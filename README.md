@@ -1,2 +1,1 @@
-# mumsys-library
-mumsys-library - Library for the MUMSYS project
+docs/README.txt

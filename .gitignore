@@ -18,3 +18,20 @@ temp/
 # Legacy ZF1
 demos/
 extras/documentation
+
+.gitmodules
+copy-free-scripts-from-lib.php
+svn/*
+.svn/
+/.settings
+/.project
+/.buildpath
+/nbproject
+/phpunit.log.xml
+logs/
+/docs/CodeCoverage/*
+/docs/API/*
+/tests/testfiles/*
+/tests/tmp/*
+/tests/tmp/*
+
