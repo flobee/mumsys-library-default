@@ -3,7 +3,8 @@
 /*{{{*/
 /**
  * ----------------------------------------------------------------------------
- * MUMSYS 2 Library for Multi User Management Interface
+ * Mumsys_File
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
  * ----------------------------------------------------------------------------

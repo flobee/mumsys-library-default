@@ -3,7 +3,7 @@
 /*{{{*/
 /**
  * ----------------------------------------------------------------------------
- * Multirename (Version 1.0.0-RC1)
+ * Multirename
  * for MUMSYS Library for Multi User Management System
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
@@ -15,9 +15,8 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Multirename
- * @version     1.2.0-RC1
+ * @version     1.2.0
  * Created on 2015-02-28
- * $Id$
  * @since       File available since Release 0.1
  * @filesource
  * -----------------------------------------------------------------------
@@ -41,7 +40,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.2.0-RC1';
+    const VERSION = '1.2.0';
 
     /**
      * Logger to log and output messages.

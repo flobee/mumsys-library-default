@@ -3,7 +3,8 @@
 /*{{{*/
 /**
  * ----------------------------------------------------------------------------
- * MUMSYS 2 Library for Multi User Management Interface
+ * Mumsys_Abstract
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
  * ----------------------------------------------------------------------------
@@ -34,7 +35,8 @@ abstract class Mumsys_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '3.0.0';
+    const VERSION = '3.0.1';
+
 
     /**
      * Retuns the version ID of this program.
@@ -46,6 +48,7 @@ abstract class Mumsys_Abstract
         return static::VERSION;
     }
 
+
     /**
      * Retuns the version string of called class.
      *
@@ -53,7 +56,7 @@ abstract class Mumsys_Abstract
      */
     public static function getVersion()
     {
-        $class= get_called_class();
+        $class = get_called_class();
         $version = '%1$s %2$s';
         return sprintf($version, $class, $class::VERSION);
     }

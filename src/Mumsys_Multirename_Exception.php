@@ -3,8 +3,8 @@
 /*{{{*/
 /**
  * ----------------------------------------------------------------------------
- * Multirename (Version 1.0.0-RC1)
- * for MUMSYS Library for Multi User Management System
+ * Mumsys_Multirename_Exception
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
  * ----------------------------------------------------------------------------
@@ -15,7 +15,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Multirename
- * @version     1.0.0-RC1
+ * @version     1.0.0
  * Created on 2015-04-08
  * $Id$
  */
