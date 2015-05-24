@@ -40,7 +40,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.2.0';
+    const VERSION = '1.2.1';
 
     /**
      * Logger to log and output messages.
@@ -85,7 +85,7 @@ class Mumsys_Multirename
     public function __construct(array $config = array(), Mumsys_FileSystem $oFiles, Mumsys_Logger_Interface $logger)
     {
         // nothing which belongs to root is allowed at the moment!
-        if (!empty($config['allowRoot']) || (php_sapi_name() === 'cli' && in_array('root',$_SERVER))) {
+        if (!empty($config['allowRoot']) || (php_sapi_name() === 'cli' && in_array('root', $_SERVER))) {
             $message = 'Something which belongs to "root" is forbidden until enough tests are present '
                 . 'and this program is no alpha version anymore! Sorry! Use a different user!'.PHP_EOL;
             throw new Mumsys_Multirename_Exception($message);
@@ -196,7 +196,7 @@ class Mumsys_Multirename
             } else {
                 $message = 'loaded config from --from-config "' . $config['from-config'] . '"';
                 $this->logger->log($message, 7);
-                /* @todo flags cant be reset but new values from cmdline should be accepted */
+
                 foreach($config as $cKey => $cValue) {
                      $newconfig[$cKey] = $cValue;
                 }
@@ -212,10 +212,10 @@ class Mumsys_Multirename
             throw new Mumsys_Multirename_Exception('Invalid --test value');
         }
 
-        if ( isset($config['keepcopy']) && $config['keepcopy'] == true ) {
-            $config['keepcopy'] = true;
-        } else {
+        if (!isset($config['keepcopy']) || $config['keepcopy']==false) {
             $config['keepcopy'] = false;
+        } else {
+            $config['keepcopy'] = true;
         }
 
         if ( isset($config['hidden']) && $config['hidden'] == true ) {
@@ -261,7 +261,7 @@ class Mumsys_Multirename
             $config['sub-paths'] = false;
         }
 
-        if (!isset($config['find'])) {
+        if (!isset($config['find']) || $config['find'] == false) {
             $config['find'] = false;
         } else {
             $config['find'] = explode(';', $config['find']);
