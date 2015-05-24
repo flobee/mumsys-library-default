@@ -15,7 +15,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_GetOpts
- * @version     3.2.0
+ * @version     3.3.0
  * Created: 2011-04-11
  * @filesource
  */
@@ -234,7 +234,7 @@ class Mumsys_GetOpts
         }
 
         foreach ($unflag as $unTag) {
-            $return[$unTag] = false;
+                $return[$unTag] = false;
         }
 
         $this->_result = $return;
