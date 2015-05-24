@@ -15,7 +15,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Multirename
- * @version     1.2.0
+ * @version     1.2.1
  * Created on 2015-02-28
  * @since       File available since Release 0.1
  * @filesource
