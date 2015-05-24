@@ -1,3 +1,47 @@
 # Changes
 
+2015-05-24
+    Mumsys_Multirename
+    - new Version: 1.2.1 Improves set/unset parameters
+    - Updates tests
+    Mumsys_GetOpts
+    - Adds handling to set/unset flags;
+    - Updates tests
+
+
+2015-05-09 
+    Mumsys_FileSystem
+    - V 3.0.6; Bugfix in scanDirInfo() force skipping folder "." or ".."
+    Mumsys_Multirename
+    - new Version: 1.2.0-RC1
+    - Implements scanning and renaming hidden (dot) files
+    - Extends tests for new feature
+
+
+2015-05-03
+    Mumsys_GetOpts
+    - Improves output for Mumsys_GetOpts::getHelp()
+    Mumsys_Multirename
+    - Imporves version output; adds version 1.1.0-RC1
+
+
+2015-04-28/29
+Core:
+    - Improves docs and License informations
+Mumsys_Multirename
+    - Adds version number and handling version with getVersion(), showVersion() 
+    methodes. Now: 1.0.0-RC1, Using http://semver.org/
+    - Adds tests for new methodes.
+
+
+2015-04-27
+- Improves runtests.sh
+- Adds Mumsys_Csv and Mumsys_Lock to a new LICENSE, Improves tests
+- Init Php test class to tests/src/phpTest.php
+
+
+2015-04-24
+- Adds /tests/tmp dir and change all tests to use that directory
+- Improves tests and code coverage
+
 
