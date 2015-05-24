@@ -1,3 +1,6 @@
 # TODOs
 
+- [x] remove path /tmp/ and set tests/tmp for testing; 2015-04-24
+- [x] Mumsys_GetOpts: Improve output of getHelp(). This is un-readable!
+
 
