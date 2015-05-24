@@ -85,7 +85,7 @@ class Mumsys_GetOpts
     /**
      * Version ID information
      */
-    const VERSION = '3.2.0';
+    const VERSION = '3.3.0';
 
     /**
      * Cmd line.
@@ -234,9 +234,7 @@ class Mumsys_GetOpts
         }
 
         foreach ($unflag as $unTag) {
-            if (isset($return[$unTag])) {
-                unset($return[$unTag]);
-            }
+            $return[$unTag] = false;
         }
 
         $this->_result = $return;
@@ -322,7 +320,11 @@ class Mumsys_GetOpts
 //                            $this->_cmd .= $k . ' ';
 //                        }
 //                        break;
-                        $this->_cmd .= $k . ' ';
+                        if ($v === false) {
+                            $this->_cmd .= '--no' . str_replace('--', '-', $this->_mapping[$k]) . ' ';
+                        } else {
+                            $this->_cmd .= $k . ' ';
+                        }
                     }
                 }
             } else {
