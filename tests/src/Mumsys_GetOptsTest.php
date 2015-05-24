@@ -162,7 +162,7 @@ class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
         $input = array('program', '--verbose', '--input', "true", '--bits', 'false', '-f', 'f_param', '--no-f');
         $this->_object = new Mumsys_GetOpts($this->opts, $input);
         $actual = $this->_object->getCmd();
-        $expected = '--verbose --input true --bits false';
+        $expected = '--verbose --input true --bits false --no-f';
         $this->assertEquals($expected, $actual);
     }
 
