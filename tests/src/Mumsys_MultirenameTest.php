@@ -97,7 +97,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
         $current = ob_get_clean();
         // this needs in the single test
         $expected = array(
-            'multirename 1.2.0 by Florian Blasel' . PHP_EOL. PHP_EOL,
+            'multirename ' . Mumsys_Multirename::VERSION . ' by Florian Blasel' . PHP_EOL. PHP_EOL,
             'Mumsys_Abstract                     ' . Mumsys_Abstract::VERSION . PHP_EOL,
             'Mumsys_FileSystem_Common_Abstract   ' . Mumsys_FileSystem_Common_Abstract::VERSION . PHP_EOL,
             'Mumsys_FileSystem                   ' . Mumsys_FileSystem::VERSION . PHP_EOL,
