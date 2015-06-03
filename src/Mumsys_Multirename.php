@@ -293,13 +293,16 @@ class Mumsys_Multirename
         $pathAll = $subPathsSubs = array();
         $dirinfo = $this->_getRelevantFiles();
         $this->logger->log('Base-Path: "' . $this->_config['path'] . '"', 7);
+        $cntMatchesTotal = $cntFilesRename = $cntFilesNorename= 0;
 
         foreach ($dirinfo AS $k => $file)
         {
             $path = $file['path'];
 
             $extension = $file['ext'];
-            $cnt_matches = 0;
+            $cntMatches = 0;
+            $cntMatchesTotal += 1;
+
             if ($extension == '') {
                 $newName = $file['name'];
             } else {
@@ -330,12 +333,12 @@ class Mumsys_Multirename
             {
                 if ((is_array($search) && is_array($replace)) || (is_scalar($search) && is_scalar($replace))) {
                     $newName = str_replace($search, $replace, $newName, $counts);
-                    $cnt_matches += $counts;
+                    $cntMatches += $counts;
                 } else {
                     /* @todo escape operators? do tests */
                     foreach ($replace AS $regex => $repl) {
                         $newName = preg_replace($regex, $repl, $newName, -1, $counts);
-                        $cnt_matches += $counts;
+                        $cntMatches += $counts;
                     }
                 }
             }
@@ -397,20 +400,30 @@ class Mumsys_Multirename
                     }
 
                     $this->logger->log(
-                        'Test-mode '.$txtMode.' (found: '. $cnt_matches .' actions):' . PHP_EOL
+                        'Test-mode '.$txtMode.' (found: '. $cntMatches .' actions):' . PHP_EOL
                         . "\t" . $file['name'] .' ...TO: ' . "\n"
                         . "\t" . $newName . $extension . PHP_EOL, 6);
 
-
+                    $cntFilesRename += 1;
                 } else {
                     $message = 'No ' . $txtMode .', identical for "' . $file['name'] . '" in "'.$path.'"';
                     $this->logger->log($message, 7);
+                    $cntFilesNorename += 1;
                 }
             }
         }
 
         if (!empty($this->_config['history']) && empty($this->_config['test'])) {
             $this->setActionHistory();
+        }
+
+        // stat output
+        if ($cntFilesRename || $cntFilesNorename|| $cntMatchesTotal) {
+            $message = 'Stats:' . PHP_EOL
+                . 'Rename files: ' . $cntFilesRename . PHP_EOL
+                . 'No rename of files (identical): ' . $cntFilesNorename . PHP_EOL
+                . 'Replacements total: '. $cntMatchesTotal . PHP_EOL;
+            $this->logger->log($message, 6);
         }
 
     }
