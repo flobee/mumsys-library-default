@@ -1,5 +1,34 @@
 # TODOs
 
+- [ ]
+
+Mumsys_Multirename
+- [ ] Config files centalized or where it happens?
+      where it happens:
+      - bad 
+          on multi-user systems: file permission problems (eg. shared folders)
+          no config share (can be help-/useful eg in: /var/)
+      - good 
+          to look directly in the config file where the action belongs to
+
+- [ ] using presets? individual names for a config incl. date informations
+- [ ] extend config, usage of different config setups/presets
+      --> presets in the local storage with --preset option? yes, sounds good!
+
+- [ ] rename list of given (existing|nonexisting?) files or output shell args 
+      or a list of from->to?
+- [ ] rename list of given files in a text file
+- [ ] scan for fileextensions given by a regex? without extension?
+- [ ] extend history, multiple undo's, detection of already removed files.. 
+      what to do then? how to report? if target file exists (keep copy or 
+      replace? in batch?) ?
+
+- [ ] improve the (test)output. limit messages e.g.: 'DONE'
+- [ ] extend rename function to substitute the hole filename including
+      extension
+
+
+
 - [x] remove path /tmp/ and set tests/tmp for testing; 2015-04-24
 - [x] Mumsys_GetOpts: Improve output of getHelp(). This is un-readable!
 
