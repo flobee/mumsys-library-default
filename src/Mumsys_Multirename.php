@@ -443,8 +443,13 @@ class Mumsys_Multirename
      */
     private function _getRelevantFiles()
     {
+        $files = array();
+        
         $dirinfo = $this->_oFiles->scanDirInfo(
-            $this->_config['path'], ($this->_config['hidden']?false:true), $this->_config['recursive']);
+            $this->_config['path'],
+            ($this->_config['hidden']?false:true),
+            $this->_config['recursive']
+        );
 
         foreach ($dirinfo as $key => $file)
         {
