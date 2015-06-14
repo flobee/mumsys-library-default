@@ -382,7 +382,12 @@ class Mumsys_Multirename
                         if ($newdest != $destination) {
                             $message = 'Target "' . $destination . '" exists. Used "' . $newdest . '"';
                             $this->logger->log($message, 5);
+
+                            $cntFilesNorename += 1;// copies
+                        } else {
+                            $cntFilesRename += 1;
                         }
+
                         $this->_history[$mode][$source] = $destination = $newdest;
 
                     } catch (Exception $e) {
@@ -425,7 +430,7 @@ class Mumsys_Multirename
         if ($cntFilesRename || $cntFilesNorename|| $cntMatchesTotal) {
             $message = 'Stats:' . PHP_EOL
                 . 'Rename files: ' . $cntFilesRename . PHP_EOL
-                . 'No rename of files (identical): ' . $cntFilesNorename . PHP_EOL
+                . 'No rename of files (identical or coypied): ' . $cntFilesNorename . PHP_EOL
                 . 'Replacements total: '. $cntMatchesTotal . PHP_EOL;
             $this->logger->log($message, 6);
         }
@@ -444,7 +449,7 @@ class Mumsys_Multirename
     private function _getRelevantFiles()
     {
         $files = array();
-        
+
         $dirinfo = $this->_oFiles->scanDirInfo(
             $this->_config['path'],
             ($this->_config['hidden']?false:true),
