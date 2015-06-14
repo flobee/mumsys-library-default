@@ -394,8 +394,12 @@ class Mumsys_Multirename
                 if ($source != $destination)
                 {
                     if (file_exists($destination) || is_link($destination)) {
-                        $message = 'Target exists! Will overwriting or copying. '
-                            . 'Depens on if --keepcopy is set';
+                        $message = 'Target exists! Will ';
+                        if ($this->_config['keepcopy']) {
+                            $message .= 'create a copy.';
+                        } else {
+                            $message .= 'overwrite target.';
+                        }
                         $this->logger->warn($message);
                     }
 
