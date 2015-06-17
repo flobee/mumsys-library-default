@@ -15,7 +15,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Multirename
- * @version     1.2.1
+ * @version     1.2.2
  * Created on 2015-02-28
  * @since       File available since Release 0.1
  * @filesource
@@ -40,7 +40,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.2.1';
+    const VERSION = '1.2.2';
 
     /**
      * Logger to log and output messages.
@@ -86,8 +86,8 @@ class Mumsys_Multirename
     {
         // nothing which belongs to root is allowed at the moment!
         if (!empty($config['allowRoot']) || (php_sapi_name() === 'cli' && in_array('root', $_SERVER))) {
-            $message = 'Something which belongs to "root" is forbidden until enough tests are present '
-                . 'and this program is no alpha version anymore! Sorry! Use a different user!'.PHP_EOL;
+            $message = 'Something which belongs to "root" is forbidden. '
+                . 'Sorry! Use a different user!'.PHP_EOL;
             throw new Mumsys_Multirename_Exception($message);
         }
         unset($config['allowRoot']);
@@ -314,7 +314,7 @@ class Mumsys_Multirename
             if (!isset($pathAll[ $path ])) {
                 $pathAll[ $path ] = $this->_buildPathBreadcrumbs( $path);
             }
-
+//-- s
             if ($this->_config['sub-paths']) {
                 if (!isset($subPathsSubs[$path])) {
                     $substitutions = $this->_substitutePaths($this->_substitutions, $pathAll[ $path ]);
@@ -343,6 +343,8 @@ class Mumsys_Multirename
                 }
             }
 
+            // $newName = $this->_substitute($newName, $pathAll);
+//-- /s
             $source = $path .'/'. $file['name'];
             $destination = $path .'/'. $newName . $extension;
 
@@ -396,6 +398,7 @@ class Mumsys_Multirename
                     }
                 }
             } else {
+                // $this->execTest()
                 if ($source != $destination)
                 {
                     if (file_exists($destination) || is_link($destination)) {
@@ -951,6 +954,16 @@ $this->_trackConfigDir($path);
         return $substitutions;
     }
 
+    /**
+     * Substitute/ replace current string (filename) by substitution informations
+     *
+     * @param array $paths List of path-breadcrumbs of the current working file for substitution.
+     * @return array Returns the compiled list of substitution to substitude
+     */
+    private function _substitute( array $substitutions = array(), array $paths = array() )
+    {
+
+    }
 
     /**
      * Install multirename.
