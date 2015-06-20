@@ -74,9 +74,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Mumsys_Multirename', $this->_object);
 
         $this->_config['allowRoot'] = true;
-        $message = 'Something which belongs to "root" is forbidden until enough '
-            . 'tests are present and this program is no alpha version anymore! '
-            . 'Sorry! Use a different user!' . PHP_EOL;
+        $message = 'Something which belongs to "root" is forbidden. Sorry! Use a different user!' . PHP_EOL;
         $this->setExpectedException('Mumsys_Multirename_Exception', $message);
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
     }
