@@ -233,9 +233,11 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Mumsys_Multirename::run
+     * @covers Mumsys_Multirename::__destruct
      * @covers Mumsys_Multirename::_getRelevantFiles
      * @covers Mumsys_Multirename::_buildPathBreadcrumbs
      * @covers Mumsys_Multirename::_substitutePaths
+     * @covers Mumsys_Multirename::_substitute
      * @covers Mumsys_Multirename::setActionHistory
      * @covers Mumsys_Multirename::undo
      * @covers Mumsys_Multirename::_undoRename

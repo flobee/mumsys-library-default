@@ -40,7 +40,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.2.2';
+    const VERSION = '1.2.3';
 
     /**
      * Logger to log and output messages.
@@ -65,6 +65,12 @@ class Mumsys_Multirename
      * @var array
      */
     private $_substitutions;
+
+    /**
+     * List of path substitutions.
+     * @var array
+     */
+    private $_pathSubstitutions = array();
 
     /**
      * Collected list of actions to be saved if --history is enabled
@@ -169,6 +175,17 @@ class Mumsys_Multirename
 
 
     /**
+     * Free temporarily created results or properties on destruction or if the
+     * destructor is called.
+     */
+    public function __destruct()
+    {
+        $this->_pathSubstitutions = array();
+        $this->_substitutions = array();
+    }
+
+
+    /**
      * Initialise incoming config parameters and returns the new configuration.
      *
      * Parameters will be validated, defaults set and prepares it for the usage
@@ -181,6 +198,8 @@ class Mumsys_Multirename
      */
     public function setSetup( array $config=array() )
     {
+        $this->__destruct();
+
         if (isset($config['from-config']))
         {
             if (is_dir($config['from-config'] .'/')) {
@@ -290,10 +309,10 @@ class Mumsys_Multirename
      */
     public function run()
     {
-        $pathAll = $subPathsSubs = array();
+        $pathAll = array();
         $dirinfo = $this->_getRelevantFiles();
         $this->logger->log('Base-Path: "' . $this->_config['path'] . '"', 7);
-        $cntMatchesTotal = $cntFilesRename = $cntFilesNorename= 0;
+        $cntMatchesTotal = 0;
 
         foreach ($dirinfo AS $k => $file)
         {
@@ -311,40 +330,12 @@ class Mumsys_Multirename
             }
 
             // generate %path0% ... %pathN% for substitution
-            if (!isset($pathAll[ $path ])) {
-                $pathAll[ $path ] = $this->_buildPathBreadcrumbs( $path);
-            }
-//-- s
-            if ($this->_config['sub-paths']) {
-                if (!isset($subPathsSubs[$path])) {
-                    $substitutions = $this->_substitutePaths($this->_substitutions, $pathAll[ $path ]);
-                    $subPathsSubs[$path] = $substitutions;
-                } else {
-                    $substitutions = $subPathsSubs[$path];
-                }
-            } else {
-                $substitutions = $this->_substitutions;
-                foreach ($pathAll[ $path ] as $pKey => $pValue) {
-                    $substitutions[$pKey] = $pValue;
-                }
+            if (!isset($pathAll[$path])) {
+                $pathAll[$path] = $this->_buildPathBreadcrumbs($path);
             }
 
-            foreach ( $substitutions AS $search => $replace )
-            {
-                if ((is_array($search) && is_array($replace)) || (is_scalar($search) && is_scalar($replace))) {
-                    $newName = str_replace($search, $replace, $newName, $counts);
-                    $cntMatches += $counts;
-                } else {
-                    /* @todo escape operators? do tests */
-                    foreach ($replace AS $regex => $repl) {
-                        $newName = preg_replace($regex, $repl, $newName, -1, $counts);
-                        $cntMatches += $counts;
-                    }
-                }
-            }
+            $newName = $this->_substitute($newName, $path, $pathAll[$path]);
 
-            // $newName = $this->_substitute($newName, $pathAll);
-//-- /s
             $source = $path .'/'. $file['name'];
             $destination = $path .'/'. $newName . $extension;
 
@@ -385,9 +376,6 @@ class Mumsys_Multirename
                             $message = 'Target "' . $destination . '" exists. Used "' . $newdest . '"';
                             $this->logger->log($message, 5);
 
-                            $cntFilesNorename += 1;// copies
-                        } else {
-                            $cntFilesRename += 1;
                         }
 
                         $this->_history[$mode][$source] = $destination = $newdest;
@@ -416,11 +404,9 @@ class Mumsys_Multirename
                         . "\t" . $file['name'] .' ...TO: ' . "\n"
                         . "\t" . $newName . $extension . PHP_EOL, 6);
 
-                    $cntFilesRename += 1;
                 } else {
                     $message = 'No ' . $txtMode .', identical for "' . $file['name'] . '" in "'.$path.'"';
                     $this->logger->log($message, 7);
-                    $cntFilesNorename += 1;
                 }
             }
         }
@@ -430,11 +416,9 @@ class Mumsys_Multirename
         }
 
         // stat output
-        if ($cntFilesRename || $cntFilesNorename|| $cntMatchesTotal) {
+        if ($cntMatchesTotal) {
             $message = 'Stats:' . PHP_EOL
-                . 'Rename files: ' . $cntFilesRename . PHP_EOL
-                . 'No rename of files (identical or coypied): ' . $cntFilesNorename . PHP_EOL
-                . 'Replacements total: '. $cntMatchesTotal . PHP_EOL;
+                . 'Files total: '. $cntMatchesTotal . PHP_EOL;
             $this->logger->log($message, 6);
         }
 
@@ -954,16 +938,47 @@ $this->_trackConfigDir($path);
         return $substitutions;
     }
 
+
     /**
-     * Substitute/ replace current string (filename) by substitution informations
+     * Substitute/ replace given string (filename)
      *
-     * @param array $paths List of path-breadcrumbs of the current working file for substitution.
-     * @return array Returns the compiled list of substitution to substitude
+     * @param string $name Filename to substitute
+     * @param string $curPath Current path of the file
+     * @param array $breadcrumbs Replacement breadcrumbs of the current path
+     *
+     * @return Returns the new substituted filename
      */
-    private function _substitute( array $substitutions = array(), array $paths = array() )
+    private function _substitute( $name, $curPath, array $breadcrumbs = array() )
     {
 
+        if ($this->_config['sub-paths']) {
+            if (!isset($this->_pathSubstitutions[$curPath])) {
+                $substitutions = $this->_substitutePaths($this->_substitutions, $breadcrumbs);
+                $this->_pathSubstitutions[$curPath] = $substitutions;
+            } else {
+                $substitutions = $this->_pathSubstitutions[$curPath];
+            }
+        } else {
+            $substitutions = $this->_substitutions;
+            foreach ($breadcrumbs as $pKey => $pValue) {
+                $substitutions[$pKey] = $pValue;
+            }
+        }
+
+        foreach ($substitutions AS $search => $replace) {
+            if ((is_array($search) && is_array($replace)) || (is_scalar($search) && is_scalar($replace))) {
+                $name = str_replace($search, $replace, $name);
+            } else {
+                /* @todo escape operators? do tests */
+                foreach ($replace AS $regex => $repl) {
+                    $name = preg_replace($regex, $repl, $name, -1);
+                }
+            }
+        }
+
+        return $name;
     }
+
 
     /**
      * Install multirename.

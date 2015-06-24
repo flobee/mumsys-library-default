@@ -3,6 +3,9 @@
 - [ ]
 
 Mumsys_Multirename
+- [33%] cleanup code: eg: substitution in a new methode, testmode in a new 
+        methode eg (tbc.): actionTest(), actionRename()
+
 - [ ] Config files centalized or where it happens?
       where it happens:
       - bad 
