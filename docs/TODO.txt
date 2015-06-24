@@ -2,6 +2,12 @@
 
 - [ ]
 
+Mumsys_GetOpts
+- [ ] Mumsys_GetOpts: add actions/operation mode(s) e.g.: 
+      call thisAction --opt1 --opt2 or
+      call secondAction --dryrun --no-history anotherAction --thatFlag
+
+
 Mumsys_Multirename
 - [33%] cleanup code: eg: substitution in a new methode, testmode in a new 
         methode eg (tbc.): actionTest(), actionRename()

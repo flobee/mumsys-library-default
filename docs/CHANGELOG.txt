@@ -1,5 +1,16 @@
 # Changes
 
+2015-06-24
+    Mumsys_Multirename
+    - new Version: 1.2.3
+    - Improves output messages in test mode
+    - Adds --find option
+    - Improves crap index of run() method 
+    - Adds method _substitution()
+    - Improves/ Updates tests
+    Mumsys_Timer
+    - Adds Timer class tests
+
 2015-05-24
     Mumsys_Multirename
     - new Version: 1.2.1 Improves set/unset parameters
