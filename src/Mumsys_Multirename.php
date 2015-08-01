@@ -15,7 +15,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Multirename
- * @version     1.2.3
+ * @version     1.2.4
  * Created on 2015-02-28
  * @since       File available since Release 0.1
  * @filesource
@@ -40,7 +40,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.2.3';
+    const VERSION = '1.2.4';
 
     /**
      * Logger to log and output messages.
@@ -454,8 +454,11 @@ class Mumsys_Multirename
                 {
                     // Check in OR condition: if something of given find list matches: take it
                     if ($this->_config['find']) {
-                        $check = false;
-                        foreach ($this->_config['find'] as $find) {
+
+                        foreach ($this->_config['find'] as $find)
+                        {
+                            $check = false;
+
                             if (preg_match('/^(regex:)/i', $find)) {
                                 $regex = substr($find, 6);
                             } else {
@@ -463,15 +466,16 @@ class Mumsys_Multirename
                             }
 
                             $check = preg_match($regex, $file['file']);
-                        }
 
-                        if (!$check) {
-                            continue;
+
+                            if (!$check) {
+                                continue;
+                            }
+
+                            $file['ext'] = $extension;
+                            $files[] = $file;
                         }
                     }
-
-                    $file['ext'] = $extension;
-                    $files[] = $file;
                 }
             }
         }
