@@ -1,5 +1,11 @@
 # Changes
 
+2015-08-01
+    Mumsys_Multirename
+    - new Version: 1.2.4
+    - Fixes a fault for --find option in _getRelevantFiles() when trying to
+      find files with several keywords
+
 2015-06-24
     Mumsys_Multirename
     - new Version: 1.2.3
