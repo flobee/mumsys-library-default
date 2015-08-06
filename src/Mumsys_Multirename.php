@@ -439,7 +439,7 @@ class Mumsys_Multirename
 
         $dirinfo = $this->_oFiles->scanDirInfo(
             $this->_config['path'],
-            ($this->_config['hidden']?false:true),
+            ($this->_config['hidden'] ? false : true),
             $this->_config['recursive']
         );
 
@@ -448,15 +448,15 @@ class Mumsys_Multirename
             if ($file['type'] == 'file')
             {
                 $extension = $this->_oFiles->extGet($file['name']);
+                $file['ext'] = $extension;
 
                 if (in_array('*', $this->_config['fileextensions'])
                     || in_array($extension, $this->_config['fileextensions']))
-                {
-                    // Check in OR condition: if something of given find list matches: take it
+ {
+                    // Check in OR condition; take it on match or continue loop
                     if ($this->_config['find']) {
 
-                        foreach ($this->_config['find'] as $find)
-                        {
+                        foreach ($this->_config['find'] as $find) {
                             $check = false;
 
                             if (preg_match('/^(regex:)/i', $find)) {
@@ -467,15 +467,13 @@ class Mumsys_Multirename
 
                             $check = preg_match($regex, $file['file']);
 
-
                             if (!$check) {
                                 continue;
                             }
-
-                            $file['ext'] = $extension;
-                            $files[] = $file;
                         }
                     }
+
+                    $files[] = $file;
                 }
             }
         }
