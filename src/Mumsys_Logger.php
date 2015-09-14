@@ -364,6 +364,8 @@ class Mumsys_Logger
     {
         try
         {
+
+            $isArray = false;
             $datesting = '';
             if ( !empty($this->_timeFormat) ) {
                 $datesting = date($this->_timeFormat, time());
@@ -371,12 +373,14 @@ class Mumsys_Logger
 
             $levelName = $this->_loglevels[$level];
 
-            if ( is_array($input) )
+            if ( ($isArray=is_array($input) ) )
             {
+                $_cnt = 0;
                 $message = '';
                 while ( list($key, $val) = each($input) )
                 {
-                    $tmp = 'ff_' . $this->_cnt . ' key: "' . $key . '", value: "' . $val.'"';
+                    //$tmp = 'ff_' . $_cnt . ' key: "' . $key . '", value: "' . $val.'"';
+                    $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val.'");';
                     $message .= sprintf(
                         $this->_logFormat,
                         $datesting,
@@ -387,7 +391,7 @@ class Mumsys_Logger
                     );
                 }
 
-                $this->_cnt++;
+                $_cnt++;
             }
             else
             {
@@ -408,14 +412,37 @@ class Mumsys_Logger
                 if ( $this->msgEcho )
                 {
                     if ($this->_logFormatMsg && $this->_logFormatMsg != $this->_logFormat) {
-                        $msgOut = sprintf(
-                            $this->_logFormatMsg,
-                            $datesting,
-                            $this->username,
-                            $levelName,
-                            $level,
-                            $input . $this->lf
-                        );
+                        if ($isArray)
+                        {
+                            $msgOut = '';
+                            $_cnt = 0;
+                            reset($input);
+                            while ( list($key, $val) = each($input) )
+                            {
+                                $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val.'");';
+                                $msgOut .= sprintf(
+                                    $this->_logFormatMsg,
+                                    $datesting,
+                                    $this->username,
+                                    $levelName,
+                                    $level,
+                                    $tmp . $this->lf
+                                );
+                            }
+
+                            $_cnt++;
+                        }
+                        else
+                        {
+                            $msgOut = sprintf(
+                                $this->_logFormatMsg,
+                                $datesting,
+                                $this->username,
+                                $levelName,
+                                $level,
+                                $input . $this->lf
+                            );
+                        }
                     } else {
                         $msgOut = $message;
                     }
