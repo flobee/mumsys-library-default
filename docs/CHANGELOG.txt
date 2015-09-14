@@ -1,5 +1,14 @@
 # Changes
 
+2015-08-09
+    Mumsys_Multirename
+    - start implementation of addActionHistory, getActionHistory, 
+    - to be droped: setActionHistory
+    - fixed some tests
+    - fixed getRelevantFiles() of version 1.2.5
+    - adds "history-size" limit to avoid memory problems when using huge listings
+    - Improves statistics output after a rename/ test
+
 2015-08-06
     Mumsys_Multirename
     - new Version: 1.2.5

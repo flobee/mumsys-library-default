@@ -9,6 +9,10 @@ Mumsys_GetOpts
 
 
 Mumsys_Multirename
+- [10%] extend history, multiple undo's, detection of already removed files.. 
+      what to do then? how to report? if target file exists (keep copy or 
+      replace? in batch?) ?
+
 - [33%] cleanup code: eg: substitution in a new methode, testmode in a new 
         methode eg (tbc.): actionTest(), actionRename()
 
@@ -21,18 +25,19 @@ Mumsys_Multirename
           to look directly in the config file where the action belongs to
 
 - [ ] using presets? individual names for a config incl. date informations
+
 - [ ] extend config, usage of different config setups/presets
       --> presets in the local storage with --preset option? yes, sounds good!
 
 - [ ] rename list of given (existing|nonexisting?) files or output shell args 
       or a list of from->to?
+
 - [ ] rename list of given files in a text file
+
 - [ ] scan for fileextensions given by a regex? without extension?
-- [ ] extend history, multiple undo's, detection of already removed files.. 
-      what to do then? how to report? if target file exists (keep copy or 
-      replace? in batch?) ?
 
 - [ ] improve the (test)output. limit messages e.g.: 'DONE'
+
 - [ ] extend rename function to substitute the hole filename including
       extension
 

@@ -22,13 +22,19 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
         $this->_testsDir = realpath(dirname(__FILE__) . '/../');
 
         $_SERVER['HOME'] = $this->_testsDir . '/tmp';
+
+        for ($i = 10; $i < 20; $i++) {
+            @touch($this->_testsDir . '/tmp/multirenametestfile_-_' . $i);
+        }
         @touch($this->_testsDir . '/tmp/multirenametestfile');
+
         $this->_config = array(
             'program',
             'path' => $this->_testsDir . '/tmp',
             'fileextensions' => '*',
             'substitutions' => 'doNotFind=doNotReplace;regex:/doNotFind/i',
             'loglevel' => 7,
+            'history-size' => 2,
         );
         $this->_oFiles = new Mumsys_FileSystem();
         $opts = array('logfile' => $this->_testsDir . '/tmp/test_' . basename(__FILE__) . '.log');
@@ -138,6 +144,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
             'sub-paths' => true,
             'find' => 'a;c;t',
             'history' => true,
+            'history-size' => 2,
         );
         $actual1 = $this->_object->setSetup($config);
         $expected1 = $config;
@@ -238,7 +245,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
      * @covers Mumsys_Multirename::_buildPathBreadcrumbs
      * @covers Mumsys_Multirename::_substitutePaths
      * @covers Mumsys_Multirename::_substitute
-     * @covers Mumsys_Multirename::setActionHistory
+     * @covers Mumsys_Multirename::_addActionHistory
      * @covers Mumsys_Multirename::undo
      * @covers Mumsys_Multirename::_undoRename
      * @covers Mumsys_Multirename::_undoTest
@@ -257,6 +264,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
             'substitutions' => 'm=XX;XX=X%path1%X;regex:/%path1%/i=xTMPx;regex:/xTMPx/i=%path1%;%path1%=xTMPx',
             'find' => 'm;regex:/m/i',
             'history' => true,
+            'history-size' => 2,
         );
         $config += $this->_config;
 
@@ -304,15 +312,42 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($expected2);
         $this->assertTrue($expected3);
         $this->assertTrue($expected4);
-    }
 
+        // do rename now
+        $config['substitutions'] = 'multirenametestfile=unittest_testfile';
+        $config['find'] = 'multirenametestfile';
+        $config['test'] = false;
+        $this->_object->setSetup($config);
+        #$this->_object->run();
+    }
 
     /**
      * @covers Mumsys_Multirename::run
      * @covers Mumsys_Multirename::_getRelevantFiles
      * @covers Mumsys_Multirename::_buildPathBreadcrumbs
      * @covers Mumsys_Multirename::_substitutePaths
-     * @covers Mumsys_Multirename::setActionHistory
+     * @covers Mumsys_Multirename::_addActionHistory
+     */
+    public function testRun4history()
+    {
+        $this->markTestIncomplete();
+        // do rename now
+        $config = $this->_config;
+        $config['substitutions'] = 'unittest_testfile_-_10=unittest_testfile_-_11';
+        $config['keepcopy'] =false;
+        $config['test'] = false;
+        $config['fileextensions'] = '*';
+
+        $this->_object->setSetup($config);
+        $this->_object->run();
+    }
+
+    /**
+     * @covers Mumsys_Multirename::run
+     * @covers Mumsys_Multirename::_getRelevantFiles
+     * @covers Mumsys_Multirename::_buildPathBreadcrumbs
+     * @covers Mumsys_Multirename::_substitutePaths
+     * @covers Mumsys_Multirename::_addActionHistory
      * @covers Mumsys_Multirename::undo
      * @covers Mumsys_Multirename::_undoRename
      * @covers Mumsys_Multirename::_undoTest
@@ -329,6 +364,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
             'substitutions' => 'multirenametestfile=unittest_testfile',
             'find' => 'multirenametestfile',
             'history' => true,
+            'history-size' => 2,
         );
         $config += $this->_config;
 
@@ -373,6 +409,31 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
         $this->_object->run();
     }
 
+    /**
+     * @covers Mumsys_Multirename::run
+     */
+    public function testRunTestOverwriteTarget()
+    {
+        $config = array(
+            'test' => true,
+            'fileextensions' => '*',
+            'keepcopy' => false,
+            'hidden' => false,
+            'recursive' => false,
+            'sub-paths' => false,
+            // @covers Mumsys_Multirename::_substitutePaths for 100% code coverage
+            'substitutions' => 'multirenametestfile_-_10=multirenametestfile_-_11',
+            'history' => true,
+            'history-size' => 2,
+        );
+        $config += $this->_config;
+
+        $this->_object->setSetup($config);
+        $this->_object->run();
+
+        $this->assertTrue(file_exists($this->_testsDir . '/tmp/multirenametestfile_-_10'));
+        $this->assertTrue(file_exists($this->_testsDir . '/tmp/multirenametestfile_-_11'));
+    }
 
     /**
      * Walk through the code for code coverage
@@ -387,7 +448,18 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
 
         // invalid history
         $file = $this->_config['path'] . '/.multirename/lastactions';
-        $history['mode'][$this->_testsDir . '/tmp/multirenametestfile'] = $this->_testsDir . '/tmp/unittest_testfile';
+        $history = array(
+            array(
+                'name' => 'history name',
+                'date' => date('Y-m-d H:i:s', time()),
+                'history' => array(
+                    'mode' => array(
+                        $this->_testsDir . '/tmp/multirenametestfile' => $this->_testsDir . '/tmp/unittest_testfile'
+                    )
+                ),
+            ),
+        );
+
         $data = json_encode($history);
         $result = file_put_contents($file, $data);
         $this->_object->undo($this->_config['path']);
@@ -458,7 +530,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
         $actual = $results[ count($results)-2 ];
         $expected = "multirename --path '".$this->_testsDir . "/tmp' --fileextensions '*' "
             . "--substitutions 'doNotFind=doNotReplace;regex:/doNotFind/i' "
-            . "--loglevel '7'";
+            . "--loglevel '7' --history-size '2'";
 
         $this->assertEquals($expected, $actual);
     }

@@ -40,7 +40,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.2.5';
+    const VERSION = '1.3.0';
 
     /**
      * Logger to log and output messages.
@@ -77,6 +77,15 @@ class Mumsys_Multirename
      * @var array
      */
     private $_history = array();
+
+    /**
+     * Number of history entrys to save.
+     * Note: If you run on much more than tousands of files you may set the
+     * memory limit to a higher value and/or reduce this number to 1.
+     * This feature may consume much memory. Take care.
+     * @var integer
+     */
+    private $_historySize = 10;
 
 
     /**
@@ -182,6 +191,7 @@ class Mumsys_Multirename
     {
         $this->_pathSubstitutions = array();
         $this->_substitutions = array();
+        $this->_history = array();
     }
 
 
@@ -290,6 +300,10 @@ class Mumsys_Multirename
             $config['history'] = false;
         }
 
+        if (isset($config['history-size'])) {
+            $this->_historySize = intval($config['history-size']);
+        }
+
         if (empty($config['test']) || $config['test'] !== true) {
             $config['test'] = false;
         }
@@ -313,20 +327,21 @@ class Mumsys_Multirename
         $dirinfo = $this->_getRelevantFiles();
         $this->logger->log('Base-Path: "' . $this->_config['path'] . '"', 7);
         $cntMatchesTotal = 0;
+        $cntMatchesRelevant = 0;
 
         foreach ($dirinfo AS $k => $file)
         {
             $path = $file['path'];
 
-            $extension = $file['ext'];
             $cntMatches = 0;
             $cntMatchesTotal += 1;
 
-            if ($extension == '') {
+            if ($file['ext'] == '') {
                 $newName = $file['name'];
+                $extension = '';
             } else {
                 $newName = $this->_oFiles->nameGet($file['name']);
-                $extension = '.' . $extension;
+                $extension = '.' . $file['ext'];
             }
 
             // generate %path0% ... %pathN% for substitution
@@ -369,16 +384,20 @@ class Mumsys_Multirename
                                 $this->_config['keepcopy']
                             );
                         } else {
-                            $newdest = $this->_oFiles->rename($source, $destination, $this->_config['keepcopy']);
+                            $newdest = $this->_oFiles->rename(
+                                $source,
+                                $destination,
+                                $this->_config['keepcopy']
+                            );
                         }
 
                         if ($newdest != $destination) {
                             $message = 'Target "' . $destination . '" exists. Used "' . $newdest . '"';
                             $this->logger->log($message, 5);
-
                         }
 
                         $this->_history[$mode][$source] = $destination = $newdest;
+                        $cntMatchesRelevant +=1;
 
                     } catch (Exception $e) {
                         $message = $txtMode .' failt for: "'.$source.'": ' .$e->getMessage();
@@ -392,10 +411,11 @@ class Mumsys_Multirename
                     if (file_exists($destination) || is_link($destination)) {
                         $message = 'Target exists! Will ';
                         if ($this->_config['keepcopy']) {
-                            $message .= 'create a copy.';
+                            $message .= 'create a copy';
                         } else {
-                            $message .= 'overwrite target.';
+                            $message .= 'overwrite target';
                         }
+                        $message .= ': "' . str_replace($this->_config['path'],'...', $destination) . "'";
                         $this->logger->warn($message);
                     }
 
@@ -404,6 +424,7 @@ class Mumsys_Multirename
                         . "\t" . $file['name'] .' ...TO: ' . "\n"
                         . "\t" . $newName . $extension . PHP_EOL, 6);
 
+                    $cntMatchesRelevant +=1;
                 } else {
                     $message = 'No ' . $txtMode .', identical for "' . $file['name'] . '" in "'.$path.'"';
                     $this->logger->log($message, 7);
@@ -412,13 +433,17 @@ class Mumsys_Multirename
         }
 
         if (!empty($this->_config['history']) && empty($this->_config['test'])) {
-            $this->setActionHistory();
+            $this->_addActionHistory();
         }
 
         // stat output
         if ($cntMatchesTotal) {
             $message = 'Stats:' . PHP_EOL
-                . 'Files total: '. $cntMatchesTotal . PHP_EOL;
+                . 'Files total: '. $cntMatchesTotal . PHP_EOL
+                . 'Files relevant: '. $cntMatchesRelevant . PHP_EOL
+                . 'Memory limit: ' . ini_get('memory_limit') . PHP_EOL
+                . 'Memory used: ' . $this->_oFiles->coolfilesize(memory_get_usage(),2) . PHP_EOL;
+
             $this->logger->log($message, 6);
         }
 
@@ -455,10 +480,9 @@ class Mumsys_Multirename
  {
                     // Check in OR condition; take it on match or continue loop
                     if ($this->_config['find']) {
-
-                        foreach ($this->_config['find'] as $find) {
+                        foreach ($this->_config['find'] as $find)
+                        {
                             $check = false;
-
                             if (preg_match('/^(regex:)/i', $find)) {
                                 $regex = substr($find, 6);
                             } else {
@@ -467,13 +491,15 @@ class Mumsys_Multirename
 
                             $check = preg_match($regex, $file['file']);
 
-                            if (!$check) {
+                            if ($check == 0) {
                                 continue;
+                            } else {
+                                $files[] = $file;
                             }
                         }
+                    } else {
+                        $files[] = $file;
                     }
-
-                    $files[] = $file;
                 }
             }
         }
@@ -494,10 +520,12 @@ class Mumsys_Multirename
      */
     public function undo( $path, $keepCopy=true)
     {
-        $file = $path . '/.multirename/lastactions';
-        if (file_exists($file)) {
-            $data = file_get_contents($file);
-            $history = json_decode($data, true);
+        $allHistorys = $this->_getActionHistory($path, -1);
+
+        if ($allHistorys)
+        {
+            // takes latest item for the moment
+            $history = $allHistorys[count($allHistorys)-1]['history'];
 
             foreach ($history as $mode => $lastActions)
             {
@@ -520,8 +548,10 @@ class Mumsys_Multirename
                     case 'rename-Test':
                         $this->_undoTest($lastActions, $mode, $keepCopy);
                         break;
+
                     default:
-                        $this->logger->log('Undo failt. Invalid mode weather a link,symlink nor rename action set', 3);
+                        $this->logger->log('Undo failt. Invalid mode. Weather '
+                            . 'a link, symlink nor rename action set', 3);
                         break;
                 }
 
@@ -611,24 +641,79 @@ class Mumsys_Multirename
 
 
     /**
-     * Set the actions preformed by a rename/symlink action from a later undo.
-     *
-     * @return boolean Returns true if the action data could be stored or false on errors
+     * Adds current history to the history log.
      */
-    public function setActionHistory() {
+    protected function _addActionHistory()
+    {
+        if (empty($this->_history)) {
+            $this->logger->log(
+                'No actions performed. Don\'t write to history', 6);
+            return array();
+        }
 
         $this->_mkConfigDir($this->_config['path']);
 
         $file = $this->_config['path'] . '/.multirename/lastactions';
 
-        $data = json_encode($this->_history);
+        $history = $this->_getActionHistory($this->_config['path'], -1);
 
+        if (count($history) > $this->_historySize) {
+            array_shift($history);
+            $this->logger->log('History size exceed. Oldest entry droped', 6);
+        }
+
+        $historyItem = array(
+            'name' => 'history ' . date('Y-m-d', $_SERVER['REQUEST_TIME']),
+            'date' => date('Y-m-d H:i:s', time()),
+            'history' => $this->_history,
+        );
+
+        if ($history && isset($history[0]['date'])) {
+            $history[] = $historyItem;
+        } else {
+            $history = array($historyItem);
+        }
+
+        $data = json_encode($history);
         $result = file_put_contents($file, $data);
 
         $this->logger->log(
-            'Actions saved. To undo/ reverse use multirename --undo --path "' . $this->_config['path'] . '"', 6);
+            'Actions saved. To undo/ reverse use multirename --undo --path "'
+            . $this->_config['path'] . '"', 6);
         $this->logger->log(
-            'Undo is possible for this path until the next rename action will be performed/ executed', 6);
+            'Undo is possible for this path until the next rename action will '
+            . 'be performed/ executed', 6);
+
+        return $result;
+    }
+
+
+    /**
+     * Returns history data.
+     * The actions preformed by a rename/symlink action. If the index is given
+     * the selected action will be returnd otherwise all history data returns.
+     *
+     * @param integer $index History index to return
+     * @return array|false Returns a list of action historys or false on error
+     */
+    protected function _getActionHistory( $path, $index = -1 )
+    {
+        $result = false;
+        $file = $path . '/.multirename/lastactions';
+
+        if (file_exists($file)) {
+            $data = file_get_contents($file);
+            $history = json_decode($data, true);
+
+            if (isset($history[$index])) {
+                $result = array($history[$index]);
+            } else {
+                $result = $history;
+            }
+        } else {
+            $this->logger->log('No action history found', 3);
+        }
+
         return $result;
     }
 
@@ -659,7 +744,8 @@ $this->_trackConfigDir($path);
 
     /**
      * Collects action directories.
-     * The idea behind: To find where this program was used. Also useful for an uninstall process
+     * The idea behind: To find where this program was used. Also useful for an
+     * uninstall process
      *
      * @param string $path Action/ start directory for renaming files
      */
@@ -1021,6 +1107,7 @@ $this->_trackConfigDir($path);
     public static function getSetup( $shellOptions = true )
     {
         $result = array(
+            '--test|-t' => 'Flag: test before execute',
             '--path|-p:' => 'Path to scann for files (tailing slash is important!) * Required',
             '--fileextensions|-e:' => 'Semicolon separated list of file extensions to scan for '
                 . 'eg. "avi;AVI;mpg;MPG" or "*" (with quotes) for all files * Required',
@@ -1043,6 +1130,11 @@ $this->_trackConfigDir($path);
             '--find|-f:' => 'Find files. Semicolon seperated list of search keywords or '
                 . 'regular expressions (starting with "regex:"). The list will be handled in OR conditons.'
                 . 'The keyword checks for matches in any string of the file location (path and filename). Optional',
+            '--exclude:' => 'Not implemented yet. '
+                . 'Exclude files. Semicolon seperated list of search keywords or regular expressions ('
+                . 'starting with "regex:"). The list will be handled in OR conditons.'
+                . 'The keyword checks for matches in any string of the file location (path and filename). Exclude '
+                . 'will also ignore matches from the --find option; Optional',
             '--recursive|-r' => 'Flag, if set read all files under each directory starting from --path recursively',
             '--keepcopy' => 'Flag. If set keep all existing files',
             '--hidden' => 'Include hidden files (dot files)',
@@ -1052,6 +1144,10 @@ $this->_trackConfigDir($path);
                 . 'This will be used internally if you use --link soft;rel the linkway will be extracted from that line',
             '--history|-h' => 'Flag; If set this will enable the history/ for the moment ONLY the last action log with '
                 . 'the option to undo it',
+            '--history-size:' => 'Integer; Number of history entrys if --history is enabled; Default: 10; '
+                . 'Note: If you run on much more than hundreds of files you may set the memory'
+                . ' limit to a higher value and/or reduce this number to 1. This feature may consume much memory. '
+                . 'Using the --test mode with loglevel 6 or higher will give you informations about the memory usage.',
             '--batch' => 'Flag; Not implemented yet. Run the job recusiv from given --path as start directory and '
                 . 'start renaming. If a new configuration in the sub directories exists is trys to load the '
                 . 'configuration for batch-mode and execute it. This enables --recursiv and --history',
@@ -1063,7 +1159,6 @@ $this->_trackConfigDir($path);
             '--del-config' => 'Flag; Deletes the config from given --path',
             '--show-config' => 'Flag; Shows the config parameter from a saved config to check or rebuild it. '
                 . 'Use it with --from-config',
-            '--test|-t' => 'Flag: test before execute',
             '--loglevel|--ll:' => 'Logging level for the output of messages (0=Emerg ... 7=verbose/debug). '
                 . 'For testing use 6 or 7; For cronjob etc. do not use lower than 5 to get important messages',
             '--version|-v' => 'Flag; Return version informations',
