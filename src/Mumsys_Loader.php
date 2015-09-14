@@ -87,18 +87,16 @@ final class Mumsys_Loader
     public static function autoload($instance)
     {
         $test = true;
-        if (!class_exists($instance))
-        {
+        if (!class_exists($instance)) {
             $path = dirname(__FILE__) . '/';
-
             if (substr($instance, 0, 6) == 'Mumsys') {
-                if (($test = file_exists($path . $instance . '.php'))) {
-                    $test = require_once $path . $instance . '.php';
-                }
+                $classfile = $path . $instance . '.php';
             } else {
-                if (($test = file_exists($path . 'class.' . $instance . '.php'))) {
-                    $test = require_once $path . 'class.' . $instance . '.php';
-                }
+                $classfile = $path . 'class.' . $instance . '.php';
+            }
+            
+            if (($test = file_exists($classfile))) {
+                $test = require_once $classfile;
             }
 
             if ($test !== false) {
