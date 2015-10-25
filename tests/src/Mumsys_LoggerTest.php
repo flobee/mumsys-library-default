@@ -152,7 +152,7 @@ class Mumsys_LoggerTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals('long log', trim($this->_object->log('long log', 7)));
 
-        $exp = 'ff_0 key: "0", value: "long log"';
+        $exp = 'ff_0: array("0" => "long log");';
         $this->assertEquals($exp, trim($this->_object->log(array('long log'), 7)));
     }
 
