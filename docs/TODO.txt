@@ -9,6 +9,9 @@ Mumsys_GetOpts
 
 
 Mumsys_Multirename
+- [ ] Like the --find option we need an --exclude option to hide from current
+      substitution!
+
 - [10%] extend history, multiple undo's, detection of already removed files.. 
       what to do then? how to report? if target file exists (keep copy or 
       replace? in batch?) ?
@@ -41,8 +44,7 @@ Mumsys_Multirename
 - [ ] extend rename function to substitute the hole filename including
       extension
 
-
-
+Mumsys_Multirename - DONE
 - [x] remove path /tmp/ and set tests/tmp for testing; 2015-04-24
 - [x] Mumsys_GetOpts: Improve output of getHelp(). This is un-readable!
 
