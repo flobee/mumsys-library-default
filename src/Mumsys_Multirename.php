@@ -15,7 +15,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Multirename
- * @version     1.2.5
+ * @version     1.3.1
  * Created on 2015-02-28
  * @since       File available since Release 0.1
  * @filesource
@@ -40,7 +40,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.3.0';
+    const VERSION = '1.3.1';
 
     /**
      * Logger to log and output messages.
