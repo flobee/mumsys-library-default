@@ -85,7 +85,7 @@ class Mumsys_GetOpts
     /**
      * Version ID information
      */
-    const VERSION = '3.3.0';
+    const VERSION = '3.3.1';
 
     /**
      * Cmd line.
@@ -341,13 +341,20 @@ class Mumsys_GetOpts
 
 
     /**
-     * Returns help/ parameter informations by given options on initialisation.
+     * Returns help/ parameter informations by given options from initialisation.
+     *
+     * @param integer $wordWrap Number of chars to wrap to a new line
+     * @param integer $indentComment Character/s to indent the comments (prefix)
+     * eg: "\t" or 4 spaces (default). Note that e.g. on the shell a TAB can be
+     * shown as 8 spaces.
      *
      * @return string Help informations
      */
-    public function getHelp()
+    public function getHelp($wordWrap=80, $indentComment="    ")
     {
         $str = '';
+        $wrap = $wordWrap - strlen($indentComment);
+
         foreach ( $this->_options AS $k => $v )
         {
             if (is_string($k)) {
@@ -366,10 +373,10 @@ class Mumsys_GetOpts
             }
 
             if ($desc) {
-                $desc = PHP_EOL . "\t" . wordwrap($desc, 76, PHP_EOL . "\t") . PHP_EOL;
+                $desc = $indentComment . wordwrap($desc, $wrap, PHP_EOL . $indentComment) . PHP_EOL . PHP_EOL;
             }
 
-            $str .= $option . $desc . '' . PHP_EOL;
+            $str .= $option . PHP_EOL . $desc;
         }
         $str = trim($str);
         return $str;
