@@ -296,6 +296,12 @@ class Mumsys_Multirename
             $config['find'] = explode(';', $config['find']);
         }
 
+        if (!isset($config['exclude']) || $config['exclude'] == false) {
+            $config['exclude'] = false;
+        } else {
+            $config['exclude'] = explode(';', $config['exclude']);
+        }
+
         if (!isset($config['history'])) {
             $config['history'] = false;
         }
@@ -470,41 +476,61 @@ class Mumsys_Multirename
 
         foreach ($dirinfo as $key => $file)
         {
-            if ($file['type'] == 'file')
+            if ($file['type'] != 'file') {
+                continue;
+            }
+
+            $extension = $this->_oFiles->extGet($file['name']);
+            $file['ext'] = $extension;
+
+            if (in_array('*', $this->_config['fileextensions'])
+                || in_array($extension, $this->_config['fileextensions']))
             {
-                $extension = $this->_oFiles->extGet($file['name']);
-                $file['ext'] = $extension;
-
-                if (in_array('*', $this->_config['fileextensions'])
-                    || in_array($extension, $this->_config['fileextensions']))
- {
-                    // Check in OR condition; take it on match or continue loop
-                    if ($this->_config['find']) {
-                        foreach ($this->_config['find'] as $find)
-                        {
-                            $check = false;
-                            if (preg_match('/^(regex:)/i', $find)) {
-                                $regex = substr($find, 6);
-                            } else {
-                                $regex = '/' . $find . '/i';
-                            }
-
-                            $check = preg_match($regex, $file['file']);
-
-                            if ($check == 0) {
-                                continue;
-                            } else {
-                                $files[] = $file;
-                            }
+                // Check in OR condition; continue loop on match
+                if ($this->_config['exclude']) {
+                    foreach ($this->_config['exclude'] as $find) {
+                        if ($this->_relevantFilesCheckMatches($find, $file['file'])) {
+                            continue;
                         }
-                    } else {
-                        $files[] = $file;
                     }
+                }
+
+                // Check in OR condition; take it on match or continue loop
+                if ($this->_config['find']) {
+                    foreach ($this->_config['find'] as $find) {
+                        if ($this->_relevantFilesCheckMatches($find, $file['file'])) {
+                            $files[] = $file;
+                        } else {
+                            continue;
+                        }
+                    }
+                } else {
+                    $files[] = $file;
                 }
             }
         }
 
         return $files;
+    }
+
+    /**
+     * Checks for a match.
+     *
+     * @param string $lookup Keyword to look for in the subject
+     * @param string $subject Subject to test for matches
+     *
+     * @return nummeric|false Returns 1 for a match, 0 for no match, false for an error
+     */
+    private function _relevantFilesCheckMatches($lookup, $subject)
+    {
+        $check = false;
+        if (preg_match('/^(regex:)/i', $lookup)) {
+            $regex = substr($lookup, 6);
+        } else {
+            $regex = '/' . $lookup . '/i';
+        }
+
+        return preg_match($regex, $subject);
     }
 
 
@@ -880,7 +906,7 @@ $this->_trackConfigDir($path);
 
     /**
      * Shows the current loaded configuration for the cmd line.
-     * Note: This will push the informations to the logger! Enable loglevel 6 if changed!
+     * Note: This will push the informations to the logger! Enable loglevel 6 to show it!
      */
     public function showConfig()
     {
@@ -1130,10 +1156,9 @@ $this->_trackConfigDir($path);
             '--find|-f:' => 'Find files. Semicolon seperated list of search keywords or '
                 . 'regular expressions (starting with "regex:"). The list will be handled in OR conditons.'
                 . 'The keyword checks for matches in any string of the file location (path and filename). Optional',
-            '--exclude:' => 'Not implemented yet. '
-                . 'Exclude files. Semicolon seperated list of search keywords or regular expressions ('
+            '--exclude:' => 'Exclude files. Semicolon seperated list of search keywords or regular expressions ('
                 . 'starting with "regex:"). The list will be handled in OR conditons.'
-                . 'The keyword checks for matches in any string of the file location (path and filename). Exclude '
+                . 'The keyword will be checked for matches in any string of the file location (path and filename). Exclude '
                 . 'will also ignore matches from the --find option; Optional',
             '--recursive|-r' => 'Flag, if set read all files under each directory starting from --path recursively',
             '--keepcopy' => 'Flag. If set keep all existing files',
