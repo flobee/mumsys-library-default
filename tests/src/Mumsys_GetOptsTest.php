@@ -182,13 +182,14 @@ class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
 
     public function testGetHelp()
     {
-        $actual = $this->_object->getHelp();
+        $actual = $this->_object->getHelp(76, "    ");
+
         $expected = '-v|--verbose' . PHP_EOL
             . '-i|--input <yourValue/s>' . PHP_EOL
             . '-b|--bits <yourValue/s>' . PHP_EOL
             . '-f <yourValue/s>' . PHP_EOL
             . '--help|-h' . PHP_EOL
-            . "\thelp option and this is the help info place";
+            . "    help option and this is the help info place";
 
         $this->assertEquals($expected, $actual);
     }
