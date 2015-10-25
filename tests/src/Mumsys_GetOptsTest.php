@@ -183,7 +183,6 @@ class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
     public function testGetHelp()
     {
         $actual = $this->_object->getHelp(76, "    ");
-
         $expected = '-v|--verbose' . PHP_EOL
             . '-i|--input <yourValue/s>' . PHP_EOL
             . '-b|--bits <yourValue/s>' . PHP_EOL
