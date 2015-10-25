@@ -1,5 +1,13 @@
 # Changes
 
+2015-10-25
+    Mumsys_Multirename
+    - Adds --exclude option, Updates tests
+    - version 1.3.1
+    Mumsys_GetOpts
+    - Improves getHelp() output, updates test
+
+
 2015-09-14
     Mumsys_SVDRP
     - Init Mumsys_SVDRP class to deal with vdr's svdrpsend command
