@@ -27,6 +27,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
             @touch($this->_testsDir . '/tmp/multirenametestfile_-_' . $i);
         }
         @touch($this->_testsDir . '/tmp/multirenametestfile');
+        @touch($this->_testsDir . '/tmp/multirenametestfile_toHide');
 
         $this->_config = array(
             'program',
@@ -143,6 +144,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
             'recursive' => true,
             'sub-paths' => true,
             'find' => 'a;c;t',
+            'exclude' => 'xxx;yyy',
             'history' => true,
             'history-size' => 2,
         );
@@ -152,6 +154,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
         $expected1['link'] = 'soft';
         $expected1['linkway'] = 'rel';
         $expected1['find'] = array('a','c','t');
+        $expected1['exclude'] = array('xxx','yyy');
 
         // from config test + hidden=true
         $this->_object->setConfig($this->_config['path']);
@@ -249,6 +252,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
      * @covers Mumsys_Multirename::undo
      * @covers Mumsys_Multirename::_undoRename
      * @covers Mumsys_Multirename::_undoTest
+     * @covers Mumsys_Multirename::_relevantFilesCheckMatches
      */
     public function testRunAndUndo()
     {
@@ -263,6 +267,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
             // @covers Mumsys_Multirename::_substitutePaths for 100% code coverage
             'substitutions' => 'm=XX;XX=X%path1%X;regex:/%path1%/i=xTMPx;regex:/xTMPx/i=%path1%;%path1%=xTMPx',
             'find' => 'm;regex:/m/i',
+            'exclude' => 'regex:/toHide/;Hide',
             'history' => true,
             'history-size' => 2,
         );
@@ -279,6 +284,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
         // do rename now
         $config['substitutions'] = 'multirenametestfile=unittest_testfile';
         $config['find'] = 'multirenametestfile';
+        $config['exclude'] = 'regex:/toHide/;Hide';
         $config['test'] = false;
         $this->_object->setSetup($config);
         $this->_object->run();
@@ -305,6 +311,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
 
         $expected3 = !file_exists($this->_testsDir . '/tmp/unittest_testfile');
         $expected4 = file_exists($this->_testsDir . '/tmp/multirenametestfile');
+        $expected5 = !file_exists($this->_testsDir . '/unittest_testfile_toHide');
 
         @unlink($this->_testsDir . '/tmp/multirenametestfile.1');
 
@@ -312,6 +319,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($expected2);
         $this->assertTrue($expected3);
         $this->assertTrue($expected4);
+        $this->assertTrue($expected5);
 
         // do rename now
         $config['substitutions'] = 'multirenametestfile=unittest_testfile';
@@ -363,6 +371,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
             'recursive' => true,
             'substitutions' => 'multirenametestfile=unittest_testfile',
             'find' => 'multirenametestfile',
+            'exclude' => 'regex:/toHide/;Hide',
             'history' => true,
             'history-size' => 2,
         );
