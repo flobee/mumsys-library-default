@@ -87,7 +87,20 @@ class Mumsys_Multirename
      */
     private $_historySize = 10;
 
+    /**
+     * Path to the file to collect working directories.
+     * For an overview or a possible remove of the program
+     * @var string
+     */
+    private $_collection = '/tmp/.multirename/collection';
 
+    /**
+     * Path to the users HOME Directory (Autodetection or this path will be used)
+     * @var string
+     */
+    private $_pathHome = '/tmp/';
+
+    
     /**
      * Initialise Multirename object.
      *
@@ -107,7 +120,7 @@ class Mumsys_Multirename
         }
         unset($config['allowRoot']);
 
-        $this->_pathHome = is_dir($_SERVER['HOME']) ? $_SERVER['HOME'] : '/tmp/';
+        $this->_pathHome = is_dir($_SERVER['HOME']) ? $_SERVER['HOME'] : $this->_pathHome;
         $this->_collection = $this->_pathHome . '/.multirename/collection';
         $this->logger = $logger;
 
@@ -118,7 +131,6 @@ class Mumsys_Multirename
         $this->logger->log('### multirename action init', 7);
 
         $config = $this->setSetup($config);
-        #$this->_config = $config;
 
         $this->_oFiles = $oFiles;
 
