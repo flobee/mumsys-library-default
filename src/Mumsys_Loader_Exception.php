@@ -15,7 +15,9 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Loader_Exception
+ * @see lib/mumsys2/Mumsys_Loader_Exception.php
  * @version 0.1 - Created on 2015-03-31
+ * $Id: Mumsys_Loader_Exception.php 3154 2015-04-06 19:42:00Z flobee $
  */
 /*}}}*/
 

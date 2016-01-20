@@ -89,6 +89,7 @@ final class Mumsys_Loader
         $test = true;
         if (!class_exists($instance)) {
             $path = dirname(__FILE__) . '/';
+
             if (substr($instance, 0, 6) == 'Mumsys') {
                 $classfile = $path . $instance . '.php';
             } else {

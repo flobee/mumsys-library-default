@@ -15,7 +15,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @version 0.1 - Created on 2009-11-27
- * $Id$
+ * $Id: Mumsys_Exception.php 3165 2015-04-09 20:25:23Z flobee $
  */
 /*}}}*/
 
