@@ -1,0 +1,25 @@
+Jan 23 07:35:22 r61 syslog-ng[969]: Configuration reload request received, reloading configuration;
+Jan 23 07:35:21 r61 systemd[1]: Reloaded System Logger Daemon.
+Feb 23 07:35:24 r61 systemd[26076]: Startup finished in 180ms.
+Jan 23 07:35:24 r61 systemd[1]: Started User Manager for UID 106.
+Jan 23 07:35:26 r61 systemd[1]: Stopping User Manager for UID 106...
+Mar 23 07:43:29 r61 freshclam[989]: Received signal: wake up
+Jan 23 07:43:29 r61 freshclam[989]: ClamAV update process started at Sat Jan 23 07:43:29 2016
+Jan 23 07:45:02 r61 anacron[16966]: Normal exit (2 jobs run)
+Apr 23 08:03:50 r61 clamd[1191]: SelfCheck: Database modification detected. Forcing reload.
+Jan 23 08:03:51 r61 clamd[1191]: Reading databases from /var/lib/clamav
+Jan 23 16:50:25 r61 kernel: WARNING: CPU: 1 PID: 1065 at /build/linux-Lu1t6N/linux/drivers/gpu/drm/drm_atomic.c:491 drm_atomic_check_only+0x4d7/0x5c0 [drm]()
+May 23 16:50:26 r61 ntpd[1071]: Soliciting pool server 78.46.53.8
+Jan 23 16:50:27 r61 ntpd[1071]: Soliciting pool server 144.76.96.7
+Jan 23 16:50:28 r61 dbus[866]: [system] Activating via systemd: service name='org.freedesktop.RealtimeKit1' unit='rtkit-daemon.service'
+Jun 23 16:50:29 r61 systemd[1]: resolvconf.service: Cannot add dependency job, ignoring: Unit resolvconf.service is masked.
+Jan 23 16:50:37 r61 systemd[1]: Starting RealtimeKit Scheduling Policy Service...
+Jul 23 16:50:38 r61 dbus[866]: [system] Successfully activated service 'org.freedesktop.RealtimeKit1'
+Jan 23 16:50:38 r61 systemd[1]: Started RealtimeKit Scheduling Policy Service.
+Aug 23 16:51:02 r61 kernel: usb 2-1: USB disconnect, device number 2
+Jan 23 16:54:52 r61 kernel: sd 2:0:0:0: [sdb] Assuming drive cache: write through
+Sep 23 16:54:52 r61 kernel: sd 2:0:0:0: [sdb] Sense not available.
+Oct 23 17:01:24 r61 kernel: sd 3:0:0:0: rejecting I/O to offline device
+Nov 23 17:01:24 r61 kernel: sd 3:0:0:0: rejecting I/O to offline device
+Dec 23 17:49:24 r61 sensord: Adapter: ISA adapter
+
