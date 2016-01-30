@@ -15,7 +15,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Loader
- * @version     3.1.0
+ * @version     3.1.1
  * 0.4 Created on 28.08.2010
  * @filesource
  * ----------------------------------------------------------------------------
