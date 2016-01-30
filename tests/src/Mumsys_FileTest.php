@@ -18,6 +18,8 @@ class Mumsys_FileTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->_version = '3.1.0';
+
         $this->_testsDir = realpath(dirname(__FILE__) .'/../');
 
         $this->_fileOk = $this->_testsDir . '/tmp/' . basename(__FILE__) . '.tmp';
@@ -294,5 +296,42 @@ class Mumsys_FileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($actual); // the owner always can read!
     }
 
+
+    // test abstracts
+
+
+    /**
+     * @covers Mumsys_File::getVersion
+     */
+    public function testGetVersion()
+    {
+        $this->assertEquals('Mumsys_File ' . $this->_version, $this->_object->getVersion());
+    }
+
+    /**
+     * @covers Mumsys_File::getVersionID
+     */
+    public function testgetVersionID()
+    {
+        $this->assertEquals($this->_version, $this->_object->getVersionID());
+    }
+
+    /**
+     * @covers Mumsys_File::getVersions
+     */
+    public function testgetVersions()
+    {
+        $expected = array(
+            'Mumsys_Abstract' => '3.0.1',
+            'Mumsys_File' => '3.1.0',
+        );
+
+        $possible = $this->_object->getVersions();
+
+        foreach ($expected as $must => $value) {
+            $this->assertTrue(isset($possible[$must]));
+            $this->assertTrue(($possible[$must] == $value));
+        }
+    }
 
 }
