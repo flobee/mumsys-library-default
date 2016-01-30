@@ -40,7 +40,7 @@ class Mumsys_Loader
     /**
      * Version ID information
      */
-    const VERSION = '3.1.0';
+    const VERSION = '3.1.1';
 
     /**
      * Container of objects which are loaded.
