@@ -93,5 +93,13 @@ class Mumsys_TimerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(round($expected, 2), round($actual, 2));
     }
 
+    // Abstract class
+
+    public function testGetVersion()
+    {
+        $this->assertEquals('Mumsys_Timer 3.2.0', $this->_object->getVersion());
+        $this->assertEquals('3.2.0', $this->_object->getVersionID());
+    }
+
 
 }

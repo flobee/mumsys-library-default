@@ -5,6 +5,11 @@
     - Add session handling
     - Adds tests
     - codecoverage 100%
+    Mumsys_Timer
+    - Updates tests
+    - extending by Mumsys_Abstract
+    - codecoverage 100%
+
 
 2016-01-22
     Mumsys_Parser 
