@@ -5,7 +5,7 @@
     verbose="true"
 >
     <testsuites>
-        <testsuite name="MUMSYS Library test suite">
+        <testsuite name="MUMSYS Library test suite - free version">
             <directory>src/</directory>
         </testsuite>
     </testsuites>
