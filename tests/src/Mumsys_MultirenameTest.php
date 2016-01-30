@@ -102,7 +102,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
         $current = ob_get_clean();
         // this needs in the single test
         $expected = array(
-            'multirename ' . Mumsys_Multirename::VERSION . ' by Florian Blasel' . PHP_EOL. PHP_EOL,
+            'multirename ' . Mumsys_Multirename::VERSION . ' by Florian Blasel' . PHP_EOL . PHP_EOL,
             'Mumsys_Abstract                     ' . Mumsys_Abstract::VERSION . PHP_EOL,
             'Mumsys_FileSystem_Common_Abstract   ' . Mumsys_FileSystem_Common_Abstract::VERSION . PHP_EOL,
             'Mumsys_FileSystem                   ' . Mumsys_FileSystem::VERSION . PHP_EOL,
@@ -118,7 +118,8 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
         $expected3 = 'Mumsys_Multirename ' . Mumsys_Multirename::VERSION;
 
         foreach ($expected as $toCheck) {
-            $this->assertTrue( (preg_match('/'.$toCheck.'/im', $current) ? true : false) );
+            $res = (preg_match('/'.$toCheck.'/im', $current) ? true : false);
+            $this->assertTrue( $res );
         }
         $this->assertEquals($expected2, $current2);
         $this->assertEquals($expected3, $current3);
@@ -339,6 +340,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
     public function testRun4history()
     {
         $this->markTestIncomplete();
+
         // do rename now
         $config = $this->_config;
         $config['substitutions'] = 'unittest_testfile_-_10=unittest_testfile_-_11';
