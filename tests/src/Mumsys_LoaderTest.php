@@ -70,5 +70,9 @@ class Mumsys_LoaderTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(is_array($expected), is_array($actual));
     }
 
+    public function testGetVersionID()
+    {
+        $this->assertEquals('3.1.1', Mumsys_Loader::VERSION);
+    }
 
 }
