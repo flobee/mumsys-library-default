@@ -3,13 +3,16 @@
 - [ ]
 
 Mumsys_GetOpts
+- [ ] Mumsys_GetOpts: Actions groups must be validated/checked. Extend the 
+      whitelist -> the configuration options
+- [ ] A value can contain a "-" or '--' or -9. Extend the parser or redesign?
+- [ ] Some parameters can be required in combination
 - [ ] Mumsys_GetOpts: add actions/operation mode(s) e.g.: 
       call thisAction --opt1 --opt2 or
       call secondAction --dryrun --no-history anotherAction --thatFlag
 
 
 Mumsys_Multirename
-
 - [10%] extend history, multiple undo's, detection of already removed files.. 
       what to do then? how to report? if target file exists (keep copy or 
       replace? in batch?) ?
