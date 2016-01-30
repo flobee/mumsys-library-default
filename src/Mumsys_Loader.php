@@ -35,7 +35,7 @@
   * @package Mumsys_Library
   * @subpackage Mumsys_Loader
   */
-final class Mumsys_Loader
+class Mumsys_Loader
 {
     /**
      * Version ID information
@@ -95,7 +95,7 @@ final class Mumsys_Loader
             } else {
                 $classfile = $path . 'class.' . $instance . '.php';
             }
-            
+
             if (($test = file_exists($classfile))) {
                 $test = require_once $classfile;
             }
