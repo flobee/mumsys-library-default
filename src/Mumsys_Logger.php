@@ -26,6 +26,7 @@
 /**
  * Class to generate log messages to a writer mechanism e.g. a logfile
  *
+ * @todo Remove public properties
  * @todo implement writer interface? ; alle dazugeörigen parameter (lofile, log
  * way etc.) müssen dort gesetzt werden
  * NÖ! dieser logger NICHT! der reicht so, sonnst nimm den pear logger!
