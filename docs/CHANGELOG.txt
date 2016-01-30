@@ -9,6 +9,10 @@
     - Updates tests
     - extending by Mumsys_Abstract
     - codecoverage 100%
+    Mumsys_Logger
+    - Improves logger tests
+    - codecoverage 100%
+    - Adds todo: change visibility of class properties
 
 
 2016-01-22
