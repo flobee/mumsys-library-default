@@ -14,7 +14,7 @@
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
- * @subpackage  Mumsys_Cache
+ * @subpackage  Mumsys_Session
  * @version     1.0.0
  * Created: 2005-01-01
  * @filesource
