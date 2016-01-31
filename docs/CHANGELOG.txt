@@ -21,6 +21,10 @@
     - Init class and tests for LGPL
     - Improves tests
     - codecoverage 100%
+    Mumsys_Cache
+    - Init class and tests for LGPL
+    - Improves tests
+    - codecoverage 100%
 
 
 2016-01-22
