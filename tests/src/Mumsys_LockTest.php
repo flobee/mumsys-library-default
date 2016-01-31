@@ -90,7 +90,6 @@ class Mumsys_LockTest extends PHPUnit_Framework_TestCase
     }
 
 
-
     // test abstracts
 
 
@@ -127,6 +126,5 @@ class Mumsys_LockTest extends PHPUnit_Framework_TestCase
             $this->assertTrue(($possible[$must] == $value));
         }
     }
-
 
 }
