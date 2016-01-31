@@ -82,7 +82,7 @@ abstract class Mumsys_Abstract
     }
 
     // getter/setter checks
-    
+
     /**
      * Check given key to be a valid string.
      *
@@ -93,7 +93,7 @@ abstract class Mumsys_Abstract
     {
         if (!is_string($key)) {
             $message = 'Invalid registry key. It\'s not a string';
-            throw new Mumsys_Registry_Exception($message);
+            throw new Mumsys_Exception($message);
         }
     }
 
