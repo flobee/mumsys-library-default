@@ -80,11 +80,16 @@ class Mumsys_Session extends Mumsys_Abstract
      * Returns the value of given key.
      *
      * @param string $key value of the key to return to
-     * @return mixed Stored value
+     * @param scalar $default
+     * @return mixed Stored value or $default if key was not set.
      */
-    public function get( $key )
+    public function get( $key, $default = null )
     {
-        return $this->_records[$this->_id][$key];
+        if (isset($this->_records[$this->_id][$key])) {
+            return $this->_records[$this->_id][$key];
+        }
+
+        return $default;
     }
 
     /**

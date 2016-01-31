@@ -27,7 +27,7 @@ class Mumsys_SessionTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-
+        $this->_object = new Mumsys_Session();
     }
 
 
@@ -51,6 +51,7 @@ class Mumsys_SessionTest extends PHPUnit_Framework_TestCase
 
         // for code coverage
         $this->_object = new Mumsys_Session();
+
         // for code coverage
         $this->_object->clear();
         $actual6 = $this->_object->getAll();
@@ -75,6 +76,9 @@ class Mumsys_SessionTest extends PHPUnit_Framework_TestCase
         $this->_object->register('newkey', array('val5','val6'));
         $actual4 = $this->_object->get('newkey');
         $expected4 = array('val5','val6');
+        // test default return
+        $actual7 = $this->_object->get('notsetbefor', 'dingding');
+        $expected7 = 'dingding';
 
         // get
         $this->assertEquals($expected1, $actual1);
@@ -88,6 +92,8 @@ class Mumsys_SessionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected5, $actual5);
         // clear
         $this->assertEquals($expected6, $actual6);
+        // test default return
+        $this->assertEquals($expected7, $actual7);
 
         // version checks
         $this->assertEquals('Mumsys_Session 1.0.0', $this->_object->getVersion());
