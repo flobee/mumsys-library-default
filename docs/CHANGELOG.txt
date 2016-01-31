@@ -1,5 +1,12 @@
 # Changes
 
+2016-01-31
+    Mumsys_Registry
+    - Init class and tests for LGPL
+    - Improves tests
+    - codecoverage 100%
+
+
 2016-01-30
     Mumsys_Session
     - Add session handling
