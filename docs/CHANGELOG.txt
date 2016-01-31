@@ -15,7 +15,11 @@
     - Adds todo: change visibility of class properties
     Mumsys_Lock
     - Init class and tests for LGPL
-    - Improves Lock tests
+    - Improves tests
+    - codecoverage 100%
+    Mumsys_Counter
+    - Init class and tests for LGPL
+    - Improves tests
     - codecoverage 100%
 
 
