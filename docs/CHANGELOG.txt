@@ -13,6 +13,10 @@
     - Improves logger tests
     - codecoverage 100%
     - Adds todo: change visibility of class properties
+    Mumsys_Lock
+    - Init class and tests for LGPL
+    - Improves Lock tests
+    - codecoverage 100%
 
 
 2016-01-22
