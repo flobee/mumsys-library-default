@@ -81,4 +81,20 @@ abstract class Mumsys_Abstract
         return $versions;
     }
 
+    // getter/setter checks
+    
+    /**
+     * Check given key to be a valid string.
+     *
+     * @param string $key Key to register
+     * @throws Mumsys_Registry_Exception Throws exception if key is not a string
+     */
+    private function _checkKey( $key )
+    {
+        if (!is_string($key)) {
+            $message = 'Invalid registry key. It\'s not a string';
+            throw new Mumsys_Registry_Exception($message);
+        }
+    }
+
 }
