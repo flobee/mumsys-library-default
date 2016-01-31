@@ -94,7 +94,7 @@ class Mumsys_LockTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * @covers Mumsys_File::getVersion
+     * @covers Mumsys_Lock::getVersion
      */
     public function testGetVersion()
     {
@@ -102,7 +102,7 @@ class Mumsys_LockTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Mumsys_File::getVersionID
+     * @covers Mumsys_Lock::getVersionID
      */
     public function testgetVersionID()
     {
@@ -110,7 +110,7 @@ class Mumsys_LockTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Mumsys_File::getVersions
+     * @covers Mumsys_Lock::getVersions
      */
     public function testgetVersions()
     {
