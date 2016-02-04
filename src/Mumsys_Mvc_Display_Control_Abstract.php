@@ -48,13 +48,18 @@ abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
      */
     private $_header = array(); // array to set php header()
 
+
     /**
-     * Adds given header string.
-     *
+     * Constructora are to be implemented in main display controller.
+     * e.g.: Mumsys_Mvc_Display_Control_Html
+     */
+    abstract public function __construct( Mumsys_Context $context, array $options = array() );
+
+
+    /**
+     * Adds header to be send on output.
      * @param string $s content of a Html header line
      */
-
-
     public function addHeader( $header = '' )
     {
         $this->_header[] = $header;
@@ -134,7 +139,9 @@ abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
     {
         if (empty($this->_header)) {
             // Set header by default to be text/html if nothing was set
-            $this->addHeader('Content-Type: text/html; charset=' . $this->_oCfg->get('charset'));
+            $this->addHeader(
+                'Content-Type: text/html; charset=' . $this->_context->getConfig()->get('charset')
+            );
         }
         $this->applyHeader();
         echo $this->fetch();
