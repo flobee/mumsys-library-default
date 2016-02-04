@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 /*{{{*/
 /**
@@ -77,7 +77,7 @@ abstract class Mumsys_Abstract
                 if (defined($class.'::VERSION')) {
                     $versions[$class] = $class::VERSION;
                 } else {
-                    $versions[$class] = '-unknown-';
+                    $versions[$class] = '- unknown version -';
                 }
             }
         }
