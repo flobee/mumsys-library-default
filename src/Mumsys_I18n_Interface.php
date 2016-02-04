@@ -52,6 +52,15 @@ interface Mumsys_I18n_Interface
     public function setlocale( $locale );
 
     /**
+     * Simple translation.
+     *
+     * @param string $string String to translate
+     * @return string The translated string (or the source string if no translation was found)
+     * @throws Mumsys_I18n_Exception Throws exception on errors
+     */
+    public static function t( $string );
+
+    /**
      * Domain translation.
      *
      * @param string $domain Translation domain
