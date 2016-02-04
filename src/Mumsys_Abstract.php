@@ -74,7 +74,11 @@ abstract class Mumsys_Abstract
 
         foreach ($list as $class) {
             if (!preg_match('/(exception|interface)/i', $class)) {
-                $versions[$class] = $class::VERSION;
+                if (defined($class.'::VERSION')) {
+                    $versions[$class] = $class::VERSION;
+                } else {
+                    $versions[$class] = '-unknown-';
+                }
             }
         }
 
