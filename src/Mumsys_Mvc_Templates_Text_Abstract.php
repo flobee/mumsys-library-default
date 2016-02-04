@@ -30,6 +30,12 @@ abstract class Mumsys_Mvc_Templates_Text_Abstract
      */
     const VERSION = '1.0.0';
 
+    /**
+     * Page title for the output
+     * @var string
+     */
+    protected $_pagetitle = '';
+
 
     /**
      * Sets the output title.
@@ -40,5 +46,6 @@ abstract class Mumsys_Mvc_Templates_Text_Abstract
     {
         $this->_pagetitle = (string)$title;
     }
+    
 
 }
