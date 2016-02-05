@@ -80,7 +80,7 @@ abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
     /**
      * Output all headers which were set.
      */
-    public function applyHeader()
+    public function applyHeaders()
     {
         while (list(, $header) = each($this->_header)) {
             header($header);
@@ -143,7 +143,7 @@ abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
                 'Content-Type: text/html; charset=' . $this->_context->getConfig()->get('charset')
             );
         }
-        $this->applyHeader();
+        $this->applyHeaders();
         echo $this->fetch();
     }
 
