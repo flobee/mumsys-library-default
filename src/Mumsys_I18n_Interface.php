@@ -42,7 +42,7 @@ interface Mumsys_I18n_Interface
      *
      * @return integer Number of the plural index
      */
-    public static function getPluralIndex( $number, $locale );
+    public function getPluralIndex( $number, $locale );
 
     /**
      * Sets the system locale by given locale string.
@@ -58,7 +58,7 @@ interface Mumsys_I18n_Interface
      * @return string The translated string (or the source string if no translation was found)
      * @throws Mumsys_I18n_Exception Throws exception on errors
      */
-    public static function t( $string );
+    public function _t( $string );
 
     /**
      * Domain translation.
@@ -68,7 +68,7 @@ interface Mumsys_I18n_Interface
      * @return string The translated string (or the source string if no translation was found)
      * @throws Mumsys_I18n_Exception Throws exception on errors
      */
-    public static function dt( $domain, $string );
+    public function _dt( $domain, $string );
 
     /**
      * Domain translation plural. Returns the translated string by the given plural and quantity.
@@ -81,6 +81,6 @@ interface Mumsys_I18n_Interface
      * @return string Returns the translated string as singular or plural form based on given number.
      * @throws Mumsys_I18n_Exception Throws exception on errors
      */
-    public static function dtn( $domain, $singular, $plural, $number );
+    public function _dtn( $domain, $singular, $plural, $number );
 
 }
