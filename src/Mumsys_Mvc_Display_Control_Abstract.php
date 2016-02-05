@@ -77,7 +77,7 @@ abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
      *
      * @return array List of header
      */
-    public function getHeader()
+    public function getHeaders()
     {
         return $this->_header;
     }
