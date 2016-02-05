@@ -43,6 +43,12 @@ abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
     private $_buffer = '';
 
     /**
+     * Last instance to the output.
+     * @var string
+     */
+    private $_output = '';
+
+    /**
      * header to be set if needed for the output
      * @var string
      */
