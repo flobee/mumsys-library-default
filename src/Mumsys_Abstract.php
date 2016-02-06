@@ -93,7 +93,7 @@ abstract class Mumsys_Abstract
      * @param string $key Key to register
      * @throws Mumsys_Registry_Exception Throws exception if key is not a string
      */
-    private function _checkKey( $key )
+    protected function _checkKey( $key )
     {
         if (!is_string($key)) {
             $message = 'Invalid registry key. It\'s not a string';
