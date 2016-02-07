@@ -270,11 +270,14 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
     public function testGetFileType()
     {
         $actual = $this->_object->getFileType('/usr/bin/sh');
-        $expected = "cannot open `/usr/bin/sh' (No such file or directory)\n";
-
+        // OS related output
+        $expecteds = array(
+            "cannot open `/usr/bin/sh' (No such file or directory)\n",
+            "ERROR: cannot open `/usr/bin/sh' (No such file or directory)\n"
+        );
         $actual2 = $this->_object->getFileType('/bin/ls');
 
-        $this->assertEquals($expected, $actual);
+        $this->assertTrue( in_array($actual, $expecteds) );
         $this->assertEquals(1, preg_match('/executable/i', $actual2));
     }
 
