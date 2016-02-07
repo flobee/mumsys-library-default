@@ -360,9 +360,10 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
     public function testRenameException()
     {
         // rename permission error
-        $msg = 'Rename failt for reason: Copy error for: "'.$this->_testsDir . '/tmp/unittest" '
+        $msg[] = 'Rename failt for reason: Copy error for: "'.$this->_testsDir . '/tmp/unittest" '
             . 'copy(/root//unittest): failed to open stream: Permission denied';
-        $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
+        $msg[] = 'Rename failt for reason: rename(): Permission denied';
+        $this->setExpectedException('Mumsys_FileSystem_Exception');
         $this->_object->rename($this->_testdirs['file'], '/root/');
     }
 
