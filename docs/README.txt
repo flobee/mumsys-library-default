@@ -24,3 +24,4 @@ If you like it, use it, feel free to make it better. Commits should be done to
 the unstable branch.
 
 
+$[![Build Status](https://travis-ci.org/flobee/mumsys-library.svg?branch=master)](https://travis-ci.org/flobee/mumsys-library)
