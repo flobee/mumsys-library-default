@@ -7,4 +7,4 @@ php:
   - hhvm
   - nightly
   
-script: phpunit --configuration phpunit.xml
+script: phpunit --configuration tests/phpunit.xml
