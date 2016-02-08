@@ -118,7 +118,6 @@ class Php
             case 'os':
                 $r = self::$os; //strtoupper(substr(PHP_OS,0,3));
                 break;
-
             case 'get_magic_quotes_gpc':
                 $r = false;
                 break;

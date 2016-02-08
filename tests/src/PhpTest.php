@@ -40,6 +40,7 @@ class PhpTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( strtoupper(substr(PHP_OS,0,3)) , Php::$os );
         $this->assertEquals( get_magic_quotes_gpc() , Php::$getMagicQuotesGpc );
         $this->assertEquals( $this->object->os , Php::$os );
+        $this->assertFalse($this->object->get_magic_quotes_gpc);
     }
 
     public function test__set()
