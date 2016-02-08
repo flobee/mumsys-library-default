@@ -65,7 +65,7 @@ class Mumsys_Loader
         try {
             // autoload will be called for "new $instance($args)"
             if (!class_exists($instance) && !isset(self::$loadedClasses[$instance])) {
-                throw new Mumsys_Loader_Exception(sprintf('Error! could not load: "%1$s".', $instance));
+                throw new Mumsys_Loader_Exception(sprintf('Could not load: "%1$s".', $instance));
             } else {
                 $x = new $instance($args);
             }

@@ -43,14 +43,14 @@ class Mumsys_LoaderTest extends PHPUnit_Framework_TestCase
 
     public function testLoadException1()
     {
-        $this->setExpectedException('Mumsys_Exception', 'Error! could not load: "Mumsys_NoExists".');
+        $this->setExpectedException('Mumsys_Exception', 'Could not load: "Mumsys_NoExists".');
         $o4 = $this->object->load('Mumsys_NoExists', array());
     }
 
 
     public function testLoadException2()
     {
-        $this->setExpectedException('Mumsys_Exception', 'Error! could not load: "Mumsys_Templates_Base".');
+        $this->setExpectedException('Mumsys_Exception', 'Could not load: "Mumsys_Templates_Base".');
         $o4 = $this->object->load('Mumsys_Templates_Base', array());
     }
 
