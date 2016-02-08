@@ -270,13 +270,19 @@ class Mumsys_GetOpts
             return $this->_resultClean;
         } else {
             // drop - and -- from keys
-            foreach ($this->_result as $key => $value) {
-                if (isset($key[1]) && $key[1] == '-') {
-                    $n = 2;
-                } else {
-                    $n = 1;
+            foreach ($this->_result as $key => $value)
+            {
+                switch ($key[0]) {
+                    case ('-' . $key[1] == '--'):
+                        $newKey = substr($key, 2);
+                        break;
+                    case '-':
+                        $newKey = substr($key, 1);
+                        break;
+                    default:
+                        $newKey = $key;
                 }
-                $this->_resultClean[ substr($key, $n)] = $value;
+                $this->_resultClean[$newKey] = $value;
             }
             return $this->_resultClean;
         }

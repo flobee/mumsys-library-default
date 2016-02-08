@@ -35,7 +35,7 @@ abstract class Mumsys_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '3.0.1';
+    const VERSION = '3.0.2';
 
 
     /**
@@ -93,7 +93,7 @@ abstract class Mumsys_Abstract
      * @param string $key Key to register
      * @throws Mumsys_Registry_Exception Throws exception if key is not a string
      */
-    protected function _checkKey( $key )
+    protected static function _checkKey( $key )
     {
         if (!is_string($key)) {
             $message = 'Invalid registry key. It\'s not a string';
