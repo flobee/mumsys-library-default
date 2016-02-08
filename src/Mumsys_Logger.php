@@ -7,9 +7,7 @@
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * ----------------------------------------------------------------------------
  * @category    Mumsys
@@ -30,6 +28,7 @@
  * @todo implement writer interface? ; alle dazugeörigen parameter (lofile, log
  * way etc.) müssen dort gesetzt werden
  * NÖ! dieser logger NICHT! der reicht so, sonnst nimm den pear logger!
+ * @todo psr-3 compatible http://www.php-fig.org/psr/psr-3/
  *
  * Example:
  * <code>
@@ -365,7 +364,6 @@ class Mumsys_Logger
     {
         try
         {
-
             $isArray = false;
             $datesting = '';
             if ( !empty($this->_timeFormat) ) {
@@ -380,7 +378,6 @@ class Mumsys_Logger
                 $message = '';
                 while ( list($key, $val) = each($input) )
                 {
-                    //$tmp = 'ff_' . $_cnt . ' key: "' . $key . '", value: "' . $val.'"';
                     $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val.'");';
                     $message .= sprintf(
                         $this->_logFormat,
