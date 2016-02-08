@@ -15,7 +15,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Loader
- * @version     3.1.1
+ * @version     3.1.2
  * 0.4 Created on 28.08.2010
  * @filesource
  * ----------------------------------------------------------------------------
@@ -40,7 +40,7 @@ class Mumsys_Loader
     /**
      * Version ID information
      */
-    const VERSION = '3.1.1';
+    const VERSION = '3.1.2';
 
     /**
      * Container of objects which are loaded.
@@ -86,15 +86,11 @@ class Mumsys_Loader
      */
     public static function autoload($instance)
     {
-        $test = true;
+        $test = false;
         if (!class_exists($instance)) {
-            $path = dirname(__FILE__) . '/';
-
-            if (substr($instance, 0, 6) == 'Mumsys') {
-                $classfile = $path . $instance . '.php';
-            } else {
-                $classfile = $path . 'class.' . $instance . '.php';
-            }
+            // default lib path
+            $path = __DIR__ . '/';
+            $classfile = $path . $instance . '.php';
 
             if (($test = file_exists($classfile))) {
                 $test = require_once $classfile;

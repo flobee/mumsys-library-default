@@ -33,7 +33,7 @@ class Mumsys_LoaderTest extends PHPUnit_Framework_TestCase
 
     public function testLoad()
     {
-        $o2 = $this->object->load('unittest');
+        $o2 = $this->object->load('Unittest');
         $o3 = $this->object->load('Mumsys_Timer');
 
         $this->assertInstanceof('unittest', $o2);
