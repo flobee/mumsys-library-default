@@ -24,6 +24,7 @@ If you like it, use it, feel free to make it better. Commits should be done to
 the unstable branch.
 
 
+Builds to run unit tests for all branches and for php versions: 5.3, 5.4, 5.5, 5.6, 7.0 and hhvm
 [![Build Status: stable](https://travis-ci.org/flobee/mumsys-library.svg?branch=stable "Build Status: stable")](https://travis-ci.org/flobee/mumsys-library)
 [![Build Status: testing](https://travis-ci.org/flobee/mumsys-library.svg?branch=testing "Build Status: testing")](https://travis-ci.org/flobee/mumsys-library)
 [![Build Status: unstable](https://travis-ci.org/flobee/mumsys-library.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/flobee/mumsys-library)
