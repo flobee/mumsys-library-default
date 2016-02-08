@@ -19,6 +19,10 @@ class Mumsys_FileTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->_version = '3.1.0';
+        $this->_versions = array(
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
+            'Mumsys_File' => '3.1.0',
+        );
 
         $this->_testsDir = realpath(dirname(__FILE__) .'/../');
 
@@ -321,14 +325,9 @@ class Mumsys_FileTest extends PHPUnit_Framework_TestCase
      */
     public function testgetVersions()
     {
-        $expected = array(
-            'Mumsys_Abstract' => '3.0.1',
-            'Mumsys_File' => '3.1.0',
-        );
-
         $possible = $this->_object->getVersions();
 
-        foreach ($expected as $must => $value) {
+        foreach ($this->_versions as $must => $value) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }

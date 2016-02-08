@@ -22,6 +22,10 @@ class Mumsys_RegistryTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->_version = '1.0.0';
+        $this->_versions = array(
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
+            'Mumsys_Registry' => '1.0.0',
+        );
         $this->_key = 'unittest';
     }
 
@@ -137,14 +141,10 @@ class Mumsys_RegistryTest extends PHPUnit_Framework_TestCase
      */
     public function testgetVersions()
     {
-        $expected = array(
-            'Mumsys_Abstract' => '3.0.1',
-            'Mumsys_Registry' => $this->_version,
-        );
-
         $possible = Mumsys_Registry::getVersions();
-
-        foreach ($expected as $must => $value) {
+        echo '<pre>';
+        print_r($possible);
+        foreach ($this->_versions as $must => $value) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }

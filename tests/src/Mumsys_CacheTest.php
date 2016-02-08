@@ -20,6 +20,10 @@ class Mumsys_CacheTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->_version = '1.0.0';
+        $this->_versions = array(
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
+            'Mumsys_Cache' => $this->_version,
+        );
         $this->_object = new Mumsys_Cache('group', 'id');
         $this->_object->setPath('/tmp/');
     }
@@ -132,14 +136,9 @@ class Mumsys_CacheTest extends PHPUnit_Framework_TestCase
      */
     public function testgetVersions()
     {
-        $expected = array(
-            'Mumsys_Abstract' => '3.0.1',
-            'Mumsys_Cache' => $this->_version,
-        );
-
         $possible = $this->_object->getVersions();
 
-        foreach ($expected as $must => $value) {
+        foreach ($this->_versions as $must => $value) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }
