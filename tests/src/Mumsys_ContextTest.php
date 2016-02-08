@@ -109,59 +109,7 @@ class Mumsys_ContextTest extends PHPUnit_Framework_TestCase
         $this->_object->registerSession($session);
     }
 
-//
-//    /**
-//     * @covers Mumsys_Context::getDatabase
-//     * @todo   Implement testGetDatabase().
-//     */
-//    public function testGetDatabase()
-//    {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//            'This test has not been implemented yet.'
-//        );
-//    }
-//
-//
-//    /**
-//     * @covers Mumsys_Context::setDatabase
-//     * @todo   Implement testSetDatabase().
-//     */
-//    public function testSetDatabase()
-//    {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//            'This test has not been implemented yet.'
-//        );
-//    }
-//
-//
-//    /**
-//     * @covers Mumsys_Context::getControllerBackend
-//     * @todo   Implement testGetControllerBackend().
-//     */
-//    public function testGetControllerBackend()
-//    {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//            'This test has not been implemented yet.'
-//        );
-//    }
-//
-//
-//    /**
-//     * @covers Mumsys_Context::setControllerBackend
-//     * @todo   Implement testSetControllerBackend().
-//     */
-//    public function testSetControllerBackend()
-//    {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//            'This test has not been implemented yet.'
-//        );
-//    }
-//
-//
+
 //    /**
 //     * @covers Mumsys_Context::getDisplay
 //     * @todo   Implement testGetDisplay().
@@ -244,31 +192,6 @@ class Mumsys_ContextTest extends PHPUnit_Framework_TestCase
         $this->_object->registerLogger($logger);
     }
 
-//
-//    /**
-//     * @covers Mumsys_Context::getControllerFrontend
-//     * @todo   Implement testGetControllerFrontend().
-//     */
-//    public function testGetControllerFrontend()
-//    {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//            'This test has not been implemented yet.'
-//        );
-//    }
-//
-//
-//    /**
-//     * @covers Mumsys_Context::setControllerFrontend
-//     * @todo   Implement testSetControllerFrontend().
-//     */
-//    public function testSetControllerFrontend()
-//    {
-//        // Remove the following lines when you implement this test.
-//        $this->markTestIncomplete(
-//            'This test has not been implemented yet.'
-//        );
-//    }
 
     // test abstracts
 
