@@ -29,6 +29,8 @@
  * application structures. This one will be usedfor the mumsys cms system but
  * can be used also for library only tasks. E.g. the tests
  *
+ * @todo implement more tests
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Context
@@ -142,6 +144,16 @@ class Mumsys_Context extends Mumsys_Abstract
         $this->_register('Mumsys_Db', $db);
     }
 
+    /**
+     * Replace the database object.
+     *
+     * @param Mumsys_Db_Driver_Interface $db Database object
+     */
+    public function replaceDatabase( Mumsys_Db_Driver_Interface $db )
+    {
+        $this->_replace('Mumsys_Db', $db);
+    }
+
 
     /**
      * Returns the mumsys controller object.
@@ -202,7 +214,6 @@ class Mumsys_Context extends Mumsys_Abstract
      *
      * @param Mumsys_Display_Control $display object which will be set in
      * dispaly factory
-     * @throws Mumsys_Exception Throws exception if object was already set
      */
     public function replaceDisplay( Mumsys_Display_Control $display )
     {

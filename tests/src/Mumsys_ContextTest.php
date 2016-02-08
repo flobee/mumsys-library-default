@@ -21,6 +21,10 @@ class Mumsys_ContextTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->_version = '1.0.2';
+        $this->_versions = array(
+            'Mumsys_Abstract' => '3.0.2',
+            'Mumsys_Context' => $this->_version,
+        );
         $this->_logfile = '/tmp/'.basename(__FILE__) . '.log';
         $this->_object = new Mumsys_Context();
     }
@@ -225,16 +229,19 @@ class Mumsys_ContextTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Mumsys_Context::getLogger
-     * @covers Mumsys_Context::setLogger
+     * @covers Mumsys_Context::registerLogger
      * @covers Mumsys_Context::_get
      * @covers Mumsys_Context::_register
      */
     public function testGetSetLogger()
     {
         $logger = new Mumsys_Logger(array('logfile' => $this->_logfile));
-        $this->_object->setLogger($logger);
+        $this->_object->registerLogger($logger);
 
         $this->assertInstanceOf('Mumsys_Logger_Interface', $this->_object->getLogger());
+
+        $this->setExpectedException('Mumsys_Exception', 'Mumsys_Logger_Interface already set');
+        $this->_object->registerLogger($logger);
     }
 
 //
@@ -289,14 +296,9 @@ class Mumsys_ContextTest extends PHPUnit_Framework_TestCase
      */
     public function testgetVersions()
     {
-        $expected = array(
-            'Mumsys_Abstract' => '3.0.1',
-            'Mumsys_Context' => $this->_version,
-        );
-
         $possible = $this->_object->getVersions();
 
-        foreach ($expected as $must => $value) {
+        foreach ($this->_versions as $must => $value) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }
