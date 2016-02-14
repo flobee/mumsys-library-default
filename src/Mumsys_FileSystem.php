@@ -599,19 +599,19 @@ class Mumsys_FileSystem
                 $txt = 'Bytes';
                 break;
 
-            case 1:
+            case ($n===1):
                 $txt = 'KB';
                 break;
 
-            case 2:
+            case ($n===2):
                 $txt = 'MB';
                 break;
 
-            case 3:
+            case ($n===3):
                 $txt = 'GB';
                 break;
 
-            case 4:
+            case ($n===4):
             default:
                 $txt = 'TB';
         }
