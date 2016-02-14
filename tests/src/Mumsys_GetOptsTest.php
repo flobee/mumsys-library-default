@@ -17,6 +17,12 @@ class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->_version = '3.3.2';
+        $this->_versions = array(
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
+            'Mumsys_GetOpts' => $this->_version,
+        );
+
         $this->opts = array(
             '-v|--verbose', // v or verbose flag
             '-i|--input:', // i or input parameter with reguired value. e.g.: --input /tmp/file.txt
@@ -192,5 +198,19 @@ class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+
+    // --- test abstract and versions
+
+    public function testgetVersions()
+    {
+        $possible = $this->_object->getVersions();
+
+        foreach ($this->_versions as $must => $value) {
+            $this->assertTrue( isset($possible[$must]) );
+            $this->assertEquals($possible[$must], $value);
+        }
+    }
+
 
 }

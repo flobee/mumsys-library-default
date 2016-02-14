@@ -3,32 +3,34 @@
 /*{{{*/
 /**
  * ----------------------------------------------------------------------------
- * Mumsys_Loader_Exception
+ * Mumsys_Config_Exception
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
  * ----------------------------------------------------------------------------
- * @copyright Copyright (c) 2015 by Florian Blasel for FloWorks Company
+ * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
  * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
- * @subpackage  Mumsys_Loader_Exception
- * @version 1.0.0
- * Created on 2015-03-31
- * $Id: Mumsys_Loader_Exception.php 3154 2015-04-06 19:42:00Z flobee $
+ * @subpackage  Mumsys_Config
+ * @version     1.0.0
+ * Created: 2009-11-29
+ * @filesource
  */
 /*}}}*/
 
 
 /**
- * Generic Exception class
+ * Generic Exception class which will be thown if no other exception will do
  *
  * @category    Mumsys
  * @package     Mumsys_Library
- * @subpackage  Mumsys_Loader
+ * @subpackage  Mumsys_Config
  */
-class Mumsys_Loader_Exception extends Mumsys_Exception
+class Mumsys_Config_Exception extends Mumsys_Exception
 {
+
 }
+

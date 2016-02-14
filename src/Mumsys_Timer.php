@@ -31,7 +31,7 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Timer
  */
-class Mumsys_Timer
+class Mumsys_Timer extends Mumsys_Abstract
 {
     /**
      * Version ID information

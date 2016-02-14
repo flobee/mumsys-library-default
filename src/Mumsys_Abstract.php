@@ -74,11 +74,31 @@ abstract class Mumsys_Abstract
 
         foreach ($list as $class) {
             if (!preg_match('/(exception|interface)/i', $class)) {
-                $versions[$class] = $class::VERSION;
+                if (defined($class.'::VERSION')) {
+                    $versions[$class] = $class::VERSION;
+                } else {
+                    $versions[$class] = '-unknown-';
+                }
             }
         }
 
         return $versions;
+    }
+
+    // getter/setter checks
+
+    /**
+     * Check given key to be a valid string.
+     *
+     * @param string $key Key to register
+     * @throws Mumsys_Registry_Exception Throws exception if key is not a string
+     */
+    protected static function _checkKey( $key )
+    {
+        if (!is_string($key)) {
+            $message = 'Invalid registry key. It\'s not a string';
+            throw new Mumsys_Exception($message);
+        }
     }
 
 }

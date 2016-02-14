@@ -85,7 +85,7 @@ class Mumsys_GetOpts
     /**
      * Version ID information
      */
-    const VERSION = '3.3.1';
+    const VERSION = '3.3.2';
 
     /**
      * Cmd line.
@@ -278,7 +278,7 @@ class Mumsys_GetOpts
                 } else {
                     $n = 1;
                 }
-                $this->_resultClean[ substr($key, $n)] = $value;
+                $this->_resultClean[substr($key, $n)] = $value;
             }
             return $this->_resultClean;
         }

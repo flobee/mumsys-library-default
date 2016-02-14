@@ -8,15 +8,19 @@
 #
 # phpdoc >= 2.8:
 # --template responsive-twig|clean
-
-cmd=/usr/bin/phpdoc;
-echo 'building API';
-
+#
+#cmd=/usr/bin/phpdoc;
+#echo 'building API';
+#
 # --parseprivate
-$cmd \
---title "Mumsys library" \
---template="responsive" \
--t ../docs/API/ \
---directory ../src/ \
---ignore "Zend/*,Smarty/*,getid3/*,phpthumb/*,graph/*"
+#$cmd \
+#--title "Mumsys library" \
+#--template="responsive" \
+#-t ../docs/API/ \
+#--directory ../src/ \
+#--ignore "Zend/*,Smarty/*,getid3/*,phpthumb/*,graph/*"
 
+
+# Using ApiGen
+# cd ./
+apigen generate --source ../src/ --destination ../docs/API/

@@ -3,7 +3,7 @@
 /*{{{*/
 /**
  * ----------------------------------------------------------------------------
- * Mumsys_Loader_Exception
+ * Mumsys_Session_Exception
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
@@ -14,21 +14,22 @@
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
- * @subpackage  Mumsys_Loader_Exception
- * @version 1.0.0
- * Created on 2015-03-31
- * $Id: Mumsys_Loader_Exception.php 3154 2015-04-06 19:42:00Z flobee $
+ * @subpackage  Mumsys_Session
+ * @version     1.0.0
+ * Created: 2005-01-01
+ * @filesource
  */
 /*}}}*/
 
-
 /**
- * Generic Exception class
+ * Mumsys_Session_Exception
  *
  * @category    Mumsys
  * @package     Mumsys_Library
- * @subpackage  Mumsys_Loader
+ * @subpackage  Mumsys_Session
  */
-class Mumsys_Loader_Exception extends Mumsys_Exception
+class Mumsys_Session_Exception extends Mumsys_Exception
 {
+
 }
+

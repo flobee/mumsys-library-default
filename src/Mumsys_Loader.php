@@ -15,7 +15,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Loader
- * @version     3.1.0
+ * @version     3.1.1
  * 0.4 Created on 28.08.2010
  * @filesource
  * ----------------------------------------------------------------------------
@@ -35,12 +35,12 @@
   * @package Mumsys_Library
   * @subpackage Mumsys_Loader
   */
-final class Mumsys_Loader
+class Mumsys_Loader
 {
     /**
      * Version ID information
      */
-    const VERSION = '3.1.0';
+    const VERSION = '3.1.1';
 
     /**
      * Container of objects which are loaded.
@@ -95,7 +95,7 @@ final class Mumsys_Loader
             } else {
                 $classfile = $path . 'class.' . $instance . '.php';
             }
-            
+
             if (($test = file_exists($classfile))) {
                 $test = require_once $classfile;
             }

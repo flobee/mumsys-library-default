@@ -611,7 +611,6 @@ class Mumsys_FileSystem
             case 4:
             default:
                 $txt = 'TB';
-                break;
         }
 
         return round($size, $digits) . ' ' . $txt;

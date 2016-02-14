@@ -1,5 +1,44 @@
 # Changes
 
+2016-02-14
+    Mumsys_GetOpts
+    - Bugfix to work with php7+
+    - Improves tests with versions checks
+
+2016-01-31
+    Mumsys_Registry
+    - Init class and tests for LGPL
+    - Improves tests
+    - codecoverage 100%
+
+
+2016-01-30
+    Mumsys_Session
+    - Add session handling
+    - Adds tests
+    - codecoverage 100%
+    Mumsys_Timer
+    - Updates tests
+    - extending by Mumsys_Abstract
+    - codecoverage 100%
+    Mumsys_Logger
+    - Improves logger tests
+    - codecoverage 100%
+    - Adds todo: change visibility of class properties
+    Mumsys_Lock
+    - Init class and tests for LGPL
+    - Improves tests
+    - codecoverage 100%
+    Mumsys_Counter
+    - Init class and tests for LGPL
+    - Improves tests
+    - codecoverage 100%
+    Mumsys_Cache
+    - Init class and tests for LGPL
+    - Improves tests
+    - codecoverage 100%
+
+
 2016-01-22
     Mumsys_Parser 
     - version 1.1.1
