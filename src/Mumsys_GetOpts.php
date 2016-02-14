@@ -269,8 +269,10 @@ class Mumsys_GetOpts
         if ($this->_resultClean) {
             return $this->_resultClean;
         } else {
+            $result = $this->_result;
+            $this->_resultClean[] = array_shift($result);
             // drop - and -- from keys
-            foreach ($this->_result as $key => $value) {
+            foreach ($result as $key => $value) {
                 if (isset($key[1]) && $key[1] == '-') {
                     $n = 2;
                 } else {
