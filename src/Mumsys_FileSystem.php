@@ -310,8 +310,11 @@ class Mumsys_FileSystem
                 $tries++;
                 return $this->copy($fileSource, $fileTarget . '.' . $tries, $keepCopy, $tries);
             } else {
-                copy($fileSource, $fileTarget);
-                return $fileTarget;
+                if (@copy($fileSource, $fileTarget)) {
+                    return $fileTarget;
+                } else {
+                    throw new Mumsys_FileSystem_Exception('copy (to: '.$fileTarget.') fails');
+                }
             }
         } catch(Exception $e) {
             throw new Mumsys_FileSystem_Exception('Copy error for: "'.$fileSource.'" '. $e->getMessage());

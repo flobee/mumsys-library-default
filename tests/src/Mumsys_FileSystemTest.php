@@ -318,8 +318,7 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
      */
     public function testCopyException()
     {
-        $msg = 'Copy error for: "'.$this->_testsDir . '/tmp/unittest" copy(/root/unittest): '
-            . 'failed to open stream: Permission denied';
+        $msg = 'Copy error for: "'.$this->_testsDir . '/tmp/unittest" copy (to: /root/unittest) fails';
         $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
         $this->_object->copy($this->_testdirs['file'], '/root');
     }
