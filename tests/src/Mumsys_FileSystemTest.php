@@ -174,8 +174,8 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
     {
         // info for a file
         $curFile = __FILE__;
-        $actual1 = $this->_object->getFileDetailsExtended($curFile);
         $stat = @lstat($curFile);
+        $actual1 = $this->_object->getFileDetailsExtended($curFile);
         $expected1 = array(
             'file' => $curFile,
             'name' => basename($curFile),
