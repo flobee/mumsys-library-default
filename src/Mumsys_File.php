@@ -31,7 +31,7 @@
  */
 class Mumsys_File
     extends Mumsys_Abstract
-    implements Mumsys_File_Interface
+    implements Mumsys_File_Interface, Mumsys_Logger_Writer_Interface
 {
     /**
      * Version ID information
@@ -185,7 +185,7 @@ class Mumsys_File
      * @throws Mumsys_File_Exception Throws exception if writing to file is
      * impossible
      */
-    public function write($content)
+    public function write( $content )
     {
         if ( !$this->isOpen() )
         {
