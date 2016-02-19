@@ -183,7 +183,7 @@ class Mumsys_LoggerTest extends PHPUnit_Framework_TestCase
         ob_start();
         $object->log(array('test1','test2'), 7);
         $x3 = ob_get_clean();
-        $y3 = 'x ff_0: array("0" => "test1");' . $object->lf
+        $y3 = 'x ff_0: array("0" => "test1");' . "\n"
             . 'x ff_0: array("1" => "test2");';
 
         $this->assertEquals('test', trim($x1));
