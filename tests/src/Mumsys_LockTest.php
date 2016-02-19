@@ -93,6 +93,16 @@ class Mumsys_LockTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($this->_object->isLocked());
     }
 
+    public function testIsLocked2()
+    {
+        $tmpFile = '/tmp/where/the/hell/are/you';
+        $o = new Mumsys_Lock($tmpFile);
+        $this->setExpectedException(
+            'Mumsys_Exception', 'Lock directory "/tmp/where/the/hell/are/you" not exists'
+        );
+        $o->isLocked();
+    }
+
 
     // test abstracts
 
