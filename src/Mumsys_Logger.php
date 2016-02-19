@@ -116,7 +116,7 @@ class Mumsys_Logger
 
         $this->_writer = $writer;
 
-        $this->log('DEPRECATED USAGE! use Mumsys_Logger_Default', Mumsys_Logger_Abstract::INFO);
+        $this->log('DEPRECATED USAGE! use Mumsys_Logger_File or see Mumsys_Logger_Default', Mumsys_Logger_Abstract::INFO);
 
         // maxfilesize feature
         /** @todo to be removed, to set in writer class? */
