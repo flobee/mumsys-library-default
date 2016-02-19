@@ -29,7 +29,7 @@
  * @subpackage  Mumsys_Logger
  * @uses Mumsys_File Writer class
  */
-class Mumsys_Logger_Abstract
+abstract class Mumsys_Logger_Abstract
     extends Mumsys_Abstract
     implements Mumsys_Logger_Interface
 {
@@ -50,31 +50,18 @@ class Mumsys_Logger_Abstract
 
 
     /**
-     * path and filename to the log file.
-     * @var string
-     */
-    protected $_logfile;
-
-    /**
-     * Type of ways to log a message. Default is a fopen "a" (add/ append).
-     *
-     * @var string
-     */
-    protected $_logway;
-
-    /**
      * Flag to also print out log messages directly or not.
      *
      * @var boolean
      */
-    protected $msgEcho = false;
+    protected $_msgEcho = false;
 
     /**
      * Flag to also return log messages or not.
      *
      * @var boolean
      */
-    protected $msgReturn = true;
+    protected $_msgReturn = true;
 
     /**
      * Log levels to log
@@ -83,7 +70,7 @@ class Mumsys_Logger_Abstract
      *
      * @var integer
      */
-    protected $logLevel = 7;  // log everything to a file
+    protected $_logLevel = 7;  // log everything to a file
 
     /**
      * Available log levels.
@@ -99,7 +86,7 @@ class Mumsys_Logger_Abstract
      *
      * @var integer
      */
-    protected $msglogLevel = 6; // logmessages that should be displayed
+    protected $_msglogLevel = 6; // logmessages that should be displayed
 
     /**
      * Format for the date/time string in logmessages.
@@ -157,14 +144,14 @@ class Mumsys_Logger_Abstract
      *
      * @var string
      */
-    protected $username;
+    protected $_username;
 
     /**
      * Linefeed sign to make a new line after a log entry (on files)
      *
      * @var string
      */
-    protected $lf = "\n";
+    protected $_lf = "\n";
 
     /**
      * Internal counter.
@@ -172,15 +159,6 @@ class Mumsys_Logger_Abstract
      * @var integer
      */
     protected $_cnt = 0;
-
-    /**
-     * Number of bytes for a logfile befor it will be purged to zero lenght
-     * zero means no limit.
-     * If $_debug or verbose is enabled $_maxfilesize will not take affect.
-	 *
-     * @var integer
-     */
-    protected $_maxfilesize = 0;
 
     /**
      * Component to write log messages to e.g. a file or database.
@@ -200,9 +178,6 @@ class Mumsys_Logger_Abstract
      * Initialize the logger object
      *
      * @param array $args Associativ array with additional params
-     * - [logfile] string Location of the logfile; optional, if not set
-     *  logs will be stored to /tmp/ ! Make sure you have access to it.
-     * - [way] string Default: fopen "a"
      * - [username] optional otherwise PHP_AUTH_USER will be taken
      * - [lineFormat] optional format of log line;see $_logformat.
      * - [timeFormat] optional format of a timestamp format
@@ -216,25 +191,12 @@ class Mumsys_Logger_Abstract
      * - [debug] boolean Default: false
      * - [verbose] boolean Default: false
      * - [lf] string Optional Linefeed Default: \n
-     * - [maxfilesize] integer Optional Number of Bytes for the logfile
-     *  Default: 0 (no limit)
+     * @param Mumsys_Logger_Writer_Interface $writer Wirter intreface to stroe messages
      *
      * @uses Mumsys_File Uses Mumsys_File object for file logging
      */
-    public function __construct( array $options=array( ) )
+    public function __construct( array $options = array(), Mumsys_Logger_Writer_Interface $writer = null )
     {
-        if ( empty($options['logfile']) ) {
-            $this->_logfile = '/tmp/' . basename(__FILE__) .'_'. date('Y-m-d', time());
-        } else {
-            $this->_logfile = $options['logfile'];
-        }
-
-        if ( empty($options['way']) ) {
-            $this->_logway = $options['way'] = 'a';
-        } else {
-            $this->_logway = (string)$options['way'];
-        }
-
         if ( empty($options['username']) ) {
             if ( isset($_SERVER['PHP_AUTH_USER']) ) {
                 $this->username = (string)$_SERVER['PHP_AUTH_USER'];
@@ -263,11 +225,11 @@ class Mumsys_Logger_Abstract
         }
 
         if ( isset($options['logLevel']) ) {
-            $this->logLevel = $options['logLevel'];
+            $this->_logLevel = $options['logLevel'];
         }
 
         if ( isset($options['msglogLevel']) ) {
-            $this->msglogLevel = $options['msglogLevel'];
+            $this->_msglogLevel = $options['msglogLevel'];
         }
 
         if ( isset($options['msgLineFormat']) ) {
@@ -275,11 +237,11 @@ class Mumsys_Logger_Abstract
         }
 
         if ( isset($options['msgEcho']) ) {
-            $this->msgEcho = $options['msgEcho'];
+            $this->_msgEcho = $options['msgEcho'];
         }
 
         if ( isset($options['msgReturn']) ) {
-            $this->msgReturn = $options['msgReturn'];
+            $this->_msgReturn = $options['msgReturn'];
         }
 
         if ( isset($options['debug']) ) {
@@ -291,31 +253,13 @@ class Mumsys_Logger_Abstract
         }
 
         if ( isset($options['lf']) ) {
-            $this->lf = $options['lf'];
+            $this->_lf = $options['lf'];
         }
 
-        if ( isset($options['maxfilesize']) ) {
-            $this->_maxfilesize = $options['maxfilesize'];
-        }
-
-        // maxfilesize feature
-        /** @todo to be removed, to set in writer class? */
-        $message = $this->checkMaxFilesize();
-
-
-        $fileOptions = array(
-            'file' => $this->_logfile,
-            'way' => $this->_logway
-        );
-        $this->_writer = new Mumsys_File($fileOptions);
+        $this->_writer = $writer;
 
         $r = new ReflectionClass($this);
         $this->_loglevels = array_flip( $r->getConstants() );
-
-        if ($message) {
-            $this->log($message, self::INFO);
-        }
-
     }
 
 
@@ -358,10 +302,10 @@ class Mumsys_Logger_Abstract
                     $message .= sprintf(
                         $this->_logFormat,
                         $datesting,
-                        $this->username,
+                        $this->_username,
                         $levelName,
                         $level,
-                        $tmp . $this->lf
+                        $tmp . $this->_lf
                     );
                 }
 
@@ -369,21 +313,19 @@ class Mumsys_Logger_Abstract
             }
             else
             {
-                $message = sprintf($this->_logFormat, $datesting, $this->username, $levelName, $level, $input);
+                $message = sprintf($this->_logFormat, $datesting, $this->_username, $levelName, $level, $input);
             }
 
-            $message .= $this->lf;
+            $message .= $this->_lf;
 
-            if ( $level <= $this->logLevel || ($this->_verbose || $this->_debug) )
+            if ( $level <= $this->_logLevel || ($this->_verbose || $this->_debug) )
             {
-                if ( $this->_logfile !== false ) {
-                    $this->write( $message );
-                }
+                $this->write( $message );
             }
 
-            if ( $level <= $this->msglogLevel || ($this->_verbose || $this->_debug) )
+            if ( $level <= $this->_msglogLevel || ($this->_verbose || $this->_debug) )
             {
-                if ( $this->msgEcho )
+                if ( $this->_msgEcho )
                 {
                     if ($this->_logFormatMsg && $this->_logFormatMsg != $this->_logFormat) {
                         if ($isArray)
@@ -397,10 +339,10 @@ class Mumsys_Logger_Abstract
                                 $msgOut .= sprintf(
                                     $this->_logFormatMsg,
                                     $datesting,
-                                    $this->username,
+                                    $this->_username,
                                     $levelName,
                                     $level,
-                                    $tmp . $this->lf
+                                    $tmp . $this->_lf
                                 );
                             }
 
@@ -411,10 +353,10 @@ class Mumsys_Logger_Abstract
                             $msgOut = sprintf(
                                 $this->_logFormatMsg,
                                 $datesting,
-                                $this->username,
+                                $this->_username,
                                 $levelName,
                                 $level,
-                                $input . $this->lf
+                                $input . $this->_lf
                             );
                         }
                     } else {
@@ -423,7 +365,7 @@ class Mumsys_Logger_Abstract
                     echo $msgOut;
                 }
 
-                if ( $this->msgReturn ) {
+                if ( $this->_msgReturn ) {
                     return $message;
                 }
             }
@@ -439,7 +381,7 @@ class Mumsys_Logger_Abstract
     /**
      * Write given content to the writer
      *
-     * @param string $content String to save to the logfile
+     * @param string $content String to save to the log writer
      * @return true Returns true on success.
      */
     public function write( $content )
@@ -455,17 +397,6 @@ class Mumsys_Logger_Abstract
 
 
     /**
-     * Return the logfile property, the location of the logfile.
-     *
-     * @return string Location of the logfile
-     */
-    public function getLogFile()
-    {
-        return $this->_logfile;
-    }
-
-
-    /**
      * Get the name of a loglevel.
      *
      * @param integer $level Nuber of the Log level
@@ -477,29 +408,6 @@ class Mumsys_Logger_Abstract
             return 'unknown';
         }
         return $this->_loglevels[$level];
-    }
-
-
-    /**
-     * Checks if the max filesize reached and drops the logfile.
-     * If debug or verbose mode is enabled this methode will return false.
-     *
-     * @return string|false Returns string with information that the log was
-     * purged or false.
-     */
-    public function checkMaxFilesize()
-    {
-        $message = false;
-        if ( $this->_maxfilesize )
-        {
-            if ( !($this->_verbose || $this->_debug)
-                && ($fsize=@filesize($this->_logfile)) > $this->_maxfilesize) {
-                unlink($this->_logfile);
-                $message = 'Max filesize reached. Log purged now';
-            }
-        }
-
-        return $message;
     }
 
 
