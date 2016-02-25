@@ -31,11 +31,6 @@
 interface Mumsys_Db_Driver_Interface
 {
     /**
-     * Version ID information
-     */
-    const VERSION = '3.1.0';
-
-    /**
      * Initialization of database and features
      *
      * @param array $args Possible values:
