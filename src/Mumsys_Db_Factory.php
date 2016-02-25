@@ -61,7 +61,7 @@ class Mumsys_Db_Factory
      * @return Mumsys_Db_Driver_Interface Returns the database driver object
      * @throws Mumsys_Db_Exception
      */
-    public function __construct( array $options )
+    public static function getInstance( array $options )
     {
         try
         {
