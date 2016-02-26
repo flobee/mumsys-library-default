@@ -187,7 +187,7 @@ abstract class Mumsys_Db_Driver_Abstract
     protected $_numQuerys = 0; // static
 
     /**
-     * Sql comparison values
+     * Query comparison values
      *
      * @var array Multi-dimensional array
      * array('internal key'=> array(
@@ -196,7 +196,7 @@ abstract class Mumsys_Db_Driver_Abstract
      * @access protected
      * @see Mumsys_DataList.php
      */
-    protected $_sqlCompareValues;
+    protected $_queryCompareValues;
 
     /**
      * Sql operators.
@@ -209,10 +209,10 @@ abstract class Mumsys_Db_Driver_Abstract
      * @access protected
      * @see Mumsys_DataList.php
      */
-    protected $_sqlOperators;
+    protected $_queryOperators;
 
     /** @todo To be implemented*/
-    protected $_sqlSortations = array(
+    protected $_querySortations = array(
         'ASC' => 'Ascending (a-z, 0-9)',
         'DESC' => 'Descending (z-a, 9-0)'
     );
@@ -339,12 +339,12 @@ abstract class Mumsys_Db_Driver_Abstract
             define('_CMS_BEGINSNOTWITH', 'begins not with');
         }
 
-        $this->_sqlCompareValues = array(
+        $this->_queryCompareValues = array(
             'AND' => array( _CMS_AND, _CMS_AND ),
             'OR' => array( _CMS_OR, _CMS_OR ),
         );
 
-        $this->_sqlOperators = array(
+        $this->_queryOperators = array(
             '=' => array( '==', _CMS_ISEQUAL ),
             '>' => array( '&gt;', _CMS_ISGREATERTHAN ),
             '<' => array( '&lt;', _CMS_ISLESSTHAN ),
@@ -442,22 +442,101 @@ abstract class Mumsys_Db_Driver_Abstract
      *
      * @return array
      */
-    public function getSqlCompareValues()
+    public function getQueryCompareValues()
     {
-        return $this->_sqlCompareValues;
+        return $this->_queryCompareValues;
     }
 
 
     /**
-     * Returns the sql operators. Multi-dimensional array
+     * Replaces query comparison values
+     *
+     * @param array $comparison Multi-dimensional array
+     * array('internal key'=> array(
+     *      'public key to map to'=>'public value of key to show')
+     * )
+     * eg (default): array(
+     *     'AND' => array('And', 'And'),
+     *     'OR' => array('Or', 'Or'),
+     *
+     * @return false on errors
+     * @throws Mumsys_Db_Exception On errors if setThrowErrors was set
+     */
+    public function replaceQueryCompareValues( array $comparison )
+    {
+        foreach ($comparison as $key => $list) {
+            if (is_numeric($key) || count($list) != 2) {
+                return $this->_setError('Invalid query operators configuration');
+            }
+        }
+
+        $this->_queryCompareValues = $comparison;
+    }
+
+    /**
+     * Returns the query operators. Multi-dimensional array
      * array('internal key'=> array(
      *      'public key to map to'=>'public value of key to show')
      * )
      * @return array
      */
-    public function getSqlOperators()
+    public function getQueryOperators()
     {
-        return $this->_sqlOperators;
+        return $this->_queryOperators;
+    }
+
+
+    /**
+     * Replaces query operators.
+     *
+     * @param array $operators Multi-dimensional array
+     * array('internal key'=> array(
+     *      'public key to map to'=>'public value of key to show')
+     * )
+     * @return false on errors
+     * @throws Mumsys_Db_Exception On errors if setThrowErrors was set
+     */
+    public function replaceQueryOperators( array $operators )
+    {
+        foreach ($operators as $key => $list) {
+            if (is_numeric($key) || count($list) != 2) {
+                return $this->_setError('Invalid query operators configuration');
+            }
+        }
+
+        $this->_queryOperators = $operators;
+    }
+
+    /**
+     * Returns the query sortations
+     *
+     * @return array List of key/value pairs for the sortation
+     */
+    public function getQuerySortations( array $sortations )
+    {
+        return $this->_querySortations;
+    }
+
+
+    /**
+     * Replaces query sortations
+     *
+     * @param array $sortations List of sortations eg: array(
+     *     'ASC' => 'Ascending (a-z, 0-9)',
+     *     'DESC' => 'Descending (z-a, 9-0)'
+     * )
+     * @return false on errors
+     * @throws Mumsys_Db_Exception On errors if setThrowErrors was set
+     */
+    public function replaceQuerySortations( array $sortations )
+    {
+        foreach ($sortations as $key => $value) {
+            if (is_numeric($key) || !is_string($value)) {
+                return $this->_setError('Invalid query sortations configuration');
+            }
+        }
+
+        $this->_querySortations = $sortations;
     }
 
 
