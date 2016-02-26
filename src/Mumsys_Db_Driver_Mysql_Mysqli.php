@@ -774,10 +774,6 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         $this->_errorMessage = $message;
 
         if ( $this->_debug ) {
-            echo 'debug output: ' . __METHOD__
-                . ' Error: ' . $message . '; code: '
-                . $code . '<br />' .PHP_EOL;
-            echo $this->_sql . PHP_EOL;
             //this blows up the memory! use carefully
             $this->_errorList[] = array('message' => $message, 'code' => $code);
         } else {
@@ -1023,7 +1019,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * Retruns a single sql expression basicly made for a sql where clause.
      * E.g.: WHERE ( `a` LIKE '%b%' )
      * An expression looks like: array('operator'=>array('column' => 'value'))
-     * @see $_sqlOperators array keys of possilble operators.
+     * @see $_queryOperators array keys of possilble operators.
      * Speacial operators:
      * - '_' string|array Can be used for unescaped and unquoted special
      * comparisons.
@@ -1466,16 +1462,16 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * Retruns complex sql expression basicly made for a sql where clause.
      *
      * The configuration input looks as follows: A compare value (see array
-     * key of $_sqlCompareValues) followed by a list of expressions the
+     * key of $_queryCompareValues) followed by a list of expressions the
      * expressions should be compared with.
      *
      * E.g: array('[AND|OR]' => array( [list of expressions])).
      *
      * An expression looks like array('[operator] => array('key' => 'value')).
-     * @see $_sqlOperators Array keys of it.
+     * @see $_queryOperators Array keys of it.
      *
      * Operator '_' can be used for special expressions. For more
-     * @see compileSqlExpression() This belongs to security problems.
+     * @see compileQueryExpression() This belongs to security problems.
      *
      * Simple mode:
      * Only a list of key/value pairs are used as input. All values are
@@ -1513,7 +1509,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             return ' WHERE 1=1';
         }
 
-        if ( !isset($this->_sqlCompareValues[key($where)]) ) {
+        if ( !isset($this->_queryCompareValues[key($where)]) ) {
             // compat. mode
             $result = $this->_compileQueryWhereSimple($where);
         } else {
@@ -1584,8 +1580,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 }
 
                 $needle = key($exprPart); // check for the upcomming operator
-                if ( isset($this->_sqlOperators[$needle]) || $needle === '_' ) {
-                    $compExpr[] = $this->compileSqlExpression($exprPart);
+                if ( isset($this->_queryOperators[$needle]) || $needle === '_' ) {
+                    $compExpr[] = $this->compileQueryExpression($exprPart);
                 } else {
                     $inner[] = $this->_compileQueryWhere($exprPart);
                 }
@@ -1650,7 +1646,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 $column = $way;
                 $way = 'ASC';
             } else {
-                if ( !isset($this->_sqlSortations[$way]) ) {
+                if ( !isset($this->_querySortations[$way]) ) {
                     $way = 'ASC';
                 }
             }
