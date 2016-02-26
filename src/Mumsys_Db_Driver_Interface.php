@@ -103,31 +103,6 @@ interface Mumsys_Db_Driver_Interface
     public function getQueryStmts();
 
     /**
-     * Returns the sql compare values.
-     * <code>
-     * array([key for the database. e.g: AND] => array(
-     *    [public/translated key to map to for visualation, [translated value
-     * description]
-     * )
-     * // e.g:
-     * array('AND' => array('and', 'and operation')<br />
-     * </code>
-     * @return array List of compare values like: AND or OR in structure.
-     */
-    public function getSqlCompareValues();
-
-    /**
-     * Returns the sql operators.
-     * Multi-dimensional array: <br />
-     * array('internal key'=> array(
-     *    'public/ translated key to map to' => 'translated value description')
-     * )<br />
-     * e.g:  array('=' => array( '==', _CMS_ISEQUAL )<br />
-     * @return array List of operators
-     */
-    public function getSqlOperators();
-
-    /**
      * Returns the list of errors the program has detected and collected.
      *
      * @return array List of errors with message=>error message, code=>error code
