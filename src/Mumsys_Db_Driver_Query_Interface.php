@@ -32,10 +32,82 @@
 interface Mumsys_Db_Driver_Query_Interface
 {
     /**
+     * Returns the sql compare values.
+     * <code>
+     * array([key for the database. e.g: AND] => array(
+     *    [public/translated key to map to for visualation, [translated value
+     * description]
+     * )
+     * // e.g:
+     * array('AND' => array('and', 'and operation')<br />
+     * </code>
+     * @return array List of compare values like: AND or OR in structure.
+     */
+    public function getQueryCompareValues();
+
+    /**
+     * Replaces query comparison values
+     *
+     * @param array $comparison Multi-dimensional array
+     * array('internal key'=> array(
+     *      'public key to map to'=>'public value of key to show')
+     * )
+     * eg (default): array(
+     *     'AND' => array('And', 'And'),
+     *     'OR' => array('Or', 'Or'),
+     *
+     * @return false on errors
+     * @throws Mumsys_Db_Exception On errors if setThrowErrors was set
+     */
+    public function replaceQueryCompareValues( array $comparison );
+
+    /**
+     * Returns the sql operators.
+     * Multi-dimensional array: <br />
+     * array('internal key'=> array(
+     *    'public/ translated key to map to' => 'translated value description')
+     * )<br />
+     * e.g:  array('=' => array( '==', _CMS_ISEQUAL )<br />
+     * @return array List of operators
+     */
+    public function getQueryOperators();
+
+    /**
+     * Replaces query operators.
+     *
+     * @param array $operators Multi-dimensional array
+     * array('internal key'=> array(
+     *      'public key to map to'=>'public value of key to show')
+     * )
+     * @return false on errors
+     * @throws Mumsys_Db_Exception On errors if setThrowErrors was set
+     */
+    public function replaceQueryOperators( array $operators );
+
+    /**
+     * Returns the query sortations
+     *
+     * @return array List of key/value pairs for the sortation
+     */
+    public function getQuerySortations( array $sortations );
+
+    /**
+     * Replaces query sortations
+     *
+     * @param array $sortations List of sortations eg: array(
+     *     'ASC' => 'Ascending (a-z, 0-9)',
+     *     'DESC' => 'Descending (z-a, 9-0)'
+     * )
+     * @return false on errors
+     * @throws Mumsys_Db_Exception On errors if setThrowErrors was set
+     */
+    public function replaceQuerySortations( array $sortations );
+
+    /**
      * Retruns a single sql expression basicly made for a sql where clause.
      * E.g.: WHERE ( `a` LIKE '%b%' )
      * An expression looks like: array('operator'=>array('column' => 'value'))
-     * @see $_sqlOperators array keys of possilble operators.
+     * @see $_queryOperators array keys of possilble operators.
      * Speacial operators:
      * - '_' string|array Can be used for unescaped and unquoted special
      * comparisons.
@@ -130,13 +202,13 @@ interface Mumsys_Db_Driver_Query_Interface
      * Retruns complex sql expression basicly made for a sql where clause.
      *
      * The configuration input looks as follows: A compare value (see array
-     * key of $_sqlCompareValues) followed by a list of expressions the
+     * key of $_queryCompareValues) followed by a list of expressions the
      * expressions should be compared with.
      *
      * E.g: array('[AND|OR]' => array( [list of expressions])).
      *
      * An expression looks like array('[operator] => array('key' => 'value')).
-     * @see $_sqlOperators Array keys of it.
+     * @see $_queryOperators Array keys of it.
      *
      * Operator '_' can be used for special expressions. For more
      * @see compileSqlExpression() This belongs to security problems.
@@ -209,5 +281,62 @@ interface Mumsys_Db_Driver_Query_Interface
      * @return string Returns the created limit, offset clause or empty string
      */
     public function compileQueryLimit( array $limit );
+
+
+    /**
+     * Implode sql conditions.
+     *
+     * @todo this method should be available in a xml creator too e.g. for attributes
+     * @todo example needed!
+     *
+     * @param string $glue
+     * @param array $array values of items to implode to make a valid statement.
+     * @param boolean $withKeys Flag: if $array values having array key which
+     * describes the cols of the table set this to true.
+     * @param array $defaults If given, in this array are table defaults like
+     *  datatype or default values to validate values;
+     *  $defaults = array('key'=>array('default'=>'', 'type'=>'int|float|double
+     *  |varchar|char|enum|set|text', 'asstring'=>false, ...));
+     * @param string $valwrap A value to enclose the value: eg.: make a value
+     * to be `value`
+     * @param string $keyValWrap The value between value and a key.
+     * eg.: "=": key = `value`, if the value of the data is false the key will
+     * be used as is, e.g: "db.col IS NOT NULL"
+     * @param string $keyWrap Value to enclose the key
+     * eg.: $keyWrap = '`'; --> `key` = `value`
+     * @return string|false seperated string by given separator
+     * @throws Mumsys_Db_Exception Throws excetion on errors
+     */
+    public function sqlImplode($separator=',', array $array=array(),
+        $withKeys=false, $defaults=array(), $valwrap='', $keyValWrap='',
+        $keyWrap='');
+
+    /**
+     * Sets the flag to throw errors or not.
+     *
+     * @param boolean $flag True for throw errors or false to collect errors.
+     */
+    public function setThrowErrors($flag);
+
+    /**
+     * Returns the status if throw errors is enabled or not.
+     * @return boolean
+     */
+    public function getThrowErrors();
+
+
+    /**
+     * Sets the flag for the debug handling.
+     *
+     * @param boolean $flag True for enable debug mode.
+     */
+    public function setDebugMode($flag);
+
+    /**
+     * Returns if debug mode is enabled or not.
+     *
+     * @return boolean
+     */
+    public function getDebugMode();
 
 }
