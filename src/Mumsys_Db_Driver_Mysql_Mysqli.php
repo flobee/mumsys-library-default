@@ -13,7 +13,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Db
- * @version     3.0.0
+ * @version     3.1.0
  * Created: 2013-12-13
  * -----------------------------------------------------------------------
  */
@@ -34,7 +34,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     /**
      * Version ID information
      */
-    const VERSION = '3.0.0';
+    const VERSION = '3.1.0';
 
 
     /**
@@ -87,7 +87,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
 
             if ( !$chk ) {
                 $this->_isConnected = false;
-                $this->_setError(
+                return $this->_setError(
                     'Connection to database failed. Please check configuration. '
                     . $this->sqlError()
                 );
@@ -101,7 +101,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
 
         } catch (Exception $e) {
             $msg = 'Connection to database failed. Messages: "' . $e->getMessage() .'", "'. $this->sqlError() .'"';
-            $this->_setError($msg, null, $e);
+            return $this->_setError($msg, null, $e);
         }
 
         return $this->_dbc;
@@ -140,8 +140,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     public function setCharset( $charset )
     {
         if ( ($result = mysqli_set_charset($this->_dbc, $charset) ) == false ) {
-            $this->_setError('Setting client character set failt');
-            return false;
+            return $this->_setError('Setting client character set failt');
         }
 
         return $result;
@@ -157,8 +156,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     public function getCharset()
     {
         if ( ($result = @mysqli_get_charset($this->_dbc) ) == false ) {
-            $this->_setError('Getting character set failt');
-            return false;
+            return $this->_setError('Getting character set failt');
         }
 
         return $result;
@@ -182,8 +180,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
 
         if ( mysqli_select_db($this->_dbc, $dbName) === false ) {
             $error = 'Can\'t select db. ' . $this->sqlError();
-            $this->_setError($error);
-            return false;
+            return $this->_setError($error);
         }
 
         $this->_dbName = $dbName;
@@ -246,8 +243,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         if ( $sql ) {
             $this->_sql = (string)$sql;
         } else {
-            $this->_setError('Query empty. Cant not query empty sql statment.');
-            return false;
+            return $this->_setError('Query empty. Cant not query empty sql statment.');
         }
 
         if ( $this->_dbc === null ) {
@@ -258,7 +254,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         $this->_errorMessage = '';
 
         if ( $unbuffered ) {
-            $this->_setError('Unbuffered querys not implemented yet');
+            return $this->_setError('Unbuffered querys not implemented yet');
         } else {
             $result = mysqli_query($this->_dbc, $this->_sql);
         }
@@ -270,8 +266,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         }
 
         if ( ($error = $this->sqlError()) ) {
-            $this->_setError($error);
-            return false;
+            return $this->_setError($error);
         }
 
         $oRes = new Mumsys_Db_Driver_Mysql_Mysqli_Result($this, $result);
@@ -287,8 +282,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function queryUnbuffered($sql=false)
     {
-        $this->_setError('Unbuffered querys not implemented yet');
-        return false;
+        return $this->_setError('Unbuffered querys not implemented yet');
     }
 
 
@@ -447,8 +441,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         }
 
         if ( $oRes===false ) {
-            $this->_setError('Error getting columns');
-            return false;
+            return $this->_setError('Error getting columns');
         }
 
         $i=0;
@@ -652,9 +645,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 'Error getting columns. Does the columne "%1$s" exists?',
                 $field
             );
-            $this->_setError($msg, 1);
 
-            return false;
+            return $this->_setError($msg, 1);
         }
 
         return $data;
@@ -783,6 +775,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         if ( $this->_throwErrors || $this->_isConnected === false) {
             throw new Mumsys_Db_Exception($message, $code, $previous);
         }
+
+        return false;
     }
 
 
@@ -831,9 +825,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             || empty($params['table'])
         ) {
             $message = 'Unknown key or empty values. No "' . $action . '" action';
-            $this->_setError($message);
-            return false;
-
+            return $this->_setError($message);
         } else {
             $where = '';
             if ( isset($params['where']) ) {
@@ -1065,8 +1057,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                     'Invalid expression key "%1$s" for where expression: '
                     . 'values (json): %2$s', $key, json_encode($value)
                 );
-                $this->_setError($msg);
-                return false;
+                return $this->_setError($msg);
             }
         } else if ( $operator === '_' ) {
             $key = null;
@@ -1077,8 +1068,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 . 'Operator: "%1$s" values (json): %2$s',
                 $operator, json_encode($keyval)
             );
-            $this->_setError($msg);
-            return false;
+            return $this->_setError($msg);
         }
 
         // escape / testing all
@@ -1096,8 +1086,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                         . 'numbers expected. operator: "%1$s" values (json): '
                         . '%2$s', $operator, json_encode($keyval)
                     );
-                    $this->_setError($msg);
-                    return false;
+                    return $this->_setError($msg);
                 }
             }
             $value = $new;
@@ -1118,8 +1107,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                             . '. String expected. Operator: "_"'
                             . ' values (json): "%1$s"', json_encode($value)
                         );
-                        $this->_setError($msg);
-                        return false;
+                        return $this->_setError($msg);
                     }
                     $new[] = $string;
                 }
@@ -1130,8 +1118,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                     . 'expected. Operator: "_" values (json): "%1$s"',
                     json_encode($keyval)
                 );
-                $this->_setError($msg);
-                return false;
+                return $this->_setError($msg);
             }
         } else {
             $valIsInt = true;
@@ -1195,8 +1182,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 $msg = sprintf(
                     'Unknown operator "%1$s" to create expression', $operator
                 );
-                $this->_setError($msg);
-                return false;
+                return $this->_setError($msg);
                 break;
         }
 
@@ -1260,8 +1246,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
 
         // table
         if ( empty($opts['table']) ) {
-            $this->_setError('No tables given to compile.');
-            return false;
+            return $this->_setError('No tables given to compile.');
         } else {
             if ( is_array($opts['table']) ) {
                 foreach ( $opts['table'] as $t => $theJoin ) {
@@ -1400,8 +1385,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                         json_encode($column),
                         $e->getMessage()
                     );
-                    $this->_setError($msg);
-                    return false;
+                    return $this->_setError($msg);
                 }
             } else {
                 $result[] = '`' . $this->escape($column) . '` AS ' . $alias;
@@ -1576,7 +1560,6 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                         json_encode($exprPart)
                     );
                     $this->_setError($msg);
-                    return false;
                 }
 
                 $needle = key($exprPart); // check for the upcomming operator
@@ -1798,8 +1781,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                             _('Value could not be used. Value warp: "%1$s"'),
                             gettype($valwrap)
                         );
-                        $this->_setError($msg);
-                        return false;
+
+                        return $this->_setError($msg);
                     } else {
                         // produce a eg: `key` = 'value'
                         $r[] = $keyWrap . $key . $keyWrap . $_keyValWrap
