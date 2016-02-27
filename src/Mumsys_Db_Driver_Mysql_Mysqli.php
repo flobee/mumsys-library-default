@@ -1230,7 +1230,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      *  [limit] array|string array(0,1) or string 0,1
      * @return string Returns a compiled sql statement
      */
-    public function compileQuery(array $opts=array( ))
+    public function compileQuery( array $opts )
     {
         $cols = '';
         $table = '';
@@ -1623,6 +1623,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         return $result;
     }
 
+
     /**
      * Returns the 'order by' clause sql statement.
      *
@@ -1644,10 +1645,10 @@ class Mumsys_Db_Driver_Mysql_Mysqli
 
             if ( is_numeric($column) ) {
                 $column = $way;
-                $way = 'ASC';
+                $way = key($this->_querySortations);
             } else {
                 if ( !isset($this->_querySortations[$way]) ) {
-                    $way = 'ASC';
+                    $way = key($this->_querySortations);
                 }
             }
             $res .= '`' . $column . '` ' . $way . '';
@@ -1655,6 +1656,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
 
         return $res;
     }
+
 
     /**
      * Returns the 'limit, offset' clause sql statement.
