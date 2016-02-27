@@ -1410,7 +1410,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @throws Mumsys_Db_Exception Throws exception on errors when escaping the
      * values.
      */
-    public function compileQuerySet( array $set = array() )
+    public function compileQuerySet( array $set )
     {
         $data = array();
         foreach($set as $col => $value) {
@@ -1503,6 +1503,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         if ( $result ) {
             return ' WHERE ' . $result;
         }
+
         return false;
     }
 
@@ -1559,7 +1560,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                         . '(json): %1$s ',
                         json_encode($exprPart)
                     );
-                    $this->_setError($msg);
+                    return $this->_setError($msg);
                 }
 
                 $needle = key($exprPart); // check for the upcomming operator
