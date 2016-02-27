@@ -125,22 +125,22 @@ class Mumsys_Db_Driver_AbstractTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * @covers Mumsys_Db_Driver_Abstract::getSqlCompareValues
+     * @covers Mumsys_Db_Driver_Abstract::getQueryCompareValues
      */
-    public function testGetSqlCompareValues()
+    public function testgetQueryCompareValues()
     {
         $expected = array(
             'AND' => array( _CMS_AND, _CMS_AND ),
             'OR' => array( _CMS_OR, _CMS_OR ),
         );
-        $this->assertEquals($expected, $this->_object->getSqlCompareValues());
+        $this->assertEquals($expected, $this->_object->getQueryCompareValues());
     }
 
 
     /**
-     * @covers Mumsys_Db_Driver_Abstract::getSqlOperators
+     * @covers Mumsys_Db_Driver_Abstract::getQueryOperators
      */
-    public function testGetSqlOperators()
+    public function testGetQueryOperators()
     {
         $expected = array(
             '=' => array( '==', _CMS_ISEQUAL ),
@@ -157,7 +157,7 @@ class Mumsys_Db_Driver_AbstractTest extends PHPUnit_Framework_TestCase
             'NOTLIKEx' => array( _CMS_BEGINSNOTWITH, _CMS_BEGINSNOTWITH ),
         );
 
-        $this->assertEquals($expected, $this->_object->getSqlOperators());
+        $this->assertEquals($expected, $this->_object->getQueryOperators());
     }
 
 
