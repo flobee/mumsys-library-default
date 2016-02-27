@@ -145,7 +145,7 @@ interface Mumsys_Db_Driver_Query_Interface
     /**
      * tested but not in use, compile* methodes are used in @see _save() method
      */
-    public function compileQuery( array $options = array() );
+    public function compileQuery( array $options );
 
     /**
      * Returns select statment by given configuration list.
@@ -196,7 +196,7 @@ interface Mumsys_Db_Driver_Query_Interface
      * @throws Mumsys_Db_Exception Throws exception on errors when escaping the
      * values.
      */
-    public function compileQuerySet( array $set = array() );
+    public function compileQuerySet( array $set );
 
     /**
      * Retruns complex sql expression basicly made for a sql where clause.
