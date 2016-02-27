@@ -35,7 +35,7 @@ interface Mumsys_Db_Driver_Result_Interface
      * @param resource $result Resultset of the sql query
      * @param array $options Array of options; NOT IMPLEMENTED YET!
      */
-    public function __construct( Mumsys_Db_Driver_Interface &$oDB, $result,
+    public function __construct( Mumsys_Db_Driver_Interface &$oDB, &$result,
         array $options=array());
 
     /**
@@ -138,7 +138,7 @@ interface Mumsys_Db_Driver_Result_Interface
 
     /**
      * Retrieves the contents of one cell from a result set. the first row
-     * 
+     *
      * old: sqlResult() method
      *
      * When working on large result sets, you should consider using one of the
