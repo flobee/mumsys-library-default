@@ -65,7 +65,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
      * @param resource $result Result set of the sql query
      * @param array $options Array of options; NOT IMPLEMENTED YET!
      */
-    public function __construct(Mumsys_Db_Driver_Interface &$oDB, $result,
+    public function __construct(Mumsys_Db_Driver_Interface &$oDB, &$result,
         array $options=array())
     {
         $this->_dbc = $oDB->connect();
@@ -91,33 +91,33 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
      * @param object $result the resultset of a different sql-resource
      * @return array return an array of fetched values
      */
-    public function fetch( $way='assoc', $result=false )
+    public function fetch( $way = 'assoc', $result = false )
     {
-        if ( $result === false ) {
+        if (!$result) {
             $result = $this->_result;
         }
 
-        switch ( $way ) {
-            case 'ASSOC':
-            case 'assoc':
-                $row = mysqli_fetch_assoc($result);
-                break;
-            case 'ARRAY':
+        switch (strtolower($way))
+        {
             case 'array':
                 $row = mysqli_fetch_array($result, MYSQLI_BOTH);
                 break;
-            case 'NUM':
+
             case 'num':
                 $row = mysqli_fetch_array($result, MYSQLI_NUM);
                 break;
-            case 'ROW':
+
             case 'row':
-                $row = mysql_fetch_row($result);
+                $row = mysqli_fetch_row($result);
                 break;
-            case 'OBJECT':
+
             case 'object':
-                $row = mysql_fetch_object($result);
+                $row = mysqli_fetch_object($result);
                 break;
+
+            case 'assoc':
+            default:
+                $row = mysqli_fetch_assoc($result);
         }
 
         return $row;
@@ -135,37 +135,24 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
      * @param resource $result Result set of the sql query
      * @return array List of records
      */
-    public function fetchAll( $way='assoc', $result=false )
+    public function fetchAll( $way='assoc', $result=null )
     {
-        if ( !$result ) {
+        $oRes = null;
+        if (!$result) {
             $oRes = $this->_result;
-        } else {
-            $oRes = $result;
         }
 
-        if ( $oRes === false ) {
+        if (!$oRes) {
             return false;
         }
 
         $data = array();
-        switch ( strtoupper($way) )
-        {
-            case 'ASSOC':
-            case 'ARRAY':
-            case 'OBJECT':
-            case 'NUM':
-                while ( $row = $oRes->fetch($way) ) {
-                    $data[] = $row;
-                }
-                break;
+        $way = strtolower($way);
 
-            default:
-                while ( $row = $oRes->fetch('ASSOC') ) {
-                    $data[] = $row;
-                }
-                break;
+        while ($row = $this->fetch($way, $oRes)) {
+            $data[] = $row;
         }
-        $oRes->free();
+        $this->free();
 
         return $data;
     }
@@ -185,10 +172,10 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
      * @return integer Returns the number of rows
      * @throws Mumsys_Db_Exception If calculation of num rows fails
      */
-    public function numRows( $result=false )
+    public function numRows( $result=null )
     {
         $numRows = null;
-        if ( $result !== false ) {
+        if ( $result ) {
             $numRows = @mysqli_num_rows($result);
         } else {
             if ( $this->_numRows !== null ) {
@@ -307,21 +294,35 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
      * column name. If undefined, the first field is retrieved.
      * @param resource $res The result resource that is being evaluated. This
      * result comes from a call to mysql_query().
-     * @return s|false The contents of one cell from a MySQL result set on
-     * success, or FALSE on failure.
+     * @return string|false The contents of one cell or FALSE on failure or for
+     * no results.
+     * @throws Mumsys_Db_Exception On errors
      */
-    public function getFirst($row=0, $field=0, $res=false)
+    public function getFirst( $row = 0, $field = 0, $res = false )
     {
-        if ( !$res ) {
+        if (!$res) {
             $res = $this->_result;
         }
 
-        if ( $field ) {
-            return @mysqli_result($res, $row, $field);
+        try
+        {
+            if (!$this->seek($row, $res)) {
+                throw new Mumsys_Db_Exception('Seeking to row '. $row . ' failed');
+            }
+            $data = $this->fetch('array', $res);
+            $this->free($res);
+
+            if (isset($data[$field])) {
+                return $data[$field];
+            }
+
+        } catch (Exception $e) {
+            throw $e;
         }
 
-        return @mysqli_result($res, $row);
+        return false;
     }
+
 
     /**
      * Alias of getFirst() method
@@ -340,7 +341,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
 
 
     /**
-     * mysql_data_seek() moves the internal row pointer of the MySQL result
+     * Seek() moves the internal row pointer of the MySQL result
      * associated with the specified result identifier to point to the specified
      * row number. The next call to a MySQL fetch function, such as
      * mysql_fetch_assoc(), would return that row.
@@ -353,16 +354,15 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
      * @param resource $res Result set of a mysql query
      * @return boolean Returns TRUE on success or FALSE on failure.
      */
-    public function seek( $n=0, $res=false )
+    public function seek( $n = 0, $res = null )
     {
-        if ( $this->numRows() <= $n ) {
+        if ( $this->numRows($res) <= $n ) {
             return false;
         }
 
-        if ( $res ) {
+        $_res = $this->_result;
+        if ($res) {
             $_res = $res;
-        } else {
-            $_res = $this->_result;
         }
 
         return mysqli_data_seek($_res, $n);
@@ -380,17 +380,20 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
      * @param resource $res The result resource that is being evaluated. This
      * result comes from a call to mysql_query().
      * @return boolean Returns TRUE on success or FALSE on failure.
-     * If a non-resource is used for the result , an error of level E_WARNING
-     * will be emitted. It's worth noting that mysql_query() only returns a
-     * resource for SELECT, SHOW, EXPLAIN, and DESCRIBE queries.
      */
     public function free($res=false)
     {
-        if ( $res ) {
-            return mysqli_free_result($res);
+        if (!$res) {
+            $res = $this->_result;
         }
 
-        return mysqli_free_result($this->_result);
+        try {
+            mysqli_free_result($res);
+        } catch (Exception $e) {
+            throw new Mumsys_Db_Exception($e->getMessage(), $e->getCode(), $e->getPrevious());
+        }
+
+        return true;
     }
 
 }
