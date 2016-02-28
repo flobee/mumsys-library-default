@@ -62,7 +62,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
              * MYSQLI_CLIENT_SSL 	Use SSL (encryption)
              */
 
-            if ( $this->_conCompession ) {
+            if ($this->_conCompession) {
                 $chk = mysqli_real_connect(
                     $this->_dbc,
                     $this->_host,
@@ -82,14 +82,6 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                     $this->_dbName,
                     $this->_port,
                     $this->_socket
-                );
-            }
-
-            if ( !$chk ) {
-                $this->_isConnected = false;
-                return $this->_setError(
-                    'Connection to database failed. Please check configuration. '
-                    . $this->sqlError()
                 );
             }
 
@@ -243,7 +235,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         if ( $sql ) {
             $this->_sql = (string)$sql;
         } else {
-            return $this->_setError('Query empty. Cant not query empty sql statment.');
+            return $this->_setError('Query empty. Cant not query empty sql statment');
         }
 
         if ( $this->_dbc === null ) {
@@ -310,11 +302,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function sqlError()
     {
-        if ( $this->_dbc ) {
-            return @mysqli_error($this->_dbc);
-        }
-
-        return @mysqli_error();
+        return @mysqli_error($this->_dbc);
     }
 
 
@@ -687,7 +675,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function getServerInfo()
     {
-        return mysqli_get_server_version($this->_dbc);
+        return mysqli_get_server_info($this->_dbc);
     }
 
 
@@ -709,15 +697,15 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             throw new Mumsys_Db_Exception($msg);
         }
 
-        switch ( $string ) {
+        switch (strtolower($string))
+        {
             case 'now()':
-            case 'NOW()':
-            case 'ASC':
-            case 'DESC':
-            case ($string===''):
+            case 'asc':
+            case 'desc':
+            case ($string === ''):
                 return $string;
-                break;
         }
+
         if ( empty($this->_dbc) ) {
             $this->connect();
         }
