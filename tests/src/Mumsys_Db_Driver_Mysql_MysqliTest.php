@@ -47,24 +47,24 @@ class Mumsys_Db_Driver_Mysql_MysqliTest extends PHPUnit_Framework_TestCase
      * @covers Mumsys_Db_Driver_Mysql_Mysqli::connect
      * @covers Mumsys_Db_Driver_Mysql_Mysqli::_setError
      */
-//    public function testConnect()
-//    {
-//        $config = $this->_configs['database'];
-//
-//        $this->assertInstanceOf('mysqli', $this->_object->connect());
-//
-//        // compression
-//        $config['compress'] = true;
-//        $object = Mumsys_Db_Factory::getInstance($config);
-//        $this->assertInstanceOf('mysqli', $object->connect());
-//
-//        /** @todo not connected w/o exception, will throw it anyway! */
-//        $config['compress'] = false;
-//        $config['host'] = '127.0.0.9'; //invalidHostname
-//        $config['throw_errors'] = false;
-//        $object = Mumsys_Db_Factory::getInstance($config);
-//        $this->assertFalse($object->connect());
-//    }
+    public function testConnect()
+    {
+        $config = $this->_configs['database'];
+
+        $this->assertInstanceOf('mysqli', $this->_object->connect());
+
+        // compression
+        $config['compress'] = true;
+        $object = Mumsys_Db_Factory::getInstance($config);
+        $this->assertInstanceOf('mysqli', $object->connect());
+
+        /** @todo not connected w/o exception, will throw it anyway! */
+        $config['compress'] = false;
+        $config['host'] = '127.0.0.9'; //invalidHostname
+        $config['throw_errors'] = false;
+        $object = Mumsys_Db_Factory::getInstance($config);
+        $this->assertFalse($object->connect());
+    }
 
 
     /**
@@ -277,9 +277,42 @@ class Mumsys_Db_Driver_Mysql_MysqliTest extends PHPUnit_Framework_TestCase
      */
     public function testFetchData()
     {
-        $actual = $this->_object->fetchData('SELECT \'abc\'', 'ASSOC');
-        $expected = array(array('abc'=>'abc'));
-        $this->assertEquals($expected, $actual);
+        $actual1 = $this->_object->fetchData('SELECT \'abc\'', 'ASSOC');
+        $expected1 = array(array('abc' => 'abc'));
+
+        $actual2 = $this->_object->fetchData('SELECT \'abc\'', 'GETIDS');
+        $expected2 = array(0 => 'abc');
+
+        $actual3 = $this->_object->fetchData('SELECT \'abc\'', 'LINE');
+        $expected3 = array('abc' => 'abc');
+
+        $actual4 = $this->_object->fetchData('SELECT \'abc\'', 'ROW');
+        $expected4 = array(0 => 'abc');
+
+        $actual5 = $this->_object->fetchData('SELECT \'abc\', 123', 'KEYGOVAL');
+        $expected5 = array('abc' => '123');
+
+        $actual6 = $this->_object->fetchData('SELECT \'abc\'', 'KEYGOKEY');
+        $expected6 = array('abc' => 'abc');
+
+        $actual7 = $this->_object->fetchData('SELECT \'a b c\', 1,2,3', 'KEYGOASSOC');
+        $expected7 = array('a b c' => array('a b c' => 'a b c', 1 => '1', 2 => '2', 3 => '3') );
+
+        $actual7 = $this->_object->fetchData('SELECT \'a b c\', 1,2,3', 'defaultASassoc');
+        $expected7 = array( array('a b c' => 'a b c', 1 => '1', 2 => '2', 3 => '3') );
+
+        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals($expected2, $actual2);
+        $this->assertEquals($expected3, $actual3);
+        $this->assertEquals($expected4, $actual4);
+        $this->assertEquals($expected5, $actual5);
+        $this->assertEquals($expected6, $actual6);
+        $this->assertEquals($expected7, $actual7);
+
+        $this->_object->setThrowErrors(false);
+        $actualFalse = $this->_object->fetchData('SELECT *', 'defaultASassoc');
+        $this->assertFalse($actualFalse);
+
     }
 
 
@@ -858,10 +891,11 @@ class Mumsys_Db_Driver_Mysql_MysqliTest extends PHPUnit_Framework_TestCase
     public function testCompileQuerySet()
     {
         $fields = array(
+            '_' => 'a=c',
             'texta' => 'textaNew', 'textb' => 'null', 'textc' => 'now()'
         );
         $actual = $this->_object->compileQuerySet($fields);
-        $expected = ' SET `texta`=\'textaNew\',`textb`=NULL,`textc`=NOW()';
+        $expected = ' SET a=c,`texta`=\'textaNew\',`textb`=NULL,`textc`=NOW()';
         $this->assertEquals($expected, $actual);
     }
 
