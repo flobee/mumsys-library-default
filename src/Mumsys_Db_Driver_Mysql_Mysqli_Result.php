@@ -388,7 +388,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
         }
 
         try {
-            mysqli_free_result($res);
+            @mysqli_free_result($res);
         } catch (Exception $e) {
             throw new Mumsys_Db_Exception($e->getMessage(), $e->getCode(), $e->getPrevious());
         }
