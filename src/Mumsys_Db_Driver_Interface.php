@@ -95,7 +95,7 @@ interface Mumsys_Db_Driver_Interface
     public function getQuery();
 
     /**
-     * Returns the list of sql statments.
+     * Returns the list of query statments performed.
      * For debugging it will return a list otherwise only the list of one
      *
      * @return array List of query statments.
@@ -105,7 +105,7 @@ interface Mumsys_Db_Driver_Interface
     /**
      * Returns the list of errors the program has detected and collected.
      *
-     * @return array List of errors with message=>error message, code=>error code
+     * @return array List of errors with ["message" => "error message", "code"=> "error code"]
      */
     public function getErrors();
 
@@ -131,7 +131,7 @@ interface Mumsys_Db_Driver_Interface
     public function setThrowErrors( $flag );
 
     /**
-     * Returns th status if throw errors is enabled or not.
+     * Returns the status if throw errors is enabled or not.
      */
     public function getThrowErrors();
 
@@ -148,9 +148,6 @@ interface Mumsys_Db_Driver_Interface
      * @return boolean True if debug mode is on/enable otherwise false.
      */
     public function getDebugMode();
-
-
-    // --- end db common abstract
 
     /**
      * Create a database connection.
@@ -261,11 +258,10 @@ interface Mumsys_Db_Driver_Interface
      * @param boolean $unbuffered Flag to executed an unbuffered query
      * default: false
      *
-     * @return Mumsys_Db_Driver_Result_Interface|false Mumsys_Db_Driver_Mysql_Result
-     * object or false on error.
+     * @return Mumsys_Db_Driver_Result_Interface|false Object or false on error
      * @throws Mumsys_Db_Exception Throws exception if
      * - database connection was not made and fails
-     * - on empty sql statement (if throw errors was set)
+     * - on empty query statement (if throw errors was set)
      * - on query error (if throw errors was set)
      */
     public function query($sql=false, $unbuffered=false);
@@ -273,8 +269,9 @@ interface Mumsys_Db_Driver_Interface
     /**
      * Test if given resource from a query is in error state
      *
-     * @param resource|Mumsys_DB_Driver_Result_Interface $res The driver
-     * result interface
+     * @param Mumsys_DB_Driver_Result_Interface|resource $res Optional, the
+     * driver result interface otherwise the default/current resultset will be
+     * used.
      *
      * @return boolean return true on error, false on no error
      */
