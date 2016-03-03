@@ -61,7 +61,7 @@ class Mumsys_Db_Driver_Mysql_Mysql_Result
      * @param resource $result Result set of the sql query
      * @param array $options Array of options; NOT IMPLEMENTED YET!
      */
-    public function __construct(Mumsys_Db_Driver_Interface &$oDB, $result,
+    public function __construct(Mumsys_Db_Driver_Interface &$oDB, &$result,
         array $options=array())
     {
         $this->_dbc = $oDB->connect();
