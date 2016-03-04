@@ -466,7 +466,7 @@ abstract class Mumsys_Db_Driver_Abstract
     {
         foreach ($comparison as $key => $list) {
             if (is_numeric($key) || count($list) != 2) {
-                return $this->_setError('Invalid query operators configuration');
+                return $this->_setError('Invalid query compare value configuration');
             }
         }
 
@@ -499,7 +499,7 @@ abstract class Mumsys_Db_Driver_Abstract
     public function replaceQueryOperators( array $operators )
     {
         foreach ($operators as $key => $list) {
-            if (is_numeric($key) || count($list) != 2) {
+            if (is_numeric($key)) {
                 return $this->_setError('Invalid query operators configuration');
             }
         }
@@ -512,7 +512,7 @@ abstract class Mumsys_Db_Driver_Abstract
      *
      * @return array List of key/value pairs for the sortation
      */
-    public function getQuerySortations( array $sortations )
+    public function getQuerySortations()
     {
         return $this->_querySortations;
     }

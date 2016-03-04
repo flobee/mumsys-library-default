@@ -5,7 +5,7 @@ class Mumsys_Db_Driver_Testdummy
 {
     public function _setError($message, $code=null, $prev=null)
     {
-        return [$message,$code,$pre];
+        return [$message,$code,$prev];
     }
     public function close()
     {
@@ -136,13 +136,33 @@ class Mumsys_Db_Driver_AbstractTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->_object->getQueryCompareValues());
     }
 
+    /**
+     * @covers Mumsys_Db_Driver_Abstract::replaceQueryCompareValues
+     */
+    public function testReplaceQueryCompareValues()
+    {
+        $expected = array(
+            'OR' => array( _CMS_OR, _CMS_OR ),
+            'AND' => array( _CMS_AND, _CMS_AND ),
+        );
+        $this->_object->replaceQueryCompareValues($expected);
+
+        $this->assertEquals($expected, $this->_object->getQueryCompareValues());
+
+        $x = $this->_object->replaceQueryCompareValues(array(1, 2, 3, 4));
+        $this->assertEquals('Invalid query compare value configuration', $x[0]);
+        $this->assertNull($x[1]);
+        $this->assertNull($x[2]);
+    }
+
 
     /**
      * @covers Mumsys_Db_Driver_Abstract::getQueryOperators
+     * @covers Mumsys_Db_Driver_Abstract::replaceQueryOperators
      */
     public function testGetQueryOperators()
     {
-        $expected = array(
+        $expected1 = array(
             '=' => array( '==', _CMS_ISEQUAL ),
             '>' => array( '&gt;', _CMS_ISGREATERTHAN ),
             '<' => array( '&lt;', _CMS_ISLESSTHAN ),
@@ -156,9 +176,53 @@ class Mumsys_Db_Driver_AbstractTest extends PHPUnit_Framework_TestCase
             'LIKEx' => array( _CMS_BEGINSWITH, _CMS_BEGINSWITH ),
             'NOTLIKEx' => array( _CMS_BEGINSNOTWITH, _CMS_BEGINSNOTWITH ),
         );
+        $expected2 = array('=' => 'eg');
 
-        $this->assertEquals($expected, $this->_object->getQueryOperators());
+        $actual1 = $this->_object->getQueryOperators();
+        $this->_object->replaceQueryOperators(array('='=>'eg'));
+        $actual2 = $this->_object->getQueryOperators();
+
+        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals($expected2, $actual2);
+
+        $x = $this->_object->replaceQueryOperators(array(1, 2, 3, 4));
+        $this->assertEquals('Invalid query operators configuration', $x[0]);
+        $this->assertNull($x[1]);
+        $this->assertNull($x[2]);
     }
+
+
+    /**
+     * @covers Mumsys_Db_Driver_Abstract::getQuerySortations
+     */
+    public function testgetQuerySortations()
+    {
+        $expected = array(
+            'ASC' => 'Ascending (a-z, 0-9)',
+            'DESC' => 'Descending (z-a, 9-0)',
+        );
+        $this->assertEquals($expected, $this->_object->getQuerySortations());
+    }
+
+    /**
+     * @covers Mumsys_Db_Driver_Abstract::getQuerySortations
+     * @covers Mumsys_Db_Driver_Abstract::replaceQuerySortations
+     */
+    public function testReplaceQuerySortations()
+    {
+        $expected = array(
+            'DESC' => 'Descending (z-a, 9-0)',
+            'ASC' => 'Ascending (a-z, 0-9)',
+        );
+        $this->_object->replaceQuerySortations($expected);
+        $this->assertEquals($expected, $this->_object->getQuerySortations());
+
+        $x = $this->_object->replaceQuerySortations(array(1, 2, 3, 4));
+        $this->assertEquals('Invalid query sortations configuration', $x[0]);
+        $this->assertNull($x[1]);
+        $this->assertNull($x[2]);
+    }
+
 
 
     /**
