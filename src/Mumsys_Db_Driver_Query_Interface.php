@@ -89,7 +89,7 @@ interface Mumsys_Db_Driver_Query_Interface
      *
      * @return array List of key/value pairs for the sortation
      */
-    public function getQuerySortations( array $sortations );
+    public function getQuerySortations();
 
     /**
      * Replaces query sortations
