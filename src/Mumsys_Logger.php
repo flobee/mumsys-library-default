@@ -23,6 +23,7 @@
 
 /**
  * DEPRICATED! see Mumsys_Logger_File
+ * 
  * Class to generate log messages to a writer mechanism e.g. a logfile
  *
  * @category    Mumsys
