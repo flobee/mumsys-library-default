@@ -45,6 +45,9 @@ class Mumsys_LoggerTest extends PHPUnit_Framework_TestCase
     }
 
 
+    /**
+     * @covers Mumsys_Logger::__construct
+     */
     public function test__constructor1()
     {
         $_SERVER['PHP_AUTH_USER'] = 'flobee';
