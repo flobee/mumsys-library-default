@@ -93,7 +93,7 @@ class Mumsys_Session extends Mumsys_Abstract
     }
 
     /**
-     * Returns the current session dat based on the current session id.
+     * Returns the current session data based on the current session id.
      *
      * Note: This is befor it will be available in $_SESSION.
      *
@@ -108,7 +108,8 @@ class Mumsys_Session extends Mumsys_Abstract
     /**
      * Returns the complete active session data.
      *
-     * Note: This is befor it will be available in $_SESSION.
+     * Note: This is befor it will be available in $_SESSION. Existing records
+     * in $_SESSION after initialisation of this class are not listed!
      *
      * @param string $key value of the key to return to
      * @return mixed Stored value
