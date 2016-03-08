@@ -35,7 +35,7 @@
   * @package Mumsys_Library
   * @subpackage Mumsys_Loader
   */
-final class Mumsys_Loader
+class Mumsys_Loader
 {
     /**
      * Version ID information
