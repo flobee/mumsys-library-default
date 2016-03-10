@@ -21,8 +21,10 @@
 
 /**
  * Abstract display control methodes to be used in general.
+ *
  * Last instance to output data to the frontend.
- * Mumsys_Mvc_Display_Control_Abstract is the base for all views.
+ * Mumsys_Mvc_Display_Control_Abstract is the base for all views. Basicly it
+ * collects, applys, shows or returns given content.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -44,8 +46,9 @@ abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
 
 
     /**
-     * Constructors are to be implemented in main display controller.
-     * e.g.: Mumsys_Mvc_Display_Control_Html
+     * Constructor is to be implemented at the display controller which will be
+     * used.
+     * e.g.: Mumsys_Mvc_Display_Control_Http
      */
     abstract public function __construct( Mumsys_Context $context, array $options = array() );
 
