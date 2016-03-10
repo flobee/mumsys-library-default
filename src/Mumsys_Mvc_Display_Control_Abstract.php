@@ -35,7 +35,7 @@ abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.1.0';
 
 
     /**
