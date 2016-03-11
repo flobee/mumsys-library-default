@@ -137,7 +137,7 @@ class Mumsys_Mvc_Templates_Text_Default
      * @param string $func Name of the function of the error
      * @param string $class Name of the class of the error
      */
-    public function mkError($msg, $line=NULL, $file=NULL, $func=false, $class=false)
+    public function mkError($msg, $line=null, $file=null, $func=false, $class=false)
     {
         $l = $this->_context->getTranslation();
 
