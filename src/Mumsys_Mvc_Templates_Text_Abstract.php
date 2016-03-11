@@ -23,7 +23,7 @@
  *
  */
 abstract class Mumsys_Mvc_Templates_Text_Abstract
-    extends Mumsys_Mvc_Display_Control_Text
+    extends Mumsys_Mvc_Display_Control_Stdout
 {
     /**
      * Version ID information
@@ -46,6 +46,6 @@ abstract class Mumsys_Mvc_Templates_Text_Abstract
     {
         $this->_pagetitle = (string)$title;
     }
-    
+
 
 }
