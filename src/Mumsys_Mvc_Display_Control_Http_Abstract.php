@@ -19,6 +19,7 @@
  */
 /*}}}*/
 
+
 /**
  * Mumsys_Mvc_Display_Control_Http_Abstract is the base for the view in http
  * context eg for html output, the frontend controller
