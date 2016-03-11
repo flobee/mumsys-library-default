@@ -19,6 +19,7 @@
  */
 /*}}}*/
 
+
 /**
  * Abstract display control methodes to be used in general.
  *
@@ -47,8 +48,7 @@ abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
 
     /**
      * Constructor is to be implemented at the display controller which will be
-     * used.
-     * e.g.: Mumsys_Mvc_Display_Control_Http
+     * used. e.g. in : Mumsys_Mvc_Display_Control_Http_Html
      */
     abstract public function __construct( Mumsys_Context $context, array $options = array() );
 
