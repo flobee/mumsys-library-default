@@ -3,7 +3,7 @@
 /*{{{*/
 /**
  * ----------------------------------------------------------------------------
- * Mumsys_Mvc_Display_Control_Stdout
+ * Mumsys_Mvc_Display_Control_Stdout_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
@@ -30,7 +30,7 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
  */
-class Mumsys_Mvc_Display_Control_Stdout
+class Mumsys_Mvc_Display_Control_Stdout_Default
     extends Mumsys_Mvc_Display_Control_Abstract
     implements Mumsys_Mvc_Display_Control_Interface
 {
@@ -51,7 +51,7 @@ class Mumsys_Mvc_Display_Control_Stdout
      * @todo pagetitle by given program infomations
      *
      * @param Mumsys_Context $context Context object
-     * @param array $options array with options
+     * @param array $options Some mixed options
      */
     public function __construct( Mumsys_Context $context, array $options = array() )
     {
