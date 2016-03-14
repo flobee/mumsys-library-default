@@ -3,7 +3,7 @@
 /*{{{*/
 /**
  * ----------------------------------------------------------------------------
- * Mumsys_Mvc_Display_Control
+ * Mumsys_Mvc_Display_Control_Http_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
@@ -20,18 +20,19 @@
 /*}}}*/
 
 /**
- * Mumsys_Mvc_Display_Control_Html is the base for the view for html output.
- * the frontend controller
- * Its the last instance befor output data.
- * The templates (Mumsys_Mvc_Templates_Html_*) adding methodes to this controller
+ * Mumsys_Mvc_Display_Control_Http_Default is the base for the view in http
+ * context like html, the frontend controller
+ * Its the last instance befor to output data.
+ * The templates (Mumsys_Mvc_Templates_Html*) adding methodes to this controller
  * to have more helper methods to generate html.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
  */
-class Mumsys_Mvc_Display_Control_Html
+class Mumsys_Mvc_Display_Control_Http_Default
     extends Mumsys_Mvc_Display_Control_Http_Abstract
+    implements Mumsys_Mvc_Display_Control_Interface, Mumsys_Mvc_Display_Control_Http_Interface
 {
     /**
      * Version ID information
@@ -73,7 +74,6 @@ class Mumsys_Mvc_Display_Control_Html
      * @var array
      */
     protected $_config;
-
 
 
 
