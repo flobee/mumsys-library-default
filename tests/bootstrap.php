@@ -17,21 +17,22 @@ setlocale(LC_ALL, 'POSIX');// "C" style
 require_once  __DIR__ . '/../src/Mumsys_Loader.php';
 spl_autoload_register(array('Mumsys_Loader', 'autoload'));
 
+require __DIR__ . '/testconstants.php';
 
 class MumsysTestHelper extends PHPUnit_Framework_TestSuite
 {
-    private static $_config;
+    private static $_configs;
 
     private static $_params;
 
 
     public static function getConfig()
     {
-        if ( !isset(self::$_config) ) {
-            self::$_config = Mumsys_Context::getConfig();
+        if ( !isset(self::$_configs) ) {
+            self::$_configs = require __DIR__ . '/testconfig.php';
         }
 
-        return self::$_config;
+        return self::$_configs;
     }
 
     public static function getTestsBaseDir()
