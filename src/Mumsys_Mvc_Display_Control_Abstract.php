@@ -7,7 +7,7 @@
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * ----------------------------------------------------------------------------
  * @category    Mumsys
