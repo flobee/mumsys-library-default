@@ -3,7 +3,7 @@
 /*{{{*/
 /**
  * ----------------------------------------------------------------------------
- * Mumsys_Mvc_Display_Control
+ * Mumsys_Mvc_Display_Control_Http_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
