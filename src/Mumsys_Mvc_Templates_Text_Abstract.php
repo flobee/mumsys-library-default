@@ -24,7 +24,7 @@
  * Default abstract class for stdout output e.g. text for the shell output
  */
 abstract class Mumsys_Mvc_Templates_Text_Abstract
-    extends Mumsys_Mvc_Display_Control_Stdout_Default
+    extends Mumsys_Mvc_Display_Control_Stdout_Abstract
 {
     /**
      * Version ID information
@@ -39,7 +39,7 @@ abstract class Mumsys_Mvc_Templates_Text_Abstract
 
 
     /**
-     * Sets the output title.
+     * Sets the output page title.
      *
      * @param string $title Title to be set
      */
