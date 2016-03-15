@@ -36,6 +36,13 @@ interface Mumsys_Mvc_Display_Control_Interface
     abstract public function __construct( Mumsys_Context $context, array $options = array() );
 
     /**
+     * Sets the output page title.
+     *
+     * @param string $title Title to be set
+     */
+    public function setPageTitle( $title = '' );
+
+    /**
      * Add content to the display/output buffer.
      *
      * @param string $content Content to add to the buffer
@@ -43,7 +50,7 @@ interface Mumsys_Mvc_Display_Control_Interface
     public function add( $content = '' );
 
     /**
-     * Output given content and the current buffer and resets it.
+     * Output the current buffer and given content and resets the buffer.
      *
      * @param string $content Optional; Content to output after the buffer
      * contents
