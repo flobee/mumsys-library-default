@@ -45,12 +45,29 @@ abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
      */
     private $_buffer = '';
 
+    /**
+     * Name of the current page/output
+     * @var string
+     */
+    protected $_pagetitle = '';
+
 
     /**
      * Constructor is to be implemented at the display controller which will be
      * used. e.g. in : Mumsys_Mvc_Display_Control_Http_Default
      */
     abstract public function __construct( Mumsys_Context $context, array $options = array() );
+
+
+    /**
+     * Sets the output page title.
+     *
+     * @param string $title Title to be set
+     */
+    public function setPageTitle( $title = '' )
+    {
+        $this->_pagetitle = (string)$title;
+    }
 
 
     /**
