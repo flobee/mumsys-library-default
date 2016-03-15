@@ -3,7 +3,7 @@
 /*{{{*/
 /**
  * ----------------------------------------------------------------------------
- * Mumsys_Mvc_Display_Control_Stdout_Default
+ * Mumsys_Mvc_Display_Control_Stdout_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
@@ -21,16 +21,15 @@
 
 
 /**
- * The default / base for the view/frontend controller for Text/stdout output
- * Its the last instance befor output some data.
- * The templates (Mumsys_Mvc_Templates_Text_*) adding methodes to this
- * controller to have more helper methods to generate Text.
+ * abstarct Text/stdout output class
+ * The templates (Mumsys_Mvc_Templates_*) adding methodes to this
+ * controller to have more helper methods to generate Text/Stdout stuff.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
  */
-class Mumsys_Mvc_Display_Control_Stdout_Abstract
+abstract class Mumsys_Mvc_Display_Control_Stdout_Abstract
     extends Mumsys_Mvc_Display_Control_Abstract
     implements Mumsys_Mvc_Display_Control_Interface
 {
