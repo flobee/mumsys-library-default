@@ -29,6 +29,7 @@
  * @subpackage  Mumsys_Mvc
  */
 interface Mumsys_Mvc_Display_Control_Http_Interface
+    extends Mumsys_Mvc_Display_Control_Interface
 {
     /**
      * Adds header to be send on output.
