@@ -60,8 +60,8 @@ interface Mumsys_Mvc_Display_Control_Interface
      * e.g.: this can be used to store the content to a file.
      *
      * @return string Returns the complete data of the requested page. e.g. The
-     * hole html page. It depends on the display controller what kind of output
-     * was set.
+     * hole html page. It depends on the display controller and what kind of
+     * output was set.
      */
     public function fetch();
 
