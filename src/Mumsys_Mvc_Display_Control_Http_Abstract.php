@@ -44,8 +44,10 @@ abstract class Mumsys_Mvc_Display_Control_Http_Abstract
      */
     private $_headers = array(); // array to set php header()
 
+    
     /**
-     * Adds header to be send on output.
+     * Adds header string.
+     *
      * @param string $s content of a Html header line
      */
     public function addHeader( $header = '' )
@@ -88,7 +90,7 @@ abstract class Mumsys_Mvc_Display_Control_Http_Abstract
     public function sendHeader( $header = '' )
     {
         if (empty($header) || !is_string($header)) {
-            $message = _('Can not send header.');
+            $message = 'Can not send header.';
             $code = Mumsys_Mvc_Display_Exception::ERROR_HTTP500;
             throw new Mumsys_Mvc_Display_Exception($message, $code);
         } else {
