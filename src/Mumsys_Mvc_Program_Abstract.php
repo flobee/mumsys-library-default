@@ -32,7 +32,8 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
  */
-abstract class Mumsys_Mvc_Program_Abstract extends Mumsys_Abstract
+abstract class Mumsys_Mvc_Program_Abstract
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
