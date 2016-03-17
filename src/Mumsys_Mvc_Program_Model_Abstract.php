@@ -21,7 +21,7 @@
 /**
  * Mumsys program model abstract contains methodes to be used in the program
  * model.
- * 
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
