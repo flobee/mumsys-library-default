@@ -37,15 +37,31 @@ class Mumsys_Mvc_Controller_Backend
      * Version ID information
      */
     const VERSION = '1.0.0';
+    /**
+     * Name of the current program
+     * @var string
+     */
+    private $_programName;
+    /**
+     * Name of the current controller
+     * @var string
+     */
+    private $_controllerName;
+    /**
+     * Name of the current action
+     * @var string
+     */
+    private $_actionName;
 
     /**
      * Initialize the programm controller and run its requested or default
      * action.
      *
-     * @param string $program Program/module
-     * @param string $controller Program controller
-     * @param string $action Program action
-     * @throws Mumsys_Exception
+     * @param string $program Program to select
+     * @param string $controller Program controller to select
+     * @param string $action Program action to use
+     * 
+     * @throws Mumsys_Mvc_Controller_Exception
      */
     public function initProgram($program, $controller, $action)
     {
@@ -95,5 +111,37 @@ class Mumsys_Mvc_Controller_Backend
 
     }
 
+
+    /**
+     * Returns the name ot the current program.
+     *
+     * @return string Name of the current program
+     */
+    public function getProgramName()
+    {
+        return $this->_programName;
+    }
+
+
+    /**
+     * Returns the name ot the current controller
+     *
+     * @return string Name of the current controller
+     */
+    public function getControllerName()
+    {
+        return $this->_controllerName;
+    }
+
+
+    /**
+     * Returns the name ot the current action.
+     *
+     * @return string Name of the current action
+     */
+    public function getActionName()
+    {
+        return $this->_actionName;
+    }
 
 }
