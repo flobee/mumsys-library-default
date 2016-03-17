@@ -112,6 +112,9 @@ abstract class Mumsys_Mvc_Program_Controller_Abstract
         if (class_exists($className)) {
             return new $className($this->_context);
         }
+
+        $message = sprintf('Unable to load the model: "%1$s"', $className);
+        throw new Mumsys_Mvc_Program_Exception($message, Mumsys_Exception::ERRCODE_404);
     }
 
 }
