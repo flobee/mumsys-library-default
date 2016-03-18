@@ -7,9 +7,7 @@
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright Copyright (c) 2014 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * ----------------------------------------------------------------------------
  * @category    Mumsys
@@ -31,7 +29,9 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Registry
  */
-abstract class Mumsys_Registry extends Mumsys_Abstract
+abstract class Mumsys_Registry
+    extends Mumsys_Abstract
+    implements Mumsys_GetterSetter_Interface
 {
     /**
      * Version ID information
@@ -85,6 +85,8 @@ abstract class Mumsys_Registry extends Mumsys_Abstract
      *
      * @todo To be removed in the future.
      *
+     * @deprecated since version 1.0.0
+     *
      * @throws Mumsys_Registry_Exception Throws exception
      */
     public static function set( $key, $value )
@@ -99,17 +101,14 @@ abstract class Mumsys_Registry extends Mumsys_Abstract
      *
      * @param string $key Key which was set
      * @return mixed Returns the value which was set
-     *
-     * @throws Mumsys_Registry_Exception Throws exception if key not exists
      */
-    public static function get( $key )
+    public static function get( $key, $default = null )
     {
         if (isset(self::$_registry[$key])) {
             return self::$_registry[$key];
         }
 
-        $message = sprintf('Registry key "%1$s" not found', $key);
-        throw new Mumsys_Registry_Exception($message);
+        return $default;
     }
 
     /**
