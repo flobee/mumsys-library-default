@@ -7,9 +7,7 @@
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * ----------------------------------------------------------------------------
  * @category    Mumsys
@@ -29,7 +27,9 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Session
  */
-class Mumsys_Session extends Mumsys_Abstract
+class Mumsys_Session
+    extends Mumsys_Abstract
+    implements Mumsys_Session_Interface
 {
     /**
      * Version ID information
