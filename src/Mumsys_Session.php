@@ -34,7 +34,7 @@ class Mumsys_Session
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.1.0';
 
     /**
      * Representation of the session befor it will be set to $_SESSION
@@ -132,7 +132,7 @@ class Mumsys_Session
      */
     public function register( $key, $value = null )
     {
-        $key = (string)$key;
+        $this->_checkKey($key);
 
         if (array_key_exists($key, $this->_records[$this->_id])) {
             $message = sprintf('Session key "%1$s" exists', $key);
@@ -152,6 +152,24 @@ class Mumsys_Session
     public function replace( $key, $value = null )
     {
         $this->_records[$this->_id][$key] = $value;
+    }
+
+
+    /**
+     * Removes registered entry.
+     *
+     * @param string $key Key which was set
+     *
+     * @return boolean True on success or false if the key wasn't set before
+     */
+    public function remove( $key )
+    {
+        if (isset($this->_records[$this->_id][$key])) {
+            unset($this->_records[$this->_id][$key]);
+            return true;
+        }
+
+        return false;
     }
 
 
