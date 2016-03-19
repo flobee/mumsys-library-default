@@ -13,7 +13,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Registry
- * @version     1.0.0
+ * @version     1.1.0
  * Created: 2014-01-07
  * @filesource
  */
@@ -36,7 +36,7 @@ abstract class Mumsys_Registry
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.1.0';
 
     /**
      * List of properties to register
