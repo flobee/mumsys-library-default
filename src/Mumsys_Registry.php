@@ -31,7 +31,7 @@
  */
 abstract class Mumsys_Registry
     extends Mumsys_Abstract
-    implements Mumsys_GetterSetter_Interface
+    implements Mumsys_Registry_Interface
 {
     /**
      * Version ID information
