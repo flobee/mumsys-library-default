@@ -63,6 +63,6 @@ interface Mumsys_GetterSetter_Interface
      *
      * @return boolean True on success or false if the key wasn't found
      */
-    public static function remove( $key );
+    public function remove( $key );
 
 }
