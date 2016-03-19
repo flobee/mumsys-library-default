@@ -28,16 +28,8 @@
  * @subpackage  Mumsys_Session
  */
 interface Mumsys_Session_Interface
+    extends Mumsys_GetterSetter_Interface
 {
-    /**
-     * Returns the value of the requested key.
-     *
-     * @param string $key value of the key to return to
-     * @param scalar $default
-     * @return mixed Stored value or $default if key was not set.
-     */
-    public function get( $key, $default = null );
-
     /**
      * Returns the current session data based on the current session id.
      *
@@ -58,26 +50,6 @@ interface Mumsys_Session_Interface
      * @return mixed Stored value
      */
     public function getAll();
-
-    /**
-     * Register a new session key.
-     *
-     * Its like register a domain for the application. This is the failsave
-     * setter to add new values to the session.
-     *
-     * @param string $key Name of the key to register.
-     * @param mixed $value optional; Value to be stored
-     * @throws Mumsys_Session_Exception Throws exception if key already exists
-     */
-    public function register( $key, $value = null );
-
-    /**
-     * Replace/sets the value for the given key.
-     *
-     * @param string $key Identifier/ session key to set
-     * @param mixed $value Value to be stored
-     */
-    public function replace( $key, $value = null );
 
     /**
      * Returns the session ID.
