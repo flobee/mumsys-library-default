@@ -32,5 +32,12 @@ class Mumsys_Exception extends Exception {
      * detected but discribed in the error message.
      */
      const ERRCODE_DEFAULT = 1;
+
+     /**
+      * File not found error code
+      * @var string
+      */
+     const ERRCODE_404 = '404';
+
 }
 
