@@ -46,12 +46,20 @@ abstract class Mumsys_Mvc_Controller_Abstract
     protected $_configs;
 
     /**
-     * Current stat of program/module controller and action
+     * Name of the current program
      * @var string
      */
-    protected $_program;
-    protected $_controller;
-    protected $_action;
+    protected $_programName;
+    /**
+     * Name of the current controller
+     * @var string
+     */
+    protected $_controllerName;
+    /**
+     * Name of the current action
+     * @var string
+     */
+    protected $_actionName;
 
     /**
      * Initialise Mvc controller
@@ -72,20 +80,20 @@ abstract class Mumsys_Mvc_Controller_Abstract
      *
      * @param string $program Name of the program
      * @param string $controller Name of the controller
-     * 
+     *
      * @return string Returns the location of the controller file
      */
-    public function getControllerLocation( & $program = null, & $controller = null )
+    public function getControllerLocation( $program = null, $controller = null )
     {
-        $newProgram = preg_replace('/ +/i', '_', ucwords($program));
-        $newCntrl = $controller;
+        $this->_programName = preg_replace('/ +/i', '_', ucwords($program));
+        $this->_controllerName = $controller;
 
         if ( !$this->checkControllerLocation($newProgram, $newCntrl) ) {
-            $newProgram = $this->_configs['defaultProgram'];
-            $newCntrl = $this->_configs['defaultController'];
+            $this->_programName = $this->_configs['defaultProgram'];
+            $this->_controllerName = $this->_configs['defaultController'];
         }
 
-        return $this->_configs['pathPrograms'] . $newProgram . '/' . $newCntrl . 'Controller.php';
+        return $this->_configs['pathPrograms'] . $this->_programName . '/' . $this->_controllerName . 'Controller.php';
     }
 
     /**
@@ -96,7 +104,7 @@ abstract class Mumsys_Mvc_Controller_Abstract
      * extension)
      * @return boolean Returns true on success of false if the location not exists
      */
-    public function checkControllerLocation( & $program = null, & $controller = null )
+    public function checkControllerLocation( $program = null, $controller = null )
     {
         if ( preg_match(MUMSYS_REGEX_AZ09X, $program)
             && preg_match(MUMSYS_REGEX_AZ09X, $controller) ) {
@@ -105,7 +113,41 @@ abstract class Mumsys_Mvc_Controller_Abstract
                  return true;
              }
         }
+
         return false;
+    }
+
+    
+    /**
+     * Returns the name ot the current program.
+     *
+     * @return string Name of the current program
+     */
+    public function getProgramName()
+    {
+        return $this->_programName;
+    }
+
+
+    /**
+     * Returns the name ot the current controller
+     *
+     * @return string Name of the current controller
+     */
+    public function getControllerName()
+    {
+        return $this->_controllerName;
+    }
+
+
+    /**
+     * Returns the name ot the current action.
+     *
+     * @return string Name of the current action
+     */
+    public function getActionName()
+    {
+        return $this->_actionName;
     }
 
 }
