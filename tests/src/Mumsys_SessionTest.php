@@ -12,7 +12,7 @@ class Mumsys_SessionTest extends PHPUnit_Framework_TestCase
      * @var Mumsys_Session
      */
     protected $_object;
-
+    protected $_version;
 
     /**
      * needed to test the session.
@@ -27,6 +27,7 @@ class Mumsys_SessionTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->_version = '1.1.0';
         $this->_object = new Mumsys_Session();
     }
 
@@ -80,6 +81,9 @@ class Mumsys_SessionTest extends PHPUnit_Framework_TestCase
         $actual7 = $this->_object->get('notsetbefor', 'dingding');
         $expected7 = 'dingding';
 
+        $actual8 = $this->_object->remove('notsetbefor');
+        $actual9 = $this->_object->remove('newkey');
+
         // get
         $this->assertEquals($expected1, $actual1);
         // __destruct
@@ -94,9 +98,12 @@ class Mumsys_SessionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected6, $actual6);
         // test default return
         $this->assertEquals($expected7, $actual7);
+        // removed but wasnt set before
+        $this->assertFalse($actual8);
+        $this->assertTrue($actual9);
 
         // version checks
-        $this->assertEquals('Mumsys_Session 1.0.0', $this->_object->getVersion());
+        $this->assertEquals($this->_version, $this->_object->getVersionID());
 
         // test register existing
         $this->setExpectedException('Mumsys_Session_Exception', 'Session key "testkey" exists');
