@@ -37,21 +37,6 @@ class Mumsys_Mvc_Controller_Backend
      * Version ID information
      */
     const VERSION = '1.0.0';
-    /**
-     * Name of the current program
-     * @var string
-     */
-    private $_programName;
-    /**
-     * Name of the current controller
-     * @var string
-     */
-    private $_controllerName;
-    /**
-     * Name of the current action
-     * @var string
-     */
-    private $_actionName;
 
     /**
      * Initialize the programm controller and run its requested or default
@@ -60,13 +45,17 @@ class Mumsys_Mvc_Controller_Backend
      * @param string $program Program to select
      * @param string $controller Program controller to select
      * @param string $action Program action to use
-     * 
+     *
      * @throws Mumsys_Mvc_Controller_Exception
      */
     public function initProgram($program, $controller, $action)
     {
         $config = $this->_configs;
         $programSettings = array();
+
+        $program = ucfirst($program);
+        $controller = ucfirst($controller);
+        $action = ucfirst($action);
         /**
          * include settings file if exists for a program.
          * if not, please always create a blank file (performance!)
@@ -85,63 +74,29 @@ class Mumsys_Mvc_Controller_Backend
 
         $file = $this->getControllerLocation($program, $controller);
 
-        if ( $file ) {
+        if ($file) {
             include_once $file;
 
-            $strControllerObject = 'Mumsys_Program_' . ucfirst($program) . '_' . ucfirst($controller) . '_Controller';
-            $controllerAction = ucfirst($action) . 'Action';
+            $strControllerObject = 'Mumsys_Program_' . $program . '_' . $controller . '_Controller';
+            $controllerAction = $action . 'Action';
 
             if (!class_exists($strControllerObject, false)) {
-                $msg = sprintf('Class "%1$s" not found',$strControllerObject);
+                $msg = sprintf('Class "%1$s" not found', $strControllerObject);
                 throw new Mumsys_Mvc_Controller_Exception($msg, Mumsys_Exception::ERRCODE_DEFAULT);
             }
-            $controllerObject = new $strControllerObject( $this->_context, $programConfig );
+            $controllerObject = new $strControllerObject($this->_context, $programConfig);
 
-            if ( method_exists($controllerObject, $controllerAction) ) {
+            if (method_exists($controllerObject, $controllerAction)) {
+                $this->_actionName = $action;
                 $controllerObject->$controllerAction();
             } else {
                 $msg = sprintf('Method "%1$s" not found', $controllerAction);
                 throw new Mumsys_Mvc_Controller_Exception($msg, Mumsys_Exception::ERRCODE_DEFAULT);
             }
-
         } else {
-            $msg = 'Abort! Unable to load program "' . $program .'" / "'. $controller . '"';
+            $msg = 'Abort! Unable to load program "' . $program . '" / "' . $controller . '"';
             throw new Mumsys_Mvc_Controller_Exception($msg, Mumsys_Exception::ERRCODE_DEFAULT);
         }
-
-    }
-
-
-    /**
-     * Returns the name ot the current program.
-     *
-     * @return string Name of the current program
-     */
-    public function getProgramName()
-    {
-        return $this->_programName;
-    }
-
-
-    /**
-     * Returns the name ot the current controller
-     *
-     * @return string Name of the current controller
-     */
-    public function getControllerName()
-    {
-        return $this->_controllerName;
-    }
-
-
-    /**
-     * Returns the name ot the current action.
-     *
-     * @return string Name of the current action
-     */
-    public function getActionName()
-    {
-        return $this->_actionName;
     }
 
 }
