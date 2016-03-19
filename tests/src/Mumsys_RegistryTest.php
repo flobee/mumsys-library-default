@@ -21,10 +21,10 @@ class Mumsys_RegistryTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->_version = '1.0.0';
+        $this->_version = '1.1.0';
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
-            'Mumsys_Registry' => '1.0.0',
+            'Mumsys_Registry' => '1.1.0',
         );
         $this->_key = 'unittest';
     }
@@ -94,12 +94,12 @@ class Mumsys_RegistryTest extends PHPUnit_Framework_TestCase
     public function testGet()
     {
         Mumsys_Registry::register($this->_key, 'new value');
-        $actual = Mumsys_Registry::get('unittest');
+        $actual1 = Mumsys_Registry::get('unittest');
 
-        $this->assertEquals('new value', $actual);
+        $actual2 = Mumsys_Registry::get('notsetValue', false);
 
-        $this->setExpectedException('Mumsys_Registry_Exception','Registry key "was not set" not found');
-        Mumsys_Registry::get('was not set');
+        $this->assertEquals('new value', $actual1);
+        $this->assertFalse($actual2);
     }
 
     /**
@@ -142,8 +142,7 @@ class Mumsys_RegistryTest extends PHPUnit_Framework_TestCase
     public function testgetVersions()
     {
         $possible = Mumsys_Registry::getVersions();
-        echo '<pre>';
-        print_r($possible);
+        // echo '<pre>'; print_r($possible);
         foreach ($this->_versions as $must => $value) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
