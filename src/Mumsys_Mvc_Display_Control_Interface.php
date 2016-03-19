@@ -50,7 +50,7 @@ interface Mumsys_Mvc_Display_Control_Interface
     public function add( $content = '' );
 
     /**
-     * Output the current buffer and given content and resets the buffer.
+     * Output the current buffer and given content and reset the buffer.
      *
      * @param string $content Optional; Content to output after the buffer
      * contents
