@@ -1,6 +1,7 @@
 <?php
 
-/*{{{*/
+
+/* {{{ */
 /**
  * ----------------------------------------------------------------------------
  * Mumsys_PriorityQueue_Simple
@@ -17,7 +18,8 @@
  * Created: 2016-03-20
  * @filesource
  */
-/*}}}*/
+/* }}} */
+
 
 /**
  * Simple priority Queue using priority names to place to order of items.
@@ -33,6 +35,8 @@
  */
 class Mumsys_PriorityQueue_Simple
 {
+
+
     private $_cnt = PHP_INT_MAX;
 
     /**
@@ -40,6 +44,7 @@ class Mumsys_PriorityQueue_Simple
      * @var array
      */
     private $_stack;
+
 
     /**
      * Initialize the object with an optional List of Key/ID => value pairs to
@@ -59,11 +64,18 @@ class Mumsys_PriorityQueue_Simple
 
 
     /**
-     * Adds values to a queue sorted by given sortation name and direction.
+     * Adds a key/value pair to the queue stack.
      *
-     * Example: Befor dispatching you need to resort some functionality. Or:
+     * By default its a simple array where you can add content and new values
+     * will be added. If this happens you dont nee this class.
+     * If the sortion should be change this can be made by given position way
+     * (before/after) and the key/id the addition belongs to.
+     *
+     * Example: You want to add an item before the first element or inbetween.
+     * Or befor dispatching you need to resort some stuff to execute your
+     * functions in the right order.
      * e.g. You have several configs you load but you can not manage
-     * directly the order of the load. When the configs are  needed you want to
+     * directly the order of the load. When the configs are needed you want to
      * have the latest loaded config at the second position so that something
      * gets in place where you need it. Catches FIFO vs LIFO confusions
      * <code>
@@ -71,69 +83,67 @@ class Mumsys_PriorityQueue_Simple
      * // $object->add('default', 'some new values'); // throws exception
      * $object->add('custom', 'some values');
      * $object->add('new', 'some values', before', 'default');
-     * Outputs: new, default, custom
+     * result: new, default, custom
      * </code>
      *
-     * @param string|integer $identifier Unique key/ID for the values to add
-     * @param mixed $value Values to add
+     * @param string|integer $identifier Unique key/ID for the value to add
+     * @param mixed $value Value to add
      * @param string $positionWay String "before" | "after" (default)
      * @param string $positionID Name of the key/ID where to set (before/
-     * after) this news entrys
+     * after) this new entrys
      *
      * @throws Mumsys_Exception If Key/ID already exists
      */
-    public function add($identifier, $value, $positionWay='after', $positionID='default')
+    public function add( $identifier, $value, $positionWay = 'after', $positionID = null )
     {
         if (isset($this->_stack[$identifier])) {
             throw new Mumsys_Exception('Identifier already set');
         }
 
         if (isset($this->_stack[$positionID])) {
-            $this->_createStack($identifier, $value, $positionWay, $positionID);
+            $pos = $this->_getPos($positionID, $positionWay);
+            $part = array_splice($this->_stack, 0, $pos);
+            $this->_stack = array_merge($part, array($identifier => $value), $this->_stack);
         } else {
             $this->_stack[$identifier] = $value;
         }
-
     }
 
+
     /**
-     * Create the new stack.
+     * Returns the new position of the given key depending on the position.
      *
-     * @param string|integer $identifier Unique key/ID for the values to add
-     * @param mixed $value Values to add
-     * @param string $positionWay String "before" | "after" (default)
-     * @param string $positionID Name of the key/ID where to set (before/
-     * after) this news entrys
-     * @throws Mumsys_Exception If direction is not implemented
+     * @param string $posKey Name of the key/ID where to set (before/
+     * after) this new entrys
+     * @param string $posWay String "before" | "after" (default)
+     * @return integer Number of the position the found key is placed
+     * @throws Mumsys_Exception
      */
-    private function _createStack($identifier, $value, $positionWay='after', $positionID='default')
+    private function _getPos( $posKey, $posWay = 'after' )
     {
-        $newStack = [];
-
-        foreach($this->_stack as $id => $name)
-        {
-            if ($id != $positionID) {
-                $newStack[$id] = $name;
-            } else {
-                switch($positionWay)
-                {
-                    case 'before':
-                        $newStack[$identifier] = $value;
-                        $newStack[$id] = $name;
-                        break;
-
-                    case 'after':
-                        $newStack[$id] = $name;
-                        $newStack[$identifier] = $value;
-                        break;
-
-                    default:
-                        throw new Mumsys_Exception('Direction not implemented');
-                }
+        $i = 0;
+        $pos = false;
+        while (list($key) = each($this->_stack)) {
+            if ($posKey === $key) {
+                $pos = $i;
+                break;
             }
+            $i++;
         }
 
-        $this->_stack = $newStack;
+        switch ($posWay) {
+            case 'before':
+                //$pos = $pos;
+                break;
+            case 'after':
+                $pos = $pos + 1;
+                break;
+            default:
+                $message = sprintf('Position way "%1$s" not implemented', $posWay);
+                throw new Mumsys_Exception($message);
+        }
+
+        return $pos;
     }
 
 
@@ -142,22 +152,10 @@ class Mumsys_PriorityQueue_Simple
      *
      * @return array Returns the list of key/value pairs
      */
-    public function getStack()
+    public function getQueue()
     {
         return $this->_stack;
     }
+
 }
 
-
-//TESTS
-
-/*
-$o = new Mumsys_PriorityQueue(array('default' => array(1,2,3));
-$o->add('a', 'AAA');
-$o->add('b', 'BBB');
-$o->add('c', 'CCC', 'before', 'AAA');
-$o->add('d', 'DDD', 'before', 'BBB');
-foreach($o->getStack() as $node) {
-    print_r($node);
-}
-*/
