@@ -21,9 +21,9 @@
 
 
 /**
- * Simple priority Queue using priority names to place to order of items.
+ * Simple priority queue uses priority names to place and to sort prorority items.
  * With "befor" and "after" keys given priroities can be set in the order you
- * which to use. Altn. hav a look into the SplPriorityQueue.
+ * which to use. Altn. have a look into the SplPriorityQueue.
  *
  * Example:
  * A => prio99 <- curently higest prio
@@ -87,13 +87,13 @@ class Mumsys_PriorityQueue_Simple
      * @param string $positionID Name of the key/ID where to set (before/
      * after) this new entrys
      *
-     * @throws Mumsys_Exception If Key/ID already exists
+     * @throws Mumsys_PriorityQueue_Exception If Key/ID already exists
      */
     public function add( $identifier, $value, $positionWay = 'after', $positionID = null )
     {
         if (isset($this->_stack[$identifier])) {
             $message = sprintf('Identifier "%1$s" already set', $identifier);
-            throw new Mumsys_Exception($message);
+            throw new Mumsys_PriorityQueue_Exception($message);
         }
 
         if (isset($this->_stack[$positionID])) {
@@ -112,8 +112,11 @@ class Mumsys_PriorityQueue_Simple
      * @param string $posKey Name of the key/ID where to set (before/
      * after) this new entrys
      * @param string $posWay String "before" | "after" (default)
+     *
      * @return integer Number of the position the found key is placed
-     * @throws Mumsys_Exception
+     *
+     * @throws Mumsys_PriorityQueue_Exception If the way dosnt contain "after"
+     * or "before"
      */
     private function _getPos( $posKey, $posWay = 'after' )
     {
@@ -136,7 +139,7 @@ class Mumsys_PriorityQueue_Simple
                 break;
             default:
                 $message = sprintf('Position way "%1$s" not implemented', $posWay);
-                throw new Mumsys_Exception($message);
+                throw new Mumsys_PriorityQueue_Exception($message);
         }
 
         return $pos;
