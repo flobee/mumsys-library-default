@@ -1,6 +1,5 @@
 <?php
 
-
 /* {{{ */
 /**
  * ----------------------------------------------------------------------------
@@ -35,10 +34,6 @@
  */
 class Mumsys_PriorityQueue_Simple
 {
-
-
-    private $_cnt = PHP_INT_MAX;
-
     /**
      * Stack of the priority
      * @var array
