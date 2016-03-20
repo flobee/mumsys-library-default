@@ -1,6 +1,7 @@
 <?php
 
-/*{{{*/
+
+/* {{{ */
 /**
  * ----------------------------------------------------------------------------
  * Mumsys_PriorityQueue_Simple
@@ -17,7 +18,8 @@
  * Created: 2016-03-20
  * @filesource
  */
-/*}}}*/
+/* }}} */
+
 
 /**
  * Simple priority Queue using priority names to place to order of items.
@@ -33,6 +35,8 @@
  */
 class Mumsys_PriorityQueue_Simple
 {
+
+
     private $_cnt = PHP_INT_MAX;
 
     /**
@@ -40,6 +44,7 @@ class Mumsys_PriorityQueue_Simple
      * @var array
      */
     private $_stack;
+
 
     /**
      * Initialize the object with an optional List of Key/ID => value pairs to
@@ -89,68 +94,57 @@ class Mumsys_PriorityQueue_Simple
      *
      * @throws Mumsys_Exception If Key/ID already exists
      */
-    public function add($identifier, $value, $positionWay='after', $positionID='default')
+    public function add( $identifier, $value, $positionWay = 'after', $positionID = null )
     {
         if (isset($this->_stack[$identifier])) {
-            throw new Mumsys_Exception('Identifier already set');
+            $message = sprintf('Identifier "%1$s" already set', $identifier);
+            throw new Mumsys_Exception($message);
         }
 
-
-
         if (isset($this->_stack[$positionID])) {
-            $pos = $htis->_getPos($positionID);
-
-            $this->_createStack($identifier, $value, $positionWay, $positionID);
+            $pos = $this->_getPos($positionID, $positionWay);
+            $part = array_splice($this->_stack, 0, $pos);
+            $this->_stack = array_merge($part, array($identifier => $value), $this->_stack);
         } else {
             $this->_stack[$identifier] = $value;
         }
-
     }
-
-    function findKey() {
-
-    }
-
 
 
     /**
-     * Create the new stack.
+     * Returns the new position of the given key depending on the position.
      *
-     * @param string|integer $identifier Unique key/ID for the values to add
-     * @param mixed $value Values to add
-     * @param string $positionWay String "before" | "after" (default)
-     * @param string $positionID Name of the key/ID where to set (before/
-     * after) this news entrys
-     * @throws Mumsys_Exception If direction is not implemented
+     * @param string $posKey Name of the key/ID where to set (before/
+     * after) this new entrys
+     * @param string $posWay String "before" | "after" (default)
+     * @return integer Number of the position the found key is placed
+     * @throws Mumsys_Exception
      */
-    private function _createStack($identifier, $value, $positionWay='after', $positionID='default')
+    private function _getPos( $posKey, $posWay = 'after' )
     {
-        $newStack = [];
-
-        foreach($this->_stack as $id => $name)
-        {
-            if ($id != $positionID) {
-                $newStack[$id] = $name;
-            } else {
-                switch($positionWay)
-                {
-                    case 'before':
-                        $newStack[$identifier] = $value;
-                        $newStack[$id] = $name;
-                        break;
-
-                    case 'after':
-                        $newStack[$id] = $name;
-                        $newStack[$identifier] = $value;
-                        break;
-
-                    default:
-                        throw new Mumsys_Exception('Direction not implemented');
-                }
+        $i = 0;
+        $pos = false;
+        while (list($key) = each($this->_stack)) {
+            if ($posKey === $key) {
+                $pos = $i;
+                break;
             }
+            $i++;
         }
 
-        $this->_stack = $newStack;
+        switch ($posWay) {
+            case 'before':
+                //$pos = $pos;
+                break;
+            case 'after':
+                $pos = $pos + 1;
+                break;
+            default:
+                $message = sprintf('Position way "%1$s" not implemented', $posWay);
+                throw new Mumsys_Exception($message);
+        }
+
+        return $pos;
     }
 
 
@@ -159,35 +153,9 @@ class Mumsys_PriorityQueue_Simple
      *
      * @return array Returns the list of key/value pairs
      */
-    public function getStack()
+    public function getQueue()
     {
         return $this->_stack;
     }
+
 }
-
-
-//TESTS
-
-
-$o = new Mumsys_PriorityQueue_Simple( array('default' => array(1,2,3)) );
-$o->add('a', 'AAA');
-$o->add('b', 'BBB');
-$o->add('c', 'CCC', 'before', 'AAA');
-$o->add('d', 'DDD', 'before', 'BBB');
-foreach($o->getStack() as $key=>$node) {
-    echo $key . PHP_EOL;
-}
-
-
-/*
-$o = new SplPriorityQueue();
-$o->insert('C', 'CCC');
-$o->insert('A', 'AAA');
-$o->insert('B', 'BBB');
-$o->insert('Z', 'ZZZ');
-
-foreach($o as $node) {
-    print_r($node);
-}
- */
-
