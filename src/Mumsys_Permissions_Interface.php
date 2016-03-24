@@ -28,7 +28,8 @@
 interface Mumsys_Permissions_Interface
 {
     /**
-     * Initialisation of permissions and session object
+     * Initialisation of the permissions object
+     *
      * @param Mumsys_Context $context Context item
      * @param array $options Optional options
      */
@@ -188,7 +189,7 @@ interface Mumsys_Permissions_Interface
      *
      * @throws Mumsys_Exception Throws exception on errors
      */
-    public function trackRequest();
+     abstract public function trackRequest();
 
     /**
      * get/set language (get_language)
