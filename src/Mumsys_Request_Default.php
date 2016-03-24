@@ -3,7 +3,7 @@
 
 /* {{{ */
 /**
- * Mumsys_Request_Interface
+ * Mumsys_Request_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
