@@ -12,11 +12,11 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Permissions
- * @version     3.1.0
  * Created: 2016-01-19
  * @filesource
  */
 /*}}}*/
+
 
 /**
  * Class to deal with the permissions (acl)
@@ -34,6 +34,30 @@ abstract class Mumsys_Permissions_Abstract
      */
     const VERSION = '3.1.0';
 
-    
+    /**
+     * Tracks the current request.
+     * old alias function track_onlineuser
+     *
+     * @throws Mumsys_Permissions_Exception Throws exception on errors
+     */
+     public function trackRequest()
+     {
+         throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
+     }
+
+    /**
+     * get/set language (get_language)
+     * load basic language and program language
+     *
+     * @param string|false $language Languge to load otherwise the default
+     * language will be loaded
+     *
+     * @return boolean true on success
+     * @throws Mumsys_Permissions_Exception Throws exception on errors
+     */
+    public function languageLoad( $language = false )
+    {
+        throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
+    }
 
 }
