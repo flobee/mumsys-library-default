@@ -21,7 +21,7 @@ class Mumsys_Request_AbstractTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $opts = array(
+        $options = array(
             'programKey' => 'programTest',
             'controllerKey' => 'controllerTest',
             'actionKey' => 'actionTest'
@@ -34,7 +34,7 @@ class Mumsys_Request_AbstractTest extends PHPUnit_Framework_TestCase
         $this->_input = $_GET;
         $_COOKIE = array('HIDDEN' => 'COOK');
 
-        $this->_object = new Mumsys_Request_Default($opts);
+        $this->_object = new Mumsys_Request_Default($options);
     }
 
     /**
