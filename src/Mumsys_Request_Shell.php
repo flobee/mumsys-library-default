@@ -31,11 +31,12 @@ class Mumsys_Request_Shell
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
 
     /**
-     * Initialise the request class using _GET and _POST arrays.
+     * Initialise the request class using servers argv array.
+     * After init _SERVER[argv] will be reseted.
      *
      * @param array $options Optional initial options e.g.:
      * 'programKey','controllerKey', 'actionKey',
@@ -57,6 +58,8 @@ class Mumsys_Request_Shell
         if (isset($_SERVER['argv']) && is_array($_SERVER['argv'])) {
             $this->_input += $_SERVER['argv'];
         }
+
+        $_SERVER['argv'] = array();
     }
 
 }
