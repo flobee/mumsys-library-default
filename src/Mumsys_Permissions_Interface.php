@@ -189,7 +189,7 @@ interface Mumsys_Permissions_Interface
      *
      * @throws Mumsys_Exception Throws exception on errors
      */
-     abstract public function trackRequest();
+     public function trackRequest();
 
     /**
      * get/set language (get_language)
