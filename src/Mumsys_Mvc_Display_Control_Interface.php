@@ -2,7 +2,6 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Display_Control_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -33,7 +32,7 @@ interface Mumsys_Mvc_Display_Control_Interface
      * Constructor is to be implemented at the display controller which will be
      * used. e.g. in : Mumsys_Mvc_Display_Control_Http_Default
      */
-    abstract public function __construct( Mumsys_Context $context, array $options = array() );
+    public function __construct( Mumsys_Context $context, array $options = array() );
 
     /**
      * Sets the output page title.
