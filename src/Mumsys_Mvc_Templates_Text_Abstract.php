@@ -30,6 +30,12 @@ abstract class Mumsys_Mvc_Templates_Text_Abstract
     const VERSION = '1.0.0';
 
     /**
+     * Context item which must be available for all mumsys objects
+     * @var Mumsys_Context
+     */
+    protected $_context;
+
+    /**
      * Page title for the output
      * @var string
      */
@@ -44,6 +50,8 @@ abstract class Mumsys_Mvc_Templates_Text_Abstract
      */
     public function __construct( Mumsys_Context $context, array $options = array() )
     {
+        $this->_context = $context;
+        
         if (isset($options['pageTitle'])) {
             $this->_pagetitle = (string)$options['pageTitle'];
         }
