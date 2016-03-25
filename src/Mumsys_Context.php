@@ -2,20 +2,16 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Context
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright Copyright (c) 2014 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Context
- * @version     1.0.0
  * Created: 2014-01-08
  * @filesource
  */
@@ -76,12 +72,12 @@ class Mumsys_Context extends Mumsys_Abstract
     /**
      * Returns the permissions object. ACL handling
      *
-     * @return Mumsys_Permissions Returns the Mumsys_Permissions object
+     * @return Mumsys_Permissions_Interface Returns the Mumsys_Permissions object
      * @throws Mumsys_Exception Throws exception if object was not set
      */
     public function getPermissions()
     {
-        return $this->_get('Mumsys_Permissions');
+        return $this->_get('Mumsys_Permissions_Interface');
     }
 
 
@@ -91,33 +87,33 @@ class Mumsys_Context extends Mumsys_Abstract
      * @param Mumsys_Permissions $permissions
      * @throws Mumsys_Exception Throws exception if object was already set
      */
-    public function registerPermissions( Mumsys_Permissions $permissions )
+    public function registerPermissions( Mumsys_Permissions_Interface $permissions )
     {
-        $this->_register('Mumsys_Permissions', $permissions);
+        $this->_register('Mumsys_Permissions_Interface', $permissions);
     }
 
 
     /**
      * Returns the session object.
      *
-     * @return Mumsys_Session Returns the Mumsys_Session object
+     * @return Mumsys_Session_Interface Returns the Mumsys_Session object
      * @throws Mumsys_Exception Throws exception if object was not set
      */
     public function getSession()
     {
-        return $this->_get('Mumsys_Session');
+        return $this->_get('Mumsys_Session_Interface');
     }
 
 
     /**
      * Register the default session object.
      *
-     * @param Mumsys_Session $session Session object
+     * @param Mumsys_Session_Interface $session Session object
      * @throws Mumsys_Exception Throws exception if object was already set
      */
-    public function registerSession( Mumsys_Session $session )
+    public function registerSession( Mumsys_Session_Interface $session )
     {
-        $this->_register('Mumsys_Session', $session);
+        $this->_register('Mumsys_Session_Interface', $session);
     }
 
 
@@ -185,12 +181,12 @@ class Mumsys_Context extends Mumsys_Abstract
      * This object it available in program context. So a program/module box or
      * navigation is used.
      *
-     * @return Mumsys_Display_Control Returns display object
+     * @return Mumsys_Mvc_Display_Control_Interface Returns display object
      * @throws Mumsys_Exception If controller was not set
      */
     public function getDisplay()
     {
-        return $this->_get('Mumsys_Display_Control');
+        return $this->_get('Mumsys_Mvc_Display_Control_Interface');
     }
 
 
@@ -198,13 +194,12 @@ class Mumsys_Context extends Mumsys_Abstract
      * Sets the display controller object. The view.
      * Note: When calling Mumsys_Display_Factory->load() it will be set automatically!
      *
-     * @param Mumsys_Display_Control $display object which will be set in
-     * dispaly factory
+     * @param Mumsys_Mvc_Display_Control_Interface $display object
      * @throws Mumsys_Exception Throws exception if object was already set
      */
-    public function registerDisplay( Mumsys_Display_Control $display )
+    public function registerDisplay( Mumsys_Mvc_Display_Control_Interface $display )
     {
-        $this->_register('Mumsys_Display_Control', $display);
+        $this->_register('Mumsys_Mvc_Display_Control_Interface', $display);
     }
 
 
@@ -215,9 +210,9 @@ class Mumsys_Context extends Mumsys_Abstract
      * @param Mumsys_Display_Control $display object which will be set in
      * dispaly factory
      */
-    public function replaceDisplay( Mumsys_Display_Control $display )
+    public function replaceDisplay( Mumsys_Mvc_Display_Control_Interface $display )
     {
-        $this->_replace('Mumsys_Display_Control', $display);
+        $this->_replace('Mumsys_Mvc_Display_Control_Interface', $display);
     }
 
 
@@ -269,32 +264,21 @@ class Mumsys_Context extends Mumsys_Abstract
     }
 
 
-
-    ################
-    /** @todo Backend controller decides if the frontend controller is needed? */
-    ################
-
     /**
-     * Returns the mumsys frontend controller object (the view controll).
-     *
-     * @return Mumsys_Controller_Frontend Returns the mumsys frontend controller object
-     * @throws Mumsys_Exception If controller was not set
+     * @see getDisplay()
      */
     public function getControllerFrontend()
     {
-        return $this->_get('Mumsys_Controller_Frontend');
+        return $this->_get('Mumsys_Mvc_Display_Control_Interface');
     }
 
 
     /**
-     * Sets the frontend controller object (the view controll).
-     *
-     * @param Mumsys_Controller_Frontend $controller Frontend controller object
-     * @throws Mumsys_Exception Throws exception if object was already set
+     * @see registerDisplay()
      */
-    public function registerControllerFrontend( Mumsys_Controller_Frontend $controller )
+    public function registerControllerFrontend( Mumsys_Mvc_Display_Control_Interface $controller )
     {
-        $this->_register('Mumsys_Controller_Frontend', $controller);
+        $this->_register('Mumsys_Mvc_Display_Control_Interface', $controller);
     }
 
 
@@ -325,7 +309,7 @@ class Mumsys_Context extends Mumsys_Abstract
     private function _register( $key, $value )
     {
         if ( array_key_exists($key, $this->_config) ) {
-            throw new Mumsys_Exception($key . ' already set');
+            throw new Mumsys_Exception('"' . $key . '" already set');
         }
 
         $this->_config[$key] = $value;
