@@ -2,7 +2,6 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Templates_Text_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -13,7 +12,6 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
- * @version     1.0.0
  * Created: 2016-02-04
  * @filesource
  */
@@ -31,6 +29,11 @@
 class Mumsys_Mvc_Templates_Text_Default
     extends Mumsys_Mvc_Templates_Text_Abstract
 {
+    /**
+     * Version ID information
+     */
+    const VERSION = '1.0.0';
+
     /**
      * Returns a "table" by given records of data.
      *
@@ -63,7 +66,7 @@ class Mumsys_Mvc_Templates_Text_Default
      */
     public function addTitleBlock( $title = '', $content = '' )
     {
-        $this->add(getTitleBlock($title, $content));
+        $this->add($this->getTitleBlock($title, $content));
     }
 
 
