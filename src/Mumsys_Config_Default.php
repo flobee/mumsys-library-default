@@ -2,7 +2,6 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Config_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -66,8 +65,7 @@ class Mumsys_Config_Default
      * @param array $config Config parameters to be set
      * @param array $paths List of locations for config files
      */
-    public function __construct( Mumsys_Context $context, array $config = array(),
-        array $paths = array() )
+    public function __construct( Mumsys_Context $context, array $config = array(), array $paths = array() )
     {
         $this->_context = $context;
         $this->_configs = $config;
@@ -112,28 +110,14 @@ class Mumsys_Config_Default
 
 
     /**
-     * Get all config parameters
+     * Get all config parameters which are used or loaded at this moment
      *
-     * @return array
+     * @return array Config parameters
      */
     public function getAll()
     {
         return $this->_configs;
     }
-
-
-    /**
-     * Adds/ registers config parameters to the current state if possible.
-     *
-     * @param array $config Configuration parameters to register
-     * @throws Mumsys_Config_Exception On errors or if a config already exists
-     */
-//    public function add(array $config = array())
-//    {
-//        foreach ($config as $key => & $value) {
-//            $this->register($key, $value);
-//        }
-//    }
 
 
     /**
@@ -146,7 +130,6 @@ class Mumsys_Config_Default
      */
     public function register( $key, $value = null )
     {
-
         if ( ($test = $this->get($key)) !== null) {
             $message = sprintf('Config key "%1$s" already exists', $key);
             throw new Mumsys_Config_Exception($message);
@@ -193,6 +176,8 @@ class Mumsys_Config_Default
 
     /**
      * Load the config file if possible.
+     *
+     * @todo check database usage or a mix of cofig files and db
      *
      * @param array $config Current global config
      * @param string $curPath Path of the config file
@@ -303,24 +288,21 @@ class Mumsys_Config_Default
      */
     public function load( $appKey = 'mumsys' )
     {
-        throw new Mumsys_Config_Exception('exit in: ' . basename(__FILE__) . ':' . __LINE__);
+        throw new Mumsys_Config_Exception('exit in: ' . basename(__FILE__) . '');
 
 
         $oDB = $this->_context->getDatabase();
 
-        $sql = $this->get('credentials/database/mumsys/config/get');
+        $sql = $this->get('database/mumsys/config/get');
 /*        echo $sql = sprintf(
             'SELECT config_key, config_val, config_type FROM %1$s%2$s WHERE config_app = \'%3$s\'',
             $this->_config['table_prefix'],
             $this->_config['table_config'],
             $appKey
         );
+        ...
 */
-        $oRes = $oDB->query($sql);
 
-        if ($oDB->isError($oRes)) {
-            throw new Mumsys_Config_Exception($oDB->getErrorMessage());
-        }
         while ( list($key, $val, $type) = $oRes->fetch('ROW') )
         {
             $key = trim($key);
@@ -342,19 +324,19 @@ class Mumsys_Config_Default
                     } else {
                         $result = true;
                     }
-                    $this->_configs[$key] = $result;
+                    $this->register($key, $result);
                     break;
 
                 case 'DECIMAL':
-                    $this->_configs[$key] = (int)$val;
+                    $this->register($key, (int)$val);
                     break;
 
                 case 'DOUBLE':
-                    $this->_configs[$key] = (float)$val;
+                    $this->register($key, (float)$val);
                     break;
 
                 case 'FUNCTION': //closures?
-                    $result = null;
+                    throw new Mumsys_Config_Exception('not implemented yet');
                     break;
 
                 case 'CONSTANT':
@@ -366,17 +348,17 @@ class Mumsys_Config_Default
                     break;
 
                 case 'SERIALIZED':
-                    $this->_configs[$key] = unserialize($val);
-
+                    $this->register($key, unserialize($val));
                     break;
 
                 case 'JSON':
-                    $this->_configs[$key] = json_decode($val);
+                    $this->register($key, json_decode($val));
                     break;
 
                 case 'VARIABLE':
+                case 'STRING':
                 default:
-                    $this->_configs[$key] = (string)$val;
+                    $this->register($key, $val);
                     break;
             }
         }
