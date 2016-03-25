@@ -21,7 +21,7 @@ class Mumsys_Config_DefaultTest extends PHPUnit_Framework_TestCase
         $this->_configs = array('testkey' => 'test value');
         $this->_paths = array(
             __DIR__ . '/', //testconfig.php
-            __DIR__ . '/../../config/', //credentials.php and sub paths
+            __DIR__ . '/../config/', //credentials.php and sub paths
         );
         $this->_context = new Mumsys_Context();
         $this->_object = new Mumsys_Config_Default($this->_context, $this->_configs, $this->_paths);
@@ -57,12 +57,12 @@ class Mumsys_Config_DefaultTest extends PHPUnit_Framework_TestCase
     public function testGet()
     {
         $actual1 = $this->_object->get('testkey');
-        $actual2 = $this->_object->get('credentials/database/mumsys/config/get', false);
+        $actual2 = $this->_object->get('credentials/database/host', false);
         $actual3 = $this->_object->get('credentials/database/mumsys/config/set', false);
-        $actual4 = $this->_object->get(array('credentials', 'database', 'mumsys', 'config', 'get'), false);
-        $actual5 = $this->_object->get('database/mumsys/config/get', false);
+        $actual4 = $this->_object->get(array('credentials', 'database', 'host'), false);
+        $actual5 = $this->_object->get('database/mumsys/config/search', false);
         $expected1 = 'test value';
-        $expected2 = 'got it';
+        $expected2 = 'localhost';
 
         $this->assertEquals($expected1, $actual1);
         $this->assertEquals($expected2, $actual2);
@@ -93,8 +93,17 @@ class Mumsys_Config_DefaultTest extends PHPUnit_Framework_TestCase
         $this->_object->replace('new key', 'new value');
         $actual2 = $this->_object->get('new key');
 
+        // with path
+        $expected3 = array('a' => 'b', 'c' => 'd');
+        $this->_object->replace('tests/somevalues', $expected3);
+        $actual3 = $this->_object->get('tests/somevalues');
+        $this->_object->replace('tests', array());
+        $actual4 = $this->_object->get('tests');
+
         $this->assertEquals('value test', $actual);
         $this->assertEquals('new value', $actual2);
+        $this->assertEquals($expected3, $actual3);
+        $this->assertEquals(array(), $actual4);
     }
 
     /**
@@ -104,10 +113,17 @@ class Mumsys_Config_DefaultTest extends PHPUnit_Framework_TestCase
     {
         $this->_object->register('testkey2', 'test');
         $actual = $this->_object->get('testkey2', false);
-        $this->assertEquals('test', $actual);
 
-        $this->setExpectedException('Mumsys_Config_Exception', 'Config key "testkey" already exists');
-        $this->_object->register('testkey', 'value test');
+        // with path
+        $expected3 = array('a' => 'b', 'c' => 'd');
+        $this->_object->register('tests/somevalues', $expected3);
+        $actual3 = $this->_object->get('tests/somevalues');
+
+        $this->assertEquals('test', $actual);
+        $this->assertEquals($expected3, $actual3);
+
+        $this->setExpectedException('Mumsys_Config_Exception', 'Config key "tests/somevalues" already exists');
+        $this->_object->register('tests/somevalues', array());
     }
 
     /**
@@ -115,7 +131,7 @@ class Mumsys_Config_DefaultTest extends PHPUnit_Framework_TestCase
      */
     public function testLoad()
     {
-        $this->setExpectedException('Mumsys_Config_Exception', 'exit in: Mumsys_Config_Default.php:308');
+        $this->setExpectedException('Mumsys_Config_Exception', 'exit in: Mumsys_Config_Default.php');
         $this->_object->load();
 
     }
