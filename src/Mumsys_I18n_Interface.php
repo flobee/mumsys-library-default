@@ -22,8 +22,8 @@
 /**
  * Internationalization Interface (I18n)
  *
- * http://de.wikipedia.org/wiki/I18n
- * http://www.w3.org/International/questions/qa-i18n.de.php
+ * @see http://de.wikipedia.org/wiki/I18n
+ * @see http://www.w3.org/International/questions/qa-i18n.de.php
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -42,11 +42,18 @@ interface Mumsys_I18n_Interface
     public function getPluralIndex( $number, $locale );
 
     /**
-     * Sets the system locale by given locale string.
+     * Replaces/ sets the current locale.
      *
-     * @param string $locale Locale to be set.
+     * @param string $locale ISO-3166 locale string.
      */
-    public function setlocale( $locale );
+    public function setlocale( $locale='' );
+
+    /**
+	 * Returns the current locale.
+	 *
+	 * @return string Current locale in ISO-3166 format
+	 */
+	public function getLocale();
 
     /**
      * Simple translation.
@@ -68,12 +75,13 @@ interface Mumsys_I18n_Interface
     public function _dt( $domain, $string );
 
     /**
-     * Domain translation plural. Returns the translated string by the given plural and quantity.
+     * Domain translation plural version.
+     * Returns the translated string by the given plural and quantity.
      *
      * @param string $domain Translation domain
      * @param string $singular Singular string
      * @param string $plural Plural string
-     * @param integer $number Quantity for languages with plural forms
+     * @param integer $number Quantity for languages with more than one plural form
      *
      * @return string Returns the translated string as singular or plural form based on given number.
      * @throws Mumsys_I18n_Exception Throws exception on errors
