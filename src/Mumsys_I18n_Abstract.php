@@ -49,6 +49,33 @@ abstract class Mumsys_I18n_Abstract
 
 
     /**
+     * Replaces/ sets the current locale.
+     *
+     * @param string $locale ISO-3166 locale string.
+     * @throws Mumsys_I18n_Exception if locale dosne fit the ISO-3166 format
+     */
+    public function setlocale( $locale = '' )
+    {
+        if (strlen($locale) > 5) {
+            throw new Mumsys_I18n_Exception(sprintf('Invalid locale "%1$s"', $locale));
+        }
+
+        $this->_locale = (string)$locale;
+    }
+
+
+    /**
+     * Returns the current locale.
+     *
+     * @return string Current locale in ISO-3166 format
+     */
+    public function getLocale()
+    {
+        return $this->_locale;
+    }
+
+
+    /**
      * Returns the plural index number to be used for the plural translation.
      *
      * Taken from Zend Framework 1.5
@@ -172,32 +199,5 @@ abstract class Mumsys_I18n_Abstract
                 return 0;
         }
     }
-
-
-    /**
-     * Replaces/ sets the current locale.
-     *
-     * @param string $locale ISO-3166 locale string.
-     * @throws Mumsys_I18n_Exception if locale dosne fit the ISO-3166 format
-     */
-    public function setlocale( $locale = '' )
-    {
-        if (strlen($locale) > 5) {
-            throw new Mumsys_I18n_Exception(sprintf('Invalid locale "%1$s"', $locale));
-        }
-
-        $this->_locale = (string)$locale;
-    }
-
-
-    /**
-	 * Returns the current locale.
-	 *
-	 * @return string Current locale in ISO-3166 format
-	 */
-	public function getLocale()
-	{
-		return $this->_locale;
-	}
 
 }
