@@ -2,7 +2,6 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Config_Exception
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -13,7 +12,6 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Config
- * @version     1.0.0
  * Created: 2009-11-29
  * @filesource
  */
@@ -31,4 +29,3 @@ class Mumsys_Config_Exception extends Mumsys_Exception
 {
 
 }
-
