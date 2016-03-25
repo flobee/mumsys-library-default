@@ -2,7 +2,6 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Templates_Text_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -13,7 +12,6 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
- * @version     1.0.0
  * Created: 2016-02-04
  * @filesource
  */
@@ -39,14 +37,16 @@ abstract class Mumsys_Mvc_Templates_Text_Abstract
 
 
     /**
-     * Sets the output page title.
+     * Initialize the display text object.
      *
-     * @param string $title Title to be set
+     * @param Mumsys_Context $context Context object
+     * @param array $opts Optional options to setup the frontend controller
      */
-    public function setPageTitle($title='')
+    public function __construct( Mumsys_Context $context, array $options = array() )
     {
-        $this->_pagetitle = (string)$title;
+        if (isset($options['pageTitle'])) {
+            $this->_pagetitle = (string)$options['pageTitle'];
+        }
     }
-
 
 }
