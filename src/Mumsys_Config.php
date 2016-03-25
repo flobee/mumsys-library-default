@@ -2,6 +2,7 @@
 
 /*{{{*/
 /**
+ * @deprecated since version 1.0.1 Use Mumsys_Config_Default from now on
  * ----------------------------------------------------------------------------
  * Mumsys_Config
  * for MUMSYS Library for Multi User Management System (MUMSYS)
@@ -13,7 +14,6 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Config
- * @version     1.0.1
  * Created: 2009-11-29
  * @filesource
  */
@@ -37,7 +37,7 @@ class Mumsys_Config extends Mumsys_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * Configuration vars in an array container.
@@ -122,7 +122,7 @@ class Mumsys_Config extends Mumsys_Abstract
      * // returns: array('a'=> array('some props'), 'c'=> array('some props'));
      * </pre>
      *
-     * @param array $depth List of values to discribe the depth
+     * @param array $depth List of values to discribe the depth/path to the value
      * @param array $keys List of array keys you want to get from given depth
      *
      * @return array List of key/values pairs with values which were found or false.
