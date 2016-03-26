@@ -22,7 +22,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest extends PHPUnit_Framework_TestCase
     {
         $this->_context = new Mumsys_Context();
 
-        $this->_configs = MumsysTestHelper::getConfig();
+        $this->_configs = MumsysTestHelper::getConfigs();
         $this->_configs['database']['type'] = 'mysql:mysqli';
 
         $this->_object = Mumsys_Db_Factory::getInstance($this->_context, $this->_configs['database']);
