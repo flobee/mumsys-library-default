@@ -325,7 +325,7 @@ interface Mumsys_Db_Driver_Interface
 
 
     /**
-     * Replace existing data.
+     * Replace existing data at the database.
      *
      * @param array $params Parameters to be set/ replaced:<br/>
      * [fields] required Fields to set in the replace command<br/>
