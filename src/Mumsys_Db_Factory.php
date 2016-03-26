@@ -59,7 +59,7 @@ class Mumsys_Db_Factory
      * @return Mumsys_Db_Driver_Interface Returns the database driver object
      * @throws Mumsys_Db_Exception On errors
      */
-    public static function getInstance( array $options )
+    public static function getInstance(Mumsys_Context $context, array $options )
     {
         try
         {
@@ -72,7 +72,7 @@ class Mumsys_Db_Factory
 
             $types = $tps;
             $class = 'Mumsys_Db_Driver_' . ucwords($types[0]) .'_'. ucwords($types[1]);
-            $object = new $class($options);
+            $object = new $class($context, $options);
         }
         catch ( Exception $e ) {
             throw new Mumsys_Db_Exception($e->getMessage(), $e->getCode(), $e);
