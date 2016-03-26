@@ -87,7 +87,7 @@ abstract class Mumsys_Db_Driver_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '3.1.0';
+    const VERSION = '3.2.0';
 
     /**
      * Database resource
