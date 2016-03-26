@@ -3,13 +3,13 @@
 /**
  * Test class for Mumsys_Timer.
  */
-class Mumsys_TimerTest extends PHPUnit_Framework_TestCase
+class Mumsys_TimerTest extends MumsysTestHelper
 {
 
     /**
      * @var Mumsys_TimerTest
      */
-    protected $object;
+    protected $_object;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
