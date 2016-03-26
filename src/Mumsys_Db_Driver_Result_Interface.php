@@ -2,7 +2,6 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Db_Driver_Result_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -14,7 +13,6 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Db
  * @version     3.0.1
- * @filesource
  */
 /*}}}*/
 
