@@ -2,7 +2,6 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Db_Exception
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -20,7 +19,7 @@
 
 
 /**
- * Base exception for all Db objects.
+ * Generic exception for all Db objects.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
