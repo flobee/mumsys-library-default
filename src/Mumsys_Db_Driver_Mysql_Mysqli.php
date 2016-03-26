@@ -370,7 +370,6 @@ class Mumsys_Db_Driver_Mysql_Mysqli
 
             case 'LINE':
                 $data = $oRes->fetch('ASSOC');
-                $oRes->free();
                 break;
 
             case 'ROW':
