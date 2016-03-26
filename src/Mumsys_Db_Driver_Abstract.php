@@ -92,14 +92,12 @@ abstract class Mumsys_Db_Driver_Abstract
     /**
      * Database resource
      * @var ressorce The database connection (resource)
-     * @access protected
      */
     protected $_dbc;
 
     /**
      * Database name and the name of the current selected database.
      * @var string
-     * @access protected
      */
     protected $_dbName;
 
@@ -107,7 +105,6 @@ abstract class Mumsys_Db_Driver_Abstract
      * Username for the database connection
      *
      * @var string
-     * @access protected
      */
     protected $_username;
 
@@ -115,21 +112,18 @@ abstract class Mumsys_Db_Driver_Abstract
      * Password for the database connection
      *
      * @var string
-     * @access protected
      */
     protected $_password;
 
     /**
      * Hostname or ip address of the database server
      * @var string
-     * @access protected
      */
     protected $_host = 'localhost';
 
     /**
      * Server port to connect to.
      * @var integer
-     * @access protected
      */
     protected $_port;
 
@@ -139,7 +133,6 @@ abstract class Mumsys_Db_Driver_Abstract
      * Specifies the socket or named pipe that should be used.
      *
      * @var string
-     * @access protected
      */
     protected $_socket;
 
@@ -166,15 +159,13 @@ abstract class Mumsys_Db_Driver_Abstract
      * Latest sql statment which was executed.
      *
      * @var string
-     * @access protected
      */
     protected $_sql;
 
     /**
      * Query tracker; Container for all sql statments.
      *
-     * @var array Container of all sql statments that are executed
-     * @access protected
+     * @var array
      */
     protected $_querys = array( );
 
@@ -182,7 +173,6 @@ abstract class Mumsys_Db_Driver_Abstract
      * Internal counter of executed sql statements
      *
      * @var integer
-     * @access protected
      */
     protected $_numQuerys = 0; // static
 
@@ -193,7 +183,6 @@ abstract class Mumsys_Db_Driver_Abstract
      * array('internal key'=> array(
      *      'public key to map to'=>'public value of key to show')
      * ): eg: array('AND' => array('and', 'in an AND condition' )
-     * @access protected
      * @see Mumsys_DataList.php
      */
     protected $_queryCompareValues;
@@ -206,22 +195,21 @@ abstract class Mumsys_Db_Driver_Abstract
      *      'public key to map to'=>'public value of key to show')
      * )
      *
-     * @access protected
      * @see Mumsys_DataList.php
      */
     protected $_queryOperators;
 
-    /** @todo To be implemented*/
-    protected $_querySortations = array(
-        'ASC' => 'Ascending (a-z, 0-9)',
-        'DESC' => 'Descending (z-a, 9-0)'
-    );
+    /**
+     * @todo To be implemented
+     * List of sortations e.g: ASC => ascending
+     * @var array
+     */
+    protected $_querySortations;
 
     /**
      * Debug mode
      *
      * @var boolean True to enable false by default
-     * @access protected
      */
     protected $_debug = false;
 
@@ -231,7 +219,7 @@ abstract class Mumsys_Db_Driver_Abstract
      *  message => error message,
      *  code => error code
      * for each item.
-     * Note that collecting alle error can blow up the memory. Collecting will
+     * Note that collecting errors can blow up the memory. Collecting will
      * be made only in debug mode!
      *
      * @see setThrowErrors()
@@ -252,7 +240,6 @@ abstract class Mumsys_Db_Driver_Abstract
     /**
      * String of a error message
      * @var string
-     * @access protected
      */
     protected $_errorMessage = null;
 
@@ -260,7 +247,6 @@ abstract class Mumsys_Db_Driver_Abstract
      * Error code from database server
      *
      * @var integer Number of the error (database specific)
-     * @access protected
      */
     protected $_errorNumber = null;
 
@@ -280,7 +266,7 @@ abstract class Mumsys_Db_Driver_Abstract
      * - 'throw_errors' boolean optional default: true
      * - 'compress' boolean optional Deside to compress the connection or not.
      */
-    public function __construct(array $args=array() )
+    public function __construct( array $args = array() )
     {
         if ( isset($args['host']) ) {
             $this->_host = (string)$args['host'];
@@ -323,6 +309,8 @@ abstract class Mumsys_Db_Driver_Abstract
         }
 
         if ( !defined('_CMS_ISEQUAL') ) {
+            /** @todo translations? */
+
             define('_CMS_AND', 'And');
             define('_CMS_OR', 'Or');
             define('_CMS_ISEQUAL', 'is equal');
@@ -358,6 +346,11 @@ abstract class Mumsys_Db_Driver_Abstract
             'LIKEx' => array( _CMS_BEGINSWITH, _CMS_BEGINSWITH ),
             'NOTLIKEx' => array( _CMS_BEGINSNOTWITH, _CMS_BEGINSNOTWITH ),
         );
+
+        $this->_querySortations = array(
+            'ASC' => 'Ascending (a-z, 0-9)',
+            'DESC' => 'Descending (z-a, 9-0)'
+        );
     }
 
 
@@ -373,7 +366,7 @@ abstract class Mumsys_Db_Driver_Abstract
 
 
     /**
-     * Default escaping for a given string for the database
+     * Default escaping for a string in db context
      *
      * @see php.net/manual/en/function.addslashes.php
      * @param string $string String to be escaped
