@@ -42,11 +42,11 @@ interface Mumsys_Db_Driver_Interface
      * - 'charset' client character set to be used. If given it will be set when connection will be made
      * - 'socket' boolean optional
      * - 'debug' boolean optional
-     * - 'throw_errors' boolean optional default: true
+     * - 'throwErrors' boolean optional default: true
      * - 'compress' boolean optional Deside to compress the connection or not
      * - mixed other parameters you may need for your own connection/ driver
      */
-    public function __construct( array $args );
+    public function __construct(  Mumsys_Context $context, array $args );
 
     /**
      * Destructor. Close current connection.
