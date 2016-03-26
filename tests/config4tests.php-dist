@@ -1,0 +1,31 @@
+<?php
+
+// config example for unit tests
+
+return array(
+    'ME'			=> & $_SERVER['PHP_SELF'],
+    // enable debug mode,
+    'debug'			=> true,
+
+    'database' => array(
+        'type' => 'mysql:mysqli',
+        'host' => 'localost.localdomain',
+        'port' => '3306',
+        'username' => 'username',
+        'password' => 'password',
+        'db' => 'some database to connect to',
+        'charset' => 'utf8',
+        'compress' => false,
+        'throwErrors' => true,
+        'debug' => false,
+        'socket' => false,
+        //default tables used by mumsys cms
+        'tables' => array(
+            'table_access' => 'mumsys_access',
+            'table_programs' => 'mumsys_modules',
+            'table_blocks' => 'mumsys_blocks',
+            'table_sessions' => 'mumsys_sessions',
+            'table_sessionsuser' => 'mumsys_sessionsuser',
+            'table_config' => 'mumsys_config',
+    ),
+);
