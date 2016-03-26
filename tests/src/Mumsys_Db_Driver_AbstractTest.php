@@ -18,12 +18,14 @@ class Mumsys_Db_Driver_Testdummy
  */
 class Mumsys_Db_Driver_AbstractTest extends PHPUnit_Framework_TestCase
 {
-
-
     /**
      * @var Mumsys_Db_Driver_Testdummy
      */
     protected $_object;
+    /**
+     * @var Mumsys_Context
+     */
+    protected $_context;
     protected $_configs;
 
 
@@ -33,10 +35,11 @@ class Mumsys_Db_Driver_AbstractTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->_context = new Mumsys_Context();
         $this->_configs = MumsysTestHelper::getConfig();
         $this->_configs['database']['type'] = 'Testdummy';//mysqli
 
-        $this->_object = new Mumsys_Db_Driver_Testdummy($this->_configs['database']);
+        $this->_object = new Mumsys_Db_Driver_Testdummy($this->_context, $this->_configs['database']);
     }
 
 
@@ -55,7 +58,7 @@ class Mumsys_Db_Driver_AbstractTest extends PHPUnit_Framework_TestCase
      */
     public function test__construct()
     {
-        $x = new Mumsys_Db_Driver_Testdummy($this->_configs['database']);
+        $x = new Mumsys_Db_Driver_Testdummy($this->_context, $this->_configs['database']);
     }
 
     /**
