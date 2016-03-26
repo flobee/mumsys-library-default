@@ -59,7 +59,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest extends PHPUnit_Framework_TestCase
         /** @todo not connected w/o exception, will throw it anyway! */
         $config['compress'] = false;
         $config['host'] = '127.0.0.9'; //invalidHostname
-        $config['throw_errors'] = false;
+        $config['throwErrors'] = false;
         $object = Mumsys_Db_Factory::getInstance($config);
         $this->assertFalse($object->connect());
     }
@@ -100,13 +100,13 @@ class Mumsys_Db_Driver_Mysql_MysqliTest extends PHPUnit_Framework_TestCase
     public function testGetCharsetErrors()
     {
         $config = $this->_configs['database'];
-        $config['throw_errors'] = false;
+        $config['throwErrors'] = false;
         $object = Mumsys_Db_Factory::getInstance($config);
         $actual1 = $object->getCharset();
 
         $this->assertFalse($actual1);
 
-        $config['throw_errors'] = true;
+        $config['throwErrors'] = true;
         $object = Mumsys_Db_Factory::getInstance($config);
         $this->setExpectedException('Mumsys_Db_Exception', 'Getting character set failt');
         $object->getCharset();
