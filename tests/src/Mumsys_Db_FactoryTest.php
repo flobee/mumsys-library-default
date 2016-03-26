@@ -12,7 +12,10 @@ class Mumsys_Db_FactoryTest extends PHPUnit_Framework_TestCase
      * @var Mumsys_Db
      */
     protected $_object;
-
+    /**
+     * @var Mumsys_Context
+     */
+    protected $_context;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -20,10 +23,11 @@ class Mumsys_Db_FactoryTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->_context = new Mumsys_Context();
         $this->_configs = MumsysTestHelper::getConfig();
         $this->_configs['database']['type'] = 'mysql:mysqli';
 
-        $this->_object = new Mumsys_Db_Factory($this->_configs['database']);
+        $this->_object = new Mumsys_Db_Factory($this->_context, $this->_configs['database']);
     }
 
 
@@ -42,7 +46,7 @@ class Mumsys_Db_FactoryTest extends PHPUnit_Framework_TestCase
      */
     public function testGetInstance()
     {
-        $actual = $this->_object->getInstance($this->_configs['database']);
+        $actual = $this->_object->getInstance($this->_context, $this->_configs['database']);
         $this->assertInstanceOf('Mumsys_Db_Driver_Interface', $actual);
     }
 
@@ -55,7 +59,7 @@ class Mumsys_Db_FactoryTest extends PHPUnit_Framework_TestCase
         $options['type'] = 'xxx';
 
         $this->setExpectedException('Mumsys_Db_Exception', 'Invalid Db driver. Can not create instance');
-        $actual = $this->_object->getInstance($options);
+        $actual = $this->_object->getInstance($this->_context, $options);
     }
 
 }
