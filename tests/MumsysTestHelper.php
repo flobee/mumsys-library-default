@@ -1,6 +1,6 @@
 <?php
 
-class MumsysTestHelper
+class MumsysTestHelper extends PHPUnit_Framework_TestCase
 {
     private static $_configs;
 
@@ -22,7 +22,7 @@ class MumsysTestHelper
             return self::$_params['testsBaseDir'];
 
         } else {
-            self::$_params['testsBaseDir'] = realpath(dirname(__FILE__) .'/');
+            self::$_params['testsBaseDir'] =__DIR__ .'/';
             return self::$_params['testsBaseDir'];
         }
     }
