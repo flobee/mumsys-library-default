@@ -26,10 +26,10 @@ class MumsysTestHelper extends PHPUnit_Framework_TestSuite
     private static $_params;
 
 
-    public static function getConfig()
+    public static function getConfigs()
     {
         if ( !isset(self::$_configs) ) {
-            self::$_configs = require __DIR__ . '/testconfig.php';
+            self::$_configs = require __DIR__ . '/config4tests.php';
         }
 
         return self::$_configs;
