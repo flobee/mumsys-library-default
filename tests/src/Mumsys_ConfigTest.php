@@ -3,9 +3,8 @@
 /**
  * Test class for Mumsys_Config.
  */
-class Mumsys_ConfigTest extends PHPUnit_Framework_TestCase
+class Mumsys_ConfigTest extends MumsysTestHelper
 {
-
     /**
      * @var Mumsys_Config
      */

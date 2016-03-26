@@ -3,7 +3,7 @@
 /**
  * Mumsys_Db_Driver_Mysql_Mysqli Test
  */
-class Mumsys_Db_Driver_Mysql_MysqliTest extends PHPUnit_Framework_TestCase
+class Mumsys_Db_Driver_Mysql_MysqliTest extends MumsysTestHelper
 {
     /**
      * @var Mumsys_Db_Driver_Mysql_Mysqli

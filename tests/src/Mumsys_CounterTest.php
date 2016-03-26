@@ -1,11 +1,9 @@
 <?php
 
-// $Id$
-
 /**
  * Test class for Mumsys_Counter.
  */
-class Mumsys_CounterTest extends PHPUnit_Framework_TestCase
+class Mumsys_CounterTest extends MumsysTestHelper
 {
     /**
      * @var Mumsys_CounterTest

@@ -3,7 +3,7 @@
 /**
  * Mumsys_Context Test
  */
-class Mumsys_ContextTest extends PHPUnit_Framework_TestCase
+class Mumsys_ContextTest extends MumsysTestHelper
 {
     /**
      * @var Mumsys_Context

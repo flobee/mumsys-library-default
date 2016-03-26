@@ -1,10 +1,9 @@
 <?php
 
-
 /**
  * Mumsys_Config_Default Test
  */
-class Mumsys_Config_DefaultTest extends PHPUnit_Framework_TestCase
+class Mumsys_Config_DefaultTest extends MumsysTestHelper
 {
     /**
      * @var Mumsys_Config_Default

@@ -3,7 +3,7 @@
 /**
  * Test class for Mumsys_FileSystem.
  */
-class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
+class Mumsys_FileSystemTest extends MumsysTestHelper
 {
     /**
      * @var Mumsys_FileSystem
