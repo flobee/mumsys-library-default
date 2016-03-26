@@ -9,7 +9,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest extends PHPUnit_Framework_TestCase
      * @var Mumsys_Db_Driver_Mysql_Mysqli
      */
     protected $_object;
-
+    /**
+     * @var Mumsys_Context
+     */
+    protected $_context;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -17,10 +20,12 @@ class Mumsys_Db_Driver_Mysql_MysqliTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->_context = new Mumsys_Context();
+
         $this->_configs = MumsysTestHelper::getConfig();
         $this->_configs['database']['type'] = 'mysql:mysqli';
 
-        $this->_object = Mumsys_Db_Factory::getInstance($this->_configs['database']);
+        $this->_object = Mumsys_Db_Factory::getInstance($this->_context, $this->_configs['database']);
         $this->_object->connect();
 
         $this->_tempTable = 'mumsysunittesttemp';
@@ -53,14 +58,14 @@ class Mumsys_Db_Driver_Mysql_MysqliTest extends PHPUnit_Framework_TestCase
 
         // compression
         $config['compress'] = true;
-        $object = Mumsys_Db_Factory::getInstance($config);
+        $object = Mumsys_Db_Factory::getInstance($this->_context, $config);
         $this->assertInstanceOf('mysqli', $object->connect());
 
         /** @todo not connected w/o exception, will throw it anyway! */
         $config['compress'] = false;
         $config['host'] = '127.0.0.9'; //invalidHostname
         $config['throwErrors'] = false;
-        $object = Mumsys_Db_Factory::getInstance($config);
+        $object = Mumsys_Db_Factory::getInstance($this->_context, $config);
         $this->assertFalse($object->connect());
     }
 
@@ -101,13 +106,13 @@ class Mumsys_Db_Driver_Mysql_MysqliTest extends PHPUnit_Framework_TestCase
     {
         $config = $this->_configs['database'];
         $config['throwErrors'] = false;
-        $object = Mumsys_Db_Factory::getInstance($config);
+        $object = Mumsys_Db_Factory::getInstance($this->_context, $config);
         $actual1 = $object->getCharset();
 
         $this->assertFalse($actual1);
 
         $config['throwErrors'] = true;
-        $object = Mumsys_Db_Factory::getInstance($config);
+        $object = Mumsys_Db_Factory::getInstance($this->_context, $config);
         $this->setExpectedException('Mumsys_Db_Exception', 'Getting character set failt');
         $object->getCharset();
     }
