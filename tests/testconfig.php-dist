@@ -16,7 +16,7 @@ return array(
         'db' => 'some database to connect to',
         'charset' => 'utf8',
         'compress' => false,
-        'throw_errors' => true,
+        'throwErrors' => true,
         'debug' => false,
         'socket' => false,
 
