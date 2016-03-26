@@ -16,6 +16,10 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends PHPUnit_Framework_TestCas
 
     /** @var Mumsys_Db_Driver_Mysql_Mysqli */
     protected $_dbDriver;
+    /**
+     * @var Mumsys_Context
+     */
+    protected $_context;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -23,12 +27,14 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends PHPUnit_Framework_TestCas
      */
     protected function setUp()
     {
+        $this->_context = new Mumsys_Context();
+
         $this->_configs = $this->_config = MumsysTestHelper::getConfig();
         $this->_configs['database']['type'] = 'mysql:mysqli';
 
         $this->_dbConfig = $this->_configs['database'];
 
-        $this->_dbDriver = new Mumsys_Db_Driver_Mysql_Mysqli($this->_dbConfig);
+        $this->_dbDriver = new Mumsys_Db_Driver_Mysql_Mysqli($this->_context, $this->_dbConfig);
 
         $this->_object = $this->_dbDriver->query('SELECT 1+1 AS colname');
     }
@@ -47,7 +53,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends PHPUnit_Framework_TestCas
 
     public function testConstruct()
     {
-        $actual1 = new Mumsys_Db_Driver_Mysql_Mysqli($this->_dbConfig);
+        $actual1 = new Mumsys_Db_Driver_Mysql_Mysqli($this->_context, $this->_dbConfig);
         $actual2 = $this->_dbDriver->query('SELECT 1+1 AS colname');
 
         $this->assertInstanceOf('Mumsys_Db_Driver_Mysql_Mysqli', $actual1);
@@ -73,7 +79,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends PHPUnit_Framework_TestCas
         foreach ( $tests as $way => $expected ) {
             $actual = $this->_object->fetch($way);
             $this->_object->seek(0);
-            
+
             $this->assertEquals($expected, $actual);
         }
     }
