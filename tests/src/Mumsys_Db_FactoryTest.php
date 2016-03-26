@@ -24,7 +24,7 @@ class Mumsys_Db_FactoryTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->_context = new Mumsys_Context();
-        $this->_configs = MumsysTestHelper::getConfig();
+        $this->_configs = MumsysTestHelper::getConfigs();
         $this->_configs['database']['type'] = 'mysql:mysqli';
 
         $this->_object = new Mumsys_Db_Factory($this->_context, $this->_configs['database']);
