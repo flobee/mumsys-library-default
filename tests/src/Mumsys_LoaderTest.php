@@ -3,7 +3,7 @@
 /**
  * Test class for Mumsys_Loader.
  */
-class Mumsys_LoaderTest extends PHPUnit_Framework_TestCase
+class Mumsys_LoaderTest extends MumsysTestHelper
 {
 
     /**

@@ -1,10 +1,9 @@
 <?php
 
-
 /**
  * Test class for Mumsys_Multirename.
  */
-class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
+class Mumsys_MultirenameTest extends MumsysTestHelper
 {
 
     /**

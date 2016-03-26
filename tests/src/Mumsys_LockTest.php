@@ -3,7 +3,7 @@
 /**
  * Test class for Mumsys_Lock.
  */
-class Mumsys_LockTest extends PHPUnit_Framework_TestCase
+class Mumsys_LockTest extends MumsysTestHelper
 {
     /**
      * @var Mumsys_Lock

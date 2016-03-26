@@ -1,10 +1,9 @@
 <?php
 
-
 /**
  * Test class for Mumsys_Parser_Logline
  */
-class Mumsys_Parser_LoglineTest extends PHPUnit_Framework_TestCase
+class Mumsys_Parser_LoglineTest extends MumsysTestHelper
 {
     /**
      * @var Mumsys_Parser_Logline

@@ -3,7 +3,7 @@
 /**
  * Mumsys_Request_Abstract test
  */
-class Mumsys_Request_AbstractTest extends PHPUnit_Framework_TestCase
+class Mumsys_Request_AbstractTest extends MumsysTestHelper
 {
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Test class for Mumsys_Logger.
+ * Test class for Mumsys_Logger_File
  */
-class Mumsys_Logger_FileTest extends PHPUnit_Framework_TestCase
+class Mumsys_Logger_FileTest extends MumsysTestHelper
 {
 
     /**

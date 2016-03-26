@@ -3,7 +3,7 @@
 /**
  * Mumsys_I18n_Abstract Test
  */
-class Mumsys_I18n_AbstractTest extends PHPUnit_Framework_TestCase
+class Mumsys_I18n_AbstractTest extends MumsysTestHelper
 {
     /**
      * @var Mumsys_I18n_Default

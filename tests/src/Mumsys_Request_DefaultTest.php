@@ -3,9 +3,8 @@
 /**
  * Mumsys_Request_Default Test
  */
-class Mumsys_Request_DefaultTest extends PHPUnit_Framework_TestCase
+class Mumsys_Request_DefaultTest extends MumsysTestHelper
 {
-
     /**
      * @var Mumsys_Request_Default
      */

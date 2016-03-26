@@ -3,9 +3,8 @@
 /**
  * Test class for Mumsys_Logger.
  */
-class Mumsys_LoggerTest extends PHPUnit_Framework_TestCase
+class Mumsys_LoggerTest extends MumsysTestHelper
 {
-
     /**
      * @var Mumsys_Logger
      */
