@@ -29,7 +29,7 @@ class Mumsys_Db_Factory
     /**
      * Version ID information
      */
-    const VERSION = '3.4.0';
+    const VERSION = '3.5.0';
 
     /**
      * Returns the database object.
