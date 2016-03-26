@@ -1,8 +1,7 @@
 <?php
 
-/*{{{*/
+/* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Db_Driver_Mysql_Mysql_Result
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -13,11 +12,9 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Db
- * @version     1.0.1
  * Created: 2009-11-27
- * @filesource
  */
-/*}}}*/
+/* }}} */
 
 
 /**
@@ -33,6 +30,11 @@
 class Mumsys_Db_Driver_Mysql_Mysql_Result
     implements Mumsys_Db_Driver_Result_Interface
 {
+    /**
+     * Version ID information
+     */
+    const VERSION = '3.0.1';
+
     /**
      * Database resource.
      *
