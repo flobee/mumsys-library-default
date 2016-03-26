@@ -77,6 +77,7 @@ abstract class Mumsys_I18n_Abstract
 
     /**
      * Returns the plural index number to be used for the plural translation.
+     * 0 = Singular, 1 = Plural version.
      *
      * Taken from Zend Framework 1.5
      * @copyright Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
