@@ -2,21 +2,18 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Db_Driver_Query_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright Copyright (c) 2007 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Db
  * @version     1.0.0
- * 0.1 - Created on 2007-06-23 as querytool.php
+ * Created on 2007-06-23 as querytool.php
  * -----------------------------------------------------------------------
  */
 /* }}} */
