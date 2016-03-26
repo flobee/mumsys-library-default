@@ -1,11 +1,9 @@
 <?php
 
-// $Id$
-
 /**
  * Test class for php class.
  */
-class PhpTest extends PHPUnit_Framework_TestCase
+class PhpTest extends MumsysTestHelper
 {
     /**
      * @var php
