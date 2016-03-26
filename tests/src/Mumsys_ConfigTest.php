@@ -21,7 +21,7 @@ class Mumsys_ConfigTest extends PHPUnit_Framework_TestCase
     {
         $this->_context = new Mumsys_Context();
 
-        $this->_config = require __DIR__ . '/../testconfig.php';
+        $this->_config = MumsysTestHelper::getConfigs();
 
         $this->_object = new Mumsys_Config($this->_context, $this->_config);
     }
@@ -39,7 +39,7 @@ class Mumsys_ConfigTest extends PHPUnit_Framework_TestCase
 
     public function test__construct()
     {
-        $expected = MumsysTestHelper::getConfig();
+        $expected = MumsysTestHelper::getConfigs();
         $testvalues = $this->_object->getAll();
         $this->assertEquals($expected, $testvalues);
     }
@@ -69,7 +69,7 @@ class Mumsys_ConfigTest extends PHPUnit_Framework_TestCase
     public function testGetAll()
     {
         $expected = $this->_object->getAll();
-        $testvalues = MumsysTestHelper::getConfig();
+        $testvalues = MumsysTestHelper::getConfigs();
         $this->assertEquals($expected, $testvalues);
         $this->assertTrue( is_array($expected) );
     }
