@@ -73,10 +73,14 @@ class Mumsys_I18n_DefaultTest extends PHPUnit_Framework_TestCase
      */
     public function test_dtn()
     {
-        $expected = 'Flower';
-        $actual = $this->_object->_dtn('domain', $expected, 'Flowers', 2); //two flowers
+        $this->_object->setlocale('de');
+        $singular = 'Flower';
+        $plural = 'Flowers';
+        $actual1 = $this->_object->_dtn('domain', $singular, $plural, 1); //one flower
+        $actual2 = $this->_object->_dtn('domain', $singular, $plural, 2); //two flowers
 
-        $this->assertEquals($expected . 's', $actual);
+        $this->assertEquals($singular, $actual1);
+        $this->assertEquals($plural, $actual2);
     }
 
 }
