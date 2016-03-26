@@ -2,7 +2,6 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Db_Factory
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -13,7 +12,6 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Db
- * @version     3.4.0
  * @filesource
  */
 /*}}}*/
@@ -55,11 +53,11 @@ class Mumsys_Db_Factory
      *  'type' => required; driver "servertype:drivertype" e.g. mysql:mysql, mysql:mysqli,
      * mysql:pdo, postges:default, oracle:default, sqlite3:default
      *  'debug' => boolean, optional, default: false
-     *  'throw_errors' => boolean, optional, default: true
+     *  'throwErrors' => boolean, optional, default: true
      * More common options:see Mumsys_Db_Driver_Abstract::__construct
      *
      * @return Mumsys_Db_Driver_Interface Returns the database driver object
-     * @throws Mumsys_Db_Exception
+     * @throws Mumsys_Db_Exception On errors
      */
     public static function getInstance( array $options )
     {
