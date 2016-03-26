@@ -263,10 +263,10 @@ abstract class Mumsys_Db_Driver_Abstract
      * - 'charset' client character set to be used. If given it will be set when connection will be made
      * - 'socket' boolean optional
      * - 'debug' boolean optional
-     * - 'throw_errors' boolean optional default: true
+     * - 'throwErrors' boolean optional default: true
      * - 'compress' boolean optional Deside to compress the connection or not.
      */
-    public function __construct( array $args = array() )
+    public function __construct(Mumsys_Context $context, array $args = array() )
     {
         if ( isset($args['host']) ) {
             $this->_host = (string)$args['host'];
@@ -300,8 +300,8 @@ abstract class Mumsys_Db_Driver_Abstract
             $this->_debug = (boolean) $args['debug'];
         }
 
-        if ( isset($args['throw_errors']) ) {
-            $this->_throwErrors = (boolean) $args['throw_errors'];
+        if ( isset($args['throwErrors']) ) {
+            $this->_throwErrors = (boolean) $args['throwErrors'];
         }
 
         if ( isset($args['compress']) ) {
