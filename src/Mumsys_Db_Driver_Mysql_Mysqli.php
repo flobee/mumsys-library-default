@@ -2,7 +2,6 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Db_Driver_Mysql_Mysqli
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -13,9 +12,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Db
- * @version     3.1.0
  * Created: 2013-12-13
- * -----------------------------------------------------------------------
  */
 /* }}} */
 
