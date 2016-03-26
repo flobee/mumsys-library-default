@@ -12,7 +12,6 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_I18n
- * @version     1.0.0
  * Created: 2013-12-17
  * @filesource
  */
@@ -33,6 +32,12 @@ class Mumsys_I18n_Default
     extends Mumsys_I18n_Abstract
     implements Mumsys_I18n_Interface
 {
+    /**
+     * Version ID information
+     */
+    const VERSION = '3.2.1';
+
+
     /**
      * Initialize the I18n interface
      *
@@ -87,7 +92,13 @@ class Mumsys_I18n_Default
      */
     public function _dtn( $domain, $singular, $plural, $number )
     {
-        return $plural;
+        $index = $this->getPluralIndex($number, $this->getLocale());
+
+        if ($index >= 1) {
+            return $plural;
+        }
+
+        return $singular;
     }
 
 }

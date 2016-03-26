@@ -12,7 +12,6 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_I18n
- * @version     1.0.0
  * Created: 2013-12-17
  * @filesource
  */
@@ -27,8 +26,14 @@
  * @subpackage  Mumsys_I18n
  */
 abstract class Mumsys_I18n_Abstract
+    extends Mumsys_Abstract
     implements Mumsys_I18n_Interface
 {
+    /**
+     * Version ID information
+     */
+    const VERSION = '3.2.1';
+
     /**
      * The locale the translation is for/belongs to.
      * @var string

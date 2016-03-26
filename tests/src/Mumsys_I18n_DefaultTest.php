@@ -17,6 +17,13 @@ class Mumsys_I18n_DefaultTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->_version = '3.2.1';
+        $this->_versions = array(
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
+            'Mumsys_I18n_Default' => $this->_version,
+            'Mumsys_I18n_Abstract' => '3.2.1',
+        );
+
         $this->_object = new Mumsys_I18n_Default('ru');
     }
 
@@ -81,6 +88,25 @@ class Mumsys_I18n_DefaultTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($singular, $actual1);
         $this->assertEquals($plural, $actual2);
+    }
+
+    /**
+     * @covers Mumsys_I18n_Abstract::getVersion
+     * @covers Mumsys_I18n_Abstract::getVersionID
+     * @covers Mumsys_I18n_Abstract::getVersions
+     */
+    public function testAbstractClass()
+    {
+        $this->assertEquals('Mumsys_I18n_Default ' . $this->_version, $this->_object->getVersion());
+
+        $this->assertEquals($this->_version, $this->_object->getVersionID());
+
+        $possible = $this->_object->getVersions();
+
+        foreach ($this->_versions as $must => $value) {
+            $this->assertTrue(isset($possible[$must]));
+            $this->assertTrue(($possible[$must] == $value));
+        }
     }
 
 }
