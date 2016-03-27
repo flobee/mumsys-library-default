@@ -13,7 +13,7 @@ return array(
         'port' => '3306',
         'username' => 'username',
         'password' => 'password',
-        'db' => 'some database to connect to',
+        'db' => 'some database name to connect to',
         'charset' => 'utf8',
         'compress' => false,
         'throwErrors' => true,
@@ -22,7 +22,7 @@ return array(
         //default tables used by mumsys cms
         'tables' => array(
             'table_access' => 'mumsys_access',
-            'table_programs' => 'mumsys_modules',
+            'table_programs' => 'mumsys_programs',
             'table_blocks' => 'mumsys_blocks',
             'table_sessions' => 'mumsys_sessions',
             'table_sessionsuser' => 'mumsys_sessionsuser',
