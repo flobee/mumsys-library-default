@@ -13,9 +13,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Config
- * @version     2.0.0
  * Created: 2009-11-29
- * @filesource
  */
 /*}}}*/
 
@@ -307,3 +305,5 @@ class Mumsys_Config_Default
     {
         throw new Mumsys_Config_Exception('exit in: ' . basename(__FILE__) . ':' . __LINE__);
     }
+
+}
