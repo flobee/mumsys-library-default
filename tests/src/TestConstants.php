@@ -2,15 +2,29 @@
 
 /**
  * Constants Test
- * Tests if constats exists.
+ * Test for required constants in mumsys
  */
-class ConstantsTest extends MumsysTestHelper
+class Mumsys_ConstantsTest extends MumsysTestHelper
 {
+    protected function setUp()
+    {
+    }
+
+    protected function tearDown()
+    {
+    }
 
     public function testIncludedConstants()
     {
+        $this->assertEquals('MUMSYS_REGEX_AZ09', '/^([0-9a-zA-Z])+$/i');
         $this->assertEquals('MUMSYS_REGEX_ALNUM', '/^([_]|[0-9a-zA-Z])+$/i');
         $this->assertEquals('MUMSYS_REGEX_AZ09X', '/^([_-]|[0-9a-zA-Z])+$/i');
         $this->assertEquals('MUMSYS_REGEX_DATETIME_MYSQL', '/^(\d{4})-(\d{2})-(\d{2} (\d{1,2}):(\d{1,2}):(\d{1,2}))$/');
-        //$this->assertEquals($expected, $actual);
+        $this->assertEquals('MUMSYS_REGEX_AZ09X_' ,'/^([ ]|[_-]|[0-9a-zA-Z])+$/i');
+
+        //$this->assertEquals('MUMSYS_REGEX_AZ09, $actual);
+
+        $this->assertEquals('_NL', PHP_EOL);
     }
+
+}
