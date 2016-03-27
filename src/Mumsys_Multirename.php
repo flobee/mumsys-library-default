@@ -40,13 +40,13 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.3.1';
+    const VERSION = '1.3.2';
 
     /**
      * Logger to log and output messages.
      * @var Mumsys_Logger_Interface
      */
-    public $logger;
+    private $_logger;
 
     /**
      * Current working settings.
@@ -122,13 +122,13 @@ class Mumsys_Multirename
 
         $this->_pathHome = is_dir($_SERVER['HOME']) ? $_SERVER['HOME'] : $this->_pathHome;
         $this->_collection = $this->_pathHome . '/.multirename/collection';
-        $this->logger = $logger;
+        $this->_logger = $logger;
 
         if ( isset($config['loglevel']) ) {
-            $this->logger->msglogLevel = (int)$config['loglevel'];
+            $this->_logger->msglogLevel = (int)$config['loglevel'];
         }
 
-        $this->logger->log('### multirename action init', 7);
+        $this->_logger->log('### multirename action init', 7);
 
         $config = $this->setSetup($config);
 
@@ -162,7 +162,7 @@ class Mumsys_Multirename
 
         foreach($actions as $action)
         {
-            $this->logger->log('Will perform action "' . $action . '" now', 7);
+            $this->_logger->log('Will perform action "' . $action . '" now', 7);
 
             switch ($action) {
                 case 'set-config':
@@ -191,7 +191,7 @@ class Mumsys_Multirename
             }
         }
 
-        $this->logger->log('### multirename action done.', 7);
+        $this->_logger->log('### multirename action done.', 7);
     }
 
 
@@ -236,7 +236,7 @@ class Mumsys_Multirename
                 throw new Mumsys_Multirename_Exception($message);
             } else {
                 $message = 'loaded config from --from-config "' . $config['from-config'] . '"';
-                $this->logger->log($message, 7);
+                $this->_logger->log($message, 7);
 
                 foreach($config as $cKey => $cValue) {
                      $newconfig[$cKey] = $cValue;
@@ -343,7 +343,7 @@ class Mumsys_Multirename
     {
         $pathAll = array();
         $dirinfo = $this->_getRelevantFiles();
-        $this->logger->log('Base-Path: "' . $this->_config['path'] . '"', 7);
+        $this->_logger->log('Base-Path: "' . $this->_config['path'] . '"', 7);
         $cntMatchesTotal = 0;
         $cntMatchesRelevant = 0;
 
@@ -388,7 +388,7 @@ class Mumsys_Multirename
             {
                 if ($source != $destination)
                 {
-                    $this->logger->log(
+                    $this->_logger->log(
                         'Will '.$txtMode.':' . "\n\t" . $file['name']
                         . ' ...TO: ' . "\n\t" . $newName . $extension, 6);
 
@@ -411,7 +411,7 @@ class Mumsys_Multirename
 
                         if ($newdest != $destination) {
                             $message = 'Target "' . $destination . '" exists. Used "' . $newdest . '"';
-                            $this->logger->log($message, 5);
+                            $this->_logger->log($message, 5);
                         }
 
                         $this->_history[$mode][$source] = $destination = $newdest;
@@ -419,7 +419,7 @@ class Mumsys_Multirename
 
                     } catch (Exception $e) {
                         $message = $txtMode .' failt for: "'.$source.'": ' .$e->getMessage();
-                        $this->logger->log($message, 3);
+                        $this->_logger->log($message, 3);
                     }
                 }
             } else {
@@ -434,10 +434,10 @@ class Mumsys_Multirename
                             $message .= 'overwrite target';
                         }
                         $message .= ': "' . str_replace($this->_config['path'],'...', $destination) . "'";
-                        $this->logger->warn($message);
+                        $this->_logger->warn($message);
                     }
 
-                    $this->logger->log(
+                    $this->_logger->log(
                         'Test-mode '.$txtMode.' (found: '. $cntMatches .' actions):' . PHP_EOL
                         . "\t" . $file['name'] .' ...TO: ' . "\n"
                         . "\t" . $newName . $extension . PHP_EOL, 6);
@@ -445,7 +445,7 @@ class Mumsys_Multirename
                     $cntMatchesRelevant +=1;
                 } else {
                     $message = 'No ' . $txtMode .', identical for "' . $file['name'] . '" in "'.$path.'"';
-                    $this->logger->log($message, 7);
+                    $this->_logger->log($message, 7);
                 }
             }
         }
@@ -462,7 +462,7 @@ class Mumsys_Multirename
                 . 'Memory limit: ' . ini_get('memory_limit') . PHP_EOL
                 . 'Memory used: ' . $this->_oFiles->coolfilesize(memory_get_usage(),2) . PHP_EOL;
 
-            $this->logger->log($message, 6);
+            $this->_logger->log($message, 6);
         }
 
     }
@@ -588,16 +588,16 @@ class Mumsys_Multirename
                         break;
 
                     default:
-                        $this->logger->log('Undo failt. Invalid mode. Weather '
+                        $this->_logger->log('Undo failt. Invalid mode. Weather '
                             . 'a link, symlink nor rename action set', 3);
                         break;
                 }
 
-                $this->logger->log('Undo (mode: "'.$mode.'") done', 7);
+                $this->_logger->log('Undo (mode: "'.$mode.'") done', 7);
             }
 
         } else {
-            $this->logger->log('Undo failt. No action history found ', 6);
+            $this->_logger->log('Undo failt. No action history found ', 6);
         }
 
         return;
@@ -619,9 +619,9 @@ class Mumsys_Multirename
     {
         foreach ($files as $to => $from) { // reverse, wording is now correct for this undo case for $to and $from
             if (preg_match('/link/i', $mode)) {
-                $this->logger->log('Undo ' . $mode . ': delete: "' . $from . '"', 6);
+                $this->_logger->log('Undo ' . $mode . ': delete: "' . $from . '"', 6);
             } else {
-                $this->logger->log('Undo ' . $mode . ': "' . $from . '" TO: "' . $to . '"', 6);
+                $this->_logger->log('Undo ' . $mode . ': "' . $from . '" TO: "' . $to . '"', 6);
             }
         }
     }
@@ -644,14 +644,14 @@ class Mumsys_Multirename
             try {
                 $newTo = $this->_oFiles->rename($from, $to, $keepCopy);
 
-                $this->logger->log('Undo rename ok for: "' . basename($from) . '"', 7);
+                $this->_logger->log('Undo rename ok for: "' . basename($from) . '"', 7);
                 if ($newTo != $to) {
-                    $this->logger->log(
+                    $this->_logger->log(
                         'Undo rename to "' . $to . '" notice: Already exists!. Used "' . basename($newTo) . '" instead', 5);
                 }
             } catch (Mumsys_FileSystem_Exception $e) {
                 $message = 'Undo rename failt for "' . $from . '" TO: "' . $to . '". Message: ' . $e->getMessage();
-                $this->logger->log($message, 3);
+                $this->_logger->log($message, 3);
             }
         }
     }
@@ -670,9 +670,9 @@ class Mumsys_Multirename
         foreach ($files as $to => $from) // reverse (old to is now from)
         {
             if (is_link($from) && !@unlink($from)) {
-                $this->logger->log('Deleting the link failt for "' . $from . '" ', 3);
+                $this->_logger->log('Deleting the link failt for "' . $from . '" ', 3);
             } else {
-                $this->logger->log('Undo link ok for: "' . basename($from) . '"', 7);
+                $this->_logger->log('Undo link ok for: "' . basename($from) . '"', 7);
             }
         }
     }
@@ -684,7 +684,7 @@ class Mumsys_Multirename
     protected function _addActionHistory()
     {
         if (empty($this->_history)) {
-            $this->logger->log(
+            $this->_logger->log(
                 'No actions performed. Don\'t write to history', 6);
             return array();
         }
@@ -697,7 +697,7 @@ class Mumsys_Multirename
 
         if (count($history) > $this->_historySize) {
             array_shift($history);
-            $this->logger->log('History size exceed. Oldest entry droped', 6);
+            $this->_logger->log('History size exceed. Oldest entry droped', 6);
         }
 
         $historyItem = array(
@@ -715,10 +715,10 @@ class Mumsys_Multirename
         $data = json_encode($history);
         $result = file_put_contents($file, $data);
 
-        $this->logger->log(
+        $this->_logger->log(
             'Actions saved. To undo/ reverse use multirename --undo --path "'
             . $this->_config['path'] . '"', 6);
-        $this->logger->log(
+        $this->_logger->log(
             'Undo is possible for this path until the next rename action will '
             . 'be performed/ executed', 6);
 
@@ -749,7 +749,7 @@ class Mumsys_Multirename
                 $result = $history;
             }
         } else {
-            $this->logger->log('No action history found', 3);
+            $this->_logger->log('No action history found', 3);
         }
 
         return $result;
@@ -768,7 +768,7 @@ class Mumsys_Multirename
         if (!is_dir($path)) {
             if (!@mkdir($path, 0755)) {
                 $message = 'Can not create directory "' . $this->_config['path'] . '/.multirename"';
-                $this->logger->log($message, 3);
+                $this->_logger->log($message, 3);
                 return false;
             } else {
                 $this->_trackConfigDir($path);
@@ -789,7 +789,7 @@ $this->_trackConfigDir($path);
      */
     private function _trackConfigDir($path)
     {
-        $this->logger->log('Will track config directory for collection. Path: "' . $path . '"', 7);
+        $this->_logger->log('Will track config directory for collection. Path: "' . $path . '"', 7);
         $data = $this->_getCollection();
         $this->_setCollection($data, $path);
     }
@@ -887,7 +887,7 @@ $this->_trackConfigDir($path);
         $data = json_encode($config);
 
         $result = file_put_contents($file, $data);
-        $this->logger->log('Set config done', 6);
+        $this->_logger->log('Set config done', 6);
         return $result;
     }
 
@@ -903,13 +903,13 @@ $this->_trackConfigDir($path);
         $file = $path . '/.multirename/config';
         if ($path && file_exists($file)) {
             if (@unlink($file)) {
-                $this->logger->log('Config deleted', 6);
+                $this->_logger->log('Config deleted', 6);
                 return true;
             } else {
-                $this->logger->log('Could not delete config', 3);
+                $this->_logger->log('Could not delete config', 3);
             }
         } else {
-            $this->logger->log('Config not found', 5);
+            $this->_logger->log('Config not found', 5);
         }
 
         return false;
@@ -922,7 +922,7 @@ $this->_trackConfigDir($path);
      */
     public function showConfig()
     {
-        $this->logger->log('Show config:', 6);
+        $this->_logger->log('Show config:', 6);
 
         $all = '';
         foreach ($this->_config as $key => $value) {
@@ -942,11 +942,11 @@ $this->_trackConfigDir($path);
                 }
             }
             if ($msg) {
-                $this->logger->log($msg, 6);
+                $this->_logger->log($msg, 6);
             }
             $all .= $msg;
         }
-        $this->logger->log('Cmd line:'. PHP_EOL .'multirename' . $all, 6);
+        $this->_logger->log('Cmd line:'. PHP_EOL .'multirename' . $all, 6);
     }
 
 
@@ -1123,7 +1123,7 @@ $this->_trackConfigDir($path);
             $this->_oFiles->mkdirs($path, 0755);
             $this->_trackConfigDir($path);
         } catch (Exception $err) {
-            $this->logger->log('Install failure! Reason: "' . $err->getMessage() . '"');
+            $this->_logger->log('Install failure! Reason: "' . $err->getMessage() . '"');
             throw $err;
         }
     }

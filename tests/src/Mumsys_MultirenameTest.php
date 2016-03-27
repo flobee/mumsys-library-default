@@ -11,6 +11,11 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
      * @var Mumsys_Multirename
      */
     protected $_object;
+    /**
+     *
+     * @var Mumsys_Logger
+     */
+    protected $_logger;
 
 
     /**
@@ -244,7 +249,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
 
     /**
      * Tests for max. code coverage.
-     * 
+     *
      * @covers Mumsys_Multirename::run
      * @covers Mumsys_Multirename::__destruct
      * @covers Mumsys_Multirename::_getRelevantFiles
@@ -533,9 +538,12 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
      */
     public function testShowConfig()
     {
-        $this->_object->logger->msgEcho = true;
-
         ob_start();
+        
+        $opts = array('msgEcho'=>true, 'msgLineFormat'=>'%5$s', 'logfile' => $this->_testsDir . '/tmp/test_' . basename(__FILE__) . '.log');
+        $this->_logger = new Mumsys_Logger($opts);
+        $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
+
         $this->_object->showConfig();
         $output = ob_get_clean();
 
