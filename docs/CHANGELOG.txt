@@ -1,9 +1,19 @@
 # Changes
 
+2016-03-27
+    Mumsys_Multirename
+    - Improves history handling
+    - Sets logger property to be private
+    - version 1.3.3
+    - Update/ improves tests
+    - codecoverage 100%
+
+
 2016-02-14
     Mumsys_GetOpts
     - Bugfix to work with php7+
     - Improves tests with versions checks
+
 
 2016-01-31
     Mumsys_Registry
