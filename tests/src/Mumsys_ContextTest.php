@@ -17,7 +17,7 @@ class Mumsys_ContextTest extends MumsysTestHelper
      */
     protected function setUp()
     {
-        $this->_version = '1.0.2';
+        $this->_version = '1.1.2';
         $this->_versions = array(
             'Mumsys_Abstract' => '3.0.2',
             'Mumsys_Context' => $this->_version,
@@ -25,7 +25,6 @@ class Mumsys_ContextTest extends MumsysTestHelper
         $this->_logfile = '/tmp/'.basename(__FILE__) . '.log';
         $this->_object = new Mumsys_Context();
     }
-
 
     /**
      * Tears down the fixture, for example, closes a network connection.
@@ -86,7 +85,6 @@ class Mumsys_ContextTest extends MumsysTestHelper
         $this->setExpectedException('Mumsys_Exception', '"Mumsys_Session_Interface" already set');
         $this->_object->registerSession($session);
     }
-
 
     /**
      * @covers Mumsys_Context::getDisplay
@@ -156,6 +154,25 @@ class Mumsys_ContextTest extends MumsysTestHelper
 
         $this->setExpectedException('Mumsys_Exception', '"Mumsys_Logger_Interface" already set');
         $this->_object->registerLogger($logger);
+    }
+
+    /**
+     * @covers Mumsys_Context::getGeneric
+     * @covers Mumsys_Context::registerGeneric
+     */
+    public function testGetSetGerneic()
+    {
+        $interface = 'MyInterface';
+        $value = new stdClass();
+        $this->_object->registerGeneric($interface, $value);
+        $actual1 = $this->_object->getGeneric($interface, false);
+        $actual2 = $this->_object->getGeneric('notExists', false);
+
+        $this->assertEquals($value, $actual1);
+        $this->assertFalse($actual2);
+
+        $this->setExpectedException('Mumsys_Exception', '"' . $interface . '" already set');
+        $this->_object->registerGeneric($interface, $value);
     }
 
     /**

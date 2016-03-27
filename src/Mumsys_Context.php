@@ -36,7 +36,7 @@ class Mumsys_Context extends Mumsys_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.0.2';
+    const VERSION = '1.1.2';
 
     /**
      * Configuration vars in an array container.
@@ -283,6 +283,39 @@ class Mumsys_Context extends Mumsys_Abstract
 
 
     /**
+     * Returns a generic already registered interface/ object.
+     *
+     * @param string $interface Name of the Interface the object implements
+     * @param mixed $default Default value to return if interface not exists
+     *
+     * @return object Retuns the requested interface
+     * @throws Mumsys_Exception Throws exception if the object was not set
+     */
+    public function getGeneric( $interface, $default = null )
+    {
+        try {
+            return $this->_get($interface);
+        } catch (Mumsys_Exception $e) { ; }
+
+        return $default;
+    }
+
+
+    /**
+     * Registers a new interface/ oject.
+     *
+     * @param string $interface Name of the Interface the object implements
+     * @param mixed $value The object to register
+     *
+     * @throws Mumsys_Exception Throws exception if the object exists
+     */
+    public function registerGeneric( $interface, $value )
+    {
+        $this->_register($interface, $value);
+    }
+
+
+    /**
      * Returns the object by given key.
      *
      * @param string $key Name of the class to reqister
@@ -303,7 +336,7 @@ class Mumsys_Context extends Mumsys_Abstract
      * Register/ set initially the object by given key.
      *
      * @param string $key Name of the object to register
-     * @param object $value The object to be register
+     * @param object $value The object to register
      * @throws Mumsys_Exception Throws exception if object already set
      */
     private function _register( $key, $value )
