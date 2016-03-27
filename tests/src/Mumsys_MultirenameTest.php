@@ -16,7 +16,8 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
      * @var Mumsys_Logger
      */
     protected $_logger;
-
+    protected $_version;
+    protected $_versions;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -24,6 +25,12 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->_version = '1.3.2';
+        $this->_versions = array(
+            'Mumsys_Abstract' => '3.0.1',
+            'Mumsys_Multirename' => $this->_version,
+        );
+
         $this->_testsDir = realpath(dirname(__FILE__) . '/../');
 
         $_SERVER['HOME'] = $this->_testsDir . '/tmp';
@@ -539,7 +546,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
     public function testShowConfig()
     {
         ob_start();
-        
+
         $opts = array('msgEcho'=>true, 'msgLineFormat'=>'%5$s', 'logfile' => $this->_testsDir . '/tmp/test_' . basename(__FILE__) . '.log');
         $this->_logger = new Mumsys_Logger($opts);
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
@@ -586,4 +593,22 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(count($expected), count($actual));
     }
 
+
+    /**
+     * @covers Mumsys_Multirename::getVersion
+     * @covers Mumsys_Multirename::getVersions
+     * @covers Mumsys_Multirename::getVersionID
+     */
+    public function testAbstractClass()
+    {
+        $this->assertEquals('Mumsys_Multirename ' . $this->_version, $this->_object->getVersion());
+        $this->assertEquals($this->_version, $this->_object->getVersionID());
+   
+        $possible = $this->_object->getVersions();
+
+        foreach ($this->_versions as $must => $value) {
+            $this->assertTrue(isset($possible[$must]));
+            $this->assertTrue(($possible[$must] == $value));
+        }
+    }
 }
