@@ -36,7 +36,7 @@ class Mumsys_Context extends Mumsys_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.1.2';
+    const VERSION = '1.1.3';
 
     /**
      * Configuration vars in an array container.
@@ -139,6 +139,7 @@ class Mumsys_Context extends Mumsys_Abstract
     {
         $this->_register('Mumsys_Db', $db);
     }
+
 
     /**
      * Replace the database object.
@@ -302,15 +303,21 @@ class Mumsys_Context extends Mumsys_Abstract
 
 
     /**
-     * Registers a new interface/ oject.
+     * Registers a new interface/ object.
      *
      * @param string $interface Name of the Interface the object implements
-     * @param mixed $value The object to register
+     * @param object $value Object to register
      *
-     * @throws Mumsys_Exception Throws exception if the object exists
+     * @throws Mumsys_Exception Throws exception if the object exists or if
+     * incoming type is invalid
      */
     public function registerGeneric( $interface, $value )
     {
+        if (!is_object($value) || !is_a($value, $interface)) {
+            $message = sprintf('Value does not implement the interface "%1$s"', $interface);
+            throw new Mumsys_Exception($message);
+        }
+
         $this->_register($interface, $value);
     }
 

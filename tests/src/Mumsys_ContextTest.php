@@ -17,7 +17,7 @@ class Mumsys_ContextTest extends MumsysTestHelper
      */
     protected function setUp()
     {
-        $this->_version = '1.1.2';
+        $this->_version = '1.1.3';
         $this->_versions = array(
             'Mumsys_Abstract' => '3.0.2',
             'Mumsys_Context' => $this->_version,
@@ -162,7 +162,7 @@ class Mumsys_ContextTest extends MumsysTestHelper
      */
     public function testGetSetGerneic()
     {
-        $interface = 'MyInterface';
+        $interface = 'stdClass';
         $value = new stdClass();
         $this->_object->registerGeneric($interface, $value);
         $actual1 = $this->_object->getGeneric($interface, false);
@@ -172,6 +172,19 @@ class Mumsys_ContextTest extends MumsysTestHelper
         $this->assertFalse($actual2);
 
         $this->setExpectedException('Mumsys_Exception', '"' . $interface . '" already set');
+        $this->_object->registerGeneric($interface, $value);
+    }
+
+    /**
+     * @covers Mumsys_Context::getGeneric
+     * @covers Mumsys_Context::registerGeneric
+     */
+    public function testRegisterGerneicException()
+    {
+        $interface = 'badInterface';
+        $value = new stdClass();
+
+        $this->setExpectedException('Mumsys_Exception', 'Value does not implement the interface "badInterface"');
         $this->_object->registerGeneric($interface, $value);
     }
 
