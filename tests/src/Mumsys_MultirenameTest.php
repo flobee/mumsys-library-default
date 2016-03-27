@@ -25,7 +25,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->_version = '1.3.2';
+        $this->_version = '1.3.3';
         $this->_versions = array(
             'Mumsys_Abstract' => '3.0.1',
             'Mumsys_Multirename' => $this->_version,
@@ -268,6 +268,8 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
      * @covers Mumsys_Multirename::_undoRename
      * @covers Mumsys_Multirename::_undoTest
      * @covers Mumsys_Multirename::_relevantFilesCheckMatches
+     * @covers Mumsys_Multirename::_getActionHistory
+     * @covers Mumsys_Multirename::_addActionHistory
      */
     public function testRunAndUndo()
     {
@@ -345,23 +347,36 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * For code coverage in _addActionHistory()
      * @covers Mumsys_Multirename::run
      * @covers Mumsys_Multirename::_getRelevantFiles
      * @covers Mumsys_Multirename::_buildPathBreadcrumbs
      * @covers Mumsys_Multirename::_substitutePaths
      * @covers Mumsys_Multirename::_addActionHistory
+     * @covers Mumsys_Multirename::_getActionHistory
      */
     public function testRun4history()
     {
-        $this->markTestIncomplete();
-
         // do rename now
         $config = $this->_config;
-        $config['substitutions'] = 'unittest_testfile_-_10=unittest_testfile_-_11';
+        $config['substitutions'] = 'multirenametestfile_-_10=multirenametestfile_-_11';
         $config['keepcopy'] =false;
         $config['test'] = false;
         $config['fileextensions'] = '*';
+        $config['history'] = true;
 
+        $this->_object->setSetup($config);
+        $this->_object->run();
+
+        $config['substitutions'] = 'multirenametestfile_-_11=multirenametestfile_-_12';
+        $this->_object->setSetup($config);
+        $this->_object->run();
+
+        $config['substitutions'] = 'multirenametestfile_-_12=multirenametestfile_-_13';
+        $this->_object->setSetup($config);
+        $this->_object->run();
+
+        $config['substitutions'] = 'multirenametestfile_-_13=multirenametestfile_-_14';
         $this->_object->setSetup($config);
         $this->_object->run();
     }
@@ -603,7 +618,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals('Mumsys_Multirename ' . $this->_version, $this->_object->getVersion());
         $this->assertEquals($this->_version, $this->_object->getVersionID());
-   
+
         $possible = $this->_object->getVersions();
 
         foreach ($this->_versions as $must => $value) {

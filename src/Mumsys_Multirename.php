@@ -40,7 +40,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.3.2';
+    const VERSION = '1.3.3';
 
     /**
      * Logger to log and output messages.
@@ -346,6 +346,7 @@ class Mumsys_Multirename
         $this->_logger->log('Base-Path: "' . $this->_config['path'] . '"', 7);
         $cntMatchesTotal = 0;
         $cntMatchesRelevant = 0;
+        $history = array();
 
         foreach ($dirinfo AS $k => $file)
         {
@@ -389,7 +390,7 @@ class Mumsys_Multirename
                 if ($source != $destination)
                 {
                     $this->_logger->log(
-                        'Will '.$txtMode.':' . "\n\t" . $file['name']
+                        'Will ' . $txtMode . ':' . "\n\t" . $file['name']
                         . ' ...TO: ' . "\n\t" . $newName . $extension, 6);
 
                     try {
@@ -414,7 +415,7 @@ class Mumsys_Multirename
                             $this->_logger->log($message, 5);
                         }
 
-                        $this->_history[$mode][$source] = $destination = $newdest;
+                        $history[$mode][$source] = $destination = $newdest;
                         $cntMatchesRelevant +=1;
 
                     } catch (Exception $e) {
@@ -450,8 +451,8 @@ class Mumsys_Multirename
             }
         }
 
-        if (!empty($this->_config['history']) && empty($this->_config['test'])) {
-            $this->_addActionHistory();
+        if (!empty($this->_config['history']) && empty($this->_config['test']) && $history) {
+            $this->_addActionHistory($history);
         }
 
         // stat output
@@ -680,15 +681,11 @@ class Mumsys_Multirename
 
     /**
      * Adds current history to the history log.
+     *
+     * @param array $current Current created history to add
      */
-    protected function _addActionHistory()
+    protected function _addActionHistory(array $current)
     {
-        if (empty($this->_history)) {
-            $this->_logger->log(
-                'No actions performed. Don\'t write to history', 6);
-            return array();
-        }
-
         $this->_mkConfigDir($this->_config['path']);
 
         $file = $this->_config['path'] . '/.multirename/lastactions';
@@ -701,9 +698,9 @@ class Mumsys_Multirename
         }
 
         $historyItem = array(
-            'name' => 'history ' . date('Y-m-d', $_SERVER['REQUEST_TIME']),
+            'name' => 'history ' . date('Y-m-d', time()),
             'date' => date('Y-m-d H:i:s', time()),
-            'history' => $this->_history,
+            'history' => $current,
         );
 
         if ($history && isset($history[0]['date'])) {
@@ -743,11 +740,13 @@ class Mumsys_Multirename
             $data = file_get_contents($file);
             $history = json_decode($data, true);
 
-            if (isset($history[$index])) {
+            /** @todo future
+             if (isset($history[$index])) {
                 $result = array($history[$index]);
             } else {
                 $result = $history;
-            }
+            }*/
+            $result = $history;
         } else {
             $this->_logger->log('No action history found', 3);
         }
