@@ -168,6 +168,25 @@ class Mumsys_Config_Default
         $this->_configs = $this->_replace($this->_configs, $parts, $value);
     }
 
+    
+    /**
+     * Adds a path to the config.
+     * On runtime you may set additional paths to the config object. Note that
+     * the configs will be avalivable only sinse this the time you add the path.
+     * @param string $path Additionl path where config files exists.
+     *
+     * @throws Mumsys_Config_Exception If path not exists
+     */
+    public function addPath( $path )
+    {
+        if (!is_dir($path.'/')) {
+            $message = sprintf('Path not found: "%1$s"', $path);
+            throw new Mumsys_Config_Exception($message);
+        }
+
+        $this->_paths[] = (string)$path;
+    }
+
 
     /**
 	 * Returns a config value.
