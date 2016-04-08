@@ -46,14 +46,19 @@ class Mumsys_Timer extends Mumsys_Abstract
     /**
      * Initialize the object.
      *
-     * @param boolean $startNow Flag to enable "start now" function.
+     * @param boolean|float $start If true enable "start now" 
+	 * function otherwise given float value will be used as starttime in mictotime format
      * If true time recording starts now
      */
-    public function __construct( $startNow=false )
+    public function __construct( $start=false )
     {
-        if ( $startNow ) {
+        if ( $start === true ) {
             $this->start();
         }
+		
+		if ( is_float($start) ) {
+			$this->startTimeSet($start);
+		}
     }
 
 
@@ -89,6 +94,16 @@ class Mumsys_Timer extends Mumsys_Abstract
     {
         return $this->_start;
     }
+	
+	/**
+	 * Sets the start time in microtim format.
+	 *
+	 * @param $microTime Time in microtime format (sec.microsec)
+	 */
+	public function startTimeSet($microTime)
+    {
+        return $this->_start = (float)$microTime;
+	}
 
 
     /**
