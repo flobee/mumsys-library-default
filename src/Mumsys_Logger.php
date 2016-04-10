@@ -221,6 +221,18 @@ class Mumsys_Logger
      */
     protected $_cfg = array();
 
+    private $_bufferOutputMessage = '';
+    private $_bufferLogMessage = '';
+
+    public function getLastLog( $param )
+    {
+        return $this->_bufferLogMessage;
+    }
+    public function getLastMessage()
+    {
+        return $this->_bufferOutputMessage;
+    }
+
     /**
      * Initialize the logger object
      *
@@ -405,6 +417,7 @@ class Mumsys_Logger
             {
                 if ( $this->_logfile !== false ) {
                     $this->write( $message );
+                    $this->_bufferLogMessage = $message;
                 }
             }
 
@@ -412,7 +425,8 @@ class Mumsys_Logger
             {
                 if ( $this->msgEcho )
                 {
-                    if ($this->_logFormatMsg && $this->_logFormatMsg != $this->_logFormat) {
+                    if ($this->_logFormatMsg && $this->_logFormatMsg != $this->_logFormat)
+                    {
                         if ($isArray)
                         {
                             $msgOut = '';
@@ -425,7 +439,7 @@ class Mumsys_Logger
                                     $this->_logFormatMsg,
                                     $datesting,
                                     $this->username,
-                                    $levelName,
+                                    $this->getOutputLevelName($level),
                                     $level,
                                     $tmp . $this->lf
                                 );
@@ -439,7 +453,7 @@ class Mumsys_Logger
                                 $this->_logFormatMsg,
                                 $datesting,
                                 $this->username,
-                                $levelName,
+                                $this->getOutputLevelName($level),
                                 $level,
                                 $input . $this->lf
                             );
@@ -448,6 +462,7 @@ class Mumsys_Logger
                         $msgOut = $message;
                     }
                     echo $msgOut;
+                    $this->_bufferOutputMessage = $message;
                 }
 
                 if ( $this->msgReturn ) {
@@ -504,6 +519,18 @@ class Mumsys_Logger
             return 'unknown';
         }
         return $this->_loglevels[$level];
+    }
+
+
+    public function getOutputLevelName( $level )
+    {
+        if ( !isset($this->_loglevels[$level]) ) {
+            $status = 'unknown';
+        } else {
+            $status = $this->_loglevels[$level];
+        }
+
+        return $status;
     }
 
 
@@ -633,4 +660,14 @@ class Mumsys_Logger
         return $this->log($message, Mumsys_Logger::DEBUG);
     }
 
+
+    public function setMessageLoglevel($level)
+    {
+        if (isset($this->_loglevels[$level])) {
+            $this->msglogLevel = (int)$level;
+            return true;
+        }
+
+        throw new Mumsys_Logger_Exception('Level "' . $level . '" unknown');
+    }
 }
