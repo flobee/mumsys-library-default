@@ -51,6 +51,9 @@ Mumsys_Multirename
 
 ## new features
 
+- [10%] adding extenal plugin scripts to execute befor or after internal rename 
+        action
+
 - [00%] rename list of given files in a text file
 
 - [00%] scan for fileextensions given by a regex? without extension?

@@ -1364,19 +1364,20 @@ class Mumsys_Multirename
                 . '(Values: soft|hard[;rel|abs]). If the second parameter is not given relativ links will be created',
             '--linkway:' => 'Type of the link to be created relative or absolut: ("rel"|"abs"), default: "rel". '
                 . 'This will be used internally if you use --link soft;rel the linkway will be extracted from that line',
-            '--plugins' => 'Semicolon separated list of plugins to use. Plugins to use to do the renameing: eg.: '
-                . 'You have a text file including the new name of the file to be renameed: The pluging gets the '
-                . 'file location and you return the new filename befor or after the other rules take affect! '
-                . 'Example: --plugins \'TitleOfVDRInfoFile:before;CutAdvertising:after\'',
             '--history|-h' => 'Flag; If set this will enable the history/ for the moment ONLY the last action log with '
                 . 'the option to undo it',
             '--history-size:' => 'Integer; Number of history entrys if --history is enabled; Default: 10; '
                 . 'Note: If you run on much more than hundreds of files you may set the memory'
                 . ' limit to a higher value and/or reduce this number to 1. This feature may consume much memory. '
                 . 'Using the --test mode with loglevel 6 or higher will give you informations about the memory usage.',
+
             '--batch' => 'Flag; Not implemented yet. Run the job recusiv from given --path as start directory and '
                 . 'start renaming. If a new configuration in the sub directories exists is trys to load the '
                 . 'configuration for batch-mode and execute it. This enables --recursiv and --history',
+            '--plugins' => 'Not implemented yet. Semicolon separated list of plugins to use. Plugins to use to do the '
+                . 'renameing: eg.: You have a text file including the new name of the file to be renameed: The pluging '
+                . 'gets the file location and you return the new filename befor or after the other rules take affect! '
+                . 'Example: --plugins \'TitleOfVDRInfoFile:before;CutAdvertising:after\'',
             '--undo' => 'Flag; Revers/ undo the last action',
             '--from-config:' => 'Read saved configuration from given path and execute it',
             '--set-config' => 'disabled; see --save-config',
