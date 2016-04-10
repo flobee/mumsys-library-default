@@ -531,6 +531,36 @@ class Mumsys_Logger
         }
 
         return $status;
+
+        switch ($status)
+        {
+            case 'INFO':
+                $color = "[42m"; //Green background
+                break;
+
+            case "EMERG":
+            case "ALERT":
+            case 'ERR':
+                $color = "[41m"; //Red background
+                break;
+
+            case "CRIT":
+            case "WARN":
+                $color = "[43m"; //Yellow background
+                break;
+
+            case "NOTE":
+            case 'NOTICE':
+                $color = "[44m"; //Blue background
+                break;
+
+            case 'DEBUG':
+            default:
+                $color = '[41m';
+        }
+
+        $chr27 = chr(27);
+        return sprintf('%1$s%2$s%3$s%4$s[0m', $chr27, $color, $this->_loglevels[$level], $chr27 );
     }
 
 
