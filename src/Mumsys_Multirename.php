@@ -2,24 +2,17 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Multirename
  * for MUMSYS Library for Multi User Management System
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright (c) 2015 by Florian Blasel
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Multirename
- * @version     1.3.1
  * Created on 2015-02-28
- * @since       File available since Release 0.1
- * @filesource
- * ----------------------------------------------------------------------------
  */
 /*}}}*/
 
@@ -40,19 +33,26 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.3.3';
+    const VERSION = '1.4.0';
 
     /**
      * Logger to log and output messages.
-     * @var Mumsys_Logger_Interface
+     * @var Mumsys_Logger_File
      */
     private $_logger;
 
     /**
+     * @deprecated since version 1.3.3
      * Current working settings.
      * @var array
      */
     private $_config;
+
+    /**
+     * Current list of working settings.
+     * @var array
+     */
+    private $_configs = array();
 
     /**
      * Filesystem object to execute rename or link/symlink tasks.
@@ -88,6 +88,12 @@ class Mumsys_Multirename
     private $_historySize = 10;
 
     /**
+     * Relativ location for the history file
+     * @var string
+     */
+    private $_historyFile = '/.multirename/lastactions';
+
+    /**
      * Path to the file to collect working directories.
      * For an overview or a possible remove of the program
      * @var string
@@ -100,6 +106,17 @@ class Mumsys_Multirename
      */
     private $_pathHome = '/tmp/';
 
+    /**
+     * Statistics
+     * @var array
+     */
+    private $_counter = array();
+    /**
+     * Bitmask for json encode options
+     * @var bitmask
+     */
+    private $_jsonOptions = JSON_PRETTY_PRINT;
+
 
     /**
      * Initialise Multirename object.
@@ -107,91 +124,38 @@ class Mumsys_Multirename
      * @param array $config Setup parameters. @see getSetup() for more.
      * @param Mumsys_FileSystem $oFiles Filesystem object for the primary
      * execution.
-     * @param object $logger Log object to track the work and/ or show the
+     * @param Mumsys_Logger_Interface $logger Log object to track the work and/ or show the
      * output when using as shell script or cronjob
      */
     public function __construct(array $config = array(), Mumsys_FileSystem $oFiles, Mumsys_Logger_Interface $logger)
     {
+        $logger->log('### multirename ('.self::VERSION.') start run()', 7);
+
         // nothing which belongs to root is allowed at the moment!
-        if (!empty($config['allowRoot']) || (php_sapi_name() === 'cli' && in_array('root', $_SERVER))) {
+        if (php_sapi_name() === 'cli' && in_array('root', $_SERVER)) {
             $message = 'Something which belongs to "root" is forbidden. '
                 . 'Sorry! Use a different user!'.PHP_EOL;
             throw new Mumsys_Multirename_Exception($message);
         }
-        unset($config['allowRoot']);
 
         $this->_pathHome = is_dir($_SERVER['HOME']) ? $_SERVER['HOME'] : $this->_pathHome;
         $this->_collection = $this->_pathHome . '/.multirename/collection';
         $this->_logger = $logger;
 
         if ( isset($config['loglevel']) ) {
-            $this->_logger->msglogLevel = (int)$config['loglevel'];
+            $this->_logger->setMessageLoglevel( (int)$config['loglevel'] );
         }
 
-        $this->_logger->log('### multirename action init', 7);
-
-        $config = $this->setSetup($config);
-
+        $this->_counter = array(
+            'cntMatches' => 0,
+            'cntMatchesTotal' => 0,
+            'cntMatchesRelevant' => 0,
+        );
         $this->_oFiles = $oFiles;
 
+        $this->run($config);
 
-        $actions = array();
-
-        if ( isset($config['undo']) ) {
-            $actions['undo'] = 'undo';
-        } else {
-            $actions['run'] = 'run';
-        }
-
-        if (isset($config['set-config'])) {
-            $actions['set-config'] = 'set-config';
-        }
-
-        if (isset($config['del-config'])) {
-            $actions['del-config'] = 'del-config';
-        }
-
-        if (isset($config['show-config'])) {
-            $actions['show-config'] = 'show-config';
-            unset($actions['run']);
-        }
-
-        if (isset($config['version'])) {
-            $actions = array('version' => 'version');
-        }
-
-        foreach($actions as $action)
-        {
-            $this->_logger->log('Will perform action "' . $action . '" now', 7);
-
-            switch ($action) {
-                case 'set-config':
-                    $this->setConfig($config['path']);
-                    break;
-
-                case 'del-config':
-                    $this->delConfig($config['path']);
-                    break;
-
-                case 'undo':
-                    $this->undo($config['path']);
-                    break;
-
-                case 'show-config':
-                    $this->showConfig();
-                    break;
-
-                case 'version':
-                    $this->showVersion();
-                    break;
-
-                case 'run':
-                default:
-                    $this->run();
-            }
-        }
-
-        $this->_logger->log('### multirename action done.', 7);
+        $this->_logger->log('### multirename run() done.' . PHP_EOL, 7);
     }
 
 
@@ -208,42 +172,100 @@ class Mumsys_Multirename
 
 
     /**
-     * Initialise incoming config parameters and returns the new configuration.
+     * Run the rename process based on given config.
+     *
+     * @param array $input Configuration/ setup parameters from shell input.
+     * see initSetup() for more
+     */
+    public function run(array $input = array())
+    {
+        if (isset($input['from-config'])) {
+            $this->_configs = $this->_mergeConfigs($input);
+        } else {
+            $this->_configs = array($input);
+        }
+
+        foreach ($this->_configs as $config)
+        {
+            $config = $this->initSetup($config);
+
+            $actions = array();
+
+            /** @todo to be replace with new getopts features: action1 options action2 options */
+            if ( !empty($config['undo']) ) {
+                $actions['undo'] = 'undo';
+            } else {
+                $actions['run'] = 'run';
+            }
+
+            if (isset($config['save-config']) || isset($config['set-config'])) {
+                $actions['save-config'] = 'save-config';
+            }
+
+            if (isset($config['del-config'])) {
+                $actions['del-config'] = 'del-config';
+            }
+
+            if (isset($config['show-config'])) {
+                $actions['show-config'] = 'show-config';
+                unset($actions['run']);
+            }
+
+            if (isset($config['version'])) {
+                $actions = array('version' => 'version');
+            }
+
+            foreach($actions as $action)
+            {
+                $this->_logger->log('Will perform action "' . $action . '" now', 7);
+
+                switch ($action)
+                {
+                    case 'save-config':
+                        $this->saveConfig($config['path']);
+                        break;
+
+                    case 'del-config':
+                        $this->deleteConfig($config['path']);
+                        break;
+
+                    case 'show-config':
+                        $this->_showConfig($config);
+                        break;
+
+                    case 'undo':
+                        $this->_undo($config);
+                        break;
+
+                    case 'version':
+                        $this->showVersion();
+                        break;
+
+                    case 'run':
+                    default:
+                        $this->_execute($config);
+                        $this->stats();
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Initialise config parameters for the current action and returns the new
+     * configuration.
      *
      * Parameters will be validated, defaults set and prepares it for the usage
      * internally.
      *
-     * @param array $config Configuration/ setup parameters. see getSetup() for help/ a complete list!
+     * @param array $config Configuration/ setup parameters. see initSetup() for help/ a complete list!
      *
      * @return array Returns the new, checked configuration.
      * @throws Mumsys_Exception Throws exception on any error happen with the incoming data.
      */
-    public function setSetup( array $config=array() )
+    public function initSetup( array $config=array() )
     {
         $this->__destruct();
-
-        if (isset($config['from-config']))
-        {
-            if (is_dir($config['from-config'] .'/')) {
-                $config['path'] =& $config['from-config'];
-            } else {
-                $message = 'Invalid --from-config <your value> parameter. Path not found';
-                throw new Mumsys_Multirename_Exception($message);
-            }
-
-            if (!($newconfig=$this->getConfig($config['from-config']) ) ) {
-                $message = 'Could not read from-config in path: "' . $config['from-config'] . '"';
-                throw new Mumsys_Multirename_Exception($message);
-            } else {
-                $message = 'loaded config from --from-config "' . $config['from-config'] . '"';
-                $this->_logger->log($message, 7);
-
-                foreach($config as $cKey => $cValue) {
-                     $newconfig[$cKey] = $cValue;
-                }
-                $config = $newconfig;
-            }
-        }
 
         if ( !isset($config['path']) || !is_dir($config['path']) ) {
             throw new Mumsys_Multirename_Exception('Invalid --path <your value>');
@@ -265,7 +287,7 @@ class Mumsys_Multirename
             $config['hidden'] = false;
         }
 
-        if ( isset($config['link']) ) {
+        if ( !empty($config['link']) ) {
             $linkParts = explode(';', $config['link']);
             $config['link'] = $linkParts[0];
             if (isset($linkParts[1])) {
@@ -273,7 +295,7 @@ class Mumsys_Multirename
             }
         }
 
-        if ( isset($config['linkway']) ) {
+        if ( !empty($config['linkway']) ) {
             if ($config['linkway'] != 'abs') {
                 $config['linkway'] = 'rel';
             }
@@ -326,8 +348,6 @@ class Mumsys_Multirename
             $config['test'] = false;
         }
 
-        $this->_config = $config;
-
         return $config;
     }
 
@@ -337,23 +357,21 @@ class Mumsys_Multirename
      * This method will look for required files and will test, link or rename
      * affected files.
      *
-     * @todo Reduce crap index of codecoverage
+     * @param array $config Configuration to work with for this action.
      */
-    public function run()
+    private function _execute(array $config)
     {
         $pathAll = array();
-        $dirinfo = $this->_getRelevantFiles();
-        $this->_logger->log('Base-Path: "' . $this->_config['path'] . '"', 7);
-        $cntMatchesTotal = 0;
-        $cntMatchesRelevant = 0;
+        $dirinfo = $this->_getRelevantFiles($config);
+        $this->_logger->log('Base-Path: "' . $config['path'] . '"', 7);
+
         $history = array();
 
         foreach ($dirinfo AS $k => $file)
         {
             $path = $file['path'];
 
-            $cntMatches = 0;
-            $cntMatchesTotal += 1;
+            $this->_counter['cntMatchesTotal']  += 1;
 
             if ($file['ext'] == '') {
                 $newName = $file['name'];
@@ -365,18 +383,18 @@ class Mumsys_Multirename
 
             // generate %path0% ... %pathN% for substitution
             if (!isset($pathAll[$path])) {
-                $pathAll[$path] = $this->_buildPathBreadcrumbs($path);
+                $pathAll[$path] = $this->_buildPathBreadcrumbs($path, $config['path']);
             }
 
-            $newName = $this->_substitute($newName, $path, $pathAll[$path]);
+            $newName = $this->_substitute($newName, $path, $pathAll[$path], $config['sub-paths']);
 
             $source = $path .'/'. $file['name'];
             $destination = $path .'/'. $newName . $extension;
 
-            if (isset($this->_config['link'])) {
+            if (!empty($config['link'])) {
                 $txtMode = 'link';
                 $mode = 'link';
-                if ($this->_config['link'] == 'soft') {
+                if ($config['link'] == 'soft') {
                     $txtMode = 'symlink';
                     $mode = 'symlink';
                 }
@@ -385,28 +403,28 @@ class Mumsys_Multirename
                 $mode = 'rename';
             }
 
-            if ($this->_config['test'] !== true)
+            if ($config['test'] !== true)
             {
                 if ($source != $destination)
                 {
                     $this->_logger->log(
                         'Will ' . $txtMode . ':' . "\n\t" . $file['name']
                         . ' ...TO: ' . "\n\t" . $newName . $extension, 6);
-
-                    try {
-                        if (isset($this->_config['link'])) {
+                    try
+                    {
+                        if (!empty($config['link'])) {
                             $newdest = $this->_oFiles->link(
                                 $source,
                                 $destination,
-                                $this->_config['link'],
-                                $this->_config['linkway'],
-                                $this->_config['keepcopy']
+                                $config['link'],
+                                $config['linkway'],
+                                $config['keepcopy']
                             );
                         } else {
                             $newdest = $this->_oFiles->rename(
                                 $source,
                                 $destination,
-                                $this->_config['keepcopy']
+                                $config['keepcopy']
                             );
                         }
 
@@ -416,7 +434,7 @@ class Mumsys_Multirename
                         }
 
                         $history[$mode][$source] = $destination = $newdest;
-                        $cntMatchesRelevant +=1;
+                        $this->_counter['cntMatchesRelevant']  += 1;
 
                     } catch (Exception $e) {
                         $message = $txtMode .' failt for: "'.$source.'": ' .$e->getMessage();
@@ -424,48 +442,77 @@ class Mumsys_Multirename
                     }
                 }
             } else {
-                // $this->execTest()
-                if ($source != $destination)
-                {
-                    if (file_exists($destination) || is_link($destination)) {
-                        $message = 'Target exists! Will ';
-                        if ($this->_config['keepcopy']) {
-                            $message .= 'create a copy';
-                        } else {
-                            $message .= 'overwrite target';
-                        }
-                        $message .= ': "' . str_replace($this->_config['path'],'...', $destination) . "'";
-                        $this->_logger->warn($message);
-                    }
-
-                    $this->_logger->log(
-                        'Test-mode '.$txtMode.' (found: '. $cntMatches .' actions):' . PHP_EOL
-                        . "\t" . $file['name'] .' ...TO: ' . "\n"
-                        . "\t" . $newName . $extension . PHP_EOL, 6);
-
-                    $cntMatchesRelevant +=1;
-                } else {
-                    $message = 'No ' . $txtMode .', identical for "' . $file['name'] . '" in "'.$path.'"';
-                    $this->_logger->log($message, 7);
-                }
+                $matches = $this->_executeTest($config, $source, $destination, $file, $newName, $extension, $txtMode);
+                $this->_counter['cntMatchesRelevant'] += $matches;
             }
         }
 
-        if (!empty($this->_config['history']) && empty($this->_config['test']) && $history) {
-            $this->_addActionHistory($history);
+        if (!empty($config['history']) && empty($config['test']) && $history) {
+            $this->_addActionHistory($config, $history);
         }
 
+    }
+
+    /**
+     * Send statistics to the logger if possible (loglevel >= 6)
+     */
+    public function stats()
+    {
         // stat output
-        if ($cntMatchesTotal) {
+        if ($this->_counter['cntMatchesTotal'])
+        {
             $message = 'Stats:' . PHP_EOL
-                . 'Files total: '. $cntMatchesTotal . PHP_EOL
-                . 'Files relevant: '. $cntMatchesRelevant . PHP_EOL
+                . 'Scanned files total: '. $this->_counter['cntMatchesTotal'] . PHP_EOL
+                . 'Files relevant: '. $this->_counter['cntMatchesRelevant'] . PHP_EOL
                 . 'Memory limit: ' . ini_get('memory_limit') . PHP_EOL
                 . 'Memory used: ' . $this->_oFiles->coolfilesize(memory_get_usage(),2) . PHP_EOL;
 
             $this->_logger->log($message, 6);
         }
+    }
 
+    /**
+     * Perfom a test rename.
+     *
+     * @param array $config Current action config
+     * @param string $source Source file
+     * @param string $destination Target file
+     * @param array $file List of key/value pairs of source file properties
+     * @param string $newName New file name
+     * @param string $extension Extension of the new filename
+     * @param string $txtMode Mode in text format to show/output
+     *
+     * @return integer Number of occurances.
+     */
+    private function _executeTest(array $config, $source, $destination, $file, $newName, $extension, $txtMode)
+    {
+        $cntMatchesRelevant = 0;
+
+        if ($source != $destination)
+        {
+            if (file_exists($destination) || is_link($destination)) {
+                $message = 'Target exists! Will ';
+                if ($config['keepcopy']) {
+                    $message .= 'create a copy';
+                } else {
+                    $message .= 'overwrite target';
+                }
+                $message .= ': "' . str_replace($config['path'], '...', $destination) . "'";
+                $this->_logger->warn($message);
+            }
+
+            $this->_logger->log(
+                'Test-mode ' . $txtMode . ' (found: ' . $cntMatchesRelevant . ' actions):' . PHP_EOL
+                . "\t" . $file['name'] . ' ...TO: ' . "\n"
+                . "\t" . $newName . $extension . PHP_EOL, 6);
+
+            $cntMatchesRelevant +=1;
+        } else {
+            $message = 'No ' . $txtMode . ', identical for "' . $file['name'] . '" in "' . $file['path'] . '"';
+            $this->_logger->log($message, 7);
+        }
+
+        return $cntMatchesRelevant;
     }
 
 
@@ -474,17 +521,19 @@ class Mumsys_Multirename
      *
      * @todo Reduce crap index of codecoverage
      *
+     * @param array $config Current action config
+     *
      * @return array List of properties from Mumsys_FileSystem::getFileDetails
      * including 'ext' for extension.
      */
-    private function _getRelevantFiles()
+    private function _getRelevantFiles(array $config)
     {
         $files = array();
 
         $dirinfo = $this->_oFiles->scanDirInfo(
-            $this->_config['path'],
-            ($this->_config['hidden'] ? false : true),
-            $this->_config['recursive']
+            $config['path'],
+            ($config['hidden'] ? false : true),
+            $config['recursive']
         );
 
         foreach ($dirinfo as $key => $file)
@@ -496,12 +545,12 @@ class Mumsys_Multirename
             $extension = $this->_oFiles->extGet($file['name']);
             $file['ext'] = $extension;
 
-            if (in_array('*', $this->_config['fileextensions'])
-                || in_array($extension, $this->_config['fileextensions']))
+            if (in_array('*', $config['fileextensions'])
+                || in_array($extension, $config['fileextensions']))
             {
                 // Check in OR condition; continue loop on match
-                if ($this->_config['exclude']) {
-                    foreach ($this->_config['exclude'] as $find) {
+                if ($config['exclude']) {
+                    foreach ($config['exclude'] as $find) {
                         if ($this->_relevantFilesCheckMatches($find, $file['file'])) {
                             continue;
                         }
@@ -509,8 +558,8 @@ class Mumsys_Multirename
                 }
 
                 // Check in OR condition; take it on match or continue loop
-                if ($this->_config['find']) {
-                    foreach ($this->_config['find'] as $find) {
+                if ($config['find']) {
+                    foreach ($config['find'] as $find) {
                         if ($this->_relevantFilesCheckMatches($find, $file['file'])) {
                             $files[] = $file;
                         } else {
@@ -550,16 +599,16 @@ class Mumsys_Multirename
     /**
      * Undo last rename action.
      *
-     * @param string $path Action directory where the files where renamed
+     * @param array $config Current action config
      * @param string $keepCopy Flag to set to what to do if old file already
      * exists again on undo. On true the existing file will be kept, on false
      * overwriting take affect.
      *
      * @return void
      */
-    public function undo( $path, $keepCopy=true)
+    protected function _undo(array $config, $keepCopy=true)
     {
-        $allHistorys = $this->_getActionHistory($path, -1);
+        $allHistorys = $this->_getActionHistory($config['path'], -1);
 
         if ($allHistorys)
         {
@@ -568,7 +617,7 @@ class Mumsys_Multirename
 
             foreach ($history as $mode => $lastActions)
             {
-                if ($this->_config['test']) {
+                if ($config['test']) {
                     $mode = $mode.'-Test';
                 }
 
@@ -598,7 +647,7 @@ class Mumsys_Multirename
             }
 
         } else {
-            $this->_logger->log('Undo failt. No action history found ', 6);
+            $this->_logger->log('Undo failt. No action history found', 6);
         }
 
         return;
@@ -682,15 +731,16 @@ class Mumsys_Multirename
     /**
      * Adds current history to the history log.
      *
-     * @param array $current Current created history to add
+     * @param array $config Current action config
+     * @param array $current Current created actions to add to the history
      */
-    protected function _addActionHistory(array $current)
+    protected function _addActionHistory(array $config, array $current)
     {
-        $this->_mkConfigDir($this->_config['path']);
+        $this->_mkConfigDir($config['path']);
 
-        $file = $this->_config['path'] . '/.multirename/lastactions';
+        $file = $config['path'] . $this->_historyFile;
 
-        $history = $this->_getActionHistory($this->_config['path'], -1);
+        $history = $this->_getActionHistory($config['path'], -1);
 
         if (count($history) > $this->_historySize) {
             array_shift($history);
@@ -709,12 +759,12 @@ class Mumsys_Multirename
             $history = array($historyItem);
         }
 
-        $data = json_encode($history);
+        $data = $this->toJson($history);
         $result = file_put_contents($file, $data);
 
         $this->_logger->log(
             'Actions saved. To undo/ reverse use multirename --undo --path "'
-            . $this->_config['path'] . '"', 6);
+            . $config['path'] . '"', 6);
         $this->_logger->log(
             'Undo is possible for this path until the next rename action will '
             . 'be performed/ executed', 6);
@@ -728,13 +778,14 @@ class Mumsys_Multirename
      * The actions preformed by a rename/symlink action. If the index is given
      * the selected action will be returnd otherwise all history data returns.
      *
+     * @param string $path Action/ start directory for renaming
      * @param integer $index History index to return
      * @return array|false Returns a list of action historys or false on error
      */
     protected function _getActionHistory( $path, $index = -1 )
     {
         $result = false;
-        $file = $path . '/.multirename/lastactions';
+        $file = $path . $this->_historyFile;
 
         if (file_exists($file)) {
             $data = file_get_contents($file);
@@ -747,11 +798,29 @@ class Mumsys_Multirename
                 $result = $history;
             }*/
             $result = $history;
-        } else {
-            $this->_logger->log('No action history found', 3);
         }
 
         return $result;
+    }
+
+
+    /**
+     * Removes the history
+     *
+     * @param string $path Action/ start directory for renaming
+     *
+     * @return boolean Returns true on success or false on error
+     * @throws Mumsys_Multirename_Exception On any other errors
+     */
+    public function removeActionHistory( $path )
+    {
+        $file = $path . $this->_historyFile;
+
+        if (!file_exists($file) || !unlink($file)) {
+            throw new Mumsys_Multirename_Exception('Removing history failed');
+        }
+
+        return true;
     }
 
 
@@ -766,15 +835,14 @@ class Mumsys_Multirename
         $path = $path . '/.multirename/';
         if (!is_dir($path)) {
             if (!@mkdir($path, 0755)) {
-                $message = 'Can not create directory "' . $this->_config['path'] . '/.multirename"';
+                $message = 'Can not create directory "' . $path . '/.multirename"';
                 $this->_logger->log($message, 3);
                 return false;
             } else {
                 $this->_trackConfigDir($path);
             }
         }
-/* @todo for testing at the moment and upgrading while implement this feature */
-$this->_trackConfigDir($path);
+
         return true;
     }
 
@@ -823,37 +891,81 @@ $this->_trackConfigDir($path);
     {
         $data[ md5($path) ] = str_replace('//', '/', $path);
         asort($data);
-        $jdata = json_encode($data);
-        return file_put_contents($this->_collection, $jdata);
+        $jdata = $this->toJson($data);
 
-        return true;
+        return file_put_contents($this->_collection, $jdata);
     }
 
 
     /**
-     * Returns the configuration from the given start directory.
+     * Loads and returns a list of configurations from the given start directory.
      *
      * @param string $path Action/ start directory for renaming files
      * @param integer|string $configID Config ID to return
      *
-     * @return array|false Returns the configuration values or false if no configuration exists.
+     * @return array|false Returns a list of configurations or false if no
+     * configuration exists.
+     *
+     * @throws Mumsys_Multirename_Exception If config not exists
      */
     public function getConfig( $path = '', $configID = '_' )
     {
         $file = $path . '/.multirename/config';
-        if (file_exists($file)) {
+        if (file_exists($file))
+        {
             $data = file_get_contents($file);
             $allconfig = json_decode($data, true);
 
-            return $allconfig[$configID]['config'];
+            $message = 'loaded config from --from-config "' . $path . '"';
+            $this->_logger->log($message, 7);
+
+            if (isset($allconfig[$configID]['configs']))  {
+                return $allconfig[$configID]['configs'];
+            }
+
+            /** @deprecated since version 1.3.3 */
+            $this->_configs = array($allconfig[$configID]['config']);
+            return array($allconfig[$configID]['config']);
+            /** @deprecated since version 1.3.3 */
         }
 
-        return false;
+        $message = 'Could not read config in path: "' . $path . '"';
+        throw new Mumsys_Multirename_Exception($message);
     }
 
 
     /**
-     * Saves/ sets the current configuration.
+     * Merge config list from loaded config file into config from shell input.
+     * Note: shell input overwrites config items from config file.
+     *
+     * @param array $config Configuration/ setup parameters. see initSetup() for help/ a complete list!
+     * @throws Mumsys_Multirename_Exception On errors
+     */
+    public function _mergeConfigs(array $config = array())
+    {
+        if (is_dir($config['from-config'] .'/')) {
+            $config['path'] = $config['from-config'];
+        } else {
+            $message = 'Invalid --from-config <your value> parameter. Path not found';
+            throw new Mumsys_Multirename_Exception($message);
+        }
+
+        $newConfigList = $this->getConfig($config['from-config']);
+
+        foreach ($newConfigList as $i => $opts) {
+            foreach ($config as $key => $val) {
+                $newConfigList[$i][$key] = $config[$key];
+            }
+        }
+
+//echo 'merged cfg:'; print_r($newConfigList); exit;
+
+        return $newConfigList;
+    }
+
+
+    /**
+     * Saves the configuration.
      *
      * Note: configID: '_' will be used for batch processing (When --batch flag
      * is set, currently the only implementation)
@@ -864,7 +976,7 @@ $this->_trackConfigDir($path);
      * @param integer|string $configID Config ID to set. Optional, for the future.
      * @return integer|false Returns number of bytes written or false on error
      */
-    public function setConfig( $path, $configID = '_' )
+    public function saveConfig($path, $configID = '_')
     {
         if (!$this->_mkConfigDir($path)) {
             return false;
@@ -872,18 +984,24 @@ $this->_trackConfigDir($path);
 
         $file = $path . '/.multirename/config';
 
-        $config = $this->_config;
-        unset($config['test'], $config['set-config'], $config['from-config'], $config['loglevel']);
+        $configs = array();
+
+        foreach ($this->_configs as $i => $values) {
+            unset($values['test'], $values['save-config'], $values['show-config'], $values['from-config'], $values['loglevel']/*, $values['path']*/);
+            $configs[$i] = $values;
+        }
 
         $config = array(
             $configID => array(
                 'name' => 'config or preset name',
                 'date' => date('Y-m-d H:i:s', time()),
-                'config' => $config,
+                'version' => self::VERSION,
+                'path' => $path,
+                'configs' => $configs,
             ),
         );
 
-        $data = json_encode($config);
+        $data = $this->toJson($config);
 
         $result = file_put_contents($file, $data);
         $this->_logger->log('Set config done', 6);
@@ -897,10 +1015,10 @@ $this->_trackConfigDir($path);
      * @param string $path Action/ start directory for renaming files
      * @return boolean Returns true on success or false
      */
-    public function delConfig( $path = '' )
+    public function deleteConfig( $path = '' )
     {
         $file = $path . '/.multirename/config';
-        if ($path && file_exists($file)) {
+        if (file_exists($file)) {
             if (@unlink($file)) {
                 $this->_logger->log('Config deleted', 6);
                 return true;
@@ -916,15 +1034,30 @@ $this->_trackConfigDir($path);
 
 
     /**
+     * Show /output all existing action configurations.
+     */
+    public function showConfigs()
+    {
+        foreach ($this->_configs as $n => $config) {
+            $this->_logger->log('Configuration number ' . ($n + 1) . ' (index:'.$n.'):', 6);
+            $this->_showConfig($config);
+        }
+    }
+
+
+    /**
      * Shows the current loaded configuration for the cmd line.
      * Note: This will push the informations to the logger! Enable loglevel 6 to show it!
+     *
+     * @param array $config Current action config
      */
-    public function showConfig()
+    private function _showConfig(array $config)
     {
         $this->_logger->log('Show config:', 6);
-
         $all = '';
-        foreach ($this->_config as $key => $value) {
+
+        foreach ($config as $key => $value)
+        {
             if (is_int($key)) {
                 continue;
             }
@@ -943,9 +1076,11 @@ $this->_trackConfigDir($path);
             if ($msg) {
                 $this->_logger->log($msg, 6);
             }
+
             $all .= $msg;
         }
-        $this->_logger->log('Cmd line:'. PHP_EOL .'multirename' . $all, 6);
+
+        $this->_logger->log('cmd#> multirename' . $all, 6);
     }
 
 
@@ -964,11 +1099,12 @@ $this->_trackConfigDir($path);
      * );
      *
      * @param string $path Path of the current file
+     * @param string $conifgPath Path of the current config, recursiv scans may differ
      * @return array List of path-breadcrumbs of the current file.
      */
-    private function _buildPathBreadcrumbs( $path = '' )
+    private function _buildPathBreadcrumbs( $path = '', $configPath )
     {
-        $pathAll = array('%path0%' => $this->_config['path']);
+        $pathAll = array('%path0%' => $configPath);
         $pathTmp = explode('/', $path);
 
         $j = 1;
@@ -1073,10 +1209,10 @@ $this->_trackConfigDir($path);
      *
      * @return Returns the new substituted filename
      */
-    private function _substitute( $name, $curPath, array $breadcrumbs = array() )
+    private function _substitute( $name, $curPath, array $breadcrumbs = array(), $substitutePaths=false)
     {
 
-        if ($this->_config['sub-paths']) {
+        if ($substitutePaths) {
             if (!isset($this->_pathSubstitutions[$curPath])) {
                 $substitutions = $this->_substitutePaths($this->_substitutions, $breadcrumbs);
                 $this->_pathSubstitutions[$curPath] = $substitutions;
@@ -1125,6 +1261,56 @@ $this->_trackConfigDir($path);
             $this->_logger->log('Install failure! Reason: "' . $err->getMessage() . '"');
             throw $err;
         }
+    }
+
+    public function upgrade()
+    {
+        switch (self::VERSION) {
+            case '1.4.0':
+            default:
+                $list = $this->_getCollection();
+                foreach ($list as $id => $configPath) {
+                    if (is_dir($configPath)) {
+                        $path = $configPath . '/../';
+                        $config = $this->getConfig($path);
+                        print_r($config);
+                    }
+                }
+                echo 'paths where configs exists to upgrade:' . PHP_EOL;
+                print_r($list);
+        }
+    }
+
+
+    /**
+     * Retuns the version of this program.
+     *
+     * @return string Returns the version string
+     */
+    public static function getVersionLong()
+    {
+        $version = self::getVersionShort();
+        $versions = parent::getVersions();
+        foreach ($versions as $class => $ver) {
+            $version .= str_pad($class, 35, ' ', STR_PAD_RIGHT) . " " . $ver . PHP_EOL;
+        }
+        $version .= PHP_EOL;
+        return $version;
+    }
+
+    public static function getVersionShort()
+    {
+        $version = 'multirename %1$s by Florian Blasel' . PHP_EOL . PHP_EOL;
+        return sprintf($version, self::VERSION);
+    }
+
+
+    /**
+     * Outputs the version information.
+     */
+    public static function showVersion()
+    {
+        echo self::getVersionLong();
     }
 
 
@@ -1178,6 +1364,10 @@ $this->_trackConfigDir($path);
                 . '(Values: soft|hard[;rel|abs]). If the second parameter is not given relativ links will be created',
             '--linkway:' => 'Type of the link to be created relative or absolut: ("rel"|"abs"), default: "rel". '
                 . 'This will be used internally if you use --link soft;rel the linkway will be extracted from that line',
+            '--plugins' => 'Semicolon separated list of plugins to use. Plugins to use to do the renameing: eg.: '
+                . 'You have a text file including the new name of the file to be renameed: The pluging gets the '
+                . 'file location and you return the new filename befor or after the other rules take affect! '
+                . 'Example: --plugins \'TitleOfVDRInfoFile:before;CutAdvertising:after\'',
             '--history|-h' => 'Flag; If set this will enable the history/ for the moment ONLY the last action log with '
                 . 'the option to undo it',
             '--history-size:' => 'Integer; Number of history entrys if --history is enabled; Default: 10; '
@@ -1189,9 +1379,9 @@ $this->_trackConfigDir($path);
                 . 'configuration for batch-mode and execute it. This enables --recursiv and --history',
             '--undo' => 'Flag; Revers/ undo the last action',
             '--from-config:' => 'Read saved configuration from given path and execute it',
-            '--set-config' => 'Flag; Sets, replaces existing, and saves the parameters to a '
-                . 'config file in the given path which adds a new folder ".multirename" '
-                . 'for later use with --from-config',
+            '--set-config' => 'disabled; see --save-config',
+            '--save-config' => 'Flag; Saves the configuration to the --path of the config which adds a new folder '
+                . '".multirename" for later use with --from-config',
             '--del-config' => 'Flag; Deletes the config from given --path',
             '--show-config' => 'Flag; Shows the config parameter from a saved config to check or rebuild it. '
                 . 'Use it with --from-config',
@@ -1215,36 +1405,40 @@ $this->_trackConfigDir($path);
         return $result;
     }
 
-
     /**
-     * Retuns the version of this program.
+     * Returns a json encodeded string.
      *
-     * @return string Returns the version string
+     * @param mixed $content The value being encoded. Can be any type except a
+     * resource. All string data must be UTF-8 encoded.
+     * PHP implements a superset of JSON as specified in the original RFC 4627 -
+     * it will also encode and decode scalar types and NULL. RFC 4627 only
+     * supports these values when they are nested inside an array or an object.
+     * Although this superset is consistent with the expanded definition of
+     * "JSON text" in the newer RFC 7159 (which aims to supersede RFC 4627) and
+     * ECMA-404, this may cause interoperability issues with older JSON parsers
+     * that adhere strictly to RFC 4627 when encoding a single scalar value.
+     * @param int $options [optional] Bitmask consisting of JSON_HEX_QUOT,
+     * JSON_HEX_TAG, JSON_HEX_AMP, JSON_HEX_APOS, JSON_NUMERIC_CHECK,
+     * JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES, JSON_FORCE_OBJECT,
+     * JSON_PRESERVE_ZERO_FRACTION, JSON_UNESCAPED_UNICODE,
+     * JSON_PARTIAL_OUTPUT_ON_ERROR. The behaviour of these constants is
+     * described on the JSON constants page.
+     * @param int $depth [optional] Set the maximum depth. Must be greater than zero.
+     *
+     * @return string A JSON encoded string on success or FALSE on failure
      */
-    public static function getVersionLong()
+    public function toJson( $content, $options=null, $depth=512)
     {
-        $version = self::getVersionShort();
-        $versions = parent::getVersions();
-        foreach ($versions as $class => $ver) {
-            $version .= str_pad($class, 35, ' ', STR_PAD_RIGHT) . " " . $ver . PHP_EOL;
+        if (empty($depth)) {
+            $depth = 512;
         }
-        $version .= PHP_EOL;
-        return $version;
+
+        if ($options) {
+           $jsonOptions = $options;
+        } else {
+            $jsonOptions = $this->_jsonOptions;
+        }
+
+        return json_encode($content, $jsonOptions, $depth);
     }
-
-    public static function getVersionShort()
-    {
-        $version = 'multirename %1$s by Florian Blasel' . PHP_EOL . PHP_EOL;
-        return sprintf($version, self::VERSION);
-    }
-
-
-    /**
-     * Outputs the version information.
-     */
-    public static function showVersion()
-    {
-        echo self::getVersionLong();
-    }
-
 }

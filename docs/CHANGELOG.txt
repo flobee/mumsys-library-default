@@ -1,5 +1,18 @@
 # Changes
 
+2016-03-10
+    Mumsys_Multirename
+    - Improves handling of stored config files
+        A config can contain selveral sub configs e.g: one config for this file 
+        extension and one config for that file extension and so on.
+        there is no config management at the moment. add some config or delete 
+        the config file is currently supported. The thing at all: this config 
+        will be called from now on (next version) the default "preset" and it 
+        containts one of more configs.
+    - Update/ improves tests
+    - codecoverage 100%
+    - VERSION 1.4.0
+
 2016-03-27
     Mumsys_Multirename
     - Improves history handling
@@ -7,7 +20,7 @@
     - version 1.3.3
     - Update/ improves tests
     - codecoverage 100%
-
+    - removes old code eg: _trackConfigDir()
 
 2016-02-14
     Mumsys_GetOpts
