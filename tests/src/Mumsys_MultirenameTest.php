@@ -49,7 +49,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->_oldHome = $_SERVER['HOME'];
-        $this->_version = '1.4.0';
+        $this->_version = '1.4.1';
         $this->_versions = array(
             'Mumsys_Abstract' => '3.0.1',
             'Mumsys_Multirename' => $this->_version,

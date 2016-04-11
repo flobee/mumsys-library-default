@@ -1269,17 +1269,18 @@ class Mumsys_Multirename
     {
         switch (self::VERSION) {
             case '1.4.0':
+            case '1.4.1':
             default:
-                $list = $this->_getCollection();
-                foreach ($list as $id => $configPath) {
-                    if (is_dir($configPath)) {
-                        $path = $configPath . '/../';
-                        $config = $this->getConfig($path);
-                        print_r($config);
-                    }
-                }
-                echo 'paths where configs exists to upgrade:' . PHP_EOL;
-                print_r($list);
+//                $list = $this->_getCollection();
+//                foreach ($list as $id => $configPath) {
+//                    if (is_dir($configPath)) {
+//                        $path = $configPath . '/../';
+//                        $config = $this->getConfig($path);
+//                        print_r($config);
+//                    }
+//                }
+//                echo 'paths where configs exists to upgrade:' . PHP_EOL;
+//                print_r($list);
         }
     }
 
