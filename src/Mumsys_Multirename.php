@@ -33,7 +33,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.4.0';
+    const VERSION = '1.4.1';
 
     /**
      * Logger to log and output messages.
@@ -924,6 +924,8 @@ class Mumsys_Multirename
             }
 
             /** @deprecated since version 1.3.3 */
+            $message = '--- Old config found. Please UPGRADE using --save-config ---';
+            $this->_logger->log($message, 4);
             $this->_configs = array($allconfig[$configID]['config']);
             return array($allconfig[$configID]['config']);
             /** @deprecated since version 1.3.3 */
