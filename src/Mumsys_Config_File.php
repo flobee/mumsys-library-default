@@ -66,8 +66,8 @@ class Mumsys_Config_File
      * @param array $config Config parameters to be set
      * @param array $paths List of locations for config files
      */
-    public function __construct( Mumsys_Context $context, array $config = array(),
-        array $paths = array() )
+    public function __construct( Mumsys_Context $context, array $config =
+        array(), array $paths = array() )
     {
         $this->_context = $context;
         $this->_configs = $config;
@@ -78,7 +78,7 @@ class Mumsys_Config_File
     /**
      * Get config parameter/s by given path.
      * The path can be a string like: frontend/plugins/jquery-ui or an array
-     * definig the path: array('frontend','plugins', 'jquery-ui')
+     * defining the path: array('frontend','plugins', 'jquery-ui')
      *
      * @param string|array $key Path to the config to get config value/s from
      * e.g. frontend/pageTitle or array('frontend', 'pageTitle)
@@ -92,22 +92,22 @@ class Mumsys_Config_File
         if (is_array($key)) {
             $parts = $key; // old getsubValues() feature
         } else {
-            $parts = explode( '/', trim( $key, '/' ) );
+            $parts = explode('/', trim($key, '/'));
         }
 
-		if( ( $value = $this->_get( $this->_configs, $parts ) ) !== null ) {
-			return $value;
-		}
+        if (( $value = $this->_get($this->_configs, $parts) ) !== null) {
+            return $value;
+        }
 
-		foreach( $this->_paths as $path ) {
-			$this->_configs = $this->_load( $this->_configs, $path, $parts );
-		}
+        foreach ($this->_paths as $path) {
+            $this->_configs = $this->_load($this->_configs, $path, $parts);
+        }
 
-		if( ( $value = $this->_get( $this->_configs, $parts ) ) !== null ) {
-			return $value;
-		}
+        if (( $value = $this->_get($this->_configs, $parts) ) !== null) {
+            return $value;
+        }
 
-		return $default;
+        return $default;
     }
 
 
@@ -120,7 +120,6 @@ class Mumsys_Config_File
     {
         return $this->_configs;
     }
-
 
     /**
      * Adds/ registers config parameters to the current state if possible.
@@ -179,7 +178,7 @@ class Mumsys_Config_File
      */
     public function addPath( $path )
     {
-        if (!is_dir($path.'/')) {
+        if (!is_dir($path . '/')) {
             $message = sprintf('Path not found: "%1$s"', $path);
             throw new Mumsys_Config_Exception($message);
         }
@@ -189,16 +188,16 @@ class Mumsys_Config_File
 
 
     /**
-	 * Returns a config value.
-	 *
-	 * @param array $config Config array
-	 * @param array $parts List of sub paths to look for
+     * Returns a config value.
      *
-	 * @return mixed Config value/s or null config does not exists
-	 */
-	protected function _get( $config,  $parts )
-	{
-		if ( ( $cur = array_shift($parts) ) !== NULL && isset($config[$cur])) {
+     * @param array $config Config array
+     * @param array $parts List of sub paths to look for
+     *
+     * @return mixed Config value/s or null config does not exists
+     */
+    protected function _get( $config, $parts )
+    {
+        if (( $cur = array_shift($parts) ) !== NULL && isset($config[$cur])) {
             if (count($parts) > 0) {
                 return $this->_get($config[$cur], $parts);
             }
@@ -284,29 +283,28 @@ class Mumsys_Config_File
 
 
     /**
-	 * Replaces/ sets a given config to the existing config.
-	 *
+     * Replaces/ sets a given config to the existing config.
+     *
      * @todo array $path in func signature?
      *
-	 * @param array $config Configuration sub-part
-	 * @param array $path Parts of the path
-	 * @param array $value The value to be set
-	 */
-	protected function _replace( $config, $path, $value )
-	{
-		if( ( $current = array_shift( $path ) ) !== NULL )
-		{
-			if( isset( $config[$current] ) ) {
-				$config[$current] = $this->_replace( $config[$current], $path, $value );
-			} else {
-				$config[$current] = $this->_replace( array(), $path, $value );
-			}
+     * @param array $config Configuration sub-part
+     * @param array $path Parts of the path
+     * @param array $value The value to be set
+     */
+    protected function _replace( $config, $path, $value )
+    {
+        if (( $current = array_shift($path) ) !== NULL) {
+            if (isset($config[$current])) {
+                $config[$current] = $this->_replace($config[$current], $path, $value);
+            } else {
+                $config[$current] = $this->_replace(array(), $path, $value);
+            }
 
-			return $config;
-		}
+            return $config;
+        }
 
-		return $value;
-	}
+        return $value;
+    }
 
 
     /**
