@@ -13,6 +13,7 @@
     - codecoverage 100%
     - VERSION 1.4.0
 
+
 2016-03-27
     Mumsys_Multirename
     - Improves history handling
