@@ -1,5 +1,6 @@
 <?php
 
+
 /* {{{ */
 /**
  * Mumsys_Request_Abstract
@@ -28,6 +29,8 @@ class Mumsys_Request_Console
     extends Mumsys_Request_Abstract
     implements Mumsys_Request_Interface
 {
+
+
     /**
      * Version ID information
      */
@@ -83,7 +86,7 @@ class Mumsys_Request_Console
      * @param array $options Optional initial options e.g.:
      * 'programKey','controllerKey', 'actionKey',
      */
-    public function __construct(array $options = array())
+    public function __construct( array $options = array() )
     {
         if (isset($options['programKey'])) {
             $this->setProgramKey($options['programKey']);
@@ -99,17 +102,18 @@ class Mumsys_Request_Console
 
         if (isset($_SERVER['argv']) && is_array($_SERVER['argv']))
         {
-            foreach($_SERVER['argv'] as $keyValue) {
+            foreach ($_SERVER['argv'] as $keyValue)
+            {
                 $tmp = explode('=', $keyValue);
-                if (count($tmp) == 2) {
-                    $res = explode('=', $keyValue);
-                    $list[ $res[0] ] = $res[1];
+                if (isset($tmp[1])) {
+                    $list[$res[0]] = $res[1];
+                } else {
+                    $list[] = $res[0];
                 }
             }
 
             $this->_input = $list;
         }
-
     }
 
 }
