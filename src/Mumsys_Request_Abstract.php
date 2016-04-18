@@ -1,5 +1,6 @@
 <?php
 
+
 /* {{{ */
 /**
  * Mumsys_Request_Abstract
@@ -32,7 +33,6 @@ abstract class Mumsys_Request_Abstract
      * Version ID information
      */
     const VERSION = '1.0.0';
-
 
     /**
      * The current programm name
