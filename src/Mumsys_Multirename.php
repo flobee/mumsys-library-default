@@ -111,8 +111,9 @@ class Mumsys_Multirename
      * @var array
      */
     private $_counter = array();
+    
     /**
-     * Bitmask for json encode options
+     * Bitmask for json encode options; @see toJson()
      * @var bitmask
      */
     private $_jsonOptions = JSON_PRETTY_PRINT;
@@ -124,12 +125,12 @@ class Mumsys_Multirename
      * @param array $config Setup parameters. @see getSetup() for more.
      * @param Mumsys_FileSystem $oFiles Filesystem object for the primary
      * execution.
-     * @param Mumsys_Logger_Interface $logger Log object to track the work and/ or show the
-     * output when using as shell script or cronjob
+     * @param Mumsys_Logger_Interface $logger Log object to track the work and/
+     * or show the output when using as shell script or cronjob
      */
     public function __construct(array $config = array(), Mumsys_FileSystem $oFiles, Mumsys_Logger_Interface $logger)
     {
-        $logger->log('### multirename ('.self::VERSION.') start run()', 7);
+        $logger->log('### multirename (' . self::VERSION . ') starts', 7);
 
         // nothing which belongs to root is allowed at the moment!
         if (php_sapi_name() === 'cli' && in_array('root', $_SERVER)) {
@@ -155,26 +156,14 @@ class Mumsys_Multirename
 
         $this->run($config);
 
-        $this->_logger->log('### multirename run() done.' . PHP_EOL, 7);
-    }
-
-
-    /**
-     * Free temporarily created results or properties on destruction or if the
-     * destructor is called.
-     */
-    public function __destruct()
-    {
-        $this->_pathSubstitutions = array();
-        $this->_substitutions = array();
-        $this->_history = array();
+        $this->_logger->log('### multirename done.' . PHP_EOL, 7);
     }
 
 
     /**
      * Run the rename process based on given config.
      *
-     * @param array $input Configuration/ setup parameters from shell input.
+     * @param array $input Configuration/ setup parameters e.g. from shell input.
      * see initSetup() for more
      */
     public function run(array $input = array())
@@ -258,10 +247,12 @@ class Mumsys_Multirename
      * Parameters will be validated, defaults set and prepares it for the usage
      * internally.
      *
-     * @param array $config Configuration/ setup parameters. see initSetup() for help/ a complete list!
+     * @param array $config Configuration/ setup parameters. see initSetup() for
+     * help/ a complete list!
      *
      * @return array Returns the new, checked configuration.
-     * @throws Mumsys_Exception Throws exception on any error happen with the incoming data.
+     * @throws Mumsys_Exception Throws exception on any error happen with the
+     * incoming data.
      */
     public function initSetup( array $config=array() )
     {
@@ -1320,10 +1311,10 @@ class Mumsys_Multirename
     /**
      * Returns all input options for the construction.
      *
-     * When using other GetOpt than the current one this is probably the configuration
-     * your are looking for.
-     * Note: When using your own GetOpt program: The long input values will be used
-     * and are required!!! Short options map to the long version.
+     * When using other GetOpt than the current one this is probably the
+     * configuration your are looking for.
+     * Note: When using your own GetOpt program: The long input values will be
+     * used and are required!!! Short options map to the long version.
      *
      * @param boolean $shellOptions Returns shell options if true or array list of
      * input parameters and their description for the construction.
@@ -1445,4 +1436,17 @@ class Mumsys_Multirename
 
         return json_encode($content, $jsonOptions, $depth);
     }
+
+
+    /**
+     * Free temporarily created results or properties on destruction or if the
+     * destructor is called.
+     */
+    public function __destruct()
+    {
+        $this->_pathSubstitutions = array();
+        $this->_substitutions = array();
+        $this->_history = array();
+    }
+
 }
