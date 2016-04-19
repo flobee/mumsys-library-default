@@ -1,5 +1,22 @@
 # Changes
 
+2016-04-19
+    Mumsys_Request
+    - Init Mumsys_Request_Interface
+    - Init Mumsys_Request_Abstract
+    - Init Mumsys_Request_Default
+    - Init Mumsys_Request_Console
+    Mumsys_Session
+    - Rename Mumsys_Session to Mumsys_Session_Default
+    - Updates tests
+    Mumsys_Time
+    - Improves timer, updates tests
+    Mumsys_FileSystem
+    - Doesnt flollow symlinks now
+    Mumsys_Multirename
+    - Updates in coding style
+
+
 2016-03-10
     Mumsys_Multirename
     - Improves handling of stored config files
@@ -22,6 +39,7 @@
     - Update/ improves tests
     - codecoverage 100%
     - removes old code eg: _trackConfigDir()
+
 
 2016-02-14
     Mumsys_GetOpts
