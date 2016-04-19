@@ -29,13 +29,10 @@ class Mumsys_Request_Console
     extends Mumsys_Request_Abstract
     implements Mumsys_Request_Interface
 {
-
-
     /**
      * Version ID information
      */
     const VERSION = '1.0.0';
-
 
     /**
      * The current programm name
@@ -104,8 +101,8 @@ class Mumsys_Request_Console
         {
             foreach ($_SERVER['argv'] as $keyValue)
             {
-                $tmp = explode('=', $keyValue);
-                if (isset($tmp[1])) {
+                $res = explode('=', $keyValue);
+                if (isset($res[1])) {
                     $list[$res[0]] = $res[1];
                 } else {
                     $list[] = $res[0];
