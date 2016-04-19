@@ -21,19 +21,19 @@
 
 
 /**
- * Class to deal with the session
+ * Class to deal with the php session
  *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Session
  */
-class Mumsys_Session
+class Mumsys_Session_Default
     extends Mumsys_Abstract
 {
     /**
      * Version ID information
      */
-    const VERSION = '1.0.1';
+    const VERSION = '1.0.2';
 
     /**
      * Representation of the session befor it will be set to $_SESSION
@@ -67,13 +67,14 @@ class Mumsys_Session
          * session_cache_expire(180);
          * echo $cache_expire = session_cache_expire();
          */
+        $this->_appKey = $appkey;
+
         if (isset($_SESSION)) {
             $this->_records = & $_SESSION;
         } else {
             @session_start();
             $this->_id = session_id();
-            $this->_appKey = $appkey;
-            $this->_records = $_SESSION;
+            $this->_records = & $_SESSION;
             $this->_records[$this->_id][$appkey] = array();
         }
     }

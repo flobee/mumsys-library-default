@@ -8,7 +8,7 @@ class Mumsys_Session_DefaultTest
     extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var Mumsys_Session
+     * @var Mumsys_Session_Default
      */
     protected $_object;
 
@@ -28,7 +28,7 @@ class Mumsys_Session_DefaultTest
      */
     protected function setUp()
     {
-        $this->_object = new Mumsys_Session();
+        $this->_object = new Mumsys_Session_Default();
     }
 
 
@@ -38,6 +38,7 @@ class Mumsys_Session_DefaultTest
      */
     protected function tearDown()
     {
+        $this->_object->clear();
         $this->_object = NULL;
     }
 
@@ -48,10 +49,10 @@ class Mumsys_Session_DefaultTest
      */
     public function testAllMethodes()
     {
-        $this->_object = new Mumsys_Session();
+        $this->_object = new Mumsys_Session_Default();
 
         // for code coverage
-        $this->_object = new Mumsys_Session();
+        $this->_object = new Mumsys_Session_Default();
 
         // for code coverage
         $this->_object->clear();
@@ -97,13 +98,11 @@ class Mumsys_Session_DefaultTest
         $this->assertEquals($expected7, $actual7);
 
         // version checks
-        $this->assertEquals('Mumsys_Session 1.0.1', $this->_object->getVersion());
+        $this->assertEquals('Mumsys_Session_Default 1.0.2', $this->_object->getVersion());
 
         // test register existing
         $this->setExpectedException('Mumsys_Session_Exception', 'Session key "testkey" exists');
         $this->_object->register('testkey', array('val5', 'val6'));
-
-        echo 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
     }
 
 }
