@@ -31,13 +31,10 @@
 class Mumsys_Multirename
     extends Mumsys_Abstract
 {
-
-
     /**
      * Version ID information
      */
     const VERSION = '1.4.1';
-
 
     /**
      * Logger to log and output messages.
@@ -654,7 +651,7 @@ class Mumsys_Multirename
      * exists again on undo. On true the existing file will be kept, on false
      * overwriting take affect.
      */
-    private function _undoTest( array $files = array(), $mode = '', $keepCopy = true )
+    private function _undoTest( array $files = array(), $mode = '' )
     {
         foreach ($files as $to => $from) { // reverse, wording is now correct for this undo case for $to and $from
             if (preg_match('/link/i', $mode)) {
@@ -669,7 +666,7 @@ class Mumsys_Multirename
     /**
      * Undo a rename action.
      *
-     * @param string $mode Type of the undo mode links symlink, rename to show to the output
+     * @param string $files List of files from/to pairs to undo/ reverse.
      * @param string $keepCopy Flag to set to what to do if old file already
      * exists again on undo. On true the existing file will be kept, on false
      * overwriting take affect.
@@ -680,7 +677,8 @@ class Mumsys_Multirename
     {
         foreach ($files as $to => $from) // reverse (old to is now from)
         {
-            try {
+            try
+            {
                 $newTo = $this->_oFiles->rename($from, $to, $keepCopy);
 
                 $this->_logger->log('Undo rename ok for: "' . basename($from) . '"', 7);
@@ -688,7 +686,7 @@ class Mumsys_Multirename
                     $message = sprintf(
                         'Undo rename to "%1$s" notice: Already exists!. Used "%2$s" instead', $to, basename($newTo)
                     );
-                    $this->_logger->log($massage, 5);
+                    $this->_logger->log($message, 5);
                 }
             } catch (Mumsys_FileSystem_Exception $e) {
                 $message = 'Undo rename failt for "' . $from . '" TO: "' . $to . '". Message: ' . $e->getMessage();
@@ -947,11 +945,9 @@ class Mumsys_Multirename
 
         foreach ($newConfigList as $i => $opts) {
             foreach ($config as $key => $val) {
-                $newConfigList[$i][$key] = $config[$key];
+                $newConfigList[$i][$key] = $val;
             }
         }
-
-//echo 'merged cfg:'; print_r($newConfigList); exit;
 
         return $newConfigList;
     }
@@ -981,7 +977,7 @@ class Mumsys_Multirename
 
         foreach ($this->_configs as $i => $values) {
             unset($values['test'], $values['save-config'], $values['show-config'], $values['from-config'],
-                $values['loglevel']/* , $values['path'] */);
+                $values['loglevel']);
             $configs[$i] = $values;
         }
 
@@ -999,6 +995,7 @@ class Mumsys_Multirename
 
         $result = file_put_contents($file, $data);
         $this->_logger->log('Set config done', 6);
+
         return $result;
     }
 
