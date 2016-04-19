@@ -1,6 +1,7 @@
 <?php
 
-/*{{{*/
+
+/* {{{ */
 /**
  * Mumsys_Session
  * for MUMSYS Library for Multi User Management System (MUMSYS)
@@ -16,7 +17,7 @@
  * Created: 2005-01-01
  * @filesource
  */
-/*}}}*/
+/* }}} */
 
 
 /**
@@ -26,7 +27,8 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Session
  */
-class Mumsys_Session extends Mumsys_Abstract
+class Mumsys_Session
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
@@ -65,13 +67,13 @@ class Mumsys_Session extends Mumsys_Abstract
          * session_cache_expire(180);
          * echo $cache_expire = session_cache_expire();
          */
-        @session_start();
-        $this->_id = session_id();
-        $this->_appKey = $appkey;
-
-        if ($_SESSION) {
+        if (isset($_SESSION)) {
             $this->_records = & $_SESSION;
         } else {
+            @session_start();
+            $this->_id = session_id();
+            $this->_appKey = $appkey;
+            $this->_records = $_SESSION;
             $this->_records[$this->_id][$appkey] = array();
         }
     }
@@ -102,6 +104,7 @@ class Mumsys_Session extends Mumsys_Abstract
         return $default;
     }
 
+
     /**
      * Returns the current session data based on the current session id and
      * application key.
@@ -114,6 +117,7 @@ class Mumsys_Session extends Mumsys_Abstract
     {
         return $this->_records[$this->_id][$this->_appKey];
     }
+
 
     /**
      * Returns the complete active session data.
