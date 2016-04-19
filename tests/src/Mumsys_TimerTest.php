@@ -96,7 +96,7 @@ class Mumsys_TimerTest
         $expected = microtime(1);
         $actual = $this->_object->stopTimeGet();
 
-        $this->assertEquals(round($expected, 2), round($actual, 2));
+        $this->assertEquals(round($expected, 1), round($actual, 1));
     }
 
 
