@@ -1,6 +1,7 @@
 <?php
 
-/*{{{*/
+
+/* {{{ */
 /**
  * ----------------------------------------------------------------------------
  * Mumsys_Timer
@@ -21,7 +22,7 @@
  * @filesource
  * -----------------------------------------------------------------------
  */
- /*}}}*/
+/* }}} */
 
 
 /**
@@ -31,7 +32,8 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Timer
  */
-class Mumsys_Timer extends Mumsys_Abstract
+class Mumsys_Timer
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
@@ -46,20 +48,20 @@ class Mumsys_Timer extends Mumsys_Abstract
     /**
      * Initialize the object.
      *
-     * @param boolean|float $start If true enable "start now" 
-	    * function otherwise given float value will be used as starttime in mictotime format
+     * @param boolean|float $start If true enable "start now"
+     * function otherwise given float value will be used as starttime in mictotime format
      * If true time recording starts now
      */
-    public function __construct( $start=false )
+    public function __construct( $start = false )
     {
-        if ( $start === true ) {
+        if ($start === true) {
             $this->start();
         }
 
-        if ( is_float($start) ) {
+        if (is_float($start)) {
             $this->startTimeSet($start);
         }
-     }
+    }
 
 
     /**
@@ -93,6 +95,17 @@ class Mumsys_Timer extends Mumsys_Abstract
     public function startTimeGet()
     {
         return $this->_start;
+    }
+
+
+    /**
+     * Sets the start time.
+     *
+     * @param float Statr time as float value to be set
+     */
+    public function startTimeSet( $time )
+    {
+        $this->_start = (float)$time;
     }
 
 
@@ -136,7 +149,7 @@ class Mumsys_Timer extends Mumsys_Abstract
      */
     public function __toString()
     {
-        return (string) $this->stop();
+        return (string)$this->stop();
     }
 
 }
