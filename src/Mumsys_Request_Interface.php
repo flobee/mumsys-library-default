@@ -34,7 +34,7 @@ interface Mumsys_Request_Interface
      *
      * @param array $options Optional parameters for the specific driver
      */
-    abstract function __construct( array $options = array() );
+    public function __construct( array $options = array() );
 
 
     /**
