@@ -30,105 +30,11 @@ interface Mumsys_Request_Interface
 
 
     /**
-     * Retrieve the module name
+     * Constructor to be implemented at the clild classes.
      *
-     * @return string
+     * @param array $options Optional parameters for the specific driver
      */
-    public function getProgramName();
-
-
-    /**
-     * Sets/ replaces the program name.
-     *
-     * @param string $value Name of the program
-     * @return self
-     */
-    public function setProgramName( $value );
-
-
-    /**
-     * Returns the controller name.
-     *
-     * @return string Name of the controller
-     */
-    public function getControllerName();
-
-
-    /**
-     * Sets/ replaces the controller name.
-     *
-     * @param string $value Name of the controller
-     * @return self
-     */
-    public function setControllerName( $value );
-
-
-    /**
-     * Retrieve the action name.
-     *
-     * @return string Name of the action
-     */
-    public function getActionName();
-
-
-    /**
-     * Sets/ replaces the action name
-     *
-     * @param string $value Name of the action
-     * @return self
-     */
-    public function setActionName( $value );
-
-
-    /**
-     * Returns the program name.
-     *
-     * @return string Name of the program
-     */
-    public function getProgramKey();
-
-
-    /**
-     * Sets/ replaces the program key.
-     *
-     * @param string $key Key of the program to idenify from a request
-     * @return self
-     */
-    public function setProgramKey( $key = 'program' );
-
-
-    /**
-     * Retuns the name of the controller key
-     *
-     * @return string Key name of the controller key to idenify from a request
-     */
-    public function getControllerKey();
-
-
-    /**
-     * Sets/ replaces the controller key name
-     *
-     * @param string $key Key name of the controller 
-     * @return Zend_Controller_Request_Abstract
-     */
-    public function setControllerKey( $key = 'controller' );
-
-
-    /**
-     * Returns the action key name
-     *
-     * @return string
-     */
-    public function getActionKey();
-
-
-    /**
-     * Sets/ replaces the action key name.
-     *
-     * @param string $key Name of the action
-     * @return self
-     */
-    public function setActionKey( $key = 'action' );
+    abstract function __construct( array $options = array() );
 
 
     /**

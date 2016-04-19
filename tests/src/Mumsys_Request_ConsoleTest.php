@@ -38,7 +38,7 @@ class Mumsys_Request_ConsoleTest
 
 
     /**
-     * @covers Mumsys_Request_Console::_construct
+     * @covers Mumsys_Request_Console::__construct
      */
     public function test_Construct()
     {

@@ -35,42 +35,6 @@ class Mumsys_Request_Console
     const VERSION = '1.0.0';
 
     /**
-     * The current programm name
-     * @var string
-     */
-    protected $_programName;
-
-    /**
-     * Default program key name for retrieving the program parameter
-     * @var string
-     */
-    protected $_programNameKey = 'program';
-
-    /**
-     * The current controller name
-     * @var string
-     */
-    protected $_controllerName;
-
-    /**
-     * Default controller key name for retrieving the controller parameter
-     * @var string
-     */
-    protected $_controllerNameKey = 'controller';
-
-    /**
-     * The current action name
-     * @var string
-     */
-    protected $_actionName;
-
-    /**
-     * Default action key name for retrieving the "action" parameter
-     * @var string
-     */
-    protected $_actionKey = 'action';
-
-    /**
      * Incomming request parameters
      * @var array
      */
@@ -85,18 +49,6 @@ class Mumsys_Request_Console
      */
     public function __construct( array $options = array() )
     {
-        if (isset($options['programKey'])) {
-            $this->setProgramKey($options['programKey']);
-        }
-
-        if (isset($options['controllerKey'])) {
-            $this->setControllerKey($options['controllerKey']);
-        }
-
-        if (isset($options['actionKey'])) {
-            $this->setActionKey($options['actionKey']);
-        }
-
         if (isset($_SERVER['argv']) && is_array($_SERVER['argv']))
         {
             foreach ($_SERVER['argv'] as $keyValue)
