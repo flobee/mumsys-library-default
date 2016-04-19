@@ -54,6 +54,8 @@ class Mumsys_FileSystem
      * $this->_dirinfo and all of it will be returned! Dont be confused if you
      * think records are scanned twice or you think you have dublicate records.
      *
+     * @todo follow symlinks?
+     *
      * @param string $dir Directory/ Path to start the scan
      * @param boolean $hideHidden Flag to decide to skip hidden files or directories
      * @param boolean $recursive Flag to deside to scan recursive or not
@@ -62,7 +64,7 @@ class Mumsys_FileSystem
      */
     public function scanDirInfo($dir, $hideHidden=true, $recursive=false)
     {
-        if (@is_dir($dir) && is_readable($dir)) {
+        if (@is_dir($dir) && is_readable($dir) && !is_link($dir)) {
             if ($dh = @opendir($dir)) {
                 while(($file = readdir($dh)) !== false)
                 {
