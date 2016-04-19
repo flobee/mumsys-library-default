@@ -1,5 +1,6 @@
 <?php
 
+
 /* {{{ */
 /**
  * Mumsys_Request_Interface
@@ -26,6 +27,8 @@
  */
 interface Mumsys_Request_Interface
 {
+
+
     /**
      * Retrieve the module name
      *
@@ -105,7 +108,7 @@ interface Mumsys_Request_Interface
     /**
      * Sets/ replaces the controller key name
      *
-     * @param string $key Key name of the controller
+     * @param string $key Key name of the controller 
      * @return Zend_Controller_Request_Abstract
      */
     public function setControllerKey( $key = 'controller' );
