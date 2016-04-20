@@ -59,10 +59,11 @@ class Mumsys_FileSystem
      * @param string $dir Directory/ Path to start the scan
      * @param boolean $hideHidden Flag to decide to skip hidden files or directories
      * @param boolean $recursive Flag to deside to scan recursive or not
+     * @param array $filters List of regular expressions look for a match (the list will used AND conditions)
      *
      * @return array|false Returns list of file/link/directory details like path, name, size, type
      */
-    public function scanDirInfo($dir, $hideHidden=true, $recursive=false)
+    public function scanDirInfo($dir, $hideHidden=true, $recursive=false, array $filters=array())
     {
         if (@is_dir($dir) && is_readable($dir) && !is_link($dir)) {
             if ($dh = @opendir($dir)) {
@@ -90,6 +91,16 @@ class Mumsys_FileSystem
             @closedir($dh);
         } else {
             return false;
+        }
+        
+        if ($filters) 
+        {
+            while(list($location,) = each( $this->_dirInfo) )
+                foreach($filter as $regex) {
+                    if (!preg_match($location, $regex)) {
+                        unset($this->_dirInfo[$location]);
+                    }
+                }
         }
 
         return $this->_dirInfo;
