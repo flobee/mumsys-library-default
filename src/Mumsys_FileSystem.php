@@ -57,12 +57,14 @@ class Mumsys_FileSystem
      * @param string $dir Directory/ Path to start the scan
      * @param boolean $hideHidden Flag to decide to skip hidden files or directories
      * @param boolean $recursive Flag to deside to scan recursive or not
+     * @param string $filter Reqular expression to only keep matches
      *
      * @return array|false Returns list of file/link/directory details like path, name, size, type
      */
-    public function scanDirInfo($dir, $hideHidden=true, $recursive=false)
+    public function scanDirInfo($dir, $hideHidden=true, $recursive=false, $filter=false)
     {
-        if (@is_dir($dir) && is_readable($dir)) {
+
+        if (@is_dir($dir) && is_readable($dir) && !is_link($dir)) {
             if ($dh = @opendir($dir)) {
                 while(($file = readdir($dh)) !== false)
                 {
@@ -78,7 +80,7 @@ class Mumsys_FileSystem
                     if ($recursive && is_dir($test.DIRECTORY_SEPARATOR)) {
                         $newdir = $dir . DIRECTORY_SEPARATOR . $file;
                         $this->_dirInfo[$newdir] = $this->getFileDetails($newdir);
-                        $this->scanDirInfo($newdir, $hideHidden, $recursive);
+                        $this->scanDirInfo($newdir, $hideHidden, $recursive, $filter);
                     }
                     else {
                         $this->_dirInfo[$test] = $this->getFileDetails($dir, $file);
@@ -89,6 +91,14 @@ class Mumsys_FileSystem
         } else {
             return false;
         }
+        if ($filter) {
+            foreach ($this->_dirInfo as $location => $parts) {
+                if (!preg_match($filter, $location) ) {
+                    unset($this->_dirInfo[$location]);
+                }
+            }
+        }
+
 
         return $this->_dirInfo;
     }
