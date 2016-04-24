@@ -1,5 +1,6 @@
 <?php
 
+
 /* {{{ */
 /**
  * Mumsys_Mvc_Router_Default
@@ -41,17 +42,18 @@ class Mumsys_Mvc_Router_Default
      */
     protected $_request;
 
+
     /**
      * Initialise the router object.
      *
      * @param Mumsys_Request_Interface Request interface
-     * @param array $options Optional initial options e.g.: 'programKey', 
+     * @param array $options Optional initial options e.g.: 'programKey',
      * 'controllerKey', 'actionKey' mappings to initialize the object
      */
     public function __construct( Mumsys_Request_Interface $request, array $options = array() )
     {
         $this->_request = $request;
-        
+
         if (isset($options['programKey'])) {
             $this->setProgramKey($options['programKey']);
         }
