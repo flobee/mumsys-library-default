@@ -34,7 +34,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.4.1';
+    const VERSION = '1.4.2';
 
     /**
      * Logger to log and output messages.
@@ -231,10 +231,13 @@ class Mumsys_Multirename
                         $this->showVersion();
                         break;
 
+                    case 'stats':
+                        $this->stats();
+                        break;
+
                     case 'run':
                     default:
                         $this->_execute($config);
-                        $this->stats();
                 }
             }
         }
@@ -1381,6 +1384,7 @@ class Mumsys_Multirename
             . 'Use it with --from-config',
             '--loglevel|--ll:' => 'Logging level for the output of messages (0=Emerg ... 7=verbose/debug). '
             . 'For testing use 6 or 7; For cronjob etc. do not use lower than 5 to get important messages',
+            '--stats' => 'Print some stats after execution',
             '--version|-v' => 'Flag; Return version informations',
         );
 
