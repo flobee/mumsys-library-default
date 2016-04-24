@@ -28,6 +28,28 @@
 /**
  * Track the duration between a start and end time.
  *
+ * Example 1:
+ * <code>
+ * $timer = new Mumsys_Timer(true);
+ * // do some stuff
+ * echo $timer; // print out the duration time
+ * </code>
+ * Example 2:
+ * <code>
+ * $timer = new Mumsys_Timer($_SERVER['REQUEST_TIME_FLOAT']);
+ * // do some stuff
+ * echo $timer; // print out the duration time
+ * </code>
+ * Example 3 (manual):
+ * <code>
+ * $timer = new Mumsys_Timer();
+ * // do some stuff
+ * $timer->start();             // start recording the time
+ * // do some more stuff
+ * $duration = $timer->stop();  // return the duration OR:
+ * echo $timer                  // print out the duration time
+ * </code>
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Timer
@@ -47,6 +69,11 @@ class Mumsys_Timer
 
     /**
      * Initialize the object.
+     *
+     * Two different options to automatically start the timer:
+     * 1. When true the current time (microtime) will be used
+     * 2. If the $start value contains a float value it will be used as start
+     * time.
      *
      * @param boolean|float $start If true enable "start now"
      * function otherwise given float value will be used as starttime in mictotime format
@@ -76,7 +103,7 @@ class Mumsys_Timer
     /**
      * Stop the timer and calculate the time between start and stop time.
      *
-     * @return string Returns the number of seconds, micro secconds
+     * @return string Returns the number of seconds, micro seconds
      */
     public function stop()
     {
