@@ -1,5 +1,16 @@
 # Changes
 
+2016-04-24
+    Mumsys_Multirename
+    - Adding --stats flag to output some stats
+    Mumsys_Mvc_Router*
+    - Init Mumsys_Mvc_Router_Abstract
+    - Init Mumsys_Mvc_Router_Default
+    - Init Mumsys_Mvc_Router_Interface
+    Mumsys_PriorityQueue_Simple
+    - Init Mumsys_PriorityQueue_Simple + tests
+
+
 2016-04-19
     Mumsys_Request
     - Init Mumsys_Request_Interface
@@ -9,7 +20,7 @@
     Mumsys_Session
     - Rename Mumsys_Session to Mumsys_Session_Default
     - Updates tests
-    Mumsys_Time
+    Mumsys_Timer
     - Improves timer, updates tests
     Mumsys_FileSystem
     - Doesnt flollow symlinks now
