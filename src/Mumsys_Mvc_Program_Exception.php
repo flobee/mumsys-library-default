@@ -1,6 +1,7 @@
 <?php
 
-/*{{{*/
+
+/* {{{ */
 /**
  * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Program_Exception
@@ -17,7 +18,8 @@
  * Created: 2016-01-30
  * @filesource
  */
-/*}}}*/
+/* }}} */
+
 
 /**
  * Mumsys_Mvc_Program_Exception
@@ -26,7 +28,8 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
  */
-class Mumsys_Mvc_Program_Exception extends Mumsys_Exception
+class Mumsys_Mvc_Program_Exception
+    extends Mumsys_Exception
 {
-}
 
+}
