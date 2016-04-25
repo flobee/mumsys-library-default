@@ -29,7 +29,7 @@
  * @subpackage  Mumsys_Mvc
  */
 class Mumsys_Mvc_Program_Exception
-    extends Mumsys_Exception
+    extends Mumsys_Mvc_Exception
 {
 
 }
