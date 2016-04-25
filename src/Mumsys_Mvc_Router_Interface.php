@@ -1,5 +1,6 @@
 <?php
 
+
 /* {{{ */
 /**
  * Mumsys_Mvc_Router_Interface
@@ -22,15 +23,17 @@
  *
  * @category    Mumsys
  * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
+ * @subpackage  Mumsys_Mvc
  */
 interface Mumsys_Mvc_Router_Interface
 {
+
+
     /**
      * Initialise the router object.
      *
      * @param Mumsys_Request_Interface Request interface
-     * @param array $options Optional initial options e.g.: 'programKey', 
+     * @param array $options Optional initial options e.g.: 'programKey',
      * 'controllerKey', 'actionKey' mappings to initialize the object
      */
     public function __construct( Mumsys_Request_Interface $request, array $options = array() );
