@@ -1,6 +1,7 @@
 <?php
 
-/*{{{*/
+
+/* {{{ */
 /**
  * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Display_Control_Abstract
@@ -17,7 +18,7 @@
  * Created: 2016-01-30
  * @filesource
  */
-/*}}}*/
+/* }}} */
 
 
 /**
@@ -31,13 +32,13 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
  */
-abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
+abstract class Mumsys_Mvc_Display_Control_Abstract
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
      */
     const VERSION = '1.1.0';
-
 
     /**
      * Buffer of content to output or return.
@@ -51,12 +52,45 @@ abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
      */
     protected $_pagetitle = '';
 
+    /**
+     * List of requested helper classes to buffer. The key contains the class name and the value the object.
+     * @var array
+     */
+    private $_helpers;
+
 
     /**
      * Constructor is to be implemented at the display controller which will be
      * used. e.g. in : Mumsys_Mvc_Display_Control_Http_Default
      */
     abstract public function __construct( Mumsys_Context $context, array $options = array() );
+
+
+    /**
+     * Returns the requested display helper class.
+     *
+     * @param string $extension Name of the extension to load/ get
+     *
+     * @return false|Mumsys_Display_Helper_{$extension}
+     * @throws Mumsys_Display_Exception on errors init the helper class
+     */
+    public function getDisplayHelper( $extension )
+    {
+        if (isset($this->_helpers[$extension])) {
+            return $this->_helpers[$extension];
+        }
+
+        try {
+            $class = 'Mumsys_Display_Helper_' . ucfirst($extension);
+            if (!class_exists($class, false)) {
+                $return = $this->_helpers[$extension] = new $class($this->_context);
+            }
+        } catch (Exception $e) {
+            throw new Mumsys_Display_Exception(sprintf('Helper class not found/ exists "%1$s"', $extension));
+        }
+
+        return $return;
+    }
 
 
     /**
