@@ -2,7 +2,6 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Display_Control_Http_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -13,7 +12,6 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
- * @version     1.0.0
  * Created: 2006-12-01
  * @filesource
  */
@@ -32,6 +30,7 @@
  */
 abstract class Mumsys_Mvc_Display_Control_Http_Abstract
     extends Mumsys_Mvc_Display_Control_Abstract
+    implements Mumsys_Mvc_Display_Control_Http_Interface
 {
     /**
      * Version ID information
@@ -44,7 +43,7 @@ abstract class Mumsys_Mvc_Display_Control_Http_Abstract
      */
     private $_headers = array(); // array to set php header()
 
-    
+
     /**
      * Adds header string.
      *
