@@ -55,6 +55,10 @@ class Mumsys_Session extends Mumsys_Abstract
          * http://de2.php.net/manual/en/function.session-cache-limiter.php
          * session_cache_expire(180);
          * echo $cache_expire = session_cache_expire();
+         *
+         * PHP_SESSION_DISABLED if sessions are disabled
+         * PHP_SESSION_NONE if sessions are enabled, but none exists
+         * PHP_SESSION_ACTIVE if sessions are enabled, and one exists
          */
         if (isset($_SESSION)) {
             $this->_id = session_id();
