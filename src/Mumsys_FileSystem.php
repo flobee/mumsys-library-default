@@ -93,8 +93,10 @@ class Mumsys_FileSystem
         }
         if ($filter) {
             foreach ($this->_dirInfo as $location => $parts) {
-                if (!preg_match($filter, $location) ) {
-                    unset($this->_dirInfo[$location]);
+                foreach($filter as $regex) {
+                    if (!preg_match($regex, $location) ) {
+                        unset($this->_dirInfo[$location]);
+                    }
                 }
             }
         }
