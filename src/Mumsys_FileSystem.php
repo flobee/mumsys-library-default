@@ -54,16 +54,17 @@ class Mumsys_FileSystem
      * $this->_dirinfo and all of it will be returned! Dont be confused if you
      * think records are scanned twice or you think you have dublicate records.
      *
+     * @todo follow symlinks?
+     *
      * @param string $dir Directory/ Path to start the scan
      * @param boolean $hideHidden Flag to decide to skip hidden files or directories
      * @param boolean $recursive Flag to deside to scan recursive or not
-     * @param string $filter Reqular expression to only keep matches
+     * @param array $filters List of regular expressions look for a match (the list will used AND conditions)
      *
      * @return array|false Returns list of file/link/directory details like path, name, size, type
      */
-    public function scanDirInfo($dir, $hideHidden=true, $recursive=false, $filter=false)
+    public function scanDirInfo($dir, $hideHidden=true, $recursive=false, array $filters=array())
     {
-
         if (@is_dir($dir) && is_readable($dir) && !is_link($dir)) {
             if ($dh = @opendir($dir)) {
                 while(($file = readdir($dh)) !== false)
@@ -91,16 +92,16 @@ class Mumsys_FileSystem
         } else {
             return false;
         }
-        if ($filter) {
-            foreach ($this->_dirInfo as $location => $parts) {
-                foreach($filter as $regex) {
-                    if (!preg_match($regex, $location) ) {
+        
+        if ($filters) 
+        {
+            while(list($location,) = each( $this->_dirInfo) )
+                foreach($filters as $regex) {
+                    if (!preg_match($regex, $location)) {
                         unset($this->_dirInfo[$location]);
                     }
                 }
-            }
         }
-
 
         return $this->_dirInfo;
     }
@@ -322,8 +323,11 @@ class Mumsys_FileSystem
                 $tries++;
                 return $this->copy($fileSource, $fileTarget . '.' . $tries, $keepCopy, $tries);
             } else {
-                copy($fileSource, $fileTarget);
-                return $fileTarget;
+                if (@copy($fileSource, $fileTarget)) {
+                    return $fileTarget;
+                } else {
+                    throw new Mumsys_FileSystem_Exception('copy (to: '.$fileTarget.') fails');
+                }
             }
         } catch(Exception $e) {
             throw new Mumsys_FileSystem_Exception('Copy error for: "'.$fileSource.'" '. $e->getMessage());
@@ -608,19 +612,19 @@ class Mumsys_FileSystem
                 $txt = 'Bytes';
                 break;
 
-            case 1:
+            case ($n===1):
                 $txt = 'KB';
                 break;
 
-            case 2:
+            case ($n===2):
                 $txt = 'MB';
                 break;
 
-            case 3:
+            case ($n===3):
                 $txt = 'GB';
                 break;
 
-            case 4:
+            case ($n===4):
             default:
                 $txt = 'TB';
         }
