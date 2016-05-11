@@ -81,7 +81,7 @@ class Mumsys_FileSystem
                     if ($recursive && is_dir($test.DIRECTORY_SEPARATOR)) {
                         $newdir = $dir . DIRECTORY_SEPARATOR . $file;
                         $this->_dirInfo[$newdir] = $this->getFileDetails($newdir);
-                        $this->scanDirInfo($newdir, $hideHidden, $recursive, $filter);
+                        $this->scanDirInfo($newdir, $hideHidden, $recursive, $filters);
                     }
                     else {
                         $this->_dirInfo[$test] = $this->getFileDetails($dir, $file);
