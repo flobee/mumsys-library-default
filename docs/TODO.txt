@@ -1,6 +1,8 @@
 # TODOs
 
-- [ ]
+Mumsys_Abstract
+- [ ] All tests must contain test against the Mumsys_Abstract class if 
+      implemented
 
 Mumsys_GetOpts
 - [ ] Mumsys_GetOpts: Actions groups must be validated/checked. Extend the 

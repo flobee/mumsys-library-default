@@ -1,5 +1,38 @@
 # Changes
 
+Still in todo: 2016-XX-XX
+    Mumsys_GetOpts >> 3.4.0
+    - Adds action groups (or optional parameters handling as groups) like: 
+        eg: script.php --globalOption action1 --host ab action2 --host cd
+        eg: script.php doThis -p 123 doThat now
+        - Existing configurations will be used as is as global whitelist or 
+          needs to be extended to new action groups.
+        - Return values will return like befor when not using the addition.
+    - Improves phpdoc/ code
+    - Updates Tests
+
+2016-05-15
+    Mumsys_Logger_*
+    - adds method to replace loglevel during runtime
+    - Updates tests to be 100% of code coverage
+    
+2016-03-01
+    Mumsys_I18n (init from svn to git)
+    - Init Mumsys_I18n_Abstract
+    - Init Mumsys_I18n_Default
+    - Updates Mumsys_I18n_Interface
+    - Updates Mumsys_I18n_*Tests
+
+
+2016-02-19
+    Mumsys_Logger
+    - Init Mumsys_Logger_Writer_Interface
+    - Init Mumsys_Logger_Abstract
+    - Init Mumsys_Logger_Default
+    - Init Mumsys_Logger_File
+    - Mark "Mumsys_Logger" to be deprecated
+
+
 2016-01-31
     Mumsys_Registry
     - Init class and tests for LGPL

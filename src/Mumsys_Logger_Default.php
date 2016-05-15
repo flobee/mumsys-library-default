@@ -1,24 +1,22 @@
 <?php
 
+
 /* {{{ */
 /**
- *-----------------------------------------------------------------------------
  * Mumsys_Logger_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Logger
- * @version     1.0.0
  * 0.1 Created: 2016-02-19
- * @filesource
- * -----------------------------------------------------------------------
  */
 /* }}} */
+
 
 /**
  * Class to generate log messages to a writer mechanism e.g. a logfile
@@ -29,9 +27,9 @@
  * <code>
  * $fileopts = array(
  *      'file' => $logfile,
-        'way' => 'a',
+ *      'way' => 'a',
  * );
-   $writer = new Mumsys_File($fileopts);
+  $writer = new Mumsys_File($fileopts);
  *
  * $opts = array(
  *     'logLevel'=>7,
@@ -55,6 +53,7 @@ class Mumsys_Logger_Default
      */
     const VERSION = '1.0.0';
 
+
     /**
      * Initialize the default logger object
      *
@@ -74,7 +73,7 @@ class Mumsys_Logger_Default
      * - [lf] string Optional Linefeed Default: \n
      * @param Mumsys_Logger_Writer_Interface $writer Writer interface to store messages
      */
-    public function __construct( array $options = array(), Mumsys_Logger_Writer_Interface $writer=null )
+    public function __construct( array $options = array(), Mumsys_Logger_Writer_Interface $writer = null )
     {
         parent::__construct($options, $writer);
     }

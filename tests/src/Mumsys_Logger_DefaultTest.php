@@ -1,15 +1,19 @@
 <?php
 
+
 /**
  * Mumsys_Logger_Default Test
  */
-class Mumsys_Logger_DefaultTest extends MumsysTestHelper
+class Mumsys_Logger_DefaultTest
+    extends MumsysTestHelper
 {
-
-/**
+    /**
      * @var Mumsys_Logger
      */
     protected $_object;
+    protected $_version;
+    protected $_versions;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -17,7 +21,14 @@ class Mumsys_Logger_DefaultTest extends MumsysTestHelper
      */
     protected function setUp()
     {
-        $this->_testsDir = realpath(dirname(__FILE__) .'/../');
+        $this->_version = '1.0.0';
+        $this->_versions = array(
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
+            'Mumsys_Logger_Default' => $this->_version,
+            'Mumsys_Logger_Abstract' => '1.2.0'
+        );
+
+        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
 
         $this->_logfile = $this->_testsDir . '/tmp/Mumsys_LoggerTest_defaultfile.test';
         $this->_opts = $opts = array(
@@ -60,6 +71,7 @@ class Mumsys_Logger_DefaultTest extends MumsysTestHelper
         $object = new Mumsys_Logger_Default($opts, $this->_writer);
     }
 
+
     // for 100% code coverage
     public function test__constructor2()
     {
@@ -73,11 +85,35 @@ class Mumsys_Logger_DefaultTest extends MumsysTestHelper
         $_SERVER['REMOTE_USER'] = 'flobee';
         $object = new Mumsys_Logger_Default($opts, $this->_writer);
 
-        unset($opts['username'], $_SERVER['REMOTE_USER'], $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'], $_SERVER['LOGNAME']);
+        unset($opts['username'], $_SERVER['REMOTE_USER'], $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'],
+            $_SERVER['LOGNAME']);
         $object = new Mumsys_Logger_Default($opts, $this->_writer);
 
         $_SERVER['LOGNAME'] = 'God';
         $object = new Mumsys_Logger_Default($opts, $this->_writer);
+    }
+
+
+    /**
+     * Just for code coverage
+     */
+    public function testReplaceLogLevels()
+    {
+        $this->_object->setLoglevel(3);
+
+        $this->setExpectedExceptionRegExp('Mumsys_Logger_Exception', '/(Level unknown "9" to set the log level)/');
+        $this->_object->setLoglevel(9);
+    }
+
+
+    public function testReplaceMessageLogLevels()
+    {
+        $this->_object->setMessageLoglevel(3);
+
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Logger_Exception', '/(Level unknown "9" to set the message log level)/'
+        );
+        $this->_object->setMessageLoglevel(9);
     }
 
 
@@ -152,6 +188,7 @@ class Mumsys_Logger_DefaultTest extends MumsysTestHelper
         $this->assertEquals($exp, trim($this->_object->log(array('long log'), 7)));
     }
 
+
     public function testLogException()
     {
         $this->setExpectedException('PHPUnit_Framework_Error_Notice');
@@ -177,7 +214,7 @@ class Mumsys_Logger_DefaultTest extends MumsysTestHelper
 
         // as array input
         ob_start();
-        $object->log(array('test1','test2'), 7);
+        $object->log(array('test1', 'test2'), 7);
         $x3 = ob_get_clean();
         $y3 = 'x ff_0: array("0" => "test1");' . "\n"
             . 'x ff_0: array("1" => "test2");';
@@ -201,8 +238,22 @@ class Mumsys_Logger_DefaultTest extends MumsysTestHelper
     public function testWrite()
     {
         $this->setExpectedException('Mumsys_File_Exception',
-            'Can not write to file: "'.$this->_testsDir . '/tmp/Mumsys_LoggerTest_defaultfile.test". IsOpen: "Yes", Is writeable: "Yes".');
+            'Can not write to file: "' . $this->_testsDir . '/tmp/Mumsys_LoggerTest_defaultfile.test". IsOpen: "Yes", Is writeable: "Yes".');
         $this->_object->write($this);
+    }
+
+
+    /**
+     * @covers Mumsys_Logger_Default::getVersions
+     */
+    public function testgetVersions()
+    {
+        $possible = $this->_object->getVersions();
+
+        foreach ($this->_versions as $must => $value) {
+            $this->assertTrue(isset($possible[$must]));
+            $this->assertTrue(($possible[$must] == $value));
+        }
     }
 
 }
