@@ -12,7 +12,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Request
- * @filesource
+ * @version 1.1.0
  */
 /* }}} */
 
@@ -26,6 +26,20 @@
  */
 interface Mumsys_Request_Interface
 {
+
+
+    /**
+     * Initialise the request object.
+     *
+     * After init the global arrays inside this class: _POST , _GET, _COOKIE
+     * will be reset! on only available in here.
+     *
+     * @param array $options Optional initial options e.g.:
+     * 'programKey','controllerKey', 'actionKey',
+     */
+    public function __construct( array $options = array() );
+
+
     /**
      * Retrieve the module name
      *
@@ -153,7 +167,7 @@ interface Mumsys_Request_Interface
     /**
      * Returns all input parameters
      *
-     * @return array incomming request valiables (_GET + _POST)
+     * @return array incomming request valiables
      */
     public function getParams();
 
@@ -187,6 +201,6 @@ interface Mumsys_Request_Interface
      * @return mixed Returns requested value or the default if the key does not
      * extists
      */
-    public function getCookie( $key = null, $default = null );
+    public function getInputCookie( $key = null, $default = null );
 
 }

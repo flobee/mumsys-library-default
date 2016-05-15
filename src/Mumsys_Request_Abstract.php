@@ -33,7 +33,6 @@ abstract class Mumsys_Request_Abstract
      */
     const VERSION = '1.0.0';
 
-
     /**
      * The current programm name
      * @var string
@@ -75,6 +74,40 @@ abstract class Mumsys_Request_Abstract
      * @var array
      */
     protected $_input = array();
+
+    /**
+     * Incomming cookie parameters
+     * @var array
+     */
+    protected $_inputCookie = array();
+
+
+    /**
+     * Initialise the request object using _GET and _POST arrays.
+     *
+     * After init the global arrays _POST and _GET will be reset!
+     *
+     * @param array $options Optional initial options e.g.:
+     * 'programKey','controllerKey', 'actionKey',
+     */
+    public function __construct( array $options = array() )
+    {
+        if (isset($options['programKey'])) {
+            $this->setProgramKey($options['programKey']);
+        }
+
+        if (isset($options['controllerKey'])) {
+            $this->setControllerKey($options['controllerKey']);
+        }
+
+        if (isset($options['actionKey'])) {
+            $this->setActionKey($options['actionKey']);
+        }
+
+        if (isset($_COOKIE) && is_array($_COOKIE)) {
+            $this->_inputCookie = $_COOKIE;
+        }
+    }
 
 
     /**
@@ -252,10 +285,12 @@ abstract class Mumsys_Request_Abstract
     {
         $key = (string)$key;
         if (isset($this->_input[$key])) {
-            return $this->_input[$key];
+            $return = $this->_input[$key];
+        } else {
+            $return = $default;
         }
 
-        return $default;
+        return $return;
     }
 
 
@@ -337,18 +372,20 @@ abstract class Mumsys_Request_Abstract
      * @return mixed Returns requested value or the default if the key does not
      * extists
      */
-    public function getCookie( $key = null, $default = null )
+    public function getInputCookie( $key = null, $default = null )
     {
         if (empty($key)) {
-            return $_COOKIE;
+            return $this->_inputCookie;
         }
 
         $key = (string)$key;
-        if (isset($_COOKIE[$key])) {
-            return $_COOKIE[$key];
+        if (isset($this->_inputCookie[$key])) {
+            $return = $this->_inputCookie[$key];
+        } else {
+            $return = $default;
         }
 
-        return $default;
+        return $return;
     }
 
 }

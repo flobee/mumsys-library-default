@@ -31,29 +31,20 @@ class Mumsys_Request_Shell
     /**
      * Version ID information
      */
-    const VERSION = '1.0.1';
+    const VERSION = '1.1.1';
 
 
     /**
-     * Initialise the request class using servers argv array.
-     * After init _SERVER[argv] will be reseted.
+     * Initialise the request object using servers argv array.
+     *
+     * After init _SERVER[argv] it will be set empty
      *
      * @param array $options Optional initial options e.g.:
      * 'programKey','controllerKey', 'actionKey',
      */
     public function __construct( array $options = array() )
     {
-        if (isset($options['programKey'])) {
-            $this->setProgramKey($options['programKey']);
-        }
-
-        if (isset($options['controllerKey'])) {
-            $this->setControllerKey($options['controllerKey']);
-        }
-
-        if (isset($options['actionKey'])) {
-            $this->setActionKey($options['actionKey']);
-        }
+        parent::__construct($options);
 
         if (isset($_SERVER['argv']) && is_array($_SERVER['argv'])) {
             $this->_input += $_SERVER['argv'];
