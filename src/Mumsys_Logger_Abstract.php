@@ -33,7 +33,7 @@ abstract class Mumsys_Logger_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.1.0';
+    const VERSION = '1.2.0';
 
     /**
      * System is unusable emerg()
