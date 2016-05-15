@@ -1,14 +1,17 @@
 <?php
 
+
 /**
  * Mumsys_Request_Shell Test
  */
-class Mumsys_Request_ShellTest extends MumsysTestHelper
+class Mumsys_Request_ShellTest
+    extends MumsysTestHelper
 {
     /**
      * @var Mumsys_Request_Default
      */
     protected $_object;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -25,6 +28,7 @@ class Mumsys_Request_ShellTest extends MumsysTestHelper
         $this->_object = new Mumsys_Request_Shell($options);
     }
 
+
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
@@ -33,6 +37,7 @@ class Mumsys_Request_ShellTest extends MumsysTestHelper
     {
         $this->_object = null;
     }
+
 
     /**
      * For code coverage
@@ -54,6 +59,7 @@ class Mumsys_Request_ShellTest extends MumsysTestHelper
         $this->_object = new Mumsys_Request_Shell($options);
     }
 
+
     /**
      * Tests abstract class
      */
@@ -63,9 +69,9 @@ class Mumsys_Request_ShellTest extends MumsysTestHelper
         $actual2 = $this->_object->getVersion();
         $actual3 = $this->_object->getVersions();
 
-        $this->assertEquals('1.0.1', $actual1);
-        $this->assertEquals('Mumsys_Request_Shell 1.0.1', $actual2);
-        $this->assertEquals('1.0.1', $actual3['Mumsys_Request_Shell']);
+        $this->assertEquals('1.1.1', $actual1);
+        $this->assertEquals('Mumsys_Request_Shell 1.1.1', $actual2);
+        $this->assertEquals('1.1.1', $actual3['Mumsys_Request_Shell']);
     }
 
 }

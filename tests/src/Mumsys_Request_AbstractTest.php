@@ -1,19 +1,22 @@
 <?php
 
+
 /**
  * Mumsys_Request_Abstract test
  */
-class Mumsys_Request_AbstractTest extends MumsysTestHelper
+class Mumsys_Request_AbstractTest
+    extends MumsysTestHelper
 {
-
     /**
      * @var Mumsys_Request_Abstract
      */
     protected $_object;
+
     /**
      * @var array
      */
     protected $_input;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -37,6 +40,7 @@ class Mumsys_Request_AbstractTest extends MumsysTestHelper
         $this->_object = new Mumsys_Request_Default($options);
     }
 
+
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
@@ -46,6 +50,7 @@ class Mumsys_Request_AbstractTest extends MumsysTestHelper
         $_COOKIE = array();
         $this->_object = null;
     }
+
 
     /**
      * @covers Mumsys_Request_Abstract::getProgramName
@@ -62,6 +67,7 @@ class Mumsys_Request_AbstractTest extends MumsysTestHelper
         $this->assertEquals('Test', $actual3);
     }
 
+
     /**
      * @covers Mumsys_Request_Abstract::setControllerName
      * @covers Mumsys_Request_Abstract::getControllerName
@@ -76,6 +82,7 @@ class Mumsys_Request_AbstractTest extends MumsysTestHelper
         $this->assertInstanceOf('Mumsys_Request_Default', $actual2);
         $this->assertEquals('Lower', $actual3);
     }
+
 
     /**
      * @covers Mumsys_Request_Abstract::getActionName
@@ -94,6 +101,7 @@ class Mumsys_Request_AbstractTest extends MumsysTestHelper
         $this->assertInstanceOf('Mumsys_Request_Default', $actual4);
     }
 
+
     /**
      * @covers Mumsys_Request_Abstract::getProgramKey
      * @covers Mumsys_Request_Abstract::setProgramKey
@@ -103,6 +111,7 @@ class Mumsys_Request_AbstractTest extends MumsysTestHelper
         $actual1 = $this->_object->getProgramKey();
         $this->assertEquals('programTest', $actual1);
     }
+
 
     /**
      * @covers Mumsys_Request_Abstract::setControllerKey
@@ -117,6 +126,7 @@ class Mumsys_Request_AbstractTest extends MumsysTestHelper
         $this->assertEquals('cntl', $actual2);
     }
 
+
     /**
      * @covers Mumsys_Request_Abstract::getActionKey
      * @covers Mumsys_Request_Abstract::setActionKey
@@ -129,6 +139,7 @@ class Mumsys_Request_AbstractTest extends MumsysTestHelper
         $this->assertEquals('actionTest', $actual);
         $this->assertEquals('index', $this->_object->getActionKey());
     }
+
 
     /**
      * @covers Mumsys_Request_Abstract::getParam
@@ -149,6 +160,7 @@ class Mumsys_Request_AbstractTest extends MumsysTestHelper
         $this->assertFalse($actual5);
     }
 
+
     /**
      * Plural version.
      * @covers Mumsys_Request_Abstract::getParams
@@ -168,6 +180,7 @@ class Mumsys_Request_AbstractTest extends MumsysTestHelper
         $this->assertEquals($expected, $actual2);
     }
 
+
     /**
      * @covers Mumsys_Request_Abstract::clearParams
      */
@@ -177,14 +190,15 @@ class Mumsys_Request_AbstractTest extends MumsysTestHelper
         $this->assertEquals(array(), $this->_object->getParams());
     }
 
+
     /**
-     * @covers Mumsys_Request_Abstract::getCookie
+     * @covers Mumsys_Request_Abstract::getInputCookie
      */
     public function testGetCookie()
     {
-        $actual1 = $this->_object->getCookie('HIDDEN', false);
-        $actual2 = $this->_object->getCookie(null);
-        $actual3 = $this->_object->getCookie('notSet', false);
+        $actual1 = $this->_object->getInputCookie('HIDDEN', false);
+        $actual2 = $this->_object->getInputCookie(null);
+        $actual3 = $this->_object->getInputCookie('notSet', false);
 
         $this->assertEquals('COOK', $actual1);
         $this->assertEquals($_COOKIE, $actual2);
