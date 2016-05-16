@@ -11,6 +11,15 @@ Still in todo: 2016-XX-XX
     - Improves phpdoc/ code
     - Updates Tests
 
+
+2016-05-16
+    Mumsys_Html
+    Mumsys_Html_Table
+    Mumsys_Xml_Abstract
+    - Init classes
+    - adds tests, code coverage 100%
+
+
 2016-05-15
     Mumsys_Request_*
     - Improves input handling, extend interface, updates classes to fit the 
@@ -21,7 +30,8 @@ Still in todo: 2016-XX-XX
     Mumsys_Logger_*
     - adds method to replace loglevel during runtime
     - Updates tests to be 100% of code coverage
-    
+
+
 2016-03-01
     Mumsys_I18n (init from svn to git)
     - Init Mumsys_I18n_Abstract
