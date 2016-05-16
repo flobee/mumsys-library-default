@@ -13,6 +13,10 @@ Still in todo: 2016-XX-XX
 
 
 2016-05-16
+    Mumsys_I18n_None
+    - Init default driver to implement without translation (just the wrapper)
+    - Adds test, code coverage 100%
+
     Mumsys_Html
     Mumsys_Html_Table
     Mumsys_Xml_Abstract
