@@ -12,6 +12,20 @@ Still in todo: 2016-XX-XX
     - Updates Tests
 
 
+2016-05-17
+    Mumsys_Session_Default
+    Mumsys_Session_Nome
+    Mumsys_Session_Abstract
+    - Init new wersion of session handling where the old session class will be
+      maked as deprecated soon
+    
+    Mumsys_Session_Interface
+    - update methodes to be full featured now
+
+    Mumsys_Session
+    - Improves class to fit the extended interface
+
+
 2016-05-16
     Mumsys_I18n_None
     - Init default driver to implement without translation (just the wrapper)

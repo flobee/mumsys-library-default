@@ -25,9 +25,16 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Session
  */
-interface Mumsys_Session_Interface
-extends Mumsys_GetterSetter_Interface
+interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
 {
+
+
+    /**
+     * Initialize the session object.
+     *
+     * @param string $appSecret Application key/ Installation key
+     */
+    public function __construct( $appSecret = 'mumsys' );
 
 
     /**
