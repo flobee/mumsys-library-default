@@ -1,15 +1,23 @@
 <?php
 
+
 /**
  * Mumsys_Session Test
  */
-class Mumsys_SessionTest extends MumsysTestHelper
+class Mumsys_SessionTest
+    extends MumsysTestHelper
 {
     /**
      * @var Mumsys_Session
      */
     protected $_object;
+
+    /**
+     * Version ID string
+     * @var string
+     */
     protected $_version;
+
 
     /**
      * needed to test the session.
@@ -18,6 +26,8 @@ class Mumsys_SessionTest extends MumsysTestHelper
     {
         ob_start();
     }
+
+
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -36,6 +46,7 @@ class Mumsys_SessionTest extends MumsysTestHelper
     protected function tearDown()
     {
         $this->_object = NULL;
+        session_write_close();
     }
 
 
@@ -56,10 +67,10 @@ class Mumsys_SessionTest extends MumsysTestHelper
         $expected6 = array();
 
         // test setter
-        $this->_object->replace('testkey', array('val1','val2'));
+        $this->_object->replace('testkey', array('val1', 'val2'));
 
         $actual1 = $this->_object->get('testkey');
-        $expected1 = array('val1','val2');
+        $expected1 = array('val1', 'val2');
 
         $actual2 = $this->_object->getAll();
         $this->_object->__destruct();
@@ -71,9 +82,9 @@ class Mumsys_SessionTest extends MumsysTestHelper
         $actual5 = $this->_object->getCurrent();
         $expected5 = $expected2[$expected3];
 
-        $this->_object->register('newkey', array('val5','val6'));
+        $this->_object->register('newkey', array('val5', 'val6'));
         $actual4 = $this->_object->get('newkey');
-        $expected4 = array('val5','val6');
+        $expected4 = array('val5', 'val6');
         // test default return
         $actual7 = $this->_object->get('notsetbefor', 'dingding');
         $expected7 = 'dingding';
@@ -104,9 +115,9 @@ class Mumsys_SessionTest extends MumsysTestHelper
 
         // test register existing
         $this->setExpectedException('Mumsys_Session_Exception', 'Session key "testkey" exists');
-        $this->_object->register('testkey', array('val5','val6'));
+        $this->_object->register('testkey', array('val5', 'val6'));
 
-        echo 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+        echo __METHOD__ . 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
     }
 
 }
