@@ -1,23 +1,20 @@
 <?php
 
-/*{{{*/
+/* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Session
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Session
- * @version     1.0.0
  * Created: 2005-01-01
- * @filesource
  */
-/*}}}*/
+/* }}} */
 
 
 /**
@@ -42,6 +39,10 @@ class Mumsys_Session
      */
     private $_records;
 
+    /**
+     * ID of the session of this system.
+     * @var string
+     */
     private $_id;
 
 
@@ -92,6 +93,7 @@ class Mumsys_Session
         return $default;
     }
 
+
     /**
      * Returns the current session data based on the current session id.
      *
@@ -104,6 +106,7 @@ class Mumsys_Session
     {
         return $this->_records[$this->_id];
     }
+
 
     /**
      * Returns the complete active session data.
