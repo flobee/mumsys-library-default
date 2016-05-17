@@ -48,8 +48,10 @@ class Mumsys_Session
 
     /**
      * Initialize the session object.
+     *
+     * @param string $appSecret Not impemented, just to fit the interface
      */
-    public function __construct()
+    public function __construct( $appSecret = 'mumsys' )
     {
         /**
          * session_cache_limiter('private');
