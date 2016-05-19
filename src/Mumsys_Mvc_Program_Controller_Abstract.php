@@ -1,6 +1,6 @@
 <?php
 
-/*{{{*/
+/* {{{ */
 /**
  * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Program_Controller_Abstract
@@ -17,7 +17,8 @@
  * Created: 2010-08-19
  * @filesource
  */
-/*}}}*/
+/* }}} */
+
 
 /**
  * Mumsys program abstract contains methodes to be used in program controllers.
@@ -38,7 +39,7 @@ abstract class Mumsys_Mvc_Program_Controller_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * Context item which must be available for all mumsys objects
@@ -76,6 +77,7 @@ abstract class Mumsys_Mvc_Program_Controller_Abstract
 //        }
     }
 
+
     /**
      * Returns the display/ view.
      *
@@ -86,12 +88,9 @@ abstract class Mumsys_Mvc_Program_Controller_Abstract
      * @param string $outputComplexity Complexity for the output e.g: default|
      * extended (includes more view helper which maybe useful or required)
      *
-     * @return Mumsys_Mvc_Display_Control_Interface|
-     * Mumsys_Mvc_Display_Control_Http_Interface|
-     * Mumsys_Mvc_Display_Control_Http_Default|
-     * Mumsys_Mvc_Display_Control_Stdout_Default
+     * @return Mumsys_Mvc_Display_Control_Interface at last instance
      */
-    protected function _getDisplay( array $params = array(), $outputType = 'default', $outputComplexity = 'default' )
+    public function getDisplay( array $params = array(), $outputType = 'default', $outputComplexity = 'default' )
     {
         $display = new Mumsys_Mvc_Display_Factory($this->_context);
         return $display->load($outputType, $outputComplexity, $params);
@@ -106,7 +105,7 @@ abstract class Mumsys_Mvc_Program_Controller_Abstract
      *
      * @return Mumsys_Program_Model_Interface
      */
-    protected function loadModel($program, $model)
+    protected function loadModel( $program, $model )
     {
         $className = sprintf('Mumsys_Program_%1$s_%2$s_Model', $program, $model);
         if (class_exists($className)) {
