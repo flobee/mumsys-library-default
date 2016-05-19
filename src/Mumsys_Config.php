@@ -1,6 +1,6 @@
 <?php
 
-/*{{{*/
+/* {{{ */
 /**
  * @deprecated since version 1.0.1 Use Mumsys_Config_Default from now on
  * ----------------------------------------------------------------------------
@@ -14,16 +14,11 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Config
+ * @version     1.0.1
  * Created: 2009-11-29
- * @filesource
  */
-/*}}}*/
+/* }}} */
 
-
-// constants and configs:
-// $config
-//      def_mod -> default_program
-//      def_submod -> default_controller
 
 /**
  * Mumsys configuration.
@@ -32,7 +27,8 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Config
  */
-class Mumsys_Config extends Mumsys_Abstract
+class Mumsys_Config
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
@@ -59,7 +55,7 @@ class Mumsys_Config extends Mumsys_Abstract
      * @param array $config Config parameter to be set
      * @throws Mumsys_Config_Exception
      */
-    public function __construct(Mumsys_Context $context, array $config=array() )
+    public function __construct( Mumsys_Context $context, array $config = array() )
     {
         $this->_context = $context;
         $this->_config = $config;
@@ -111,7 +107,7 @@ class Mumsys_Config extends Mumsys_Abstract
      *
      * Example: You want values from database -> configs -> a and c
      * <pre>
-     * $structure = array(
+     * $config = array(
      *  'database'=> array(
      *      'configs'=> array(
      *          'a'=> array('some props'),
@@ -151,21 +147,7 @@ class Mumsys_Config extends Mumsys_Abstract
 
 
     /**
-     * Adds/ registers configuration parameters to the current state.
-     *
-     * @param array $config Configuration parameters to register
-     * @throws Mumsys_Config_Exception On errors or if a config already exists
-     */
-    public function add(array $config = array())
-    {
-        foreach ($config as $key => & $value) {
-            $this->register($key, $value);
-        }
-    }
-
-
-    /**
-     * Register a configuration parameter if not exists.
+     * Register a configuration parameter if not extsts.
      *
      * @param string $key Key-Name of the config-parameter
      * @param mixed $value Mixed value to be set.
@@ -174,13 +156,13 @@ class Mumsys_Config extends Mumsys_Abstract
      */
     public function register( $key, $value = null )
     {
-        if (array_key_exists($key, $this->_config)) {
-            $message = sprintf('Config key "%1$s" already exists', $key);
+        if (array_key_exists($key, $this->_config[$k])) {
+            $message = sprintf('Config key "%1$s" exists', $key);
             throw new Mumsys_Config_Exception($message);
         }
 
         $this->_checkKey($key);
-        $this->_config[$key] = $value;
+        $this->_config[$k] = $value;
     }
 
 
@@ -210,17 +192,15 @@ class Mumsys_Config extends Mumsys_Abstract
      */
     public function load( $appKey = 'mumsys' )
     {
-        throw new Mumsys_Config_Exception('exit in: ' . basename(__FILE__) . ':' . __LINE__);
+        throw new Mumsys_Config_Exception('exit in: ' . __FILE__ . ':' . __LINE__);
 
 
         $oDB = $this->_context->getDatabase();
 
         $this->get('configs/database/mumsys/config/get');
         echo $sql = sprintf(
-            'SELECT config_key, config_val, config_type FROM %1$s%2$s WHERE config_app = \'%3$s\'',
-            $this->_config['table_prefix'],
-            $this->_config['table_config'],
-            $appKey
+        'SELECT config_key, config_val, config_type FROM %1$s%2$s WHERE config_app = \'%3$s\'',
+        $this->_config['table_prefix'], $this->_config['table_config'], $appKey
         );
 
         $oRes = $oDB->query($sql);
@@ -228,23 +208,24 @@ class Mumsys_Config extends Mumsys_Abstract
         if ($oDB->isError($oRes)) {
             throw new Mumsys_Config_Exception($oDB->getErrorMessage());
         }
-        while ( list($key, $val, $type) = $oRes->fetch('ROW') )
-        {
+
+        while (list($key, $val, $type) = $oRes->fetch('ROW')) {
             $key = trim($key);
             $val = trim($val);
             $result = null;
 
             $msgTmpl = 'Config for "%1$s" exists for type: "%2$s", key: "%3$s" (value: "%4$s")';
 
-            if ( $type != 'CONSTANT' && isset($this->_config[$key])) {
+
+            if ($type != 'CONSTANT' && isset($this->_config[$key])) {
                 $message = sprintf($msgTmpl, $appKey, $type, $key, substr($val, 0, 15));
                 throw new Mumsys_Config_Exception($message);
             }
 
-            switch ( $type )
+            switch ($type)
             {
                 case 'BOOL':
-                    if ( empty($val) || $val == 'false' ) {
+                    if (empty($val) || $val == 'false') {
                         $result = false;
                     } else {
                         $result = true;
@@ -265,8 +246,8 @@ class Mumsys_Config extends Mumsys_Abstract
                     break;
 
                 case 'CONSTANT':
-                    if ( defined($key) ) {
-                        $message = sprintf($msgTmpl, $appKey, $type, $key, substr($val,0,15));
+                    if (defined($key)) {
+                        $message = sprintf($msgTmpl, $appKey, $type, $key, substr($val, 0, 15));
                         throw new Mumsys_Config_Exception($message);
                     }
                     define($key, $val);
@@ -291,5 +272,5 @@ class Mumsys_Config extends Mumsys_Abstract
 
         return $this->_config;
     }
-}
 
+}
