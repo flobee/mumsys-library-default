@@ -4,6 +4,9 @@ vendor/
 
 # Local configs
 config/autoload/*.local.php
+tests/config/credentials.php
+# credentials.php
+tests/config/config4tests.php
 
 # Binary gettext files
 *.mo
@@ -15,8 +18,7 @@ data/sessions/
 data/tmp/
 temp/
 
-# Legacy ZF1
-demos/
+# Legacy
 extras/documentation
 
 .gitmodules
