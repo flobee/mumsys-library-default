@@ -5,9 +5,9 @@
  * Mumsys_Logger
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -21,7 +21,11 @@
 /**
  * DEPRICATED! see Mumsys_Logger_File
  *
- * Class to generate log messages to a writer mechanism e.g. a logfile
+ * @todo Remove public properties
+ * @todo implement writer interface? ; alle dazugeörigen parameter (lofile, log
+ * way etc.) müssen dort gesetzt werden
+ * NÖ! dieser logger NICHT! der reicht so, sonnst nimm den pear logger!
+ * @todo psr-3 compatible http://www.php-fig.org/psr/psr-3/
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -147,8 +151,7 @@ class Mumsys_Logger
     public function checkMaxFilesize()
     {
         $message = false;
-        if ($this->_maxfilesize)
-        {
+        if ($this->_maxfilesize) {
             if (!($this->_verbose || $this->_debug) && ($fsize = @filesize($this->_logfile)) > $this->_maxfilesize) {
                 unlink($this->_logfile);
                 $message = 'Max filesize reached. Log purged now';
