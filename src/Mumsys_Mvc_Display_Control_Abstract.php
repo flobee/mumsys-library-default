@@ -1,22 +1,18 @@
 <?php
 
-
 /* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Display_Control_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
- * @version     1.0.0
  * Created: 2016-01-30
- * @filesource
  */
 /* }}} */
 
@@ -26,7 +22,7 @@
  *
  * Last instance to output data to the frontend.
  * Mumsys_Mvc_Display_Control_Abstract is the base for all views. Basicly it
- * collects, applys, shows or returns given content.
+ * collects, applys, shows or returns given/rendered  content.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -61,7 +57,7 @@ abstract class Mumsys_Mvc_Display_Control_Abstract
 
     /**
      * Constructor is to be implemented at the display controller which will be
-     * used. e.g. in : Mumsys_Mvc_Display_Control_Http_Default
+     * used. e.g. in : Mumsys_Mvc_Display_Control_Http_Abstract
      */
     abstract public function __construct( Mumsys_Context $context, array $options = array() );
 
