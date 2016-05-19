@@ -13,9 +13,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
- * @version     1.0.0
- * Created: 2010-08-19
- * @filesource
+ * Created: 2010-08-19 (svn)
  */
 /* }}} */
 
