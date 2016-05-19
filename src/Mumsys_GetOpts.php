@@ -192,11 +192,12 @@ class Mumsys_GetOpts
         $errorMsg = '';
         $unflag = array();
 
+
         foreach ($options as $action => $params) {
             while ($argPos < $argc) {
                 $arg = $argv[$argPos];
 
-                // skip values as they are expected in argPos + 1, if any
+// skip values as they are expected in argPos + 1, if any
                 if (isset($arg[0]) && $arg[0] == '-') {
                     if ($arg[1] == '-') {
                         $argTag = '--' . substr($arg, 2, strlen($arg));
@@ -207,7 +208,7 @@ class Mumsys_GetOpts
                     if (isset($map[$action][$argTag])) {
                         $var = $map[$action][$argTag];
                     } else {
-                        // a --no-FLAG' to unset?
+// a --no-FLAG' to unset?
                         $test = substr($argTag, 5, strlen($argTag));
                         if (strlen($test) == 1) {
                             $unTag = '-' . $test;
@@ -227,7 +228,7 @@ class Mumsys_GetOpts
                         }
                     }
 
-                    // whitelist check
+// whitelist check
                     foreach ($options[$action] as $_opk => $_opv) {
                         if (is_string($_opk)) {
                             $_opv = $_opk;
@@ -248,22 +249,22 @@ class Mumsys_GetOpts
                                     $return[$action][$var] = true;
                                 }
 
-                                //unset($options[$_opk]);
+//unset($options[$_opk]);
                             } else {
-                                // ???
+// ???
                             }
                         } else {
-                            // we got it already: was it req and had a value?
-                            //echo PHP_EOL . 'xx: ';print_r($argv[$argPos]); print_r($argv[++$argPos]) ;
-                            //$argPos+=2;
-                            //break;
+// we got it already: was it req and had a value?
+//echo PHP_EOL . 'xx: ';print_r($argv[$argPos]); print_r($argv[++$argPos]) ;
+//$argPos+=2;
+//break;
                         }
                     }
                 } else {
-                    // action / sub program call or flag detected!
-                    //$action = $arg;
-                    //$return[$action] = array();
-                    //throw new Mumsys_GetOpts_Exception('action / sub program call or flag detected' . $arg);
+// action / sub program call or flag detected!
+//$action = $arg;
+//$return[$action] = array();
+//throw new Mumsys_GetOpts_Exception('action / sub program call or flag detected' . $arg);
                 }
 
                 $argPos++;
@@ -276,7 +277,6 @@ class Mumsys_GetOpts
             $message = 'Invalid input parameters detected!' . PHP_EOL . $errorMsg;
             throw new Mumsys_GetOpts_Exception($message);
         }
-
 
         if ($unflag) {
             foreach ($unflag as $action => $values) {
@@ -293,7 +293,7 @@ class Mumsys_GetOpts
         } else {
             $this->_hasActions = true;
         }
-        //print_r($return);
+//print_r($return);
         $this->_result = $return;
     }
 
@@ -421,6 +421,7 @@ class Mumsys_GetOpts
     {
         $str = '';
         $tab = '';
+
         foreach ($this->_options AS $action => $values) {
             if ($action != '_default_') {
                 $str .= $action . '' . PHP_EOL;
@@ -442,6 +443,7 @@ class Mumsys_GetOpts
                 if ($needvalue) {
                     $option .= ' <yourValue/s>';
                 }
+
                 if ($desc) {
                     $desc = PHP_EOL . "\t" . wordwrap($desc, 76, PHP_EOL . "\t") . PHP_EOL;
                 }
@@ -510,6 +512,7 @@ class Mumsys_GetOpts
     private function _mapOptions( array $options = array() )
     {
         $mapping = array();
+
 
         foreach ($options as $action => $values) {
             foreach ($values as $opkey => $opValue) {
