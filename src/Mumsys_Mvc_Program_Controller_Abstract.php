@@ -66,15 +66,6 @@ abstract class Mumsys_Mvc_Program_Controller_Abstract
     {
         $this->_programConfig = $programConfig;
         $this->_context = $context;
-
-        /**
-         * @todo maybe permission fails because the controller do not exists because of wrong params in forms?
-         * @todo wrong place for this: deorator pattern? shell vs.  cms/auth functionality?
-         */
-//        if ( !$this->_permissions->hasAccess() ) {
-//            $oDisplay = $this->_getDisplay();
-//            $oDisplay->noAccess();
-//        }
     }
 
 
