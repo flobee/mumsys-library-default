@@ -1,21 +1,20 @@
 <?php
 
-/*{{{*/
+/* {{{ */
 /**
  * Mumsys_Context
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2014 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2014 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Context
  * Created: 2014-01-08
- * @filesource
  */
-/*}}}*/
+/* }}} */
 
 
 /**
@@ -31,12 +30,13 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Context
  */
-class Mumsys_Context extends Mumsys_Abstract
+class Mumsys_Context
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
      */
-    const VERSION = '1.1.3';
+    const VERSION = '1.1.4';
 
     /**
      * Configuration vars in an array container.
@@ -284,21 +284,22 @@ class Mumsys_Context extends Mumsys_Abstract
 
 
     /**
-     * Returns a generic already registered interface/ object.
+     * Returns a generic, already registered, interface/ object.
      *
      * @param string $interface Name of the Interface the object implements
      * @param mixed $default Default value to return if interface not exists
      *
      * @return object Retuns the requested interface
-     * @throws Mumsys_Exception Throws exception if the object was not set
+     * @throws Mumsys_Exception Throws exception if the object was not set befor
      */
     public function getGeneric( $interface, $default = null )
     {
         try {
             return $this->_get($interface);
-        } catch (Mumsys_Exception $e) { ; }
-
-        return $default;
+        } catch (Exception $e) {
+            $message = sprintf('Generic interface "%1$s" not found', $interface);
+            throw new Mumsys_Exception($message);
+        }
     }
 
 
@@ -331,7 +332,7 @@ class Mumsys_Context extends Mumsys_Abstract
      */
     private function _get( $key )
     {
-        if ( !isset($this->_config[$key]) ) {
+        if (!isset($this->_config[$key])) {
             throw new Mumsys_Exception('"' . $key . '" not set');
         }
 
@@ -348,7 +349,7 @@ class Mumsys_Context extends Mumsys_Abstract
      */
     private function _register( $key, $value )
     {
-        if ( array_key_exists($key, $this->_config) ) {
+        if (array_key_exists($key, $this->_config)) {
             throw new Mumsys_Exception('"' . $key . '" already set');
         }
 
