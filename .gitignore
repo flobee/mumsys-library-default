@@ -4,6 +4,7 @@ vendor/
 
 # Local configs
 config/autoload/*.local.php
+*/config/credentials.php
 
 # Binary gettext files
 *.mo

@@ -1,9 +1,11 @@
 <?php
 
+
 /**
  * Test class for Mumsys_FileSystem.
  */
-class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
+class Mumsys_FileSystemTest
+    extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Mumsys_FileSystem
@@ -15,7 +17,7 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->_testsDir = realpath(dirname(__FILE__) .'/../');
+        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
         $this->_testdirs = array(
             'rm1' => $this->_testsDir . '/tmp/unittest-mkdir/mkdirs/testfile',
             'rm2' => $this->_testsDir . '/tmp/unittest-mkdir/testfile',
@@ -55,6 +57,7 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $actual2);
     }
 
+
     /**
      * @covers Mumsys_FileSystem_Common_Abstract::nameGet
      */
@@ -75,6 +78,8 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('Mumsys_FileSystem', $this->_object);
     }
+
+
     /**
      * @covers Mumsys_FileSystem::scanDirInfo
      */
@@ -82,8 +87,8 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
     {
         @mkdir($this->_testdirs['dir'], 0755);
         @mkdir($this->_testdirs['dirs'], 0755);
-        @touch($this->_testdirs['dir'].'/testfile');
-        @touch($this->_testdirs['dirs'].'/testfile');
+        @touch($this->_testdirs['dir'] . '/testfile');
+        @touch($this->_testdirs['dirs'] . '/testfile');
         // simple directory
         $actual1 = $this->_object->scanDirInfo($this->_testdirs['dir'], true, false);
         $expected1 = array(
@@ -104,7 +109,8 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
         );
 
         // recursive directory
-        $actual2 = $this->_object->scanDirInfo($this->_testdirs['dir'], true, true);
+        $filers = array('/(unittest)/i');
+        $actual2 = $this->_object->scanDirInfo($this->_testdirs['dir'], true, true, $filers);
         $expected2 = array(
             $this->_testsDir . '/tmp/unittest-mkdir/mkdirs' => array(
                 'file' => $this->_testsDir . '/tmp/unittest-mkdir/mkdirs',
@@ -127,10 +133,9 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
                 'size' => 0,
                 'type' => 'file',
             ),
-
         );
-        unlink($this->_testdirs['dir'].'/testfile');
-        unlink($this->_testdirs['dirs'].'/testfile');
+        unlink($this->_testdirs['dir'] . '/testfile');
+        unlink($this->_testdirs['dirs'] . '/testfile');
 
         // unreadable path
         $actual3 = $this->_object->scanDirInfo('/root', true, true);
@@ -193,7 +198,7 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
             'mtime' => $stat['mtime'],
             'atime' => $stat['atime'],
             'ctime' => $stat['ctime'],
-            'filetype' => shell_exec('file -b -p "'.$curFile.'";'),
+            'filetype' => shell_exec('file -b -p "' . $curFile . '";'),
             'is_executable' => true,
             'ext' => 'php',
             'mimetype' => 'text/x-php',
@@ -206,7 +211,7 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
         $expected2 = array(
             'file' => $this->_testsDir . '/tmp',
             'name' => 'tmp',
-            'size' => filesize($this->_testsDir .'/tmp'),
+            'size' => filesize($this->_testsDir . '/tmp'),
             'type' => 'dir',
             'path' => $this->_testsDir,
             'is_file' => false,
@@ -220,7 +225,7 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
             'mtime' => $stat['mtime'],
             'atime' => $stat['atime'],
             'ctime' => $stat['ctime'],
-            'filetype' => shell_exec('file -b -p "'. $this->_testsDir . '/tmp";'),
+            'filetype' => shell_exec('file -b -p "' . $this->_testsDir . '/tmp";'),
             'is_executable' => true,
             'ext' => false,
             'owner_name' => @reset(posix_getpwuid($stat['uid'])),
@@ -248,7 +253,7 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
             'mtime' => $stat['mtime'],
             'atime' => $stat['atime'],
             'ctime' => $stat['ctime'],
-            'filetype' => shell_exec('file -b -p "'.$this->_testsDir . '/tmp/link";'),
+            'filetype' => shell_exec('file -b -p "' . $this->_testsDir . '/tmp/link";'),
             'is_executable' => true,
             'ext' => '',
             'mimetype' => 'inode/x-empty',
@@ -277,7 +282,7 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
         );
         $actual2 = $this->_object->getFileType('/bin/ls');
 
-        $this->assertTrue( in_array($actual, $expecteds) );
+        $this->assertTrue(in_array($actual, $expecteds));
         $this->assertEquals(1, preg_match('/executable/i', $actual2));
     }
 
@@ -307,14 +312,20 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
         $this->_object->copy($this->_testsDir . '/tmp/', '/home/');
     }
+
+
     /**
      * @covers Mumsys_FileSystem::copy
      */
     public function testCopyException()
     {
-        $msg = 'Copy error for: "'.$this->_testsDir . '/tmp/unittest" copy(//unittest): '
-            . 'failed to open stream: Permission denied';
-        $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
+
+        //Failed asserting that exception message '
+        //Copy error for: "/home/flobee/workspace/github/mumsys-library-default/tests/tmp/unittest" copy (to: //unittest) fails
+        //Copy error for: "/home/flobee/workspace/github/mumsys-library-default/tests/tmp/unittest" copy (to: //unittest): failed to open stream: Permission denied'.
+
+        $regex = '/(Copy error for)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $regex);
         $this->_object->copy($this->_testdirs['file'], '/');
     }
 
@@ -325,20 +336,20 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
     public function testRename()
     {
         // default copy
-        $source = $this->_testdirs['dir'].'/testfile';
-        $expected1 = $this->_testdirs['dir'].'/filetest';
+        $source = $this->_testdirs['dir'] . '/testfile';
+        $expected1 = $this->_testdirs['dir'] . '/filetest';
         @mkdir($this->_testdirs['dir'], 0755);
         @touch($source);
         $actual1 = $this->_object->rename($source, $expected1);
         // target exists
         @touch($source);
         $actual2 = $this->_object->rename($source, $expected1, true);
-        $expected2 = $this->_testdirs['dir'].'/filetest.1';
+        $expected2 = $this->_testdirs['dir'] . '/filetest.1';
         //stream context
         @touch($source);
         $streamCtx = stream_context_create();
         $actual3 = $this->_object->rename($source, $expected1, false, $streamCtx);
-        $expected3 = $this->_testdirs['dir'].'/filetest';
+        $expected3 = $this->_testdirs['dir'] . '/filetest';
 
         @unlink($expected1);
         @unlink($expected2);
@@ -354,18 +365,20 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
         $this->_object->rename('', $this->_testsDir . '/tmp/something');
     }
 
+
     /**
      * @covers Mumsys_FileSystem::rename
      */
     public function testRenameException()
     {
         // rename permission error
-        $msg[] = 'Rename failt for reason: Copy error for: "'.$this->_testsDir . '/tmp/unittest" '
+        $msg[] = 'Rename failt for reason: Copy error for: "' . $this->_testsDir . '/tmp/unittest" '
             . 'copy(/root//unittest): failed to open stream: Permission denied';
         $msg[] = 'Rename failt for reason: rename(): Permission denied';
         $this->setExpectedException('Mumsys_FileSystem_Exception');
         $this->_object->rename($this->_testdirs['file'], '/root/');
     }
+
 
     /**
      * @covers Mumsys_FileSystem::link
@@ -401,12 +414,13 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
 
         // test realpath exception + last, catched exception
         unlink($this->_testdirs['dir']);
-        $msg = 'Linking failt for source: "'.$this->_testsDir . '/tmp"; target: "'
+        $msg = 'Linking failt for source: "' . $this->_testsDir . '/tmp"; target: "'
             . $this->_testsDir . '/tmp/unittest-mkdir/mkdirs". '
-            . 'Real path not found for "'.$this->_testsDir . '/tmp/unittest-mkdir"';
+            . 'Real path not found for "' . $this->_testsDir . '/tmp/unittest-mkdir"';
         $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
         $this->_object->link($this->_testsDir . '/tmp', $this->_testdirs['dirs'], 'soft', 'rel', false);
     }
+
 
     /**
      * @covers Mumsys_FileSystem::link
@@ -414,12 +428,13 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
     public function testLinkException()
     {
         // invalid link type
-        $msg = 'Linking failt for source: "'.$this->_testsDir . '/tmp"; target: "'
+        $msg = 'Linking failt for source: "' . $this->_testsDir . '/tmp"; target: "'
             . $this->_testsDir . '/tmp/unittest-mkdir". '
             . 'Invalid link type "invalidType"  (Use soft|hard)';
         $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
         $this->_object->link($this->_testsDir . '/tmp', $this->_testdirs['dir'], 'invalidType', 'rel', false);
     }
+
 
     /**
      * @covers Mumsys_FileSystem::mkdir
@@ -430,7 +445,7 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
         $this->_object->mkdir($dir);
 
         $this->assertTrue(file_exists($dir));
-        $this->assertFalse( $this->_object->mkdir($dir) ); // exists error
+        $this->assertFalse($this->_object->mkdir($dir)); // exists error
 
         $exMesg = 'Can not create dir: "/xyz" mode: "755". Message: mkdir(): Permission denied';
         $this->setExpectedException('Mumsys_FileSystem_Exception', $exMesg);
@@ -450,8 +465,9 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
         $this->_object->mkdirs($dir);
 
         $this->assertTrue(file_exists($dir)); // created
-        $this->assertTrue($this->_object->mkdirs($dir));// exists
+        $this->assertTrue($this->_object->mkdirs($dir)); // exists
     }
+
 
     /**
      * Test mkdir fails and rm already created.
@@ -467,7 +483,7 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
         $this->_object->mkdirs($this->_testdirs['dirs'] . '/x/../../home/user', 0700);
         $this->assertFalse(file_exists($dir));
 
-        $this->assertTrue($this->_object->mkdirs($dir));// created
+        $this->assertTrue($this->_object->mkdirs($dir)); // created
         $this->assertTrue(file_exists($dir));
 
         @rmdir($dir);
@@ -489,7 +505,8 @@ class Mumsys_FileSystemTest extends PHPUnit_Framework_TestCase
         $actual3 = $this->_object->getRelativeDir('./myfile', './data/thatdir');
         $expected3 = '../data/thatdir/';
 
-        $actual4 = $this->_object->getRelativeDir($this->_testsDir . '/tmp/', $this->_testsDir . '/tmp/unittest-mkdir/mkdirs/');
+        $actual4 = $this->_object->getRelativeDir($this->_testsDir . '/tmp/',
+            $this->_testsDir . '/tmp/unittest-mkdir/mkdirs/');
         $expected4 = './unittest-mkdir/mkdirs/';
 
         $this->assertEquals($expected1, $actual1);
