@@ -35,7 +35,7 @@ interface Mumsys_Mailer_Interface
 
 
     /**
-     * Call a mail driver method which is not implemented.
+     * Call a mail driver method which is not implemented at the interface.
      *
      * @note Dont use it! update the interface would be the best choice!
      *
