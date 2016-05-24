@@ -52,7 +52,7 @@ class Mumsys_MultirenameTest
     protected function setUp()
     {
         $this->_oldHome = $_SERVER['HOME'];
-        $this->_version = '1.4.1';
+        $this->_version = '1.4.2';
         $this->_versions = array(
             'Mumsys_Abstract' => '3.0.1',
             'Mumsys_Multirename' => $this->_version,
