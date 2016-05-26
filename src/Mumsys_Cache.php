@@ -108,6 +108,8 @@ class Mumsys_Cache extends Mumsys_Abstract
      *
      * @param string $group Groupname
      * @param string $id Unique ID
+     *
+     * @return boolean True if cache exists or false
      */
     public function isCached()
     {
