@@ -151,7 +151,7 @@ class Mumsys_Cache extends Mumsys_Abstract
      */
     public function setPath( $path )
     {
-        $this->_path = (string)$path;
+        $this->_path = rtrim( (string)$path, '/') . '/';
     }
 
 
