@@ -1,6 +1,6 @@
 <?php
 
-/*{{{*/
+/* {{{ */
 /**
  * ----------------------------------------------------------------------------
  * Mumsys_Cache
@@ -15,12 +15,9 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Cache
- * @version     1.0.0
  * Created: 2013-12-10
- * @filesource
  */
-/*}}}*/
-
+/* }}} */
 
 /**
  * Class for standard file caching
@@ -29,12 +26,13 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Cache
  */
-class Mumsys_Cache extends Mumsys_Abstract
+class Mumsys_Cache
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.1.1';
 
     /**
      * Flag if caching is enabled or not
@@ -54,7 +52,6 @@ class Mumsys_Cache extends Mumsys_Abstract
      */
     protected $_prefix = 'cache_';
 
-
     /**
      * Initialize the cache object and sets group and id to store it.
      *
@@ -63,12 +60,11 @@ class Mumsys_Cache extends Mumsys_Abstract
      * @param string $group Groupname
      * @param string $id Unique ID e.g. requested area + userid
      */
-    public function __construct( $group, $id )
+    public function __construct($group, $id)
     {
-        $this->_id = md5((string)$id);
-        $this->_group = (string)$group;
+        $this->_id = md5((string) $id);
+        $this->_group = (string) $group;
     }
-
 
     /**
      * Cache the content.
@@ -76,7 +72,7 @@ class Mumsys_Cache extends Mumsys_Abstract
      * @param int $ttl Time to live in seconds
      * @param mixed $data Content to be cached
      */
-    public function write( $ttl, $data )
+    public function write($ttl, $data)
     {
         $filename = $this->_getFilename();
 
@@ -87,10 +83,9 @@ class Mumsys_Cache extends Mumsys_Abstract
             fclose($fp);
 
             // Set filemtime
-            touch($filename, time() + (int)$ttl);
+            touch($filename, time() + (int) $ttl);
         }
     }
-
 
     /**
      * Returns the cached content.
@@ -101,7 +96,6 @@ class Mumsys_Cache extends Mumsys_Abstract
 
         return file_get_contents($filename);
     }
-
 
     /**
      * Checks if an entry is cached.
@@ -134,24 +128,22 @@ class Mumsys_Cache extends Mumsys_Abstract
     {
         $filename = $this->_getFilename();
 
-        if ( file_exists( $filename ) ) {
-            @unlink( $filename );
+        if (file_exists($filename)) {
+            @unlink($filename);
         }
-        
+
         return true;
     }
-
 
     /**
      * Sets the filename prefix.
      *
      * @param string $prefix Filename Prefix to use
      */
-    public function setPrefix( $prefix )
+    public function setPrefix($prefix)
     {
-        $this->_prefix = (string)$prefix;
+        $this->_prefix = (string) $prefix;
     }
-
 
     /**
      * Returns the filename prefix.
@@ -161,17 +153,15 @@ class Mumsys_Cache extends Mumsys_Abstract
         return $this->_prefix;
     }
 
-
     /**
      * Sets the path for cache files.
      *
      * @param string $store The dir where to store the cache files
      */
-    public function setPath( $path )
+    public function setPath($path)
     {
-        $this->_path = rtrim( (string)$path, '/') . '/';
+        $this->_path = rtrim((string) $path, '/') . '/';
     }
-
 
     /**
      * Returns the path for cache files.
@@ -181,17 +171,15 @@ class Mumsys_Cache extends Mumsys_Abstract
         return $this->_path;
     }
 
-
     /**
      * Sets caching mode to enabled or not.
      *
      * @param boolean $flag True to enable the cache, false to disable
      */
-    public function setEnable( $flag )
+    public function setEnable($flag)
     {
-        $this->_enabled = (bool)$flag;
+        $this->_enabled = (bool) $flag;
     }
-
 
     /**
      * Builds a filename/path from group, id and path.
