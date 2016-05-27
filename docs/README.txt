@@ -5,6 +5,32 @@ Library for the MUMSYS project.
 MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - now
 
 
+## Benefits
+ - PHP 7+ (Also PHP 5 support, PHP4 Off!)
+ - Speed, speed speed. The library dosnt cost much ressources
+ - No namespaces, prefixed classes to improve overview
+ - No complicated autoloader
+ - Nearly a framework but: KISS (Keep It Simple St... develpoper :-) )
+ - Implements interfaces to be staight for common tasks or own implementations. Downgrades maintainance time
+ - Simple interfaces
+ - Convention over configuration (Not really in a library but if so than thats true)
+ - Tests are nearly 100% and always a must have
+ - For Web and shell
+
+
+
+## Test status
+
+Builds run on phpunit tests for all branches (stable, testing, unstable) and 
+for php versions: 5.3, 5.4, 5.5, 5.6, 7.0 and hhvm
+    Stable branch: [![Build Status: stable](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=stable "Build Status: stable")](https://travis-ci.org/flobee/mumsys-library-default)
+    Testing branch: [![Build Status: testing](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=testing "Build Status: testing")](https://travis-ci.org/flobee/mumsys-library-default)
+    Unstable branch: [![Build Status: unstable](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/flobee/mumsys-library-default)
+
+
+
+## History
+
 In that time an admin CMS system to 
 - create admin pages for new buissness tasks,
 - huge lists of data 
@@ -24,7 +50,4 @@ If you like it, use it, feel free to make it better. Commits should be done to
 the unstable branch.
 
 
-Builds to run unit tests for all branches (stable, testing, unstable) and for php versions: 5.3, 5.4, 5.5, 5.6, 7.0 and hhvm
-[![Build Status: stable](https://travis-ci.org/flobee/mumsys-library.svg?branch=stable "Build Status: stable")](https://travis-ci.org/flobee/mumsys-library)
-[![Build Status: testing](https://travis-ci.org/flobee/mumsys-library.svg?branch=testing "Build Status: testing")](https://travis-ci.org/flobee/mumsys-library)
-[![Build Status: unstable](https://travis-ci.org/flobee/mumsys-library.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/flobee/mumsys-library)
+
