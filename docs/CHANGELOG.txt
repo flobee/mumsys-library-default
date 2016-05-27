@@ -12,6 +12,13 @@ Still in todo: 2016-XX-XX
     - Updates Tests
 
 
+2016-05-27
+    Mumsys_Cache
+    - Adds removeCache() methode
+    - Updates tests
+    - Improves coding style
+    
+    
 2016-05-17
     Mumsys_Session_Default
     Mumsys_Session_Nome
