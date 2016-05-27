@@ -14,9 +14,18 @@ Still in todo: 2016-XX-XX
 
 2016-05-27
     Mumsys_Cache
+    - maked as depricated
     - Adds removeCache() methode
     - Updates tests
     - Improves coding style
+    Mumsys_Cache_Default
+    - Init class which uses Mumsys_Cache_File
+    Mumsys_Cache_File
+    - Init class
+    - Implemention like Mumsys_Cache BUT now un/serialise will be used to also
+      cache objects
+    Mumsys_Cache_Interface
+    - Init the interface for futher drivers e.g.: db cache
     
     
 2016-05-17

@@ -2,7 +2,7 @@
 
 /* {{{ */
 /**
- * Mumsys_Cache
+ * Mumsys_Cache_File
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -18,22 +18,19 @@
 
 
 /**
- * @deprecated since version 1.1.1
- * Use Mumsys_Cache_Default or Mumsys_Cache_File
- *
- * Class for standard file caching
+ * Class for file caching
  *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Cache
  */
-class Mumsys_Cache
+class Mumsys_Cache_File
     extends Mumsys_Abstract
 {
     /**
      * Version ID information
      */
-    const VERSION = '1.1.1';
+    const VERSION = '1.1.2';
 
     /**
      * Flag if caching is enabled or not
@@ -73,14 +70,15 @@ class Mumsys_Cache
      * Cache the content.
      *
      * @param int $ttl Time to live in seconds
-     * @param mixed $data Content to be cached
+     * @param mixed $content Content to be cached
      */
-    public function write( $ttl, $data )
+    public function write( $ttl, $content )
     {
         $filename = $this->_getFilename();
 
         if ( $fp = fopen($filename, 'xb') ) {
             if ( flock($fp, LOCK_EX) ) {
+                $data = serialize($content);
                 fwrite($fp, $data);
             }
             fclose($fp);
@@ -97,8 +95,9 @@ class Mumsys_Cache
     public function read()
     {
         $filename = $this->_getFilename();
+        $data = file_get_contents($filename);
 
-        return file_get_contents($filename);
+        return unserialize($data);
     }
 
 
