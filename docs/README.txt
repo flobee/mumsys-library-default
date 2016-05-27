@@ -24,6 +24,8 @@ If you like it, use it, feel free to make it better. Commits should be done to
 the unstable branch.
 
 
-[![Build Status: stable](https://travis-ci.org/flobee/mumsys-library.svg?branch=stable "Build Status: stable")](https://travis-ci.org/flobee/mumsys-library)
-[![Build Status: testing](https://travis-ci.org/flobee/mumsys-library.svg?branch=testing "Build Status: testing")](https://travis-ci.org/flobee/mumsys-library)
-[![Build Status: unstable](https://travis-ci.org/flobee/mumsys-library.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/flobee/mumsys-library)
+Builds run on phpunit tests for all branches (stable, testing, unstable) and 
+for php versions: 5.3, 5.4, 5.5, 5.6, 7.0 and hhvm
+    Stable branch: [![Build Status: stable](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=stable "Build Status: stable")](https://travis-ci.org/flobee/mumsys-library-default)
+    Testing branch: [![Build Status: testing](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=testing "Build Status: testing")](https://travis-ci.org/flobee/mumsys-library-default)
+    Unstable branch: [![Build Status: unstable](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/flobee/mumsys-library-default)
