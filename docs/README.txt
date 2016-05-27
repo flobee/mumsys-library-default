@@ -6,7 +6,6 @@ MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - 
 
 
 ## Benefits
-
     - PHP 7+ (Also PHP 5 support, PHP4 Off!)
     - Speed, speed speed. The library dosnt cost much ressources
     - No namespaces, prefixed classes to improve overview
