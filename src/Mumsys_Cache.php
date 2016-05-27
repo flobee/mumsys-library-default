@@ -125,6 +125,22 @@ class Mumsys_Cache extends Mumsys_Abstract
         return false;
     }
 
+    /**
+     * Removes the specific cache file.
+     *
+     * @return boolean True on success
+     */
+    public function removeCache()
+    {
+        $filename = $this->_getFilename();
+
+        if ( file_exists( $filename ) ) {
+            @unlink( $filename );
+        }
+        
+        return true;
+    }
+
 
     /**
      * Sets the filename prefix.
