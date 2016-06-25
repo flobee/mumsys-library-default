@@ -21,31 +21,28 @@
  * related tasks like create/edit/save variables.
  * Each variable should be an object with a standard set of methodes which are
  * needed for these tasks.
+ * This class only keeps informational properties like name, value, label, description and additional information.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Variable
  */
 class Mumsys_Variable_Item_Default
-    extends Mumsys_Abstract
+    extends Mumsys_Variable_Item_Abstract
+    implements Mumsys_Variable_Item_Interface
 {
-
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
-
-    /**
-     * List of initial incoming properties to be set/ checked on construction or in later use.
-     * @var array
-     */
-    private $_input = array();
+    const VERSION = '1.1.1';
 
     /**
      * List of key/value pair properties handled by this item as whitelist.
      * @var array
      */
-    private $_properties = array('name' => true, 'value' => true, 'type' => true);
+    private $_properties = array(
+        'name' => true, 'value' => true, 'label' => true, 'desc' => true, 'info' => true
+    );
 
     /**
      * PHP types and optional additional types for this item.
@@ -55,138 +52,98 @@ class Mumsys_Variable_Item_Default
         'string', 'integer', 'float', 'double', 'boolean', 'array', 'object', 'date', 'datetime', 'email'
     );
 
-    /**
-     * List of error messages
-     * @var array
-     */
-    private $_errorMessages = array();
 
     /**
      * Initialisation of the item object.
      *
      * @see $_properties
      *
-     * @param array $properties List of config parameters to be set.
-     * @param array $values List of key/value pairs e.g. request parameters
+     * @param array $properties List of key/value config parameters to be set. Config values MUST NOT be null!
      */
     public function __construct( array $properties )
     {
-        foreach($properties as $key => $value) {
-            if (isset($this->_properties[$key])) {
-                $this->_input[$key] = $value;
+        foreach ( $this->_properties as $key => $value ) {
+            if ( isset($properties[$key]) ) {
+                $this->_input[$key] = $properties[$key];
             }
         }
     }
 
-    /**
-     * Returns the item key/identifier name.
-     * Note: From a list of key/value pairs: this is the key used as name.
-     *
-     * @param mixed $default Default (null) return value if name was not set
-     * @return string Item name key/identifier
-     */
-    public function getName($default=null)
-    {
-        return (isset($this->_input['name']) ? (string)$this->_input['name'] : $default);
-    }
 
     /**
-     * Sets the item key name/ identifier.
-     * If value exists and is the same than the current one null is returned.
+     * Returns the item label.
      *
-     * @param string $value Item key/itenifier
-     * @return void
+     * @param string $altnKey Alternativ property key to get if label not exists (default: "name" for getName().
+     * @return string Item/ variable label
      */
-    public function setName( $value )
+    public function getLabel( $altnKey = 'name' )
     {
-        if ($value === $this->getName()) {
-            return;
+        $return = null;
+
+        if ( isset($this->_input['label']) ) {
+            $return = $this->_input['label'];
+        } else if ( isset($this->_input[$altnKey]) ) {
+            $return = (string) $this->_input[$altnKey];
         }
 
-        $this->_input['name'] = (string) $value;
+        return $return;
     }
 
+
     /**
-     * Returs the item value or null if not set;
+     * Sets the item label.
      *
-     * @return mixed|null Returns the item value or null
+     * @param string $value Label to set
      */
-    public function getValue()
+    public function setLabel( $value )
     {
-        return (isset($this->_input['value'])) ? $this->_input['value'] : null;
+        $this->_input['label'] = (string) $value;
     }
 
-    /**
-     * Sets the item value.
-     * If value exists and is the same than the current one null is returned.
-     *
-     * @param mixed $value Item value to be set
-     * @return void
-     */
-    public function setValue( $value )
-    {
-        if ($value === $this->getValue()) {
-            return;
-        }
 
-        $this->_input['value'] = $value;
+    /**
+     * Returns the item description.
+     *
+     * @return string|null Item description
+     */
+    public function getDescription()
+    {
+        return (isset($this->_input['desc'])) ? $this->_input['desc'] : null;
     }
 
+
     /**
-     * Returns the item type.
+     * Sets the item description.
+     * Note: Description of what kind of value will be expected e.g. in a form. E.g: "Enter your email address"
      *
-     * @return string Item type
+     * @param string $value Description to set
      */
-    public function getType()
+    public function setDescription( $value )
     {
-        return (isset($this->_input['type'])) ? $this->_input['type'] : null;
+        $this->_input['desc'] = (string) $value;
     }
 
+
     /**
-     * Sets the item type.
-     * If value exists and is the same than the current one null is returned.
+     * Returns the item additional information value.
      *
-     * Types are php types and optional types like email, date or datetime from
-     * mysql which can and will be handles as types in this class. For more
-     * @see $_types for a complete list handles by this class.
-     *
-     * @param string $value Type to be set
-     * @return void
+     * @return string|null Item information
      */
-    public function setType($value)
+    public function getInformation()
     {
-        if ($value == $this->getType()) {
-            return;
-        }
-
-        if (in_array($value, $this->_types)) {
-            $this->_input['type'] = (string) $value;
-        } else {
-            $message = sprintf('Type "%1$s" not implemented/ exists', $value);
-            throw new Mumsys_Variable_Item_Exception($message);
-        }
-
+        return (isset($this->_input['info'])) ? $this->_input['info'] : null;
     }
 
-    /**
-     * Sets/ replace an error message by given key and message value.
-     *
-     * @param string $key Error key name/identifier
-     * @param string $message Error message
-     */
-    public function setErrorMessage($key, $message)
-    {
-        $this->_errorMessages[$key] = (string)$message;
-    }
 
     /**
-     * Returns all error messages of this item if any exists.
+     * Sets the item additional information value.
+     * Note: Information about the item of what kind of value will be expected or how things will go.
      *
-     * @return array List of key/value pairs of error messages
+     * @param string $value Additional information value
      */
-    public function getErrorMessages()
+    public function setInformation( $value )
     {
-        return $this->_errorMessages;
+        $this->_input['info'] = (string) $value;
     }
 
 }
