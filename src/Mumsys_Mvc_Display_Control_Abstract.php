@@ -2,7 +2,6 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Display_Control_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -13,9 +12,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
- * @version     1.0.0
  * Created: 2016-01-30
- * @filesource
  */
 /*}}}*/
 
@@ -48,7 +45,8 @@ abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
 
     /**
      * Constructor is to be implemented at the display controller which will be
-     * used. e.g. in : Mumsys_Mvc_Display_Control_Http_Html
+     * used.
+     * e.g.: Mumsys_Mvc_Display_Control_Http
      */
     abstract public function __construct( Mumsys_Context $context, array $options = array() );
 
