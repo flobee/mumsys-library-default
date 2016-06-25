@@ -2,7 +2,7 @@
 
 /*{{{*/
 /**
- * Mumsys_Item_Default
+ * Mumsys_Variable_Item_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -11,20 +11,22 @@
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
- * @subpackage  Mumsys_Item
- * @version     1.1.1
+ * @subpackage  Mumsys_Variable
  * Created: 2006 based on Mumsys_Field_EXception, renew 2016
  */
 /*}}}*/
 
 /**
- * Generic exception class
+ * Default item implementation as variable item interface for general web
+ * related tasks like create/edit/save variables.
+ * Each variable should be an object with a standard set of methodes which are
+ * needed for these tasks.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
- * @subpackage  Mumsys_Item
+ * @subpackage  Mumsys_Variable
  */
-class Mumsys_Item_Default
+class Mumsys_Variable_Item_Default
     extends Mumsys_Abstract
 {
 
@@ -43,13 +45,21 @@ class Mumsys_Item_Default
      * List of key/value pair properties handled by this item as whitelist.
      * @var array
      */
-    private $_properties = array('value' => true, 'key' => true, 'type' => true);
+    private $_properties = array('name' => true, 'value' => true, 'type' => true);
+
     /**
-     * PHP types and optional additional types to handle by this item.
+     * PHP types and optional additional types for this item.
      * @var array
      */
-    private $_types = array('string', 'char', 'varchar', 'text', 'array', 'date', 'datetime', 'timestamp', 'email');
+    private $_types = array(
+        'string', 'integer', 'float', 'double', 'boolean', 'array', 'object', 'date', 'datetime', 'email'
+    );
 
+    /**
+     * List of error messages
+     * @var array
+     */
+    private $_errorMessages = array();
 
     /**
      * Initialisation of the item object.
@@ -70,14 +80,14 @@ class Mumsys_Item_Default
 
     /**
      * Returns the item key/identifier name.
-     * Note: From a liust of key/value pairs: this is the key.
+     * Note: From a list of key/value pairs: this is the key used as name.
      *
-     * @param mixed $default Default (null) return vale if key was not set
-     * @return string Item key/identifier
+     * @param mixed $default Default (null) return value if name was not set
+     * @return string Item name key/identifier
      */
-    public function getKey($default=null)
+    public function getName($default=null)
     {
-        return (isset($this->_input['key']) ? (string)$this->_input['key'] : $default);
+        return (isset($this->_input['name']) ? (string)$this->_input['name'] : $default);
     }
 
     /**
@@ -87,13 +97,13 @@ class Mumsys_Item_Default
      * @param string $value Item key/itenifier
      * @return void
      */
-    public function setKey( $value )
+    public function setName( $value )
     {
-        if ($value === $this->getKey()) {
+        if ($value === $this->getName()) {
             return;
         }
 
-        $this->_input['key'] = (string) $value;
+        $this->_input['name'] = (string) $value;
     }
 
     /**
@@ -149,7 +159,34 @@ class Mumsys_Item_Default
             return;
         }
 
-        $this->_input['type'] = (string) $value;
+        if (in_array($value, $this->_types)) {
+            $this->_input['type'] = (string) $value;
+        } else {
+            $message = sprintf('Type "%1$s" not implemented/ exists', $value);
+            throw new Mumsys_Variable_Item_Exception($message);
+        }
+
+    }
+
+    /**
+     * Sets/ replace an error message by given key and message value.
+     *
+     * @param string $key Error key name/identifier
+     * @param string $message Error message
+     */
+    public function setErrorMessage($key, $message)
+    {
+        $this->_errorMessages[$key] = (string)$message;
+    }
+
+    /**
+     * Returns all error messages of this item if any exists.
+     *
+     * @return array List of key/value pairs of error messages
+     */
+    public function getErrorMessages()
+    {
+        return $this->_errorMessages;
     }
 
 }
