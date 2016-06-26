@@ -111,8 +111,6 @@ class Mumsys_Logger_File
             $writer = new Mumsys_File($fileOptions);
         }
 
-        $this->_writer = $writer;
-
         parent::__construct($options, $writer);
         
         // maxfilesize feature
