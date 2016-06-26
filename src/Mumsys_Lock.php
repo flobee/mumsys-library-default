@@ -68,12 +68,12 @@ class Mumsys_Lock extends Mumsys_Abstract
     public function lock()
     {
         if ( file_exists($this->_file) ) {
-            $msg = sprintf(_('Can not lock! Lock "%1$s" exists'), $this->_file);
+            $msg = sprintf('Can not lock! Lock "%1$s" exists', $this->_file);
             throw new Mumsys_Exception($msg);
         }
 
         if ( !@touch($this->_file) ) {
-            $message = sprintf(_('Locking failt for file "%1$s"'), $this->_file);
+            $message = sprintf('Locking failt for file "%1$s"', $this->_file);
             throw new Mumsys_Exception($message);
         }
 
@@ -91,7 +91,7 @@ class Mumsys_Lock extends Mumsys_Abstract
     {
         if ( file_exists($this->_file) ) {
             if ( !@unlink($this->_file) ) {
-                $message = sprintf(_('Unlock failt for: "%1$s"'), $this->_file);
+                $message = sprintf('Unlock failt for: "%1$s"', $this->_file);
                 throw new Mumsys_Exception($message);
             }
         }

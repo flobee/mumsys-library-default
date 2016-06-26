@@ -48,7 +48,7 @@ class Mumsys_RegistryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('new value', $actual);
 
         // invalid key exception
-        $this->setExpectedException('Mumsys_Registry_Exception','Invalid registry key. It\'s not a string');
+        $this->setExpectedException('Mumsys_Exception','Invalid registry key. It\'s not a string');
         Mumsys_Registry::replace(new stdClass, 'new value');
     }
 

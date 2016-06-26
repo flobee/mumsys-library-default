@@ -2,7 +2,7 @@
 
 Library for the MUMSYS project. 
 
-MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - now
+MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - 2016, now
 
 
 In that time an admin CMS system to 
@@ -24,3 +24,6 @@ If you like it, use it, feel free to make it better. Commits should be done to
 the unstable branch.
 
 
+[![Build Status: stable](https://travis-ci.org/flobee/mumsys-library.svg?branch=stable "Build Status: stable")](https://travis-ci.org/flobee/mumsys-library)
+[![Build Status: testing](https://travis-ci.org/flobee/mumsys-library.svg?branch=testing "Build Status: testing")](https://travis-ci.org/flobee/mumsys-library)
+[![Build Status: unstable](https://travis-ci.org/flobee/mumsys-library.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/flobee/mumsys-library)
