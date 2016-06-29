@@ -64,7 +64,6 @@ abstract class Mumsys_Variable_Item_Abstract
 
     /**
      * Sets the item key name/ identifier.
-     * If value exists and is the same than the current one null is returned.
      *
      * @param string $value Item key/itenifier
      */
@@ -75,7 +74,7 @@ abstract class Mumsys_Variable_Item_Abstract
 
 
     /**
-     * Returs the item value or null if not set;
+     * Returns the item value or null if not set
      *
      * @param mixed $default Default return value if value not exists
      * @return mixed|null Returns the item value or $default
@@ -88,8 +87,7 @@ abstract class Mumsys_Variable_Item_Abstract
 
     /**
      * Sets the item value.
-     * If value exists and is the same than the current one null is returned.
-     *
+     * 
      * @param mixed $value Item value to be set
      */
     public function setValue( $value )
