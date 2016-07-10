@@ -289,17 +289,23 @@ class Mumsys_Context
      * @param string $interface Name of the Interface the object implements
      * @param mixed $default Default value to return if interface not exists
      *
-     * @return object Retuns the requested interface
-     * @throws Mumsys_Exception Throws exception if the object was not set befor
+     * @return object Retuns the requested interface/object
+     * @throws Mumsys_Exception Throws exception if the object was not set before and if default was not set
      */
     public function getGeneric( $interface, $default = null )
     {
         try {
-            return $this->_get($interface);
+            $return = $this->_get($interface);
         } catch (Exception $e) {
-            $message = sprintf('Generic interface "%1$s" not found', $interface);
-            throw new Mumsys_Exception($message);
+            if ($default === null) {
+                $message = sprintf('Generic interface "%1$s" not found. Message: "%2$s"', $interface, $e->getMessage());
+                throw new Mumsys_Exception($message);
+            } else {
+                $return = $default;
+            }
         }
+
+        return $return;
     }
 
 
