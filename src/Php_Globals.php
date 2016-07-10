@@ -238,9 +238,19 @@ class Php_Globals
 
 
     /**
+     * Returns a global value and look in the other super globals if the global
+     * variable could not be found.
+     * 
      * Returns a value of the super global variables except the upload files in
-     * the following order: getenv() befor _ENV befor _SERVER befor arcgv befor
-     * _SESSION before _COOKIE befor _REQUEST befor GLOBALS variables.
+     * the following order:
+     *      GLOBALS
+     *      befor (if cli mode) argv
+     *      befor getenv()
+     *      befor _ENV
+     *      befor _SERVER
+     *      befor _SESSION
+     *      before _COOKIE
+     *      befor _REQUEST:
      *
      * Dont use it until you really need to look for a global variable!
      * Returns a global variable and looks in all super globals.
@@ -254,12 +264,16 @@ class Php_Globals
     {
         if ( isset($GLOBALS[$key]) ) {
             return $GLOBALS[$key];
+
         } else if ( isset($GLOBALS['_REQUEST'][$key]) ) {
             $return = $GLOBALS['_REQUEST'][$key];
+
         } else if ( isset($GLOBALS['_COOKIE'][$key]) ) {
             $return = $GLOBALS['_COOKIE'][$key];
+
         } else if ( isset($GLOBALS['_SESSION'][$key]) ) {
             $return = $GLOBALS['_SESSION'][$key];
+
         } else if (PHP_SAPI == 'cli' && isset($_SERVER['argv'][$key])) {
             $return = $_SERVER['argv'][$key];
         } else {
