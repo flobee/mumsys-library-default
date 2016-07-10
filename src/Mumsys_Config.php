@@ -120,27 +120,32 @@ class Mumsys_Config
      *
      * @param array $depth List of values to discribe the depth/path to the value
      * @param array $keys List of array keys you want to get from given depth
-     *
+     * @param mixed|false $default Optional; Default to return if values not found
+     * 
      * @return array List of key/values pairs with values which were found or false.
      */
-    public function getSubValues( array $depth = array(), array $keys = array() )
+    public function getSubValues( array $depth = array(), array $keys = array(), $default=false )
     {
         $result = false;
         $cfg = & $this->_config;
 
-        if (is_array($depth)) {
-            foreach ($depth as $value) {
-                if (isset($cfg[$value])) {
-                    $cfg = $cfg[$value];
-                }
-            }
 
-            foreach ($keys as $value) {
-                if (isset($cfg[$value])) {
-                    $result[$value] = $cfg[$value];
-                }
+        foreach ($depth as $value) {
+            if (isset($cfg[$value])) {
+                $cfg = $cfg[$value];
             }
         }
+
+        foreach ($keys as $value) {
+            if (isset($cfg[$value])) {
+                $result[$value] = $cfg[$value];
+            }
+        }
+
+        if (!$result) {
+            $result = $default;
+        }
+
 
         return $result;
     }
@@ -156,13 +161,13 @@ class Mumsys_Config
      */
     public function register( $key, $value = null )
     {
-        if (array_key_exists($key, $this->_config[$k])) {
+        if (array_key_exists($key, $this->_config)) {
             $message = sprintf('Config key "%1$s" exists', $key);
             throw new Mumsys_Config_Exception($message);
         }
 
         $this->_checkKey($key);
-        $this->_config[$k] = $value;
+        $this->_config[$key] = $value;
     }
 
 
