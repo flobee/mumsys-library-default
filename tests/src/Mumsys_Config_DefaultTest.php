@@ -59,7 +59,7 @@ class Mumsys_Config_DefaultTest extends MumsysTestHelper
         $actual2 = $this->_object->get('credentials/database/host', false);
         $actual3 = $this->_object->get('credentials/database/mumsys/config/set', false);
         $actual4 = $this->_object->get(array('credentials', 'database', 'host'), false);
-        $actual5 = $this->_object->get('database/mumsys/config/search', false);
+        $actual5 = $this->_object->get('database/mumsys/config/item/search', false);
         $expected1 = 'test value';
         $expected2 = 'localhost';
 
