@@ -49,21 +49,6 @@ interface Mumsys_FileSystem_Interface
 
 
     /**
-     * Prepare incomming file informations to get file details.
-     *
-     * @param sting $fileOrPath Location of the file including the filename or the
-     * path (if it is a directory) or the path of a file but then the filename
-     * will be required as second parameter.
-     * @param type $filename Name of the file without the path
-     *
-     * @return array Returns an array containing the "filename", "path" and "file"
-     * as the hole location of the file or directory.
-     * @throws Mumsys_FileSystem_Exception Throws exception if file, link or directory could not be found
-     */
-    private function _getFileDetailsPrepare( $fileOrPath, $filename = false );
-
-
-    /**
      * Returns simple file details of a file, link or directory.
      * Best usage for a directory scan: The first parameter contains the path,
      * the second parameter contains the filename.

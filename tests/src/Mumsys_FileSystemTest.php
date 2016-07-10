@@ -84,6 +84,9 @@ class Mumsys_FileSystemTest extends MumsysTestHelper
         @mkdir($this->_testdirs['dirs'], 0755);
         @touch($this->_testdirs['dir'].'/testfile');
         @touch($this->_testdirs['dirs'].'/testfile');
+
+        $filter = array('/(unittest)/i');
+
         // simple directory
         $actual1 = $this->_object->scanDirInfo($this->_testdirs['dir'], true, false);
         $expected1 = array(
@@ -103,8 +106,8 @@ class Mumsys_FileSystemTest extends MumsysTestHelper
             )
         );
 
-        // recursive directory
-        $actual2 = $this->_object->scanDirInfo($this->_testdirs['dir'], true, true);
+        // recursive directory + filter
+        $actual2 = $this->_object->scanDirInfo($this->_testdirs['dir'], true, true, $filter);
         $expected2 = array(
             $this->_testsDir . '/tmp/unittest-mkdir/mkdirs' => array(
                 'file' => $this->_testsDir . '/tmp/unittest-mkdir/mkdirs',
@@ -312,9 +315,8 @@ class Mumsys_FileSystemTest extends MumsysTestHelper
      */
     public function testCopyException()
     {
-        $msg = 'Copy error for: "'.$this->_testsDir . '/tmp/unittest" copy(//unittest): '
-            . 'failed to open stream: Permission denied';
-        $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
+        $regex = '/(Copy error)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $regex);
         $this->_object->copy($this->_testdirs['file'], '/');
     }
 
