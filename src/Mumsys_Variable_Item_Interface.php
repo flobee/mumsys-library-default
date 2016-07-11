@@ -1,6 +1,6 @@
 <?php
 
-/*{{{*/
+/* {{{ */
 /**
  * Mumsys_Variable_Item_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
@@ -13,9 +13,10 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Variable
  * @verion 1.0.0
- * Created: 2006 based on Mumsys_Field_EXception, renew 2016
+ * Created: 2006 based on Mumsys_Field, renew 2016
  */
-/*}}}*/
+/* }}} */
+
 
 /**
  * Default variable item interface.
@@ -32,7 +33,7 @@
 interface Mumsys_Variable_Item_Interface
 {
     /**
-     * Initialisation of the item object.
+     * Initialisation of the variable item object.
      *
      * @see $_properties
      *
@@ -76,6 +77,60 @@ interface Mumsys_Variable_Item_Interface
      * @param mixed $value Item value to be set
      */
     public function setValue( $value );
+
+
+    /**
+     * Returns the item type.
+     *
+     * @return string Item type
+     */
+    public function getType();
+
+
+    /**
+     * Sets the item type.
+     * If value exists and is the same than the current one null is returned.
+     *
+     * Types are php types and optional types like email, date or datetime from
+     * mysql which can and will be handles as types in this class. For more
+     * @see $_types for a complete list handles by this class.
+     *
+     * @param string $value Type to be set
+     * @return void
+     */
+    public function setType( $value );
+
+
+    /**
+     * Returns the minimum item value length (number or string length).
+     *
+     * @return float|null Minimum length
+     */
+    public function getMinLength();
+
+
+    /**
+     * Sets the minimum item value length (number or string length).
+     *
+     * @param float $value Minimum item value length
+     */
+    public function setMinLength( $value );
+
+
+    /**
+     * Returns the maximum item value length (number or string length).
+     *
+     * @return float|null Maximum item value length
+     */
+    public function getMaxLength();
+
+
+    /**
+     * Sets the maximum item value length (number or string length).
+     *
+     * @param float $value Maximum item value length
+     */
+    public function setMaxLength( $value );
 
 
     /**
