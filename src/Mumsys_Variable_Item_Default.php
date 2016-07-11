@@ -12,16 +12,19 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Variable
- * Created: 2006 based on Mumsys_Field_EXception, renew 2016
+ * Created: 2006 based on Mumsys_Field, renew 2016
  */
 /*}}}*/
 
 /**
  * Default item implementation as variable item interface for general web
  * related tasks like create/edit/save variables.
- * Each variable should be an object with a standard set of methodes which are
- * needed for these tasks.
- * This class only keeps informational properties like name, value, label, description and additional information.
+ *
+ * This class does the following: Each variable should be an object with a
+ * standard set of methodes which are needed for these tasks.
+ * This class keeps default properties like name, value, type, minlen, maxlen,
+ * label, description, additional information and error messages.
+ * With this you already have a powerful set to handle and validate variables.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -41,7 +44,9 @@ class Mumsys_Variable_Item_Default
      * @var array
      */
     private $_properties = array(
-        'name' => true, 'value' => true, 'label' => true, 'desc' => true, 'info' => true
+        'name' => true, 'value' => true,
+        'type' => true, 'minlen' => true, 'maxlen' => true,
+        'label' => true, 'desc' => true, 'info' => true
     );
 
     /**
@@ -49,7 +54,8 @@ class Mumsys_Variable_Item_Default
      * @var array
      */
     private $_types = array(
-        'string', 'integer', 'float', 'double', 'boolean', 'array', 'object', 'date', 'datetime', 'email'
+        'string', 'integer', 'float', 'double', 'boolean', 'array', 'object',
+        'date', 'datetime', 'email'
     );
 
 
@@ -58,7 +64,8 @@ class Mumsys_Variable_Item_Default
      *
      * @see $_properties
      *
-     * @param array $properties List of key/value config parameters to be set. Config values MUST NOT be null!
+     * @param array $properties List of key/value config parameters to be set.
+     * Config values MUST NOT be null!
      */
     public function __construct( array $properties )
     {
@@ -67,6 +74,89 @@ class Mumsys_Variable_Item_Default
                 $this->_input[$key] = $properties[$key];
             }
         }
+    }
+
+
+    /**
+     * Returns the variable item type.
+     *
+     * Hint: {@link $_types} To see internal handling by the manager.
+     *
+     * @return string Item type
+     */
+    public function getType()
+    {
+        return (isset($this->_input['type'])) ? $this->_input['type'] : null;
+    }
+
+
+    /**
+     * Sets the item type.
+     * If value exists and is the same than the current one null is returned.
+     *
+     * Types are php types and optional types like email, date or datetime from
+     * mysql which can and will be handles as types in this class. For more
+     * @see $_types for a complete list handles by this class.
+     *
+     * @param string $value Type to be set
+     * @return void
+     */
+    public function setType( $value )
+    {
+        if ( $value == $this->getType() ) {
+            return;
+        }
+
+        if ( in_array($value, $this->_types) ) {
+            $this->_input['type'] = (string) $value;
+        } else {
+            $message = sprintf('Type "%1$s" not implemented/ exists', $value);
+            throw new Mumsys_Variable_Item_Exception($message);
+        }
+    }
+
+
+    /**
+     * Returns the minimum item value length (number or string length).
+     *
+     * @return float|null Minimum length
+     */
+    public function getMinLength()
+    {
+        return (isset($this->_input['minlen'])) ? $this->_input['minlen'] : null;
+    }
+
+
+    /**
+     * Sets the minimum item value length (number or string length).
+     *
+     * @param float $value Minimum item value length
+     */
+    public function setMinLength( $value )
+    {
+        $this->_input['minlen'] = (float) $value;
+    }
+
+
+    /**
+     * Returns the maximum item value length (number or string length).
+     *
+     * @return float|null Maximum item value length
+     */
+    public function getMaxLength()
+    {
+        return (isset($this->_input['maxlen'])) ? $this->_input['maxlen'] : null;
+    }
+
+
+    /**
+     * Sets the maximum item value length (number or string length).
+     *
+     * @param float $value Maximum item value length
+     */
+    public function setMaxLength( $value )
+    {
+        $this->_input['maxlen'] = (float) $value;
     }
 
 
