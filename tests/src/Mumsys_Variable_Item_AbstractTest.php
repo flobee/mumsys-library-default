@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Mumsys_Variable_Item_Abstract Test
  */
@@ -11,6 +12,12 @@ class Mumsys_Variable_Item_AbstractTest
      */
     protected $_object;
 
+    /**
+     * Version ID
+     * @var string
+     */
+    private $_version;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -18,6 +25,8 @@ class Mumsys_Variable_Item_AbstractTest
      */
     protected function setUp()
     {
+        $this->_version = '1.1.1';
+
         $this->_config = array(
             'name' => 'somevariable',
             'value' => 'init value'
@@ -67,6 +76,14 @@ class Mumsys_Variable_Item_AbstractTest
         $expected = array('testKey' => 'testMessage');
         $this->_object->setErrorMessage('testKey', 'testMessage');
         $this->assertEquals($expected, $this->_object->getErrorMessages());
+    }
+
+    /**
+     * Version check
+     */
+    public function testCheckVersion()
+    {
+        $this->assertEquals($this->_version, Mumsys_Variable_Item_Abstract::VERSION);
     }
 
 }

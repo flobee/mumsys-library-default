@@ -24,7 +24,7 @@
  * Default item implementation as variable item interface for general web
  * related tasks like create/edit/save variables.
  * Each variable should be an object with a standard set of methodes which are
- * needed for these tasks.
+ * needed for these tasks. This is the standard set of methodes as interface
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -39,7 +39,7 @@ interface Mumsys_Variable_Item_Interface
      *
      * @param array $properties List of key/value config parameters to be set. Config values MUST NOT be null!
      */
-    public function __construct( array $properties );
+    public function __construct( array $properties = array() );
 
 
     /**
@@ -131,6 +131,62 @@ interface Mumsys_Variable_Item_Interface
      * @param float $value Maximum item value length
      */
     public function setMaxLength( $value );
+
+
+    /**
+     * Returns the list of regular expressions.
+     *
+     * @return array List of regular expression or null
+     */
+    public function getRegex();
+
+
+    /**
+     * Sets/ replace a regular expression.
+     *
+     * @param string $value Regular expression
+     */
+    public function setRegex( $value );
+
+
+    /**
+     * Adds a new regular expressions to the list of regular expressions.
+     *
+     * @param string $value Regular expression
+     */
+    public function addRegex( $value );
+
+
+    /**
+     * Returns the allow empty flag of the item.
+     *
+     * @return boolean Allow empty flag
+     */
+    public function getAllowEmpty();
+
+
+    /**
+     * Sets the allow empty flag of the item.
+     *
+     * @param boolean $value True to allow empty values or false for not allow empty values
+     */
+    public function setAllowEmpty( $value );
+
+
+    /**
+     * Returns the required status of the item.
+     *
+     * @return boolean Required status
+     */
+    public function getRequired();
+
+
+    /**
+     * Sets required flag of the item.
+     *
+     * @param boolean $value Required flag
+     */
+    public function setRequired( $value );
 
 
     /**

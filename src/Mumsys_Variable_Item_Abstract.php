@@ -16,6 +16,7 @@
  */
 /*}}}*/
 
+
 /**
  * Default item implementation as variable item interface for general web
  * related tasks like create/edit/save variables.
