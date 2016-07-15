@@ -26,6 +26,9 @@
  * Class to parse a log line into it's parts from a common log file like apache
  * or nginx or by given special format.
  *
+ * @todo The parser expects a well formed string. when using an error logfile this can throw exceptions. because the mix
+ * of messages is too different than you rules can handle.
+ *
  * Example:
  * <pre>
  * # apache vhost configuration
@@ -186,9 +189,9 @@ class Mumsys_Parser_Logline
         foreach ($this->_patterns as $key => $replace) {
             $expr = preg_replace("/{$key}/", $replace, $expr);
         }
+
         return $expr;
     }
-
 
     /**
      * Sets or adds a pattern to pattern list.
@@ -253,11 +256,11 @@ class Mumsys_Parser_Logline
 
     /**
      * Adds a filter/ search rule.
-     * Note: Don't forget to escape spesial chars for the regular expressions.
+     * Note: Don't forget to escape special chars for the regular expressions.
      *
      * @param string $key Keyword based on the pattern rules to be expected: eg.: httpcode, user, time ...
      * @param array|string $value Value or list of values to look/ search for. matching tests! not exact tests!
-     * @param type $sensitive Flag to enable sensitive mode or not. Default: false (case insensitive)
+     * @param boolean $sensitive Flag to enable sensitive mode or not. Default: false (case insensitive)
      */
     public function addFilter($key, $value=array(), $sensitive=false)
     {
