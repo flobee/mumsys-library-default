@@ -45,7 +45,7 @@
  * @subpackage  Mumsys_Logger
  */
 class Mumsys_Logger_Default
-    extends Mumsys_Logger_Abstract
+    extends Mumsys_Logger_File
     implements Mumsys_Logger_Interface
 {
     /**
