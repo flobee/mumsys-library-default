@@ -48,11 +48,38 @@ class Php_Globals
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
+     *
      * @return mixed Value or $default if $key is not set/null
      */
     public static function getServerVar( $key, $default = null )
     {
-        return self::_getEnvVar($key, $default);
+        return self::_getEnvVar( $key, $default );
+    }
+
+
+    /**
+     * Returns a session variable if exists.
+     *
+     * If key parameter is NULL the complete session will return if $_SESSION
+     * was initialised otherwise false returns.
+     *
+     * @param string $key ID to check for
+     * @param mixed $default Default return value if key/ID not exists
+     *
+     * @return mixed|false Value or $default if $key is not set/null, false if
+     * session not exists (missing session_start()?)
+     */
+    public static function getSessionVar( $key = null, $default = null )
+    {
+        if ( isset( $_SESSION ) && $key === null ) {
+            return $_SESSION;
+        }
+
+        if ( isset( $_SESSION[$key] ) ) {
+            $default = $_SESSION[$key];
+        }
+
+        return $default;
     }
 
 
@@ -61,11 +88,12 @@ class Php_Globals
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
+     *
      * @return mixed Value or $default if $key is not set/null
      */
     public static function getEnvVar( $key, $default = null )
     {
-        return self::_getEnvVar($key, $default);
+        return self::_getEnvVar( $key, $default );
     }
 
 
@@ -74,15 +102,16 @@ class Php_Globals
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
+     *
      * @return mixed Value or $default if $key is not set/null
      */
     private static function _getEnvVar( $key, $default = null )
     {
-        if ( isset($_SERVER[$key]) ) {
+        if ( isset( $_SERVER[$key] ) ) {
             $default = $_SERVER[$key];
-        } else if ( isset($_ENV[$key]) ) {
+        } elseif ( isset( $_ENV[$key] ) ) {
             $default = $_ENV[$key];
-        } else if ( ($x = getenv($key) ) ) {
+        } elseif ( ($x = getenv( $key ) ) ) {
             $default = $x;
         }
 
@@ -101,11 +130,11 @@ class Php_Globals
      */
     public static function getPostVar( $key = null, $default = null )
     {
-        if ( isset($_POST) && $key === null ) {
+        if ( isset( $_POST ) && $key === null ) {
             return $_POST;
         }
 
-        if ( isset($_POST[$key]) ) {
+        if ( isset( $_POST[$key] ) ) {
             $default = $_POST[$key];
         }
 
@@ -124,11 +153,11 @@ class Php_Globals
      */
     public static function getGetVar( $key = null, $default = null )
     {
-        if ( isset($_GET) && $key === null ) {
+        if ( isset( $_GET ) && $key === null ) {
             return $_GET;
         }
 
-        if ( isset($_GET[$key]) ) {
+        if ( isset( $_GET[$key] ) ) {
             $default = $_GET[$key];
         }
 
@@ -147,11 +176,11 @@ class Php_Globals
      */
     public static function getCookieVar( $key = null, $default = null )
     {
-        if ( isset($_COOKIE) && $key === null ) {
+        if ( isset( $_COOKIE ) && $key === null ) {
             return $_COOKIE;
         }
 
-        if ( isset($_COOKIE[$key]) ) {
+        if ( isset( $_COOKIE[$key] ) ) {
             $default = $_COOKIE[$key];
         }
 
@@ -175,13 +204,12 @@ class Php_Globals
      */
     public static function getFileVar( $key = null, $default = null )
     {
-        if ( isset($_FILES) ) {
-            if (self::$_files === null) {
+        if ( isset( $_FILES ) ) {
+            if ( self::$_files === null ) {
                 $newFiles = array();
 
                 foreach ( $_FILES as $index => $file ) {
-
-                    if ( !is_array($file['name']) ) {
+                    if ( !is_array( $file['name'] ) ) {
                         $newFiles[$index][] = $file;
                         continue;
                     }
@@ -204,10 +232,9 @@ class Php_Globals
                 $default = self::$_files;
             }
 
-            if ( isset(self::$_files[$key]) ) {
+            if ( isset( self::$_files[$key] ) ) {
                 $default = self::$_files[$key];
             }
-
         }
 
         return $default;
@@ -222,14 +249,15 @@ class Php_Globals
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
+     *
      * @return mixed Value or $default if $key is not set/null
      */
     public static function getGlobalVar( $key = null, $default = null )
     {
-        if ( isset($GLOBALS) && $key === null ) {
+        if ( isset( $GLOBALS ) && $key === null ) {
             return $GLOBALS;
         }
-        if ( isset($GLOBALS[$key]) ) {
+        if ( isset( $GLOBALS[$key] ) ) {
             $default = $GLOBALS[$key];
         }
 
@@ -240,7 +268,7 @@ class Php_Globals
     /**
      * Returns a global value and look in the other super globals if the global
      * variable could not be found.
-     * 
+     *
      * Returns a value of the super global variables except the upload files in
      * the following order:
      *      GLOBALS
@@ -262,22 +290,18 @@ class Php_Globals
      */
     public static function get( $key, $default = null )
     {
-        if ( isset($GLOBALS[$key]) ) {
+        if ( isset( $GLOBALS[$key] ) ) {
             return $GLOBALS[$key];
-
-        } else if ( isset($GLOBALS['_REQUEST'][$key]) ) {
+        } elseif ( isset( $GLOBALS['_REQUEST'][$key] ) ) {
             $return = $GLOBALS['_REQUEST'][$key];
-
-        } else if ( isset($GLOBALS['_COOKIE'][$key]) ) {
+        } elseif ( isset( $GLOBALS['_COOKIE'][$key] ) ) {
             $return = $GLOBALS['_COOKIE'][$key];
-
-        } else if ( isset($GLOBALS['_SESSION'][$key]) ) {
+        } elseif ( isset( $GLOBALS['_SESSION'][$key] ) ) {
             $return = $GLOBALS['_SESSION'][$key];
-
-        } else if (PHP_SAPI == 'cli' && isset($_SERVER['argv'][$key])) {
+        } elseif ( PHP_SAPI == 'cli' && isset( $_SERVER['argv'][$key] ) ) {
             $return = $_SERVER['argv'][$key];
         } else {
-            $return = self::_getEnvVar($key, $default);
+            $return = self::_getEnvVar( $key, $default );
         }
 
         return $return;
