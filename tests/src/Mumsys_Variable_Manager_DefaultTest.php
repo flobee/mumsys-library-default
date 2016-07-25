@@ -182,7 +182,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $item->setMinLength(9);
         $item->setMaxLength(7);
 
-        foreach ( Mumsys_Variable_Abstract::TYPES as $type ) {
+        foreach ( Mumsys_Variable_Abstract::getTypes() as $type ) {
             $item->setType($type);
             $this->assertFalse($this->_object->validateMinMax($item));
         }
@@ -190,7 +190,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $item->setValue(8);
         $item->setMinLength(9);
         $item->setMaxLength(7);
-        foreach ( Mumsys_Variable_Abstract::TYPES as $type ) {
+        foreach ( Mumsys_Variable_Abstract::getTypes() as $type ) {
             $item->setType($type);
             $this->assertFalse($this->_object->validateMinMax($item));
         }

@@ -29,7 +29,7 @@ abstract class Mumsys_Variable_Abstract extends Mumsys_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.1.1';
+    const VERSION = '1.2.1';
 
     /**
      * Variable / validation types.
@@ -39,7 +39,7 @@ abstract class Mumsys_Variable_Abstract extends Mumsys_Abstract
      * @var array List of types
      * @
      */
-    const TYPES = array(
+    protected static $_types = array(
         'string', 'char', 'varchar', 'text', 'tinytext', 'longtext',
         'int', 'integer', 'smallint',
         'float', 'double',
@@ -51,5 +51,18 @@ abstract class Mumsys_Variable_Abstract extends Mumsys_Abstract
         'ipv4', 'ipv6',
         'unittest'
     );
+
+
+    /**
+     * Returns the list of possible item types.
+     * {@link Mumsys_Variable_Abstract::getTypes()}
+     *
+     * @return array List of types for the item
+     */
+    public static function getTypes()
+    {
+        return self::$_types;
+    }
+
 }
 

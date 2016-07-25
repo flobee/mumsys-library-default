@@ -89,7 +89,7 @@ class Mumsys_Variable_Item_Default
      *
      * Types are php types and optional types like email, date or datetime from
      * mysql which can and will be handles as types in this class. For more
-     * {@link Mumsys_Variable_Abstract::TYPES} for a complete list.
+     * {@link Mumsys_Variable_Abstract::getTypes} for a complete list.
      *
      * @param string $value Type to be set
      * @return void
@@ -100,7 +100,7 @@ class Mumsys_Variable_Item_Default
             return;
         }
 
-        if ( in_array($value, Mumsys_Variable_Abstract::TYPES) ) {
+        if ( in_array($value, Mumsys_Variable_Abstract::$_types) ) {
             $this->_input['type'] = (string) $value;
         } else {
             $message = sprintf('Type "%1$s" not implemented', $value);

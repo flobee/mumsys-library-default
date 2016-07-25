@@ -25,7 +25,7 @@ class Mumsys_Variable_AbstractTest
      */
     protected function setUp()
     {
-        $this->_version = '1.1.1';
+        $this->_version = '1.2.1';
         $this->_object = null;
     }
 
@@ -41,7 +41,7 @@ class Mumsys_Variable_AbstractTest
 
 
     /**
-     * @ c o v e r s Mumsys_Variable_Abstract::TYPES
+     * @ c o v e r s Mumsys_Variable_Abstract::getTypes
      * @ c o v e r s Mumsys_Variable_Abstract::VERSION
      */
     public function testCheckConstants()
@@ -59,7 +59,7 @@ class Mumsys_Variable_AbstractTest
             'unittest',
         );
 
-        $this->assertEquals($expected, Mumsys_Variable_Abstract::TYPES);
+        $this->assertEquals($expected, Mumsys_Variable_Abstract::getTypes());
         $this->assertEquals($this->_version, Mumsys_Variable_Abstract::VERSION);
     }
 

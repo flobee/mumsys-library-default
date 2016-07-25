@@ -29,7 +29,7 @@
  * @subpackage  Mumsys_Variable
  */
 abstract class Mumsys_Variable_Item_Abstract
-    extends Mumsys_Abstract
+    extends Mumsys_Variable_Abstract
     implements Mumsys_Variable_Item_Interface
 {
     /**
