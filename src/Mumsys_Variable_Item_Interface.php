@@ -93,7 +93,7 @@ interface Mumsys_Variable_Item_Interface
      *
      * Types are php types and optional types like email, date or datetime from
      * mysql which can and will be handles as types in this class. For more
-     * @see $_types for a complete list handles by this class.
+     * {@link Mumsys_Variable_Abstract::TYPES} for a complete list.
      *
      * @param string $value Type to be set
      * @return void

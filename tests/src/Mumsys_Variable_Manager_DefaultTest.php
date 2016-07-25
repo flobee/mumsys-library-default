@@ -154,6 +154,16 @@ class Mumsys_Variable_Manager_DefaultTest
         $item->setValue('2016-12-31 23:58:59');
         $this->assertTrue($this->_object->validateType($item));
 
+        $item->setType('ipv4');
+        $this->assertFalse($this->_object->validateType($item));
+        $item->setValue('127.0.0.1');
+        $this->assertTrue($this->_object->validateType($item));
+
+        $item->setType('ipv6');
+        $this->assertFalse($this->_object->validateType($item));
+        $item->setValue('::1');
+        $this->assertTrue($this->_object->validateType($item));
+
         $this->setExpectedExceptionRegExp('Mumsys_Variable_Manager_Exception', '/(Type "unittest" not implemented)/i');
         $item->setType('unittest');
         $this->_object->validateType($item);
@@ -211,6 +221,47 @@ class Mumsys_Variable_Manager_DefaultTest
         ini_set('display_errors', $b);
     }
 
+    /**
+     * @covers Mumsys_Variable_Manager_Default::validateIPv4
+     */
+    public function testValidateIPv4()
+    {
+        $item = $this->_object->getItem('username');
+        $item->setType('ipv4');
+        $item->setValue('112.110.110.112');
+
+        $item2 = clone $item;
+        $item2->setValue('localhost');
+
+        $this->assertTrue($this->_object->validateIPv4($item));
+        $this->assertFalse($this->_object->validateIPv4($item2));
+
+        $this->assertEquals(
+            array('TYPE_INVALID_IPV4' => 'Value (json):"localhost" is not an "ipv4" address'),
+            $item2->getErrorMessages()
+        );
+    }
+
+    /**
+     * @covers Mumsys_Variable_Manager_Default::validateIPv6
+     */
+    public function testValidateIPv6()
+    {
+        $item = $this->_object->getItem('username');
+        $item->setType('ipv6');
+        $item->setValue('::1');
+
+        $item2 = clone $item;
+        $item2->setValue('localhost');
+
+        $this->assertTrue($this->_object->validateIPv6($item));
+        $this->assertFalse($this->_object->validateIPv6($item2));
+
+        $this->assertEquals(
+            array('TYPE_INVALID_IPV6' => 'Value (json):"localhost" is not an "ipv6" address'),
+            $item2->getErrorMessages()
+        );
+    }
 
     /**
      * @covers Mumsys_Variable_Manager_Default::isValid
@@ -316,7 +367,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->assertInternalType('array', $this->_object->getMessageTemplates());
     }
 
-    
+
     /**
      * Version check
      */

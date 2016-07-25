@@ -48,6 +48,7 @@ abstract class Mumsys_Variable_Abstract extends Mumsys_Abstract
         'date',
         'datetime', 'timestamp',
         'email',
+        'ipv4', 'ipv6',
         'unittest'
     );
 }

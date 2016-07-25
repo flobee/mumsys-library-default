@@ -119,6 +119,16 @@ class Mumsys_Variable_Manager_Default
     const TYPE_INVALID_DATETIME = 'TYPE_INVALID_DATETIME';
 
     /**
+     * Value (json):"%1$s" is not an "ipv4" address
+     */
+    const TYPE_INVALID_IPV4 = 'TYPE_INVALID_IPV4';
+
+    /**
+     * Value (json):"%1$s" is not an "ipv6" address
+     */
+    const TYPE_INVALID_IPV6 = 'TYPE_INVALID_IPV6';
+
+    /**
      * Value "%1$s" must contain at least "%2$s" characters
      */
     const MINMAX_TOO_SHORT_STR = 'MINMAX_TOO_SHORT_STR';
@@ -171,6 +181,8 @@ class Mumsys_Variable_Manager_Default
         self::TYPE_INVALID_INT => 'Value (json): "%1$s" is not an "integer"',
         self::TYPE_INVALID_DATE => 'Value (json): "%1$s" is not of type "date"',
         self::TYPE_INVALID_DATETIME => 'Value (json): "%1$s" is not of type "datetime"',
+        self::TYPE_INVALID_IPV4 => 'Value (json):"%1$s" is not an "ipv4" address',
+        self::TYPE_INVALID_IPV6 => 'Value (json):"%1$s" is not an "ipv6" address',
 
         //min max checks
         self::MINMAX_TOO_SHORT_STR => 'Value "%1$s" must contain at least "%2$s" characters',
@@ -310,6 +322,14 @@ class Mumsys_Variable_Manager_Default
                 }
                 break;
 
+            case 'ipv4':
+                $return = $this->validateIPv4($item);
+                break;
+
+            case 'ipv6':
+                $return = $this->validateIPv6($item);
+                break;
+
             default:
                 throw new Mumsys_Variable_Manager_Exception(sprintf('Type "%1$s" not implemented', $type));
         }
@@ -439,6 +459,49 @@ class Mumsys_Variable_Manager_Default
         }
 
         return $return;
+    }
+
+
+    /**
+     * Item validation for an ipv4 address.
+     *
+     * @todo implement checks for FILTER_FLAG_NO_PRIV_RANGE
+     * (also: return filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? $value : (((ip2long($value) &
+     * 0xff000000) == 0x7f000000) ? FALSE : $value); and FILTER_FLAG_NO_RES_RANGE
+     * this may need type attributes!?
+     *
+     * @param Mumsys_Variable_Item_Interface $item Validate item object
+     *
+     * @return boolean True on success or false for invalid ip format
+     */
+    public function validateIPv4( Mumsys_Variable_Item_Interface $item )
+    {
+        if ( filter_var($item->getValue(), FILTER_VALIDATE_IP , FILTER_FLAG_IPV4) === false ) {
+            $message = sprintf($this->_messageTemplates[self::TYPE_INVALID_IPV4], $item->getValue());
+            $item->setErrorMessage(self::TYPE_INVALID_IPV4, $message);
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Item validation for an ipv4 address.
+     *
+     * @param Mumsys_Variable_Item_Interface $item Validate item object
+     *
+     * @return boolean True on success or false for invalid ip format
+     */
+    public function validateIPv6( Mumsys_Variable_Item_Interface $item )
+    {
+        if ( filter_var($item->getValue(), FILTER_VALIDATE_IP , FILTER_FLAG_IPV6) === false ) {
+            $message = sprintf($this->_messageTemplates[self::TYPE_INVALID_IPV6], $item->getValue());
+            $item->setErrorMessage(self::TYPE_INVALID_IPV6, $message);
+            return false;
+        }
+
+        return true;
     }
 
 

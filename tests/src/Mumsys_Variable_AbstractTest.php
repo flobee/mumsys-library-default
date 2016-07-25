@@ -55,6 +55,7 @@ class Mumsys_Variable_AbstractTest
             'date',
             'datetime', 'timestamp',
             'email',
+            'ipv4', 'ipv6',
             'unittest',
         );
 
