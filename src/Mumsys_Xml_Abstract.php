@@ -1,8 +1,7 @@
 <?php
 
-/* {{{ */
 /**
- * Mumsys_Xml_Abstract
+ * {{{ Mumsys_Xml_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -12,8 +11,7 @@
  * @category Mumsys
  * @package Mumsys_Library
  * @subpackage Mumsys_Xml
- */
-/* }}} */
+ }}} */
 
 
 /**
@@ -33,10 +31,12 @@ abstract class Mumsys_Xml_Abstract
 
 
     /**
-     * Returns xml/html tag attributes from array
+     * Returns xml or html tag attributes from array
      *
-     * @param array $array List of key/value pairs.
-     * @return string String eg: 'name="val" id="key" '
+     * @param array $array List of key/value pairs to create attributes from
+     *
+     * @return string String eg: name="val" id="key"
+     * @throws Mumsys_Xml_Exception If data not at least scalar
      */
     public static function attributesCreate( array $array = array() )
     {
