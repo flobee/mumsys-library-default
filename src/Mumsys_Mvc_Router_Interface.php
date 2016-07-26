@@ -1,9 +1,7 @@
 <?php
 
-
-/* {{{ */
 /**
- * Mumsys_Mvc_Router_Interface
+ * {{{ Mumsys_Mvc_Router_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -13,9 +11,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
- * @filesource
- */
-/* }}} */
+ }}} */
 
 
 /**

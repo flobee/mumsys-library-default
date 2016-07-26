@@ -12,7 +12,6 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Request
- * @filesource
  */
 /* }}} */
 
