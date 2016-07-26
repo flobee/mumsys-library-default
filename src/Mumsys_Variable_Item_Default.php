@@ -12,16 +12,20 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Variable
- * Created: 2006 based on Mumsys_Field_EXception, renew 2016
+ * Created: 2006 based on Mumsys_Field, renew 2016
  */
 /*}}}*/
+
 
 /**
  * Default item implementation as variable item interface for general web
  * related tasks like create/edit/save variables.
- * Each variable should be an object with a standard set of methodes which are
- * needed for these tasks.
- * This class only keeps informational properties like name, value, label, description and additional information.
+ *
+ * This class does the following: Each variable should be an object with a
+ * standard set of methodes which are needed for these tasks.
+ * This class keeps default properties like name, value, type, minlen, maxlen,
+ * label, description, additional information and error messages.
+ * With this you already have a powerful set to handle and validate variables.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -41,15 +45,9 @@ class Mumsys_Variable_Item_Default
      * @var array
      */
     private $_properties = array(
-        'name' => true, 'value' => true, 'label' => true, 'desc' => true, 'info' => true
-    );
-
-    /**
-     * PHP types and optional additional types for this item.
-     * @var array
-     */
-    private $_types = array(
-        'string', 'integer', 'float', 'double', 'boolean', 'array', 'object', 'date', 'datetime', 'email'
+        'name' => true, 'value' => true,
+        'type' => true, 'minlen' => true, 'maxlen' => true, 'regex' => true, 'allowEmpty'=>true, 'required' =>true,
+        'label' => true, 'desc' => true, 'info' => true, 'default' => true,
     );
 
 
@@ -58,15 +56,183 @@ class Mumsys_Variable_Item_Default
      *
      * @see $_properties
      *
-     * @param array $properties List of key/value config parameters to be set. Config values MUST NOT be null!
+     * @param array $properties List of key/value config parameters to be set.
+     * Config values MUST NOT be null!
      */
-    public function __construct( array $properties )
+    public function __construct( array $properties = array() )
     {
         foreach ( $this->_properties as $key => $value ) {
             if ( isset($properties[$key]) ) {
                 $this->_input[$key] = $properties[$key];
             }
         }
+    }
+
+
+    /**
+     * Returns the variable item type.
+     *
+     * Hint: {@link Mumsys_Variable_Abstract::TYPES} To see internal handling
+     * by the manager.
+     *
+     * @return string Item type
+     */
+    public function getType()
+    {
+        return (isset($this->_input['type'])) ? $this->_input['type'] : null;
+    }
+
+
+    /**
+     * Sets the item type.
+     * If value exists and is the same than the current one null is returned.
+     *
+     * Types are php types and optional types like email, date or datetime from
+     * mysql which can and will be handles as types in this class. For more
+     * {@link Mumsys_Variable_Abstract::getTypes} for a complete list.
+     *
+     * @param string $value Type to be set
+     * @return void
+     */
+    public function setType( $value )
+    {
+        if ( $value == $this->getType() ) {
+            return;
+        }
+
+        if ( in_array($value, Mumsys_Variable_Abstract::$_types) ) {
+            $this->_input['type'] = (string) $value;
+        } else {
+            $message = sprintf('Type "%1$s" not implemented', $value);
+            throw new Mumsys_Variable_Item_Exception($message);
+        }
+    }
+
+
+    /**
+     * Returns the minimum item value length (number or string length).
+     *
+     * @return float|null Minimum length
+     */
+    public function getMinLength()
+    {
+        return (isset($this->_input['minlen'])) ? $this->_input['minlen'] : null;
+    }
+
+
+    /**
+     * Sets the minimum item value length (number or string length).
+     *
+     * @param float $value Minimum item value length
+     */
+    public function setMinLength( $value )
+    {
+        $this->_input['minlen'] = (float) $value;
+    }
+
+
+    /**
+     * Returns the maximum item value length (number or string length).
+     *
+     * @return float|null Maximum item value length
+     */
+    public function getMaxLength()
+    {
+        return (isset($this->_input['maxlen'])) ? $this->_input['maxlen'] : null;
+    }
+
+
+    /**
+     * Sets the maximum item value length (number or string length).
+     *
+     * @param float $value Maximum item value length
+     */
+    public function setMaxLength( $value )
+    {
+        $this->_input['maxlen'] = (float) $value;
+    }
+
+
+    /**
+     * Returns the list of regular expressions.
+     *
+     * @return array List of regular expression or null
+     */
+    public function getRegex()
+    {
+        $value = & $this->_input['regex'];
+
+        if ( is_array($value) ) {
+            return $value;
+        }
+
+        return array();
+    }
+
+
+    /**
+     * Sets/ replace a regular expression.
+     *
+     * @param string $value Regular expression
+     */
+    public function setRegex( $value )
+    {
+        $this->_input['regex'] = array((string) $value);
+    }
+
+
+    /**
+     * Adds a new regular expressions to the list of regular expressions.
+     *
+     * @param string $value Regular expression
+     */
+    public function addRegex( $value )
+    {
+        $this->_input['regex'][] = (string) $value;
+    }
+
+
+    /**
+     * Returns the allow empty flag of the item.
+     *
+     * @return boolean Allow empty flag
+     */
+    public function getAllowEmpty()
+    {
+        return ( isset( $this->_input['allowEmpty'] ) ? (boolean) $this->_input['allowEmpty'] : null );
+    }
+
+
+    /**
+     * Sets the allow empty flag of the item.
+     *
+     * @param boolean $value True to allow empty values or false for not allow empty values
+     */
+    public function setAllowEmpty( $value )
+    {
+        $this->_input['allowEmpty'] = (boolean) $value;
+    }
+
+
+    /**
+     * Returns the required status of the item.
+     *
+     * @return boolean Required status
+     */
+    public function getRequired()
+    {
+        return ( isset( $this->_input['required'] ) ? (boolean) $this->_input['required'] : null );
+    }
+
+
+    /**
+     * Sets required flag of the item.
+     *
+     * @param boolean $value Required flag
+     */
+    public function setRequired( $value )
+    {
+        $this->_input['required'] = (boolean) $value;
     }
 
 
@@ -144,6 +310,28 @@ class Mumsys_Variable_Item_Default
     public function setInformation( $value )
     {
         $this->_input['info'] = (string) $value;
+    }
+
+    /**
+     * Returns the default item value.
+     *
+     * @return mixed|null Default item value
+     */
+    public function getDefault()
+    {
+        return ( isset( $this->_input['default'] ) ? $this->_input['default'] : null );
+    }
+
+
+    /**
+     * Sets the default value for the item.
+     *
+     * @param mixed $value Default value to set
+     * @return void
+     */
+    public function setDefault( $value )
+    {
+        $this->_input['default'] = $value;
     }
 
 }

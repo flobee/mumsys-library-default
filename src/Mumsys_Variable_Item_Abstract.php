@@ -12,23 +12,24 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Variable
- * Created: 2006 based on Mumsys_Field_EXception, renew 2016
+ * Created: 2006 based on Mumsys_Field, renew 2016
  */
 /*}}}*/
+
 
 /**
  * Default item implementation as variable item interface for general web
  * related tasks like create/edit/save variables.
  * Each variable should be an object with a standard set of methodes which are
  * needed for these tasks.
- * This class only keeps minimum gtetter/setter like get/set name, value and error messages.
+ * This class only keeps minimum getter/setter like get/set name, value and error messages.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Variable
  */
 abstract class Mumsys_Variable_Item_Abstract
-    extends Mumsys_Abstract
+    extends Mumsys_Variable_Abstract
     implements Mumsys_Variable_Item_Interface
 {
     /**
@@ -37,7 +38,7 @@ abstract class Mumsys_Variable_Item_Abstract
     const VERSION = '1.1.1';
 
     /**
-     * List of initial incoming properties to be set/ checked on construction or in later use.
+     * List of initial incoming variable properties to be set on construction.
      * @var array
      */
     protected $_input = array();
@@ -87,7 +88,7 @@ abstract class Mumsys_Variable_Item_Abstract
 
     /**
      * Sets the item value.
-     * 
+     *
      * @param mixed $value Item value to be set
      */
     public function setValue( $value )

@@ -1,5 +1,12 @@
 # Changes
 
+2016-07-14
+    Mumsys_Variable_*
+    Mumsys_Variable_Item_*
+    Mumsys_Variable_Manager_*
+    - Migrate from old Mumsys_Field classes
+    - Adds tests
+
 2016-04-24
     Mumsys_Multirename
     - Adding --stats flag to output some stats

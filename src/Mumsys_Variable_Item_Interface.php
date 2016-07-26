@@ -1,6 +1,6 @@
 <?php
 
-/*{{{*/
+/* {{{ */
 /**
  * Mumsys_Variable_Item_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
@@ -13,9 +13,10 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Variable
  * @verion 1.0.0
- * Created: 2006 based on Mumsys_Field_EXception, renew 2016
+ * Created: 2006 based on Mumsys_Field, renew 2016
  */
-/*}}}*/
+/* }}} */
+
 
 /**
  * Default variable item interface.
@@ -23,7 +24,7 @@
  * Default item implementation as variable item interface for general web
  * related tasks like create/edit/save variables.
  * Each variable should be an object with a standard set of methodes which are
- * needed for these tasks.
+ * needed for these tasks. This is the standard set of methodes as interface
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -32,13 +33,13 @@
 interface Mumsys_Variable_Item_Interface
 {
     /**
-     * Initialisation of the item object.
+     * Initialisation of the variable item object.
      *
      * @see $_properties
      *
      * @param array $properties List of key/value config parameters to be set. Config values MUST NOT be null!
      */
-    public function __construct( array $properties );
+    public function __construct( array $properties = array() );
 
 
     /**
@@ -76,6 +77,116 @@ interface Mumsys_Variable_Item_Interface
      * @param mixed $value Item value to be set
      */
     public function setValue( $value );
+
+
+    /**
+     * Returns the item type.
+     *
+     * @return string Item type
+     */
+    public function getType();
+
+
+    /**
+     * Sets the item type.
+     * If value exists and is the same than the current one null is returned.
+     *
+     * Types are php types and optional types like email, date or datetime from
+     * mysql which can and will be handles as types in this class. For more
+     * {@link Mumsys_Variable_Abstract::TYPES} for a complete list.
+     *
+     * @param string $value Type to be set
+     * @return void
+     */
+    public function setType( $value );
+
+
+    /**
+     * Returns the minimum item value length (number or string length).
+     *
+     * @return float|null Minimum length
+     */
+    public function getMinLength();
+
+
+    /**
+     * Sets the minimum item value length (number or string length).
+     *
+     * @param float $value Minimum item value length
+     */
+    public function setMinLength( $value );
+
+
+    /**
+     * Returns the maximum item value length (number or string length).
+     *
+     * @return float|null Maximum item value length
+     */
+    public function getMaxLength();
+
+
+    /**
+     * Sets the maximum item value length (number or string length).
+     *
+     * @param float $value Maximum item value length
+     */
+    public function setMaxLength( $value );
+
+
+    /**
+     * Returns the list of regular expressions.
+     *
+     * @return array List of regular expression or null
+     */
+    public function getRegex();
+
+
+    /**
+     * Sets/ replace a regular expression.
+     *
+     * @param string $value Regular expression
+     */
+    public function setRegex( $value );
+
+
+    /**
+     * Adds a new regular expressions to the list of regular expressions.
+     *
+     * @param string $value Regular expression
+     */
+    public function addRegex( $value );
+
+
+    /**
+     * Returns the allow empty flag of the item.
+     *
+     * @return boolean Allow empty flag
+     */
+    public function getAllowEmpty();
+
+
+    /**
+     * Sets the allow empty flag of the item.
+     *
+     * @param boolean $value True to allow empty values or false for not allow empty values
+     */
+    public function setAllowEmpty( $value );
+
+
+    /**
+     * Returns the required status of the item.
+     *
+     * @return boolean Required status
+     */
+    public function getRequired();
+
+
+    /**
+     * Sets required flag of the item.
+     *
+     * @param boolean $value Required flag
+     */
+    public function setRequired( $value );
 
 
     /**
