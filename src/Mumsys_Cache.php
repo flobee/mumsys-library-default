@@ -114,7 +114,7 @@ class Mumsys_Cache
                 return true;
             }
 
-            unlink($filename);
+            @unlink($filename);
         }
 
         return false;
