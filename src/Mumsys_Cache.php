@@ -70,13 +70,13 @@ class Mumsys_Cache
      * Cache the content.
      *
      * @param int $ttl Time to live in seconds
-     * @param mixed $data Content to be cached
+     * @param mixed $data Content to be cached. You may serialise it before.
      */
     public function write($ttl, $data)
     {
         $filename = $this->_getFilename();
 
-        if ($fp = fopen($filename, 'xb')) {
+        if ($fp = fopen($filename, 'wb')) {
             if (flock($fp, LOCK_EX)) {
                 fwrite($fp, $data);
             }
@@ -113,7 +113,8 @@ class Mumsys_Cache
             if (file_exists($filename) && filemtime($filename) > time()) {
                 return true;
             }
-            @unlink($filename);
+
+            unlink($filename);
         }
 
         return false;
