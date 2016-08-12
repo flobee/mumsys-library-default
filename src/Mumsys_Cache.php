@@ -76,7 +76,7 @@ class Mumsys_Cache
     {
         $filename = $this->_getFilename();
 
-        if ($fp = fopen($filename, 'xb')) {
+        if ($fp = fopen($filename, 'wb')) {
             if (flock($fp, LOCK_EX)) {
                 fwrite($fp, $data);
             }
