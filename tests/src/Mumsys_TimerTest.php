@@ -3,13 +3,14 @@
 /**
  * Test class for Mumsys_Timer.
  */
-class Mumsys_TimerTest extends MumsysTestHelper
+class Mumsys_TimerTest
+    extends Mumsys_Unittest_Testcase
 {
-
     /**
      * @var Mumsys_TimerTest
      */
     protected $_object;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -42,15 +43,17 @@ class Mumsys_TimerTest extends MumsysTestHelper
         $this->assertInstanceof('Mumsys_Timer', $this->_object);
         $this->assertEquals(0, $this->_object->stopTimeGet());
         $this->assertGreaterThan(0, $this->_object->startTimeGet());
-    }
 
+        $this->_object = new Mumsys_Timer($_SERVER['REQUEST_TIME_FLOAT']);
+        $this->assertEquals($_SERVER['REQUEST_TIME_FLOAT'], $this->_object->startTimeGet());
+    }
 
     public function testStart()
     {
         $this->_object->start();
         $expected = microtime(1);
         $actual = $this->_object->startTimeGet();
-        $this->assertTrue(((int) $expected == (int) $actual));
+        $this->assertTrue(((int)$expected == (int)$actual));
         //echo PHP_EOL.$expected.PHP_EOL.$actual. PHP_EOL;
         //echo round($expected, 3) . PHP_EOL . round($actual, 3) . PHP_EOL;
         $this->assertEquals(round($expected, 2), round($actual, 2));
@@ -84,13 +87,14 @@ class Mumsys_TimerTest extends MumsysTestHelper
         $this->assertEquals(0, $this->_object->elapsedTimeGet());
     }
 
+
     public function test__ToString()
     {
         $this->_object->__toString();
         $expected = microtime(1);
         $actual = $this->_object->stopTimeGet();
 
-        $this->assertEquals(round($expected, 2), round($actual, 2));
+        $this->assertEquals(round($expected, 1), round($actual, 1));
     }
 
     // Abstract class
@@ -100,6 +104,5 @@ class Mumsys_TimerTest extends MumsysTestHelper
         $this->assertEquals('Mumsys_Timer 3.2.0', $this->_object->getVersion());
         $this->assertEquals('3.2.0', $this->_object->getVersionID());
     }
-
 
 }

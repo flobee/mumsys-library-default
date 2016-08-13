@@ -1,9 +1,10 @@
 <?php
 
 /**
- * Tests class for Mumsys_PriorityQueue_Simple
+ * Mumsys_PriorityQueue_Simple Test
  */
-class Mumsys_PriorityQueue_SimpleTest extends MumsysTestHelper
+class Mumsys_PriorityQueue_SimpleTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_PriorityQueue_Simple
@@ -11,17 +12,15 @@ class Mumsys_PriorityQueue_SimpleTest extends MumsysTestHelper
     protected $_object;
     protected $_defaults;
 
-
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
     protected function setUp()
     {
-        $this->_defaults = array('default' => array(1,2,3));
-        $this->_object = new Mumsys_PriorityQueue_Simple( $this->_defaults );
+        $this->_defaults = array('default' => array(1, 2, 3));
+        $this->_object = new Mumsys_PriorityQueue_Simple($this->_defaults);
     }
-
 
     /**
      * Tears down the fixture, for example, closes a network connection.
@@ -31,7 +30,6 @@ class Mumsys_PriorityQueue_SimpleTest extends MumsysTestHelper
     {
         $this->_object = null;
     }
-
 
     /**
      * @covers Mumsys_PriorityQueue_Simple::__construct
@@ -45,7 +43,7 @@ class Mumsys_PriorityQueue_SimpleTest extends MumsysTestHelper
         $this->_object->add('just adding items to an array', 'just adding items to an array');
 
         $expected = array(
-            'default' => array(1,2,3),
+            'default' => array(1, 2, 3),
             'AAA' => 'AAA',
             'BBB' => 'BBB',
             'just adding items to an array' => 'just adding items to an array',
@@ -67,7 +65,6 @@ class Mumsys_PriorityQueue_SimpleTest extends MumsysTestHelper
         $this->_object->add('AAA', 'AAA');
     }
 
-
     /**
      * @covers Mumsys_PriorityQueue_Simple::add
      * @covers Mumsys_PriorityQueue_Simple::_getPos
@@ -83,7 +80,7 @@ class Mumsys_PriorityQueue_SimpleTest extends MumsysTestHelper
         $this->_object->add('cool man', 'cool man');
 
         $expected = array(
-            'default' => array(1,2,3),
+            'default' => array(1, 2, 3),
             'CCC' => '333',
             'AAA' => '111',
             'DDD' => '444',
@@ -95,7 +92,6 @@ class Mumsys_PriorityQueue_SimpleTest extends MumsysTestHelper
         $this->assertEquals($expected, $this->_object->getQueue());
     }
 
-
     /**
      * @covers Mumsys_PriorityQueue_Simple::__construct
      * @covers Mumsys_PriorityQueue_Simple::add
@@ -106,7 +102,6 @@ class Mumsys_PriorityQueue_SimpleTest extends MumsysTestHelper
         $this->setExpectedException('Mumsys_PriorityQueue_Exception', 'Position way "WayNotExists" not implemented');
         $this->_object->add('AAA', 'AAA', 'WayNotExists', 'default');
     }
-
 
     /**
      * @covers Mumsys_PriorityQueue_Simple::getQueue

@@ -3,9 +3,9 @@
 /**
  * Test class for Mumsys_Loader.
  */
-class Mumsys_LoaderTest extends MumsysTestHelper
+class Mumsys_LoaderTest
+    extends Mumsys_Unittest_Testcase
 {
-
     /**
      * @var Mumsys_Loader
      */
@@ -21,7 +21,6 @@ class Mumsys_LoaderTest extends MumsysTestHelper
         $this->object = new Mumsys_Loader;
     }
 
-
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
@@ -30,7 +29,6 @@ class Mumsys_LoaderTest extends MumsysTestHelper
     {
         $this->object = null;
     }
-
 
     public function testLoad()
     {
@@ -41,13 +39,11 @@ class Mumsys_LoaderTest extends MumsysTestHelper
         $this->assertInstanceof('Mumsys_Timer', $o3);
     }
 
-
     public function testLoadException1()
     {
         $this->setExpectedException('Mumsys_Exception', 'Could not load: "Mumsys_NoExists".');
         $o4 = $this->object->load('Mumsys_NoExists', array());
     }
-
 
     public function testLoadException2()
     {
@@ -55,13 +51,11 @@ class Mumsys_LoaderTest extends MumsysTestHelper
         $o4 = $this->object->load('Mumsys_Templates_Base', array());
     }
 
-
     public function testAutoload()
     {
         $this->object->autoload('Mumsys_Timer');
         $this->assertTrue(class_exists('Mumsys_Timer', $autoload = true));
     }
-
 
     public function testLoadedClassesGet()
     {

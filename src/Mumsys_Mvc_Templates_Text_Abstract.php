@@ -1,21 +1,18 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Mvc_Templates_Text_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
  * Created: 2016-02-04
- * @filesource
  */
-/*}}}*/
 
 
 /**
@@ -51,7 +48,7 @@ abstract class Mumsys_Mvc_Templates_Text_Abstract
     public function __construct( Mumsys_Context $context, array $options = array() )
     {
         $this->_context = $context;
-        
+
         if (isset($options['pageTitle'])) {
             $this->_pagetitle = (string)$options['pageTitle'];
         }

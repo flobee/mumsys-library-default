@@ -26,8 +26,6 @@
  */
 interface Mumsys_Request_Interface
 {
-
-
     /**
      * Initialise the request object.
      *
@@ -165,7 +163,7 @@ interface Mumsys_Request_Interface
 
 
     /**
-     * Returns all input parameters
+     * Returns all default input parameters.
      *
      * @return array incomming request valiables
      */

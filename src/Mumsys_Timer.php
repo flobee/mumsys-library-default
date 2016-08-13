@@ -1,6 +1,7 @@
 <?php
 
-/*{{{*/
+
+/* {{{ */
 /**
  * ----------------------------------------------------------------------------
  * Mumsys_Timer
@@ -21,17 +22,40 @@
  * @filesource
  * -----------------------------------------------------------------------
  */
- /*}}}*/
+/* }}} */
 
 
 /**
  * Track the duration between a start and end time.
  *
+ * Example 1:
+ * <code>
+ * $timer = new Mumsys_Timer(true);
+ * // do some stuff
+ * echo $timer; // print out the duration time
+ * </code>
+ * Example 2:
+ * <code>
+ * $timer = new Mumsys_Timer($_SERVER['REQUEST_TIME_FLOAT']);
+ * // do some stuff
+ * echo $timer; // print out the duration time
+ * </code>
+ * Example 3 (manual):
+ * <code>
+ * $timer = new Mumsys_Timer();
+ * // do some stuff
+ * $timer->start();             // start recording the time
+ * // do some more stuff
+ * $duration = $timer->stop();  // return the duration OR:
+ * echo $timer                  // print out the duration time
+ * </code>
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Timer
  */
-class Mumsys_Timer extends Mumsys_Abstract
+class Mumsys_Timer
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
@@ -46,13 +70,23 @@ class Mumsys_Timer extends Mumsys_Abstract
     /**
      * Initialize the object.
      *
-     * @param boolean $startNow Flag to enable "start now" function.
+     * Two different options to automatically start the timer:
+     * 1. When true the current time (microtime) will be used
+     * 2. If the $start value contains a float value it will be used as start
+     * time.
+     *
+     * @param boolean|float $start If true enable "start now"
+     * function otherwise given float value will be used as starttime in mictotime format
      * If true time recording starts now
      */
-    public function __construct( $startNow=false )
+    public function __construct( $start = false )
     {
-        if ( $startNow ) {
+        if ($start === true) {
             $this->start();
+        }
+
+        if (is_float($start)) {
+            $this->startTimeSet($start);
         }
     }
 
@@ -69,7 +103,7 @@ class Mumsys_Timer extends Mumsys_Abstract
     /**
      * Stop the timer and calculate the time between start and stop time.
      *
-     * @return string Returns the number of seconds, micro secconds
+     * @return string Returns the number of seconds, micro seconds
      */
     public function stop()
     {
@@ -88,6 +122,17 @@ class Mumsys_Timer extends Mumsys_Abstract
     public function startTimeGet()
     {
         return $this->_start;
+    }
+
+
+    /**
+     * Sets the start time.
+     *
+     * @param float Statr time as float value to be set
+     */
+    public function startTimeSet( $time )
+    {
+        $this->_start = (float)$time;
     }
 
 
@@ -131,7 +176,7 @@ class Mumsys_Timer extends Mumsys_Abstract
      */
     public function __toString()
     {
-        return (string) $this->stop();
+        return (string)$this->stop();
     }
 
 }

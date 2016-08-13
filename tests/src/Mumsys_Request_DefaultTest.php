@@ -1,11 +1,10 @@
 <?php
 
-
 /**
  * Mumsys_Request_Default Test
  */
 class Mumsys_Request_DefaultTest
-    extends MumsysTestHelper
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Request_Default
@@ -27,7 +26,7 @@ class Mumsys_Request_DefaultTest
      */
     protected $_inputPost;
 
-
+    
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -55,7 +54,6 @@ class Mumsys_Request_DefaultTest
         $this->_object = new Mumsys_Request_Default($options);
     }
 
-
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
@@ -65,9 +63,9 @@ class Mumsys_Request_DefaultTest
         $this->_object = NULL;
     }
 
-
     /**
-     * For code coverage
+     * Just for code coverage
+     * @covers Mumsys_Request_Default::__construct
      */
     public function test_construct()
     {
@@ -86,19 +84,9 @@ class Mumsys_Request_DefaultTest
         $this->_object = new Mumsys_Request_Default($options);
     }
 
-
-    public function testGetInputGet()
-    {
-        $actual1 = $this->_object->getInputGet();
-        $actual2 = $this->_object->getInputGet('programTest');
-        $actual3 = $this->_object->getInputGet('notExists', 123);
-
-        $this->assertEquals($this->_inputGet, $actual1);
-        $this->assertEquals($this->_inputGet['programTest'], $actual2);
-        $this->assertEquals('123', $actual3);
-    }
-
-
+    /**
+     * @covers Mumsys_Request_Default::getInputPost
+     */
     public function testGetInputPost()
     {
         $actual1 = $this->_object->getInputPost();
@@ -107,6 +95,20 @@ class Mumsys_Request_DefaultTest
 
         $this->assertEquals($this->_inputPost, $actual1);
         $this->assertEquals($this->_inputPost['programTest'], $actual2);
+        $this->assertEquals('123', $actual3);
+    }
+
+    /**
+     * @covers Mumsys_Request_Default::getInputGet
+     */
+    public function testGetInputGet()
+    {
+        $actual1 = $this->_object->getInputGet();
+        $actual2 = $this->_object->getInputGet('programTest');
+        $actual3 = $this->_object->getInputGet('notExists', 123);
+
+        $this->assertEquals($this->_inputGet, $actual1);
+        $this->assertEquals($this->_inputGet['programTest'], $actual2);
         $this->assertEquals('123', $actual3);
     }
 

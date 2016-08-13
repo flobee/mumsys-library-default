@@ -1,17 +1,29 @@
 <?php
 
-
 /**
- * Mumsys_Session_Default test
+ * Mumsys_Session_Default Test
  */
 class Mumsys_Session_DefaultTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Session_Default
      */
     protected $_object;
 
+    /**
+     * Version ID string
+     * @var string
+     */
+    protected $_version;
+
+    /**
+     * needed to test the session.
+     */
+    public function __construct()
+    {
+        ob_start();
+    }
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -19,9 +31,9 @@ class Mumsys_Session_DefaultTest
      */
     protected function setUp()
     {
+        $this->_version = '1.1.0';
         $this->_object = new Mumsys_Session_Default();
     }
-
 
     /**
      * Tears down the fixture, for example, closes a network connection.
@@ -29,109 +41,77 @@ class Mumsys_Session_DefaultTest
      */
     protected function tearDown()
     {
+        $this->_object->clear();
         $this->_object = NULL;
+        session_write_close();
     }
 
-
     /**
-     * @covers Mumsys_Session_Default::__construct
-     * @runInSeparateProcess
+     * Test nearly all methodes because of the problematic of php sessions
+     * itselves to test them.
      */
-    public function test_construct()
+    public function testAllMethodes()
     {
         $this->_object = new Mumsys_Session_Default();
+
         // for code coverage
         $this->_object = new Mumsys_Session_Default();
 
-        session_write_close();
-        @session_destroy();
-        @session_regenerate_id();
-        $this->_object = new Mumsys_Session_Default();
-    }
-
-
-    /**
-     *
-     * @covers Mumsys_Session_Default::get
-     * @covers Mumsys_Session_Default::register
-     * @covers Mumsys_Session_Default::replace
-     * @covers Mumsys_Session_Default::getCurrent
-     * @covers Mumsys_Session_Default::getAll
-     * @covers Mumsys_Session_Default::remove
-     * @covers Mumsys_Session_Default::clear
-     */
-    public function testGetReplaceRegister()
-    {
-        $this->_object->replace('key1', 'value1');
-        $this->_object->replace('key2', 'value2');
-        $this->_object->register('key3', 'value3');
-
-        $actual1 = $this->_object->get('key1');
-        $actual2 = $this->_object->get('key2');
-        $actual3 = $this->_object->get('key3');
-        $actual4 = $this->_object->get('key4');
-
-        $this->assertEquals('value1', $actual1);
-        $this->assertEquals('value2', $actual2);
-        $this->assertEquals('value3', $actual3);
-        $this->assertNull($actual4);
-
-        $expected1 = array(
-            'key1' => 'value1',
-            'key2' => 'value2',
-            'key3' => 'value3'
-        );
-        $expected2 = array($this->_object->getID() => $expected1);
-
-        $this->assertEquals($expected1, $this->_object->getCurrent());
-        $this->assertEquals($expected2, $this->_object->getAll());
-
-        $this->assertTrue($this->_object->remove('key3'));
-        $this->assertFalse($this->_object->remove('key4'));
-
+        // for code coverage
         $this->_object->clear();
-        $this->assertEquals(array(), $this->_object->getAll());
-        $this->assertEquals(array(), $this->_object->getCurrent());
-    }
+        $actual6 = $this->_object->getAll();
+        $expected6 = array();
 
+        // test setter
+        $this->_object->replace('testkey', array('val1', 'val2'));
 
-    /**
-     * @covers Mumsys_Session_Default::register
-     */
-    public function testRegisterException()
-    {
-        $this->_object->replace('key1', 'value1');
+        $actual1 = $this->_object->get('testkey');
+        $expected1 = array('val1', 'val2');
 
-        $this->setExpectedExceptionRegExp('Mumsys_Session_Exception', '/(Session key "key1" exists)/');
-        $this->_object->register('key1', 'value1');
-    }
+        $actual2 = $this->_object->getAll();
+        $this->_object->__destruct();
+        $expected2 = $_SESSION;
 
+        $actual3 = $this->_object->getID();
+        $expected3 = key($_SESSION);
 
-    /**
-     * @covers Mumsys_Session_Default::__destruct
-     */
-    public function test_destruct()
-    {
-        $this->assertEquals(array(), $this->_object->getAll());
-        $this->assertEquals(array(), $this->_object->getCurrent());
-    }
+        $actual5 = $this->_object->getCurrent();
+        $expected5 = $expected2[$expected3];
 
+        $this->_object->register('newkey', array('val5', 'val6'));
+        $actual4 = $this->_object->get('newkey');
+        $expected4 = array('val5', 'val6');
+        // test default return
+        $actual7 = $this->_object->get('notsetbefor', 'dingding');
+        $expected7 = 'dingding';
 
-    /**
-     * @covers Mumsys_Session_Default::remove
-     */
-    public function testRemove()
-    {
-        $this->assertFalse($this->_object->remove('key4'));
-    }
+        $actual8 = $this->_object->remove('notsetbefor');
+        $actual9 = $this->_object->remove('newkey');
 
+        // get
+        $this->assertEquals($expected1, $actual1);
+        // __destruct
+        $this->assertEquals($expected2, $actual2);
+        // getID
+        $this->assertEquals($expected3, $actual3);
+        // register
+        $this->assertEquals($expected4, $actual4);
+        // getCurrent
+        $this->assertEquals($expected5, $actual5);
+        // clear
+        $this->assertEquals($expected6, $actual6);
+        // test default return
+        $this->assertEquals($expected7, $actual7);
+        // removed but wasnt set before
+        $this->assertFalse($actual8);
+        $this->assertTrue($actual9);
 
-    /**
-     * @covers Mumsys_Session_Default::getID
-     */
-    public function testGetID()
-    {
-        $this->assertEquals($this->_object->getID(), $this->_object->getID());
+        // version checks
+        $this->assertEquals($this->_version, $this->_object->getVersionID());
+
+        // test register existing
+        $this->setExpectedException('Mumsys_Session_Exception', 'Session key "testkey" exists');
+        $this->_object->register('testkey', array('val5', 'val6'));
     }
 
 }

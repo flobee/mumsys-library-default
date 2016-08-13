@@ -1,27 +1,23 @@
 <?php
 
-/* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_PriorityQueue_Simple
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_PriorityQueue
  * @version     1.0.0
  * Created: 2016-03-20
- * @filesource
  */
-/* }}} */
 
 
 /**
- * Simple priority queue uses priority names to place and to sort prorority items.
+ * Simple priority queue uses priority names to place and to sort prirority items.
  * With "befor" and "after" keys given priroities can be set in the order you
  * which to use. Altn. have a look into the SplPriorityQueue.
  *
@@ -34,6 +30,12 @@
  */
 class Mumsys_PriorityQueue_Simple
 {
+    /**
+     * Internal counter
+     * @var integer
+     */
+    private $_cnt = PHP_INT_MAX;
+
     /**
      * Stack of the priority
      * @var array
@@ -50,7 +52,7 @@ class Mumsys_PriorityQueue_Simple
      *  array('afterdefault2 => mixed content),
      * )
      *
-     * @param array $stack Optional; Predefined and ready to go list of items.
+     * @param array $stack Optional; Predefined and ready to go list of key/values pairs.
      */
     public function __construct( array $stack = array() )
     {

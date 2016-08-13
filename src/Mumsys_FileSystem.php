@@ -49,6 +49,8 @@ class Mumsys_FileSystem
      * $this->_dirinfo and all of it will be returned! Dont be confused if you
      * think records are scanned twice or you think you have dublicate records.
      *
+     * @todo follow symlinks?
+     *
      * @param string $dir Directory/ Path to start the scan
      * @param boolean $hideHidden Flag to decide to skip hidden files or directories
      * @param boolean $recursive Flag to deside to scan recursive or not
@@ -83,12 +85,13 @@ class Mumsys_FileSystem
         }
 
         if ( $filters ) {
-            while ( list($location, ) = each($this->_dirInfo) )
+            while ( list($location, ) = each($this->_dirInfo) ) {
                 foreach ( $filters as $regex ) {
                     if ( !preg_match($regex, $location) ) {
                         unset($this->_dirInfo[$location]);
                     }
                 }
+            }
         }
         return $this->_dirInfo;
     }
@@ -559,16 +562,20 @@ class Mumsys_FileSystem
             case 0:
                 $txt = 'Bytes';
                 break;
-            case ($n === 1):
+
+            case ($n===1):
                 $txt = 'KB';
                 break;
-            case ($n === 2):
+
+            case ($n===2):
                 $txt = 'MB';
                 break;
-            case ($n === 3):
+
+            case ($n===3):
                 $txt = 'GB';
                 break;
-            case ($n === 4):
+
+            case ($n===4):
             default:
                 $txt = 'TB';
         }

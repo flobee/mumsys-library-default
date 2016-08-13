@@ -5,7 +5,7 @@
  * Mumsys_Request_Abstract test
  */
 class Mumsys_Request_AbstractTest
-    extends MumsysTestHelper
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Request_Abstract
@@ -16,6 +16,10 @@ class Mumsys_Request_AbstractTest
      * @var array
      */
     protected $_input;
+    /**
+     * @var array
+     */
+    protected $_options;
 
 
     /**
@@ -24,7 +28,7 @@ class Mumsys_Request_AbstractTest
      */
     protected function setUp()
     {
-        $options = array(
+        $this->_options = array(
             'programKey' => 'programTest',
             'controllerKey' => 'controllerTest',
             'actionKey' => 'actionTest'
@@ -37,7 +41,7 @@ class Mumsys_Request_AbstractTest
         $this->_input = $_GET;
         $_COOKIE = array('HIDDEN' => 'COOK');
 
-        $this->_object = new Mumsys_Request_Default($options);
+        $this->_object = new Mumsys_Request_Default($this->_options);
     }
 
 
@@ -51,7 +55,16 @@ class Mumsys_Request_AbstractTest
         $this->_object = null;
     }
 
-
+    /**
+     * @covers Mumsys_Request_Abstract::__construct
+     */
+    public function test_Construct()
+    {
+        $this->_object = new Mumsys_Request_Default($this->_options);
+        $this->assertEquals('programTest', $this->_object->getProgramKey());
+        $this->assertEquals('controllerTest', $this->_object->getControllerKey());
+        $this->assertEquals('actionTest', $this->_object->getActionKey());
+    }
     /**
      * @covers Mumsys_Request_Abstract::getProgramName
      * @covers Mumsys_Request_Abstract::setProgramName

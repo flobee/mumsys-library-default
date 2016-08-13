@@ -104,7 +104,7 @@ class Mumsys_Config
      *
      * Example: You want values from database -> configs -> a and c
      * <pre>
-     * $config = array(
+     * $structure = array(
      *  'database'=> array(
      *      'configs'=> array(
      *          'a'=> array('some props'),
@@ -126,7 +126,6 @@ class Mumsys_Config
         $result = false;
         $cfg = & $this->_config;
 
-
         foreach ( $depth as $value ) {
             if ( isset($cfg[$value]) ) {
                 $cfg = $cfg[$value];
@@ -145,6 +144,20 @@ class Mumsys_Config
 
 
         return $result;
+    }
+
+
+    /**
+     * Adds/ registers configuration parameters to the current state.
+     *
+     * @param array $config Configuration parameters to register
+     * @throws Mumsys_Config_Exception On errors or if a config already exists
+     */
+    public function add(array $config = array())
+    {
+        foreach ($config as $key => & $value) {
+            $this->register($key, $value);
+        }
     }
 
 

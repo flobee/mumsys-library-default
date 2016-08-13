@@ -18,7 +18,7 @@
 
 
 /**
- * Request class to get input parameters.
+ * Default request class to get input parameters $_GET, $POST, $_COOKIE.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -48,8 +48,6 @@ class Mumsys_Request_Default
 
     /**
      * Initialise the request object using _GET and _POST arrays.
-     *
-     * After init the global arrays _POST and _GET will be reset!
      *
      * @param array $options Optional initial options e.g.:
      * 'programKey','controllerKey', 'actionKey',

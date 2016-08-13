@@ -246,7 +246,6 @@ class Php_GlobalsTest
 
     /**
      * @covers Php_Globals::get
-     * @todo   Implement testGet().
      */
     public function testGet()
     {
@@ -283,6 +282,67 @@ class Php_GlobalsTest
         $this->assertEquals($expected6, $actual6);
         $this->assertEquals($expected7, $actual7);
         $this->assertEquals($expected8, $actual8);
+    }
+
+    /**
+     * @covers Php_Globals::getRemoteUser
+     * @runInSeparateProcess
+     */
+    public function testGetRemoteUser()
+    {
+        $list = array('LOGNAME', 'USER', 'REMOTE_USER', 'PHP_AUTH_USER');
+
+        foreach ( $list as $param ) {
+            $_SERVER[$param] = null;
+        }
+
+        $this->assertEquals('unknown', $this->_object->getRemoteUser());
+        $this->assertEquals('unknown', $this->_object->getRemoteUser()); // for 100% cc
+    }
+
+
+    /**
+     * @covers Php_Globals::getRemoteUser
+     * @runInSeparateProcess
+     */
+    public function testGetRemoteUserPHP_AUTH_USER()
+    {
+        $_SERVER['PHP_AUTH_USER'] = 'unittest';
+        $this->assertEquals('unittest', $this->_object->getRemoteUser());
+    }
+
+
+    /**
+     * @covers Php_Globals::getRemoteUser
+     * @runInSeparateProcess
+     */
+    public function testGetRemoteUserREMOTE_USER()
+    {
+        $_SERVER['REMOTE_USER'] = 'unittest';
+        $this->assertEquals('unittest', $this->_object->getRemoteUser());
+    }
+
+
+    /**
+     * @covers Php_Globals::getRemoteUser
+     * @runInSeparateProcess
+     */
+    public function testGetRemoteUserUSER()
+    {
+        $_SERVER['USER'] = 'unittest';
+        $this->assertEquals('unittest', $this->_object->getRemoteUser());
+    }
+
+
+    /**
+     * @covers Php_Globals::getRemoteUser
+     * @runInSeparateProcess
+     */
+    public function testGetRemoteUserLOGNAME()
+    {
+        $_SERVER['USER'] = null;
+        $_SERVER['LOGNAME'] = 'unittest';
+        $this->assertEquals('unittest', $this->_object->getRemoteUser());
     }
 
 }
