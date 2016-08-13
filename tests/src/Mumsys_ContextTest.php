@@ -84,10 +84,10 @@ class Mumsys_ContextTest
      */
     public function testGetSetSession()
     {
-        $session = new Mumsys_Session();
+        $session = new Mumsys_Session_Default();
         $this->_object->registerSession($session);
 
-        $this->assertInstanceOf('Mumsys_Session', $this->_object->getSession());
+        $this->assertInstanceOf('Mumsys_Session_Interface', $this->_object->getSession());
 
         $this->setExpectedException('Mumsys_Exception', '"Mumsys_Session_Interface" already set');
         $this->_object->registerSession($session);
