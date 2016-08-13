@@ -4,11 +4,11 @@ vendor/
 
 # Local configs
 config/autoload/*.local.php
+*/config/*.php
 
 # credentials.php
 tests/config/credentials.php
 tests/config/config4tests.php
-*/config/credentials.php
 
 
 # Binary gettext files
