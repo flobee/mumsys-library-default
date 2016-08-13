@@ -1,30 +1,22 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright Copyright (c) 2011 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2011 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys
- * @version     1.0.0
  * Created: 2011-04-11
- * @filesource
- * ----------------------------------------------------------------------------
  */
-/*}}}*/
 
 
 /**
- * Abstract class to extend mumsys with base methodes and features.
+ * Abstract class to extend mumsys classes with baseic methodes and features.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -63,7 +55,8 @@ abstract class Mumsys_Abstract
 
 
     /**
-     * Returns a list of class/versionID pairs which are loaded in this moment.
+     * Returns a list of class/versionID pairs which are loaded except
+     * exceptions and interfaces.
      *
      * @return array Returns a list of class/versionID pairs
      */
@@ -72,9 +65,9 @@ abstract class Mumsys_Abstract
         $list = Mumsys_Loader::loadedClassesGet();
         $versions = array();
 
-        foreach ($list as $class) {
-            if (!preg_match('/(exception|interface)/i', $class)) {
-                if (defined($class.'::VERSION')) {
+        foreach ( $list as $class ) {
+            if ( !preg_match('/(exception|interface)/i', $class) ) {
+                if ( defined($class . '::VERSION') ) {
                     $versions[$class] = $class::VERSION;
                 } else {
                     $versions[$class] = '- unknown version -';
@@ -85,17 +78,17 @@ abstract class Mumsys_Abstract
         return $versions;
     }
 
-    // getter/setter checks
 
     /**
      * Check given key to be a valid string.
      *
      * @param string $key Key to register
-     * @throws Mumsys_Registry_Exception Throws exception if key is not a string
+     * 
+     * @throws Mumsys_Registry_Exception If key is not a string
      */
     protected static function _checkKey( $key )
     {
-        if (!is_string($key)) {
+        if ( !is_string($key) ) {
             $message = 'Invalid registry key. It\'s not a string';
             throw new Mumsys_Exception($message);
         }
