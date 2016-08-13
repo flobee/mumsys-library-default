@@ -16,7 +16,7 @@ class Mumsys_Db_Driver_Testdummy
 /**
  * Mumsys_Db_Driver_Abstract Test
  */
-class Mumsys_Db_Driver_AbstractTest extends MumsysTestHelper
+class Mumsys_Db_Driver_AbstractTest extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Db_Driver_Testdummy

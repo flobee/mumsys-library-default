@@ -5,7 +5,7 @@
  * Mumsys_I18n_None Test
  */
 class Mumsys_I18n_NoneTest
-    extends MumsysTestHelper
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_I18n_None
@@ -106,7 +106,7 @@ class Mumsys_I18n_NoneTest
 
         $possible = $this->_object->getVersions();
 
-        foreach ($this->_versions as $must => $value) {
+        foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }

@@ -1,9 +1,11 @@
 <?php
 
+
 /**
  * Mumsys_I18n_Default Test
  */
-class Mumsys_I18n_DefaultTest extends MumsysTestHelper
+class Mumsys_I18n_DefaultTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_I18n_Default
@@ -90,6 +92,7 @@ class Mumsys_I18n_DefaultTest extends MumsysTestHelper
         $this->assertEquals($plural, $actual2);
     }
 
+
     /**
      * @covers Mumsys_I18n_Abstract::getVersion
      * @covers Mumsys_I18n_Abstract::getVersionID
@@ -103,7 +106,7 @@ class Mumsys_I18n_DefaultTest extends MumsysTestHelper
 
         $possible = $this->_object->getVersions();
 
-        foreach ($this->_versions as $must => $value) {
+        foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }

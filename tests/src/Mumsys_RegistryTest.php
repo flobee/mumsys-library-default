@@ -1,9 +1,11 @@
 <?php
 
+
 /**
- * Mumsys_RegistryTest
+ * Mumsys_Registry Test
  */
-class Mumsys_RegistryTest extends MumsysTestHelper
+class Mumsys_RegistryTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Registry
@@ -11,6 +13,7 @@ class Mumsys_RegistryTest extends MumsysTestHelper
     protected $_object;
     protected $_version;
     protected $_key;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -49,7 +52,7 @@ class Mumsys_RegistryTest extends MumsysTestHelper
         $this->assertEquals('new value', $actual);
 
         // invalid key exception
-        $this->setExpectedException('Mumsys_Exception','Invalid registry key. It\'s not a string');
+        $this->setExpectedException('Mumsys_Exception', 'Invalid registry key. It\'s not a string');
         Mumsys_Registry::replace(new stdClass, 'new value');
     }
 
@@ -66,7 +69,7 @@ class Mumsys_RegistryTest extends MumsysTestHelper
         $this->assertEquals('new value', $actual);
 
         // invalid key exception
-        $this->setExpectedException('Mumsys_Registry_Exception','Registry key "unittest" exists');
+        $this->setExpectedException('Mumsys_Registry_Exception', 'Registry key "unittest" exists');
         Mumsys_Registry::register($this->_key, 'new value');
     }
 
@@ -77,8 +80,7 @@ class Mumsys_RegistryTest extends MumsysTestHelper
     public function testSet()
     {
         $this->setExpectedException(
-            'Mumsys_Registry_Exception',
-            'Unknown meaning for set(). Use register() or replace() methodes'
+            'Mumsys_Registry_Exception', 'Unknown meaning for set(). Use register() or replace() methodes'
         );
         Mumsys_Registry::set($this->_key, 'new value');
     }
@@ -99,6 +101,7 @@ class Mumsys_RegistryTest extends MumsysTestHelper
         $this->assertFalse($actual2);
     }
 
+
     /**
      * @covers Mumsys_Registry::remove
      */
@@ -110,7 +113,6 @@ class Mumsys_RegistryTest extends MumsysTestHelper
         $this->assertTrue($actual1);
         $this->assertFalse($actual2);
     }
-
 
     // test abstracts
 
@@ -140,7 +142,7 @@ class Mumsys_RegistryTest extends MumsysTestHelper
     {
         $possible = Mumsys_Registry::getVersions();
         // echo '<pre>'; print_r($possible);
-        foreach ($this->_versions as $must => $value) {
+        foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }

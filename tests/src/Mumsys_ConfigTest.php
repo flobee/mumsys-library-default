@@ -1,9 +1,11 @@
 <?php
 
+
 /**
  * Test class for Mumsys_Config.
  */
-class Mumsys_ConfigTest extends MumsysTestHelper
+class Mumsys_ConfigTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Config
@@ -11,6 +13,7 @@ class Mumsys_ConfigTest extends MumsysTestHelper
     protected $_object;
     protected $_config;
     protected $_context;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -70,8 +73,9 @@ class Mumsys_ConfigTest extends MumsysTestHelper
         $expected = $this->_object->getAll();
         $testvalues = MumsysTestHelper::getConfigs();
         $this->assertEquals($expected, $testvalues);
-        $this->assertTrue( is_array($expected) );
+        $this->assertTrue(is_array($expected));
     }
+
 
     public function testGetSubValues()
     {
@@ -81,6 +85,7 @@ class Mumsys_ConfigTest extends MumsysTestHelper
         $this->assertEquals($expected1, $actual1);
         $this->assertEquals(false, $this->_object->getSubValues(array('noConfig'), array(), false));
     }
+
 
     public function testRegister()
     {
@@ -92,24 +97,25 @@ class Mumsys_ConfigTest extends MumsysTestHelper
         $this->assertEquals($expected1, $testvalue1);
 
         $this->setExpectedException(
-            'Mumsys_Config_Exception',
-            'Config key "testkey" exists'
+            'Mumsys_Config_Exception', 'Config key "testkey" exists'
         );
         $this->_object->register('testkey', new stdClass());
     }
 
+
     public function testAdd()
     {
         $config = array('flo' => 'bee');
-        $this->_object->register('flo','bee');
+        $this->_object->register('flo', 'bee');
 
         $this->assertEquals($config, $this->_object->get('flo'));
 
         $this->setExpectedException(
             'Mumsys_Config_Exception', 'Config key "flo" exists'
         );
-        $this->_object->register('flo','bee');
+        $this->_object->register('flo', 'bee');
     }
+
 
     public function testReplace()
     {
@@ -118,6 +124,7 @@ class Mumsys_ConfigTest extends MumsysTestHelper
 
         $this->assertEquals(array('testkey2' => 'testvalue3'), $this->_object->get('testkey2'));
     }
+
 
     public function testLoad()
     {

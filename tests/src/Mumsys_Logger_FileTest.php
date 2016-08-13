@@ -1,15 +1,17 @@
 <?php
 
+
 /**
  * Test class for Mumsys_Logger_File
  */
-class Mumsys_Logger_FileTest extends MumsysTestHelper
+class Mumsys_Logger_FileTest
+    extends Mumsys_Unittest_Testcase
 {
-
     /**
      * @var Mumsys_Logger
      */
     protected $_object;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -17,7 +19,7 @@ class Mumsys_Logger_FileTest extends MumsysTestHelper
      */
     protected function setUp()
     {
-        $this->_testsDir = realpath(dirname(__FILE__) .'/../');
+        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
 
         $this->_logfile = $this->_testsDir . '/tmp/Mumsys_LoggerTest_defaultfile.test';
         $this->_opts = $opts = array(
@@ -58,6 +60,7 @@ class Mumsys_Logger_FileTest extends MumsysTestHelper
         $object = new Mumsys_Logger_File($opts);
     }
 
+
     // for 100% code coverage
     public function test__constructor2()
     {
@@ -71,7 +74,8 @@ class Mumsys_Logger_FileTest extends MumsysTestHelper
         $_SERVER['REMOTE_USER'] = 'flobee';
         $object = new Mumsys_Logger_File($opts);
 
-        unset($opts['username'], $_SERVER['REMOTE_USER'], $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'], $_SERVER['LOGNAME']);
+        unset($opts['username'], $_SERVER['REMOTE_USER'], $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'],
+            $_SERVER['LOGNAME']);
         $object = new Mumsys_Logger_File($opts);
 
         $_SERVER['LOGNAME'] = 'God';
@@ -156,6 +160,7 @@ class Mumsys_Logger_FileTest extends MumsysTestHelper
         $this->assertEquals($exp, trim($this->_object->log(array('long log'), 7)));
     }
 
+
     public function testLogException()
     {
         $this->setExpectedException('PHPUnit_Framework_Error_Notice');
@@ -181,7 +186,7 @@ class Mumsys_Logger_FileTest extends MumsysTestHelper
 
         // as array input
         ob_start();
-        $object->log(array('test1','test2'), 7);
+        $object->log(array('test1', 'test2'), 7);
         $x3 = ob_get_clean();
         $y3 = 'x ff_0: array("0" => "test1");' . "\n"
             . 'x ff_0: array("1" => "test2");';
@@ -205,9 +210,8 @@ class Mumsys_Logger_FileTest extends MumsysTestHelper
     public function testWrite()
     {
         $this->setExpectedException('Mumsys_File_Exception',
-            'Can not write to file: "'.$this->_testsDir . '/tmp/Mumsys_LoggerTest_defaultfile.test". IsOpen: "Yes", Is writeable: "Yes".');
+            'Can not write to file: "' . $this->_testsDir . '/tmp/Mumsys_LoggerTest_defaultfile.test". IsOpen: "Yes", Is writeable: "Yes".');
         $this->_object->write($this);
     }
-
 
 }
