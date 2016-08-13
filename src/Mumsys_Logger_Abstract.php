@@ -1,6 +1,5 @@
 <?php
 
-
 /* {{{ */
 /**
  * Mumsys_Logger_Abstract
@@ -224,62 +223,52 @@ abstract class Mumsys_Logger_Abstract
      */
     public function __construct( array $options = array(), Mumsys_Logger_Writer_Interface $writer = null )
     {
-        if (empty($options['username'])) {
-            if (isset($_SERVER['PHP_AUTH_USER'])) {
-                $this->username = (string)$_SERVER['PHP_AUTH_USER'];
-            } else if (isset($_SERVER['REMOTE_USER'])) {
-                $this->username = (string)$_SERVER['REMOTE_USER'];
-            } else if (isset($_SERVER['USER'])) {
-                $this->username = (string)$_SERVER['USER'];
-            } else if (isset($_SERVER['LOGNAME'])) {
-                $this->username = (string)$_SERVER['LOGNAME'];
-            } else {
-                $this->username = 'unknown';
-            }
+        if ( empty($options['username']) ) {
+            $this->username = Php_Globals::getRemoteUser();
         } else {
             $this->username = $options['username'];
         }
 
-        if (isset($options['lineFormat'])) {
-            $this->_logFormat = (string)$options['lineFormat'];
-            if (empty($this->_logFormat)) {
+        if ( isset($options['lineFormat']) ) {
+            $this->_logFormat = (string) $options['lineFormat'];
+            if ( empty($this->_logFormat) ) {
                 throw new Mumsys_Logger_Exception('Log format empty');
             }
         }
 
-        if (isset($options['timeFormat'])) {
-            $this->_timeFormat = (string)$options['timeFormat'];
+        if ( isset($options['timeFormat']) ) {
+            $this->_timeFormat = (string) $options['timeFormat'];
         }
 
-        if (isset($options['logLevel'])) {
+        if ( isset($options['logLevel']) ) {
             $this->_logLevel = $options['logLevel'];
         }
 
-        if (isset($options['msglogLevel'])) {
+        if ( isset($options['msglogLevel']) ) {
             $this->_msglogLevel = $options['msglogLevel'];
         }
 
-        if (isset($options['msgLineFormat'])) {
-            $this->_logFormatMsg = (string)$options['msgLineFormat'];
+        if ( isset($options['msgLineFormat']) ) {
+            $this->_logFormatMsg = (string) $options['msgLineFormat'];
         }
 
-        if (isset($options['msgEcho'])) {
+        if ( isset($options['msgEcho']) ) {
             $this->_msgEcho = $options['msgEcho'];
         }
 
-        if (isset($options['msgReturn'])) {
+        if ( isset($options['msgReturn']) ) {
             $this->_msgReturn = $options['msgReturn'];
         }
 
-        if (isset($options['debug'])) {
+        if ( isset($options['debug']) ) {
             $this->_debug = $options['debug'];
         }
 
-        if (isset($options['verbose'])) {
+        if ( isset($options['verbose']) ) {
             $this->_verbose = $options['verbose'];
         }
 
-        if (isset($options['lf'])) {
+        if ( isset($options['lf']) ) {
             $this->_lf = $options['lf'];
         }
 
@@ -298,7 +287,7 @@ abstract class Mumsys_Logger_Abstract
      */
     private function _checkLevel( $level )
     {
-        if (isset($this->_loglevels[$level])) {
+        if ( isset($this->_loglevels[$level]) ) {
             return true;
         }
 
@@ -314,11 +303,11 @@ abstract class Mumsys_Logger_Abstract
      */
     public function setLoglevel( $level )
     {
-        if ($this->_checkLevel($level) === false) {
+        if ( $this->_checkLevel($level) === false ) {
             throw new Mumsys_Logger_Exception('Level unknown "' . $level . '" to set the log level');
         }
 
-        $this->_logLevel = (int)$level;
+        $this->_logLevel = (int) $level;
     }
 
 
@@ -330,11 +319,11 @@ abstract class Mumsys_Logger_Abstract
      */
     public function setMessageLoglevel( $level )
     {
-        if ($this->_checkLevel($level) === false) {
+        if ( $this->_checkLevel($level) === false ) {
             throw new Mumsys_Logger_Exception('Level unknown "' . $level . '" to set the message log level');
         }
 
-        $this->_msglogLevel = (int)$level;
+        $this->_msglogLevel = (int) $level;
     }
 
 
@@ -361,17 +350,16 @@ abstract class Mumsys_Logger_Abstract
         {
             $isArray = false;
             $datesting = '';
-            if (!empty($this->_timeFormat)) {
+            if ( !empty($this->_timeFormat) ) {
                 $datesting = date($this->_timeFormat, time());
             }
 
             $levelName = $this->_loglevels[$level];
 
-            if (($isArray = is_array($input)))
-            {
+            if ( ($isArray = is_array($input) ) ) {
                 $_cnt = 0;
                 $message = '';
-                while (list($key, $val) = each($input))
+                while ( list($key, $val) = each($input) )
                 {
                     $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val . '");';
                     $message .= sprintf(
@@ -380,29 +368,24 @@ abstract class Mumsys_Logger_Abstract
                 }
 
                 $_cnt++;
-            } else
-            {
+            } else {
                 $message = sprintf($this->_logFormat, $datesting, $this->_username, $levelName, $level, $input);
             }
 
             $message .= $this->_lf;
 
-            if ($level <= $this->_logLevel || ($this->_verbose || $this->_debug))
-            {
+            if ( $level <= $this->_logLevel || ($this->_verbose || $this->_debug) ) {
                 $this->write($message);
             }
 
-            if ($level <= $this->_msglogLevel || ($this->_verbose || $this->_debug))
-            {
-                if ($this->_msgEcho)
-                {
-                    if ($this->_logFormatMsg && $this->_logFormatMsg != $this->_logFormat) {
-                        if ($isArray)
-                        {
+            if ( $level <= $this->_msglogLevel || ($this->_verbose || $this->_debug) ) {
+                if ( $this->_msgEcho ) {
+                    if ( $this->_logFormatMsg && $this->_logFormatMsg != $this->_logFormat ) {
+                        if ( $isArray ) {
                             $msgOut = '';
                             $_cnt = 0;
                             reset($input);
-                            while (list($key, $val) = each($input))
+                            while ( list($key, $val) = each($input) )
                             {
                                 $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val . '");';
                                 $msgOut .= sprintf(
@@ -412,8 +395,7 @@ abstract class Mumsys_Logger_Abstract
                             }
 
                             $_cnt++;
-                        } else
-                        {
+                        } else {
                             $msgOut = sprintf(
                                 $this->_logFormatMsg, $datesting, $this->_username, $levelName, $level,
                                 $input . $this->_lf
@@ -425,12 +407,13 @@ abstract class Mumsys_Logger_Abstract
                     echo $msgOut;
                 }
 
-                if ($this->_msgReturn) {
+                if ( $this->_msgReturn ) {
                     return $message;
                 }
             }
 
-        } catch (Exception $e) {
+        }
+        catch ( Exception $e ) {
             throw $e;
         }
 
@@ -448,7 +431,8 @@ abstract class Mumsys_Logger_Abstract
     {
         try {
             $this->_writer->write($content);
-        } catch (Exception $e) {
+        }
+        catch ( Exception $e ) {
             throw $e;
         }
 
@@ -464,7 +448,7 @@ abstract class Mumsys_Logger_Abstract
      */
     public function levelNameGet( $level )
     {
-        if (!isset($this->_loglevels[$level])) {
+        if ( !isset($this->_loglevels[$level]) ) {
             return 'unknown';
         }
         return $this->_loglevels[$level];
