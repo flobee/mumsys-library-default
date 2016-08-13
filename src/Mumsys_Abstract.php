@@ -3,11 +3,11 @@
 /**
  * Mumsys_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2011 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys
@@ -25,7 +25,7 @@
 abstract class Mumsys_Abstract
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '3.0.2';
 
@@ -50,6 +50,7 @@ abstract class Mumsys_Abstract
     {
         $class = get_called_class();
         $version = '%1$s %2$s';
+
         return sprintf($version, $class, $class::VERSION);
     }
 
@@ -83,7 +84,7 @@ abstract class Mumsys_Abstract
      * Check given key to be a valid string.
      *
      * @param string $key Key to register
-     * 
+     *
      * @throws Mumsys_Registry_Exception If key is not a string
      */
     protected static function _checkKey( $key )
