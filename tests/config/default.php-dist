@@ -1,7 +1,9 @@
 <?php
 
-// config example for unit tests
+return array();
 
+
+// OLD config: 
 return array(
     'ME'			=> & $_SERVER['PHP_SELF'],
     // enable debug mode,
