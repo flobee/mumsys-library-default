@@ -64,7 +64,7 @@ class Mumsys_Db_Factory
         try
         {
             $types = explode(':', $options['type']);
-            $cnt = count($tps);
+            $cnt = count($types);
 
             if ($cnt != 2) {
                 throw new Mumsys_Db_Exception('Invalid Db driver. Can not create instance', 1);
