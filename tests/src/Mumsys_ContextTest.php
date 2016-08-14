@@ -140,7 +140,7 @@ class Mumsys_ContextTest
      * @covers Mumsys_Context::getTranslation
      * @covers Mumsys_Context::registerTranslation
      */
-    public function testGetTranslation()
+    public function testGetSetTranslation()
     {
         $expected1 = new Mumsys_I18n_Default('de');
         $this->_object->registerTranslation($expected1);

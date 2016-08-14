@@ -211,6 +211,24 @@ class Mumsys_Context
     }
 
     /**
+     * Alias method for getDisplay.
+     * @link getDisplay()
+     */
+    public function getControllerFrontend()
+    {
+        return $this->_get('Mumsys_Mvc_Display_Control_Interface');
+    }
+
+    /**
+     * Alias method for registerDisplay.
+     * @see registerDisplay()
+     */
+    public function registerControllerFrontend( Mumsys_Mvc_Display_Control_Interface $controller )
+    {
+        $this->_register('Mumsys_Mvc_Display_Control_Interface', $controller);
+    }
+
+    /**
      * Returns the translation object.
      *
      * @return Mumsys_I18n_Interface Returns display object
@@ -257,21 +275,6 @@ class Mumsys_Context
         $this->_register('Mumsys_Logger_Interface', $logger);
     }
 
-    /**
-     * @see getDisplay()
-     */
-    public function getControllerFrontend()
-    {
-        return $this->_get('Mumsys_Mvc_Display_Control_Interface');
-    }
-
-    /**
-     * @see registerDisplay()
-     */
-    public function registerControllerFrontend( Mumsys_Mvc_Display_Control_Interface $controller )
-    {
-        $this->_register('Mumsys_Mvc_Display_Control_Interface', $controller);
-    }
 
     /**
      * Returns a generic, already registered, interface/ object.

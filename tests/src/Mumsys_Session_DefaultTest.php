@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Mumsys_Session_Default Test
  */
@@ -17,13 +18,6 @@ class Mumsys_Session_DefaultTest
      */
     protected $_version;
 
-    /**
-     * needed to test the session.
-     */
-    public function __construct()
-    {
-        ob_start();
-    }
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -34,6 +28,7 @@ class Mumsys_Session_DefaultTest
         $this->_version = '1.1.0';
         $this->_object = new Mumsys_Session_Default();
     }
+
 
     /**
      * Tears down the fixture, for example, closes a network connection.
@@ -46,9 +41,11 @@ class Mumsys_Session_DefaultTest
         session_write_close();
     }
 
+
     /**
      * Test nearly all methodes because of the problematic of php sessions
      * itselves to test them.
+     * @runInSeparateProcess
      */
     public function testAllMethodes()
     {
