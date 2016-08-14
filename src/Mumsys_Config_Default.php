@@ -30,6 +30,6 @@ class Mumsys_Config_Default
     /**
      * Version ID information
      */
-    const VERSION = '2.0.0';
+    const VERSION = '2.1.0';
 
 }

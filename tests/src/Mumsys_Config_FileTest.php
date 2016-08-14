@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Mumsys_Config_File Test
  */
@@ -10,6 +11,12 @@ class Mumsys_Config_FileTest
      * @var Mumsys_Config_File
      */
     protected $_object;
+
+    /**
+     * Version ID
+     * @var string
+     */
+    protected $_version = '2.1.0';
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -26,6 +33,7 @@ class Mumsys_Config_FileTest
         $this->_object = new Mumsys_Config_File($this->_context, $this->_configs, $this->_paths);
     }
 
+
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
@@ -35,6 +43,7 @@ class Mumsys_Config_FileTest
         $this->_object = null;
     }
 
+
     /**
      * For code coverage
      * @covers Mumsys_Config_File::__construct
@@ -43,6 +52,7 @@ class Mumsys_Config_FileTest
     {
         $this->_object = new Mumsys_Config_File($this->_context, $this->_configs, $this->_paths);
     }
+
 
     /**
      * @covers Mumsys_Config_File::get
@@ -59,7 +69,7 @@ class Mumsys_Config_FileTest
         $actual4 = $this->_object->get(array('credentials', 'database', 'host'), false);
         $actual5 = $this->_object->get('database/mumsys/config/item/search', false);
         $expected1 = 'test value';
-        $expected2 = MumsysTestHelper::getConfig()->get('credentials/database/host' , 0);
+        $expected2 = MumsysTestHelper::getConfig()->get('credentials/database/host', 0);
 
         $this->assertEquals($expected1, $actual1);
         $this->assertEquals($expected2, $actual2);
@@ -68,6 +78,7 @@ class Mumsys_Config_FileTest
         $this->assertEquals('SELECT * FROM mumsys_config', $actual5);
     }
 
+
     /**
      * @covers Mumsys_Config_File::getAll
      */
@@ -75,6 +86,7 @@ class Mumsys_Config_FileTest
     {
         $this->assertEquals($this->_configs, $this->_object->getAll());
     }
+
 
     /**
      * @covers Mumsys_Config_File::replace
@@ -101,6 +113,7 @@ class Mumsys_Config_FileTest
         $this->assertEquals(array(), $actual4);
     }
 
+
     /**
      * @covers Mumsys_Config_File::register
      */
@@ -121,6 +134,19 @@ class Mumsys_Config_FileTest
         $this->_object->register('tests/somevalues', array());
     }
 
+
+    /**
+     * @covers Mumsys_Config_File::addPath
+     */
+    public function testAddpath()
+    {
+        $this->_object->addPath(__DIR__ . '/../config');
+
+        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(Path not found: "(.*)")/i');
+        $this->_object->addPath(__DIR__ . '/config');
+    }
+
+
     /**
      * @covers Mumsys_Config_File::load
      */
@@ -128,6 +154,14 @@ class Mumsys_Config_FileTest
     {
         $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(exit in: Mumsys_Config)/i');
         $this->_object->load();
+    }
+
+    /**
+     * Checks current version
+     */
+    public function testVersionID()
+    {
+        $this->assertEquals($this->_version, Mumsys_Config_File::VERSION);
     }
 
 }
