@@ -959,26 +959,4 @@ class Php
         }
     }
 
-
-    /**
-     * Returns the amount of memory allocated to PHP
-     *
-     * if the operation system is Windows XP the tasklist will be used to fetch
-     * the usage
-     *
-     * @todo show error "not checkable"
-     *
-     * @return integer Returns the amount of memory, in bytes, that's currently
-     * being allocated to your PHP script.
-     */
-    public static function memory_get_usage()
-    {
-        $r = false;
-        if ( function_exists('memory_get_usage') ) {
-            $r = memory_get_usage();
-        }
-
-        return $r;
-    }
-
 }

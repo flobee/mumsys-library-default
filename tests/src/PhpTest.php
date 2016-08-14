@@ -518,25 +518,6 @@ class PhpTest extends Mumsys_Unittest_Testcase
     }
 
 
-    public function test_memory_get_usage()
-    {
-        $memDef = 0;
-        $memPhp = 1;
-        if (function_exists('memory_get_usage')) {
-            $memPhp = Php::memory_get_usage();
-            $memDef = memory_get_usage();
-        }
-
-        $diffBytes = $memPhp - $memDef;
-        if ( $diffBytes ) {
-            // echo ($memDef/100)/64 .">". $diffBytes;
-            $this->assertTrue( (($memDef/100)/64 > $diffBytes) );// 0.015625% ~ 1.3 KB
-        } else {
-            $this->assertEquals($memDef, $memPhp);
-        }
-    }
-
-
     public function test__callStatic()
     {
         // PHP >= 5.3.0 !!
