@@ -106,14 +106,14 @@ class Mumsys_ConfigTest
     public function testAdd()
     {
         $config = array('flo' => 'bee');
-        $this->_object->register('flo', 'bee');
+        $this->_object->add($config);
 
         $this->assertEquals($config, $this->_object->get('flo'));
 
         $this->setExpectedException(
             'Mumsys_Config_Exception', 'Config key "flo" exists'
         );
-        $this->_object->register('flo', 'bee');
+        $this->_object->add($config);
     }
 
 

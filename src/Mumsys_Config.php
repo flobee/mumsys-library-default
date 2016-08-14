@@ -153,9 +153,9 @@ class Mumsys_Config
      * @param array $config Configuration parameters to register
      * @throws Mumsys_Config_Exception On errors or if a config already exists
      */
-    public function add(array $config = array())
+    public function add( array $config = array() )
     {
-        foreach ($config as $key => & $value) {
+        foreach ( $config as $key => & $value ) {
             $this->register($key, $value);
         }
     }
