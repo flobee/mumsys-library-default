@@ -32,10 +32,10 @@ class Mumsys_LoaderTest
 
     public function testLoad()
     {
-        $o2 = $this->object->load('Unittest');
+        $o2 = $this->object->load('Php');
         $o3 = $this->object->load('Mumsys_Timer');
 
-        $this->assertInstanceof('unittest', $o2);
+        $this->assertInstanceof('Php', $o2);
         $this->assertInstanceof('Mumsys_Timer', $o3);
     }
 
