@@ -45,25 +45,25 @@ class Mumsys_Context
     /**
      * Returns the config object.
      *
-     * @return Mumsys_Config
+     * @return Mumsys_Config_Interface
      *
      * @throws Mumsys_Exception if config was not set
      */
     public function getConfig()
     {
-        return $this->_get('Mumsys_Config');
+        return $this->_get('Mumsys_Config_Interface');
     }
 
     /**
      * Register the default config object.
      *
-     * @param Mumsys_Config $config
+     * @param Mumsys_Config_Interface $config
      *
      * @throws Mumsys_Exception if config was already set
      */
-    public function registerConfig( Mumsys_Config $config )
+    public function registerConfig( Mumsys_Config_Interface $config )
     {
-        $this->_register('Mumsys_Config', $config);
+        $this->_register('Mumsys_Config_Interface', $config);
     }
 
     /**

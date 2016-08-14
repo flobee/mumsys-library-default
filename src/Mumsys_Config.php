@@ -26,6 +26,7 @@
  */
 class Mumsys_Config
     extends Mumsys_Abstract
+    implements Mumsys_Config_Interface
 {
     /**
      * Version ID information
@@ -52,9 +53,9 @@ class Mumsys_Config
      * @param array $config Config parameter to be set
      * @throws Mumsys_Config_Exception
      */
-    public function __construct( Mumsys_Context $context, array $config = array() )
+    public function __construct( Mumsys_Context $context, array $config = array(), array $none=null)
     {
-        $this->_context = $context;
+        //$this->_context = $context;
         $this->_config = $config;
     }
 

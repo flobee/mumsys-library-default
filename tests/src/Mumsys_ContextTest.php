@@ -44,7 +44,7 @@ class Mumsys_ContextTest
      */
     public function test_get()
     {
-        $this->setExpectedException('Mumsys_Exception', '"Mumsys_Config" not set');
+        $this->setExpectedException('Mumsys_Exception', '"Mumsys_Config_Interface" not set');
         $this->_object->getConfig();
     }
 
@@ -58,7 +58,7 @@ class Mumsys_ContextTest
         $config = new Mumsys_Config($this->_object, array('x' => 'y'));
         $this->_object->registerConfig($config);
 
-        $this->assertInstanceOf('Mumsys_Config', $this->_object->getConfig());
+        $this->assertInstanceOf('Mumsys_Config_Interface', $this->_object->getConfig());
     }
 
 

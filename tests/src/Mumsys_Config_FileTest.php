@@ -69,7 +69,7 @@ class Mumsys_Config_FileTest
         $actual4 = $this->_object->get(array('credentials', 'database', 'host'), false);
         $actual5 = $this->_object->get('database/mumsys/config/item/search', false);
         $expected1 = 'test value';
-        $expected2 = MumsysTestHelper::getConfig()->get('credentials/database/host', 0);
+        $expected2 = MumsysTestHelper::getContext()->getConfig()->get('credentials/database/host', 0);
 
         $this->assertEquals($expected1, $actual1);
         $this->assertEquals($expected2, $actual2);
