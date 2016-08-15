@@ -154,7 +154,7 @@ class Mumsys_Variable_Manager_Default
     const MINMAX_TYPE_ERROR = 'MINMAX_TYPE_ERROR';
 
     /**
-     * List of key/initialized item pairs.
+     * List of key/initialized item object pairs.
      * @var array
      */
     private $_items;
