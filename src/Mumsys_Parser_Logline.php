@@ -49,7 +49,7 @@
 class Mumsys_Parser_Logline
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '1.1.1';
 
