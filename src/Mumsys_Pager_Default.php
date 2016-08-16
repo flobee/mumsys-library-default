@@ -219,7 +219,7 @@ class Mumsys_Pager_Default
      * List of messages to display and to be translated
      * @var array
      */
-    private $_messageTemplates = array(
+    private $_templates = array(
         self::PAGER_PAGEFIRST => '&laquo;&laquo;&laquo;',
         self::PAGER_PAGENEXT => '&raquo;',
         self::PAGER_PAGEPREV => '&laquo;',
@@ -391,13 +391,13 @@ class Mumsys_Pager_Default
 
         if ( $pagestart <= 0 ) {
             // first page (<<<)
-            $this->pageFirst = $this->_messageTemplates[self::PAGER_PAGEFIRST];
+            $this->pageFirst = $this->_templates[self::PAGER_PAGEFIRST];
             $html .= '[ ';
             $html .= $this->pageFirst;
-            $html .= $this->_messageTemplates[self::PAGER_SLIDERDELIMITER];
+            $html .= $this->_templates[self::PAGER_SLIDERDELIMITER];
 
             // prev page
-            $this->_pagePrev = $this->_messageTemplates[self::PAGER_PAGEPREV];
+            $this->_pagePrev = $this->_templates[self::PAGER_PAGEPREV];
             $html .= $this->_pagePrev;
             $html .= ' | ';
         } else {
@@ -405,10 +405,10 @@ class Mumsys_Pager_Default
             $html .= '[ ';
             $this->_pageFirst = '<a href="' . $basiclink . '&amp;'
                 . $pagestartVarname . '=0">'
-                . $this->_messageTemplates[self::PAGER_PAGEFIRST]
+                . $this->_templates[self::PAGER_PAGEFIRST]
                 . '</a>';
             $html .= $this->_pageFirst;
-            $html .= $this->_messageTemplates[self::PAGER_SLIDERDELIMITER];
+            $html .= $this->_templates[self::PAGER_SLIDERDELIMITER];
 
             // prev page
             $ps = $pagestart - $limit;
@@ -416,9 +416,9 @@ class Mumsys_Pager_Default
                 $ps = 0;
             }
             $this->_pagePrev = '<a href="' . $basiclink . '&amp;'
-                . $pagestartVarname . '=' . $ps . '">' . $this->_messageTemplates[self::PAGER_PAGEPREV] . '</a>';
+                . $pagestartVarname . '=' . $ps . '">' . $this->_templates[self::PAGER_PAGEPREV] . '</a>';
             $html .= $this->_pagePrev;
-            $html .= $this->_messageTemplates[self::PAGER_SLIDERDELIMITER];
+            $html .= $this->_templates[self::PAGER_SLIDERDELIMITER];
         }
 
         if ( $showPageNumbers ) {
@@ -427,10 +427,10 @@ class Mumsys_Pager_Default
                 if ( $dynamic && $cnt > $steps * 2 ) {
                     if ( $pagestart <= 0 || $limit * $i <= $cntitems ) {
                         if ( $selected == $i ) {
-                            $slider .= $this->_messageTemplates[self::PAGER_HIGHLIGHTLEFT] . '<strong>'
+                            $slider .= $this->_templates[self::PAGER_HIGHLIGHTLEFT] . '<strong>'
                                 . $x . '</strong>'
-                                . $this->_messageTemplates[self::PAGER_HIGHLIGHTRIGHT]
-                                . $this->_messageTemplates[self::PAGER_SLIDERDELIMITER];
+                                . $this->_templates[self::PAGER_HIGHLIGHTRIGHT]
+                                . $this->_templates[self::PAGER_SLIDERDELIMITER];
                         } else {
                             // zeige 10 ($steps) vor und 10 ($steps) nach dem
                             // aktuellen eintrag,
@@ -440,7 +440,7 @@ class Mumsys_Pager_Default
                                     ($limit * $i), $x
                                 );
 
-                                $slider .= $this->_messageTemplates[self::PAGER_SLIDERDELIMITER];
+                                $slider .= $this->_templates[self::PAGER_SLIDERDELIMITER];
                             }
                         }
                         $x++;
@@ -449,10 +449,10 @@ class Mumsys_Pager_Default
                     if ( $pagestart <= 0 || $limit * $i <= $cntitems ) {
                         // highlight current
                         if ( $pagestart / $limit == $i ) {
-                            $slider .= $this->_messageTemplates[self::PAGER_HIGHLIGHTLEFT]
+                            $slider .= $this->_templates[self::PAGER_HIGHLIGHTLEFT]
                                 . '<strong>' . $x . '</strong>'
-                                . $this->_messageTemplates[self::PAGER_HIGHLIGHTRIGHT]
-                                . $this->_messageTemplates[self::PAGER_SLIDERDELIMITER];
+                                . $this->_templates[self::PAGER_HIGHLIGHTRIGHT]
+                                . $this->_templates[self::PAGER_SLIDERDELIMITER];
                         } else {
                             $ps = $limit * $i;
                             if ( $limit * $i > $cntitems ) {
@@ -461,7 +461,7 @@ class Mumsys_Pager_Default
                             $slider .= sprintf(
                                 '<a href="%1$s&amp;%2$s=%3$s">%4$s</a>', $basiclink, $pagestartVarname, $ps, $x
                             );
-                            $slider .= $this->_messageTemplates[self::PAGER_SLIDERDELIMITER];
+                            $slider .= $this->_templates[self::PAGER_SLIDERDELIMITER];
                         }
                         $x++;
                     }
@@ -474,26 +474,26 @@ class Mumsys_Pager_Default
 
         if ( ($pagestart + $limit) >= $cntitems ) {
             // next page
-            $this->_pageNext = '' . $this->_messageTemplates[self::PAGER_PAGENEXT];
+            $this->_pageNext = '' . $this->_templates[self::PAGER_PAGENEXT];
             $html .= $this->_pageNext;
             // last page (>>>)
-            $this->_pageLast = $this->_messageTemplates[self::PAGER_PAGELAST];
+            $this->_pageLast = $this->_templates[self::PAGER_PAGELAST];
         } else {
             // next page
             $this->_pageNext = sprintf(
                 ' <a href="%1$s&amp;%2$s=%3$s">%4$s</a>', $basiclink, $pagestartVarname, ($pagestart + $limit),
-                $this->_messageTemplates[self::PAGER_PAGENEXT]
+                $this->_templates[self::PAGER_PAGENEXT]
             );
             $html .= $this->_pageNext;
             // last page
             $this->_pageLast = sprintf(
                 '<a href="%1$s&amp;%2$s=%3$s">%4$s</a>', $basiclink, $pagestartVarname, ($cnt * $limit - $limit),
-                $this->_messageTemplates[self::PAGER_PAGELAST]
+                $this->_templates[self::PAGER_PAGELAST]
             );
         }
-        $html .= $this->_messageTemplates[self::PAGER_SLIDERDELIMITER];
+        $html .= $this->_templates[self::PAGER_SLIDERDELIMITER];
         $html .= $this->_pageLast;
-        $html .= $this->_messageTemplates[self::PAGER_SLIDERSUFFIX];
+        $html .= $this->_templates[self::PAGER_SLIDERSUFFIX];
 
 
         $html .= '</div>' . _NL;
@@ -503,10 +503,9 @@ class Mumsys_Pager_Default
             $html .= '' . _NL
                 . '<div class="' . $this->_cssClassName . ' summary">' . _NL;
             $this->_summary = sprintf(
-                '%1$s <b>%2$s</b>, %3$s<b>%4$s</b>, %5$s<b>%6$s</b>' . _NL,
-                $this->_messageTemplates[self::PAGER_RESULTS], $cntitems,
-                $this->_messageTemplates[self::PAGER_RESULTSPERPAGE], $limit,
-                $this->_messageTemplates[self::PAGER_RESULTPAGES], $cnt
+                '%1$s <b>%2$s</b>, %3$s<b>%4$s</b>, %5$s<b>%6$s</b>' . _NL, $this->_templates[self::PAGER_RESULTS],
+                $cntitems, $this->_templates[self::PAGER_RESULTSPERPAGE], $limit,
+                $this->_templates[self::PAGER_RESULTPAGES], $cnt
             );
             $html .= $this->_summary;
             $html .= '</div>' . _NL;
@@ -526,7 +525,7 @@ class Mumsys_Pager_Default
      */
     public function getMessageTemplates()
     {
-        return $this->_messageTemplates;
+        return $this->_templates;
     }
 
 
@@ -541,7 +540,7 @@ class Mumsys_Pager_Default
      */
     public function setMessageTemplates( array $templates )
     {
-        $this->_messageTemplates = $templates;
+        $this->_templates = $templates;
     }
 
 }
