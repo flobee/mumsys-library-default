@@ -221,6 +221,7 @@ class Mumsys_Variable_Manager_DefaultTest
         ini_set('display_errors', $b);
     }
 
+
     /**
      * @covers Mumsys_Variable_Manager_Default::validateIPv4
      */
@@ -242,6 +243,7 @@ class Mumsys_Variable_Manager_DefaultTest
         );
     }
 
+
     /**
      * @covers Mumsys_Variable_Manager_Default::validateIPv6
      */
@@ -262,6 +264,7 @@ class Mumsys_Variable_Manager_DefaultTest
             $item2->getErrorMessages()
         );
     }
+
 
     /**
      * @covers Mumsys_Variable_Manager_Default::isValid
@@ -375,4 +378,5 @@ class Mumsys_Variable_Manager_DefaultTest
     {
         $this->assertEquals($this->_version, Mumsys_Variable_Item_Abstract::VERSION);
     }
+
 }
