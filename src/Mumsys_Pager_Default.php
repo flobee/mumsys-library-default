@@ -22,13 +22,16 @@
  * Example:
  * <code>
  * $opts = array(
- *   'cntitems' => $cntitems,
- *   'pagestart' => $pagestart,
- *   'limit' => $limit,
- *   'basiclink' => $basiclink, // "http://myhomepage/cms/xyz.php?way=here"
- *   'pagestartVarname' => $pagestartVarname,
- *   'showPageNumbers' => $showPageNumbers,
- *   'showSummary' => $showSummary,
+ *  'cntitems' => 1123,
+ *  'pagestart' => 0,
+ *  'pagestartVarname' => 'page',
+ *  'limit' => 25,
+ *  'basiclink' => 'http://site/index.php?a=b&limit=15',
+ *  'showPageNumbers' => true,
+ *  'showSummary' => true,
+ *  'dynamic' => true,
+ *  'slidersteps' => 8,
+ *  'cssClassName' => 'pnnavi',
  * );
  * $oPager = new Mumsys_Pager($opts);
  * $html = $oPager->getHtml();
