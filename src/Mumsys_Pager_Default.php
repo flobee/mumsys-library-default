@@ -273,23 +273,30 @@ class Mumsys_Pager_Default
      */
     public function __construct( array $params = array() )
     {
-        if ( $params ) {
-            $defaults = array(
-                'cntitems', 'pagestart', 'pagestartVarname', 'limit',
-                'basiclink', 'showPageNumbers', 'showSummary', 'dynamic',
-                'slidersteps', 'cssClassName'
-            );
-            while ( list($key, $val) = each($params) ) {
-                if ( in_array($key, $defaults) ) {
-                    $this->{'_' . $key } = $val;
-                } else {
-                    $message = 'Invalid parameter "' . $key . '" found';
-                    throw new Mumsys_Pager_Exception($message);
+        try {
+            if ( $params ) {
+                $defaults = array(
+                    'cntitems', 'pagestart', 'pagestartVarname', 'limit',
+                    'basiclink', 'showPageNumbers', 'showSummary', 'dynamic',
+                    'slidersteps', 'cssClassName'
+                );
+                while ( list($key, $val) = each($params) ) {
+                    if ( in_array($key, $defaults) ) {
+                        $this->{'_' . $key } = $val;
+                    } else {
+                        $message = 'Invalid parameter "' . $key . '" found';
+                        throw new Mumsys_Pager_Exception($message);
+                    }
                 }
             }
+
+            $return = $this->render();
+        }
+        catch ( Exception $ex ) {
+            throw $ex;
         }
 
-        return $this->render();
+        return $return;
     }
 
 
