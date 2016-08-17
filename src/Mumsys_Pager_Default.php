@@ -19,6 +19,8 @@
 /**
  * Pagination in html context.
  *
+ * @todo Improve slider, general output, spacecs and delimiter not always 100% correct, update tests
+ *
  * Example:
  * <code>
  * $opts = array(
