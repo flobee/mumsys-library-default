@@ -170,8 +170,21 @@ results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b></div>
 results: <b>150</b>, results per page: <b>5</b>, pages: <b>30</b></div>
 ';
 
+        $this->_options['pagestart'] = 10;
+        $this->_options['limit'] = 24;
+        $this->_options['cntitems'] = 50;
+        $this->_options['dynamic'] = false;
+        $this->_object = new Mumsys_Pager_Default($this->_options);
+        $actual3 = $this->_object->render();
+        $expected3 = '<div class="pnnavi">
+[ <a href="index.php?&amp;offset=0">&laquo;&laquo;&laquo;</a> | <a href="index.php?&amp;offset=0">&laquo;</a> | <a href="index.php?&amp;offset=0">1</a> | <a href="index.php?&amp;offset=24">2</a> | <a href="index.php?&amp;offset=48">3</a><a href="index.php?&amp;offset=34">&raquo;</a> | <a href="index.php?&amp;offset=48">&raquo;&raquo;&raquo;</a> ]</div>
+
+<div class="pnnavi summary">
+results: <b>50</b>, results per page: <b>24</b>, pages: <b>3</b></div>
+';
         $this->assertEquals($expected1, $actual1);
         $this->assertEquals($expected2, $actual2);
+        $this->assertEquals($expected3, $actual3);
     }
 
 
