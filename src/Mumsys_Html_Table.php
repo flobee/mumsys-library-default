@@ -421,7 +421,7 @@ class Mumsys_Html_Table
         }
 
         // global attributes for each col
-        if ($row == '_') {
+        if ($row === '_') {
             $this->_structure['_'][$col]['attr'] = $attributes;
         } else {
             $this->_structure[$row][$col] = array('attr' => $attributes);
@@ -455,23 +455,26 @@ class Mumsys_Html_Table
 
     /**
      * Sets/ replaces attributes for a specified row.
-     * For all rows you can set '_' as row.
+     *
+     * For all rows (eg css classes) you can set '_' as row.
      *
      * @param integer|string $row Number of the row where attributes should be placed or "_" for all rows
      * @param array $attributes List of key/value pairs for the attributes
      */
     public function setRowAttributes( $row, $attributes = array() )
     {
+
         if (!isset($this->_structure[$row]) || !is_array($this->_structure[$row])) {
-            $this->_structure[$row] = array();
+             $this->_structure[$row] = array();
         }
 
         // global attributes
-        if ($row == '_') {
+        if ($row === '_') {
             $this->_structure['_']['attr'] = $attributes;
         } else {
             $this->_structure[$row]['attr'] = $attributes;
         }
+
     }
 
 
