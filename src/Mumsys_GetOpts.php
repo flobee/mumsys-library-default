@@ -184,7 +184,7 @@ class Mumsys_GetOpts
         $this->_mapping = $map = $this->_mapOptions($options);
 
         $this->_options = $options;
-        print_r($argv);
+//        print_r($argv);
 
         $argPos = 1; // zero is the called program
         $var = null;
