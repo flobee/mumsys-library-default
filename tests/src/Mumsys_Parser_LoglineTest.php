@@ -1,9 +1,11 @@
 <?php
 
+
 /**
  * Test class for Mumsys_Parser_Logline
  */
-class Mumsys_Parser_LoglineTest extends MumsysTestHelper
+class Mumsys_Parser_LoglineTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Parser_Logline
@@ -142,7 +144,7 @@ class Mumsys_Parser_LoglineTest extends MumsysTestHelper
     {
         $records = explode(PHP_EOL, $this->_logContent);
 
-        $actual1 = $this->_object->parse ('id;c1;c2;c3;c4;c5'); //trim($records[2])
+        $actual1 = $this->_object->parse('id;c1;c2;c3;c4;c5'); //trim($records[2])
         $expected1 = array(
             'id' => 'id',
             'col_1' => 'c1',
@@ -200,10 +202,12 @@ class Mumsys_Parser_LoglineTest extends MumsysTestHelper
         $actual5 = $this->_object->parse(trim($records[4]));
     }
 
+
     /**
      * @covers Mumsys_Parser_Logline::parse
      */
-    public function testParseTimestampFeature() {
+    public function testParseTimestampFeature()
+    {
         // test timestamp feature
         $line = '999;2016-01-17 07:35:14';
         $format = 'id;timeIn';
@@ -218,10 +222,11 @@ class Mumsys_Parser_LoglineTest extends MumsysTestHelper
             'id' => '999',
             'time' => '2016-01-17 07:35:14',
             'stamp' => '1453012514',
-            );
+        );
 
         $this->assertEquals($actual1, $expected1);
     }
+
 
     /**
      * @covers Mumsys_Parser_Logline::_applyFilters

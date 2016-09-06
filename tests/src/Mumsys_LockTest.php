@@ -1,15 +1,18 @@
 <?php
 
+
 /**
  * Test class for Mumsys_Lock.
  */
-class Mumsys_LockTest extends MumsysTestHelper
+class Mumsys_LockTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Lock
      */
     protected $_object;
     protected $_version;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -93,6 +96,7 @@ class Mumsys_LockTest extends MumsysTestHelper
         $this->assertFalse($this->_object->isLocked());
     }
 
+
     public function testIsLocked2()
     {
         $tmpFile = '/tmp/where/the/hell/are/you';
@@ -102,7 +106,6 @@ class Mumsys_LockTest extends MumsysTestHelper
         );
         $o->isLocked();
     }
-
 
     // test abstracts
 
@@ -115,6 +118,7 @@ class Mumsys_LockTest extends MumsysTestHelper
         $this->assertEquals('Mumsys_Lock ' . $this->_version, $this->_object->getVersion());
     }
 
+
     /**
      * @covers Mumsys_Lock::getVersionID
      */
@@ -123,6 +127,7 @@ class Mumsys_LockTest extends MumsysTestHelper
         $this->assertEquals($this->_version, $this->_object->getVersionID());
     }
 
+
     /**
      * @covers Mumsys_Lock::getVersions
      */
@@ -130,7 +135,7 @@ class Mumsys_LockTest extends MumsysTestHelper
     {
         $possible = $this->_object->getVersions();
 
-        foreach ($this->_versions as $must => $value) {
+        foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }

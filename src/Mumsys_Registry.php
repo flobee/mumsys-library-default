@@ -1,29 +1,25 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Registry
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2014 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2014 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Registry
- * @version     1.1.0
  * Created: 2014-01-07
- * @filesource
  */
-/*}}}*/
 
 
 /**
- * Mumsys registry class.
+ * Mumsys registry class implementing singleton pattern.
  *
  * @uses Singleton pattern
+ * @uses Mumsys_GetterSetter_Interface
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -71,7 +67,7 @@ abstract class Mumsys_Registry
     {
         parent::_checkKey($key);
 
-        if (array_key_exists($key, self::$_registry)) {
+        if ( array_key_exists($key, self::$_registry) ) {
             $message = sprintf('Registry key "%1$s" exists', $key);
             throw new Mumsys_Registry_Exception($message);
         }
@@ -104,12 +100,13 @@ abstract class Mumsys_Registry
      */
     public static function get( $key, $default = null )
     {
-        if (isset(self::$_registry[$key])) {
+        if ( isset(self::$_registry[$key]) ) {
             return self::$_registry[$key];
         }
 
         return $default;
     }
+
 
     /**
      * Removes registered entry.
@@ -120,7 +117,7 @@ abstract class Mumsys_Registry
      */
     public static function remove( $key )
     {
-        if (isset(self::$_registry[$key])) {
+        if ( isset(self::$_registry[$key]) ) {
             unset(self::$_registry[$key]);
             return true;
         }

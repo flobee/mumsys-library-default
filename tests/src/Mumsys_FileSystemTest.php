@@ -3,9 +3,10 @@
 /**
  * Test class for Mumsys_FileSystem.
  */
-class Mumsys_FileSystemTest extends MumsysTestHelper
+class Mumsys_FileSystemTest
+    extends Mumsys_Unittest_Testcase
 {
-    /**
+/**
      * @var Mumsys_FileSystem
      */
     protected $_object;
@@ -15,6 +16,12 @@ class Mumsys_FileSystemTest extends MumsysTestHelper
 
     protected function setUp()
     {
+        $this->_version = '3.0.6';
+        $this->_versions = array(
+            'Mumsys_FileSystem' => $this->_version,
+            'Mumsys_FileSystem_Common_Abstract' => '3.1.0',
+        );
+
         $this->_testsDir = realpath(dirname(__FILE__) .'/../');
         $this->_testdirs = array(
             'rm1' => $this->_testsDir . '/tmp/unittest-mkdir/mkdirs/testfile',
@@ -84,6 +91,9 @@ class Mumsys_FileSystemTest extends MumsysTestHelper
         @mkdir($this->_testdirs['dirs'], 0755);
         @touch($this->_testdirs['dir'].'/testfile');
         @touch($this->_testdirs['dirs'].'/testfile');
+
+        $filter = array('/(unittest)/i');
+
         // simple directory
         $actual1 = $this->_object->scanDirInfo($this->_testdirs['dir'], true, false);
         $expected1 = array(
@@ -103,8 +113,8 @@ class Mumsys_FileSystemTest extends MumsysTestHelper
             )
         );
 
-        // recursive directory
-        $actual2 = $this->_object->scanDirInfo($this->_testdirs['dir'], true, true);
+        // recursive directory + filter
+        $actual2 = $this->_object->scanDirInfo($this->_testdirs['dir'], true, true, $filter);
         $expected2 = array(
             $this->_testsDir . '/tmp/unittest-mkdir/mkdirs' => array(
                 'file' => $this->_testsDir . '/tmp/unittest-mkdir/mkdirs',
@@ -174,8 +184,8 @@ class Mumsys_FileSystemTest extends MumsysTestHelper
     {
         // info for a file
         $curFile = __FILE__;
-        $actual1 = $this->_object->getFileDetailsExtended($curFile);
         $stat = @lstat($curFile);
+        $actual1 = $this->_object->getFileDetailsExtended($curFile);
         $expected1 = array(
             'file' => $curFile,
             'name' => basename($curFile),
@@ -312,9 +322,8 @@ class Mumsys_FileSystemTest extends MumsysTestHelper
      */
     public function testCopyException()
     {
-        $msg = 'Copy error for: "'.$this->_testsDir . '/tmp/unittest" copy(//unittest): '
-            . 'failed to open stream: Permission denied';
-        $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
+        $regex = '/(Copy error)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $regex);
         $this->_object->copy($this->_testdirs['file'], '/');
     }
 
@@ -520,6 +529,20 @@ class Mumsys_FileSystemTest extends MumsysTestHelper
             '1000 TB',
         );
         $this->assertEquals($expected, $actual);
+    }
+
+
+    // --- test abstract and versions
+
+
+    public function testgetVersions()
+    {
+        $possible = $this->_object->getVersions();
+
+        foreach ($this->_versions as $must => $value) {
+            $this->assertTrue( isset($possible[$must]) );
+            $this->assertEquals($possible[$must], $value);
+        }
     }
 
 }

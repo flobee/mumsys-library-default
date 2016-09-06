@@ -91,6 +91,10 @@ class Mumsys_Cache_FileTest
         $actual2 = $this->_object->isCached();
         $this->assertTrue($actual1);
         $this->assertFalse($actual2);
+
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Cache_Exception', '/(unlink)(.*)(No such file or directory)/i');
+        $this->_object->removeCache();
     }
 
 

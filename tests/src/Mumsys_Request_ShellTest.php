@@ -5,7 +5,7 @@
  * Mumsys_Request_Shell Test
  */
 class Mumsys_Request_ShellTest
-    extends MumsysTestHelper
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Request_Default

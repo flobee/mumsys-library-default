@@ -144,7 +144,7 @@ class Mumsys_Mvc_Display_Factory
         $templateDriver = sprintf('Mumsys_Mvc_Templates_%1$s_%2$s', $this->_outputType, $this->_outputComplexity);
 
         if (class_exists($templateDriver, false)) {
-            $display = new $templateDriver($this->_context, $props);
+            $display = new $templateDriver($this->_context, $options);
         } else {
             $message = sprintf('Driver for the display "%1$s" $2$s" not found', $outputType, $outputComplexity);
             $code = Mumsys_Mvc_Display_Exception::ERRCODE_DEFAULT;

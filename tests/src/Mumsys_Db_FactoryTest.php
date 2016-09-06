@@ -4,7 +4,7 @@
 /**
  * Mumsys_Db_Factory Test
  */
-class Mumsys_Db_FactoryTest extends MumsysTestHelper
+class Mumsys_Db_FactoryTest extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Db

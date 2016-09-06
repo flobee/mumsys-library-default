@@ -1,20 +1,18 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Mvc_Display_Control_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
  * Created: 2016-01-30
  */
-/* }}} */
 
 
 /**
@@ -72,16 +70,17 @@ abstract class Mumsys_Mvc_Display_Control_Abstract
      */
     public function getDisplayHelper( $extension )
     {
-        if (isset($this->_helpers[$extension])) {
+        if ( isset($this->_helpers[$extension]) ) {
             return $this->_helpers[$extension];
         }
 
         try {
             $class = 'Mumsys_Display_Helper_' . ucfirst($extension);
-            if (!class_exists($class, false)) {
+            if ( !class_exists($class, false) ) {
                 $return = $this->_helpers[$extension] = new $class($this->_context);
             }
-        } catch (Exception $e) {
+        }
+        catch ( Exception $e ) {
             throw new Mumsys_Display_Exception(sprintf('Helper class not found/ exists "%1$s"', $extension));
         }
 
@@ -96,7 +95,7 @@ abstract class Mumsys_Mvc_Display_Control_Abstract
      */
     public function setPageTitle( $title = '' )
     {
-        $this->_pagetitle = (string)$title;
+        $this->_pagetitle = (string) $title;
     }
 
 

@@ -1,14 +1,13 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Mailer_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2014 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mailer
@@ -16,7 +15,6 @@
  * Created on 01.12.2006 improved since 2016, init interface
  * $Id: class.mailsys.php 2369 2011-12-08 22:02:37Z flobee $
  */
-/* }}} */
 
 
 /**
@@ -35,7 +33,7 @@ interface Mumsys_Mailer_Interface
 
 
     /**
-     * Call a mail driver method which is not implemented at the interface.
+     * Call a mail driver method which is not implemented in this interface.
      *
      * @note Dont use it! update the interface would be the best choice!
      *
@@ -126,7 +124,6 @@ interface Mumsys_Mailer_Interface
     /**
      * Adds an attachment from a path on the filesystem.
      *
-     *
      * @param string $location Location to the attachment on the filesystem.
      * @param string $encoding File encoding (e.g base64)
      * @param string $type File extension (MIME) type.
@@ -178,5 +175,4 @@ interface Mumsys_Mailer_Interface
      * @return array List of all headers
      */
     public function getCustomHeaders();
-
 }

@@ -1,0 +1,348 @@
+<?php
+
+
+/**
+ * Php_Globals Test
+ */
+class Php_GlobalsTest
+    extends Mumsys_Unittest_Testcase
+{
+    /**
+     * @var Php_Globals
+     */
+    protected $_object;
+
+    /**
+     * one! $_FILES upload
+     * @var array
+     */
+    protected $_file;
+
+    /**
+     * serveral! $_FILES upload
+     * @var array
+     */
+    protected $_files;
+
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+        // in
+        $this->_file = $_FILES = array(
+            'test' => array(
+                'name' => 'test.jpg',
+                'type' => 'image/jpeg',
+                'size' => 542,
+                'tmp_name' => __DIR__ . '/../tmp/source-test.jpg',
+                'error' => 0
+            )
+        );
+
+        $this->_files = array();
+
+        $this->_object = new Php_Globals;
+    }
+
+
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+        $this->_object = NULL;
+    }
+
+
+    /**
+     * @covers Php_Globals::getServerVar
+     * @covers Php_Globals::_getEnvVar
+     */
+    public function testGetServerVar()
+    {
+        $expected1 = 'no address';
+        $actual1 = $this->_object->getServerVar('REMOTE_ADDR', 'no address');
+
+        $expected2 = 'phpunit';
+        $actual2 = $this->_object->getServerVar('PHP_SELF', 'PHP_SELF');
+
+        $this->assertEquals($expected1, $actual1);
+        $this->assertRegExp('/(' . $expected2 . ')/i', $actual2);
+    }
+
+
+    /**
+     * @covers Php_Globals::getEnvVar
+     * @covers Php_Globals::_getEnvVar
+     */
+    public function testGetEnvVar()
+    {
+        $expected1 = 'no addr';
+        $actual1 = $this->_object->getEnvVar('REMOTE_ADDR', 'no addr');
+
+        $expected2 = $_SERVER['HOME'];
+        $actual2 = $this->_object->getEnvVar('HOME', 'no home');
+
+        $expected3 = $_ENV['LANGX'] = getenv('LANG');
+        $actual3 = $this->_object->getEnvVar('LANGX', 'no lang');
+
+        $expected4 = 'hello';
+        putenv("HELLO=hello");
+        $actual4 = $this->_object->getEnvVar('HELLO', getenv('HELLO'));
+
+        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals($expected2, $actual2);
+        $this->assertEquals($expected3, $actual3);
+        $this->assertEquals($expected4, $actual4);
+    }
+
+
+    /**
+     * @covers Php_Globals::getPostVar
+     */
+    public function testGetPostVar()
+    {
+        $expected1 = array();
+        $actual1 = $this->_object->getPostVar();
+
+        $expected2 = $_POST['HOME'] = 'unittest';
+        $actual2 = $this->_object->getPostVar('HOME', 'no home');
+
+        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals($expected2, $actual2);
+    }
+
+
+    /**
+     * @covers Php_Globals::getGetVar
+     */
+    public function testGetGetVar()
+    {
+        $expected1 = array();
+        $actual1 = $this->_object->getGetVar();
+
+        $expected2 = $_GET['HOME'] = 'unittest';
+        $actual2 = $this->_object->getGetVar('HOME', 'no home');
+
+        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals($expected2, $actual2);
+    }
+
+
+    /**
+     * @covers Php_Globals::getCookieVar
+     */
+    public function testGetCookieVar()
+    {
+        $expected1 = array();
+        $actual1 = $this->_object->getCookieVar();
+
+        $expected2 = $_COOKIE['HOME'] = 'unittest';
+        $actual2 = $this->_object->getCookieVar('HOME', 'no home');
+
+        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals($expected2, $actual2);
+    }
+
+
+    /**
+     * @covers Php_Globals::getFileVar
+     */
+    public function testGetFileVar()
+    {
+        $expected1 = array($this->_file['test']);
+        $actual1 = $this->_object->getFileVar('test', false);
+
+        $expected2 = 'noFile';
+        $actual2 = $this->_object->getFileVar('noFile', $expected2);
+
+        $expected3 = array('test'=> array($this->_file['test']));
+        $actual3 = $this->_object->getFileVar(null, false);
+
+        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals($expected2, $actual2);
+        $this->assertEquals($expected3, $actual3);
+    }
+
+    /**
+     * @covers Php_Globals::getFileVar
+     * @runInSeparateProcess
+     */
+    public function testGetFileVar2()
+    {
+        // some more files as "test[]" upload
+        // in php standard style
+        $_FILES = array(
+            'test' => array(
+                'name' => array(
+                    'test.jpg',
+                    'test2.jpg'
+                ),
+                'type' => array(
+                    'image/jpeg',
+                    'image/jpeg'
+                ),
+                'size' => array(
+                    542,
+                    543
+                ),
+                'tmp_name' => array(
+                    __DIR__ . '/../tmp/source-test.jpg',
+                    __DIR__ . '/../tmp/source-test2.jpg'
+                ),
+                'error' => array(0, 0)
+            )
+        );
+        $expected4 = array(
+            'test' => array(
+                array(
+                    'name' => 'test.jpg',
+                    'type' => 'image/jpeg',
+                    'tmp_name' => __DIR__ . '/../tmp/source-test.jpg',
+                    'error' => 0,
+                    'size' => 542,
+                ),
+                array(
+                    'name' => 'test2.jpg',
+                    'type' => 'image/jpeg',
+                    'tmp_name' => __DIR__ . '/../tmp/source-test2.jpg',
+                    'error' => 0,
+                    'size' => 543,
+                ),
+            )
+        );
+        $actual4 = $this->_object->getFileVar(null, false);
+
+        $this->assertEquals($expected4, $actual4);
+    }
+
+
+    /**
+     * @covers Php_Globals::getGlobalVar
+     */
+    public function testGetGlobalVar()
+    {
+        $expected0 = $GLOBALS;
+        $actual0 = $this->_object->getGlobalVar();
+
+        $expected1 = 'no addr';
+        $actual1 = $this->_object->getGlobalVar('REMOTE_ADDR', 'no addr');
+
+        $expected2 = 'no home';
+        $actual2 = $this->_object->getGlobalVar('HOME', 'no home');
+
+        $expected3 = $GLOBALS['LANGUAGE'] = 'no lang';
+        $actual3 = $this->_object->getGlobalVar('LANGUAGE', 'no lang');
+
+        $this->assertEquals($expected0, $actual0);
+        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals($expected2, $actual2);
+        $this->assertEquals($expected3, $actual3);
+    }
+
+
+    /**
+     * @covers Php_Globals::get
+     */
+    public function testGet()
+    {
+        $expected1 = 'no addr';
+        $actual1 = $this->_object->get('REMOTE_ADDR', 'no addr');
+
+        $expected2 = $_SESSION['unittest-session'] = 'test';
+        $actual2 = $this->_object->get('unittest-session', 'no test');
+
+        $expected3 = 'files tests not implemented';
+        $actual3 = $this->_object->get('unittest-file', $expected3);
+
+        $expected4 = $_COOKIE['unittest-cookie'] = 'test';
+        $actual4 = $this->_object->get('unittest-cookie', 'no cookie');
+
+        $expected5 = $_REQUEST['unittest-request'] = 'test';
+        $actual5 = $this->_object->get('unittest-request', 'no request');
+
+        $expected6 = 'no get';
+        $_GET['unittest-get'] = 'test';
+        $actual6 = $this->_object->get('unittest-get', 'no get');
+
+        $expected7 = $GLOBALS['unittest-global'] = 'test';
+        $actual7 = $this->_object->get('unittest-global', 'no global');
+
+        $expected8 = is_array($_SERVER['argv']) ? $_SERVER['argv'][0] : null;
+        $actual8 = $this->_object->get(0, 'no argv');
+
+        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals($expected2, $actual2);
+        $this->assertEquals($expected3, $actual3);
+        $this->assertEquals($expected4, $actual4);
+        $this->assertEquals($expected5, $actual5);
+        $this->assertEquals($expected6, $actual6);
+        $this->assertEquals($expected7, $actual7);
+        $this->assertEquals($expected8, $actual8);
+    }
+
+    /**
+     * @covers Php_Globals::getRemoteUser
+     * @runInSeparateProcess
+     */
+    public function testGetRemoteUser()
+    {
+        $list = array('LOGNAME', 'USER', 'REMOTE_USER', 'PHP_AUTH_USER');
+
+        foreach ( $list as $param ) {
+            $_SERVER[$param] = null;
+        }
+
+        $this->assertEquals('unknown', $this->_object->getRemoteUser());
+        $this->assertEquals('unknown', $this->_object->getRemoteUser()); // for 100% cc
+    }
+
+
+    /**
+     * @covers Php_Globals::getRemoteUser
+     * @runInSeparateProcess
+     */
+    public function testGetRemoteUserPHP_AUTH_USER()
+    {
+        $_SERVER['PHP_AUTH_USER'] = 'unittest';
+        $this->assertEquals('unittest', $this->_object->getRemoteUser());
+    }
+
+
+    /**
+     * @covers Php_Globals::getRemoteUser
+     * @runInSeparateProcess
+     */
+    public function testGetRemoteUserREMOTE_USER()
+    {
+        $_SERVER['REMOTE_USER'] = 'unittest';
+        $this->assertEquals('unittest', $this->_object->getRemoteUser());
+    }
+
+
+    /**
+     * @covers Php_Globals::getRemoteUser
+     * @runInSeparateProcess
+     */
+    public function testGetRemoteUserUSER()
+    {
+        $_SERVER['USER'] = 'unittest';
+        $this->assertEquals('unittest', $this->_object->getRemoteUser());
+    }
+
+
+    /**
+     * @covers Php_Globals::getRemoteUser
+     * @runInSeparateProcess
+     */
+    public function testGetRemoteUserLOGNAME()
+    {
+        $_SERVER['USER'] = null;
+        $_SERVER['LOGNAME'] = 'unittest';
+        $this->assertEquals('unittest', $this->_object->getRemoteUser());
+    }
+
+}

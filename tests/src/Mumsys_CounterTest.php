@@ -1,9 +1,11 @@
 <?php
 
+
 /**
  * Test class for Mumsys_Counter.
  */
-class Mumsys_CounterTest extends MumsysTestHelper
+class Mumsys_CounterTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_CounterTest
@@ -84,11 +86,11 @@ class Mumsys_CounterTest extends MumsysTestHelper
         $this->assertEquals(0, $this->_object->result());
     }
 
+
     public function testtoString()
     {
         $this->assertEquals(0, $this->_object->__toString());
     }
-
 
     // test abstracts
 
@@ -101,6 +103,7 @@ class Mumsys_CounterTest extends MumsysTestHelper
         $this->assertEquals('Mumsys_Counter ' . $this->_version, $this->_object->getVersion());
     }
 
+
     /**
      * @covers Mumsys_Counter::getVersionID
      */
@@ -109,6 +112,7 @@ class Mumsys_CounterTest extends MumsysTestHelper
         $this->assertEquals($this->_version, $this->_object->getVersionID());
     }
 
+
     /**
      * @covers Mumsys_Counter::getVersions
      */
@@ -116,9 +120,10 @@ class Mumsys_CounterTest extends MumsysTestHelper
     {
         $possible = $this->_object->getVersions();
 
-        foreach ($this->_versions as $must => $value) {
+        foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }
     }
+
 }

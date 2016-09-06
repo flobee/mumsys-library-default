@@ -1,14 +1,17 @@
 <?php
 
+
 /**
  * Test class for File.
  */
-class Mumsys_FileTest extends MumsysTestHelper
+class Mumsys_FileTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_File
      */
     protected $_object;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -22,7 +25,7 @@ class Mumsys_FileTest extends MumsysTestHelper
             'Mumsys_File' => '3.1.0',
         );
 
-        $this->_testsDir = realpath(dirname(__FILE__) .'/../');
+        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
 
         $this->_fileOk = $this->_testsDir . '/tmp/' . basename(__FILE__) . '.tmp';
         $this->_fileNotOk = $this->_testsDir . '/tmp/notExists/file.tmp';
@@ -74,7 +77,7 @@ class Mumsys_FileTest extends MumsysTestHelper
         $this->_object->setFile($this->_fileNotOk);
 
         $this->setExpectedException('Mumsys_File_Exception',
-            'Can not open file "'. $this->_testsDir . '/tmp/notExists/file.tmp" '
+            'Can not open file "' . $this->_testsDir . '/tmp/notExists/file.tmp" '
             . 'with mode "w+". Directory is writeable: "No", readable: "No".');
         $this->_object->open();
     }
@@ -102,7 +105,7 @@ class Mumsys_FileTest extends MumsysTestHelper
         $this->_object->close();
 
         $this->setExpectedException('Mumsys_File_Exception',
-            'File not open. Can not write to file: "'. $this->_testsDir
+            'File not open. Can not write to file: "' . $this->_testsDir
             . '/tmp/Mumsys_FileTest.php.tmp".');
         $x = $this->_object->write('hello world');
     }
@@ -123,8 +126,9 @@ class Mumsys_FileTest extends MumsysTestHelper
         $this->assertTrue($o->isReadable());
         $this->assertFalse($o->isWriteable());
 
-        $this->setExpectedException('Mumsys_File_Exception', 'File not writeable: '
-            . '"'. $this->_testsDir . '/tmp/Mumsys_FileTest.php.tmp".');
+        $this->setExpectedException('Mumsys_File_Exception',
+            'File not writeable: '
+            . '"' . $this->_testsDir . '/tmp/Mumsys_FileTest.php.tmp".');
         $x = $o->write('hello world');
     }
 
@@ -138,7 +142,7 @@ class Mumsys_FileTest extends MumsysTestHelper
         $o->setFile($this->_fileOk);
 
         $this->setExpectedException('Mumsys_File_Exception',
-            'Can not write to file: "'. $this->_testsDir . '/tmp/Mumsys_FileTest.php.tmp". '
+            'Can not write to file: "' . $this->_testsDir . '/tmp/Mumsys_FileTest.php.tmp". '
             . 'IsOpen: "Yes", Is writeable: "Yes".');
         $x = $o->write($this);
     }
@@ -168,7 +172,7 @@ class Mumsys_FileTest extends MumsysTestHelper
         $o->setFile($this->_fileNotOk);
 
         $this->setExpectedException('Mumsys_File_Exception',
-            'File not open. Can not read from file: "'.$this->_testsDir . '/tmp/notExists/file.tmp".');
+            'File not open. Can not read from file: "' . $this->_testsDir . '/tmp/notExists/file.tmp".');
         $text1 = $o->read();
     }
 
@@ -190,7 +194,7 @@ class Mumsys_FileTest extends MumsysTestHelper
         $this->assertTrue($o->isWriteable());
 
         $this->setExpectedException('Mumsys_File_Exception',
-            'File "'.$this->_testsDir . '/tmp/Mumsys_FileTest.php.tmp" not readable with mode "w". '
+            'File "' . $this->_testsDir . '/tmp/Mumsys_FileTest.php.tmp" not readable with mode "w". '
             . 'Is writeable "Yes", readable: "No".');
         $x = $o->read();
     }
@@ -202,7 +206,7 @@ class Mumsys_FileTest extends MumsysTestHelper
         $o = new Mumsys_File(array('file' => $this->_fileOk, 'way' => 'w'));
 
         $this->setExpectedException('Mumsys_File_Exception',
-            'Error when reading the file: "'.$this->_testsDir . '/tmp/Mumsys_FileTest.php.tmp". IsOpen: "Yes".');
+            'Error when reading the file: "' . $this->_testsDir . '/tmp/Mumsys_FileTest.php.tmp". IsOpen: "Yes".');
         $text1 = $o->read();
     }
 
@@ -229,6 +233,7 @@ class Mumsys_FileTest extends MumsysTestHelper
         $o->close();
         $this->assertEquals("hello world\nhello", $string);
     }
+
 
     public function testSetModeException()
     {
@@ -298,7 +303,6 @@ class Mumsys_FileTest extends MumsysTestHelper
         $this->assertTrue($actual); // the owner always can read!
     }
 
-
     // test abstracts
 
 
@@ -310,6 +314,7 @@ class Mumsys_FileTest extends MumsysTestHelper
         $this->assertEquals('Mumsys_File ' . $this->_version, $this->_object->getVersion());
     }
 
+
     /**
      * @covers Mumsys_File::getVersionID
      */
@@ -318,6 +323,7 @@ class Mumsys_FileTest extends MumsysTestHelper
         $this->assertEquals($this->_version, $this->_object->getVersionID());
     }
 
+
     /**
      * @covers Mumsys_File::getVersions
      */
@@ -325,7 +331,7 @@ class Mumsys_FileTest extends MumsysTestHelper
     {
         $possible = $this->_object->getVersions();
 
-        foreach ($this->_versions as $must => $value) {
+        foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }

@@ -1,12 +1,14 @@
 <?php
 
-// config example for unit tests
-
 return array(
-    'ME'			=> & $_SERVER['PHP_SELF'],
     // enable debug mode,
     'debug'			=> true,
 
+    /**
+     * uses the mumsys v1, v2 DB classes, to be removed in v3!
+     * @deprecated since mumsys version 3.0.0
+     * Use seperated config file for credentials like db access
+     */
     'database' => array(
         'type' => 'mysql:mysqli',
         'host' => 'localost.localdomain',
@@ -27,5 +29,6 @@ return array(
             'table_sessions' => 'mumsys_sessions',
             'table_sessionsuser' => 'mumsys_sessionsuser',
             'table_config' => 'mumsys_config',
-    ),
+        ),
+    )
 );

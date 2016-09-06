@@ -3,13 +3,13 @@
 /**
  * Mumsys_Config_Default Test
  */
-class Mumsys_Config_DefaultTest extends MumsysTestHelper
+class Mumsys_Config_DefaultTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Config_Default
      */
     protected $_object;
-
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -26,7 +26,6 @@ class Mumsys_Config_DefaultTest extends MumsysTestHelper
         $this->_object = new Mumsys_Config_Default($this->_context, $this->_configs, $this->_paths);
     }
 
-
     /**
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
@@ -35,7 +34,6 @@ class Mumsys_Config_DefaultTest extends MumsysTestHelper
     {
         $this->_object = null;
     }
-
 
     /**
      * For code coverage
@@ -59,9 +57,9 @@ class Mumsys_Config_DefaultTest extends MumsysTestHelper
         $actual2 = $this->_object->get('credentials/database/host', false);
         $actual3 = $this->_object->get('credentials/database/mumsys/config/set', false);
         $actual4 = $this->_object->get(array('credentials', 'database', 'host'), false);
-        $actual5 = $this->_object->get('database/mumsys/config/search', false);
+        $actual5 = $this->_object->get('database/mumsys/config/item/search', false);
         $expected1 = 'test value';
-        $expected2 = 'localhost';
+        $expected2 = MumsysTestHelper::getContext()->getConfig()->get('credentials/database/host' , 0);
 
         $this->assertEquals($expected1, $actual1);
         $this->assertEquals($expected2, $actual2);
@@ -70,7 +68,6 @@ class Mumsys_Config_DefaultTest extends MumsysTestHelper
         $this->assertEquals('SELECT * FROM mumsys_config', $actual5);
     }
 
-
     /**
      * @covers Mumsys_Config_Default::getAll
      */
@@ -78,7 +75,6 @@ class Mumsys_Config_DefaultTest extends MumsysTestHelper
     {
         $this->assertEquals($this->_configs, $this->_object->getAll());
     }
-
 
     /**
      * @covers Mumsys_Config_Default::replace
@@ -130,9 +126,8 @@ class Mumsys_Config_DefaultTest extends MumsysTestHelper
      */
     public function testLoad()
     {
-        $this->setExpectedException('Mumsys_Config_Exception', 'exit in: Mumsys_Config_Default.php');
+        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(exit in: Mumsys_Config)/i');
         $this->_object->load();
-
     }
 
 }

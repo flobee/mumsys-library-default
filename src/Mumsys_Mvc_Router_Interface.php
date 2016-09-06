@@ -1,21 +1,17 @@
 <?php
 
-
-/* {{{ */
 /**
  * Mumsys_Mvc_Router_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
- * @filesource
  */
-/* }}} */
 
 
 /**
@@ -27,8 +23,6 @@
  */
 interface Mumsys_Mvc_Router_Interface
 {
-
-
     /**
      * Initialise the router object.
      *
@@ -38,14 +32,12 @@ interface Mumsys_Mvc_Router_Interface
      */
     public function __construct( Mumsys_Request_Interface $request, array $options = array() );
 
-
     /**
      * Retrieve the module name
      *
      * @return string
      */
     public function getProgramName();
-
 
     /**
      * Sets/ replaces the program name.
@@ -55,14 +47,12 @@ interface Mumsys_Mvc_Router_Interface
      */
     public function setProgramName( $value = null );
 
-
     /**
      * Returns the controller name.
      *
      * @return string Name of the controller
      */
     public function getControllerName();
-
 
     /**
      * Sets/ replaces the controller name.
@@ -72,14 +62,12 @@ interface Mumsys_Mvc_Router_Interface
      */
     public function setControllerName( $value = null );
 
-
     /**
      * Retrieve the action name.
      *
      * @return string Name of the action
      */
     public function getActionName();
-
 
     /**
      * Sets/ replaces the action name
@@ -89,14 +77,12 @@ interface Mumsys_Mvc_Router_Interface
      */
     public function setActionName( $value = null );
 
-
     /**
      * Returns the program name.
      *
      * @return string Name of the program
      */
     public function getProgramKey();
-
 
     /**
      * Sets/ replaces the program key.
@@ -106,14 +92,12 @@ interface Mumsys_Mvc_Router_Interface
      */
     public function setProgramKey( $key = 'program' );
 
-
     /**
      * Retuns the name of the controller key
      *
      * @return string Key name of the controller key to idenify from a request
      */
     public function getControllerKey();
-
 
     /**
      * Sets/ replaces the controller key name
@@ -123,14 +107,12 @@ interface Mumsys_Mvc_Router_Interface
      */
     public function setControllerKey( $key = 'controller' );
 
-
     /**
      * Returns the action key name
      *
      * @return string
      */
     public function getActionKey();
-
 
     /**
      * Sets/ replaces the action key name.
@@ -139,5 +121,4 @@ interface Mumsys_Mvc_Router_Interface
      * @return self
      */
     public function setActionKey( $key = 'action' );
-
 }

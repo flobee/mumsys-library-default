@@ -1,22 +1,19 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Mvc_Display_Control_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
  * @version     1.0.0
  * Created: 2016-01-30
- * @filesource
  */
-/*}}}*/
 
 
 /**
@@ -34,6 +31,7 @@ interface Mumsys_Mvc_Display_Control_Interface
      */
     public function __construct( Mumsys_Context $context, array $options = array() );
 
+
     /**
      * Sets the output page title.
      *
@@ -41,12 +39,14 @@ interface Mumsys_Mvc_Display_Control_Interface
      */
     public function setPageTitle( $title = '' );
 
+
     /**
      * Add content to the display/output buffer.
      *
      * @param string $content Content to add to the buffer
      */
     public function add( $content = '' );
+
 
     /**
      * Output the current buffer and given content and reset the buffer.
@@ -56,10 +56,12 @@ interface Mumsys_Mvc_Display_Control_Interface
      */
     public function apply( $content = '' );
 
+
     /**
      * Print out the complete content.
      */
     public function show();
+
 
     /**
      * Fetch the content without any, maybe needed, headers and resets the buffer.
@@ -70,5 +72,4 @@ interface Mumsys_Mvc_Display_Control_Interface
      * output was set.
      */
     public function fetch();
-
 }

@@ -3,7 +3,7 @@
 /**
  * Test class for php class.
  */
-class PhpTest extends MumsysTestHelper
+class PhpTest extends Mumsys_Unittest_Testcase
 {
     /**
      * @var php
@@ -69,13 +69,13 @@ class PhpTest extends MumsysTestHelper
 
     public function testIs_int()
     {
-        $this->assertEquals( true , Php::is_int( 0 ) );
-        $this->assertEquals( true , Php::is_int( 12 ) );
-        $this->assertEquals( true , Php::is_int( '12' ) );
-        $this->assertEquals( true , Php::is_int( '1234' ) );
-        $this->assertEquals( false , Php::is_int( 1.9 ) );
-        $this->assertEquals( false , Php::is_int( '1.9' ) );
-        $this->assertEquals( false , Php::is_int( '1.9999' ) );
+        $this->assertTrue( Php::is_int( 0 ) );
+        $this->assertTrue( Php::is_int( 12 ) );
+        $this->assertTrue( Php::is_int( '12' ) );
+        $this->assertTrue( Php::is_int( '1234' ) );
+        $this->assertFalse( Php::is_int( 1.9 ) );
+        $this->assertFalse( Php::is_int( '1.9' ) );
+        $this->assertFalse( Php::is_int( '1.9999' ) );
     }
 
     /**
@@ -484,7 +484,7 @@ class PhpTest extends MumsysTestHelper
     {
         $logfile = $this->_testsDir . '/logs/' . __FUNCTION__ . '.log';
         $logOpts = array('logfile'=> $logfile);
-        $logger = new Mumsys_Logger($logOpts);
+        $logger = new Mumsys_Logger_File($logOpts);
 
         $cmdLine = 'df -a %1$s';
         if (Php::$os == 'WIN') {
@@ -515,25 +515,6 @@ class PhpTest extends MumsysTestHelper
         $this->assertFalse($chkCache);
         $this->assertTrue($overflow);
         $this->assertTrue($err);
-    }
-
-
-    public function test_memory_get_usage()
-    {
-        $memDef = 0;
-        $memPhp = 1;
-        if (function_exists('memory_get_usage')) {
-            $memPhp = Php::memory_get_usage();
-            $memDef = memory_get_usage();
-        }
-
-        $diffBytes = $memPhp - $memDef;
-        if ( $diffBytes ) {
-            // echo ($memDef/100)/64 .">". $diffBytes;
-            $this->assertTrue( (($memDef/100)/64 > $diffBytes) );// 0.015625% ~ 1.3 KB
-        } else {
-            $this->assertEquals($memDef, $memPhp);
-        }
     }
 
 

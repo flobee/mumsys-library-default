@@ -19,6 +19,11 @@ class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
     {
         $this->markTestSkipped();
         return false;
+        $this->_version = '3.3.2';
+        $this->_versions = array(
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
+            'Mumsys_GetOpts' => $this->_version,
+        );
 
         $this->opts = array(
             '-v|--verbose', // v or verbose flag
@@ -241,5 +246,19 @@ print_r($this->_object);
 //
 //        $this->assertEquals($expected, $actual);
 //    }
+
+
+    // --- test abstract and versions
+
+    public function testgetVersions()
+    {
+        $possible = $this->_object->getVersions();
+
+        foreach ($this->_versions as $must => $value) {
+            $this->assertTrue( isset($possible[$must]) );
+            $this->assertEquals($possible[$must], $value);
+        }
+    }
+
 
 }
