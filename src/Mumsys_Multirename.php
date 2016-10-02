@@ -1,14 +1,13 @@
 <?php
 
-
 /* {{{ */
 /**
  * Multirename
  * for MUMSYS Library for Multi User Management System
  * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright (c) 2015 by Florian Blasel
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright (c) 2015 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -129,7 +128,8 @@ class Mumsys_Multirename
      * @param Mumsys_Logger_Interface $logger Log object to track the work and/
      * or show the output when using as shell script or cronjob
      */
-    public function __construct( array $config = array(), Mumsys_FileSystem $oFiles, Mumsys_Logger_Interface $logger )
+    public function __construct( array $config = array(), Mumsys_FileSystem $oFiles, 
+            Mumsys_Logger_Interface $logger )
     {
         $logger->log('### multirename (' . self::VERSION . ') starts', 7);
 
@@ -181,7 +181,8 @@ class Mumsys_Multirename
 
             $actions = array();
 
-            /** @todo to be replace with new getopts features: action1 options action2 options */
+            /** @todo to be replace with new getopts features: 
+             * action1 options action2 options */
             if (!empty($config['undo'])) {
                 $actions['undo'] = 'undo';
             } else {
@@ -255,6 +256,7 @@ class Mumsys_Multirename
      * help/ a complete list!
      *
      * @return array Returns the new, checked configuration.
+     * 
      * @throws Mumsys_Exception Throws exception on any error happen with the
      * incoming data.
      */
@@ -474,7 +476,8 @@ class Mumsys_Multirename
      *
      * @return integer Number of occurances.
      */
-    private function _executeTest( array $config, $source, $destination, $file, $newName, $extension, $txtMode )
+    private function _executeTest( array $config, $source, $destination, $file, 
+            $newName, $extension, $txtMode )
     {
         $cntMatchesRelevant = 0;
 
@@ -592,8 +595,6 @@ class Mumsys_Multirename
      * @param string $keepCopy Flag to set to what to do if old file already
      * exists again on undo. On true the existing file will be kept, on false
      * overwriting take affect.
-     *
-     * @return void
      */
     protected function _undo( array $config, $keepCopy = true )
     {
@@ -772,6 +773,7 @@ class Mumsys_Multirename
      *
      * @param string $path Action/ start directory for renaming
      * @param integer $index History index to return
+     * 
      * @return array|false Returns a list of action historys or false on error
      */
     protected function _getActionHistory( $path, $index = -1 )
@@ -802,6 +804,7 @@ class Mumsys_Multirename
      * @param string $path Action/ start directory for renaming
      *
      * @return boolean Returns true on success or false on error
+     * 
      * @throws Mumsys_Multirename_Exception On any other errors
      */
     public function removeActionHistory( $path )
@@ -820,6 +823,7 @@ class Mumsys_Multirename
      * Creates a config directory to store a config or action history.
      *
      * @param string $path Action/ start directory for renaming files.
+     * 
      * @return boolean Returns true on success of false if the config dir could not be created
      */
     private function _mkConfigDir( $path )
@@ -932,7 +936,9 @@ class Mumsys_Multirename
      * Merge config list from loaded config file into config from shell input.
      * Note: shell input overwrites config items from config file.
      *
-     * @param array $config Configuration/ setup parameters. see initSetup() for help/ a complete list!
+     * @param array $config Configuration/ setup parameters. see initSetup() for 
+     * help/ a complete list!
+     * 
      * @throws Mumsys_Multirename_Exception On errors
      */
     public function _mergeConfigs( array $config = array() )
@@ -966,6 +972,7 @@ class Mumsys_Multirename
      *
      * @param string $path Action/ start directory for renaming files
      * @param integer|string $configID Config ID to set. Optional, for the future.
+     * 
      * @return integer|false Returns number of bytes written or false on error
      */
     public function saveConfig( $path, $configID = '_' )
@@ -1007,6 +1014,7 @@ class Mumsys_Multirename
      * Removes/ purges the complete configuration file.
      *
      * @param string $path Action/ start directory for renaming files
+     * 
      * @return boolean Returns true on success or false
      */
     public function deleteConfig( $path = '' )
@@ -1094,6 +1102,7 @@ class Mumsys_Multirename
      *
      * @param string $path Path of the current file
      * @param string $conifgPath Path of the current config, recursiv scans may differ
+     * 
      * @return array List of path-breadcrumbs of the current file.
      */
     private function _buildPathBreadcrumbs( $path = '', $configPath )
@@ -1152,6 +1161,7 @@ class Mumsys_Multirename
      * Replace path informations in substitution configuration
      *
      * @param array $paths List of path-breadcrumbs of the current working file for substitution.
+     * 
      * @return array Returns the compiled list of substitution to substitude
      */
     private function _substitutePaths( array $substitutions = array(), array $paths = array() )
