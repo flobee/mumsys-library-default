@@ -1,21 +1,19 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Session_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Session
  * @version     1.1.0
  * Created: 2005-01-01, new in 2016-03-19
  */
-/* }}} */
 
 
 /**
@@ -27,16 +25,6 @@
  */
 interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
 {
-
-
-    /**
-     * Initialize the session object.
-     *
-     * @param string $appSecret Application key/ Installation key
-     */
-    public function __construct( $appSecret = 'mumsys' );
-
-
     /**
      * Returns the value of given key.
      *
@@ -45,7 +33,6 @@ interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
      * @return mixed Stored value or $default if key was not set.
      */
     public function get( $key, $default = null );
-
 
     /**
      * Returns the current session data based on the current session id.
@@ -57,7 +44,6 @@ interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
      */
     public function getCurrent();
 
-
     /**
      * Returns the complete active session data.
      *
@@ -68,7 +54,6 @@ interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
      * @return mixed Stored value
      */
     public function getAll();
-
 
     /**
      * Register a new session key.
@@ -82,7 +67,6 @@ interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
      */
     public function register( $key, $value = null );
 
-
     /**
      * Replace/sets the value for the given key.
      *
@@ -90,7 +74,6 @@ interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
      * @param mixed $value Value to be stored
      */
     public function replace( $key, $value = null );
-
 
     /**
      * Removes registered entry.
@@ -101,7 +84,6 @@ interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
      */
     public function remove( $key );
 
-
     /**
      * Returns the session ID.
      *
@@ -109,10 +91,8 @@ interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
      */
     public function getID();
 
-
     /**
      * Clears and unsets the current session
      */
     public function clear();
-
 }

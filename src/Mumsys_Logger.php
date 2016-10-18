@@ -1,25 +1,21 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Logger
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Logger
- * @version     3.1.0
  * 0.1 Created: 2005-01-01
  */
-/* }}} */
-
 
 /**
- * DEPRICATED! see Mumsys_Logger_File
+ * @DEPRICATED! see Mumsys_Logger_File
  *
  * @todo Remove public properties
  * @todo implement writer interface? ; alle dazugeörigen parameter (lofile, log
@@ -30,7 +26,7 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Logger
- * @uses Mumsys_File Writer class
+ * @uses Mumsys_File Writer_Interface
  */
 class Mumsys_Logger
     extends Mumsys_Logger_Abstract
@@ -62,7 +58,18 @@ class Mumsys_Logger
      * @var integer
      */
     protected $_maxfilesize = 0;
+    private $_bufferOutputMessage = '';
+    private $_bufferLogMessage = '';
 
+    public function getLastLog( $param )
+    {
+        return $this->_bufferLogMessage;
+    }
+
+    public function getLastMessage()
+    {
+        return $this->_bufferOutputMessage;
+    }
 
     /**
      * Initialize the logger object
@@ -92,23 +99,23 @@ class Mumsys_Logger
     {
         parent::__construct($options, $writer);
 
-        if (empty($options['logfile'])) {
+        if ( empty($options['logfile']) ) {
             $this->_logfile = '/tmp/' . basename(__FILE__) . '_' . date('Y-m-d', time());
         } else {
             $this->_logfile = $options['logfile'];
         }
 
-        if (empty($options['way'])) {
+        if ( empty($options['way']) ) {
             $this->_logway = $options['way'] = 'a';
         } else {
-            $this->_logway = (string)$options['way'];
+            $this->_logway = (string) $options['way'];
         }
 
-        if (isset($options['maxfilesize'])) {
+        if ( isset($options['maxfilesize']) ) {
             $this->_maxfilesize = $options['maxfilesize'];
         }
 
-        if (!$writer) {
+        if ( !$writer ) {
             $fileOptions = array(
                 'file' => $this->_logfile,
                 'way' => $this->_logway
@@ -124,11 +131,10 @@ class Mumsys_Logger
         /** @todo to be removed, to set in writer class? */
         $message = $this->checkMaxFilesize();
 
-        if ($message) {
+        if ( $message ) {
             $this->log($message, Mumsys_Logger_Abstract::INFO);
         }
     }
-
 
     /**
      * Return the logfile property, the location of the logfile.
@@ -140,6 +146,46 @@ class Mumsys_Logger
         return $this->_logfile;
     }
 
+    public function getOutputLevelName( $level )
+    {
+        if ( !isset($this->_loglevels[$level]) ) {
+            $status = 'unknown';
+        } else {
+            $status = $this->_loglevels[$level];
+        }
+
+        return $status;
+
+        switch ( $status )
+        {
+            case 'INFO':
+                $color = "[42m"; //Green background
+                break;
+
+            case "EMERG":
+            case "ALERT":
+            case 'ERR':
+                $color = "[41m"; //Red background
+                break;
+
+            case "CRIT":
+            case "WARN":
+                $color = "[43m"; //Yellow background
+                break;
+
+            case "NOTE":
+            case 'NOTICE':
+                $color = "[44m"; //Blue background
+                break;
+
+            case 'DEBUG':
+            default:
+                $color = '[41m';
+        }
+
+        $chr27 = chr(27);
+        return sprintf('%1$s%2$s%3$s%4$s[0m', $chr27, $color, $this->_loglevels[$level], $chr27);
+    }
 
     /**
      * Checks if the max filesize reached and drops the logfile.
@@ -151,8 +197,8 @@ class Mumsys_Logger
     public function checkMaxFilesize()
     {
         $message = false;
-        if ($this->_maxfilesize) {
-            if (!($this->_verbose || $this->_debug) && ($fsize = @filesize($this->_logfile)) > $this->_maxfilesize) {
+        if ( $this->_maxfilesize ) {
+            if ( !($this->_verbose || $this->_debug) && ($fsize = @filesize($this->_logfile)) > $this->_maxfilesize ) {
                 unlink($this->_logfile);
                 $message = 'Max filesize reached. Log purged now';
             }

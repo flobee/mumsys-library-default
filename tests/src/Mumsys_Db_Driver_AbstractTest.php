@@ -1,27 +1,36 @@
 <?php
 
+
 class Mumsys_Db_Driver_Testdummy
     extends Mumsys_Db_Driver_Abstract
 {
-    public function _setError($message, $code=null, $prev=null)
+
+
+    public function _setError( $message, $code = null, $prev = null )
     {
-        return [$message,$code,$prev];
+        return [$message, $code, $prev];
     }
+
+
     public function close()
     {
         return true;
     }
+
 }
+
 
 /**
  * Mumsys_Db_Driver_Abstract Test
  */
-class Mumsys_Db_Driver_AbstractTest extends MumsysTestHelper
+class Mumsys_Db_Driver_AbstractTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Db_Driver_Testdummy
      */
     protected $_object;
+
     /**
      * @var Mumsys_Context
      */
@@ -37,7 +46,7 @@ class Mumsys_Db_Driver_AbstractTest extends MumsysTestHelper
     {
         $this->_context = new Mumsys_Context();
         $this->_configs = MumsysTestHelper::getConfigs();
-        $this->_configs['database']['type'] = 'Testdummy';//mysqli
+        $this->_configs['database']['type'] = 'Testdummy'; //mysqli
 
         $this->_object = new Mumsys_Db_Driver_Testdummy($this->_context, $this->_configs['database']);
     }
@@ -60,6 +69,7 @@ class Mumsys_Db_Driver_AbstractTest extends MumsysTestHelper
     {
         $x = new Mumsys_Db_Driver_Testdummy($this->_context, $this->_configs['database']);
     }
+
 
     /**
      * @covers Mumsys_Db_Driver_Abstract::__destruct
@@ -133,11 +143,12 @@ class Mumsys_Db_Driver_AbstractTest extends MumsysTestHelper
     public function testgetQueryCompareValues()
     {
         $expected = array(
-            'AND' => array( _CMS_AND, _CMS_AND ),
-            'OR' => array( _CMS_OR, _CMS_OR ),
+            'AND' => array(_CMS_AND, _CMS_AND),
+            'OR' => array(_CMS_OR, _CMS_OR),
         );
         $this->assertEquals($expected, $this->_object->getQueryCompareValues());
     }
+
 
     /**
      * @covers Mumsys_Db_Driver_Abstract::replaceQueryCompareValues
@@ -145,8 +156,8 @@ class Mumsys_Db_Driver_AbstractTest extends MumsysTestHelper
     public function testReplaceQueryCompareValues()
     {
         $expected = array(
-            'OR' => array( _CMS_OR, _CMS_OR ),
-            'AND' => array( _CMS_AND, _CMS_AND ),
+            'OR' => array(_CMS_OR, _CMS_OR),
+            'AND' => array(_CMS_AND, _CMS_AND),
         );
         $this->_object->replaceQueryCompareValues($expected);
 
@@ -166,23 +177,23 @@ class Mumsys_Db_Driver_AbstractTest extends MumsysTestHelper
     public function testGetQueryOperators()
     {
         $expected1 = array(
-            '=' => array( '==', _CMS_ISEQUAL ),
-            '>' => array( '&gt;', _CMS_ISGREATERTHAN ),
-            '<' => array( '&lt;', _CMS_ISLESSTHAN ),
-            '>=' => array( '&gt;=', _CMS_ISGREATERTHANOREQUAL ),
-            '<=' => array( '&lt;=', _CMS_ISLESSTHANOREQUAL ),
-            '!=' => array( '!=', _CMS_ISNOTEQUAL ),
-            'LIKE' => array( _CMS_CONTAINS, _CMS_CONTAINS ),
-            'NOTLIKE' => array( _CMS_CONTAINS_NOT, _CMS_CONTAINS_NOT ),
-            'xLIKE' => array( _CMS_ENDSWITH, _CMS_ENDSWITH ),
-            'xNOTLIKE' => array( _CMS_ENDSNOTWITH, _CMS_ENDSNOTWITH ),
-            'LIKEx' => array( _CMS_BEGINSWITH, _CMS_BEGINSWITH ),
-            'NOTLIKEx' => array( _CMS_BEGINSNOTWITH, _CMS_BEGINSNOTWITH ),
+            '=' => array('==', _CMS_ISEQUAL),
+            '>' => array('&gt;', _CMS_ISGREATERTHAN),
+            '<' => array('&lt;', _CMS_ISLESSTHAN),
+            '>=' => array('&gt;=', _CMS_ISGREATERTHANOREQUAL),
+            '<=' => array('&lt;=', _CMS_ISLESSTHANOREQUAL),
+            '!=' => array('!=', _CMS_ISNOTEQUAL),
+            'LIKE' => array(_CMS_CONTAINS, _CMS_CONTAINS),
+            'NOTLIKE' => array(_CMS_CONTAINS_NOT, _CMS_CONTAINS_NOT),
+            'xLIKE' => array(_CMS_ENDSWITH, _CMS_ENDSWITH),
+            'xNOTLIKE' => array(_CMS_ENDSNOTWITH, _CMS_ENDSNOTWITH),
+            'LIKEx' => array(_CMS_BEGINSWITH, _CMS_BEGINSWITH),
+            'NOTLIKEx' => array(_CMS_BEGINSNOTWITH, _CMS_BEGINSNOTWITH),
         );
         $expected2 = array('=' => 'eg');
 
         $actual1 = $this->_object->getQueryOperators();
-        $this->_object->replaceQueryOperators(array('='=>'eg'));
+        $this->_object->replaceQueryOperators(array('=' => 'eg'));
         $actual2 = $this->_object->getQueryOperators();
 
         $this->assertEquals($expected1, $actual1);
@@ -207,6 +218,7 @@ class Mumsys_Db_Driver_AbstractTest extends MumsysTestHelper
         $this->assertEquals($expected, $this->_object->getQuerySortations());
     }
 
+
     /**
      * @covers Mumsys_Db_Driver_Abstract::getQuerySortations
      * @covers Mumsys_Db_Driver_Abstract::replaceQuerySortations
@@ -225,7 +237,6 @@ class Mumsys_Db_Driver_AbstractTest extends MumsysTestHelper
         $this->assertNull($x[1]);
         $this->assertNull($x[2]);
     }
-
 
 
     /**
@@ -267,6 +278,7 @@ class Mumsys_Db_Driver_AbstractTest extends MumsysTestHelper
         $this->_object->setThrowErrors(0);
         $this->assertFalse($this->_object->getThrowErrors());
     }
+
 
     /**
      * @covers Mumsys_Db_Driver_Abstract::getDebugMode

@@ -1,20 +1,18 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Context
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2014 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Context
  * Created: 2014-01-08
  */
-/* }}} */
 
 
 /**
@@ -44,35 +42,35 @@ class Mumsys_Context
      */
     private $_config = array();
 
-
     /**
      * Returns the config object.
      *
-     * @return Mumsys_Config
+     * @return Mumsys_Config_Interface
+     *
      * @throws Mumsys_Exception if config was not set
      */
     public function getConfig()
     {
-        return $this->_get('Mumsys_Config');
+        return $this->_get('Mumsys_Config_Interface');
     }
-
 
     /**
      * Register the default config object.
      *
-     * @param Mumsys_Config $config
+     * @param Mumsys_Config_Interface $config
+     *
      * @throws Mumsys_Exception if config was already set
      */
-    public function registerConfig( Mumsys_Config $config )
+    public function registerConfig( Mumsys_Config_Interface $config )
     {
-        $this->_register('Mumsys_Config', $config);
+        $this->_register('Mumsys_Config_Interface', $config);
     }
-
 
     /**
      * Returns the permissions object. ACL handling
      *
      * @return Mumsys_Permissions_Interface Returns the Mumsys_Permissions object
+     *
      * @throws Mumsys_Exception Throws exception if object was not set
      */
     public function getPermissions()
@@ -80,11 +78,11 @@ class Mumsys_Context
         return $this->_get('Mumsys_Permissions_Interface');
     }
 
-
     /**
      * Sets the default permissions object. ACL handling
      *
      * @param Mumsys_Permissions $permissions
+     *
      * @throws Mumsys_Exception Throws exception if object was already set
      */
     public function registerPermissions( Mumsys_Permissions_Interface $permissions )
@@ -92,11 +90,11 @@ class Mumsys_Context
         $this->_register('Mumsys_Permissions_Interface', $permissions);
     }
 
-
     /**
      * Returns the session object.
      *
      * @return Mumsys_Session_Interface Returns the Mumsys_Session object
+     *
      * @throws Mumsys_Exception Throws exception if object was not set
      */
     public function getSession()
@@ -104,18 +102,17 @@ class Mumsys_Context
         return $this->_get('Mumsys_Session_Interface');
     }
 
-
     /**
      * Register the default session object.
      *
      * @param Mumsys_Session_Interface $session Session object
+     *
      * @throws Mumsys_Exception Throws exception if object was already set
      */
     public function registerSession( Mumsys_Session_Interface $session )
     {
         $this->_register('Mumsys_Session_Interface', $session);
     }
-
 
     /**
      * Returns the database object.
@@ -128,7 +125,6 @@ class Mumsys_Context
         return $this->_get('Mumsys_Db');
     }
 
-
     /**
      * Sets the default database object.
      *
@@ -140,7 +136,6 @@ class Mumsys_Context
         $this->_register('Mumsys_Db', $db);
     }
 
-
     /**
      * Replace the database object.
      *
@@ -151,11 +146,11 @@ class Mumsys_Context
         $this->_replace('Mumsys_Db', $db);
     }
 
-
     /**
      * Returns the mumsys controller object.
      *
      * @return Mumsys_Controller_Backend Returns the mumsys backend controller object
+     *
      * @throws Mumsys_Exception If controller was not set
      */
     public function getControllerBackend()
@@ -163,18 +158,17 @@ class Mumsys_Context
         return $this->_get('Mumsys_Controller_Backend');
     }
 
-
     /**
      * Sets the default backend controller object.
      *
      * @param Mumsys_Controller_Backend $controller Backend controller object
+     *
      * @throws Mumsys_Exception Throws exception if object was already set
      */
     public function registerControllerBackend( Mumsys_Controller_Backend $controller )
     {
         $this->_register('Mumsys_Controller_Backend', $controller);
     }
-
 
     /**
      * Returns the display object. The the view! for the set and requested
@@ -183,6 +177,7 @@ class Mumsys_Context
      * navigation is used.
      *
      * @return Mumsys_Mvc_Display_Control_Interface Returns display object
+     *
      * @throws Mumsys_Exception If controller was not set
      */
     public function getDisplay()
@@ -190,19 +185,18 @@ class Mumsys_Context
         return $this->_get('Mumsys_Mvc_Display_Control_Interface');
     }
 
-
     /**
      * Sets the display controller object. The view.
      * Note: When calling Mumsys_Display_Factory->load() it will be set automatically!
      *
      * @param Mumsys_Mvc_Display_Control_Interface $display object
+     *
      * @throws Mumsys_Exception Throws exception if object was already set
      */
     public function registerDisplay( Mumsys_Mvc_Display_Control_Interface $display )
     {
         $this->_register('Mumsys_Mvc_Display_Control_Interface', $display);
     }
-
 
     /**
      * Replaces the display controller object. The view.
@@ -216,11 +210,29 @@ class Mumsys_Context
         $this->_replace('Mumsys_Mvc_Display_Control_Interface', $display);
     }
 
+    /**
+     * Alias method for getDisplay.
+     * @link getDisplay()
+     */
+    public function getControllerFrontend()
+    {
+        return $this->_get('Mumsys_Mvc_Display_Control_Interface');
+    }
+
+    /**
+     * Alias method for registerDisplay.
+     * @see registerDisplay()
+     */
+    public function registerControllerFrontend( Mumsys_Mvc_Display_Control_Interface $controller )
+    {
+        $this->_register('Mumsys_Mvc_Display_Control_Interface', $controller);
+    }
 
     /**
      * Returns the translation object.
      *
      * @return Mumsys_I18n_Interface Returns display object
+     *
      * @throws Mumsys_Exception If object was not set
      */
     public function getTranslation()
@@ -228,11 +240,11 @@ class Mumsys_Context
         return $this->_get('Mumsys_I18n_Interface');
     }
 
-
     /**
      * Sets the translation object.
      *
      * @param Mumsys_I18n_Interface $translate Translation object
+     *
      * @throws Mumsys_Exception Throws exception if object was already set
      */
     public function registerTranslation( Mumsys_I18n_Interface $translate )
@@ -240,18 +252,17 @@ class Mumsys_Context
         $this->_register('Mumsys_I18n_Interface', $translate);
     }
 
-
     /**
      * Returns the logger object.
      *
      * @return Mumsys_Logger Returns the logger object
+     *
      * @throws Mumsys_Exception If class was not set
      */
     public function getLogger()
     {
         return $this->_get('Mumsys_Logger_Interface');
     }
-
 
     /**
      * Sets the logger object.
@@ -266,42 +277,30 @@ class Mumsys_Context
 
 
     /**
-     * @see getDisplay()
-     */
-    public function getControllerFrontend()
-    {
-        return $this->_get('Mumsys_Mvc_Display_Control_Interface');
-    }
-
-
-    /**
-     * @see registerDisplay()
-     */
-    public function registerControllerFrontend( Mumsys_Mvc_Display_Control_Interface $controller )
-    {
-        $this->_register('Mumsys_Mvc_Display_Control_Interface', $controller);
-    }
-
-
-    /**
      * Returns a generic, already registered, interface/ object.
      *
      * @param string $interface Name of the Interface the object implements
      * @param mixed $default Default value to return if interface not exists
      *
-     * @return object Retuns the requested interface
-     * @throws Mumsys_Exception Throws exception if the object was not set befor
+     * @return object Retuns the requested interface/object
+     * @throws Mumsys_Exception Throws exception if the object was not set before and if default was not set
      */
     public function getGeneric( $interface, $default = null )
     {
         try {
-            return $this->_get($interface);
-        } catch (Exception $e) {
-            $message = sprintf('Generic interface "%1$s" not found', $interface);
-            throw new Mumsys_Exception($message);
+            $return = $this->_get($interface);
         }
-    }
+        catch ( Exception $e ) {
+            if ( $default === null ) {
+                $message = sprintf('Generic interface "%1$s" not found. Message: "%2$s"', $interface, $e->getMessage());
+                throw new Mumsys_Exception($message);
+            } else {
+                $return = $default;
+            }
+        }
 
+        return $return;
+    }
 
     /**
      * Registers a new interface/ object.
@@ -314,14 +313,13 @@ class Mumsys_Context
      */
     public function registerGeneric( $interface, $value )
     {
-        if (!is_object($value) || !is_a($value, $interface)) {
+        if ( !is_object($value) || !is_a($value, $interface) ) {
             $message = sprintf('Value does not implement the interface "%1$s"', $interface);
             throw new Mumsys_Exception($message);
         }
 
         $this->_register($interface, $value);
     }
-
 
     /**
      * Returns the object by given key.
@@ -332,13 +330,12 @@ class Mumsys_Context
      */
     private function _get( $key )
     {
-        if (!isset($this->_config[$key])) {
+        if ( !isset($this->_config[$key]) ) {
             throw new Mumsys_Exception('"' . $key . '" not set');
         }
 
         return $this->_config[$key];
     }
-
 
     /**
      * Register/ set initially the object by given key.
@@ -349,13 +346,12 @@ class Mumsys_Context
      */
     private function _register( $key, $value )
     {
-        if (array_key_exists($key, $this->_config)) {
+        if ( array_key_exists($key, $this->_config) ) {
             throw new Mumsys_Exception('"' . $key . '" already set');
         }
 
         $this->_config[$key] = $value;
     }
-
 
     /**
      * Replaces the object by given key. If the object already exists it will be replaced.

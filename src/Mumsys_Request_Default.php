@@ -5,9 +5,9 @@
  * Mumsys_Request_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -18,7 +18,7 @@
 
 
 /**
- * Request class to get input parameters.
+ * Default request class to get input parameters $_GET, $POST, $_COOKIE.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -49,8 +49,6 @@ class Mumsys_Request_Default
     /**
      * Initialise the request object using _GET and _POST arrays.
      *
-     * After init the global arrays _POST and _GET will be reset!
-     *
      * @param array $options Optional initial options e.g.:
      * 'programKey','controllerKey', 'actionKey',
      */
@@ -67,8 +65,6 @@ class Mumsys_Request_Default
             $this->_input += $_POST;
             $this->_inputPost = $_POST;
         }
-
-        $_GET = $_POST = array();
     }
 
 

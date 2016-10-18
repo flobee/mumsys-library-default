@@ -17,6 +17,5 @@ setlocale(LC_ALL, 'POSIX');// "C" style
 require_once  __DIR__ . '/../src/Mumsys_Loader.php';
 spl_autoload_register(array('Mumsys_Loader', 'autoload'));
 
-require __DIR__ . '/testconstants.php';
-
+require_once __DIR__ . '/testconstants.php';
 require_once __DIR__ . '/MumsysTestHelper.php';

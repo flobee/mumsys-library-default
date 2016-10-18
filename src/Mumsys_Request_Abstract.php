@@ -1,20 +1,17 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Request_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Request
- * @filesource
  */
-/* }}} */
 
 
 /**
@@ -334,11 +331,12 @@ abstract class Mumsys_Request_Abstract
      * If value is NULL it will be unset if key exists
      *
      * @param array $array List of key/value pairs to set
+     * 
      * @return self
      */
     public function setParams( array $array )
     {
-        $this->_input = $this->_input + (array)$array;
+        $this->_input = $this->_input + $array;
 
         foreach ($array as $key => $value) {
             if ($value === null) {

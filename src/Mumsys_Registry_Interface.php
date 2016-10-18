@@ -1,9 +1,7 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
- * Mumsys_Registry
+ * Mumsys_Registry_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
@@ -15,9 +13,7 @@
  * @subpackage  Mumsys_Registry
  * @version     1.0.0
  * Created: 2014-01-07
- * @filesource
  */
-/*}}}*/
 
 
 /**
@@ -40,6 +36,7 @@ interface Mumsys_Registry_Interface
      */
     public static function replace( $key, $value );
 
+
     /**
      * Registers the value to the registry by given key.
      *
@@ -49,6 +46,7 @@ interface Mumsys_Registry_Interface
      * @throws Mumsys_Registry_Exception Throws exception if key already exists
      */
     public static function register( $key, $value );
+
 
     /**
      * Sets value to the registry by given key and value.
@@ -61,6 +59,7 @@ interface Mumsys_Registry_Interface
      */
     public static function set( $key, $value );
 
+
     /**
      * Returns the value by given key.
      *
@@ -68,6 +67,7 @@ interface Mumsys_Registry_Interface
      * @return mixed Returns the value which was set
      */
     public static function get( $key, $default = null );
+
 
     /**
      * Removes registered entry.
@@ -77,5 +77,4 @@ interface Mumsys_Registry_Interface
      * @throws Mumsys_Registry_Exception Throws exception if key not exists
      */
     public static function remove( $key );
-
 }

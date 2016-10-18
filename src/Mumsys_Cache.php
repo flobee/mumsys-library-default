@@ -1,27 +1,24 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Cache
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Cache
  * Created: 2013-12-10
  */
-/* }}} */
 
 
 /**
+ * Class for standard file caching
  * @deprecated since version 1.1.1
  * Use Mumsys_Cache_Default or Mumsys_Cache_File
- *
- * Class for standard file caching
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -79,7 +76,7 @@ class Mumsys_Cache
     {
         $filename = $this->_getFilename();
 
-        if ( $fp = fopen($filename, 'xb') ) {
+        if ( $fp = fopen($filename, 'wb') ) {
             if ( flock($fp, LOCK_EX) ) {
                 fwrite($fp, $data);
             }

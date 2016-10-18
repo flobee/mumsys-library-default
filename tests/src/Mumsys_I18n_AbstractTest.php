@@ -1,9 +1,11 @@
 <?php
 
+
 /**
  * Mumsys_I18n_Abstract Test
  */
-class Mumsys_I18n_AbstractTest extends MumsysTestHelper
+class Mumsys_I18n_AbstractTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_I18n_Default
@@ -36,6 +38,7 @@ class Mumsys_I18n_AbstractTest extends MumsysTestHelper
     {
         $this->_object = null;
     }
+
 
     /**
      * For code coverage.
@@ -89,8 +92,8 @@ class Mumsys_I18n_AbstractTest extends MumsysTestHelper
             ),
         );
 
-        foreach ($listOfLocales as $number => $locales) {
-            foreach ($locales as $lc) {
+        foreach ( $listOfLocales as $number => $locales ) {
+            foreach ( $locales as $lc ) {
                 $this->_object->setlocale($lc);
                 $this->assertEquals('Flower', $this->_object->_dtn('domain', 'Flower', 'Flowers', $number));
             }
@@ -99,6 +102,7 @@ class Mumsys_I18n_AbstractTest extends MumsysTestHelper
         $this->_object->setlocale('xxxx');
         $this->assertEquals('Flower', $this->_object->_dtn('domain', 'Flower', 'Flowers', 1));
     }
+
 
     /**
      * @covers Mumsys_I18n_Abstract::getVersion
@@ -113,7 +117,7 @@ class Mumsys_I18n_AbstractTest extends MumsysTestHelper
 
         $possible = $this->_object->getVersions();
 
-        foreach ($this->_versions as $must => $value) {
+        foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }

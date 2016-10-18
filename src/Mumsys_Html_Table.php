@@ -1,8 +1,7 @@
 <?php
 
-/* {{{ */
 /**
- * Mumsys_Html_Table
+ * {{{ Mumsys_Html_Table
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -12,15 +11,14 @@
  * @category Mumsys
  * @package Mumsys_Library
  * @subpackage Mumsys_Html
- */
-/* }}} */
+ }}} */
 
 
 /**
  * CHANGELOG:
  * 2016
  *      Merge to git, fixes code, improves code, also for php 7, drops php4 support
- * 
+ *
  * 2007-08-18
  * 		Added global row and col attributes:
  * 		$table->setRowAttributes('_', array('style'=>'color:red;', 'nowrap'=>'nowrap'));
@@ -38,8 +36,11 @@
 // $objTable->setHeadlines( $headlines );
 //
 // $objTable->setAltRowColor( array('#000000','#FFFFFF') );
-// if the value in this col has changed than the row befor, then the color will change
+//
+// if the value in this col (columne 0) has changed than the row befor, then
+// the color will change
 // $objTable->setAltRowColor($arrayColors, $colKeyChange=0);
+//
 // $objTable->setRowAttributes($row, array('class'=>'rowclass'))
 // $objTable->setColAttributes($row,$col, array('width'=>'100'))
 // $tabledata = array(0=>array('col1'=>'val1','col2'=>'val3','col3'=>'val3...'));
@@ -53,8 +54,9 @@
 /**
  * Class for generating a Html-Table
  *
- * @category mumsys_library
- * @package mumsys_library
+ * @category Mumsys
+ * @package Mumsys_Library
+ * @subpackage Mumsys_Html
  */
 class Mumsys_Html_Table
     extends Mumsys_Xml_Abstract

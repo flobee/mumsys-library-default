@@ -89,23 +89,22 @@ abstract class Mumsys_I18n_Abstract
 	 * @license http://framework.zend.com/license/new-bsd New BSD License
      *
      * @param  integer $number Number to find the plural form
-     * @param  string  $locale Locale to use
      *
      * @return integer Number of the plural index
      */
-    public function getPluralIndex( $number, $locale )
+    public function getPluralIndex( $number )
     {
         $number = abs((int)$number);
 
-        if ($locale == 'pt_BR') {
-            $locale = 'xbr'; // temporary set a locale for brasilian
+        if ($this->_locale == 'pt_BR') {
+            $this->_locale = 'xbr'; // temporary set a locale for brasilian
         }
 
-        if (strlen($locale) > 3) {
-            $locale = substr($locale, 0, -strlen(strrchr($locale, '_')));
+        if (strlen($this->_locale) > 3) {
+            $this->_locale = substr($this->_locale, 0, -strlen(strrchr($this->_locale, '_')));
         }
 
-        switch ($locale) {
+        switch ($this->_locale) {
             case 'af':
             case 'az':
             case 'bn':

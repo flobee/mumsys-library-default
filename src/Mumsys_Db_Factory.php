@@ -63,14 +63,13 @@ class Mumsys_Db_Factory
     {
         try
         {
-            $tps = explode(':', $options['type']);
-            $cnt = count($tps);
+            $types = explode(':', $options['type']);
+            $cnt = count($types);
 
             if ($cnt != 2) {
                 throw new Mumsys_Db_Exception('Invalid Db driver. Can not create instance', 1);
             }
 
-            $types = $tps;
             $class = 'Mumsys_Db_Driver_' . ucwords($types[0]) .'_'. ucwords($types[1]);
             $object = new $class($context, $options);
         }

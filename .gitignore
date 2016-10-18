@@ -4,9 +4,12 @@ vendor/
 
 # Local configs
 config/autoload/*.local.php
-tests/config/credentials.php
+*/config/*.php
+
 # credentials.php
+tests/config/credentials.php
 tests/config/config4tests.php
+
 
 # Binary gettext files
 *.mo

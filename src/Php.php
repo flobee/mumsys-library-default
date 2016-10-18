@@ -1,23 +1,19 @@
 <?php
 
-/** {{{
- * MUMSYS 2 Library for Multi User Management Interface
- *
- * LICENSE
- *
- * All rights reseved
- * DO NOT COPY OR CHANGE ANY KIND OF THIS CODE UNTIL YOU  HAVE THE
- * WRITTEN/ BRIFLY PERMISSION FROM THE AUTOR, THANK YOU
- * -----------------------------------------------------------------------
- * @category mumsys_library
- * @package mumsys_library
- * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
- * @author Florian Blasel <info@flo-W-orks.com>
- * @see lib/mumsys2/class.Php.php
- * @version 0.1 - Created on 2006-04-30
- * $Id$
- * -----------------------------------------------------------------------
- * }}} */
+/* {{{ */
+/**
+ * Php
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
+ * ----------------------------------------------------------------------------
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ * ----------------------------------------------------------------------------
+ * @category    Mumsys
+ * @package     Php
+ * Created on 2006-04-30
+ */
+/* }}} */
 
 
 /**
@@ -26,7 +22,7 @@
  * @see http://us2.php.net/manual/en/function.phpversion.php
  * @see http://us2.php.net/manual/en/reserved.constants.php#reserved.constants.core
  */
-if (!defined('PHP_VERSION_ID')) {
+if ( !defined('PHP_VERSION_ID') ) {
     $version = explode('.', PHP_VERSION);
     define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
 }
@@ -44,23 +40,11 @@ if (!defined('PHP_VERSION_ID')) {
 // For example, we may here define the PHP_VERSION_* constants thats
 // not available in versions prior to 5.2.7
 
-if (PHP_VERSION_ID < 50207) {
-    define('PHP_MAJOR_VERSION',   $version[0]);
-    define('PHP_MINOR_VERSION',   $version[1]);
+if ( PHP_VERSION_ID < 50207 ) {
+    define('PHP_MAJOR_VERSION', $version[0]);
+    define('PHP_MINOR_VERSION', $version[1]);
     define('PHP_RELEASE_VERSION', $version[2]);
 }
-
-
-
-/** {{{
- * Exception thrown by Php class.
- *
- * @category mumsys_library
- * @package mumsys_library
- * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
- * @author Florian Blasel <info@flo-W-orks.com>
- * }}} */
-class Php_Exception extends Exception {}
 
 
 /** {{{
@@ -74,14 +58,12 @@ class Php_Exception extends Exception {}
  * Example:
  * <code>
  * <?php
- * $value = Php::is_int('123');
+ * $value = Php::float('123');
  * ?>
  * </code>
  *
- * @category mumsys_library
- * @package mumsys_library
- * @see lib/mumsys2/class.Php.php
- *
+ * @category    Mumsys
+ * @package     Php
  * }}} */
 class Php
 {
@@ -96,6 +78,7 @@ class Php
      */
     public static $getMagicQuotesGpc;
 
+
     /**
      * Initialisation of PHP class
      */
@@ -105,29 +88,34 @@ class Php
         self::$getMagicQuotesGpc = false;
     }
 
+
     /**
-     * Getter
+     * Magic getter
      *
-     * @param sstring $k Key to test class property
+     * @param string $key Key to test class property
      * @return mixed Returns the value by given key
      */
-    public function __get($k)
+    public function __get( $key )
     {
-        $r = null;
-        switch ( $k ) {
+        $return = null;
+        switch ( $key )
+        {
             case 'os':
-                $r = self::$os; //strtoupper(substr(PHP_OS,0,3));
+                $return = self::$os;
                 break;
             case 'get_magic_quotes_gpc':
-                $r = false;
+                $return = false;
                 break;
         }
-        return $r;
+
+        return $return;
     }
 
-    public function __set($k, $v)
+
+    public function __set( $k, $v )
     {
-        switch ( $k ) {
+        switch ( $k )
+        {
             case 'get_magic_quotes_gpc':
                 self::$getMagicQuotesGpc = $v;
                 break;
@@ -137,34 +125,39 @@ class Php
         }
     }
 
+
     /**
      * php >= 5.3.0
      * public Mixed __call():
      * Re-route all function calls to the PHP-functions
+     *
+     * Note: Don't use it! if you have a better/ different solution. Performance reasons!
      */
-    public static function __callStatic($function, $arguments)
+    public static function __callStatic( $function, $arguments )
     {
-        // switch($function) {}
         return call_user_func_array($function, $arguments);
     }
 
+
     /**
      * Re-route php function call to the PHP-functions.
-     * Note: Don't use it! if you have a better/ different solution.
+     * Note: Don't use it! if you have a better/ different solution. Performance reasons!
      *
      * @param string $function Function to call
      * @param mixed $arguments Mixed arguments
      * @return mixed
      */
-    public function __call($function, $arguments)
+    public function __call( $function, $arguments )
     {
         return call_user_func_array($function, $arguments);
     }
 
+
     // +-- start features ----------------------------------------
-    //
+
+
     // --- Variable handling Functions -----------------------------------------
-    //
+
 
     /**
      * Check if a value is an integer
@@ -173,35 +166,35 @@ class Php
      * @return integer|false Returns the casted interger value or false if value
      * is not a nummeric type
      */
-    public static function is_int($value)
+    public static function is_int( $value )
     {
         return (is_numeric($value) ? intval($value) == $value : false);
     }
 
+
     /**
-     * Check if a given value is a float value.
+     * Cast to float and check if a given value is a float value.
      * If the value contains colons or dot's the given value will be cleand to
      * be a tehnical value.
      * Note: Behavior belongs to setlocale().
      *
      * @see setlocale()
      *
-     * @param scalar $str
-     * @return float Returns the casted float value
+     * @param scalar $value
+     * @return boolean True on success or false
      */
-    public static function floatval($str)
+    public static function floatval( $value )
     {
-        if ( strstr($str, ',') ) {
-            $str = str_replace('.', '', $str); // replace dots (thousand seps) with blancs
-            $str = str_replace(',', '.', $str); // replace ',' with '.'
+        if ( strstr($value, ',') ) {
+            $value = str_replace('.', '', $value);  // replace dots (thousand seps) with blancs
+            $value = str_replace(',', '.', $value); // replace ',' with '.'
         }
 
-        return floatval($str);
+        return floatval($value);
     }
 
     //
     // --- Filesystem functions ------------------------------------------------
-    //
 
     /** {{{
      * Test if a file exists
@@ -220,7 +213,7 @@ class Php
      * exists; FALSE otherwise. This function will return FALSE for symlinks
      * pointing to non-existing files.
      * }}} */
-    public static function file_exists($url='')
+    public static function file_exists( $url = '' )
     {
         if ( empty($url) ) {
             return false;
@@ -230,8 +223,7 @@ class Php
         // scheme: http:// https:// ftp:// file:// php:// c:\ d:\ etc..
         $scheme = self::parseUrl($url, PHP_URL_SCHEME);
 
-        if ( !empty($scheme) && (PHP_VERSION_ID >= '50000') )
-        {
+        if ( (PHP_VERSION_ID >= '50000') && !empty($scheme) ) {
             if ( @fclose(@fopen($url, 'r')) ) {
                 return true;
             } else {
@@ -242,7 +234,6 @@ class Php
             return @file_exists($url);
         }
     }
-
 
     /*
       public static function url_exists($url) {
@@ -266,6 +257,8 @@ class Php
 
     /** {{{
      * Get the contens of a specified file
+     *
+     * @deprecated since version 2016-07-01
      *
      * This function is similar to file(), except that file_get_contents() returns
      * the file in a string, starting at the specified offset up to maxlen bytes.
@@ -295,10 +288,13 @@ class Php
      * If you don't need to use a custom context, you can skip this parameter by NULL.
      * @param <type> $offset
      * @param <type> $maxlen
-     * @return string Returns the contents of the given file
+     *
+     * @return string|false Returns the contents of the given file or false on error (too old php version for this)
      * }}} */
-    public static function file_get_contents($path, $flags=0, $streamContext=null, $offset=-1, $maxlen=-1)
+    public static function file_get_contents( $path, $flags = 0, $streamContext = null, $offset = -1, $maxlen = -1 )
     {
+        $data = false;
+
         if ( PHP_VERSION_ID >= '40300' ) {
             if ( $maxlen >= 0 ) {
                 $data = file_get_contents($path, $flags, $streamContext, $offset, $maxlen);
@@ -310,9 +306,6 @@ class Php
         return $data;
     }
 
-    //
-    // ---
-    //
 
     /**
      * Get a php.ini variable and return a more technical useable value
@@ -322,7 +315,7 @@ class Php
      * @param string $key Key to get from php.ini
      * @return string Returns the translated nummeric value if a nummeric value was detekted
      */
-    public static function ini_get($key)
+    public static function ini_get( $key )
     {
         $val = ini_get($key);
         $val = trim($val);
@@ -330,14 +323,15 @@ class Php
             return null;
         } else {
             $last = $val{strlen($val) - 1};
-            switch ( $last ) {
+            switch ( $last )
+            {
                 case 'k':
                 case 'K':
-                    return (int)$val * 1024;
+                    return (int) $val * 1024;
                     break;
                 case 'm':
                 case 'M':
-                    return (int)$val * 1048576;
+                    return (int) $val * 1048576;
                     break;
                 case 'g':
                 case 'G':
@@ -351,9 +345,10 @@ class Php
         }
     }
 
+
     //
     // --- String methodes -----------------------------------------------------
-    //
+
 
     /**
      * Quote string with slashes.
@@ -362,7 +357,7 @@ class Php
      * @param string $string String to add slashes if needed
      * @return string Returns the escaped string or the string
      */
-    public static function addslashes($string)
+    public static function addslashes( $string )
     {
         if ( self::$getMagicQuotesGpc ) {
             return $string;
@@ -370,6 +365,7 @@ class Php
             return addslashes($string);
         }
     }
+
 
     /**
      * Un-quotes a quoted string.
@@ -379,7 +375,7 @@ class Php
      * @return string Returns a string with backslashes stripped off.
      * \' becomes ' and so on. Double backslashes (\\) are made into a single backslash (\).
      */
-    public static function stripslashes($string)
+    public static function stripslashes( $string )
     {
         if ( self::$getMagicQuotesGpc ) {
             return stripslashes($string);
@@ -387,6 +383,7 @@ class Php
             return $string;
         }
     }
+
 
     /**
      * {{{ Check if a string is in another string.
@@ -402,7 +399,7 @@ class Php
      * haystack before the first occurrence of the needle.
      * @return string|false Returns the portion of string, or FALSE if needle is not found.
      * }}} */
-    public static function in_string($needle, $heystack, $insensitive=false, $beforeNeedle=false)
+    public static function in_string( $needle, $heystack, $insensitive = false, $beforeNeedle = false )
     {
         if ( $beforeNeedle ) {
             if ( $insensitive ) {
@@ -439,14 +436,15 @@ class Php
      * both; ENT_NOQUOTES no quote conversation
      * @return string
      * }}} */
-    public static function htmlspecialchars($str='', $style=ENT_QUOTES)
+    public static function htmlspecialchars( $str = '', $style = ENT_QUOTES )
     {
         // use forward look up to only convert & not &#abc; and not &amp;
         $str = preg_replace('/&(?!(#[0-9]|amp)+;)/s', "&amp;", $str);
         //$str = preg_replace("/&(?![0-9a-z]+;)/s",'&amp;', $str );
         $str = str_replace('<', '&lt;', $str);
         $str = str_replace('>', '&gt;', $str);
-        switch ( $style ) {
+        switch ( $style )
+        {
             case ENT_COMPAT:
                 $str = str_replace('"', "&quot;", $str);
                 break;
@@ -470,7 +468,7 @@ class Php
      * both; ENT_NOQUOTES no quote conversation
      * @return stringreturns the re-converted html entity
      * }}} */
-    public static function xhtmlspecialchars($str='', $style=ENT_QUOTES)
+    public static function xhtmlspecialchars( $str = '', $style = ENT_QUOTES )
     {
         $str = str_replace('&amp;', '&', $str);
         $str = str_replace('&lt;', '<', $str);
@@ -504,7 +502,7 @@ class Php
      * @param string $s String to be check/added with <br> tags
      * @return string Returns nl2br  ( string $string  [, bool $is_xhtml=true] )
      */
-    public static function nl2br($string, $isXhtml=true)
+    public static function nl2br( $string, $isXhtml = true )
     {
         if ( $isXhtml ) {
             $r = '<br />';
@@ -512,9 +510,7 @@ class Php
             $r = '<br>';
         }
 
-        return strtr($string, array( "\r\n" => $r, "\r" => $r, "\n" => $r ));
-        // @todo \n -> <br/>\n; but: "<br/>\n" not to "<br/>\n<br />\n"
-        //return strtr($s, array("\r\n" => $r."\r\n", "\r" => $r."\r", "\n" => $r."\n"));
+        return strtr($string, array("\r\n" => $r, "\r" => $r, "\n" => $r));
     }
 
 
@@ -525,10 +521,10 @@ class Php
      * @param string $breakChar Element for the breakline eg: \n, \rn, \r; default: \n
      * @return string Returns the converted string
      */
-    public static function br2nl($string='', $breakChar="\n")
+    public static function br2nl( $string = '', $breakChar = "\n" )
     {
-        $search = array( '<br />', '<br/>', '<br>' );
-        $replace = array( $breakChar, $breakChar, $breakChar );
+        $search = array('<br />', '<br/>', '<br>');
+        $replace = array($breakChar, $breakChar, $breakChar);
         $result = str_replace($search, $replace, $string);
 
         return $result;
@@ -561,7 +557,7 @@ class Php
      *
      * @thows Php_Exception Throws exception if parseUrl would return false.
      * }}} */
-    public static function parseUrl($url, $component=null)
+    public static function parseUrl( $url, $component = null )
     {
         if ( isset($component) ) {
             $x = parse_url($url, $component);
@@ -604,7 +600,7 @@ class Php
      *
      * @throws Php_Exception Throws exception if string could not be converted.
      */
-    public static function parseStr($string)
+    public static function parseStr( $string )
     {
         $x = parse_str($string, $res);
 
@@ -630,16 +626,14 @@ class Php
      *
      * @return string The padded string
      */
-    public static function numberPad( $integer, $digits, $padString='0' )
+    public static function numberPad( $integer, $digits, $padString = '0' )
     {
-        return str_pad( (int)$integer, $digits, $padString, STR_PAD_LEFT);
+        return str_pad((int) $integer, $digits, $padString, STR_PAD_LEFT);
     }
-
 
     //
     // --- Array methodes ------------------------------------------------------
     //
-
 
     /**
      * Return the current element in an array by reference.
@@ -651,7 +645,7 @@ class Php
      * @see http://php.net/manual/en/function.current.php
      * @return mixed Returns the current value by reference
      */
-    public static function &current(&$s)
+    public static function &current( &$s )
     {
         return $s[key($s)];
     }
@@ -671,13 +665,14 @@ class Php
      * @return array Returns the result portion on difference or an empty array
      * for no changes between the arrays
      * }}} */
-    public static function compareArray(array $have=array(), array $totest=array(), $way='vals')
+    public static function compareArray( array $have = array(), array $totest = array(), $way = 'vals' )
     {
         $res = array();
         if ( $have !== $totest ) {
             foreach ( $have AS $keyA => $valA ) {
                 foreach ( $totest AS $keyB => $valB ) {
-                    switch ( $way ) {
+                    switch ( $way )
+                    {
                         case 'keys':
                             if ( $keyA === $keyB ) {
                                 if ( isset($res[$keyA]) ) {
@@ -721,12 +716,11 @@ class Php
      * @param array $haystack Array to be checked
      * @return boolean Returns true if the search key was found
      */
-    public static function array_keys_search_recursive_check($needle, $haystack)
+    public static function array_keys_search_recursive_check( $needle, $haystack )
     {
-        foreach ( $haystack as $key => $value)
-        {
-            if ( $key === $needle
-                || ( is_array($value) && ( $x=self::array_keys_search_recursive($needle, $value, true) ) ) ) {
+        foreach ( $haystack as $key => $value ) {
+            if ( $key === $needle || ( is_array($value) && ( $x = self::array_keys_search_recursive($needle, $value,
+                    true) ) ) ) {
                 return true;
             }
         }
@@ -766,13 +760,13 @@ class Php
      * @return array Returns a list of key->value pairs by reference  array indexes to the specified key. Last value
      * contains the searched $needle; if the array is empty nothing were found
      * }}} */
-    public static function array_keys_search_recursive($needle, & $haystack, $stopOnFirstMatch=false)
+    public static function array_keys_search_recursive( $needle, & $haystack, $stopOnFirstMatch = false )
     {
         $matches = array();
         foreach ( $haystack as $key => &$value ) {
 
             if ( $stopOnFirstMatch && $stopOnFirstMatch === 'break' ) {
-                 break;
+                break;
             }
             // echo ":$needle:=:$key: m: $stopOnFirstMatch\n";
             if ( $key === $needle ) {
@@ -812,28 +806,25 @@ class Php
     public static function array_merge_recursive()
     {
         if ( func_num_args() < 2 ) {
-            throw new Mumsys_Exception( __METHOD__ . ' needs at least two arrays as arguments' );
+            throw new Mumsys_Exception(__METHOD__ . ' needs at least two arrays as arguments');
         }
 
         $arrays = func_get_args();
         $merged = array();
 
-        while ( $arrays )
-        {
+        while ( $arrays ) {
             $array = array_shift($arrays);
 
             if ( !is_array($array) ) {
-                throw new Mumsys_Exception( __METHOD__ . ' given argument is not an array "' . $array . '"' );
+                throw new Mumsys_Exception(__METHOD__ . ' given argument is not an array "' . $array . '"');
             }
 
             if ( !$array ) {
                 continue;
             }
 
-            foreach ( $array as $key => $value )
-            {
-                if ( is_string($key) )
-                {
+            foreach ( $array as $key => $value ) {
+                if ( is_string($key) ) {
                     if ( is_array($value) && array_key_exists($key, $merged) && is_array($merged[$key]) ) {
                         $merged[$key] = self::array_merge_recursive($merged[$key], $value);
                     } else {
@@ -848,10 +839,9 @@ class Php
         return $merged;
     }
 
-
     //
     // --- Helper methodes -----------------------------------------------------
-    //
+
 
     /** {{{
      * Check free disk space (df -a)
@@ -879,7 +869,8 @@ class Php
      *
      * @return boolean Returns true if disk size exceed the limit or false for OK
      * }}} */
-    public static function check_disk_free_space($path='', $secCmp=60, $maxSizeCmp=92, Mumsys_Logger $logger, $cmd='df -a %1$s')
+    public static function check_disk_free_space( $path = '', $secCmp = 60, $maxSizeCmp = 92,
+        Mumsys_Logger_Interface $logger, $cmd = 'df -a %1$s' )
     {
         // key of exec result in $cmd
         $resultKey = 4;
@@ -892,16 +883,16 @@ class Php
         $cmd = sprintf($cmd, $path);
 
         $now = time();
-        $_v = array( );
+        $_v = array();
 
         static $paths = null;
         static $sizes = null;
         static $times = null;
 
         if ( $paths === null ) {
-            $paths = array( );
-            $sizes = array( );
-            $times = array( );
+            $paths = array();
+            $sizes = array();
+            $times = array();
         }
 
         $logger->log(__METHOD__ . ': using path: ' . $path, 6);
@@ -910,10 +901,11 @@ class Php
         $i = array_search($path, $paths);
         if ( $i !== false && isset($times[$i]) && ($now - $times[$i]) <= $secCmp ) {
             if ( $sizes[$i] >= $maxSizeCmp ) {
-                $logger->log(__METHOD__ . ': disc space overflow: ' . $sizes[$i] . ' (' . $maxSizeCmp . ' is max limit!)', 3);
+                $logger->log(__METHOD__ . ': disc space overflow: ' . $sizes[$i] . ' (' . $maxSizeCmp . ' is max limit!)',
+                    3);
                 return true;
             } else {
-                $logger->log(__METHOD__ .  'disc space OK: ' . $sizes[$i] . '% (' . $maxSizeCmp . ' is max limit!)', 6);
+                $logger->log(__METHOD__ . 'disc space OK: ' . $sizes[$i] . '% (' . $maxSizeCmp . ' is max limit!)', 6);
                 return false;
             }
         }
@@ -937,7 +929,7 @@ class Php
             }
             $logger->log($_v, 7);
 
-            $size = (int)$_v[$resultKey];
+            $size = (int) $_v[$resultKey];
 
             $paths[] = $path;
             $sizes[] = $size;
@@ -946,58 +938,25 @@ class Php
             if ( $size >= $maxSizeCmp ) {
                 $logger->log(
                     sprintf(
-                        __METHOD__ .  ': disc space overflow: size: "%1$s" (max limit: "%2$s") for path: "%3$s"',
-                        $sizes[$i],
-                        $maxSizeCmp,
-                        $path
+                        __METHOD__ . ': disc space overflow: size: "%1$s" (max limit: "%2$s") for path: "%3$s"',
+                        $sizes[$i], $maxSizeCmp, $path
                     ), 3
                 );
                 return true;
             } else {
                 $logger->log(
                     sprintf(
-                        __METHOD__ . 'disc space OK: size "%1$s" (max limit: "%2$s") for path: "%3$s"',
-                        $sizes[$i],
-                        $maxSizeCmp,
-                        $path
+                        __METHOD__ . 'disc space OK: size "%1$s" (max limit: "%2$s") for path: "%3$s"', $sizes[$i],
+                        $maxSizeCmp, $path
                     ), 6
                 );
 
                 return false;
             }
         } catch ( Exception $e ) {
-            // unknown error
-            $logger->log(__METHOD__ . ': Catchable exception. Message: "' . $e->getMessage() .'"', 0);
+            $logger->log(__METHOD__ . ': Catchable exception. Message: "' . $e->getMessage() . '"', 0);
             return true;
         }
-    }
-
-
-    /**
-     * Returns the amount of memory allocated to PHP
-     *
-     * if the operation system is Windows XP the tasklist will be used to fetch
-     * the usage
-     *
-     * @todo show error "not checkable"
-     *
-     * @return integer Returns the amount of memory, in bytes, that's currently
-     * being allocated to your PHP script.
-     */
-    public static function memory_get_usage()
-    {
-        $r = false;
-        if ( function_exists('memory_get_usage') ) {
-            $r = memory_get_usage();
-        }
-        /* else if (strpos( strtolower(getenv('OS'), 'windows') !== false))
-          {
-          // Windows workaround
-          $output = array();
-          exec('tasklist /FI "PID eq ' . getmypid() . '" /FO LIST', $output);
-          $r = substr($output[5], strpos($output[5], ':') + 1);
-          } */
-        return $r;
     }
 
 }

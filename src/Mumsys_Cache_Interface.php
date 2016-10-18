@@ -1,14 +1,13 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Cache_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Cache
@@ -26,8 +25,6 @@
  */
 interface Mumsys_Cache_Interface
 {
-
-
     /**
      * Initialize the cache object and sets group and id to store it.
      *
@@ -49,7 +46,9 @@ interface Mumsys_Cache_Interface
 
 
     /**
-     * Returns the cached contents.
+     * Returns the cached content.
+     *
+     * @return mixed Contens of the cache file
      */
     public function read();
 
@@ -66,9 +65,11 @@ interface Mumsys_Cache_Interface
 
 
     /**
-     * Removes the specific cache file.
+     * Removes the cache file.
      *
      * @return boolean True on success
+     *
+     * @throws Exception If remove of the cache fails
      */
     public function removeCache();
 
@@ -76,13 +77,15 @@ interface Mumsys_Cache_Interface
     /**
      * Sets the filename prefix.
      *
-     * @param string $prefix Filename Prefix to use
+     * @param string $prefix Filename prefix for the cache filename
      */
     public function setPrefix( $prefix );
 
 
     /**
      * Returns the filename prefix.
+     *
+     * @return string Prefix of the cache filename default: "cache_"
      */
     public function getPrefix();
 
@@ -97,6 +100,8 @@ interface Mumsys_Cache_Interface
 
     /**
      * Returns the path for cache files.
+     *
+     * @return string Path of the cache files
      */
     public function getPath();
 
@@ -107,11 +112,5 @@ interface Mumsys_Cache_Interface
      * @param boolean $flag True to enable the cache, false to disable
      */
     public function setEnable( $flag );
-
-
-    /**
-     * Builds a filename/path from group, id and path.
-     */
-    protected function _getFilename();
 
 }

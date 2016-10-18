@@ -1,9 +1,11 @@
 <?php
 
+
 /**
  * Mumsys_Context Test
  */
-class Mumsys_ContextTest extends MumsysTestHelper
+class Mumsys_ContextTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Context
@@ -17,14 +19,15 @@ class Mumsys_ContextTest extends MumsysTestHelper
      */
     protected function setUp()
     {
-        $this->_version = '1.1.3';
+        $this->_version = '1.1.4';
         $this->_versions = array(
             'Mumsys_Abstract' => '3.0.2',
             'Mumsys_Context' => $this->_version,
         );
-        $this->_logfile = '/tmp/'.basename(__FILE__) . '.log';
+        $this->_logfile = '/tmp/' . basename(__FILE__) . '.log';
         $this->_object = new Mumsys_Context();
     }
+
 
     /**
      * Tears down the fixture, for example, closes a network connection.
@@ -35,14 +38,16 @@ class Mumsys_ContextTest extends MumsysTestHelper
         @unlink($this->_logfile);
     }
 
+
     /**
      * @covers Mumsys_Context::_get
      */
     public function test_get()
     {
-        $this->setExpectedException('Mumsys_Exception', '"Mumsys_Config" not set');
+        $this->setExpectedException('Mumsys_Exception', '"Mumsys_Config_Interface" not set');
         $this->_object->getConfig();
     }
+
 
     /**
      * @covers Mumsys_Context::getConfig
@@ -53,8 +58,9 @@ class Mumsys_ContextTest extends MumsysTestHelper
         $config = new Mumsys_Config($this->_object, array('x' => 'y'));
         $this->_object->registerConfig($config);
 
-        $this->assertInstanceOf('Mumsys_Config', $this->_object->getConfig());
+        $this->assertInstanceOf('Mumsys_Config_Interface', $this->_object->getConfig());
     }
+
 
     /**
      * @covers Mumsys_Context::getPermissions
@@ -69,6 +75,7 @@ class Mumsys_ContextTest extends MumsysTestHelper
         $this->assertInstanceOf('Mumsys_Permissions_Interface', $this->_object->getPermissions());
     }
 
+
     /**
      * @covers Mumsys_Context::getSession
      * @covers Mumsys_Context::registerSession
@@ -77,14 +84,15 @@ class Mumsys_ContextTest extends MumsysTestHelper
      */
     public function testGetSetSession()
     {
-        $session = new Mumsys_Session();
+        $session = new Mumsys_Session_Default();
         $this->_object->registerSession($session);
 
-        $this->assertInstanceOf('Mumsys_Session', $this->_object->getSession());
+        $this->assertInstanceOf('Mumsys_Session_Interface', $this->_object->getSession());
 
         $this->setExpectedException('Mumsys_Exception', '"Mumsys_Session_Interface" already set');
         $this->_object->registerSession($session);
     }
+
 
     /**
      * @covers Mumsys_Context::getDisplay
@@ -99,7 +107,7 @@ class Mumsys_ContextTest extends MumsysTestHelper
         $actual1 = $this->_object->getDisplay();
 
         $factory = new Mumsys_Mvc_Display_Factory($this->_object);
-        $display2 = $factory->load(array(), 'Text','Default');
+        $display2 = $factory->load(array(), 'Text', 'Default');
         $this->_object->replaceDisplay($display2);
         $actual2 = $this->_object->getDisplay();
 
@@ -112,6 +120,7 @@ class Mumsys_ContextTest extends MumsysTestHelper
         $this->setExpectedException('Mumsys_Exception', '"Mumsys_Mvc_Display_Control_Interface" already set');
         $this->_object->registerDisplay($display2);
     }
+
 
     /**
      * @covers Mumsys_Context::getControllerFrontend
@@ -126,11 +135,12 @@ class Mumsys_ContextTest extends MumsysTestHelper
         $this->assertEquals($obj, $actual1);
     }
 
+
     /**
      * @covers Mumsys_Context::getTranslation
      * @covers Mumsys_Context::registerTranslation
      */
-    public function testGetTranslation()
+    public function testGetSetTranslation()
     {
         $expected1 = new Mumsys_I18n_Default('de');
         $this->_object->registerTranslation($expected1);
@@ -138,6 +148,7 @@ class Mumsys_ContextTest extends MumsysTestHelper
 
         $this->assertEquals($expected1, $actual1);
     }
+
 
     /**
      * @covers Mumsys_Context::getLogger
@@ -156,24 +167,28 @@ class Mumsys_ContextTest extends MumsysTestHelper
         $this->_object->registerLogger($logger);
     }
 
+
     /**
      * @covers Mumsys_Context::getGeneric
      * @covers Mumsys_Context::registerGeneric
      */
-    public function testGetSetGerneic()
+    public function testGetSetGeneric()
     {
         $interface = 'stdClass';
         $value = new stdClass();
         $this->_object->registerGeneric($interface, $value);
+
         $actual1 = $this->_object->getGeneric($interface, false);
         $actual2 = $this->_object->getGeneric('notExists', false);
 
         $this->assertEquals($value, $actual1);
         $this->assertFalse($actual2);
 
-        $this->setExpectedException('Mumsys_Exception', '"' . $interface . '" already set');
-        $this->_object->registerGeneric($interface, $value);
+        $message = '/(Generic interface "imNotSetInterface" not found)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_Exception', $message);
+        $this->_object->getGeneric('imNotSetInterface', null);
     }
+
 
     /**
      * @covers Mumsys_Context::getGeneric
@@ -187,6 +202,7 @@ class Mumsys_ContextTest extends MumsysTestHelper
         $this->setExpectedException('Mumsys_Exception', 'Value does not implement the interface "badInterface"');
         $this->_object->registerGeneric($interface, $value);
     }
+
 
     /**
      * Test abstract class
@@ -202,7 +218,7 @@ class Mumsys_ContextTest extends MumsysTestHelper
 
         $possible = $this->_object->getVersions();
 
-        foreach ($this->_versions as $must => $value) {
+        foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }

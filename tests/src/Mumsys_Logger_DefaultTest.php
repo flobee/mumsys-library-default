@@ -5,7 +5,7 @@
  * Mumsys_Logger_Default Test
  */
 class Mumsys_Logger_DefaultTest
-    extends MumsysTestHelper
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Logger
@@ -250,7 +250,7 @@ class Mumsys_Logger_DefaultTest
     {
         $possible = $this->_object->getVersions();
 
-        foreach ($this->_versions as $must => $value) {
+        foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }

@@ -1,21 +1,18 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_I18n_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_I18n
  * Created: 2013-12-17
- * @filesource
  */
-/*}}}*/
 
 
 /**
@@ -39,7 +36,7 @@ class Mumsys_I18n_Default
 
 
     /**
-     * Initialize the I18n interface
+     * Initialise the I18n default driver
      *
      * @param string $locale The locale string the translation belongs to e.g.
      * de or de_DE,
@@ -65,7 +62,7 @@ class Mumsys_I18n_Default
 
 
     /**
-     * Domain translation.
+     * Retruns translated string by given domain.
      *
      * @param string $domain Translation domain
      * @param string $string String to translate
@@ -79,8 +76,7 @@ class Mumsys_I18n_Default
 
 
     /**
-     * Domain translation plural version.
-     * Returns the translated string by the given plural and quantity.
+     * Returns the translated string by the given domain, plural and quantity.
      *
      * @param string $domain Translation domain
      * @param string $singular Singular string
@@ -92,9 +88,9 @@ class Mumsys_I18n_Default
      */
     public function _dtn( $domain, $singular, $plural, $number )
     {
-        $index = $this->getPluralIndex($number, $this->getLocale());
+        $index = $this->getPluralIndex($number);
 
-        if ($index >= 1) {
+        if ( $index >= 1 ) {
             return $plural;
         }
 

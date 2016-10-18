@@ -1,21 +1,17 @@
 <?php
 
-
-/* {{{ */
 /**
  * Mumsys_Mvc_Router_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
- * @filesource
  */
-/* }}} */
 
 
 /**
@@ -23,6 +19,9 @@
  *
  * In detail: Incomming parameters like program/module, controler/subprogram
  * action/subcalls are the parameters the router will working on in the mvc
+ *
+ * The default is to use standard parameters to map and call the requested
+ * program parts. E.g: program=User&controller=Index=action=show
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -36,5 +35,35 @@ class Mumsys_Mvc_Router_Default
      * Version ID information
      */
     const VERSION = '1.0.0';
+
+    /**
+     * @var Mumsys_Request_Interface
+     */
+    protected $_request;
+
+
+    /**
+     * Initialise the router object.
+     *
+     * @param Mumsys_Request_Interface Request interface
+     * @param array $options Optional initial options e.g.: 'programKey',
+     * 'controllerKey', 'actionKey' mappings to initialize the object
+     */
+    public function __construct( Mumsys_Request_Interface $request, array $options = array() )
+    {
+        $this->_request = $request;
+
+        if ( isset($options['programKey']) ) {
+            $this->setProgramKey($options['programKey']);
+        }
+
+        if ( isset($options['controllerKey']) ) {
+            $this->setControllerKey($options['controllerKey']);
+        }
+
+        if ( isset($options['actionKey']) ) {
+            $this->setActionKey($options['actionKey']);
+        }
+    }
 
 }

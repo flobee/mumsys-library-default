@@ -1,20 +1,18 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Session_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Session
  * Created: 2005-01-01, new in 2016-05-17
  */
-/* }}} */
 
 
 /**
@@ -26,6 +24,7 @@
  */
 abstract class Mumsys_Session_Abstract
     extends Mumsys_Abstract
+    implements Mumsys_Session_Interface
 {
     /**
      * Version ID information
@@ -36,13 +35,13 @@ abstract class Mumsys_Session_Abstract
      * Representation of the session for this use
      * @var array
      */
-    private $_records = array();
+    protected $_records = array();
 
     /**
      * ID of the session of this system.
      * @var string
      */
-    private $_id;
+    protected $_id;
 
 
     /**
@@ -52,10 +51,10 @@ abstract class Mumsys_Session_Abstract
      * @param string $sessionId ID of the current session
      * @param string $secret Application key/ Installation key
      */
-    public function __construct( array $records, $sessionId, $secret )
+    public function __construct( array $records, $sessionId, $appKey )
     {
         $this->_records = $records;
-        $this->_id = $secret . '_' . $sessionId;
+        $this->_id = $appKey . '_' . $sessionId;
     }
 
 

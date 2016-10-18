@@ -1,24 +1,22 @@
 <?php
 
-/* {{{ */
 /**
- * Mumsys_Session_Default
+ * Mumsys_Session
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Session
- * Created: 2005-01-01, new in 2016-05-17
+ * Created: 2005-01-01
  */
-/* }}} */
 
 
 /**
- * Default class to deal with the session using php session
+ * Class to deal with the php session
  *
  * @category    Mumsys
  * @package     Mumsys_Library
@@ -31,33 +29,15 @@ class Mumsys_Session_Default
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
-
-    /**
-     * Representation of the session befor it will be set to $_SESSION
-     * @var array
-     */
-    private $_records = array();
-
-    /**
-     * ID of the session of this system.
-     * @var string
-     */
-    private $_id;
-
-    /**
-     * Appication secret if you have serveral installations on the same server.
-     * @var string
-     */
-    private $_appSecret;
+    const VERSION = '1.1.0';
 
 
     /**
      * Initialize the session object.
      *
-     * @param string $appSecret Application domain or installation key
+     * @param string $appkey Application key the session belongs to.
      */
-    public function __construct( $appSecret = 'mumsys' )
+    public function __construct( $appkey = 'mumsys' )
     {
         /**
          * session_cache_limiter('private');
@@ -65,27 +45,16 @@ class Mumsys_Session_Default
          * session_cache_expire(180);
          * echo $cache_expire = session_cache_expire();
          */
-        $this->_appSecret = $appSecret;
-        $this->_records = array();
-
-        if (($tmp = session_id()) === '') {
+        if ( ($sessionId = session_id()) === '' ) {
             @session_start();
-            $tmp = session_id();
-        }
-        $this->_id = $tmp;
-
-        if (isset($_SESSION[$this->_id])) {
-            $this->_records = $_SESSION;
-        } else {
-            $this->_records = array();
+            $sessionId = session_id();
         }
 
-        parent::__construct($this->_records, $this->_id, $appSecret);
+        parent::__construct($_SESSION, $sessionId, $appkey);
     }
 
-
     /**
-     * Stores session informations to the session
+     * Stores session informations managed by this object.
      */
     public function __destruct()
     {
@@ -95,12 +64,11 @@ class Mumsys_Session_Default
 
 
     /**
-     * Clears and unsets the current session
+     * Clears and unsets the current session at all.
      */
     public function clear()
     {
         parent::clear();
-        $this->_records = array();
         session_unset();
     }
 

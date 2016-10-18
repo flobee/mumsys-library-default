@@ -3,13 +3,45 @@
 /**
  * Test class for Mumsys_Multirename.
  */
-class Mumsys_MultirenameTest extends MumsysTestHelper
+class Mumsys_MultirenameTest
+    extends Mumsys_Unittest_Testcase
 {
-
     /**
      * @var Mumsys_Multirename
      */
     protected $_object;
+
+    /**
+     * @var Mumsys_Logger_File
+     */
+    protected $_logger;
+
+    /**
+     * @var Mumsys_FileSystem
+     */
+    protected $_oFiles;
+    protected $_version;
+    protected $_versions;
+    protected $_testFiles = array();
+
+    /**
+     * root path for tests
+     * @var string
+     */
+    protected $_testsDir;
+
+    /**
+     * list of tmp dir created by tests an to delete right after
+     * @var array
+     */
+    protected $_testDirs = array();
+    protected $_config;
+    protected $_oldHome;
+
+//    public function __construct($name=null, $data=array(), $dataName='')
+//    {
+//        parent::__construct($name, $data, $dataName);
+//    }
 
 
     /**
@@ -18,15 +50,32 @@ class Mumsys_MultirenameTest extends MumsysTestHelper
      */
     protected function setUp()
     {
-        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
+        $this->_oldHome = $_SERVER['HOME'];
+        $this->_version = '1.4.2';
+        $this->_versions = array(
+            'Mumsys_Abstract' => '3.0.1',
+            'Mumsys_Multirename' => $this->_version,
+        );
 
+        $this->_testsDir = MumsysTestHelper::getTestsBaseDir();
+
+        $logfile = $this->_testsDir . '/tmp/test_' . basename(__FILE__) . '.log';
         $_SERVER['HOME'] = $this->_testsDir . '/tmp';
 
-        for ($i = 10; $i < 20; $i++) {
-            @touch($this->_testsDir . '/tmp/multirenametestfile_-_' . $i);
+        for ($i = 10; $i <= 19; $i++) {
+            $file = $this->_testsDir . '/tmp/multirenametestfile_-_' . $i . '.txt';
+            @touch($file);
+            $this->_testFiles[] = $file;
+            $this->_testFiles[] = $this->_testsDir . '/tmp/unittest_testfile_-_' . $i . '.txt';
         }
+
+        @touch($this->_testsDir . '/tmp/unittest_testfile_-_10.txt');
         @touch($this->_testsDir . '/tmp/multirenametestfile');
         @touch($this->_testsDir . '/tmp/multirenametestfile_toHide');
+        $this->_testFiles[] = $this->_testsDir . '/tmp/multirenametestfile';
+        $this->_testFiles[] = $this->_testsDir . '/tmp/unittest_testfile';
+        $this->_testFiles[] = $this->_testsDir . '/tmp/multirenametestfile_toHide';
+        $this->_testFiles[] = $this->_testsDir . '/tmp/unittest_testfile_toHide';
 
         $this->_config = array(
             'program',
@@ -34,11 +83,13 @@ class Mumsys_MultirenameTest extends MumsysTestHelper
             'fileextensions' => '*',
             'substitutions' => 'doNotFind=doNotReplace;regex:/doNotFind/i',
             'loglevel' => 7,
-            'history-size' => 2,
+            'history-size' => 3,
         );
+
+        $opts = array('way' => 'a', 'logfile' => $logfile);
+        $this->_logger = new Mumsys_Logger_File($opts);
         $this->_oFiles = new Mumsys_FileSystem();
-        $opts = array('logfile' => $this->_testsDir . '/tmp/test_' . basename(__FILE__) . '.log');
-        $this->_logger = new Mumsys_Logger($opts);
+
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
     }
 
@@ -49,49 +100,45 @@ class Mumsys_MultirenameTest extends MumsysTestHelper
      */
     protected function tearDown()
     {
-        @unlink($this->_config['path'].'/.multirename/config');
-        @unlink($this->_config['path'].'/.multirename/collection');
-        @unlink($this->_config['path'].'/.multirename/lastactions');
-        @unlink($this->_config['path'].'/multirenametestfile');
-        @rmdir($this->_config['path'].'/.multirename/');
+        @unlink($this->_config['path'] . '/.multirename/config');
+        @unlink($this->_config['path'] . '/.multirename/collection');
+        @unlink($this->_config['path'] . '/.multirename/lastactions');
+        @unlink($this->_config['path'] . '/multirenametestfile');
+        @rmdir($this->_config['path'] . '/.multirename/');
+
+        foreach ($this->_testFiles as $target) {
+            @unlink($target);
+        }
+        foreach ($this->_testDirs as $target) {
+            @rmdir($target);
+        }
+        $_SERVER['HOME'] = $this->_oldHome;
     }
 
 
     /**
      * Test and also fill data for the code coverage.
-     *
-     * @covers Mumsys_Multirename::__construct
-     * @covers Mumsys_Multirename::setSetup
-     * @covers Mumsys_Multirename::_buildSubstitutions
-     * @covers Mumsys_Multirename::showConfig
-     * @covers Mumsys_Multirename::_mkConfigDir
-     * @covers Mumsys_Multirename::_trackConfigDir
-     * @covers Mumsys_Multirename::_getCollection
-     * @covers Mumsys_Multirename::_setCollection
      */
     public function testConstructor()
     {
-        $this->_config['allowRoot'] = false;
         $this->_config['undo'] = true;
         $this->_config['del-config'] = true;
-        $this->_config['set-config'] = true;
+        $this->_config['save-config'] = true;
         $this->_config['show-config'] = true;
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
         $this->assertInstanceOf('Mumsys_Multirename', $this->_object);
 
-        $this->_config['allowRoot'] = true;
+        $tmp = $_SERVER['USER'];
+        $_SERVER['USER'] = 'root';
         $message = 'Something which belongs to "root" is forbidden. Sorry! Use a different user!' . PHP_EOL;
         $this->setExpectedException('Mumsys_Multirename_Exception', $message);
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
+        $_SERVER['USER'] = $tmp;
     }
 
+
     /**
-     * @covers Mumsys_Multirename::__construct
-     * @covers Mumsys_Multirename::getVersion
-     * @covers Mumsys_Multirename::showVersion
-     * @covers Mumsys_Abstract
-     * @covers Mumsys_Multirename::getVersionLong
-     * @covers Mumsys_Multirename::getVersionShort
+     * Test show version
      */
     public function testConstructorGetShowVersion()
     {
@@ -105,7 +152,7 @@ class Mumsys_MultirenameTest extends MumsysTestHelper
             'Mumsys_Abstract                     ' . Mumsys_Abstract::VERSION . PHP_EOL,
             'Mumsys_FileSystem_Common_Abstract   ' . Mumsys_FileSystem_Common_Abstract::VERSION . PHP_EOL,
             'Mumsys_FileSystem                   ' . Mumsys_FileSystem::VERSION . PHP_EOL,
-            'Mumsys_Logger                       ' . Mumsys_Logger::VERSION . PHP_EOL,
+            'Mumsys_Logger_File                  ' . Mumsys_Logger_File::VERSION . PHP_EOL,
             'Mumsys_File                         ' . Mumsys_File::VERSION . PHP_EOL,
             'Mumsys_Multirename                  ' . Mumsys_Multirename::VERSION . PHP_EOL,
         );
@@ -117,8 +164,8 @@ class Mumsys_MultirenameTest extends MumsysTestHelper
         $expected3 = 'Mumsys_Multirename ' . Mumsys_Multirename::VERSION;
 
         foreach ($expected as $toCheck) {
-            $res = (preg_match('/'.$toCheck.'/im', $current) ? true : false);
-            $this->assertTrue( $res );
+            $res = (preg_match('/' . $toCheck . '/im', $current) ? true : false);
+            $this->assertTrue($res);
         }
         $this->assertEquals($expected2, $current2);
         $this->assertEquals($expected3, $current3);
@@ -127,12 +174,290 @@ class Mumsys_MultirenameTest extends MumsysTestHelper
 
 
     /**
-     * @covers Mumsys_Multirename::setSetup
-     * @covers Mumsys_Multirename::setConfig
-     * @covers Mumsys_Multirename::getConfig
-     * @covers Mumsys_Multirename::_mkConfigDir
+     * Tests run and for max. code coverage.
      */
-    public function testSetSetup()
+    public function testExecute()
+    {
+        /* TEST mode */
+        $this->_logger->log(__METHOD__ . ' TEST MODE Test 1', 6);
+        // test mode, mostly run through everything with is possible for max. code coverage!
+        $config = array(
+            'test' => true,
+            'fileextensions' => ';txt;*',
+            'keepcopy' => false,
+            'hidden' => true,
+            'recursive' => true,
+            'sub-paths' => true,
+            //  Mumsys_Multirename::_substitutePaths for 100% code coverage
+            'substitutions' => 'm=XX;XX=X%path1%X;regex:/%path1%/i=xTMPx;regex:/xTMPx/i=%path1%;%path1%=xTMPx',
+            'find' => 'm;regex:/m/i',
+            'exclude' => 'regex:/toHide/;Hide',
+            'history' => true,
+            'show-history' => true,
+        );
+        $config += $this->_config;
+        $this->_object->run($config);
+
+        // code coverage with existing targets
+        $this->_logger->log(__METHOD__ . ' TEST MODE Test 2', 6);
+        $config['substitutions'] = 'multirenametestfile_-_10=unittest_testfile_-_10';
+        $config['find'] = false;
+        $this->_object->run($config);
+
+        // code coverage with existing test targets with keepcopy
+        $this->_logger->log(__METHOD__ . ' TEST MODE Test 3', 6);
+        $config['keepcopy'] = true;
+        $this->_object->run($config);
+
+        // real rename tests with keepcopy
+        $config['test'] = false;
+        $this->_logger->log(__METHOD__ . ' RENAME MODE: rename 1', 6);
+        $config['substitutions'] = 'multirenametestfile_-_11=unittest_testfile_-_11';
+        $this->_object->run($config);
+        $this->assertTrue(file_exists($this->_testsDir . '/tmp/unittest_testfile_-_11.txt'));
+        $this->assertFalse(file_exists($this->_testsDir . '/tmp/unittest_testfile_-_11.txt.1'));
+
+        // real rename tests with keepcopy again target exists
+        $this->_logger->log(__METHOD__ . ' RENAME MODE: rename 2', 6);
+        $config['substitutions'] = 'multirenametestfile_-_12=unittest_testfile_-_11';
+        $this->_object->run($config);
+        $this->assertTrue(file_exists($this->_testsDir . '/tmp/unittest_testfile_-_11.txt'));
+        $this->assertTrue(file_exists($this->_testsDir . '/tmp/unittest_testfile_-_11.txt.1'));
+        $this->_testFiles[] = $this->_testsDir . '/tmp/unittest_testfile_-_11.txt.1';
+
+        // real symlink rename tests with keepcopy
+        $this->_logger->log(__METHOD__ . ' RENAME MODE: symlink rename 1', 6);
+        $config['substitutions'] = 'multirenametestfile_-_13=unittest_testfile_-_13';
+        $config['link'] = 'soft';
+        $config['linkway'] = 'abs';
+        $this->_object->run($config);
+        $this->assertTrue(file_exists($this->_testsDir . '/tmp/unittest_testfile_-_13.txt'));
+        $this->assertTrue(is_link($this->_testsDir . '/tmp/unittest_testfile_-_13.txt'));
+
+        // test exception, just for code coverage
+        $this->_logger->log(__METHOD__ . ' RENAME MODE: rename exception 1', 6);
+        $config['substitutions'] = 'multirenametestfile_-_14=/root/unittest_testfile_-_14';
+        $this->_object->run($config);
+
+        $this->_logger->log(__METHOD__ . ' RENAME MODE: rename exception 1', 6);
+        $config['substitutions'] = 'multirenametestfile_-_14=/root/unittest_testfile_-_14';
+        $this->_object->run($config);
+
+        // test _getRelevantFiles: look for txt extension
+        $this->_logger->log(__METHOD__ . ' Code Coverage MODE: chk _getRelevantFiles: txt extension', 6);
+        $config['fileextensions'] = 'txt';
+        $config['find'] = 'doNotFind';
+        $this->_object->run($config);
+
+        $this->_object->removeActionHistory($config['path']);
+        $this->setExpectedException('Mumsys_Multirename_Exception', 'Removing history failed');
+        $this->_object->removeActionHistory($config['path']);
+    }
+
+
+    /**
+     * Execute and undo
+     */
+    public function testExecuteAndUndo()
+    {
+
+        $config = array(
+            'test' => false,
+            //'link' => 'soft;abs',
+            'fileextensions' => 'txt',
+            'keepcopy' => true,
+            'recursive' => false,
+            'substitutions' => 'multirenametestfile_-_15=unittest_testfile_-_15',
+            'find' => 'multirenametestfile_-_15',
+            'exclude' => 'regex:/toHide/;Hide',
+            'history' => true,
+            'path' => $this->_config['path'],
+        );
+
+        /*
+         *  do rename now and undo then: rename mode
+         */
+        $this->_logger->log(__METHOD__ . ' RENAME and UNDO: rename mode check 1', 6);
+        $config['run'] = true;
+        $this->_object->run($config);
+        $actual1 = file_exists($this->_testsDir . '/tmp/unittest_testfile_-_15.txt');
+        $actual2 = file_exists($this->_testsDir . '/tmp/multirenametestfile_-_15.txt');
+
+        $config['undo'] = true;
+        $this->_object->run($config);
+        $actual3 = file_exists($this->_testsDir . '/tmp/unittest_testfile_-_15.txt');
+        $actual4 = file_exists($this->_testsDir . '/tmp/multirenametestfile_-_15.txt');
+
+        $this->assertTrue($actual1);
+        $this->assertFalse($actual2);
+        $this->assertFalse($actual3);
+        $this->assertTrue($actual4);
+
+        /*
+         *  do rename now and undo in test mode
+         */
+        $this->_logger->log(__METHOD__ . ' RENAME and UNDO: rename mode check 2', 6);
+        $config['run'] = true;
+        $config['undo'] = false;
+        $this->_object->run($config);
+        $actual1 = file_exists($this->_testsDir . '/tmp/unittest_testfile_-_15.txt');
+        $actual2 = file_exists($this->_testsDir . '/tmp/multirenametestfile_-_15.txt');
+
+        $config['undo'] = true;
+        $config['test'] = true;
+        $this->_object->run($config);
+        $actual3 = file_exists($this->_testsDir . '/tmp/unittest_testfile_-_15.txt');
+        $actual4 = file_exists($this->_testsDir . '/tmp/multirenametestfile_-_15.txt');
+        // ... and revert for the next test
+        $config['undo'] = true;
+        $config['test'] = false;
+        $this->_object->run($config);
+
+        /*
+         * do rename now and undo then: symlink mode
+         */
+        $this->_logger->log(__METHOD__ . ' RENAME and UNDO: symlink mode check 3', 6);
+        $config['undo'] = false;
+        $config['run'] = true;
+        $config['link'] = 'soft;abs';
+        $this->_object->run($config);
+        $actual1 = is_link($this->_testsDir . '/tmp/unittest_testfile_-_15.txt');
+        $actual2 = file_exists($this->_testsDir . '/tmp/multirenametestfile_-_15.txt');
+        // undo link test mode
+        $config['undo'] = true;
+        $config['test'] = true;
+        $this->_object->run($config);
+
+        $config['undo'] = true;
+        $config['test'] = false;
+        $this->_object->run($config);
+        $actual3 = !file_exists($this->_testsDir . '/tmp/unittest_testfile_-_15.txt');
+        $actual4 = file_exists($this->_testsDir . '/tmp/multirenametestfile_-_15.txt');
+
+        $this->assertTrue($actual1);
+        $this->assertTrue($actual2);
+        $this->assertTrue($actual3);
+        $this->assertTrue($actual4);
+
+        /*
+         * do rename now in invalid mode,
+         */
+        $this->_logger->log(__METHOD__ . ' RENAME and UNDO: invalid mode check 4', 6);
+        $config['run'] = true;
+        $config['undo'] = false;
+        $config['link'] = 'invalid;abs';
+        $this->_object->run($config);
+        $actual1 = !file_exists($this->_testsDir . '/tmp/unittest_testfile_-_15.txt');
+        $actual2 = file_exists($this->_testsDir . '/tmp/multirenametestfile_-_15.txt');
+
+        $this->assertTrue($actual1);
+        $this->assertTrue($actual2);
+
+        /*
+         * do rename now rename mode with keepcopy but exists, cover _undoRename
+         */
+        $this->_logger->log(__METHOD__ . ' RENAME and UNDO: rename mode with keepcopy check 5', 6);
+        $config['undo'] = false;
+        $config['link'] = false;
+        $config['keepcopy'] = true;
+        @touch($this->_testsDir . '/tmp/unittest_testfile_-_15.txt');
+        $this->_object->run($config);
+
+        $actual1 = file_exists($this->_testsDir . '/tmp/unittest_testfile_-_15.txt');
+        $actual2 = !file_exists($this->_testsDir . '/tmp/multirenametestfile_-_15.txt');
+        $actual3 = file_exists($this->_testsDir . '/tmp/unittest_testfile_-_15.txt.1');
+        $this->_testFiles[] = $this->_testsDir . '/tmp/unittest_testfile_-_15.txt.1';
+
+        $this->assertTrue($actual1);
+        $this->assertTrue($actual2);
+        $this->assertTrue($actual3);
+        // undo and target exists
+        @touch($this->_testsDir . '/tmp/multirenametestfile_-_15.txt');
+        $this->_testFiles[] = $this->_testsDir . '/tmp/multirenametestfile_-_15.txt.1';
+        $config['undo'] = true;
+        $config['keepcopy'] = true;
+        $this->_object->run($config);
+
+        /*
+         *  _undo exception
+         */
+        $this->_logger->log(__METHOD__ . ' RENAME and UNDO: _undo() exception/error check 6', 6);
+        $config['undo'] = true;
+        $config['keepcopy'] = true;
+        $config['substitutions'] = 'multirenametestfile_-_15=../home/unittest_testfile';
+        $data = '[{"name":"history 2000-01-01","date":"2000-01-01 23:59:59","history":{"invalidMode":{"multirenametestfile":"unittest_testfile"}}}]';
+        $file = $this->_testsDir . '/tmp/.multirename/lastactions';
+        file_put_contents($file, $data);
+        $this->_object->run($config);
+
+        /*
+         *  _undoRename exception
+         */
+        $this->_logger->log(__METHOD__ . ' RENAME and UNDO: _undoRename() exception check 7', 6);
+        $config['undo'] = true;
+        $config['keepcopy'] = true;
+        $config['substitutions'] = 'multirenametestfile_-_15=../home/unittest_testfile';
+        $data = '[{"name":"history 2000-01-01","date":"2000-01-01 23:59:59","history":{"rename":{"invalidsource":"invalidtarget"}}}]';
+        $file = $this->_testsDir . '/tmp/.multirename/lastactions';
+        file_put_contents($file, $data);
+        $this->_object->run($config);
+
+        /*
+         *  _undoLink exception
+         */
+        $this->_logger->log(__METHOD__ . ' RENAME and UNDO: _undoLink() error check 8', 6);
+        $config['undo'] = true;
+        $config['keepcopy'] = true;
+        $config['substitutions'] = 'multirenametestfile_-_15=../home/unittest_testfile';
+        @touch($this->_testsDir . '/tmp/invalidsource');
+        symlink($this->_testsDir . '/tmp/invalidsource', $this->_testsDir . '/tmp/invalidtarget');
+        @chmod($this->_testsDir . '/tmp/', 0500);
+        $this->_testFiles[] = $this->_testsDir . '/tmp/invalidsource';
+        $this->_testFiles[] = $this->_testsDir . '/tmp/invalidtarget';
+        $data = '[{"name":"history 2000-01-01","date":"2000-01-01 23:59:59","history":{"symlink":{"' . $this->_testsDir . '/tmp/invalidsource":"' . $this->_testsDir . '/tmp/invalidtarget"}}}]';
+        $file = $this->_testsDir . '/tmp/.multirename/lastactions';
+        file_put_contents($file, $data);
+        $this->_object->run($config);
+        @chmod($this->_testsDir . '/tmp/', 0755);
+    }
+
+
+    /**
+     * For code coverage in _addActionHistory()
+     */
+    public function testRun4history()
+    {
+        $this->_logger->log(__METHOD__ . ' _addActionHistory check 1', 6);
+        $config = $this->_config;
+        $config['substitutions'] = 'multirenametestfile_-_16=multirenametestfile_-_17';
+        $config['keepcopy'] = false;
+        $config['test'] = false;
+        $config['fileextensions'] = '*';
+        $config['history'] = true;
+        $config['history-size'] = 2;
+
+        $this->_object->run($config);
+
+        $config['substitutions'] = 'multirenametestfile_-_17=multirenametestfile_-_16';
+        $this->_object->run($config);
+
+        $config['substitutions'] = 'multirenametestfile_-_16=multirenametestfile_-_17';
+        $this->_object->run($config);
+
+        $config['substitutions'] = 'multirenametestfile_-_17=multirenametestfile_-_16';
+        $this->_object->run($config);
+    }
+
+//    public function testRemoveHistory()
+//    {
+//
+//    }
+
+
+    /**
+     * Test initSetup for max code coverage
+     */
+    public function testInitSetup()
     {
         $config = $this->_config;
         $config += array(
@@ -148,406 +473,197 @@ class Mumsys_MultirenameTest extends MumsysTestHelper
             'history' => true,
             'history-size' => 2,
         );
-        $actual1 = $this->_object->setSetup($config);
+        $actual1 = $this->_object->initSetup($config);
         $expected1 = $config;
         $expected1['fileextensions'] = array('*');
         $expected1['link'] = 'soft';
         $expected1['linkway'] = 'rel';
-        $expected1['find'] = array('a','c','t');
-        $expected1['exclude'] = array('xxx','yyy');
+        $expected1['find'] = array('a', 'c', 't');
+        $expected1['exclude'] = array('xxx', 'yyy');
 
         // from config test + hidden=true
-        $this->_object->setConfig($this->_config['path']);
-        $config['from-config'] = $this->_config['path'];
+        //$this->_object->initSetup($this->_config['path']);
+
+
         $config['hidden'] = true;
-        $actual2 = $this->_object->setSetup($config);
+        $actual2 = $this->_object->initSetup($config);
         $expected2 = $expected1;
-        $expected2['from-config'] = $config['from-config'];
         $expected2['hidden'] = $config['hidden'];
 
         $this->assertEquals($expected1, $actual1);
         $this->assertEquals($expected2, $actual2);
 
         // config dir error
-        $msg = 'Invalid --from-config <your value> parameter. Path not found';
-        $this->setExpectedException('Mumsys_Multirename_Exception', $msg);
-        $config['from-config'] = $this->_testsDir . '/tmp/dirNotExists';
-        $this->_object->setSetup($config);
-    }
-
-    /**
-     * @covers Mumsys_Multirename::setSetup
-     * @covers Mumsys_Multirename::delConfig
-     */
-    public function testSetSetupException1()
-    {
-        // config not exists error
-        $config = $this->_config;
-        $config['from-config'] = $this->_config['path'];
-        $this->_object->delConfig($this->_config['path']);
-
-        $msg = 'Could not read from-config in path: "'.$this->_testsDir . '/tmp"';
-        $this->setExpectedException('Mumsys_Multirename_Exception', $msg);
-        $this->_object->setSetup($config);
-    }
-
-    /**
-     * @covers Mumsys_Multirename::setSetup
-     */
-    public function testSetSetupException2()
-    {
-        $config = $this->_config;
-        unset($config['path']);
         $msg = 'Invalid --path <your value>';
         $this->setExpectedException('Mumsys_Multirename_Exception', $msg);
-        $this->_object->setSetup($config);
+        $config['path'] = $this->_testsDir . '/tmp/dirNotExists';
+        $this->_object->initSetup($config);
     }
 
+
     /**
-     * @covers Mumsys_Multirename::setSetup
+     * Test initSetup for max code coverage
      */
-    public function testSetSetupException3()
+    public function testInitSetupException2()
     {
-        $config = $this->_config;
-        $config['test'] = 'yes';
         $msg = 'Invalid --test value';
         $this->setExpectedException('Mumsys_Multirename_Exception', $msg);
-        $this->_object->setSetup($config);
+        $this->_config['test'] = 'wrongValue';
+        $this->_object->initSetup($this->_config);
     }
 
+
     /**
-     * @covers Mumsys_Multirename::setSetup
+     * Test initSetup for max code coverage
      */
-    public function testSetSetupException4()
+    public function testInitSetupException3()
     {
-        $config = $this->_config;
-        unset($config['fileextensions'],$config['undo']);
         $msg = 'Missing --fileextensions "<your value/s>"';
         $this->setExpectedException('Mumsys_Multirename_Exception', $msg);
-        $this->_object->setSetup($config);
+        $this->_config['fileextensions'] = null;
+        $this->_object->initSetup($this->_config);
     }
 
+
     /**
-     * @covers Mumsys_Multirename::setSetup
+     * Test initSetup for max code coverage
      */
-    public function testSetSetupException5()
+    public function testInitSetupException4()
     {
-        $config = $this->_config;
-        unset($config['substitutions']);
         $msg = 'Missing --substitutions "<your value/s>"';
         $this->setExpectedException('Mumsys_Multirename_Exception', $msg);
-        $this->_object->setSetup($config);
-    }
-
-
-
-    /**
-     * @covers Mumsys_Multirename::run
-     * @covers Mumsys_Multirename::__destruct
-     * @covers Mumsys_Multirename::_getRelevantFiles
-     * @covers Mumsys_Multirename::_buildPathBreadcrumbs
-     * @covers Mumsys_Multirename::_substitutePaths
-     * @covers Mumsys_Multirename::_substitute
-     * @covers Mumsys_Multirename::_addActionHistory
-     * @covers Mumsys_Multirename::undo
-     * @covers Mumsys_Multirename::_undoRename
-     * @covers Mumsys_Multirename::_undoTest
-     * @covers Mumsys_Multirename::_relevantFilesCheckMatches
-     */
-    public function testRunAndUndo()
-    {
-        // test mode, mostly run through everything with is possible for max. code coverage
-        $config = array(
-            'test' => true,
-            'fileextensions' => ';log;*',
-            'keepcopy' => false,
-            'hidden' => true,
-            'recursive' => true,
-            'sub-paths' => true,
-            // @covers Mumsys_Multirename::_substitutePaths for 100% code coverage
-            'substitutions' => 'm=XX;XX=X%path1%X;regex:/%path1%/i=xTMPx;regex:/xTMPx/i=%path1%;%path1%=xTMPx',
-            'find' => 'm;regex:/m/i',
-            'exclude' => 'regex:/toHide/;Hide',
-            'history' => true,
-            'history-size' => 2,
-        );
-        $config += $this->_config;
-
-        $this->_object->setSetup($config);
-        $this->_object->run();
-
-        // -- test rename the same (walk through the code for code coverage)
-        $config['substitutions'] = 'multirenametestfile=multirenametestfile';
-        $this->_object->setSetup($config);
-        $this->_object->run();
-
-        // do rename now
-        $config['substitutions'] = 'multirenametestfile=unittest_testfile';
-        $config['find'] = 'multirenametestfile';
-        $config['exclude'] = 'regex:/toHide/;Hide';
-        $config['test'] = false;
-        $this->_object->setSetup($config);
-        $this->_object->run();
-
-        $this->assertTrue(file_exists($this->_testsDir . '/tmp/unittest_testfile'));
-
-        // do test undo rename
-        $config['test'] = true;
-        $this->_object->setSetup($config);
-        $this->_object->undo($this->_config['path']);
-
-
-        // do undo rename but target already exists
-        @copy($this->_testsDir . '/tmp/unittest_testfile', $this->_testsDir . '/tmp/multirenametestfile');
-        $config['test'] = false;
-        $this->_object->setSetup($config);
-        $this->_object->undo($this->_config['path'], true);
-
-        $expected1 = !file_exists($this->_testsDir . '/tmp/unittest_testfile');
-        $expected2 = file_exists($this->_testsDir . '/tmp/multirenametestfile.1');
-
-
-        $this->_object->undo($this->_config['path'], false);
-
-        $expected3 = !file_exists($this->_testsDir . '/tmp/unittest_testfile');
-        $expected4 = file_exists($this->_testsDir . '/tmp/multirenametestfile');
-        $expected5 = !file_exists($this->_testsDir . '/unittest_testfile_toHide');
-
-        @unlink($this->_testsDir . '/tmp/multirenametestfile.1');
-
-        $this->assertTrue($expected1);
-        $this->assertTrue($expected2);
-        $this->assertTrue($expected3);
-        $this->assertTrue($expected4);
-        $this->assertTrue($expected5);
-
-        // do rename now
-        $config['substitutions'] = 'multirenametestfile=unittest_testfile';
-        $config['find'] = 'multirenametestfile';
-        $config['test'] = false;
-        $this->_object->setSetup($config);
-        #$this->_object->run();
-    }
-
-    /**
-     * @covers Mumsys_Multirename::run
-     * @covers Mumsys_Multirename::_getRelevantFiles
-     * @covers Mumsys_Multirename::_buildPathBreadcrumbs
-     * @covers Mumsys_Multirename::_substitutePaths
-     * @covers Mumsys_Multirename::_addActionHistory
-     */
-    public function testRun4history()
-    {
-        $this->markTestIncomplete();
-
-        // do rename now
-        $config = $this->_config;
-        $config['substitutions'] = 'unittest_testfile_-_10=unittest_testfile_-_11';
-        $config['keepcopy'] =false;
-        $config['test'] = false;
-        $config['fileextensions'] = '*';
-
-        $this->_object->setSetup($config);
-        $this->_object->run();
-    }
-
-    /**
-     * @covers Mumsys_Multirename::run
-     * @covers Mumsys_Multirename::_getRelevantFiles
-     * @covers Mumsys_Multirename::_buildPathBreadcrumbs
-     * @covers Mumsys_Multirename::_substitutePaths
-     * @covers Mumsys_Multirename::_addActionHistory
-     * @covers Mumsys_Multirename::undo
-     * @covers Mumsys_Multirename::_undoRename
-     * @covers Mumsys_Multirename::_undoTest
-     * @covers Mumsys_Multirename::_undoLink
-     */
-    public function testRunAndUndoForLinks()
-    {
-        $config = array(
-            'test' => false,
-            'link' => 'soft;abs',
-            'fileextensions' => ';log',
-            'keepcopy' => true,
-            'recursive' => true,
-            'substitutions' => 'multirenametestfile=unittest_testfile',
-            'find' => 'multirenametestfile',
-            'exclude' => 'regex:/toHide/;Hide',
-            'history' => true,
-            'history-size' => 2,
-        );
-        $config += $this->_config;
-
-        // do rename now
-        $this->_object->setSetup($config);
-        $this->_object->run();
-        //again, target exists and keepcopy
-        // -- test
-        $config['test'] = true;
-        $this->_object->setSetup($config);
-        $this->_object->run();
-        // -- run
-        $config['test'] = false;
-        $this->_object->setSetup($config);
-        $this->_object->run();
-        $this->assertTrue(is_link($this->_testsDir . '/tmp/unittest_testfile'));
-        $this->assertTrue(is_link($this->_testsDir . '/tmp/unittest_testfile.lnk'));
-        @unlink($this->_testsDir . '/tmp/unittest_testfile'); //twice ->run() dublicate
-
-        // undo link
-        // -- test link undo
-        $config['test'] = true;
-        $this->_object->setSetup($config);
-        $this->_object->undo($this->_config['path']);
-        // -- do link undo
-        $config['test'] = false;
-        $this->_object->setSetup($config);
-        // ---- error deleting link
-        @chmod($this->_config['path'].'/', 0500);
-        $this->_object->undo($this->_config['path']);
-        // ---- deletes the link
-        @chmod($this->_config['path'].'/', 0700);
-        $this->_object->undo($this->_config['path']);
-
-        $this->assertFalse(file_exists($this->_testsDir . '/tmp/unittest_testfile.lnk'));
-        $this->assertTrue(file_exists($this->_testsDir . '/tmp/multirenametestfile'));
-
-        // rename/ link exception for code coverage
-        $config['substitutions'] = 'multirenametestfile=../home/unittest_testfile';
-        $config['keepcopy'] = false;
-        $this->_object->setSetup($config);
-        $this->_object->run();
-    }
-
-    /**
-     * @covers Mumsys_Multirename::run
-     */
-    public function testRunTestOverwriteTarget()
-    {
-        $config = array(
-            'test' => true,
-            'fileextensions' => '*',
-            'keepcopy' => false,
-            'hidden' => false,
-            'recursive' => false,
-            'sub-paths' => false,
-            // @covers Mumsys_Multirename::_substitutePaths for 100% code coverage
-            'substitutions' => 'multirenametestfile_-_10=multirenametestfile_-_11',
-            'history' => true,
-            'history-size' => 2,
-        );
-        $config += $this->_config;
-
-        $this->_object->setSetup($config);
-        $this->_object->run();
-
-        $this->assertTrue(file_exists($this->_testsDir . '/tmp/multirenametestfile_-_10'));
-        $this->assertTrue(file_exists($this->_testsDir . '/tmp/multirenametestfile_-_11'));
+        $this->_config['substitutions'] = null;
+        $this->_object->initSetup($this->_config);
     }
 
     /**
      * Walk through the code for code coverage
      */
-    public function testUndoHackInvalidMode()
-    {
-        // create config path
-        $this->_object->setConfig($this->_config['path']);
-
-        // no history
-        $this->_object->undo($this->_config['path']);
-
-        // invalid history
-        $file = $this->_config['path'] . '/.multirename/lastactions';
-        $history = array(
-            array(
-                'name' => 'history name',
-                'date' => date('Y-m-d H:i:s', time()),
-                'history' => array(
-                    'mode' => array(
-                        $this->_testsDir . '/tmp/multirenametestfile' => $this->_testsDir . '/tmp/unittest_testfile'
-                    )
-                ),
-            ),
-        );
-
-        $data = json_encode($history);
-        $result = file_put_contents($file, $data);
-        $this->_object->undo($this->_config['path']);
-    }
-
-
-    /**
-     * Detais see at testSetSetup().
-     *
-     * @covers Mumsys_Multirename::getConfig
-     */
-    public function testGetConfig()
-    {
-        $actual1 = $this->_object->getConfig($this->_config['path']);
-        $this->assertFalse($actual1);
-    }
+//    public function testUndoHackInvalidMode()
+//    {
+//        // create config path
+//        $this->_object->setConfig($this->_config['path']);
+//
+//        // no history
+//        $this->_object->undo($this->_config['path']);
+//
+//        // invalid history
+//        $file = $this->_config['path'] . '/.multirename/lastactions';
+//        $history = array(
+//            array(
+//                'name' => 'history name',
+//                'date' => date('Y-m-d H:i:s', time()),
+//                'history' => array(
+//                    'mode' => array(
+//                        $this->_testsDir . '/tmp/multirenametestfile' => $this->_testsDir . '/tmp/unittest_testfile'
+//                    )
+//                ),
+//            ),
+//        );
+//
+//        $data = json_encode($history);
+//        $result = file_put_contents($file, $data);
+//        $this->_object->undo($this->_config['path']);
+//    }
 
 
     /**
      * See at testSetSetup() for more tests.
-     *
-     * @covers Mumsys_Multirename::setConfig
-     * @covers Mumsys_Multirename::_mkConfigDir
-     * @covers Mumsys_Multirename::_trackConfigDir
-     * @covers Mumsys_Multirename::_getCollection
-     * @covers Mumsys_Multirename::_setCollection
      */
-    public function testSetConfig()
+    public function testSaveGetConfig()
     {
-        $actual = $this->_object->setConfig($this->_config['path']);
+        $actual = $this->_object->saveConfig($this->_config['path']);
 
-        $this->assertTrue( (is_numeric($actual) && $actual>0) );
+        $this->assertTrue((is_numeric($actual) && $actual > 0));
 
-        $this->assertFalse( $this->_object->setConfig('/root/') );
+        $this->assertFalse($this->_object->saveConfig('/root/'));
+
+        $actual = $this->_object->getConfig($this->_config['path']);
+        $expected = array($this->_config);
+        unset($expected[0]['loglevel']);
+        $this->assertEquals($expected, $actual);
+
+        // Version < 1.3.3
+        $path = $this->_testsDir . '/testfiles/Mumsys_Multirename/version-lt-1.3.3/';
+        $actual = $this->_object->getConfig($path);
+
+        $this->assertTrue(is_array($actual));
+
+        // test _gethistory
+        $this->_testFiles[] = $this->_testsDir . '/tmp/tmp2/.multirename/config';
+        $this->_testDirs[] = $this->_testsDir . '/tmp/tmp2/.multirename/';
+        $actual = $this->_object->saveConfig($this->_testsDir . '/tmp/tmp2/');
+        $this->assertTrue(($actual >= 1291));
     }
 
 
-    /**
-     * @covers Mumsys_Multirename::delConfig
-     */
-    public function testDelConfig()
+    public function testGetConfigException()
     {
-        $this->_object->setConfig($this->_config['path']);
+        $regex = '/(Could not read config in path: "' . str_replace('/', '\/', $this->_config['path']) . '")/';
+        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $regex);
+        $this->_object->getConfig($this->_config['path']);
+    }
 
-        @chmod($this->_config['path'].'/.multirename/', 0500);
-        $actual1 = $this->_object->delConfig($this->_config['path']);
 
-        @chmod($this->_config['path'].'/.multirename/', 0700);
-        $actual2 = $this->_object->delConfig($this->_config['path']);
+    public function testMergerConfig()
+    {
+        $actual = $this->_object->saveConfig($this->_config['path']);
+        $this->assertTrue((is_numeric($actual) && $actual > 0));
 
+        $config['from-config'] = $this->_config['path'];
+        $this->_object->run($config);
+
+        // invalid path
+        $regex = '/(Invalid --from-config <your value> parameter. Path not found)/';
+        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $regex);
+        $config['from-config'] = '/hello/';
+        $this->_object->run($config);
+    }
+
+
+    public function testDeleteConfig()
+    {
+        $this->_object->saveConfig($this->_config['path']);
+
+        @chmod($this->_config['path'] . '/.multirename/', 0500);
+        $actual1 = $this->_object->deleteConfig($this->_config['path']);
+
+        @chmod($this->_config['path'] . '/.multirename/', 0700);
+        $actual2 = $this->_object->deleteConfig($this->_config['path']);
+        //config not found
+        $actual3 = $this->_object->deleteConfig($this->_config['path']);
         $this->assertFalse($actual1);
         $this->assertTrue($actual2);
+        $this->assertFalse($actual3);
     }
 
 
     /**
-     * @covers Mumsys_Multirename::showConfig
+     * showConfigs
      */
     public function testShowConfig()
     {
-        $this->_object->logger->msgEcho = true;
-
         ob_start();
-        $this->_object->showConfig();
+
+        $opts = array('msgEcho' => true, 'msgLineFormat' => '%5$s', 'logfile' => $this->_testsDir . '/tmp/test_' . basename(__FILE__) . '.log');
+        $this->_logger = new Mumsys_Logger_File($opts);
+        $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
+
+        $this->_object->showConfigs();
         $output = ob_get_clean();
 
         $results = explode("\n", $output);
-        $actual = $results[ count($results)-2 ];
-        $expected = "multirename --path '".$this->_testsDir . "/tmp' --fileextensions '*' "
+        $actual = $results[count($results) - 2];
+        $expected = "cmd#> multirename --path '" . $this->_testsDir . "/tmp' --fileextensions '*' "
             . "--substitutions 'doNotFind=doNotReplace;regex:/doNotFind/i' "
-            . "--loglevel '7' --history-size '2'";
+            . "--loglevel '7' --history-size '3'";
 
         $this->assertEquals($expected, $actual);
     }
 
 
     /**
-     * @covers Mumsys_Multirename::install
+     * Mumsys_Multirename::install
      */
     public function testInstall()
     {
@@ -564,8 +680,17 @@ class Mumsys_MultirenameTest extends MumsysTestHelper
     }
 
 
+    public function testUpgrade()
+    {
+        $_SERVER['HOME'] = $this->_oldHome;
+
+        $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
+        $this->_object->upgrade();
+    }
+
+
     /**
-     * @covers Mumsys_Multirename::getSetup
+     * Mumsys_Multirename::getSetup
      */
     public function testGetSetup()
     {
@@ -573,6 +698,34 @@ class Mumsys_MultirenameTest extends MumsysTestHelper
         $expected = $this->_object->getSetup(false);
 
         $this->assertEquals(count($expected), count($actual));
+    }
+
+
+    public function testToJson()
+    {
+        $value = array(1, 2, 3);
+        $expected = json_encode($value, JSON_PRETTY_PRINT);
+        $actual = $this->_object->toJson($value, JSON_PRETTY_PRINT, null);
+        $this->assertEquals($expected, $actual);
+    }
+
+
+    /**
+     * @ covers Mumsys_Multirename::getVersion
+     * @ covers Mumsys_Multirename::getVersions
+     * @ covers Mumsys_Multirename::getVersionID
+     */
+    public function testAbstractClass()
+    {
+        $this->assertEquals('Mumsys_Multirename ' . $this->_version, $this->_object->getVersion());
+        $this->assertEquals($this->_version, $this->_object->getVersionID());
+
+        $possible = $this->_object->getVersions();
+
+        foreach ($this->_versions as $must => $value) {
+            $this->assertTrue(isset($possible[$must]));
+            $this->assertTrue(($possible[$must] == $value));
+        }
     }
 
 }
