@@ -6,9 +6,9 @@
 # Fix coding style of the current directory using the following settings:
 ###
 
-echo '+------------------------------------------------------+';
-echo '| Usage: ./phpcs-fixer.sh location-to-file-or-direcory |';
-echo '+------------------------------------------------------+';
+echo '+-------------------------------------------------------+';
+echo '| Usage: ./phpcs-fixer.sh location-to-file-or-directory |';
+echo '+-------------------------------------------------------+';
 
 
 location=$1;

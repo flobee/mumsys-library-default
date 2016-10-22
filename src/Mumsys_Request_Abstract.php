@@ -77,6 +77,12 @@ abstract class Mumsys_Request_Abstract
      * @var array
      */
     protected $_inputCookie = array();
+    
+    /**
+     * Request ID
+     * @var string
+     */
+    private static $_requestId=null;
 
 
     /**
@@ -106,6 +112,38 @@ abstract class Mumsys_Request_Abstract
         }
     }
 
+    
+    /**
+     * Returns a unique id for the current request.
+     *
+     * If there already exists a http header (HTTP_X_REQUEST_ID) for the 
+     * request ID it will be used otherwise a new individual ID will be 
+     * generated and set to the enviroment valiable:
+     * _SERVER['HTTP_X_REQUEST_ID'].
+     *
+     * @return string x-http-request-id
+     */
+    public function getRequestId()
+    {
+        if (self::$_requestId != null ) {
+            return self::$_requestId;
+        }
+        
+        self::$_requestId = Php_Globals::getServerVar('HTTP_X_REQUEST_ID', false );
+        
+        if (self::$_requestId===false) {
+            self::$_requestId = uniqid('', true);
+        } else {
+            // VALID RFC 4211 COMPLIANT Universally Unique IDentifiers (UUID) check
+            $egex = '/(/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i)/i';
+            if (!preg_match($regex, self::$_requestId)) {
+                self::$_requestId = uniqid('', true);
+            }
+        }
+        
+        return self::$_requestId;
+    }
+    
 
     /**
      * Retrieve the module name
