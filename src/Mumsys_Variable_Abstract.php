@@ -1,20 +1,18 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Variable_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Variable
  * Created: 2006 based on Mumsys_Field, renew 2016 PHP >= 7
  */
-/*}}}*/
 
 
 /**
@@ -24,7 +22,8 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Variable
  */
-abstract class Mumsys_Variable_Abstract extends Mumsys_Abstract
+abstract class Mumsys_Variable_Abstract
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
@@ -40,15 +39,27 @@ abstract class Mumsys_Variable_Abstract extends Mumsys_Abstract
      * @
      */
     protected static $_types = array(
-        'string', 'char', 'varchar', 'text', 'tinytext', 'longtext',
-        'int', 'integer', 'smallint',
-        'float', 'double',
+        'string',
+        'char',
+        'varchar',
+        'text',
+        'tinytext',
+        'longtext',
+        'int',
+        'integer',
+        'smallint',
+        'float',
+        'double',
         'numeric',
-        'boolean', 'array', 'object',
+        'boolean',
+        'array',
+        'object',
         'date',
-        'datetime', 'timestamp',
+        'datetime',
+        'timestamp',
         'email',
-        'ipv4', 'ipv6',
+        'ipv4',
+        'ipv6',
         'unittest'
     );
 
@@ -65,4 +76,3 @@ abstract class Mumsys_Variable_Abstract extends Mumsys_Abstract
     }
 
 }
-

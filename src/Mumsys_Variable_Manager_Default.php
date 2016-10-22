@@ -154,7 +154,27 @@ class Mumsys_Variable_Manager_Default
     const MINMAX_TYPE_ERROR = 'MINMAX_TYPE_ERROR';
 
     /**
-     * List of key/initialized item object pairs.
+     * Filter "%1$s" failt for name: "%2$s"
+     */
+    const FILTER_ERROR = 'FILTER_ERROR';
+
+    /**
+     * Filter function "%1$s" not found for item: "%2$s"
+     */
+    const FILTER_NOTFOUND = 'FILTER_NOTFOUND';
+
+    /**
+     * Callback "%1$s" for "%2$s" failt for value: "%3$s"'
+     */
+    const CALLBACK_ERROR = 'CALLBACK_ERROR';
+
+    /**
+     * Callback function "%1$s" not found for item: "%2$s"
+     */
+    const CALLBACK_NOTFOUND = 'CALLBACK_NOTFOUND';
+
+    /**
+     * List key/validation items.
      * @var array
      */
     private $_items;
@@ -191,18 +211,64 @@ class Mumsys_Variable_Manager_Default
         self::MINMAX_TOO_LONG_NUM => 'Value "%1$s" can be maximum "%2$s"',
         self::MINMAX_TYPE_ERROR => 'Min/max type error "%1$s". Must be "string", "integer", "numeric", "float"'
         . ' or "double"',
+
+        self::FILTER_ERROR => 'Filter "%1$s" failt for value: "%2$s"',
+        self::FILTER_NOTFOUND => 'Filter function "%1$s" not found for item: "%2$s"',
+
+        self::CALLBACK_ERROR => 'Callback "%1$s" for "%2$s" failt for value: "%3$s"',
+        self::CALLBACK_NOTFOUND => 'Callback function "%1$s" not found for item: "%2$s"',
     );
 
 
     /**
      * Initialises the default manager and variable item objects.
      *
+     * Example:
+     * <code>
+     * $config = array(
+     *  'user.name' => array(           // address of the item
+     *      'name' => 'name',           // * real name of the item; optional if the address contains the same *
+     *      'label' => 'User name',
+     *      'desc' => 'User group name',
+     *      'info' => "Allowed characters: a-z A-Z 0-9 _ - \nMin. 5 chars max. 45 chars.",
+     *      'type' => 'string',
+     *      'minlen' => 5,
+     *      'maxlen' => 45,
+     *      'allowEmpty' => false,
+     *      'required' => true,
+     *      'regex' => '/^([a-zA-Z0-9-_]{4,45})*$/i',
+     *      'default' => '',
+     *      'filters' => array(
+     *          'onSave' => array(
+     *              'trim', 'substr' => array('%value%', 0,45)
+     *          )
+     * ), ...
+     * $values = $_REQUEST;
+     * $validator = new Mumsys_Validate_Manager($config, $values);
+     *
+     * // Sets the state and applys it to the items so that filters are ready befor validatation.
+     * //default is "onView"; for maximum performance user the state on construction, this is just
+     * a helper to force the state for all reqistered items.
+     * $validator->setAttributes( array('state' => 'onSave') );
+     * $validator->filtersApply()
+     * $success = $validator->validate();
+     *
+     * $userItem = $validator->getItem('client.name');
+     * $userItem->setValue('I\'m your user name');
+     * echo $userItem->getLabel();
+     * echo $userItem->getDescription();
+     * echo $userItem->getInformation();
+     * print_r($userItem->getErrorMessages());
+     * $itemSuccess = $validator->isValid($userItem);
+     * </code>
+     *
      * @param array $config List of key/value configuration pairs containing item properties for the item construction
      * @param array $values List of key/value pairs to set/bind to the item values e.g: the post parameters
      */
     public function __construct( array $config = array(), array $values = array() )
     {
-        foreach ( $config as $itemKey => $properties ) {
+        foreach ( $config as $itemKey => $properties )
+        {
             $properties['name'] = $itemKey;
             if ( isset($values[$itemKey]) ) {
                 $properties['value'] = $values[$itemKey];
@@ -234,7 +300,7 @@ class Mumsys_Variable_Manager_Default
     /**
      * Item type validation.
      *
-     * If the test fails an error message will set at the item.
+     * If the test fails an error message will be set at the item.
      *
      * @param Mumsys_Variable_Item_Interface $item Variable item interface
      *
@@ -308,7 +374,10 @@ class Mumsys_Variable_Manager_Default
             case 'date':
                 if ( strlen($value) != 10 && !preg_match('/^(\d{4})-(\d{2})-(\d{2})/i', $value) ) {
                     $errorKey = self::TYPE_INVALID_DATE;
-                    $errorMessage = sprintf($this->_messageTemplates['TYPE_INVALID_DATE'], json_encode($value));
+                    $errorMessage = sprintf(
+                        $this->_messageTemplates['TYPE_INVALID_DATE'],
+                        json_encode($value)
+                    );
                 }
                 break;
 
@@ -552,6 +621,8 @@ class Mumsys_Variable_Manager_Default
             $status = false;
         }
 
+        $item->setValidated( $status );
+
         return $status;
     }
 
@@ -628,7 +699,7 @@ class Mumsys_Variable_Manager_Default
      */
     public function getErrorMessages()
     {
-        $messages = false;
+        $messages = array();
 
         foreach ( $this->_items as $key => $item ) {
             if ( ($errors = $item->getErrorMessages() ) ) {
@@ -662,6 +733,391 @@ class Mumsys_Variable_Manager_Default
     public function setMessageTemplates( array $templates )
     {
         $this->_messageTemplates = $templates;
+    }
+
+
+    /**
+     * Sets/ replaces a message template by given key, and value.
+     *
+     * @param string $key Message key/ID
+     * @param string $value The message
+     */
+    public function setMessageTemplate( $key, $value )
+    {
+        $this->_messageTemplates[(string) $key] = (string) $value;
+    }
+
+
+    /**
+     * Sets attributes/ propertys to all or selected items.
+     *
+     * You can set attributes like the value or state for all items like
+     *      array('value' => 'this value in all items')
+     *      array('state' => 'onSave')
+     *
+     * Additional and possible attributes to set in $attr are: "values" and
+     * "labels" where you can set some of the items and set an individual value.
+     * E.g: Item A gets value 1, item B gets value 2, item C gets value 3:
+     * <code>
+     *  // for some
+     *  $attr = array('values' => array(a => '1', b => 2, c => 3 );
+     *  // dont work!
+     *  $attr = array('values' => 'new value');
+     *  // this works for all
+     *  $attr = array('value' => 'new value');
+     * </code>
+     *
+     * @param array $attr List of key->value pairs to be set
+     *
+     * @throw Mumsys_Variable_Manager_Exception If attribute setter not implemented
+     */
+    public function setAttributes( array $attr = array() )
+    {
+        foreach ( $attr AS $fieldKey => $value )
+        {
+            foreach ( $this->_items as $item )
+            {
+                $fieldName = $item->getName();
+
+                switch ( $fieldKey )
+                {
+                    // all items
+                    case 'value':
+                        $item->setValue( $value );
+                        break;
+
+                    // some if given or none
+                    case 'values':
+                        if ( isset( $value[$fieldName] ) ) {
+                            $item->setValue( $value[$fieldName] );
+                        }
+                        break;
+                    // some if given or none
+                    case 'labels':
+                        if ( isset( $value[$fieldName] ) ) {
+                            $item->setLabel( $value[$fieldName] );
+                        }
+                        break;
+
+                    case 'state':
+                        $item->stateSet( $value );
+                        break;
+
+                    default:
+                        $msg = sprintf( 'Set item attributes for "%1$s" not implemented.', $fieldKey );
+                        throw new Mumsys_Variable_Manager_Exception( $msg );
+                        break;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Returns the list of key/value pairs for all items.
+     *
+     * @param boolean $byAddress If true the item address will be used as key
+     * otherwise the item name property (default)
+     *
+     * @return array List of key/value pairs
+     */
+    public function toArray($byAddress=false)
+    {
+        $list = array();
+        foreach ( $this->_items as $address => $item ) {
+            if ($byAddress) {
+                $list[ $address ] = $item->getValue();
+            } else {
+                $list[ $item->getName() ] = $item->getValue();
+            }
+        }
+
+        return $list;
+    }
+
+
+    /**
+     * Apply filters and callbacks in this order.
+     *
+     * You may want to use a different order of validate() filter*() and
+     * callback*() of items. This applys only filtersApply() and if successful
+     * callbacksApply() and returns the status
+     *
+     * @return boolean Status, true for success otherwise false
+     */
+    public function externalsApply()
+    {
+        $status = false;
+        if ( $this->filtersApply() && $this->callbacksApply() ) {
+            $status = true;
+        }
+
+        return $status;
+    }
+
+
+    /**
+     * Apply/ execute all filters of the current state.
+     *
+     * @return boolean Returns true on success or false on failure
+     */
+    public function filtersApply()
+    {
+        $status = true;
+
+        foreach ( $this->_items as $item ) {
+            $this->filterItem( $item );
+            if ($item->isValid() === false) {
+                $status = false;
+            }
+        }
+
+        return $status;
+    }
+
+
+    /**
+     * Apply filters of the given item.
+     *
+     * @param Mumsys_Variable_Item_Interface $item Validate item
+     *
+     * @return boolean Returns true on success or false on failure
+     */
+    public function filterItem( Mumsys_Variable_Item_Interface $item )
+    {
+        $filters = $item->filtersGet(true);
+        $state = $item->stateGet();
+        $status = true;
+
+        if ( empty( $filters[$state] ) ) {
+            $item->setValidated($status);
+            return $status;
+        }
+
+        $value = $item->getValue();
+        $itemName = ( ( $a = $item->getLabel() ) ? $a : $item->getName() );
+
+        $toReplace = $params = $x = null;
+
+        $_filters = $filters[$state];
+
+        foreach ( $_filters as $opts )
+        {
+            $parameters = $opts['params'];
+            $cmd = $opts['cmd'];
+
+            if ( is_callable( $cmd ) )
+            {
+                if ( $parameters !== null )
+                {
+                    if ( is_array( $parameters ) )
+                    {
+                        $params = array();
+                        foreach ( $parameters as $tmp => &$toReplace ) {
+                            if ( $toReplace === '%value%' ) {
+                                $params[$tmp] = $value;
+                            } else {
+                                $params[$tmp] = $toReplace;
+                            }
+                        }
+
+                        // $x = $this->_execExternal($cmd, $params, 'array');
+                        $x = call_user_func_array($cmd, $params);
+
+                    } else {
+                        if ( $parameters === '%value%' ) {
+                            $params = $value;
+                        } else {
+                            $params = $parameters;
+                        }
+
+                        $x = $this->_execExternal($cmd, $params);
+                    }
+                } else {
+                    $x = $this->_execExternal($cmd, $value);
+                }
+
+
+                if ( $x === false ) {
+                    $status = false;
+                    /* false as return or false of the callback ?
+                     * boolean values should not be filtered! */
+                    $message = sprintf(
+                        $this->_messageTemplates['FILTER_ERROR'], $cmd, $itemName
+                    );
+                    $item->setErrorMessage( self::FILTER_ERROR, $message );
+
+                } else {
+                    $item->setValue( $x );
+                    $value = $x;
+                }
+
+            } else {
+                $status = false;
+                $message = sprintf(
+                    $this->_messageTemplates['FILTER_NOTFOUND'], $cmd, $itemName
+                );
+                $item->setErrorMessage( self::FILTER_NOTFOUND, $message );
+            }
+        }
+
+        $item->setValidated($status);
+
+        return $status;
+    }
+
+
+    /**
+     * Apply/ execute all callbacks.
+     *
+     * @param mixed Mixed data to pipe to the callback function
+     *
+     * @return boolean Returns true on success or false on failure
+     */
+    public function callbacksApply($data=null)
+    {
+        $status = true;
+
+        foreach ( $this->_items as $item ) {
+            $this->callbackItem( $item, $data );
+            if ($item->isValid() === false) {
+                $status = false;
+            }
+        }
+
+        return $status;
+    }
+
+
+    /**
+     * Apply callbacks of the given item based on the current state.
+     *
+     * Callback function signature is:
+     * functionName(Mumsys_Variable_Item_Interface object, mixed $dataFromExtenrnalCallerFunc=null,
+     * array optionalParams=null);
+     *
+     * @param Mumsys_Variable_Item_Interface $item Validate item
+     * @param mixed Mixed data to pipe to the callback function
+     *
+     * @return boolean Returns true on success or false on failure
+     */
+    public function callbackItem( Mumsys_Variable_Item_Interface $item, $data = null )
+    {
+        $callbacks = $item->callbacksGet( true );
+        $state = $item->stateGet();
+        $status = true;
+
+        if ( empty( $callbacks[$state] ) ) {
+            $item->setValidated( $status );
+            return $status;
+        }
+
+        $value = $item->getValue();
+        $itemName = ( ( $a = $item->getLabel() ) ? $a : $item->getName() );
+
+        $_callbacks = $callbacks[$state];
+
+        foreach ( $_callbacks as $opts )
+        {
+            $parameters = $opts['params'];
+            $cmd = $opts['cmd'];
+
+            if ( is_callable( $cmd ) )
+            {
+                if ( $parameters !== null )
+                {
+                    if ( is_array( $parameters ) )
+                    {
+                        $params = array();
+                        foreach ( $parameters as $tmp => &$toReplace ) {
+                            if ( $toReplace === '%value%' ) {
+                                $params[$tmp] = $value;
+                            } else {
+                                $params[$tmp] = $toReplace;
+                            }
+                        }
+
+                        $x = call_user_func( $cmd, $item, $data, $params );
+                    } else {
+                        if ( $parameters === '%value%' ) {
+                            $params = $value;
+                        } else {
+                            $params = $parameters;
+                        }
+
+                        $x = call_user_func( $cmd, $item, $data, $params );
+                    }
+                } else {
+                    $x = call_user_func( $cmd, $item, $data );
+                }
+
+                if ( $x === false ) {
+                    $status = false;
+                    /* false as return or false of the callback ?
+                     * boolean values should not be filtered! */
+                    $message = sprintf(
+                        $this->_messageTemplates['CALLBACK_ERROR'], $cmd, $itemName, $value
+                    );
+                    $item->setErrorMessage( self::CALLBACK_ERROR, $message );
+                } else {
+                    $item->setValue( $x );
+                    $value = $x;
+                }
+            } else {
+                $status = false;
+                $message = sprintf(
+                    $this->_messageTemplates['CALLBACK_NOTFOUND'], $cmd, $itemName
+                );
+                $item->setErrorMessage( self::CALLBACK_NOTFOUND, $message );
+            }
+        }
+
+
+        $item->setValidated( $status );
+
+
+        return $status;
+    }
+
+
+    /**
+     * Execute and return external filter or callback result.
+     *
+     * @param string $cmd Funtion/method to be called
+     * @param string|array $params Parameters to pipe to the function
+     * @param string $ptype Type of the parameters empty string|string|array
+     *
+     * @return mixed|false Returns to value of the callback or false on errors
+     */
+    private function _execExternal($cmd, $params, $ptype='string')
+    {
+        /* future for callbacks:
+        if ($ptype=='array') {
+            return call_user_func_array($cmd, $params);
+        }*/
+
+        $value = false;
+
+        /* switches to improve performance */
+        switch($cmd)
+        {
+            case 'trim':
+                $value = trim($params);
+                break;
+
+            case 'htmlspecialchars':
+                $value = htmlspecialchars($params);
+                break;
+
+            case 'htmlentities':
+                $value = htmlentities($params);
+                break;
+
+            default:
+                $value = call_user_func( $cmd, $params );
+        }
+
+        return $value;
     }
 
 }

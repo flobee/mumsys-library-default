@@ -59,7 +59,9 @@ class Mumsys_Variable_AbstractTest
             'unittest',
         );
 
-        $this->assertEquals($expected, Mumsys_Variable_Abstract::getTypes());
+        $actual = Mumsys_Variable_Abstract::getTypes();
+        $this->assertEquals($expected, $actual);
+        $this->assertEquals( count($expected), count($actual) );
         $this->assertEquals($this->_version, Mumsys_Variable_Abstract::VERSION);
     }
 
