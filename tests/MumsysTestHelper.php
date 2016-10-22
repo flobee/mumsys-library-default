@@ -11,6 +11,12 @@ class MumsysTestHelper
     private static $_configs;
 
     /**
+     * Context object including Mumsys_Config_File object
+     * @var Mumsys_Context
+     */
+    private static $_context;
+    
+    /**
      * New default config object
      * @var Mumsys_Context
      */
@@ -39,7 +45,15 @@ class MumsysTestHelper
         return self::$_context;
     }
 
+    /**
+     * Return the config from context object
+     */
+    public static function getConfig()
+    {
+        return self::getContext()->getConfig()
+    }
 
+    
     /**
      * Return config parameters.
      *
