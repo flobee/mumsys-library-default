@@ -88,7 +88,7 @@ class Mumsys_Mvc_Display_Factory
     /**
      * Initialize the factory.
      *
-     * @param Toolbox_Context $context
+     * @param Mumsys_Context $context
      */
     public function __construct( Mumsys_Context $context )
     {
