@@ -31,6 +31,7 @@ svn/*
 /phpunit.log.xml
 logs/
 /docs/CodeCoverage/*
+/docs/gitstats
 /docs/API/*
 /tests/testfiles/*
 /tests/tmp/*
