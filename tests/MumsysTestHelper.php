@@ -15,12 +15,12 @@ class MumsysTestHelper
      * @var Mumsys_Context
      */
     private static $_context;
-    
+
     /**
      * New default config object
-     * @var Mumsys_Context
+     * @var Mumsys_Config_Interface
      */
-    private static $_context;
+    private static $_config;
 
     /**
      * Mixed config pararameters container
@@ -35,7 +35,7 @@ class MumsysTestHelper
     public static function getContext()
     {
         if ( !isset(self::$_context) ) {
-            self::$_context =  new Mumsys_Context();
+            self::$_context = new Mumsys_Context();
 
             $paths = array(__DIR__ . '/config');
             $oConfig = new Mumsys_Config_File(self::$_context, array(), $paths);
@@ -45,15 +45,16 @@ class MumsysTestHelper
         return self::$_context;
     }
 
+
     /**
      * Return the config from context object
      */
     public static function getConfig()
     {
-        return self::getContext()->getConfig()
+        return self::getContext()->getConfig();
     }
 
-    
+
     /**
      * Return config parameters.
      *
