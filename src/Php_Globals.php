@@ -64,6 +64,32 @@ class Php_Globals
 
 
     /**
+     * Returns a session variable if exists.
+     *
+     * If key parameter is NULL the complete session will return if $_SESSION
+     * was initialised otherwise false returns.
+     *
+     * @param string $key ID to check for
+     * @param mixed $default Default return value if key/ID not exists
+     *
+     * @return mixed|false Value or $default if $key is not set/null, false if
+     * session not exists (missing session_start()?)
+     */
+    public static function getSessionVar( $key = null, $default = null )
+    {
+        if ( isset( $_SESSION ) && $key === null ) {
+            return $_SESSION;
+        }
+
+        if ( isset( $_SESSION[$key] ) ) {
+            $default = $_SESSION[$key];
+        }
+
+        return $default;
+    }
+
+
+    /**
      * Returns an eviroment variable in this order: getenv() befor _ENV befor _SERVER.
      *
      * @param string $key ID to check for
