@@ -226,8 +226,8 @@ class Mumsys_Variable_Manager_Default
      * Example:
      * <code>
      * $config = array(
-     *  'user.name' => array(           // address of the item
-     *      'name' => 'name',           // * real name of the item; optional if the address contains the same *
+     *  'user.name' => array(           // address/name of the item to work with withing the manager
+     *      'name' => 'name',           // real name of the item; optional if the address contains the same name
      *      'label' => 'User name',
      *      'desc' => 'User group name',
      *      'info' => "Allowed characters: a-z A-Z 0-9 _ - \nMin. 5 chars max. 45 chars.",
@@ -244,7 +244,7 @@ class Mumsys_Variable_Manager_Default
      *          )
      * ), ...
      * $values = $_REQUEST;
-     * $validator = new Mumsys_Validate_Manager($config, $values);
+     * $validator = new Mumsys_Validate_Manager_Default($config, $values);
      *
      * // Sets the state and applys it to the items so that filters are ready befor validatation.
      * //default is "onView"; for maximum performance user the state on construction, this is just
@@ -253,7 +253,7 @@ class Mumsys_Variable_Manager_Default
      * $validator->filtersApply()
      * $success = $validator->validate();
      *
-     * $userItem = $validator->getItem('client.name');
+     * $userItem = $validator->getItem('user.name');
      * $userItem->setValue('I\'m your user name');
      * echo $userItem->getLabel();
      * echo $userItem->getDescription();
@@ -269,9 +269,28 @@ class Mumsys_Variable_Manager_Default
     {
         foreach ( $config as $itemKey => $properties )
         {
-            $properties['name'] = $itemKey;
-            if ( isset($values[$itemKey]) ) {
-                $properties['value'] = $values[$itemKey];
+            /**
+             * @todo name vs itemKey needs more understanding how to use it
+             * if name is missing then its easy but if both is set and
+             * different it is difficult to understand!
+             */
+            if (!isset($properties['name'])) {
+                $properties['name'] = $itemKey;
+            }
+
+//            if ($properties['name'] !== $itemKey) {
+//                $message = sprintf(
+//                    'Item name ("%1$s") and item address (record key: "%2$s"), both set and not identcal',
+//                    $properties['name'],
+//                    $itemKey
+//                );
+//                throw new Mumsys_Variable_Manager_Exception($message);
+//            }
+
+            $internalKey = $properties['name'];
+
+            if ( isset( $values[$internalKey] ) ) {
+                $properties['value'] = $values[$internalKey];
             }
 
             $this->_items[$itemKey] = $this->createItem($properties);
