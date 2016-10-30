@@ -92,8 +92,8 @@ class Mumsys_FileSystem
         } else {
             return false;
         }
-        
-        if ($filters) 
+
+        if ($filters)
         {
             while(list($location,) = each( $this->_dirInfo) )
                 foreach($filter as $regex) {
@@ -459,7 +459,7 @@ class Mumsys_FileSystem
                     break;
 
                 default:
-                    $msg = 'Invalid link type "' . $type . '"  (Use soft|hard)';
+                    $msg = 'Invalid link type "' . $type . '" (Use soft|hard)';
                     throw new Mumsys_FileSystem_Exception($msg);
             }
 

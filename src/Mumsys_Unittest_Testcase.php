@@ -64,39 +64,17 @@ class Mumsys_Unittest_Testcase
      *
      * @throws Exception If assertType() is not available
      */
-    public static function assertType( $expected, $actual, $message = '' )
+    public function assertType( $expected, $actual, $message = '' )
     {
-        $message = 'assertType() was removed since phpunit 3.5*. You may check with assertInternalType() ?';
+        $message = 'assertType() was removed since phpunit 3.5*. You may check with assertInternalType()';
         self::_checkMethod('assertType', $message);
     }
 
 
     /**
-     * Checks PhpUnit getMock() if available.
-     *
-     * @deprecated since version 5.4.0
-     *
-     * @param string $originalClassName
-     * @param array $methods
-     * @param array $arguments
-     * @param string $message
-     * @param bool $callOriginalConstructor
-     * @param bool $callOriginalClone
-     * @param bool $callAutoload
-     * @param bool $cloneArguments
-     * @param bool $callOriginalMethods
-     */
-    public static function getMock( $originalClassName, $methods, $arguments, $message, $callOriginalConstructor,
-        $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods )
-    {
-        $message = 'getMock() will be removed in the future. Deprecated since Release 5.4.0';
-        self::_checkMethod('getMock', $message);
-    }
-
-    /**
      * Checks PhpUnit hasPerformedExpectationsOnOutput() if available.
      */
-    public static function hasPerformedExpectationsOnOutput()
+    public function hasPerformedExpectationsOnOutput()
     {
         $message = 'hasPerformedExpectationsOnOutput() will be removed in the future.'
             . 'Marked as deprecated since Release (found 5.4.*)';
@@ -109,7 +87,7 @@ class Mumsys_Unittest_Testcase
      *
      * @param string $originalClassName Class name
      */
-    public static function getMockWithoutInvokingTheOriginalConstructor( $originalClassName )
+    public function getMockWithoutInvokingTheOriginalConstructor( $originalClassName )
     {
         $message = 'getMockWithoutInvokingTheOriginalConstructor() will be
             removed in the future. Deprecated since Release 5.4.0';
