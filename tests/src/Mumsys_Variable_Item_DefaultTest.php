@@ -4,7 +4,7 @@
  * Mumsys_Variable_Item_Default Test
  */
 class Mumsys_Variable_Item_DefaultTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
      /**
      * @var Mumsys_Variable_Item_Default
@@ -29,7 +29,7 @@ class Mumsys_Variable_Item_DefaultTest
     protected function setUp()
     {
         $this->_version = '1.1.1';
-        
+
         $this->_config = array(
             'name' => 'some name',
             'value' => 'flobee@mumsys.local',
@@ -79,7 +79,7 @@ class Mumsys_Variable_Item_DefaultTest
         $this->_object->setType('integer');
         $this->assertEquals('integer', $this->_object->getType());
 
-        $this->setExpectedException('Mumsys_Variable_Item_Exception', 'Type "xxx" not implemented');
+        $this->setExpectedExceptionRegExp('Mumsys_Variable_Item_Exception', '/Type "xxx" not implemented/i');
         $this->_object->setType('xxx');
     }
 
