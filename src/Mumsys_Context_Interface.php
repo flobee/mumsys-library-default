@@ -2,7 +2,7 @@
 
 /**
  * Mumsys_Context_Interface
- * for MUMSYS Cms / Multi User Management System (MUMSYS)
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2015 by Florian Blasel for FloWorks Company
@@ -19,9 +19,13 @@
  * Mumsys context interface.
  *
  * Component container to place in needed constructs like MVC or other
- * application structures. This one will be usedfor the mumsys cms/library or
- * application system but can be used also for library only tasks.
- * E.g. the tests
+ * application structures. This one will be used for the mumsys library and
+ * holds only the basic parts of/for it. Like: session, config, database,
+ * logger, translation (I18n) and request objects.
+ * It can be also used for other projects by extending it and implement your
+ * individual components to hold eg: In mvc context you may have getter/setter
+ * for the view/controller and models. This would be e.g. in the
+ * Cms_Context_* object and extends this class.
  *
  * @category    Mumsys
  * @package     Library
