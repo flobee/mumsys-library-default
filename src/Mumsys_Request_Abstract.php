@@ -64,7 +64,7 @@ abstract class Mumsys_Request_Abstract
      * Default action key name for retrieving the "action" parameter
      * @var string
      */
-    protected $_actionKey = 'action';
+    protected $_actionNameKey = 'action';
 
     /**
      * Incomming request parameters
@@ -77,12 +77,12 @@ abstract class Mumsys_Request_Abstract
      * @var array
      */
     protected $_inputCookie = array();
-    
+
     /**
      * Request ID
      * @var string
      */
-    private static $_requestId=null;
+    private static $_requestId = null;
 
 
     /**
@@ -95,29 +95,29 @@ abstract class Mumsys_Request_Abstract
      */
     public function __construct( array $options = array() )
     {
-        if (isset($options['programKey'])) {
+        if ( isset($options['programKey']) ) {
             $this->setProgramKey($options['programKey']);
         }
 
-        if (isset($options['controllerKey'])) {
+        if ( isset($options['controllerKey']) ) {
             $this->setControllerKey($options['controllerKey']);
         }
 
-        if (isset($options['actionKey'])) {
+        if ( isset($options['actionKey']) ) {
             $this->setActionKey($options['actionKey']);
         }
 
-        if (isset($_COOKIE) && is_array($_COOKIE)) {
+        if ( isset($_COOKIE) && is_array($_COOKIE) ) {
             $this->_inputCookie = $_COOKIE;
         }
     }
 
-    
+
     /**
      * Returns a unique id for the current request.
      *
-     * If there already exists a http header (HTTP_X_REQUEST_ID) for the 
-     * request ID it will be used otherwise a new individual ID will be 
+     * If there already exists a http header (HTTP_X_REQUEST_ID) for the
+     * request ID it will be used otherwise a new individual ID will be
      * generated and set to the enviroment valiable:
      * _SERVER['HTTP_X_REQUEST_ID'].
      *
@@ -125,34 +125,34 @@ abstract class Mumsys_Request_Abstract
      */
     public function getRequestId()
     {
-        if (self::$_requestId != null ) {
+        if ( self::$_requestId !== null ) {
             return self::$_requestId;
         }
-        
-        self::$_requestId = Php_Globals::getServerVar('HTTP_X_REQUEST_ID', false );
-        
-        if (self::$_requestId===false) {
+
+        self::$_requestId = Php_Globals::getServerVar('HTTP_X_REQUEST_ID', false);
+
+        if ( self::$_requestId === false ) {
             self::$_requestId = uniqid('', true);
         } else {
             // VALID RFC 4211 COMPLIANT Universally Unique IDentifiers (UUID) check
             $egex = '/(/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i)/i';
-            if (!preg_match($regex, self::$_requestId)) {
+            if ( !preg_match($regex, self::$_requestId) ) {
                 self::$_requestId = uniqid('', true);
             }
         }
-        
+
         return self::$_requestId;
     }
-    
+
 
     /**
-     * Retrieve the module name
+     * Retrieve the program/module name
      *
      * @return string
      */
     public function getProgramName()
     {
-        if ($this->_programName === null) {
+        if ( $this->_programName === null ) {
             $this->_programName = $this->getParam($this->getProgramKey());
         }
 
@@ -168,7 +168,7 @@ abstract class Mumsys_Request_Abstract
      */
     public function setProgramName( $value = null )
     {
-        $this->_programName = ucwords((string)$value);
+        $this->_programName = ucwords((string) $value);
         return $this;
     }
 
@@ -180,7 +180,7 @@ abstract class Mumsys_Request_Abstract
      */
     public function getControllerName()
     {
-        if ($this->_controllerName === null) {
+        if ( $this->_controllerName === null ) {
             $this->_controllerName = $this->getParam($this->getControllerKey());
         }
 
@@ -196,7 +196,7 @@ abstract class Mumsys_Request_Abstract
      */
     public function setControllerName( $value = null )
     {
-        $this->_controllerName = ucwords((string)$value);
+        $this->_controllerName = ucwords((string) $value);
 
         return $this;
     }
@@ -209,7 +209,7 @@ abstract class Mumsys_Request_Abstract
      */
     public function getActionName()
     {
-        if ($this->_actionName === null) {
+        if ( $this->_actionName === null ) {
             $this->_actionName = $this->getParam($this->getActionKey());
         }
 
@@ -225,8 +225,8 @@ abstract class Mumsys_Request_Abstract
      */
     public function setActionName( $value = null )
     {
-        $this->_actionName = strtolower((string)$value);
-        if ($value === null) {
+        $this->_actionName = strtolower((string) $value);
+        if ( $value === null ) {
             $this->setParam($this->getActionKey(), $value);
         }
 
@@ -253,7 +253,7 @@ abstract class Mumsys_Request_Abstract
      */
     public function setProgramKey( $key = 'program' )
     {
-        $this->_programNameKey = (string)$key;
+        $this->_programNameKey = (string) $key;
 
         return $this;
     }
@@ -278,7 +278,7 @@ abstract class Mumsys_Request_Abstract
      */
     public function setControllerKey( $key = 'controller' )
     {
-        $this->_controllerNameKey = (string)$key;
+        $this->_controllerNameKey = (string) $key;
 
         return $this;
     }
@@ -303,7 +303,7 @@ abstract class Mumsys_Request_Abstract
      */
     public function setActionKey( $key = 'action' )
     {
-        $this->_actionNameKey = (string)$key;
+        $this->_actionNameKey = (string) $key;
 
         return $this;
     }
@@ -318,8 +318,8 @@ abstract class Mumsys_Request_Abstract
      */
     public function getParam( $key, $default = null )
     {
-        $key = (string)$key;
-        if (isset($this->_input[$key])) {
+        $key = (string) $key;
+        if ( isset($this->_input[$key]) ) {
             $return = $this->_input[$key];
         } else {
             $return = $default;
@@ -340,11 +340,11 @@ abstract class Mumsys_Request_Abstract
      */
     public function setParam( $key = '', $value = null )
     {
-        $key = (string)$key;
+        $key = (string) $key;
 
-        if (($value === null) && isset($this->_input[$key])) {
+        if ( ($value === null) && isset($this->_input[$key]) ) {
             unset($this->_input[$key]);
-        } elseif ($value !== null) {
+        } elseif ( $value !== null ) {
             $this->_input[$key] = $value;
         }
 
@@ -369,15 +369,15 @@ abstract class Mumsys_Request_Abstract
      * If value is NULL it will be unset if key exists
      *
      * @param array $array List of key/value pairs to set
-     * 
+     *
      * @return self
      */
     public function setParams( array $array )
     {
         $this->_input = $this->_input + $array;
 
-        foreach ($array as $key => $value) {
-            if ($value === null) {
+        foreach ( $array as $key => $value ) {
+            if ( $value === null ) {
                 unset($this->_input[$key]);
             }
         }
@@ -410,12 +410,12 @@ abstract class Mumsys_Request_Abstract
      */
     public function getInputCookie( $key = null, $default = null )
     {
-        if (empty($key)) {
+        if ( empty($key) ) {
             return $this->_inputCookie;
         }
 
-        $key = (string)$key;
-        if (isset($this->_inputCookie[$key])) {
+        $key = (string) $key;
+        if ( isset($this->_inputCookie[$key]) ) {
             $return = $this->_inputCookie[$key];
         } else {
             $return = $default;
