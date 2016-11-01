@@ -1,33 +1,26 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_File
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright Copyright (c) 2007 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2007 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_File
+ * @package     Library
+ * @subpackage  File
  * @version     3.1.0
- * 0.1 - Created on 2007/11
- * -----------------------------------------------------------------------
  */
-/* }}} */
 
 
 /**
  * Class for standard File handling open close read and write a file.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_File
+ * @package     Library
+ * @subpackage  File
  */
 class Mumsys_File
     extends Mumsys_Abstract
@@ -136,7 +129,8 @@ class Mumsys_File
     {
         if ( ($this->_fh = @fopen($this->_file, $this->_way)) === false ) {
             $msg = sprintf(
-                'Can not open file "%1$s" with mode "%2$s". Directory is writeable: "%3$s", readable: "%4$s".',
+                'Can not open file "%1$s" with mode "%2$s". Directory is '
+                . 'writeable: "%3$s", readable: "%4$s".',
                 $this->_file,
                 $this->_way,
                 (self::bool2str($this->isWriteable())),
@@ -187,10 +181,11 @@ class Mumsys_File
      */
     public function write( $content )
     {
-        if ( !$this->isOpen() )
-        {
-            $message = sprintf( 'File not open. Can not write to file: "%1$s".', $this->_file );
-            throw new Mumsys_File_Exception( $message );
+        if ( !$this->isOpen() ) {
+            $message = sprintf(
+                'File not open. Can not write to file: "%1$s".', $this->_file
+            );
+            throw new Mumsys_File_Exception($message);
         }
 
         if ( !$this->isWriteable() )
@@ -235,7 +230,10 @@ class Mumsys_File
             $msg = sprintf(
                 'File "%1$s" not readable with mode "%2$s". Is writeable '
                 . '"%3$s", readable: "%4$s".'
-                , $this->_file, $this->_way, self::bool2str($this->isWriteable()), self::bool2str($this->isReadable())
+                , $this->_file,
+                $this->_way,
+                self::bool2str($this->isWriteable()),
+                self::bool2str($this->isReadable())
             );
             throw new Mumsys_File_Exception($msg);
         }
@@ -385,7 +383,6 @@ class Mumsys_File
     {
         if ($this->_isReadable === null) {
             if ($this->isOpen()) {
-                // test if file is readable
                 if ( is_readable($this->_file) ) {
                     $this->_isReadable = true;
                 } else {
@@ -409,8 +406,8 @@ class Mumsys_File
     /**
      * Test if open() was called successfully.
      *
-     * @return boolean Returns true if file connection was opend successfully or
-     * false on failure or the connection was closed
+     * @return boolean Returns true if file connection was opend successfully
+     * or false on failure or the connection was closed
      */
     public function isOpen()
     {
