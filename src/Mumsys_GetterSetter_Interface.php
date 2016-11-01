@@ -33,6 +33,7 @@ interface Mumsys_GetterSetter_Interface
      *
      * @param sting $key Key to be set
      * @param mixed $value Value to be set
+     *
      * @throws Mumsys_Registry_Exception Throws exception if key is not a string
      */
     public function replace( $key, $value );
@@ -51,6 +52,7 @@ interface Mumsys_GetterSetter_Interface
      * Returns the value by given key.
      *
      * @param string $key Key which was set
+     * 
      * @return mixed Returns the value which was set or a default
      */
     public function get( $key, $default = null );
