@@ -1,6 +1,5 @@
 <?php
 
-/* {{{ */
 /**
  * Php
  * for MUMSYS Library for Multi User Management System (MUMSYS)
@@ -13,7 +12,6 @@
  * @package     Php
  * Created on 2006-04-30
  */
-/* }}} */
 
 
 /**
@@ -47,10 +45,11 @@ if ( PHP_VERSION_ID < 50207 ) {
 }
 
 
-/** {{{
- * Class for php improvements.
+/**
+ * {{{ Class for php improvements.
  *
- * Improved or missing functionality you will find here.
+ * Improved or missing functionality you will find here. Missing functionality
+ * you will find at its best @pear's "Compat" package.
  * This comes from old times where functionality not exists but still implemented
  * somewhere.
  * All methodes should be called staticly.
@@ -111,15 +110,26 @@ class Php
         return $return;
     }
 
-
+    /**
+     * Magic setter
+     *
+     * Only "get_magic_quotes_gpc" can be set at the moment.
+     *
+     * @param string $k Key to be set.
+     * @param mixed $v Value to be set
+     *
+     * @throws PHP_Exception If key is not implemented to react on. This will
+     * prevent public access to this class
+     */
     public function __set( $k, $v )
     {
         switch ( $k )
         {
             case 'get_magic_quotes_gpc':
-                self::$getMagicQuotesGpc = $v;
+                self::$getMagicQuotesGpc = boolval($v);
                 break;
             default:
+
                 throw new PHP_Exception('__set: "' . $k . '"="' . $v . '" not allowed.');
                 break;
         }
@@ -140,7 +150,7 @@ class Php
 
 
     /**
-     * Re-route php function call to the PHP-functions.
+     * Re-route php function calls to the PHP-functions.
      * Note: Don't use it! if you have a better/ different solution. Performance reasons!
      *
      * @param string $function Function to call
