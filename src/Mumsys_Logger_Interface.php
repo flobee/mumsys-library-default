@@ -1,23 +1,18 @@
 <?php
 
-/* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Logger_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright Copyright (c) 2011 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2011 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Logger
+ * @package     Library
+ * @subpackage  Logger
  * @version     3.1.0
  * Created on 2011/02
- * -----------------------------------------------------------------------
  */
 /* }}} */
 
@@ -51,8 +46,8 @@ interface Mumsys_Logger_Interface
      * - [debug] boolean Default: false
      * - [verbose] boolean Default: false
      * - [lf] string Optional Linefeed Default: \n
-     * - [maxfilesize] integer Optional Number of Bytes for the logfile
-     *  Default: 0 (no limit)
+     * - [maxfilesize] integer Optional Number of Bytes for the logfile:
+     * Default: 0 (no limit)
      * @param Mumsys_Logger_Writer_Interface $writer Writer intreface to store messages
      *
      * @uses Mumsys_File Uses Mumsys_File object for file logging
@@ -63,14 +58,14 @@ interface Mumsys_Logger_Interface
      * Create a log entry by a given message and log level.
      *
      * Levels are:
-     * 0 EMERG 		emerg() 	System is unusable
-     * 1 ALERT 		alert() 	Immediate action required
-     * 2 CRIT 		crit() 		Critical conditions
-     * 3 ERR 		err() 		Error conditions
-     * 4 WARN       warn()      Warn conditions
-     * 5 NOTICE 	notice() 	Normal but significant
-     * 6 INFO       info() 		Informational
-     * 7 DEBUG      debug() 	Debug-level messages
+     * 0 EMERG    emerg()   System is unusable
+     * 1 ALERT    alert()   Immediate action required
+     * 2 CRIT     crit()    Critical conditions
+     * 3 ERR      err()     Error conditions
+     * 4 WARN     warn()    Warn conditions
+     * 5 NOTICE   notice()  Normal but significant
+     * 6 INFO     info()    Informational
+     * 7 DEBUG    debug()   Debug-level messages
      *
      * @param string|array $input Message or list of messages to log
      * @param integer $level Level number of log priority

@@ -1,33 +1,29 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Logger_Exception
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright Copyright (c) 2011 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2011 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Logger
+ * @package     Library
+ * @subpackage  Logger
  * @version     3.1.0
- * V0.1 - Created on 2009-11-27
  */
-/*}}}*/
 
 
 /**
  * Generic Exception class
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Logger
+ * @package     Library
+ * @subpackage  Logger
  */
-class Mumsys_Logger_Exception extends Mumsys_Exception
+class Mumsys_Logger_Exception
+    extends Mumsys_Exception
 {
+
 }

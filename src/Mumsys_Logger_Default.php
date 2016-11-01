@@ -1,21 +1,18 @@
 <?php
 
 
-/* {{{ */
 /**
  * Mumsys_Logger_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Logger
- * 0.1 Created: 2016-02-19
+ * @package     Library
+ * @subpackage  Logger
  */
-/* }}} */
 
 
 /**
@@ -29,7 +26,7 @@
  *      'file' => $logfile,
  *      'way' => 'a',
  * );
-  $writer = new Mumsys_File($fileopts);
+ * $writer = new Mumsys_File($fileopts);
  *
  * $opts = array(
  *     'logLevel'=>7,
@@ -41,17 +38,17 @@
  * </code>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Logger
+ * @package     Library
+ * @subpackage  Logger
  */
 class Mumsys_Logger_Default
     extends Mumsys_Logger_File
     implements Mumsys_Logger_Interface
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '3.0.0';
 
 
     /**

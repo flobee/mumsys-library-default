@@ -1,29 +1,28 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Logger_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Logger
- * 0.1 Created: 2016-02-19
+ * @package     Library
+ * @subpackage  Logger
  */
 /* }}} */
 
 
 /**
- * Abstract class to generate log messages
+ * Abstract class to generate log messages.
+ *
+ * @uses Mumsys_File Writer class
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Logger
- * @uses Mumsys_File Writer class
+ * @package     Library
+ * @subpackage  Logger
  */
 abstract class Mumsys_Logger_Abstract
     extends Mumsys_Abstract
@@ -32,7 +31,7 @@ abstract class Mumsys_Logger_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.2.0';
+    const VERSION = '3.2.0';
 
     /**
      * System is unusable emerg()
@@ -135,13 +134,17 @@ abstract class Mumsys_Logger_Abstract
     protected $_logFormat = '%1$s [%2$s] [%3$s](%4$s) %5$s';
 
     /**
-     * Format of a log message for the output. (When printing log messages directly to stdout)
+     * Format of a log message for the output. (When printing log messages
+     * directly to stdout).
+     *
      * Default:
      *  1 = dateformat string
      *  2 = username
      *  3 = name of the log level
      *  4 = id of the log level
      *  5 = the message
+     *
+     * E.g: "[%3$s] %5$s" leave empty if you don't need it. (performance resons)
      *
      * @var string
      */
@@ -202,6 +205,8 @@ abstract class Mumsys_Logger_Abstract
 
     /**
      * Initialize the logger object
+     *
+     * @uses Php_Globals of the mumsys library
      *
      * @param array $args Associativ array with additional params
      * - [username] optional otherwise PHP_AUTH_USER will be taken
@@ -304,7 +309,8 @@ abstract class Mumsys_Logger_Abstract
     public function setLoglevel( $level )
     {
         if ( $this->_checkLevel($level) === false ) {
-            throw new Mumsys_Logger_Exception('Level unknown "' . $level . '" to set the log level');
+            $message = 'Level unknown "' . $level . '" to set the log level';
+            throw new Mumsys_Logger_Exception($message);
         }
 
         $this->_logLevel = (int) $level;
@@ -320,7 +326,8 @@ abstract class Mumsys_Logger_Abstract
     public function setMessageLoglevel( $level )
     {
         if ( $this->_checkLevel($level) === false ) {
-            throw new Mumsys_Logger_Exception('Level unknown "' . $level . '" to set the message log level');
+            $message = 'Level unknown "' . $level . '" to set the message log level';
+            throw new Mumsys_Logger_Exception($message);
         }
 
         $this->_msglogLevel = (int) $level;
@@ -330,14 +337,14 @@ abstract class Mumsys_Logger_Abstract
     /**
      * Create a log entry by a given log level.
      *
-     * 0 EMERG      emerg()     System is unusable
-     * 1 ALERT      alert()     Immediate action required
-     * 2 CRIT       crit()      Critical conditions
-     * 3 ERR        err()       Error conditions
-     * 4 WARNING    warn()      Warning conditions
-     * 5 NOTICE     notice() 	Normal but significant
-     * 6 INFO       info()      Informational
-     * 7 DEBUG      debug()     Debug-level messages
+     * 0 EMERG    emerg()   System is unusable
+     * 1 ALERT    alert()   Immediate action required
+     * 2 CRIT     crit()    Critical conditions
+     * 3 ERR      err()     Error conditions
+     * 4 WARN     warn()    Warn conditions
+     * 5 NOTICE   notice()  Normal but significant
+     * 6 INFO     info()    Informational
+     * 7 DEBUG    debug()   Debug-level messages
      *
      * @param string|array $input Message or list of messages to be logged
      * @param integer $level Level number of log priority
@@ -368,6 +375,7 @@ abstract class Mumsys_Logger_Abstract
                 }
 
                 $_cnt++;
+
             } else {
                 $message = sprintf($this->_logFormat, $datesting, $this->_username, $levelName, $level, $input);
             }
