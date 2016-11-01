@@ -9,10 +9,9 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Config
- * @version 2.0.0
- * Created: 2009-11-29
+ * @package     Library
+ * @subpackage  Config
+ * @version     3.0.0
  */
 
 
@@ -20,11 +19,11 @@
  * Generic exception class.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Config
+ * @package     Library
+ * @subpackage  Config
  */
 class Mumsys_Config_Exception
     extends Mumsys_Exception
 {
-    
+
 }

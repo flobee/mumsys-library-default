@@ -5,13 +5,12 @@
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * @author Florian Blasel <flobee.code@gmail.com>
  * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Config
- * Created: 2009-11-29
+ * @package     Library
+ * @subpackage  Config
  */
 
 /**
@@ -20,8 +19,8 @@
  * @uses Mumsys_Config_File
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Config
+ * @package     Library
+ * @subpackage  Config
  */
 class Mumsys_Config_Default
     extends Mumsys_Config_File
@@ -30,6 +29,6 @@ class Mumsys_Config_Default
     /**
      * Version ID information
      */
-    const VERSION = '2.1.0';
+    const VERSION = '3.0.0';
 
 }

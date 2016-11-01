@@ -9,51 +9,64 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Config
- * @version 2.1.0
- * Created: 2009-11-29
+ * @package     Library
+ * @subpackage  Config
+ * @version     3.0.0
  */
 
 
 /**
- * Mumsys config class 2.0.
+ * Mumsys config class
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Config
+ * @package     Library
+ * @subpackage  Config
  */
 interface Mumsys_Config_Interface
 {
     /**
      * Initialize the config object.
      *
-     * @param Mumsys_Context $context Context object
      * @param array $config Config parameters to be set
      * @param array $paths List of locations for config files
      */
-    public function __construct( Mumsys_Context $context, array $config = array(), array $paths = array() );
+    public function __construct( array $config = array(), array $paths = array() );
+
+
+    /**
+     * Returns all config parameters
+     *
+     * @return array All existing config parameters
+     */
+    public function getAll();
+
+
+    /**
+     * Adds a path to the config.
+     *
+     * On runtime you may set additional paths to the config object. Note that
+     * the configs will be avalivable only since this time you add the path.
+     *
+     * @param string $path Additionl path where config files exists.
+     *
+     * @throws Mumsys_Config_Exception If path not exists
+     */
+    public function addPath( $path );
 
 
     /**
      * Get config parameter/s by given path.
+     *
+     * If key can not be found the $default will return.
      *
      * @param string|array $key Path to the config to get config value/s from
      * e.g. frontend/pageTitle or array('frontend', 'pageTitle)
      * @param mixed|null $default Expectd value or the default value to return
      * if key does not exists
      *
-     * @return array Value/s of the requested key or the default will return.
+     * @return mixed Value/s of the requested key or the $default will return.
      */
     public function get( $key, $default = null );
-
-
-    /**
-     * Get all config parameters
-     *
-     * @return array Config parameters
-     */
-    public function getAll();
 
 
     /**
