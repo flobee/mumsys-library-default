@@ -5,7 +5,7 @@
  * Mumsys_Variable_Manager_Factory Test
  */
 class Mumsys_Variable_Manager_FactoryTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Variable_Manager_Factory

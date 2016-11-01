@@ -1,125 +1,120 @@
 <?php
 
+/**
+ * Mumsys_Unittest_Testcase
+ * for MUMSYS / Multi User Management System (MUMSYS)
+ *
+ * @license GPL Version 3 http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright Copyright (c) 2015 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Unittest
+ */
+
 
 /**
- * Unittest test case class.
+ * PhpUnit test case class as wrapper for PHPUnit_Framework_TestCase.
  *
  * Denies to use methodes which are already maked as deprecated or removed
  * methodes to keep you informed.
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Unittest
  */
 class Mumsys_Unittest_Testcase
     extends PHPUnit_Framework_TestCase
 {
-    private static $_methodExists = array();
-
-
     /**
-     * Checks if given method exists in current version of PHPUnit.
-     *
-     * @param string $method Method to check
-     * @return boolean
+     * Methods memory container
+     * @var array
      */
-    private static function _checkMethod( $method )
-    {
-        if ( !isset(self::$_methodExists[$method]) ) {
-            self::$_methodExists[$method] = method_exists('PHPUnit_Framework_TestCase', $method);
-        }
+    private static $_methods = array();
 
-        return self::$_methodExists[$method];
-    }
 
     /**
-     * Calls setExpectedException() if available.
+     * Checks PhpUnit setExpectedException() if available.
      *
      * @deprecated since version 5.2.0
      *
      * @param string $exceptionName
      * @param string $exceptionMessage
      * @param integer|string $exceptionCode
+     *
      * @throws Exception
      */
     public function setExpectedException( $exceptionName, $exceptionMessage = '', $exceptionCode = null )
     {
-        if ( self::_checkMethod('setExpectedException') ) {
-            parent::setExpectedException($exceptionName, $exceptionMessage, $exceptionCode);
-        } else {
-            // no fallback at the moment!
-            throw new Exception(
-                'setExpectedException() is removed since phpunit >= 5.9*?. Use setExpectedExceptionRegExp()'
-            );
-        }
+        $message = 'setExpectedException() will be removed with phpunit ~ 5.9*.'
+            . 'Please use setExpectedExceptionRegExp()';
+
+        self::_checkMethod('setExpectedException', $message);
     }
 
 
     /**
-     * Calls assertType() of parent class if available.
+     * Checks PhpUnit assertType() if available.
+     *
      * Available from PHPUnit <= 3.5
      *
      * @param mixed $expected Expected value
      * @param mixed $actual Actual value
      * @param string $message Message to print if assertion is wrong
-     * @throws Exception If assertType() method is not available
+     *
+     * @throws Exception If assertType() is not available
      */
-    public static function assertType( $expected, $actual, $message = '' )
+    public function assertType( $expected, $actual, $message = '' )
     {
-        if ( self::_checkMethod('assertType') ) {
-            parent::assertType($expected, $actual, $message);
-        } else {
-            throw new Exception('assertType() is removed since phpunit >= 3.5');
-        }
+        $message = 'assertType() was removed since phpunit 3.5*. You may check with assertInternalType()';
+        self::_checkMethod('assertType', $message);
     }
 
 
     /**
-     * Calls assertType() or assertInternalType() depending on the PHPUnit version.
-     * Available from PHPUnit >= 3.5
-     *
-     * @param string $expected Expected value
-     * @param mixed $actual Actual value
-     * @param string $message Message to print if assertion is wrong
+     * Checks PhpUnit hasPerformedExpectationsOnOutput() if available.
      */
-    public static function assertInternalType( $expected, $actual, $message = '' )
+    public function hasPerformedExpectationsOnOutput()
     {
-        if ( self::_checkMethod('assertInternalType') ) {
-            parent::assertInternalType($expected, $actual, $message);
-        } else {
-            parent::assertType($expected, $actual, $message);
-        }
+        $message = 'hasPerformedExpectationsOnOutput() will be removed in the future.'
+            . 'Marked as deprecated since Release (found 5.4.*)';
+        self::_checkMethod('hasPerformedExpectationsOnOutput', $message);
     }
 
 
     /**
-     * Calls assertType() or assertInstanceOf() depending on the PHPUnit version.
-     * Available from PHPUnit >= 3.5
+     * Checks PhpUnit getMockWithoutInvokingTheOriginalConstructor() if available.
      *
-     * @param string $expected Expected value
-     * @param mixed $actual Actual value
-     * @param string $message Message to print if assertion is wrong
+     * @param string $originalClassName Class name
      */
-    public static function assertInstanceOf( $expected, $actual, $message = '' )
+    public function getMockWithoutInvokingTheOriginalConstructor( $originalClassName )
     {
-        if ( self::_checkMethod('assertInstanceOf') ) {
-            parent::assertInstanceOf($expected, $actual, $message);
-        } else {
-            parent::assertType($expected, $actual, $message);
-        }
+        $message = 'getMockWithoutInvokingTheOriginalConstructor() will be
+            removed in the future. Deprecated since Release 5.4.0';
+
+        self::_checkMethod('getMockWithoutInvokingTheOriginalConstructor', $message);
     }
 
 
     /**
-     * Calls assertEmpty() or assertThat() depending on the PHPUnit version.
-     * Available from PHPUnit >= 3.5
+     * Checks if given method exists in current version of PHPUnit.
      *
-     * @param mixed $actual Actual value
-     * @param string $message Message to print if assertion is wrong
+     * @param string $method Method to check if exists
      */
-    public static function assertEmpty( $actual, $message = '' )
+    private static function _checkMethod( $method, $message )
     {
-        if ( self::_checkMethod('assertEmpty') ) {
-            parent::assertEmpty($actual, $message);
-        } else {
-            parent::assertThat($actual, parent::isEmpty(), $message);
+        if ( !isset(self::$_methods[$method]) ) {
+            self::$_methods[$method] = method_exists('PHPUnit_Framework_TestCase', $method);
         }
+
+        if ( self::$_methods[$method] ) {
+            parent::markTestIncomplete($message);
+        } else {
+            throw new Exception($message);
+        }
+
+        return self::$_methods[$method];
     }
 
 }

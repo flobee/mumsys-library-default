@@ -1,28 +1,26 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_FileSystem
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright (c) 2006 by Florian Blasel
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @category Mumsys
- * @package Mumsys_Library
- * @subpackage Mumsys_FileSystem
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  FileSystem
  * Created on 2006-12-01
  */
-/* }}} */
 
 
 /**
  * Class for the File System and Tools to handle files or directories
  *
- * @category Mumsys
- * @package Mumsys_Library
- * @subpackage Mumsys_FileSystem
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  FileSystem
  */
 class Mumsys_FileSystem
     extends Mumsys_FileSystem_Common_Abstract
@@ -58,17 +56,21 @@ class Mumsys_FileSystem
      *
      * @return array|false Returns list of file/link/directory details like path, name, size, type
      */
-    public function scanDirInfo( $dir, $hideHidden = true, $recursive = false, array $filters = array() )
+    public function scanDirInfo( $dir, $hideHidden = true, $recursive = false,
+        array $filters = array() )
     {
         if ( @is_dir($dir) && is_readable($dir) && !is_link($dir) ) {
             if ( $dh = @opendir($dir) ) {
-                while ( ($file = readdir($dh)) !== false ) {
+                while ( ($file = readdir($dh)) !== false )
+                {
                     if ( $file == '.' || $file == '..' ) {
                         continue;
                     }
+
                     if ( $hideHidden && $file[0] == '.' && preg_match('/^(\.\w+|\.$|\.\.$)/i', $file) ) {
                         continue;
                     }
+
                     $test = $dir . DIRECTORY_SEPARATOR . $file;
                     if ( $recursive && is_dir($test . DIRECTORY_SEPARATOR) ) {
                         $newdir = $dir . DIRECTORY_SEPARATOR . $file;
@@ -85,14 +87,14 @@ class Mumsys_FileSystem
         }
 
         if ( $filters ) {
-            while ( list($location, ) = each($this->_dirInfo) ) {
-                foreach ( $filters as $regex ) {
-                    if ( !preg_match($regex, $location) ) {
+            while ( list($location, ) = each($this->_dirInfo) )
+                foreach ( $filter as $regex ) {
+                    if ( !preg_match($location, $regex) ) {
                         unset($this->_dirInfo[$location]);
                     }
                 }
-            }
         }
+
         return $this->_dirInfo;
     }
 
@@ -423,7 +425,7 @@ class Mumsys_FileSystem
                     $res = link($srcFile, $linkName);
                     break;
                 default:
-                    $msg = 'Invalid link type "' . $type . '"  (Use soft|hard)';
+                    $msg = 'Invalid link type "' . $type . '" (Use soft|hard)';
                     throw new Mumsys_FileSystem_Exception($msg);
             }
         } catch ( Exception $e ) {
@@ -526,7 +528,9 @@ class Mumsys_FileSystem
         $from = explode($sep, $from);
         $to = $resultParts = explode($sep, $to);
         $cntFrom = count($from);
-        foreach ( $from as $key => $pathPart ) {
+
+        foreach ( $from as $key => $pathPart )
+        {
             if ( isset($to[$key]) && $pathPart === $to[$key] ) {
                 array_shift($resultParts);
             } else {
@@ -540,6 +544,7 @@ class Mumsys_FileSystem
                 }
             }
         }
+        
         return implode($sep, $resultParts);
     }
 

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Test class for Mumsys_Counter.
  */

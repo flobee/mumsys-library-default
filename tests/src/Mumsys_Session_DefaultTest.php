@@ -107,7 +107,7 @@ class Mumsys_Session_DefaultTest
         $this->assertEquals($this->_version, $this->_object->getVersionID());
 
         // test register existing
-        $this->setExpectedException('Mumsys_Session_Exception', 'Session key "testkey" exists');
+        $this->setExpectedExceptionRegExp('Mumsys_Session_Exception', '/(Session key "testkey" exists)/i');
         $this->_object->register('testkey', array('val5', 'val6'));
     }
 

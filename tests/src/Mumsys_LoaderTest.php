@@ -32,22 +32,22 @@ class Mumsys_LoaderTest
 
     public function testLoad()
     {
-        $o2 = $this->object->load('Php');
         $o3 = $this->object->load('Mumsys_Timer');
-
-        $this->assertInstanceof('Php', $o2);
         $this->assertInstanceof('Mumsys_Timer', $o3);
+
+        $this->setExpectedExceptionRegExp('Mumsys_Loader_Exception', '/(Error! could not load: "unittest")/i');
+        $this->object->load('unittest');
     }
 
     public function testLoadException1()
     {
-        $this->setExpectedException('Mumsys_Exception', 'Could not load: "Mumsys_NoExists".');
+        $this->setExpectedExceptionRegExp('Mumsys_Exception', '/(Error! could not load: "Mumsys_NoExists".)/');
         $o4 = $this->object->load('Mumsys_NoExists', array());
     }
 
     public function testLoadException2()
     {
-        $this->setExpectedException('Mumsys_Exception', 'Could not load: "Mumsys_Templates_Base".');
+        $this->setExpectedExceptionRegExp('Mumsys_Exception', '/(Error! could not load: "Mumsys_Templates_Base".)/');
         $o4 = $this->object->load('Mumsys_Templates_Base', array());
     }
 

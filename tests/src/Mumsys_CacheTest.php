@@ -1,11 +1,10 @@
 <?php
 
-
 /**
  * Mumsys_Cache Tests
  */
 class Mumsys_CacheTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Cache

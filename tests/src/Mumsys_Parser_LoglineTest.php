@@ -120,7 +120,7 @@ class Mumsys_Parser_LoglineTest
         $this->_object->setFilterCondition('AND');
         $this->_object->setFilterCondition('OR');
 
-        $this->setExpectedException('Mumsys_Parser_Exception', 'Invalid filter condition');
+        $this->setExpectedExceptionRegExp('Mumsys_Parser_Exception', '/(Invalid filter condition)/');
         $this->_object->setFilterCondition('FAILT');
     }
 
@@ -193,11 +193,15 @@ class Mumsys_Parser_LoglineTest
         $this->assertFalse($actual5);
 
         // crap in "opt"
-        $this->setExpectedException(
+        $this->setExpectedExceptionRegExp(
             'Mumsys_Parser_Exception',
-            'Format of log line invalid (expected:"#^id;c1;c2;c3;c4;c5$#"); Line was "5;"which has";"semicolon";"as";'
-            . '"d";"wont work because of the quotes""; regex: "#^(?P<id>\w+);(?P<col_1>.+);(?P<col_2>.+);(?P<col_3>.+)'
-            . ';(?P<col_4>.+);(?P<col_5>\w*)$#"'
+            '/('
+            . 'Format of log line invalid \(expected:"#\^id;c1;c2;c3;c4;c5\$#"\); '
+            . 'Line was "5;"which has";"semicolon";"as";'
+            . '"d";"wont work because of the quotes""; regex: '
+//            . '"#^(?P<id>\w+);(?P<col_1>.+);(?P<col_2>.+);(?P<col_3>.+)'
+//            . ';(?P<col_4>.+);(?P<col_5>\w*)$#"'
+            . ')/'
         );
         $actual5 = $this->_object->parse(trim($records[4]));
     }

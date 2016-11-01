@@ -52,7 +52,7 @@ class Mumsys_RegistryTest
         $this->assertEquals('new value', $actual);
 
         // invalid key exception
-        $this->setExpectedException('Mumsys_Exception', 'Invalid registry key. It\'s not a string');
+        $this->setExpectedExceptionRegExp('Mumsys_Exception','/(Invalid registry key. It\'s not a string)/i');
         Mumsys_Registry::replace(new stdClass, 'new value');
     }
 
@@ -69,7 +69,7 @@ class Mumsys_RegistryTest
         $this->assertEquals('new value', $actual);
 
         // invalid key exception
-        $this->setExpectedException('Mumsys_Registry_Exception', 'Registry key "unittest" exists');
+        $this->setExpectedExceptionRegExp('Mumsys_Registry_Exception','/(Registry key "unittest" exists)/i');
         Mumsys_Registry::register($this->_key, 'new value');
     }
 
@@ -79,8 +79,9 @@ class Mumsys_RegistryTest
      */
     public function testSet()
     {
-        $this->setExpectedException(
-            'Mumsys_Registry_Exception', 'Unknown meaning for set(). Use register() or replace() methodes'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Registry_Exception',
+            '/(Unknown meaning for set\(\). Use register\(\) or replace\(\) methodes)/'
         );
         Mumsys_Registry::set($this->_key, 'new value');
     }
@@ -99,6 +100,9 @@ class Mumsys_RegistryTest
 
         $this->assertEquals('new value', $actual1);
         $this->assertFalse($actual2);
+        
+        $this->setExpectedExceptionRegExp('Mumsys_Registry_Exception','/(Registry key "was not set" not found)/');
+        Mumsys_Registry::get('was not set');
     }
 
 

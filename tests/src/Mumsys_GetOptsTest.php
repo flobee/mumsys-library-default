@@ -3,7 +3,7 @@
 /**
  * Test class for Mumsys_GetOpts.
  */
-class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
+class Mumsys_GetOptsTest extends Mumsys_Unittest_Testcase
 {
 
     /**
@@ -133,15 +133,61 @@ class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
 //        $this->assertEquals($expected, $actual1);
 //    }
 
-    /**
-     * - Adds action groups (or optional parameters handling as groups) like:
-        eg: script.php --globalOption action1 --host ab action2 --host cd
-        eg: script.php doThis -p 123 doThat now
-        - Existing configurations will be used as is as global whitelist or
-          needs to be extended to new action groups.
-        - Return values will return like befor when not using the addition.
-     */
-    public function testGetResultMoreActions()
+    // for 100% code coverage
+    public function testConstruct1()
+    {
+        // use server vars, not input parameters
+        $x = new Mumsys_GetOpts($this->opts);
+    }
+
+    // for 100% code coverage
+    public function testConstructWithNoFlag()
+    {
+        $inp[] = 'programToCall';
+        $inp[] = '--help';
+        $inp[] = '--no-help';
+        $x = new Mumsys_GetOpts($this->opts, $inp);
+    }
+
+
+    // for 100% code coverage
+    public function testConstructExceptionWithNoFlag()
+    {
+        $inp = $this->_input;
+        $inp[] = '--no-unknown';
+
+        $this->setExpectedExceptionRegExp('Mumsys_GetOpts_Exception',
+            '/(Option "--no-unknown" not found in option list\/configuration)/');
+        $x = new Mumsys_GetOpts($this->opts, $inp);
+    }
+
+    public function testConstructException()
+    {
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_GetOpts_Exception',
+            '/(Empty options detected. Can not parse shell arguments)/'
+        );
+        $x = new Mumsys_GetOpts(array(), $input = array());
+    }
+
+
+    public function testConstructException2()
+    {
+        $this->setExpectedExceptionRegExp('Mumsys_GetOpts_Exception', '/(Missing value for parameter "-h"' . PHP_EOL .')/m');
+        $options = array(
+            '-h:',
+            '--action:' => 'Action to call: finalize, cron, import',
+            'cron' => 'Process listed jobs',
+            'import' => 'Create new jobs',
+            '--file:' => 'csv file location to/for import',
+            'finalize' => 'Bring cache to storage an drop cache after a successful execution',
+        );
+
+        $o = new Mumsys_GetOpts($options, array('cmd', '-h'));
+    }
+
+
+    public function testGetResult()
     {
         $input = array('script.php', 'action1', '--verbose', '--input', "file1.txt", '--flag', 'action2', '--xbc', 'file2.txt');
 //        $simpleConfig = array(
@@ -184,6 +230,35 @@ print_r($this->_object);
             '--set' => true,
             'actions' => array('run','setconfig', 'showconfig'),
         );
+
+        $this->assertEquals($expected, $actual);
+    }
+
+
+    public function testGetCmd()
+    {
+        $actual = $this->_object->getCmd();
+        $expected = '--verbose --input i_input --bits b_input -f f_param --help';
+        $this->assertEquals($expected, $actual);
+
+        $input = array('program', '--verbose', '--input', "true", '--bits', 'false', '-f', 'f_param', '--no-f');
+        $this->_object = new Mumsys_GetOpts($this->opts, $input);
+        $actual = $this->_object->getCmd();
+        $expected = '--verbose --input true --bits false --no-f';
+        $this->assertEquals($expected, $actual);
+    }
+
+
+    public function testGetCmd2()
+    {
+        $o = new Mumsys_GetOpts(array('-y:'), array('cmd', '-y', 'yes'));
+        $actual = $o->getCmd();
+        $expected = '-y yes';
+        $this->assertEquals($expected, $actual);
+
+        $this->setExpectedExceptionRegExp('Mumsys_GetOpts_Exception', '/(Missing value for parameter "-x")/');
+        $o = new Mumsys_GetOpts(array('-x:'), array('cmd', '-x'));
+        $actual = $o->getCmd();
     }
 
 //    public function testGetMapping()
