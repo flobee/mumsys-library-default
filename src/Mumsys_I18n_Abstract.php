@@ -1,29 +1,26 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_I18n_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_I18n
+ * @package     Library
+ * @subpackage  I18n
  * Created: 2013-12-17
- * @filesource
  */
-/*}}}*/
 
 
 /**
  * Abstract class for the internationalization Interface (I18n)
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_I18n
+ * @package     Library
+ * @subpackage  I18n
  */
 abstract class Mumsys_I18n_Abstract
     extends Mumsys_Abstract
@@ -46,9 +43,14 @@ abstract class Mumsys_I18n_Abstract
      *
      * @param string $locale The locale string the translation belongs to e.g.
      * de or de_DE,
+     * @param array $options Optional options to be set to setup your individual driver.
      */
-    public function __construct( $locale = '' )
+    public function __construct( $locale = null, array $options = array() )
     {
+        if ( !isset($locale) ) {
+            throw new Mumsys_I18n_Exception('Locale not set');
+        }
+
         $this->setlocale($locale);
     }
 
@@ -57,15 +59,16 @@ abstract class Mumsys_I18n_Abstract
      * Replaces/ sets the current locale.
      *
      * @param string $locale ISO-3166 locale string.
-     * @throws Mumsys_I18n_Exception if locale dosne fit the ISO-3166 format
+     *
+     * @throws Mumsys_I18n_Exception if locale does not fit the ISO-3166 format
      */
     public function setlocale( $locale = '' )
     {
-        if (strlen($locale) > 5) {
+        if ( strlen($locale) > 5 ) {
             throw new Mumsys_I18n_Exception(sprintf('Invalid locale "%1$s"', $locale));
         }
 
-        $this->_locale = (string)$locale;
+        $this->_locale = (string) $locale;
     }
 
 
@@ -86,7 +89,7 @@ abstract class Mumsys_I18n_Abstract
      *
      * Taken from Zend Framework 1.5
      * @copyright Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
-	 * @license http://framework.zend.com/license/new-bsd New BSD License
+     * @license http://framework.zend.com/license/new-bsd New BSD License
      *
      * @param  integer $number Number to find the plural form
      *
@@ -94,17 +97,18 @@ abstract class Mumsys_I18n_Abstract
      */
     public function getPluralIndex( $number )
     {
-        $number = abs((int)$number);
+        $number = abs((int) $number);
 
-        if ($this->_locale == 'pt_BR') {
+        if ( $this->_locale == 'pt_BR' ) {
             $this->_locale = 'xbr'; // temporary set a locale for brasilian
         }
 
-        if (strlen($this->_locale) > 3) {
+        if ( strlen($this->_locale) > 3 ) {
             $this->_locale = substr($this->_locale, 0, -strlen(strrchr($this->_locale, '_')));
         }
 
-        switch ($this->_locale) {
+        switch ( $this->_locale )
+        {
             case 'af':
             case 'az':
             case 'bn':

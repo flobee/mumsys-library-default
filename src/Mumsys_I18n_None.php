@@ -9,14 +9,14 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_I18n
+ * @package     Library
+ * @subpackage  I18n
  * Created: 2013-12-17
  */
 
 
 /**
- * Dummy implementation for the internationalization Interface (I18n).
+ * Dummy implementation for the internationalization / translation Interface (I18n).
  *
  * There is no real translation! This is just the wrapper class as default for
  * further implementations e.g. using "gettext" or other drivers.
@@ -26,8 +26,8 @@
  * will come. This class is the minimum layer.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_I18n
+ * @package     Library
+ * @subpackage  I18n
  */
 class Mumsys_I18n_None
     extends Mumsys_I18n_Abstract
@@ -37,19 +37,6 @@ class Mumsys_I18n_None
      * Version ID information
      */
     const VERSION = '3.2.1';
-
-
-    /**
-     * Initialize the I18n interface
-     *
-     * @param string $locale The locale string the translation belongs to e.g.
-     * de or de_DE,
-     * @throws Mumsys_I18n_Exception On errors with the locale
-     */
-    public function __construct( $locale = '' )
-    {
-        parent::__construct($locale);
-    }
 
 
     /**

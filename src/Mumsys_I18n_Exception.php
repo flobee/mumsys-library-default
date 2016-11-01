@@ -9,8 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_I18n
+ * @package     Library
+ * @subpackage  I18n
  * @version 1.0.0
  * Created on 2013-12-17
  */
@@ -20,8 +20,8 @@
  * Generic Exception class for I18n interface
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_I18n
+ * @package     Library
+ * @subpackage  I18n
  */
 class Mumsys_I18n_Exception
     extends Mumsys_Exception
