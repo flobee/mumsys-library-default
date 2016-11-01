@@ -2,7 +2,10 @@
 
 
 /**
- * Unittest test case class phpunit >= phpunit 3.4 and 3.6
+ * Unittest test case class.
+ *
+ * Denies to use methodes which are already maked as deprecated or removed
+ * methodes to keep you informed.
  */
 class Mumsys_Unittest_Testcase
     extends PHPUnit_Framework_TestCase
