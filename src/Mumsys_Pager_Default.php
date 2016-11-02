@@ -9,8 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Pager
+ * @package     Library
+ * @subpackage  Pager
  * Created: 2007-07-14
  * $Id: Mumsys_Pager.php 2820 2013-11-12 12:11:46Z flobee $
  */
@@ -24,24 +24,24 @@
  * Example:
  * <code>
  * $opts = array(
- *  'cntitems' => 1123,
- *  'pagestart' => 0,
- *  'pagestartVarname' => 'page',
- *  'limit' => 25,
- *  'basiclink' => 'http://site/index.php?a=b&limit=15',
- *  'showPageNumbers' => true,
- *  'showSummary' => true,
- *  'dynamic' => true,
- *  'slidersteps' => 8,
- *  'cssClassName' => 'pnnavi',
+ *      'cntitems' => 1123,
+ *      'pagestart' => 0,
+ *      'pagestartVarname' => 'page',
+ *      'limit' => 25,
+ *      'basiclink' => 'http://site/index.php?a=b&limit=15',
+ *      'showPageNumbers' => true,
+ *      'showSummary' => true,
+ *      'dynamic' => true,
+ *      'slidersteps' => 8,
+ *      'cssClassName' => 'pnnavi',
  * );
  * $oPager = new Mumsys_Pager($opts);
  * $html = $oPager->getHtml();
  * </code>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Pager
+ * @package     Library
+ * @subpackage  Pager
  */
 class Mumsys_Pager_Default
     extends Mumsys_Abstract
@@ -233,8 +233,8 @@ class Mumsys_Pager_Default
         self::PAGER_RESULTPAGES => 'pages: ',
         self::PAGER_RESULTSPERPAGE => 'results per page: ',
         // current/ activ item to hightlight
-        self::PAGER_HIGHLIGHTLEFT => ' &gt;', // or: <span class="nicefeature">
-        self::PAGER_HIGHLIGHTRIGHT => '&lt; ', // or: </span>
+        self::PAGER_HIGHLIGHTLEFT => ' &gt;',   // or: <span class="nicefeature">
+        self::PAGER_HIGHLIGHTRIGHT => '&lt; ',  // or: </span>
         self::PAGER_SLIDERPREFIX => '[ ',
         self::PAGER_SLIDERSUFFIX => ' ]',
         self::PAGER_SLIDERDELIMITER => ' | ',
@@ -247,16 +247,16 @@ class Mumsys_Pager_Default
      * Example for parameters:
      * <code>
      * array(
-     *  'cntitems' => 1123,
-     *  'pagestart' => 0,
-     *  'pagestartVarname' => 'page',
-     *  'limit' => 25,
-     *  'basiclink' => 'http://site/index.php?a=b&limit=15',
-     *  'showPageNumbers' => true,
-     *  'showSummary' => true,
-     *  'dynamic' => true,
-     *  'slidersteps' => 8,
-     *  'cssClassName' => 'pnnavi',
+     *      'cntitems' => 1123,
+     *      'pagestart' => 0,
+     *      'pagestartVarname' => 'page',
+     *      'limit' => 25,
+     *      'basiclink' => 'http://site/index.php?a=b&limit=15',
+     *      'showPageNumbers' => true,
+     *      'showSummary' => true,
+     *      'dynamic' => true,
+     *      'slidersteps' => 8,
+     *      'cssClassName' => 'pnnavi',
      * );
      * </code>
      *
@@ -423,7 +423,8 @@ class Mumsys_Pager_Default
                 $ps = 0;
             }
             $this->_pagePrev = '<a href="' . $basiclink . '&amp;'
-                . $pagestartVarname . '=' . $ps . '">' . $this->_templates[self::PAGER_PAGEPREV] . '</a>';
+                . $pagestartVarname . '=' . $ps . '">'
+                . $this->_templates[self::PAGER_PAGEPREV] . '</a>';
             $html .= $this->_pagePrev;
             $html .= $this->_templates[self::PAGER_SLIDERDELIMITER];
         }
@@ -492,13 +493,15 @@ class Mumsys_Pager_Default
         } else {
             // next page
             $this->_pageNext = sprintf(
-                '<a href="%1$s&amp;%2$s=%3$s">%4$s</a>', $basiclink, $pagestartVarname, ($pagestart + $limit),
+                '<a href="%1$s&amp;%2$s=%3$s">%4$s</a>',
+                $basiclink, $pagestartVarname, ($pagestart + $limit),
                 $this->_templates[self::PAGER_PAGENEXT]
             );
             $html .= $this->_pageNext;
             // last page
             $this->_pageLast = sprintf(
-                '<a href="%1$s&amp;%2$s=%3$s">%4$s</a>', $basiclink, $pagestartVarname, ($cnt * $limit - $limit),
+                '<a href="%1$s&amp;%2$s=%3$s">%4$s</a>',
+                $basiclink, $pagestartVarname, ($cnt * $limit - $limit),
                 $this->_templates[self::PAGER_PAGELAST]
             );
         }
