@@ -9,9 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Session
- * Created: 2005-01-01, new in 2016-05-17
+ * @package     Library
+ * @subpackage  Session
  */
 
 
@@ -19,17 +18,17 @@
  * Memory based wrapper class as session interface to be used as dummy
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Session
+ * @package     Library
+ * @subpackage  Session
  */
 class Mumsys_Session_None
     extends Mumsys_Session_Abstract
     implements Mumsys_Session_Interface
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
 
     /**
@@ -49,15 +48,6 @@ class Mumsys_Session_None
     public function __destruct()
     {
         $this->_records = array();
-    }
-
-
-    /**
-     * Clears and unsets the current session
-     */
-    public function clear()
-    {
-        parent::clear();
     }
 
 }

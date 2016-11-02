@@ -9,10 +9,9 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Session
+ * @package     Library
+ * @subpackage  Session
  * @version     1.1.0
- * Created: 2005-01-01, new in 2016-03-19
  */
 
 
@@ -20,8 +19,8 @@
  * Session interface
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Session
+ * @package     Library
+ * @subpackage  Session
  */
 interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
 {
@@ -30,6 +29,7 @@ interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
      *
      * @param string $key value of the key to return to
      * @param scalar $default
+     *
      * @return mixed Stored value or $default if key was not set.
      */
     public function get( $key, $default = null );
@@ -40,6 +40,7 @@ interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
      * Note: This is befor it will be available in $_SESSION.
      *
      * @param string $key value of the key to return to
+     *
      * @return mixed Stored value
      */
     public function getCurrent();
@@ -51,6 +52,7 @@ interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
      * in $_SESSION after initialisation of this class are not listed!
      *
      * @param string $key value of the key to return to
+     *
      * @return mixed Stored value
      */
     public function getAll();
@@ -63,6 +65,7 @@ interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
      *
      * @param string $key Name of the key to register.
      * @param mixed $value optional; Value to be stored
+     * 
      * @throws Mumsys_Session_Exception Throws exception if key already exists
      */
     public function register( $key, $value = null );

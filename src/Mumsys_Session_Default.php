@@ -9,9 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Session
- * Created: 2005-01-01
+ * @package     Library
+ * @subpackage  Session
  */
 
 
@@ -19,8 +18,8 @@
  * Class to deal with the php session
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Session
+ * @package     Library
+ * @subpackage  Session
  */
 class Mumsys_Session_Default
     extends Mumsys_Session_Abstract

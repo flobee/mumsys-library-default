@@ -9,8 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Session
+ * @package     Library
+ * @subpackage  Session
  * Created: 2005-01-01, new in 2016-05-17
  */
 
@@ -19,15 +19,15 @@
  * Abstact session class to handle the session data.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Session
+ * @package     Library
+ * @subpackage  Session
  */
 abstract class Mumsys_Session_Abstract
     extends Mumsys_Abstract
     implements Mumsys_Session_Interface
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '1.0.0';
 
@@ -38,7 +38,7 @@ abstract class Mumsys_Session_Abstract
     protected $_records = array();
 
     /**
-     * ID of the session of this system.
+     * ID of the session of this request.
      * @var string
      */
     protected $_id;
