@@ -1,33 +1,33 @@
 <?php
 
 /**
- * {{{ Mumsys_Xml_Abstract
+ * Mumsys_Xml_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @category Mumsys
- * @package Mumsys_Library
- * @subpackage Mumsys_Xml
- }}} */
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Xml
+ */
 
 
 /**
  * Class for xml code creation, validation and filtering
  *
- * @category Mumsys
- * @package Mumsys_Library
- * @subpackage Mumsys_Xml
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Xml
  */
 abstract class Mumsys_Xml_Abstract
     extends Mumsys_Abstract
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
-    const VERSION = '3.2.1';
+    const VERSION = '3.0.0';
 
 
     /**
