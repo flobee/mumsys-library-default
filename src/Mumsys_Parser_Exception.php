@@ -9,21 +9,21 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Parser
+ * @package     Library
+ * @subpackage  Parser
  * @version     1.1.1
- * Created: 2015-08-11
  */
+
 
 /**
  * Mumsys_Parser_Exception
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Parser
+ * @package     Library
+ * @subpackage  Parser
  */
-class Mumsys_Parser_Exception extends Mumsys_Exception
+class Mumsys_Parser_Exception
+    extends Mumsys_Exception
 {
 
 }
-
