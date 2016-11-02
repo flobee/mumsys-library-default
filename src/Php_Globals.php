@@ -34,7 +34,13 @@
  * @subpackage  Globals
  */
 class Php_Globals
+    extends Mumsys_Abstract
 {
+    /**
+     * Version ID information.
+     */
+    const VERSION = '1.0.0';
+
     /**
      * Cache container for uploaded files
      * @var array

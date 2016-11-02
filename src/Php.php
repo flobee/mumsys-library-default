@@ -10,7 +10,6 @@
  *
  * @category    Mumsys
  * @package     Php
- * Created on 2006-04-30
  */
 
 
@@ -65,7 +64,13 @@ if ( PHP_VERSION_ID < 50207 ) {
  * @package     Php
  */
 class Php
+    extends Mumsys_Abstract
 {
+    /**
+     * Version ID information.
+     */
+    const VERSION = '2.0.0';
+
     /**
      * @var string
      */
@@ -815,7 +820,7 @@ class Php
      * @todo to be tested deeply
      *
      * @param array $array1, $array2, $array3... Arrays be be merged
-     * 
+     *
      * @return array Returns the merged array
      *
      * @throws Mumsys_Exception Throws exception on unexpercted behaviour
