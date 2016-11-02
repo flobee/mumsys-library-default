@@ -9,9 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Registry
- * Created: 2014-01-07
+ * @package     Library
+ * @subpackage  Registry
  */
 
 
@@ -19,18 +18,17 @@
  * Mumsys registry class implementing singleton pattern.
  *
  * @uses Singleton pattern
- * @uses Mumsys_GetterSetter_Interface
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Registry
+ * @package     Library
+ * @subpackage  Registry
  */
 abstract class Mumsys_Registry
     extends Mumsys_Abstract
     implements Mumsys_Registry_Interface
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '1.1.0';
 
@@ -46,6 +44,7 @@ abstract class Mumsys_Registry
      *
      * @param sting $key Key to be set
      * @param mixed $value Value to be set
+     *
      * @throws Mumsys_Registry_Exception Throws exception if key is not a string
      */
     public static function replace( $key, $value )
@@ -77,25 +76,10 @@ abstract class Mumsys_Registry
 
 
     /**
-     * Sets value to the registry by given key and value.
-     *
-     * @todo To be removed in the future.
-     *
-     * @deprecated since version 1.0.0
-     *
-     * @throws Mumsys_Registry_Exception Throws exception
-     */
-    public static function set( $key, $value )
-    {
-        $message = 'Unknown meaning for set(). Use register() or replace() methodes';
-        throw new Mumsys_Registry_Exception($message);
-    }
-
-
-    /**
      * Returns the value by given key.
      *
      * @param string $key Key which was set
+     *
      * @return mixed Returns the value which was set
      */
     public static function get( $key, $default = null )
@@ -112,17 +96,12 @@ abstract class Mumsys_Registry
      * Removes registered entry.
      *
      * @param string $key Key which was set
-     *
-     * @throws Mumsys_Registry_Exception Throws exception if key not exists
      */
     public static function remove( $key )
     {
         if ( isset(self::$_registry[$key]) ) {
             unset(self::$_registry[$key]);
-            return true;
         }
-
-        return false;
     }
 
 }
