@@ -1,21 +1,19 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Variable_Item_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
- * @verion 1.0.0
+ * @package     Library
+ * @subpackage  Variable
+ * @verion      1.1.1
  * Created: 2006 based on Mumsys_Field, renew 2016
  */
-/* }}} */
 
 
 /**
@@ -27,8 +25,8 @@
  * needed for these tasks. This is the standard set of methodes as interface
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
+ * @package     Library
+ * @subpackage  Variable
  */
 interface Mumsys_Variable_Item_Interface
 {
@@ -47,6 +45,7 @@ interface Mumsys_Variable_Item_Interface
      * Note: From a list of key/value pairs: this is the key used as name.
      *
      * @param mixed $default Default (null) return value if name was not set
+     *
      * @return string|mixed|null Item name key/identifier
      */
     public function getName( $default = null );
@@ -96,6 +95,7 @@ interface Mumsys_Variable_Item_Interface
      * {@link Mumsys_Variable_Abstract::TYPES} for a complete list.
      *
      * @param string $value Type to be set
+     *
      * @return void
      */
     public function setType( $value );
@@ -255,5 +255,4 @@ interface Mumsys_Variable_Item_Interface
      * @return array List of key/value pairs of error messages
      */
     public function getErrorMessages();
-
 }

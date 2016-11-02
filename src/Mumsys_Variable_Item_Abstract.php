@@ -1,17 +1,16 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Variable_Item_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
+ * @package     Library
+ * @subpackage  Variable
  * Created: 2006 based on Mumsys_Field, renew 2016
  */
 /* }}} */
@@ -25,8 +24,8 @@
  * This class only keeps minimum getter/setter like get/set name, value and error messages.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
+ * @package     Library
+ * @subpackage  Variable
  */
 abstract class Mumsys_Variable_Item_Abstract
     extends Mumsys_Variable_Abstract
@@ -103,6 +102,7 @@ abstract class Mumsys_Variable_Item_Abstract
      * Note: From a list of key/value pairs: this is the key used as name.
      *
      * @param mixed $default Default (null) return value if name was not set
+     *
      * @return string Item name key/identifier
      */
     public function getName( $default = null )
@@ -131,6 +131,7 @@ abstract class Mumsys_Variable_Item_Abstract
      * Returns the item value or null if not set
      *
      * @param mixed $default Default return value if value not exists
+     *
      * @return mixed|null Returns the item value or $default
      */
     public function getValue( $default = null )
@@ -403,6 +404,7 @@ abstract class Mumsys_Variable_Item_Abstract
      * in some cases.
      *
      * @param string $type Type of the variable to init: filters or callbacks
+     * 
      * @return boolean Returns true to init existing callbacks from construction,
      * false if there are no callbacks or filters set
      */

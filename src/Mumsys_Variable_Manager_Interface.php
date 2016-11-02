@@ -1,21 +1,19 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Variable_Manager_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
+ * @package     Library
+ * @subpackage  Variable
  * @version     1.1.1
  * Created: 2006 based on Mumsys_Field, renew 2016
  */
-/* }}} */
 
 
 /**
@@ -64,6 +62,7 @@ interface Mumsys_Variable_Manager_Interface
      * lower the current value.
      *
      * @param Mumsys_Variable_Item_Interface $item
+     *
      * @return boolean True on success otherwise false
      */
     public function validateMinMax( Mumsys_Variable_Item_Interface $item );
@@ -73,6 +72,7 @@ interface Mumsys_Variable_Manager_Interface
      * Item validation agains regular expressions.
      *
      * @param Mumsys_Variable_Item_Interface $item Validate item object
+     *
      * @return boolean True on success or if no regex was set or false on error
      */
     public function validateRegex( Mumsys_Variable_Item_Interface $item );
@@ -107,6 +107,7 @@ interface Mumsys_Variable_Manager_Interface
      * Returns a variable item by given key.
      *
      * @param string $key Key/ identifier of the variable item
+     *
      * @return Mumsys_Variable_Item_Interface|false Variable item or false
      */
     public function getItem( $key );
