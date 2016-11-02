@@ -1,39 +1,38 @@
 <?php
 
-/* {{{ */
 /**
  * Php_Globals
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Php
  * @subpackage  Globals
  */
-/* }}} */
 
 
-/** {{{
- * Nice interface for php's GLOBAL VARIABLES like $GLOBALS, $_SERVER, $_GET,
- * $_POST, $_FILES, $_COOKIE, $_SESSION, $_REQUEST and $_ENV and getenv().
+/**
+ * Nice interface for php's GLOBAL VARIABLES.
+ *
+ * Wraper for $GLOBALS, $_SERVER, $_GET, $_POST, $_FILES, $_COOKIE, $_SESSION,
+ * $_REQUEST and $_ENV and getenv().
  *
  * When ever using the server or env variables and your are bored about testing
  * if an array key exists and/or has a value you may find this class useful to
  * always have a default value if something NOT EXISTS. eg.: When switching to
  * shell, something is not available. This will solve some or more overhead
  * implementing things but brings more memory usage.
- * If you dont really nee some of the methodes: don't use them! As long the
+ * If you dont really need some of the methodes: don't use them! As long the
  * initialisation of the super globals is not needed you are in a good
  * performace way. With or without this class.
  *
  * @category    Mumsys
  * @package     Php
  * @subpackage  Globals
- *
- * }}} */
+ */
 class Php_Globals
 {
     /**
@@ -87,11 +86,11 @@ class Php_Globals
      */
     private static function _getEnvVar( $key, $default = null )
     {
-        if ( isset( $_SERVER[$key] ) ) {
+        if ( isset($_SERVER[$key]) ) {
             $default = $_SERVER[$key];
-        } elseif ( isset( $_ENV[$key] ) ) {
+        } elseif ( isset($_ENV[$key]) ) {
             $default = $_ENV[$key];
-        } elseif ( ($x = getenv( $key ) ) ) {
+        } elseif ( ($x = getenv($key) ) ) {
             $default = $x;
         }
 
@@ -110,11 +109,11 @@ class Php_Globals
      */
     public static function getPostVar( $key = null, $default = null )
     {
-        if ( isset( $_POST ) && $key === null ) {
+        if ( isset($_POST) && $key === null ) {
             return $_POST;
         }
 
-        if ( isset( $_POST[$key] ) ) {
+        if ( isset($_POST[$key]) ) {
             $default = $_POST[$key];
         }
 
@@ -133,11 +132,11 @@ class Php_Globals
      */
     public static function getGetVar( $key = null, $default = null )
     {
-        if ( isset( $_GET ) && $key === null ) {
+        if ( isset($_GET) && $key === null ) {
             return $_GET;
         }
 
-        if ( isset( $_GET[$key] ) ) {
+        if ( isset($_GET[$key]) ) {
             $default = $_GET[$key];
         }
 
@@ -156,11 +155,11 @@ class Php_Globals
      */
     public static function getCookieVar( $key = null, $default = null )
     {
-        if ( isset( $_COOKIE ) && $key === null ) {
+        if ( isset($_COOKIE) && $key === null ) {
             return $_COOKIE;
         }
 
-        if ( isset( $_COOKIE[$key] ) ) {
+        if ( isset($_COOKIE[$key]) ) {
             $default = $_COOKIE[$key];
         }
 
@@ -184,12 +183,12 @@ class Php_Globals
      */
     public static function getFileVar( $key = null, $default = null )
     {
-        if ( isset( $_FILES ) ) {
+        if ( isset($_FILES) ) {
             if ( self::$_files === null ) {
                 $newFiles = array();
 
                 foreach ( $_FILES as $index => $file ) {
-                    if ( !is_array( $file['name'] ) ) {
+                    if ( !is_array($file['name']) ) {
                         $newFiles[$index][] = $file;
                         continue;
                     }
@@ -212,10 +211,9 @@ class Php_Globals
                 $default = self::$_files;
             }
 
-            if ( isset( self::$_files[$key] ) ) {
+            if ( isset(self::$_files[$key]) ) {
                 $default = self::$_files[$key];
             }
-
         }
 
         return $default;
@@ -224,6 +222,7 @@ class Php_Globals
 
     /**
      * Returns a global variable if set.
+     *
      * If $key is NULL it will return all global parameters
      * This does not check the super global variables like _ENV, _SERVER, _GET,
      *  _POST, _REQUEST, _COOKIE, _FILES ... but they are in as array key
@@ -235,10 +234,10 @@ class Php_Globals
      */
     public static function getGlobalVar( $key = null, $default = null )
     {
-        if ( isset( $GLOBALS ) && $key === null ) {
+        if ( isset($GLOBALS) && $key === null ) {
             return $GLOBALS;
         }
-        if ( isset( $GLOBALS[$key] ) ) {
+        if ( isset($GLOBALS[$key]) ) {
             $default = $GLOBALS[$key];
         }
 
@@ -271,22 +270,23 @@ class Php_Globals
      */
     public static function get( $key, $default = null )
     {
-        if ( isset( $GLOBALS[$key] ) ) {
+        if ( isset($GLOBALS[$key]) ) {
             return $GLOBALS[$key];
-        } elseif ( isset( $GLOBALS['_REQUEST'][$key] ) ) {
+        } elseif ( isset($GLOBALS['_REQUEST'][$key]) ) {
             $return = $GLOBALS['_REQUEST'][$key];
-        } elseif ( isset( $GLOBALS['_COOKIE'][$key] ) ) {
+        } elseif ( isset($GLOBALS['_COOKIE'][$key]) ) {
             $return = $GLOBALS['_COOKIE'][$key];
-        } elseif ( isset( $GLOBALS['_SESSION'][$key] ) ) {
+        } elseif ( isset($GLOBALS['_SESSION'][$key]) ) {
             $return = $GLOBALS['_SESSION'][$key];
-        } elseif ( PHP_SAPI == 'cli' && isset( $_SERVER['argv'][$key] ) ) {
+        } elseif ( PHP_SAPI == 'cli' && isset($_SERVER['argv'][$key]) ) {
             $return = $_SERVER['argv'][$key];
         } else {
-            $return = self::_getEnvVar( $key, $default );
+            $return = self::_getEnvVar($key, $default);
         }
 
         return $return;
     }
+
 
     /**
      * Returns the remote user.
@@ -298,7 +298,7 @@ class Php_Globals
      */
     public static function getRemoteUser()
     {
-        if (self::$_remoteuser !== null) {
+        if ( self::$_remoteuser !== null ) {
             return self::$_remoteuser;
         }
 
