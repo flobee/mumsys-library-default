@@ -4,16 +4,15 @@
 /**
  * Mumsys_Permissions_Shell
  * for MUMSYS (Multi User Management System)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Permissions
+ * @package     Library
+ * @subpackage  Permissions
  * Created: 2016-01-19
- * @filesource
  */
 /*}}}*/
 
@@ -21,11 +20,11 @@
 /**
  * Class to deal with the permissions (acl) and custom setting per user
  *
- * @category Mumsys
- * @package Mumsys_Library
- * @subpackage Mumsys_Permissions
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Permissions
  */
-class Mumsys_Permissions_Shell
+class Mumsys_Permissions_Console
     extends Mumsys_Permissions_Abstract
 {
     /**
