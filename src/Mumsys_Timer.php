@@ -9,10 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Timer
- * V1 - Created 2006-01-12
- * @since       File available since Release 2
+ * @package     Library
+ * @subpackage  Timer
  */
 
 
@@ -42,14 +40,14 @@
  * </code>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Timer
+ * @package     Library
+ * @subpackage  Timer
  */
 class Mumsys_Timer
     extends Mumsys_Abstract
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '3.2.0';
 
@@ -82,7 +80,6 @@ class Mumsys_Timer
      *
      * @param boolean|float $start If true enable "start now"
      * function otherwise given float value will be used as starttime in mictotime format
-     * If true time recording starts now
      */
     public function __construct( $start = false )
     {
