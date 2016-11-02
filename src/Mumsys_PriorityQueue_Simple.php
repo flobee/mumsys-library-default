@@ -9,15 +9,15 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_PriorityQueue
+ * @package     Library
+ * @subpackage  PriorityQueue
  * @version     1.0.0
- * Created: 2016-03-20
  */
 
 
 /**
  * Simple priority queue uses priority names to place and to sort prirority items.
+ *
  * With "befor" and "after" keys given priroities can be set in the order you
  * which to use. Altn. have a look into the SplPriorityQueue.
  *
@@ -27,9 +27,18 @@
  * C => befor prio99
  * Result: C, A, B
  *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  PriorityQueue
  */
 class Mumsys_PriorityQueue_Simple
+    extends Mumsys_Abstract
 {
+    /**
+     * Version ID information.
+     */
+    const VERSION = '1.0.0';
+
     /**
      * Internal counter
      * @var integer
@@ -46,10 +55,11 @@ class Mumsys_PriorityQueue_Simple
     /**
      * Initialize the object with an optional List of Key/ID => value pairs to
      * be set as initial and ready to go stack.
+     *
      * Example: array(
-     *  array('default' => mixed content),
-     *  array('afterdefault1 => mixed content),
-     *  array('afterdefault2 => mixed content),
+     *      array('default' => mixed content),
+     *      array('afterdefault1 => mixed content),
+     *      array('afterdefault2 => mixed content),
      * )
      *
      * @param array $stack Optional; Predefined and ready to go list of key/values pairs.
