@@ -3,11 +3,11 @@
 /**
  * Php
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Php
  * Created on 2006-04-30
@@ -17,8 +17,8 @@
 /**
  * PHP_VERSION_ID is available as of PHP 5.2.7, if our
  * version is lower than that, then emulate it
- * @see http://us2.php.net/manual/en/function.phpversion.php
- * @see http://us2.php.net/manual/en/reserved.constants.php#reserved.constants.core
+ * @see http://php.net/manual/en/function.phpversion.php
+ * @see http://php.net/manual/en/reserved.constants.php#reserved.constants.core
  */
 if ( !defined('PHP_VERSION_ID') ) {
     $version = explode('.', PHP_VERSION);
@@ -46,7 +46,7 @@ if ( PHP_VERSION_ID < 50207 ) {
 
 
 /**
- * {{{ Class for php improvements.
+ * Class for php improvements.
  *
  * Improved or missing functionality you will find here. Missing functionality
  * you will find at its best @pear's "Compat" package.
@@ -63,7 +63,7 @@ if ( PHP_VERSION_ID < 50207 ) {
  *
  * @category    Mumsys
  * @package     Php
- * }}} */
+ */
 class Php
 {
     /**
@@ -265,7 +265,7 @@ class Php
      */
 
 
-    /** {{{
+    /**
      * Get the contens of a specified file
      *
      * @deprecated since version 2016-07-01
@@ -300,7 +300,7 @@ class Php
      * @param <type> $maxlen
      *
      * @return string|false Returns the contents of the given file or false on error (too old php version for this)
-     * }}} */
+     */
     public static function file_get_contents( $path, $flags = 0, $streamContext = null, $offset = -1, $maxlen = -1 )
     {
         $data = false;
@@ -396,39 +396,40 @@ class Php
 
 
     /**
-     * {{{ Check if a string is in another string.
+     * Check if a string is in another string.
      *
      * Alias like function of str(i)str()
      * If needle is not a string, it is converted to an integer and applied as
      * the ordinal value of a character.
      *
      * @param string $needle String to be checked
-     * @param string $heystack
+     * @param string $haystack
      * @param boolean $insensitive If true needle will be checked insensitive
      * @param boolean $beforeNeedle If TRUE, strstr() returns the part of the
      * haystack before the first occurrence of the needle.
+     *
      * @return string|false Returns the portion of string, or FALSE if needle is not found.
-     * }}} */
-    public static function in_string( $needle, $heystack, $insensitive = false, $beforeNeedle = false )
+     */
+    public static function in_string( $needle, $haystack, $insensitive = false, $beforeNeedle = false )
     {
         if ( $beforeNeedle ) {
             if ( $insensitive ) {
-                return stristr($heystack, $needle, $beforeNeedle);
+                return stristr($haystack, $needle, $beforeNeedle);
             } else {
-                return strstr($heystack, $needle, $beforeNeedle);
+                return strstr($haystack, $needle, $beforeNeedle);
             }
         } else {
             if ( $insensitive ) {
-                return stristr($heystack, $needle);
+                return stristr($haystack, $needle);
             } else {
-                return strstr($heystack, $needle);
+                return strstr($haystack, $needle);
             }
         }
     }
 
 
     /**
-     * {{{ Convert special characters to HTML entities. Improved version
+     * Convert special characters to HTML entities. Improved version
      *
      * The translations performed are:
      *  # '&' (ampersand) becomes '&amp;'
@@ -476,6 +477,7 @@ class Php
      * @param string $str The string being converted.
      * @param mixed $style by default: ENT_QUOTES ; ENT_COMPAT (convert "); ENT_QUOTES convert
      * both; ENT_NOQUOTES no quote conversation
+     *
      * @return stringreturns the re-converted html entity
      * }}} */
     public static function xhtmlspecialchars( $str = '', $style = ENT_QUOTES )
@@ -507,9 +509,10 @@ class Php
     /**
      * nl2br — Inserts HTML line breaks before all newlines in a string \n -> <br />\n
      *
-     * @todo \n -> <br />\n; currently: \n -> <br />
+     * @todo "\n -> <br />\n"; currently: "\n -> <br />"
      *
      * @param string $s String to be check/added with <br> tags
+     *
      * @return string Returns nl2br  ( string $string  [, bool $is_xhtml=true] )
      */
     public static function nl2br( $string, $isXhtml = true )
@@ -606,6 +609,7 @@ class Php
      * @link http://php.net/manual/en/function.parse-str.php
      *
      * @param string $string String to parse.
+     *
      * @return array Returns all portions in an associative array
      *
      * @throws Php_Exception Throws exception if string could not be converted.
@@ -647,12 +651,14 @@ class Php
 
     /**
      * Return the current element in an array by reference.
+     *
      * The current function simply returns the value of the array element that's
      * currently being pointed to by the internal pointer. It does not move the
      * pointer in any way. If the internal pointer points beyond the end of the
      * elements list or the array is empty, current returns false.
      *
      * @see http://php.net/manual/en/function.current.php
+     *
      * @return mixed Returns the current value by reference
      */
     public static function &current( &$s )
@@ -661,7 +667,7 @@ class Php
     }
 
 
-    /** {{{
+    /**
      * Compare an array (list of values or list of key=>val pairs) with another
      * array and test if a smaler array with their key or values exists in a
      * bigger array.
@@ -674,7 +680,7 @@ class Php
      * @param string $way Type of array to check values or array keys
      * @return array Returns the result portion on difference or an empty array
      * for no changes between the arrays
-     * }}} */
+     */
     public static function compareArray( array $have = array(), array $totest = array(), $way = 'vals' )
     {
         $res = array();
@@ -809,6 +815,7 @@ class Php
      * @todo to be tested deeply
      *
      * @param array $array1, $array2, $array3... Arrays be be merged
+     * 
      * @return array Returns the merged array
      *
      * @throws Mumsys_Exception Throws exception on unexpercted behaviour
