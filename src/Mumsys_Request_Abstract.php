@@ -9,8 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
+ * @package     Library
+ * @subpackage  Request
  */
 
 
@@ -18,8 +18,8 @@
  * Abstract request class to get input parameters.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
+ * @package     Library
+ * @subpackage  Request
  */
 abstract class Mumsys_Request_Abstract
     extends Mumsys_Abstract

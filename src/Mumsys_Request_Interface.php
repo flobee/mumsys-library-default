@@ -1,28 +1,26 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Request_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
- * @version 1.1.0
+ * @package     Library
+ * @subpackage  Request
+ * @version     1.1.0
  */
-/* }}} */
 
 
 /**
  * Request inferface
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
+ * @package     Library
+ * @subpackage  Request
  */
 interface Mumsys_Request_Interface
 {
@@ -30,7 +28,7 @@ interface Mumsys_Request_Interface
      * Initialise the request object.
      *
      * After init the global arrays inside this class: _POST , _GET, _COOKIE
-     * will be reset! on only available in here.
+     * will be reset! and only available in here.
      *
      * @param array $options Optional initial options e.g.:
      * 'programKey','controllerKey', 'actionKey',
@@ -200,5 +198,4 @@ interface Mumsys_Request_Interface
      * extists
      */
     public function getInputCookie( $key = null, $default = null );
-
 }
