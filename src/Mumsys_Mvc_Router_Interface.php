@@ -9,8 +9,9 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc
+ * @version     1.0.0
  */
 
 
@@ -18,8 +19,8 @@
  * Abstract request class to get input parameters.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc
  */
 interface Mumsys_Mvc_Router_Interface
 {

@@ -1,6 +1,5 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Permissions_Shell
  * for MUMSYS (Multi User Management System)
@@ -12,9 +11,7 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Permissions
- * Created: 2016-01-19
  */
-/*}}}*/
 
 
 /**

@@ -1,23 +1,17 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Program_Config
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
  * @copyright Copyright (c) 2011 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
- * @version     1.0.0
- * Created: 2014-01-15
- * @filesource
+ * @package     Library
+ * @subpackage  Mvc_Program
  */
-/*}}}*/
 
 
 /**
@@ -42,12 +36,11 @@
  *
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
- *
- * @uses Mumsys_Db_Driver_Interface To get/set records in the storage
+ * @package     Library
+ * @subpackage  Mvc_Program
  */
-class Mumsys_Mvc_Program_Config extends Mumsys_Config
+class Mumsys_Mvc_Program_Config
+    extends Mumsys_Config
 {
     /**
      * Version ID information
@@ -66,15 +59,16 @@ class Mumsys_Mvc_Program_Config extends Mumsys_Config
      */
     private $_context;
 
+
     /**
      * Initialize the program config object.
      *
-     * @param Mumsys_Context $context Context ojects for depenencies.
+     * @param Mumsys_Context_Interface $context Context ojects for depenencies.
      * Note: This may be including a different DB driver, so take care and clone
      * or create a new Context if needed
      * @param array $config Config parameter to be set.
      */
-    public function __construct( Mumsys_Context $context, array $config = array() )
+    public function __construct( Mumsys_Context_Interface $context, array $config = array() )
     {
         $this->_context = $context;
         $this->_config = $config;

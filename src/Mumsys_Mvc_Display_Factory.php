@@ -1,20 +1,18 @@
 <?php
 
-/* {{{ */
 /**
- * Mumsys_Mvc_Display_Factory View factory
+ * Mumsys_Mvc_Display_Factory
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc
  * Created: 2006-12-01 (svn)
  */
-/* }}} */
 
 
 /**
@@ -49,8 +47,8 @@
  *
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc
  */
 class Mumsys_Mvc_Display_Factory
 {
@@ -88,9 +86,9 @@ class Mumsys_Mvc_Display_Factory
     /**
      * Initialize the factory.
      *
-     * @param Mumsys_Context $context
+     * @param Mumsys_Context_Interface $context Context item
      */
-    public function __construct( Mumsys_Context $context )
+    public function __construct( Mumsys_Context_Interface $context )
     {
         $this->_context = $context;
     }

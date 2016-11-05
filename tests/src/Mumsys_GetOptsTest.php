@@ -5,7 +5,6 @@
  */
 class Mumsys_GetOptsTest extends Mumsys_Unittest_Testcase
 {
-
     /**
      * @var Mumsys_GetOpts
      */

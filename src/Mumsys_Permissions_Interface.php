@@ -1,39 +1,39 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Permissions_Interface
  * for MUMSYS (Multi User Management System)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Permissions
+ * @package     Library
+ * @subpackage  Permissions
  * @version     1.0.0
- * Created: 2016-01-19
- * @filesource
  */
-/*}}}*/
+
 
 /**
  * Class to deal with the permissions (acl)
  *
- * @category Mumsys
- * @package Mumsys_Library
- * @subpackage Mumsys_Permissions
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Permissions
  */
 interface Mumsys_Permissions_Interface
 {
+
+
     /**
      * Initialisation of the permissions object
      *
      * @param Mumsys_Context $context Context item
      * @param array $options Optional options
      */
-    public function __construct( Mumsys_Context $context, array $options=array() );
+    public function __construct( Mumsys_Context $context, array $options = array() );
+
 
     /**
      * Set user configuration infomation for a current program/sub-programm
@@ -44,6 +44,7 @@ interface Mumsys_Permissions_Interface
      */
     public function progCfgSet( $values, $program, $controller );
 
+
     /**
      * Get user configuration infomation for a current program/sub-programm
      *
@@ -53,7 +54,7 @@ interface Mumsys_Permissions_Interface
      *
      * @return mixed the values which was set in progCfgSet()
      */
-    public function progCfgGet( $program, $controller, $param='' );
+    public function progCfgGet( $program, $controller, $param = '' );
 
 
     /**
@@ -76,7 +77,7 @@ interface Mumsys_Permissions_Interface
      *
      * @return string the name of the program
      */
-    public function progNameGet( $program=false, $controller=false );
+    public function progNameGet( $program = false, $controller = false );
 
 
     /**
@@ -86,11 +87,13 @@ interface Mumsys_Permissions_Interface
      */
     public function loadDefault();
 
+
     /**
      * Get name of the remote user
      * @return string|boolean Returns the remote username or false by default
      */
     public function getRemoteUser();
+
 
     /**
      * Get the password of the current user (remote user).
@@ -118,6 +121,7 @@ interface Mumsys_Permissions_Interface
      * @return bool true on success or fals on failure
      */
     public function isModerator();
+
 
     /**
      * Test if the user has super-moderator privileges.
@@ -148,7 +152,8 @@ interface Mumsys_Permissions_Interface
      *
      * @return boolean Returns true on access or false for no access
      */
-    public function hasAccess( $program=false, $controller=false, $action=false );
+    public function hasAccess( $program = false, $controller = false, $action = false );
+
 
     /**
      * get accesslevels based on a setted level or by its own usergrouplevel
@@ -156,7 +161,8 @@ interface Mumsys_Permissions_Interface
      * @param integer $level optional the highes level to find lower levels (0-5)
      * @return array returns a one dimensional array with integer level => string level-name
      */
-    public function getAuthLevels( $level=null );
+    public function getAuthLevels( $level = null );
+
 
     /**
      * Get label/ name of a level.
@@ -165,13 +171,17 @@ interface Mumsys_Permissions_Interface
      */
     public function getAuthName( $level );
 
-    // --- loging -------------------------------------------------------
+
+
+    // --- logging -------------------------------------------------------
+
 
     /**
      * Logout the logged in user.
      * This will turncate the session and loads the default session.
      */
     public function logout();
+
 
     /**
      * Login a user.
@@ -180,7 +190,7 @@ interface Mumsys_Permissions_Interface
      * @param string $password Password of the login user
      * @return boolean Returns true on success or fals if authentication fails
      */
-    public function login( $username='', $password='' );
+    public function login( $username = '', $password = '' );
 
 
     /**
@@ -189,7 +199,8 @@ interface Mumsys_Permissions_Interface
      *
      * @throws Mumsys_Exception Throws exception on errors
      */
-     public function trackRequest();
+    public function trackRequest();
+
 
     /**
      * get/set language (get_language)
@@ -198,6 +209,5 @@ interface Mumsys_Permissions_Interface
      * @param string|false $l Languge to load otherwise default language will be loaded
      * @return boolean
      */
-    public function languageLoad( $l=false );
-
+    public function languageLoad( $l = false );
 }

@@ -1,38 +1,36 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Mvc_Program_Model_Interface
  * for MUMSYS (Multi User Management System)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc_Program
  * @version     1.0.0
  * Created: 2016-03-16
- * @filesource
  */
-/*}}}*/
+
 
 /**
  * Mumsys program model abstract contains methodes to be used in the program
  * model.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc_Program
  */
 interface Mumsys_Mvc_Program_Model_Interface
 {
     /**
      * Initializes the program model object.
      *
-     * @param Mumsys_Context $context Context item
+     * @param Mumsys_Context_Interface $context Context item
      */
-    public function __construct( Mumsys_Context $context );
+    public function __construct( Mumsys_Context_Interface $context );
 
 }

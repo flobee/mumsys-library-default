@@ -1,21 +1,18 @@
 <?php
 
-/* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Program_Controller_Abstract
  * for MUMSYS (Multi User Management System)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2010 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2010 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc_Program
  * Created: 2010-08-19 (svn)
  */
-/* }}} */
 
 
 /**
@@ -28,8 +25,8 @@
  * $view = $this->_getDisplay()
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc_Program
  */
 abstract class Mumsys_Mvc_Program_Controller_Abstract
     extends Mumsys_Abstract
@@ -56,11 +53,11 @@ abstract class Mumsys_Mvc_Program_Controller_Abstract
     /**
      * Initializes the program object.
      *
-     * @param Mumsys_Context $context Context item
+     * @param Mumsys_Context_Interface $context Context item
      * @param Mumsys_Mvc_Program_Config $programConfig Program config object
      * containing all configuration values which may comes from setting.php
      */
-    public function __construct( Mumsys_Context $context, Mumsys_Mvc_Program_Config $programConfig )
+    public function __construct( Mumsys_Context_Interface $context, Mumsys_Mvc_Program_Config $programConfig )
     {
         $this->_programConfig = $programConfig;
         $this->_context = $context;
@@ -79,7 +76,8 @@ abstract class Mumsys_Mvc_Program_Controller_Abstract
      *
      * @return Mumsys_Mvc_Display_Control_Interface at last instance
      */
-    public function getDisplay( array $params = array(), $outputType = 'default', $outputComplexity = 'default' )
+    public function getDisplay( array $params = array(), $outputType = 'default',
+        $outputComplexity = 'default' )
     {
         $display = new Mumsys_Mvc_Display_Factory($this->_context);
         return $display->load($outputType, $outputComplexity, $params);
@@ -97,7 +95,7 @@ abstract class Mumsys_Mvc_Program_Controller_Abstract
     protected function loadModel( $program, $model )
     {
         $className = sprintf('Mumsys_Program_%1$s_%2$s_Model', $program, $model);
-        if (class_exists($className)) {
+        if ( class_exists($className) ) {
             return new $className($this->_context);
         }
 

@@ -9,14 +9,18 @@
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc
  * Created: 2016-02-04
  */
 
 
 /**
  * Default abstract class for stdout output e.g. text for the shell output
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Mvc
  */
 abstract class Mumsys_Mvc_Templates_Text_Abstract
     extends Mumsys_Mvc_Display_Control_Stdout_Abstract
@@ -49,8 +53,8 @@ abstract class Mumsys_Mvc_Templates_Text_Abstract
     {
         $this->_context = $context;
 
-        if (isset($options['pageTitle'])) {
-            $this->_pagetitle = (string)$options['pageTitle'];
+        if ( isset($options['pageTitle']) ) {
+            $this->_pagetitle = (string) $options['pageTitle'];
         }
     }
 

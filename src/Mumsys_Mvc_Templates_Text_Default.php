@@ -1,30 +1,27 @@
 <?php
 
-/*{{{*/
 /**
- * Mumsys_Mvc_Templates_Text_Abstract
+ * Mumsys_Mvc_Templates_Text_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
- * Created: 2016-02-04
- * @filesource
+ * @package     Library
+ * @subpackage  Mvc
  */
-/*}}}*/
 
 
 /**
- * Default text templates for the view.
- * These methodes are basicly view helpers for the text output
+ * Default text templates for the display/view.
  *
- * @category Mumsys
- * @package Mumsys_Library
- * @subpackage Mumsys_Mvc
+ * These methodes are basicly display helpers for the text output
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Mvc
  */
 class Mumsys_Mvc_Templates_Text_Default
     extends Mumsys_Mvc_Templates_Text_Abstract
@@ -103,8 +100,6 @@ class Mumsys_Mvc_Templates_Text_Default
 
     /**
      * Returns the footer contents.
-     *
-     * @todo to be implemented for text mode
      *
      * @return string All content to finish the output at the end of an output
      */

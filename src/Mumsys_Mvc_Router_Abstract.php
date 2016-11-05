@@ -9,8 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
+ * @package     Library
+ * @subpackage  Mvc
  */
 
 
@@ -18,8 +18,8 @@
  * Abstract router class to get input parameters.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
+ * @package     Library
+ * @subpackage  Mvc
  */
 abstract class Mumsys_Mvc_Router_Abstract
     extends Mumsys_Abstract

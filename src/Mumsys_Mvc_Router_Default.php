@@ -9,8 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc
  */
 
 
@@ -24,8 +24,8 @@
  * program parts. E.g: program=User&controller=Index=action=show
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc
  */
 class Mumsys_Mvc_Router_Default
     extends Mumsys_Mvc_Router_Abstract
