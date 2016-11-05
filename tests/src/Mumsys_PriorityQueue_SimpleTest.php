@@ -5,7 +5,7 @@
  * Mumsys_PriorityQueue_Simple Test
  */
 class Mumsys_PriorityQueue_SimpleTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_PriorityQueue_Simple

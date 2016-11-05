@@ -2,7 +2,7 @@
 
 /*{{{*/
 /**
- * Mumsys_Variable_Item_Exception
+ * Mumsys_Variable_Manager_Exception
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -13,7 +13,7 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Variable
  * @version     1.1.1
- * Created: 2006 based on Mumsys_Field_EXception, renew 2016
+ * Created: 2006 based on Mumsys_Field, renew 2016
  */
 /*}}}*/
 
@@ -25,7 +25,7 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Variable
  */
-class Mumsys_Variable_Item_Exception extends Mumsys_Exception
+class Mumsys_Variable_Manager_Exception extends Mumsys_Exception
 {
 
 }

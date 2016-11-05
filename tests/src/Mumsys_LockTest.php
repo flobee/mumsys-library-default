@@ -3,7 +3,7 @@
 /**
  * Test class for Mumsys_Lock.
  */
-class Mumsys_LockTest extends PHPUnit_Framework_TestCase
+class Mumsys_LockTest extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Lock
@@ -44,8 +44,8 @@ class Mumsys_LockTest extends PHPUnit_Framework_TestCase
     public function testLockException1()
     {
         $this->_object->lock();
-        $this->setExpectedException(
-            'Mumsys_Exception', 'Can not lock! Lock "/tmp/Mumsys_Lock.php_default.lock" exists'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Exception', '/(Can not lock! Lock "\/tmp\/Mumsys_Lock.php_default.lock" exists)/'
         );
         $this->_object->lock();
     }
@@ -55,8 +55,8 @@ class Mumsys_LockTest extends PHPUnit_Framework_TestCase
     public function testLockException2()
     {
         $this->_object = new Mumsys_Lock('/root/nix.tmp');
-        $this->setExpectedException(
-            'Mumsys_Exception', 'Locking failt for file "/root/nix.tmp"'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Exception', '/(Locking failt for file "\/root\/nix.tmp")/'
         );
 
         $this->_object->lock();
@@ -74,8 +74,8 @@ class Mumsys_LockTest extends PHPUnit_Framework_TestCase
     {
         $tmpFile = '/tmp/.ICE-unix';
         $o = new Mumsys_Lock($tmpFile); //file with different owner
-        $this->setExpectedException(
-            'Mumsys_Exception', 'Unlock failt for: "' . $tmpFile . '"'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Exception', '/(Unlock failt for: "' . str_replace('/', '\/', $tmpFile) . '")/'
         );
         $o->unlock();
     }

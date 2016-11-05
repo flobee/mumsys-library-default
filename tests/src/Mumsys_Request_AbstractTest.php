@@ -5,7 +5,7 @@
  * Mumsys_Request_Abstract Test
  */
 class Mumsys_Request_AbstractTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Request_Abstract
