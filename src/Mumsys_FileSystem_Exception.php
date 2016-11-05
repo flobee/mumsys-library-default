@@ -1,34 +1,29 @@
 <?php
-/*{{{*/
+
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_FileSystem_Exception
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright Copyright (c) 2015 by Florian Blasel
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2015 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_FileSystem
+ * @package     Library
+ * @subpackage  FileSystem
  * @version     3.0.0
- * 0.1 - Created on 2015/03
- * ----------------------------------------------------------------------------
  */
-/*}}}*/
 
 
 /**
- * Generic Exception class.
+ * Generic exception class.
  *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_FileSystem
  */
-class Mumsys_FileSystem_Exception extends Mumsys_Exception
+class Mumsys_FileSystem_Exception
+    extends Mumsys_Exception
 {
 
 }
