@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Mumsys_Logger_Interface
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2011 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Logger
+ * @version     1.0.0
+ * Created on 2011/02
+ */
+
+
+/**
+ * Writer interface for the logger object.
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Logger
+ */
+interface Mumsys_Logger_Writer_Interface
+{
+    /**
+     * Write given content to the writer
+     *
+     * @param string $content String to save
+     *
+     * @return boolean Returns true on success
+     *
+     * @throws Exception on errors.
+     */
+    public function write( $content );
+}
