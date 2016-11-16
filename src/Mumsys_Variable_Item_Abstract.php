@@ -94,7 +94,12 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function __toString()
     {
-        return $this->getValue();
+        $return = $this->getValue();
+        if ($return === null) {
+            $return = '';
+        }
+
+        return $return;
     }
 
 
