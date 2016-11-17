@@ -140,8 +140,44 @@ class Mumsys_FileSystemTest
         // unreadable path
         $actual3 = $this->_object->scanDirInfo('/root', true, true);
 
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected2, $actual2);
+        $p = $this->_testsDir . '/tmp/unittest-mkdir/mkdirs';
+        $this->assertEquals($expected1[$p]['file'], $actual1[$p]['file']);
+        $this->assertEquals($expected1[$p]['name'], $actual1[$p]['name']);
+        $this->assertEquals($expected1[$p]['path'], $actual1[$p]['path']);
+        $this->assertTrue( ($expected1[$p]['size'] <= $actual1[$p]['size']) );
+        $this->assertEquals($expected1[$p]['type'], $actual1[$p]['type']);
+
+        $p = $this->_testsDir . '/tmp/unittest-mkdir/testfile';
+        $this->assertEquals($expected1[$p]['file'], $actual1[$p]['file']);
+        $this->assertEquals($expected1[$p]['name'], $actual1[$p]['name']);
+        $this->assertEquals($expected1[$p]['path'], $actual1[$p]['path']);
+        $this->assertTrue( ($expected1[$p]['size'] >= $actual1[$p]['size']) );
+        $this->assertEquals($expected1[$p]['type'], $actual1[$p]['type']);
+
+
+        $p = $this->_testsDir . '/tmp/unittest-mkdir/mkdirs';
+        $this->assertEquals($expected2[$p]['file'], $actual2[$p]['file']);
+        $this->assertEquals($expected2[$p]['name'], $actual2[$p]['name']);
+        $this->assertEquals($expected2[$p]['path'], $actual2[$p]['path']);
+        $this->assertTrue( ($expected2[$p]['size'] <= $actual2[$p]['size']) );
+        $this->assertEquals($expected2[$p]['type'], $actual2[$p]['type']);
+
+        $p = $this->_testsDir . '/tmp/unittest-mkdir/testfile';
+        $this->assertEquals($expected2[$p]['file'], $actual2[$p]['file']);
+        $this->assertEquals($expected2[$p]['name'], $actual2[$p]['name']);
+        $this->assertEquals($expected2[$p]['path'], $actual2[$p]['path']);
+        $this->assertTrue( ($expected2[$p]['size'] <= $actual2[$p]['size']) );
+        $this->assertEquals($expected2[$p]['type'], $actual2[$p]['type']);
+
+        $p = $this->_testsDir . '/tmp/unittest-mkdir/mkdirs/testfile';
+        $this->assertEquals($expected2[$p]['file'], $actual2[$p]['file']);
+        $this->assertEquals($expected2[$p]['name'], $actual2[$p]['name']);
+        $this->assertEquals($expected2[$p]['path'], $actual2[$p]['path']);
+        $this->assertTrue( ($expected2[$p]['size'] <= $actual2[$p]['size']) );
+        $this->assertEquals($expected2[$p]['type'], $actual2[$p]['type']);
+
+
+
         $this->assertFalse($actual3);
     }
 
