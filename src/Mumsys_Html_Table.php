@@ -151,6 +151,17 @@ class Mumsys_Html_Table
         $this->_headlines['attr'] = array();
     }
 
+    /**
+     * Returns the html code of the table.
+     *
+     * This will render the table.
+     *
+     * @return string Html got of the redered table
+     */
+    public function __toString()
+    {
+        return $this->toHtml();
+    }
 
     /**
      * Set attributes for the <table> tag.
