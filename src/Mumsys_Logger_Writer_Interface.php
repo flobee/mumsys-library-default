@@ -38,7 +38,7 @@ interface Mumsys_Logger_Writer_Interface
 
 
     /**
-     * Truncate storrage
+     * Truncate storage
      *
      * This will clean a file to zero byte or truncate the database table
      */
