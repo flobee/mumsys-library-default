@@ -31,7 +31,7 @@ class Mumsys_Logger_File
     /**
      * Version ID information
      */
-    const VERSION = '3.0.1';
+    const VERSION = '3.0.2';
 
     /**
      * path and filename to the log file.
@@ -189,13 +189,13 @@ class Mumsys_Logger_File
     {
         $message = false;
 
-        if ( empty($this->_maxfilesize) ) {
+        if ( $this->_maxfilesize <= 0 ) {
             return $message;
         }
 
         if ( !$this->_debug
             && ($fsize = @filesize($this->_logfile)) > $this->_maxfilesize ) {
-            unlink($this->_logfile);
+            file_put_contents($this->_logfile, '');
             $message = 'Max filesize reached. Log purged now';
         }
 
