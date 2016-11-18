@@ -11,7 +11,7 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Logger
- * @version     1.0.0
+ * @version     1.1.0
  * Created on 2011/02
  */
 
@@ -35,4 +35,12 @@ interface Mumsys_Logger_Writer_Interface
      * @throws Exception on errors.
      */
     public function write( $content );
+
+
+    /**
+     * Truncate storrage
+     *
+     * This will clean a file to zero byte or truncate the database table
+     */
+    public function truncate();
 }
