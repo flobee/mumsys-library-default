@@ -67,7 +67,7 @@ abstract class Mumsys_Logger_Decorator_Abstract
         return $this->_object->getLevelName($level);
     }
 
-    
+
     /**
      * Create a log entry by a given message and log level.
      *
@@ -91,121 +91,11 @@ abstract class Mumsys_Logger_Decorator_Abstract
         return $this->_object->log($input, $level);
     }
 
-    /**
-     * Create an emergency log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     *
-     * @return string Returns the formated log message string
-     */
-    public function emerg( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::EMERG);
-    }
-
-
-    /**
-     * Create an alert log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     *
-     * @return string Returns the formated log message string
-     */
-    public function alert( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::ALERT);
-    }
-
-
-    /**
-     * Create an critical log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     *
-     * @return string Returns the formated log message string
-     */
-    public function crit( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::CRIT);
-    }
-
-
-    /**
-     * Create an error log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     *
-     * @return string Returns the formated log message string
-     */
-    public function err( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::ERR);
-    }
-
-
-    /**
-     * Create a warning log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     *
-     * @return string Returns the formated log message string
-     */
-    public function warn( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::WARN);
-    }
-
-
-    /**
-     * Create a notice log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     *
-     * @return string Returns the formated log message string
-     */
-    public function notice( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::NOTICE);
-    }
-
-
-    /**
-     * Create an information log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     *
-     * @return string Returns the formated log message string
-     */
-    public function info( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::INFO);
-    }
-
-
-    /**
-     * Create a debug log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     *
-     * @return string Returns the formated log message string
-     */
-    public function debug( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::DEBUG);
-    }
 
     /**
      * Checks if a loglevel is registered or not
      *
-     * @param integer $level Log level to be checked
+     * @param integer $level 0-7 Log level to be checked
      *
      * @return boolean Returns true for OK otherwise false
      */
