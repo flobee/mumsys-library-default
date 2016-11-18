@@ -31,7 +31,7 @@ abstract class Mumsys_Logger_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '3.2.0';
+    const VERSION = '3.3.0';
 
     /**
      * System is unusable emerg()
@@ -74,21 +74,7 @@ abstract class Mumsys_Logger_Abstract
     const DEBUG = 7;
 
     /**
-     * Flag to also print out log messages directly or not.
-     *
-     * @var boolean
-     */
-    protected $_msgEcho = false;
-
-    /**
-     * Flag to also return log messages or not.
-     *
-     * @var boolean
-     */
-    protected $_msgReturn = true;
-
-    /**
-     * Log levels to log
+     * Current log level to log
      *
      * Levels higher than $logLevel will be ignored; range 0-7 by default
      *
@@ -98,27 +84,21 @@ abstract class Mumsys_Logger_Abstract
 
     /**
      * Available log levels.
-     * See class constants for more details
+     *
+     * List of key/value pairs where the key ist this log level and the value
+     * the name of the log level.
      *
      * @var array
      */
-    protected $_loglevels;
-
-    /**
-     * Level to output logmessages
-     * if $msgEcho is true messages lower or with the same value will be printed
-     *
-     * @var integer
-     */
-    protected $_msglogLevel = 6; // logmessages that should be displayed
+    private $_loglevels;
 
     /**
      * Format for the date/time string in logmessages.
      * @see http://php.net/date function for details.
-     *
+     * Default: 'Y-m-d H:i:s'
      * @var string
      */
-    protected $_timeFormat = 'Y-m-d H:i:s';
+    protected $_timeFormat;
 
     /**
      * Format of a log message.
@@ -133,30 +113,6 @@ abstract class Mumsys_Logger_Abstract
      */
     protected $_logFormat = '%1$s [%2$s] [%3$s](%4$s) %5$s';
 
-    /**
-     * Format of a log message for the output. (When printing log messages
-     * directly to stdout).
-     *
-     * Default:
-     *  1 = dateformat string
-     *  2 = username
-     *  3 = name of the log level
-     *  4 = id of the log level
-     *  5 = the message
-     *
-     * E.g: "[%3$s] %5$s" leave empty if you don't need it. (performance resons)
-     *
-     * @var string
-     */
-    protected $_logFormatMsg = '';
-
-    /**
-     * Flag to enable verbose or not.
-     * Verbose mode will print out all log messages to stdout.
-     *
-     * @var boolean
-     */
-    protected $_verbose;
 
     /**
      * Flag to enable debugging or not.
@@ -188,25 +144,12 @@ abstract class Mumsys_Logger_Abstract
      */
     protected $_cnt = 0;
 
-    /**
-     * Component to write log messages to e.g. a file or database.
-     *
-     * @var Mumsys_Logger_Writer_Interface
-     */
-    protected $_writer;
-
-    /**
-     * Config parameter
-     *
-     * @var array
-     */
-    protected $_cfg = array();
-
 
     /**
      * Initialize the logger object
      *
-     * @uses Php_Globals of the mumsys library
+     * @uses Mumsys_Php_Globals Class of the mumsys library to get the remote
+     * user if not set
      *
      * @param array $args Associativ array with additional params
      * - [username] optional otherwise PHP_AUTH_USER will be taken
@@ -214,24 +157,15 @@ abstract class Mumsys_Logger_Abstract
      * - [timeFormat] optional format of a timestamp format
      * - [logLevel] integer Optional Number of the loglevel
      *  Default: 7 (debug mode, log all)
-     * - [msglogLevel] integer Optional Message log level for messages which
-     *  should be printed (if msgEcho=true)
-     * - [msgLineFormat] optional Output format which should be printed (if msgEcho=true)
-     * - [msgEcho] boolean Optional Echo a log event Default: false
-     * - [msgReturn] boolean Optional Return current log event Default: true
      * - [debug] boolean Default: false
-     * - [verbose] boolean Default: false
      * - [lf] string Optional Linefeed Default: \n
-     * @param Mumsys_Logger_Writer_Interface $writer Wirter intreface to stroe messages
-     *
-     * @uses Mumsys_File Uses Mumsys_File object for file logging
      */
-    public function __construct( array $options = array(), Mumsys_Logger_Writer_Interface $writer = null )
+    public function __construct( array $options = array() )
     {
-        if ( empty($options['username']) ) {
-            $this->username = Mumsys_Php_Globals::getRemoteUser();
+        if ( !isset($options['username']) ) {
+            $this->_username = Mumsys_Php_Globals::getRemoteUser();
         } else {
-            $this->username = $options['username'];
+            $this->_username = $options['username'];
         }
 
         if ( isset($options['lineFormat']) ) {
@@ -243,54 +177,60 @@ abstract class Mumsys_Logger_Abstract
 
         if ( isset($options['timeFormat']) ) {
             $this->_timeFormat = (string) $options['timeFormat'];
+        } else {
+            $this->_timeFormat = 'Y-m-d H:i:s';
         }
 
         if ( isset($options['logLevel']) ) {
             $this->_logLevel = $options['logLevel'];
         }
 
-        if ( isset($options['msglogLevel']) ) {
-            $this->_msglogLevel = $options['msglogLevel'];
-        }
-
-        if ( isset($options['msgLineFormat']) ) {
-            $this->_logFormatMsg = (string) $options['msgLineFormat'];
-        }
-
-        if ( isset($options['msgEcho']) ) {
-            $this->_msgEcho = $options['msgEcho'];
-        }
-
-        if ( isset($options['msgReturn']) ) {
-            $this->_msgReturn = $options['msgReturn'];
-        }
-
         if ( isset($options['debug']) ) {
             $this->_debug = $options['debug'];
-        }
-
-        if ( isset($options['verbose']) ) {
-            $this->_verbose = $options['verbose'];
         }
 
         if ( isset($options['lf']) ) {
             $this->_lf = $options['lf'];
         }
 
-        $this->_writer = $writer;
-
-        $r = new ReflectionClass($this);
-        $this->_loglevels = array_flip($r->getConstants());
+        $this->_loglevels = array(
+            self::EMERG => 'EMERG',
+            self::ALERT => 'ALERT',
+            self::CRIT => 'CRIT',
+            self::ERR => 'ERR',
+            self::WARN => 'WARN',
+            self::NOTICE => 'NOTICE',
+            self::INFO => 'INFO',
+            self::DEBUG => 'DEBUG',
+        );
     }
 
+
+    /**
+     * Sets the new log level to react from now on (0 - 7).
+     *
+     * @param integer $level Log level to set
+     *
+     * @throws Mumsys_Logger_Exception If level is unknown
+     */
+    public function setLoglevel( $level )
+    {
+        if ( $this->checkLevel($level) === false ) {
+            $message = 'Log level "' . $level . '" unknown. Can not set';
+            throw new Mumsys_Logger_Exception($message);
+        }
+
+        $this->_logLevel = (int) $level;
+    }
 
     /**
      * Checks if a loglevel is registered or not
      *
      * @param integer $level Log level to be checked
+     *
      * @return boolean Returns true for OK otherwise false
      */
-    private function _checkLevel( $level )
+    public function checkLevel( $level = 0 )
     {
         if ( isset($this->_loglevels[$level]) ) {
             return true;
@@ -301,272 +241,18 @@ abstract class Mumsys_Logger_Abstract
 
 
     /**
-     * Sets the new log level to react from now on (0 - 7).
-     *
-     * @param integer $level Log level to set
-     * @throws Mumsys_Logger_Exception If level is unknown
-     */
-    public function setLoglevel( $level )
-    {
-        if ( $this->_checkLevel($level) === false ) {
-            $message = 'Level unknown "' . $level . '" to set the log level';
-            throw new Mumsys_Logger_Exception($message);
-        }
-
-        $this->_logLevel = (int) $level;
-    }
-
-
-    /**
-     * Sets the new message log level to react from now on (0 - 7).
-     *
-     * @param integer $level Log level to set
-     * @throws Mumsys_Logger_Exception If level is unknown
-     */
-    public function setMessageLoglevel( $level )
-    {
-        if ( $this->_checkLevel($level) === false ) {
-            $message = 'Level unknown "' . $level . '" to set the message log level';
-            throw new Mumsys_Logger_Exception($message);
-        }
-
-        $this->_msglogLevel = (int) $level;
-    }
-
-
-    /**
-     * Create a log entry by a given log level.
-     *
-     * 0 EMERG    emerg()   System is unusable
-     * 1 ALERT    alert()   Immediate action required
-     * 2 CRIT     crit()    Critical conditions
-     * 3 ERR      err()     Error conditions
-     * 4 WARN     warn()    Warn conditions
-     * 5 NOTICE   notice()  Normal but significant
-     * 6 INFO     info()    Informational
-     * 7 DEBUG    debug()   Debug-level messages
-     *
-     * @param string|array $input Message or list of messages to be logged
-     * @param integer $level Level number of log priority
-     *
-     * @return string|void Returns the log message if needed or nothing
-     */
-    public function log( $input, $level = 0 )
-    {
-        try
-        {
-            $isArray = false;
-            $datesting = '';
-            if ( !empty($this->_timeFormat) ) {
-                $datesting = date($this->_timeFormat, time());
-            }
-
-            $levelName = $this->_loglevels[$level];
-
-            if ( ($isArray = is_array($input) ) ) {
-                $_cnt = 0;
-                $message = '';
-                while ( list($key, $val) = each($input) )
-                {
-                    $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val . '");';
-                    $message .= sprintf(
-                        $this->_logFormat, $datesting, $this->_username, $levelName, $level, $tmp . $this->_lf
-                    );
-                }
-
-                $_cnt++;
-
-            } else {
-                $message = sprintf($this->_logFormat, $datesting, $this->_username, $levelName, $level, $input);
-            }
-
-            $message .= $this->_lf;
-
-            if ( $level <= $this->_logLevel || ($this->_verbose || $this->_debug) ) {
-                $this->write($message);
-            }
-
-            if ( $level <= $this->_msglogLevel || ($this->_verbose || $this->_debug) ) {
-                if ( $this->_msgEcho ) {
-                    if ( $this->_logFormatMsg && $this->_logFormatMsg != $this->_logFormat ) {
-                        if ( $isArray ) {
-                            $msgOut = '';
-                            $_cnt = 0;
-                            reset($input);
-                            while ( list($key, $val) = each($input) )
-                            {
-                                $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val . '");';
-                                $msgOut .= sprintf(
-                                    $this->_logFormatMsg, $datesting, $this->_username, $levelName, $level,
-                                    $tmp . $this->_lf
-                                );
-                            }
-
-                            $_cnt++;
-                        } else {
-                            $msgOut = sprintf(
-                                $this->_logFormatMsg, $datesting, $this->_username, $levelName, $level,
-                                $input . $this->_lf
-                            );
-                        }
-                    } else {
-                        $msgOut = $message;
-                    }
-                    echo $msgOut;
-                }
-
-                if ( $this->_msgReturn ) {
-                    return $message;
-                }
-            }
-
-        }
-        catch ( Exception $e ) {
-            throw $e;
-        }
-
-        return;
-    }
-
-
-    /**
-     * Write given content to the writer
-     *
-     * @param string $content String to save to the log writer
-     *
-     * @return true Returns true on success.
-     *
-     * @throws Exception on errors
-     */
-    public function write( $content )
-    {
-        try {
-            $this->_writer->write($content);
-        }
-        catch ( Exception $e ) {
-            throw $e;
-        }
-
-        return true;
-    }
-
-
-    /**
      * Get the name of a loglevel.
      *
      * @param integer $level Nuber of the Log level
      * @return string Returns the string of the errorlevel
      */
-    public function levelNameGet( $level )
+    public function getLevelName( $level )
     {
         if ( !isset($this->_loglevels[$level]) ) {
             return 'unknown';
         }
+
         return $this->_loglevels[$level];
-    }
-
-
-    /**
-     * Create an emergency log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     * @return string|void Returns the log message if needed or nothing
-     */
-    public function emerg( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::EMERG);
-    }
-
-
-    /**
-     * Create an alert log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     * @return string|void Returns the log message if needed or nothing
-     */
-    public function alert( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::ALERT);
-    }
-
-
-    /**
-     * Create an critical log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     * @return string|void Returns the log message if needed or nothing
-     */
-    public function crit( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::CRIT);
-    }
-
-
-    /**
-     * Create an error log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     * @return string|void Returns the log message if needed or nothing
-     */
-    public function err( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::ERR);
-    }
-
-
-    /**
-     * Create a warning log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     * @return string|void Returns the log message if needed or nothing
-     */
-    public function warn( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::WARN);
-    }
-
-
-    /**
-     * Create a notice log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     * @return string|void Returns the log message if needed or nothing
-     */
-    public function notice( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::NOTICE);
-    }
-
-
-    /**
-     * Create an information log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     * @return string|void Returns the log message if needed or nothing
-     */
-    public function info( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::INFO);
-    }
-
-
-    /**
-     * Create a debug log entry.
-     * Alias method for log()
-     *
-     * @param string $message Message to be logged
-     * @return string|void Returns the log message if needed or nothing
-     */
-    public function debug( $message )
-    {
-        return $this->log($message, Mumsys_Logger_Abstract::DEBUG);
     }
 
 }
