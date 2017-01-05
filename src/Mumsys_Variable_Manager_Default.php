@@ -619,8 +619,8 @@ class Mumsys_Variable_Manager_Default
             return true;
         }
 
-        if ( $value === null && ( ( $req = $item->getRequired() ) || ($allowEmpty === false) ) ) {
-            if ( $req ) {
+        if ( $value === null && ( $required || ($allowEmpty === false) ) ) {
+            if ( $required ) {
                 $item->setErrorMessage(self::REQUIRED_MISSING, $this->_messageTemplates['REQUIRED_MISSING']);
             } else {
                 $item->setErrorMessage(self::ALLOWEMPTY_ERROR, $this->_messageTemplates['ALLOWEMPTY_ERROR']);
