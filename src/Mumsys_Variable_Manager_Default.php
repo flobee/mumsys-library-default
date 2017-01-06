@@ -410,6 +410,10 @@ class Mumsys_Variable_Manager_Default
                 }
                 break;
 
+            case 'unixtime':
+                throw new Mumsys_Variable_Manager_Exception(sprintf('Type "%1$s" not implemented', $type));
+                break;
+
             case 'ipv4':
                 $return = $this->validateIPv4($item);
                 break;
@@ -468,6 +472,7 @@ class Mumsys_Variable_Manager_Default
             case 'email':
             case 'date':
             case 'datetime':
+            case 'unixtime':
                 $strlen = strlen($value);
                 if ( isset($min) && $strlen < $min ) {
                     $errorKey = self::MINMAX_TOO_SHORT_STR;
@@ -496,7 +501,7 @@ class Mumsys_Variable_Manager_Default
                     $errorMessage = sprintf($this->_messageTemplates['MINMAX_TOO_LONG_NUM'], $value, $max);
                 }
                 break;
-
+                
             default:
                 $errorKey = self::MINMAX_TYPE_ERROR;
                 $errorMessage = sprintf($this->_messageTemplates['MINMAX_TYPE_ERROR'], $type);
