@@ -42,7 +42,10 @@ class Mumsys_Variable_Item_Default
     const VERSION = '1.1.1';
 
     /**
-     * List of key/value pair properties handled by this item as whitelist.
+     * List of key/value pairs (property/[boolean: en|dis-abled] handled by this item as whitelist.
+     *
+     * @todo Do we need a getProperties() methode?
+     * 
      * @var array
      */
     private $_properties = array(
