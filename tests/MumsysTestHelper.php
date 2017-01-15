@@ -38,7 +38,7 @@ class MumsysTestHelper
             self::$_context = new Mumsys_Context_Item();
 
             $paths = array(__DIR__ . '/config');
-            $oConfig = new Mumsys_Config_File(self::$_context, array(), $paths);
+            $oConfig = new Mumsys_Config_File(array(), $paths);
             self::$_context->registerConfig($oConfig);
         }
 
