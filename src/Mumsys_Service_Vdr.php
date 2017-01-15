@@ -197,7 +197,7 @@ class Mumsys_Service_Vdr
     /**
      * Disconnect and reset reset connection status.
      *
-     * @return bolean Returns the status of the close command from the server
+     * @return boolean Returns the status of the close command from the server
      */
     public function disconnect()
     {
@@ -205,7 +205,7 @@ class Mumsys_Service_Vdr
 
         if (!$this->isOpen()) {
             $this->_logger->log('Not connected', 5);
-            return;
+            return true;
         }
         $this->execute('QUIT');
 
