@@ -28,9 +28,13 @@ class Mumsys_Service_VdrTest
         $this->_context = MumsysTestHelper::getContext();
         $this->_logfile = MumsysTestHelper::getTestsBaseDir() .'/tmp/service_vdr.log';
 
-        $logOptions = array('logfile' => $this->_logfile );
-        $logger = new Mumsys_Logger_File( $logOptions);
-        $this->_context->registerLogger($logger);
+        try {
+            $this->_context->getLogger();
+        } catch(Exception $e) {
+            $logOptions = array('logfile' => $this->_logfile );
+            $logger = new Mumsys_Logger_File( $logOptions);
+            $this->_context->registerLogger($logger);
+        }
 
         $this->_options = array();
         $this->_object = new Mumsys_Service_Vdr($this->_context);
@@ -98,7 +102,7 @@ class Mumsys_Service_VdrTest
         $actual1 = $this->_object->connect();
         $actual2 = $this->_object->execute('LSTC');
         $expected2 = 'Some resut';
-        
+
         $this->assertTrue($actual1);
         $this->assertEquals($expected2, $actual2);
     }
