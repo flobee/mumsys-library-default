@@ -35,28 +35,68 @@
  * @package     Library
  * @subpackage  Service
  *
- * @uses Mumsys_Logger Log messages class
- * @uses Mumsys_GetOpts Shell args handler class
+ * @uses Mumsys_Logger Logger mobejct in context item
  */
 class Mumsys_Service_Vdr
-    extends Mumsys_Abstract
+    /* extends Mumsys_Abstract */
 {
     /**
      * Version ID information.
      */
     const VERSION = '1.0.0';
 
+    /**
+     * Context item for dependency injection.
+     * @var Mumsys_Context_Item
+     */
     private $_context;
 
+    /**
+     * Hostname / IP to connect to (default: localhost)
+     * @var string
+     */
     private $_host;
+
+    /**
+     * Port to connect to (default: 6419)
+     * @var integer
+     */
     private $_port;
+
+    /**
+     * Timeout in seconds (default: 5)
+     * @var integer
+     */
     private $_timeout;
 
+    /**
+     * Flag about the connection status
+     * @var boolean
+     */
     private $_connection;
 
+    /**
+     * Flag of the debug status
+     * @var boolean
+     */
     private $_debug;
+
+    /**
+     * List of channels
+     * @var array
+     */
     private $_channels = array();
+
+    /**
+     * List of times
+     * @var array
+     */
     private $_timers = array();
+
+    /**
+     * List of recordings
+     * @var arry
+     */
     private $_recordings = array();
 
 
@@ -69,13 +109,14 @@ class Mumsys_Service_Vdr
      * @param integer $timeout
      * @param boolean $debug Flag to enable debugging.
      */
-    public function __construct( Mumsys_Context_Item $context, $host = 'localhost', $port = 6419, $timeout = 5, $debug = false )
+    public function __construct( Mumsys_Context_Item $context, $host = 'localhost', $port = 6419,
+        $timeout = 5, $debug = false )
     {
         $this->_context = $context;
 
         $this->_logger = $context->getLogger();
 
-        if ($debug === true) {
+        if ( $debug === true ) {
             $this->_logger->logLevel = 7;
             $this->_logger->msglogLevel = 7;
             $this->_logger->msgEcho = true;
@@ -83,10 +124,10 @@ class Mumsys_Service_Vdr
 
         $this->_logger->log(__METHOD__, 7);
 
-        $this->_host = $host;
-        $this->_port = $port;
-        $this->_timeout = $timeout;
-        $this->_debug = $debug;
+        $this->_host = (string)$host;
+        $this->_port = (int)$port;
+        $this->_timeout = (int)$timeout;
+        $this->_debug = (bool)$debug;
         $this->_connection = false;
         /*
           $config = array(
@@ -98,7 +139,7 @@ class Mumsys_Service_Vdr
 
           );
          */
-        if ($this->_host && $this->_port && $this->_timeout && $context) {
+        if ( $this->_host && $this->_port && $this->_timeout && $context ) {
             $this->connect();
         }
     }
