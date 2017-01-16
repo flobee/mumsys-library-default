@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Mumsys_Service_VdrTest
  */
@@ -19,6 +20,7 @@ class Mumsys_Service_VdrTest
     private $_options;
     private $_logfile;
 
+
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -26,13 +28,14 @@ class Mumsys_Service_VdrTest
     protected function setUp()
     {
         $this->_context = MumsysTestHelper::getContext();
-        $this->_logfile = MumsysTestHelper::getTestsBaseDir() .'/tmp/service_vdr.log';
+        $this->_logfile = MumsysTestHelper::getTestsBaseDir() . '/tmp/service_vdr.log';
 
         try {
             $this->_context->getLogger();
-        } catch(Exception $e) {
-            $logOptions = array('logfile' => $this->_logfile );
-            $logger = new Mumsys_Logger_File( $logOptions);
+        }
+        catch ( Exception $e ) {
+            $logOptions = array('logfile' => $this->_logfile);
+            $logger = new Mumsys_Logger_File($logOptions);
             $this->_context->registerLogger($logger);
         }
 
@@ -47,7 +50,7 @@ class Mumsys_Service_VdrTest
      */
     protected function tearDown()
     {
-        if (file_exists($this->_logfile)) {
+        if ( file_exists($this->_logfile) ) {
             unlink($this->_logfile);
         }
 

@@ -38,7 +38,7 @@
  * @uses Mumsys_Logger Logger mobejct in context item
  */
 class Mumsys_Service_Vdr
-    /* extends Mumsys_Abstract */
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information.
@@ -50,6 +50,12 @@ class Mumsys_Service_Vdr
      * @var Mumsys_Context_Item
      */
     private $_context;
+
+    /**
+     * Logger object.
+     * @var Mumsys_Logger_Interface
+     */
+    private $_logger;
 
     /**
      * Hostname / IP to connect to (default: localhost)
@@ -122,8 +128,6 @@ class Mumsys_Service_Vdr
             $this->_logger->msgEcho = true;
         }
 
-        $this->_logger->log(__METHOD__, 7);
-
         $this->_host = (string)$host;
         $this->_port = (int)$port;
         $this->_timeout = (int)$timeout;
@@ -139,6 +143,7 @@ class Mumsys_Service_Vdr
 
           );
          */
+
         if ( $this->_host && $this->_port && $this->_timeout && $context ) {
             $this->connect();
         }
@@ -146,25 +151,21 @@ class Mumsys_Service_Vdr
 
 
     /**
-     * Destuction.
-     * Disconnect and reset reset connection status.
+     * Destuction. Disconnect and reset connection status.
      */
     public function __destruct()
     {
-        $this->_logger->log(__METHOD__, 7);
         return $this->disconnect();
     }
 
 
     /**
-     * Connect to the svdrpsend server.
+     * Connect to the vdr service.
      *
      * @return boolean Returns true on success or connection already exists
      */
     public function connect()
     {
-        $this->_logger->log(__METHOD__, 7);
-
         if ($this->isOpen()) {
             return true;
         }
@@ -174,21 +175,23 @@ class Mumsys_Service_Vdr
         $this->_connection = fsockopen($this->_host, $this->_port, $errno, $errstr, $this->_timeout);
 
         if ($this->_connection === false) {
-            $this->_logger->log('Connection to server "' . $this->_host . '" failt. ' . $errno . ': ' . $errstr, 3);
-            return false;
+            $message = 'Connection to server "' . $this->_host . '" failt. ' . $errno . ': ' . $errstr;
+            $this->_logger->log($message, 3);
+
+            throw new Mumsys_Service_Exception($message, Mumsys_Exception::ERRCODE_500);
         }
 
-        $this->_logger->log('Connection to SVDRP server: ' . $this->_host, 7);
+        $this->_logger->log('Connection to vdr server: ' . $this->_host, 7);
 
         $result = fgets($this->_connection, 128);
 
         if (empty($result) || $result == "timeout\n" || !preg_match("/^220 /", $result)) {
-            $this->_logger->log('Connection failure. Expected code 220; Result was "' . $result . '"', 3);
+            $message = 'Connection failure. Expected code 220; Result was "' . $result . '"';
+            $this->_logger->log($message, 3);
             $this->disconnect();
-            return false;
-        }
 
-        $this->_logger->log(__METHOD__ . ' Connection to server "' . $this->_host . '" successful', 7);
+            throw new Mumsys_Service_Exception($message, 1);
+        }
 
         return true;
     }
@@ -204,20 +207,19 @@ class Mumsys_Service_Vdr
         $this->_logger->log(__METHOD__, 7);
 
         if (!$this->isOpen()) {
-            $this->_logger->log('Not connected', 5);
             return true;
         }
+
         $this->execute('QUIT');
+        fclose($this->_connection);
 
         $return = true;
-        $this->_connection = false;
+
         $this->_isOpen = false;
 
         if (is_resource($this->_connection)) {
             $return = @fclose($this->_fh);
         }
-
-        $this->_logger->log(__METHOD__ . ' disconnected!', 7);
 
         return $return;
     }
@@ -264,7 +266,7 @@ class Mumsys_Service_Vdr
         );
 
         if (!in_array($command, $cmdlist['default'])) {
-            throw new Exception('Command unknown. Exiting');
+            throw new Mumsys_Service_Exception('Command unknown. Exiting');
         }
 
         $cmd = $command;
