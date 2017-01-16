@@ -35,8 +35,14 @@ class Mumsys_Exception
 
     /**
      * File not found error code
-     * @var string
+     * @var integer
      */
-    const ERRCODE_404 = '404';
+    const ERRCODE_404 = 404;
+
+    /**
+     * Server error.
+     * @var integer
+     */
+    const ERRCODE_500 = 500;
 
 }
