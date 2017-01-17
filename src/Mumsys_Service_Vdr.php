@@ -163,34 +163,45 @@ class Mumsys_Service_Vdr
      * Connect to the vdr service.
      *
      * @return boolean Returns true on success or connection already exists
+     *
+     * @throws Mumsys_Service_Exception If connection fails
      */
     public function connect()
     {
-        if ($this->isOpen()) {
-            return true;
+        try
+        {
+            if ( $this->isOpen() ) {
+                return true;
+            }
+
+            $errno = 0;
+            $errstr = '';
+            $this->_connection = @fsockopen(
+                $this->_host, $this->_port, $errno, $errstr, $this->_timeout
+            );
+
+            if ( $this->_connection === false ) {
+                $message = 'Connection to server "' . $this->_host . '" failt: ' . $errstr . ' ('.$errno .')';
+                $this->_logger->log($message, 3);
+
+                throw new Mumsys_Service_Exception($message, Mumsys_Exception::ERRCODE_500);
+            }
+
+            $this->_logger->log('Connection to vdr server: ' . $this->_host, 7);
+
+            $result = fgets($this->_connection, 128);
+
+            if ( empty($result) || $result == "timeout\n" || !preg_match("/^220 /", $result) )
+            {
+                $message = 'Connection failure. Expected code 220; Result was "' . $result . '"';
+                $this->_logger->log($message, 3);
+                $this->disconnect();
+
+                throw new Mumsys_Service_Exception($message, 1);
+            }
         }
-
-        $errno = 0;
-        $errstr = '';
-        $this->_connection = fsockopen($this->_host, $this->_port, $errno, $errstr, $this->_timeout);
-
-        if ($this->_connection === false) {
-            $message = 'Connection to server "' . $this->_host . '" failt. ' . $errno . ': ' . $errstr;
-            $this->_logger->log($message, 3);
-
-            throw new Mumsys_Service_Exception($message, Mumsys_Exception::ERRCODE_500);
-        }
-
-        $this->_logger->log('Connection to vdr server: ' . $this->_host, 7);
-
-        $result = fgets($this->_connection, 128);
-
-        if (empty($result) || $result == "timeout\n" || !preg_match("/^220 /", $result)) {
-            $message = 'Connection failure. Expected code 220; Result was "' . $result . '"';
-            $this->_logger->log($message, 3);
-            $this->disconnect();
-
-            throw new Mumsys_Service_Exception($message, 1);
+        catch ( Exception $e ) {
+            throw $e;
         }
 
         return true;
@@ -200,48 +211,40 @@ class Mumsys_Service_Vdr
     /**
      * Disconnect and reset reset connection status.
      *
-     * @return boolean Returns the status of the close command from the server
+     * @return boolean Returns the status of the close command. True on success
      */
     public function disconnect()
     {
-        $this->_logger->log(__METHOD__, 7);
-
         if (!$this->isOpen()) {
             return true;
         }
 
         $this->execute('QUIT');
-        fclose($this->_connection);
-
-        $return = true;
+        $return = fclose($this->_connection);
 
         $this->_isOpen = false;
 
-        if (is_resource($this->_connection)) {
-            $return = @fclose($this->_fh);
-        }
-
         return $return;
     }
+
 
     /**
      * Execute given command.
      *
      * @param string $command Command to be executed
      * @param string $parameters Optional parameters to pipe the the command
+     *
      * @return array|false Returns a list of records in raw format or false if the connection is missing
      *
-     * @thows Mumsys_Exception If a result code do not match 250
+     * @thows Mumsys_Service_Exception If a result code do not match any spec
      */
     public function execute( $command, $parameters = '' )
     {
         $this->_logger->log(__METHOD__ . ' command: "' . $command . '", params: "' . $parameters . '"', 7);
 
         if (!$this->isOpen()) {
-            return false;
+            throw new Mumsys_Service_Exception('Not connected');
         }
-
-        $command = strtoupper($command);
 
         /** @todo check cmd in the future. speedup things */
         $cmdlist = array(
@@ -264,6 +267,8 @@ class Mumsys_Service_Vdr
                 'UPDT',
                 ),
         );
+
+        $command = strtoupper($command);
 
         if (!in_array($command, $cmdlist['default'])) {
             throw new Mumsys_Service_Exception('Command unknown. Exiting');
@@ -301,7 +306,7 @@ class Mumsys_Service_Vdr
               550 Angeforderte Aktion nicht ausgeführt
               554 Transaktion fehlgeschlagen
              */
-            switch ($data[1]) {
+            switch ( $data[1] ) {
                 case '250':
                     $records[] = trim($data[3]);
                     break;
@@ -311,7 +316,7 @@ class Mumsys_Service_Vdr
                     // $records[] = trim($data[3]);
 
                     $line = trim($data[3]);
-                    switch ($line{0})
+                    switch ( $line[0] )
                     {
                         case 'c':   // end of a channel
                             break;
@@ -319,19 +324,19 @@ class Mumsys_Service_Vdr
                         case 'C':   // begin of a channel
                             // eg: C T-8468-514-514 ZDF (T) (T)
                             $channel = array();
-                            if (preg_match('/^C ([^ ]+) *(.*)/', $line, $channels)) {
+                            if ( preg_match('/^C ([^ ]+) *(.*)/', $line, $channels) ) {
                                 $channel['key'] = $channels[1];
                                 $channel['name'] = $channels[2];
                             }
                             break;
 
                         case 'D':
-                            $record['description'] = substr($line,2);
+                            $record['description'] = substr($line, 2);
                             break;
 
                         case 'e':   // end of a record
                             $records[] = $record;
-                            unset($record, $channel,$channels, $extras);
+                            unset($record, $channel, $channels, $extras);
                             break;
 
                         case 'E':   // begin of a record/event
@@ -356,7 +361,7 @@ class Mumsys_Service_Vdr
                                 'stream_desc' => ''
                             );
 
-                            if (preg_match('/^E (.*?) (.*?) (.*?) (.*?) (.*)/', $line, $event)) {
+                            if ( preg_match('/^E (.*?) (.*?) (.*?) (.*?) (.*)/', $line, $event) ) {
                                 $record['event_id'] = $event[1];
                                 $record['timestamp'] = $event[2];
                                 $record['duration'] = $event[3];
@@ -366,27 +371,27 @@ class Mumsys_Service_Vdr
                             break;
 
                         case 'G':
-                            $record['genre'] = substr($line,2); // raw format
+                            $record['genre'] = substr($line, 2); // raw format
                             break;
 
                         case 'R': // age check, advisory
-                            $record['advisory'] = substr( $line,2);
+                            $record['advisory'] = substr($line, 2);
                             break;
 
                         case 'S':
-                            $record['subtitle'] = substr($line,2);
+                            $record['subtitle'] = substr($line, 2);
                             break;
 
                         case 'T':
-                            $record['title'] = substr($line,2);
+                            $record['title'] = substr($line, 2);
                             break;
 
                         case 'V':
-                            $record['vps'] = substr($line,2);
+                            $record['vps'] = substr($line, 2);
                             break;
 
                         case 'X':
-                            if (preg_match('/^X (.*?) (.*?) (.*?) (.*)/', $line, $extras)) {
+                            if ( preg_match('/^X (.*?) (.*?) (.*?) (.*)/', $line, $extras) ) {
                                 $record['stream_kind'] = $extras[1];
                                 $record['stream_type'] = $extras[2];
                                 $record['stream_lang'] = $extras[3];
@@ -396,13 +401,13 @@ class Mumsys_Service_Vdr
 
                         // in recordings:
                         case 'F':
-                            $record['framerate'] = substr($line,2);
+                            $record['framerate'] = substr($line, 2);
                             break;
                         case 'P':
-                            $record['priority'] = substr($line,2);
+                            $record['priority'] = substr($line, 2);
                             break;
                         case 'L':
-                            $record['lifetime'] = substr($line,2);
+                            $record['lifetime'] = substr($line, 2);
                             break;
                         case '@':
                             //$record['notes'] = substr($line,2);
@@ -410,8 +415,9 @@ class Mumsys_Service_Vdr
                             break;
 
                         default:
-                            throw new Mumsys_Exception(
-                                'Input error. If you see this, something went wrong. Input was: "'.$line .'"'
+                            throw new Mumsys_Service_Exception(
+                                'Input error. If you see this, something went wrong. '
+                                . 'Input was: "' . $line . '"'
                             );
                             break;
                     }
@@ -427,7 +433,7 @@ class Mumsys_Service_Vdr
                     break;
 
                 default:
-                    throw new Mumsys_Exception('None catchable exception: ' . $data[3]);
+                    throw new Mumsys_Service_Exception('None catchable exception: ' . $data[3]);
                     break;
             }
 
@@ -445,54 +451,127 @@ class Mumsys_Service_Vdr
 
 
     /**
-     * Return the list of channels.
+     * Return the list of available channels.
      *
      * Example:<pre>
      * id title;[semikolon]bouquet/transp:
      * id Name ;bouquet :Frequenz :Parameter          :Signalquelle:Symbolrate:VPID :APID     :TPID:CAID:SID  :NID :TID :RID
      * 30 NDR 2;ZDFmobil:674000000:B8C23D12G4M16S0T8Y0:R           :0         :673=2:674=deu@3:679 :0   :16426:8468:4097:0</pre>
      *
-     * @param string|integer $channel Optional Channel ID or name to look for
      * @return array|false Returns list of key/value pair where the key is the
      * channels ID and the value the channels name
      */
-    public function channelsGet($channel=null)
+    public function channelsGet()
     {
-        $this->_logger->log(__METHOD__, 7);
+        return $this->_channelsGet('');
+    }
 
-        if (!$this->_channels) {
-            $records = $this->execute('LSTC', $channel);
-            while (list(, $line) = each($records))
-            {
-                $parts = explode(':', $line);
-                $posStart = strpos($parts[0], ' ');
-                $posEnd = strpos($parts[0], ';');
 
-                $recordId = substr($parts[0], 0, $posStart);
-                $names = explode(';', (substr($parts[0], $posStart + 1)));
-                $recordName = str_replace('|', ':', $names[0]);
-                $recordTransponder = $names[1];
+    /**
+     * Returns a list of channels.
+     *
+     * @param string|integer $key String to search for channels or integer for
+     * a specific channel id to return.
+     *
+     * @return array List of channel items found. Item keys are:
+     *      'vdr_id'
+     *      'name'
+     *      'bouquet'
+     *      'frequency'
+     *      'parameter'
+     *      'source'
+     *      'symbolrate'
+     *      'VPID'
+     *      'APID'
+     *      'TPID'
+     *      'CAID'
+     *      'SID'
+     *      'NID'
+     *      'TID'
+     *      'RID'
+     */
+    private function _channelsGet( $key )
+    {
+        $channelList = array();
+        $records = $this->execute('LSTC', $key);
 
-                $this->_channels[$recordId] = array(
-                    'vdr_id' => $recordId,
-                    'name' => $recordName,
-                    'bouquet' => $recordTransponder,
-                    'frequency' => trim($parts[1]),
-                    'parameter' => trim($parts[2]),
-                    'source' => trim($parts[3]),
-                    'symbolrate' => trim($parts[4]),
-                    'VPID' => trim($parts[5]),
-                    'APID' => trim($parts[6]),
-                    'TPID' => trim($parts[7]),
-                    'CAID' => trim($parts[8]),
-                    'SID' => trim($parts[9]),
-                    'NID' => trim($parts[10]),
-                    'TID' => trim($parts[11]),
-                    'RID' => trim($parts[12]),
-                );
-            }
+        while ( list(, $line) = each($records) )
+        {
+            $parts = explode(':', $line);
+            $posStart = strpos($parts[0], ' ');
+            $posEnd = strpos($parts[0], ';');
+
+            $recordId = substr($parts[0], 0, $posStart);
+            $names = explode(';', (substr($parts[0], $posStart + 1)));
+            $recordName = str_replace('|', ':', $names[0]);
+            $recordTransponder = $names[1];
+
+            $channelList[$recordId] = array(
+                'vdr_id' => $recordId,
+                'name' => $recordName,
+                'bouquet' => $recordTransponder,
+                'frequency' => trim($parts[1]),
+                'parameter' => trim($parts[2]),
+                'source' => trim($parts[3]),
+                'symbolrate' => trim($parts[4]),
+                'VPID' => trim($parts[5]),
+                'APID' => trim($parts[6]),
+                'TPID' => trim($parts[7]),
+                'CAID' => trim($parts[8]),
+                'SID' => trim($parts[9]),
+                'NID' => trim($parts[10]),
+                'TID' => trim($parts[11]),
+                'RID' => trim($parts[12]),
+            );
         }
-        return $this->_channels;
+
+        if (empty($key)) {
+            $this->_channels = $channelList;
+        }
+
+        return $channelList;
+    }
+
+
+    /**
+     * Returns the channel item by given id.
+     *
+     * @param integer $id Channel ID to return
+     *
+     * @return array Channel item
+     */
+    public function channelGet($id=null)
+    {
+        $id = (int) $id;
+
+        if (!isset($this->_channels[$id])) {
+            $this->_channels[$id] = $this->_channelsGet($id);
+        }
+
+        return $this->_channels[$id];
+    }
+
+
+    /**
+     * Returns list of channels.
+     *
+     * @param string|integer $key Keyword to search for or integer for a specific channel id
+     *
+     * @return array List of channel items
+     *
+     * @throws Mumsys_Service_Exception
+     */
+    public function channelsSearch( $key = null )
+    {
+        if ( is_string($key) ) {
+            $search = (int) $key;
+        } else if ( is_numeric($key) ) {
+            $search = trim($key);
+        } else {
+            throw new Mumsys_Service_Exception('Invalid search parameter');
+        }
+
+        return $this->_channelsGet($search);
     }
 
 

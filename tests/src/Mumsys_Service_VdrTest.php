@@ -5,7 +5,7 @@
  * Mumsys_Service_VdrTest
  */
 class Mumsys_Service_VdrTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Service_Vdr
@@ -40,7 +40,18 @@ class Mumsys_Service_VdrTest
         }
 
         $this->_options = array();
-        $this->_object = new Mumsys_Service_Vdr($this->_context);
+
+        try
+        {
+            $this->_object = new Mumsys_Service_Vdr($this->_context);
+        }
+        catch ( Exception $ex ) {
+            $this->_object->disconnect();
+            $this->markTestSkipped(
+                'Service error or not available, skip test. Message: ' . $ex->getMessage()
+            );
+        }
+
     }
 
 
@@ -50,8 +61,10 @@ class Mumsys_Service_VdrTest
      */
     protected function tearDown()
     {
+        $this->_object->disconnect();
+
         if ( file_exists($this->_logfile) ) {
-            unlink($this->_logfile);
+            //unlink($this->_logfile);
         }
 
         $this->_object = null;
@@ -64,8 +77,12 @@ class Mumsys_Service_VdrTest
     public function testConnect()
     {
         $actual1 = $this->_object->connect();
+        $actual2 = $this->_object->disconnect();
+        $actual3 = $this->_object->connect();
 
         $this->assertTrue($actual1);
+        $this->assertTrue($actual2);
+        $this->assertTrue($actual3);
     }
 
 
@@ -74,11 +91,9 @@ class Mumsys_Service_VdrTest
      */
     public function test__destruct()
     {
-        $actual1 = $this->_object->connect();
         $actual2 = $this->_object->__destruct();
         $actual3 = $this->_object->isOpen();
 
-        $this->assertTrue($actual1);
         $this->assertTrue($actual2);
         $this->assertFalse($actual3);
     }
@@ -98,29 +113,46 @@ class Mumsys_Service_VdrTest
 
 
     /**
+     * Expect one or more existing channels.
+     *
      * @covers Mumsys_Service_Vdr::execute
      */
     public function testExecute()
     {
-        $actual1 = $this->_object->connect();
-        $actual2 = $this->_object->execute('LSTC');
-        $expected2 = 'Some resut';
+        $actual2 = $this->_object->execute('SCAN');
+        $expected2 = array('EPG scan triggered');
 
-        $this->assertTrue($actual1);
         $this->assertEquals($expected2, $actual2);
     }
 
 
     /**
      * @covers Mumsys_Service_Vdr::channelsGet
-     * @todo   Implement testChannelsGet().
+     * @covers Mumsys_Service_Vdr::channelGet
+     * @covers Mumsys_Service_Vdr::channelsSearch
+     * @covers Mumsys_Service_Vdr::_channelsGet
      */
     public function testChannelsGet()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $channelsList = $this->_object->channelsGet();
+        if ( count($channelsList) <= 0 ) {
+            $this->markTestSkipped('No channels found. Pls check your vdr config. Skip test');
+        }
+
+        foreach ( $channelsList as $id => $parts ) {
+            $current = $this->_object->channelGet($id);
+
+            $this->assertEquals($current, $parts);
+        }
+
+        $chanSearch = $this->_object->channelsSearch('sat');
+        if ( count($chanSearch) <= 0 ) {
+            $this->markTestSkipped('No channels found. Pls check the search option in ' . __METHOD__ . '');
+        }
+
+        foreach ( $chanSearch as $id => $parts ) {
+            $this->assertEquals($channelsList[$id], $parts);
+        }
     }
 
 
@@ -130,10 +162,7 @@ class Mumsys_Service_VdrTest
      */
     public function testTimersGet()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+
     }
 
 
@@ -143,10 +172,7 @@ class Mumsys_Service_VdrTest
      */
     public function testTimerRecordGet()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+
     }
 
 
@@ -156,10 +182,7 @@ class Mumsys_Service_VdrTest
      */
     public function testTimerStringGet()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+
     }
 
 
@@ -169,10 +192,7 @@ class Mumsys_Service_VdrTest
      */
     public function testTimerString2RecordGet()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+
     }
 
 
@@ -182,10 +202,7 @@ class Mumsys_Service_VdrTest
      */
     public function testTimerRecord2StringGet()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+
     }
 
 
@@ -195,10 +212,7 @@ class Mumsys_Service_VdrTest
      */
     public function testRecordingsGet()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+
     }
 
 
@@ -208,10 +222,7 @@ class Mumsys_Service_VdrTest
      */
     public function testIsOpen()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+
     }
 
 }
