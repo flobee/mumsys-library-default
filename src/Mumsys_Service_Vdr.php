@@ -35,419 +35,26 @@
  * @package     Library
  * @subpackage  Service
  *
- * @uses Mumsys_Logger Logger mobejct in context item
+ * @uses Mumsys_Logger Logger obejct in context item
  */
 class Mumsys_Service_Vdr
-    extends Mumsys_Abstract
+    extends Mumsys_Service_Vdr_Abstract
 {
     /**
      * Version ID information.
      */
     const VERSION = '1.0.0';
 
-    /**
-     * Context item for dependency injection.
-     * @var Mumsys_Context_Item
-     */
-    private $_context;
 
     /**
-     * Logger object.
-     * @var Mumsys_Logger_Interface
-     */
-    private $_logger;
-
-    /**
-     * Hostname / IP to connect to (default: localhost)
-     * @var string
-     */
-    private $_host;
-
-    /**
-     * Port to connect to (default: 6419)
-     * @var integer
-     */
-    private $_port;
-
-    /**
-     * Timeout in seconds (default: 5)
-     * @var integer
-     */
-    private $_timeout;
-
-    /**
-     * Flag about the connection status
-     * @var boolean
-     */
-    private $_connection;
-
-    /**
-     * Flag of the debug status
-     * @var boolean
-     */
-    private $_debug;
-
-    /**
-     * List of channels
+     * List of channel items. Item keys are:
+     * 'vdr_id', 'name', 'bouquet', 'frequency', 'parameter', 'source', 'symbolrate',
+     * 'VPID', 'APID', 'TPID', 'CAID', 'SID', 'NID', 'TID', 'RID'
+     * @link http://vdr-wiki.de/wiki/index.php/Channels.conf VDR Specs
      * @var array
      */
     private $_channels = array();
 
-    /**
-     * List of times
-     * @var array
-     */
-    private $_timers = array();
-
-    /**
-     * List of recordings
-     * @var arry
-     */
-    private $_recordings = array();
-
-
-    /**
-     * Initialise the object.
-     *
-     * @param Mumsys_Context $context Context object to get the Logger object
-     * @param string $host Host or ip to the server. Default: localhost
-     * @param integer $port Port to connect to
-     * @param integer $timeout
-     * @param boolean $debug Flag to enable debugging.
-     */
-    public function __construct( Mumsys_Context_Item $context, $host = 'localhost', $port = 6419,
-        $timeout = 5, $debug = false )
-    {
-        $this->_context = $context;
-
-        $this->_logger = $context->getLogger();
-
-        if ( $debug === true ) {
-            $this->_logger->logLevel = 7;
-            $this->_logger->msglogLevel = 7;
-            $this->_logger->msgEcho = true;
-        }
-
-        $this->_host = (string)$host;
-        $this->_port = (int)$port;
-        $this->_timeout = (int)$timeout;
-        $this->_debug = (bool)$debug;
-        $this->_connection = false;
-        /*
-          $config = array(
-          'commands' => array(
-          //'getchannels' => 'svdrpsend -d ' . $globalConfig['hostname'] . ' lstc | /usr/bin/cut -f1 -d';' | tr -d \'\r\n\'',
-          'getchannels' => 'svdrpsend -d ' . $hostname . ' lstc',
-          'gettimers' => 'svdrpsend -d ' . $hostname . ' lstt',
-          )
-
-          );
-         */
-
-        if ( $this->_host && $this->_port && $this->_timeout && $context ) {
-            $this->connect();
-        }
-    }
-
-
-    /**
-     * Destuction. Disconnect and reset connection status.
-     */
-    public function __destruct()
-    {
-        return $this->disconnect();
-    }
-
-
-    /**
-     * Connect to the vdr service.
-     *
-     * @return boolean Returns true on success or connection already exists
-     *
-     * @throws Mumsys_Service_Exception If connection fails
-     */
-    public function connect()
-    {
-        try
-        {
-            if ( $this->isOpen() ) {
-                return true;
-            }
-
-            $errno = 0;
-            $errstr = '';
-            $this->_connection = @fsockopen(
-                $this->_host, $this->_port, $errno, $errstr, $this->_timeout
-            );
-
-            if ( $this->_connection === false ) {
-                $message = 'Connection to server "' . $this->_host . '" failt: ' . $errstr . ' ('.$errno .')';
-                $this->_logger->log($message, 3);
-
-                throw new Mumsys_Service_Exception($message, Mumsys_Exception::ERRCODE_500);
-            }
-
-            $this->_logger->log('Connection to vdr server: ' . $this->_host, 7);
-
-            $result = fgets($this->_connection, 128);
-
-            if ( empty($result) || $result == "timeout\n" || !preg_match("/^220 /", $result) )
-            {
-                $message = 'Connection failure. Expected code 220; Result was "' . $result . '"';
-                $this->_logger->log($message, 3);
-                $this->disconnect();
-
-                throw new Mumsys_Service_Exception($message, 1);
-            }
-        }
-        catch ( Exception $e ) {
-            throw $e;
-        }
-
-        return true;
-    }
-
-
-    /**
-     * Disconnect and reset reset connection status.
-     *
-     * @return boolean Returns the status of the close command. True on success
-     */
-    public function disconnect()
-    {
-        if (!$this->isOpen()) {
-            return true;
-        }
-
-        $this->execute('QUIT');
-        $return = fclose($this->_connection);
-
-        $this->_isOpen = false;
-
-        return $return;
-    }
-
-
-    /**
-     * Execute given command.
-     *
-     * @param string $command Command to be executed
-     * @param string $parameters Optional parameters to pipe the the command
-     *
-     * @return array|false Returns a list of records in raw format or false if the connection is missing
-     *
-     * @thows Mumsys_Service_Exception If a result code do not match any spec
-     */
-    public function execute( $command, $parameters = '' )
-    {
-        $this->_logger->log(__METHOD__ . ' command: "' . $command . '", params: "' . $parameters . '"', 7);
-
-        if (!$this->isOpen()) {
-            throw new Mumsys_Service_Exception('Not connected');
-        }
-
-        /** @todo check cmd in the future. speedup things */
-        $cmdlist = array(
-            'default' => array(
-                'CHAN', 'CLRE', 'DELC', 'DELR', 'DELT',
-                'EDIT', 'GRAB', 'HELP', 'HITK', 'LSTC',
-                'LSTE', 'LSTR', 'LSTT', 'MESG', 'MODC',
-                'MODT', 'MOVC', 'NEWC', 'NEWT', 'NEXT',
-                'PLAY', 'PLUG', 'PUTE', 'REMO', 'SCAN',
-                'STAT', 'UPDT', 'UPDR', 'VOLU', 'QUIT',
-            ),
-            // e.g: 'PLUG EPGSEARCH LSTS' ?
-            'EPGSEARCH' => array(
-                'LSTS', 'NEWS', 'DELS', 'EDIS', 'MODS',
-                'UPDS', 'UPDD', 'SETS', 'FIND', 'QRYS',
-                'QRYF', 'LSRD', 'LSTC', 'NEWC', 'EDIC',
-                'DELC', 'RENC', 'LSTB', 'NEWB', 'DELB',
-                'EDIB', 'LSTE', 'SETP', 'LSTT', 'NEWT',
-                'DELT', 'EDIT', 'DEFT', 'LSCC', 'MENU',
-                'UPDT',
-                ),
-        );
-
-        $command = strtoupper($command);
-
-        if (!in_array($command, $cmdlist['default'])) {
-            throw new Mumsys_Service_Exception('Command unknown. Exiting');
-        }
-
-        $cmd = $command;
-        if ($parameters) {
-            $cmd = $cmd . ' ' . stripslashes($parameters);
-        }
-
-        fputs($this->_connection, $cmd . "\n");
-
-        $records = $record = $channel = array();
-
-        while ($raw = fgets($this->_connection, 2048)) {
-            if (!preg_match('/^(\d{3})( |-)(.*)$/i', $raw, $data)) {
-                continue;
-            }
-
-            $this->_logger->log('data: "' . print_r($raw, true) . '"', 7);
-
-            /*
-              214 Hilfetext
-              215 EPG Eintrag
-              216 Image grab data (base 64)
-              220 VDR-Service bereit
-              221 VDR-Service schließt Sende-Kanal
-              250 Angeforderte Aktion okay, beendet
-              354 Start senden von EPG-Daten
-              451 Angeforderte Aktion abgebrochen: lokaler Fehler bei der Bearbeitung
-              500 Syntax-Fehler, unbekannter Befehl
-              501 Syntax-Fehler in Parameter oder Argument
-              502 Befehl nicht implementiert
-              504 Befehls-Parameter nicht implementiert
-              550 Angeforderte Aktion nicht ausgeführt
-              554 Transaktion fehlgeschlagen
-             */
-            switch ( $data[1] ) {
-                case '250':
-                    $records[] = trim($data[3]);
-                    break;
-
-                // EPG record
-                case '215':
-                    // $records[] = trim($data[3]);
-
-                    $line = trim($data[3]);
-                    switch ( $line[0] )
-                    {
-                        case 'c':   // end of a channel
-                            break;
-
-                        case 'C':   // begin of a channel
-                            // eg: C T-8468-514-514 ZDF (T) (T)
-                            $channel = array();
-                            if ( preg_match('/^C ([^ ]+) *(.*)/', $line, $channels) ) {
-                                $channel['key'] = $channels[1];
-                                $channel['name'] = $channels[2];
-                            }
-                            break;
-
-                        case 'D':
-                            $record['description'] = substr($line, 2);
-                            break;
-
-                        case 'e':   // end of a record
-                            $records[] = $record;
-                            unset($record, $channel, $channels, $extras);
-                            break;
-
-                        case 'E':   // begin of a record/event
-                            //reset prev. results first and fill with defaults
-                            $record = array(
-                                'channel_key' => $channel['key'],
-                                'channel_name' => $channel['name'],
-                                'event_id' => '',
-                                'timestamp' => '',
-                                'duration' => '',
-                                'e_tableid' => '',
-                                'e_version' => '',
-                                'description' => '',
-                                'subtitle' => '',
-                                'title' => '',
-                                'advisory' => 0,
-                                'vps' => '',
-                                'genre' => '',
-                                'stream_kind' => '',
-                                'stream_type' => '',
-                                'stream_lang' => '',
-                                'stream_desc' => ''
-                            );
-
-                            if ( preg_match('/^E (.*?) (.*?) (.*?) (.*?) (.*)/', $line, $event) ) {
-                                $record['event_id'] = $event[1];
-                                $record['timestamp'] = $event[2];
-                                $record['duration'] = $event[3];
-                                $record['e_tableid'] = @$event[4];
-                                $record['e_version'] = @$event[5];
-                            }
-                            break;
-
-                        case 'G':
-                            $record['genre'] = substr($line, 2); // raw format
-                            break;
-
-                        case 'R': // age check, advisory
-                            $record['advisory'] = substr($line, 2);
-                            break;
-
-                        case 'S':
-                            $record['subtitle'] = substr($line, 2);
-                            break;
-
-                        case 'T':
-                            $record['title'] = substr($line, 2);
-                            break;
-
-                        case 'V':
-                            $record['vps'] = substr($line, 2);
-                            break;
-
-                        case 'X':
-                            if ( preg_match('/^X (.*?) (.*?) (.*?) (.*)/', $line, $extras) ) {
-                                $record['stream_kind'] = $extras[1];
-                                $record['stream_type'] = $extras[2];
-                                $record['stream_lang'] = $extras[3];
-                                $record['stream_desc'] = $extras[4];
-                            }
-                            break;
-
-                        // in recordings:
-                        case 'F':
-                            $record['framerate'] = substr($line, 2);
-                            break;
-                        case 'P':
-                            $record['priority'] = substr($line, 2);
-                            break;
-                        case 'L':
-                            $record['lifetime'] = substr($line, 2);
-                            break;
-                        case '@':
-                            //$record['notes'] = substr($line,2);
-                            $records[] = $record;
-                            break;
-
-                        default:
-                            throw new Mumsys_Service_Exception(
-                                'Input error. If you see this, something went wrong. '
-                                . 'Input was: "' . $line . '"'
-                            );
-                            break;
-                    }
-
-                    break; // end epg list
-
-                case '220':
-                case '221':
-                    break;
-
-                case '501':
-                    // also for "Not found"
-                    break;
-
-                default:
-                    throw new Mumsys_Service_Exception('None catchable exception: ' . $data[3]);
-                    break;
-            }
-
-            // the last record, break the loop
-            if (trim($data[2]) != '-') {
-                break;
-            }
-
-            //$this->_logger->log('$records: "' . print_r($records, true) . '"', 7);
-        }
-        unset($raw, $data);
-
-        return $records;
-    }
 
 
     /**
@@ -463,7 +70,38 @@ class Mumsys_Service_Vdr
      */
     public function channelsGet()
     {
-        return $this->_channelsGet('');
+        return $this->_channelsGet();
+    }
+
+
+    /**
+     * Returns the channel item by given id.
+     *
+     * @param integer $id Channel ID to return
+     *
+     * @return array Channel item
+     */
+    public function channelGet( $id = null )
+    {
+        $id = (int) $id;
+        $channel = $this->_channelsGet($id);
+
+        return reset($channel);
+    }
+
+
+    /**
+     * Returns list of channels.
+     *
+     * @param string|integer $key Keyword to search for or integer for a specific channel ID
+     *
+     * @return array List of channel items
+     *
+     * @throws Mumsys_Service_Exception
+     */
+    public function channelSearch( $key = null )
+    {
+        return $this->_channelsGet($key);
     }
 
 
@@ -474,26 +112,23 @@ class Mumsys_Service_Vdr
      * a specific channel id to return.
      *
      * @return array List of channel items found. Item keys are:
-     *      'vdr_id'
-     *      'name'
-     *      'bouquet'
-     *      'frequency'
-     *      'parameter'
-     *      'source'
-     *      'symbolrate'
-     *      'VPID'
-     *      'APID'
-     *      'TPID'
-     *      'CAID'
-     *      'SID'
-     *      'NID'
-     *      'TID'
-     *      'RID'
+     *      'vdr_id', 'name', 'bouquet', 'frequency', 'parameter', 'source', 'symbolrate',
+     *      'VPID', 'APID', 'TPID', 'CAID', 'SID', 'NID', 'TID', 'RID'
      */
-    private function _channelsGet( $key )
+    private function _channelsGet( $key = null )
     {
+        if ($key === null ) {
+            $search = null;
+        } else if ( is_string($key) ) {
+            $search = trim($key);
+        } else if ( is_numeric($key) && (int)$key > 0 ) {
+            $search = (int) $key;
+        } else {
+            throw new Mumsys_Service_Exception('Invalid channel parameter');
+        }
+
+        $records = $this->execute('LSTC', $search);
         $channelList = array();
-        $records = $this->execute('LSTC', $key);
 
         while ( list(, $line) = each($records) )
         {
@@ -525,79 +160,216 @@ class Mumsys_Service_Vdr
             );
         }
 
-        if (empty($key)) {
-            $this->_channels = $channelList;
-        }
-
         return $channelList;
     }
 
 
     /**
-     * Returns the channel item by given id.
+     * Returns recording details. An epg item.
      *
-     * @param integer $id Channel ID to return
+     * @param integer $recordingID Recording ID to get
+     * @param boolean $path Optional; Set to true to get the path of the specified recording
      *
-     * @return array Channel item
+     * @return array|string Recording item or path
+     *
+     * @throws Mumsys_Session_Exception If ID is 0 or lower
      */
-    public function channelGet($id=null)
+    public function recordingGet( $recordingID = 0 , $path=false)
     {
-        $id = (int) $id;
+        $recording = null;
+        $recordingID = (int)$recordingID;
 
-        if (!isset($this->_channels[$id])) {
-            $this->_channels[$id] = $this->_channelsGet($id);
+        if ( (int) $recordingID <= 0 ) {
+            throw new Mumsys_Service_Exception('Invalid recording ID');
         }
 
-        return $this->_channels[$id];
+        if ( $path ) {
+            $tmp = $this->_recordingGetPath($recordingID);
+            $recording = $tmp;
+        } else {
+            $tmp = $this->execute('LSTR', $recordingID);
+            $recording = reset($tmp);
+        }
+
+        return $recording;
     }
 
 
     /**
-     * Returns list of channels.
+     * Returns the list of recordings.
      *
-     * @param string|integer $key Keyword to search for or integer for a specific channel id
-     *
-     * @return array List of channel items
-     *
-     * @throws Mumsys_Service_Exception
+     * @return array Returns the list of key/value pairs where the key is the
+     * internal recording ID and the value is a list of key/value pairs of
+     * recording properties
      */
-    public function channelsSearch( $key = null )
+    public function recordingsGet()
     {
-        if ( is_string($key) ) {
-            $search = (int) $key;
-        } else if ( is_numeric($key) ) {
-            $search = trim($key);
-        } else {
-            throw new Mumsys_Service_Exception('Invalid search parameter');
+        $records = $this->execute('LSTR');
+
+        $recordings = array();
+        while ( list(, $line) = each($records) )
+        {
+            $line = trim($line);
+
+            $partA = explode(' ', substr($line, 0, 23));
+            $partB = substr($line, 23, 1);
+
+            $title = str_replace('|', ':', substr($line, 25));
+            $date = explode('.', $partA[1]);
+            $dateString = sprintf('20%1$s-%2$s-%3$s', $date[2], $date[1], $date[0]);
+
+            $id = (int) $partA[0];
+            $options = array(
+                'id' => $id,
+                'date' => $dateString,
+                'time_start' => $partA[2],
+                'duration' => substr($partA[3], 0, 5),
+                'new' => (($partB == '*') ? 1 : 0),
+                'title' => $title,
+            );
+
+
+            $recordings[$id] = $options;
         }
 
-        return $this->_channelsGet($search);
+        unset($records, $id, $options, $partA, $partB, $line);
+
+        return $recordings;
+    }
+
+
+    /**
+     * Returns the path of a specified recording.
+     *
+     * @param integer $recordingID Recording ID to get
+     *
+     * @return string Path of the recording
+     */
+    public function _recordingGetPath( $recordingID = null )
+    {
+        $result = '';
+
+        if ( $recordingID !== null && (int) $recordingID <= 0 ) {
+            throw new Mumsys_Session_Exception('Invalid recording id');
+        } else {
+            $records = $this->execute('LSTR', $recordingID . ' path');
+            $result = reset($records);
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * Return the timer by given timer ID.
+     *
+     * @param integer $timerID Optional timer ID to get only this timer details
+     *
+     * @return array|false Returns list of key/value pair where the key is the
+     * timer ID and the value is a key/value pair of timer properties
+     */
+    public function timerGet( $timerID = null )
+    {
+        return reset($this->_timersGet($timerID));
     }
 
 
     /**
      * Return the list of timers.
      *
-     * @param integer $timerID Optional timer ID to get only this timer details
      * @return array|false Returns list of key/value pair where the key is the
      * timer ID and the value is a key/value pair of timer properties
      */
-    public function timersGet( $timerID = null )
+    public function timersGet()
     {
-        $this->_logger->log(__METHOD__, 7);
+        return $this->_timersGet();
+    }
 
-        if (!$this->_timers) {
-            $records = $this->execute('LSTT', (int)$timerID);
-            while (list(, $line) = each($records)) {
-
-                $options = $this->timerString2RecordGet($line);
-
-                $this->_timers[$options['id']] = $options;
-            }
+    /**
+     *
+     * @param integer|null $timerID Timer ID to get ro 0 or null for all timers
+     *
+     * @return array Timer item or list of timer items wher array key contants theitem ID
+     *
+     * @throws Mumsys_Session_Exception If $timerID given and is 0 (zero)
+     */
+    private function _timersGet( $timerID = null )
+    {
+        if ( $id !== null && (int) $id <= 0 ) {
+            throw new Mumsys_Session_Exception('Invalid timer id');
         }
-        unset($options, $recordId, $parts, $posStart, $line);
 
-        return $this->_timers;
+        $id = (int) $timerID;
+        $timers = array();
+
+        $records = $this->execute('LSTT', $id);
+
+        while ( list(, $line) = each($records) ) {
+            $options = $this->_timerString2ArrayGet($line);
+            $timers[$options['id']] = $options;
+        }
+
+        return $timers;
+    }
+
+
+    /**
+     * Adds a timer to the vdr.
+     *
+     * @param integer $activ Aktiv (1) or inactiv (0)
+     * @param integer $channelID Channel ID
+     * @param integer $dayOfMonth Day of the month 1-31
+     * @param integer $timeStart Number of the start time eg.: 2015
+     * @param integer $timeEnd Number of the ending of the recording eg.: 2231
+     * @param integer $priority Recording priority 0-99
+     * @param integer $lifetime Lifetime 0-99
+     * @param string $title Title/ name of the timer
+     * @param string $notes Additional Informations, optional
+     * @param integer $id ID of the timer. Null for a new one or id to modify/update
+     *
+     * @return Return the timer item.
+     */
+    public function timerAdd( $activ, $channelID, $dayOfMonth, $timeStart, $timeEnd, $priority,
+        $lifetime, $title, $notes, $id = null )
+    {
+        $timerString = $this->_timerStringGet(
+            $activ, $channelID, $day, $timeStart, $timeEnd, $priority, $lifetime, $title, $notes
+        );
+
+        $response = $this->execute('NEWT', $timerString);
+        $result = $this->_timerString2ArrayGet($response);
+
+        return $result;
+    }
+
+
+    /**
+     * Sets the specified timer to activ or inactiv.
+     *
+     * @param integer $timerID Timer ID to enable/ disable
+     * @param boolean $active Flag to enable (true) or disable (false, default) the timer
+     *
+     * @return array Return the timer item on success
+     *
+     * @throws Mumsys_Session_Exception
+     */
+    public function timerSetActive( $timerID, $active = false )
+    {
+        $id = (int) $timerID;
+
+        if ( $id <= 0 ) {
+            throw new Mumsys_Session_Exception('Invalid timer id');
+        }
+
+        $status = 'off';
+        if ( $active ) {
+            $status = 'on';
+        }
+
+        $param = $id . ' ' . $status;
+        $response = $this->execute('MODT', $timerID);
+
+        return $this->_timerString2ArrayGet($response);
     }
 
 
@@ -615,13 +387,11 @@ class Mumsys_Service_Vdr
      * @param string $notes Additional Informations, optional
      * @param integer $id ID of the timer. Null for a new one or id to modify/update
      *
-     * @return array Timer record
+     * @return array Timer item
      */
-    public function timerRecordGet( $activ, $channelid, $day, $timeStart,
+    public function timerItemCreate( $activ, $channelid, $day, $timeStart,
         $timeEnd, $priority, $lifetime, $title, $notes, $id = null )
     {
-        $this->_logger->log(__METHOD__, 7);
-
         $record = array(
             'activ' => $activ,
             'channelid' => $channelid,
@@ -641,45 +411,7 @@ class Mumsys_Service_Vdr
         return $record;
     }
 
-    /**
-     * Returns the timer string to be used to set or update a timer.
-     *
-     * Api note: [nummer] aktiv:Kanalnummer:Tag_des_Monats:Startzeit:Endzeit:Priorität:Dauerhaftigkeit:Titel:
-     *
-     * @param integer $activ Aktiv (1) or inactiv (0)
-     * @param integer $channelID Channel ID
-     * @param integer $dayOfMonth Day of the month
-     * @param integer $timeStart Number of the start time eg.: 2015
-     * @param integer $timeEnd Number of the ending of the recording eg.: 2231
-     * @param integer $priority Recording priority 0-99
-     * @param integer $lifetime Lifetime 0-99
-     * @param string $title Title/ name of the timer
-     * @param string $notes Additional Informations, optional
-     * @param integer $id ID of the timer. Null for a new one or id to modify/update
-     *
-     * @return string Timer string to be used to add or update a timer
-     */
-    public function timerStringGet( $activ, $channelID, $dayOfMonth, $timeStart,
-        $timeEnd, $priority, $lifetime, $title, $notes, $id = null )
-    {
-        $this->_logger->log(__METHOD__, 7);
 
-        $timerString = sprintf(
-            '%10$s %1$s:%2$s:%3$s:%4$s:%5$s:%6$s:%7$s:%8$s:%9$s',
-            $activ,
-            $channelID,
-            $dayOfMonth,
-            $timeStart,
-            $timeEnd,
-            $priority,
-            $lifetime,
-            str_replace(':', '|', $title),
-            $notes,
-            $id
-        );
-
-        return $timerString;
-    }
 
 
     /**
@@ -688,10 +420,8 @@ class Mumsys_Service_Vdr
      * @param string $timerString The timer string from svdrp program
      * @return array|false Returns the timer record or false if record ID is missing.
      */
-    public function timerString2RecordGet( $timerString=null )
+    private function _timerString2ArrayGet( $timerString=null )
     {
-        $this->_logger->log(__METHOD__, 7);
-
         $line = trim($timerString);
 
         $parts = explode(':', $line);
@@ -723,15 +453,13 @@ class Mumsys_Service_Vdr
      * @param string $timerString The timer string from svdrp program
      * @return string Returns the timer string.
      */
-    public function timerRecord2StringGet( array $record = array() )
+    public function timerArray2StringGet( array $record = array() )
     {
-        $this->_logger->log(__METHOD__, 7);
-
         if (empty($record['id'])) {
             $record['id'] = null;
         }
 
-        $timerString = $this->timerStringGet(
+        $timerString = $this->_timerStringGet(
             $record['activ'],
             $record['channelid'],
             $record['day'],
@@ -749,67 +477,41 @@ class Mumsys_Service_Vdr
 
 
     /**
-     * Returns the list of recording.
+     * Returns the timer string to be used to set or update a timer.
      *
-     * @return array|false Returns list of key/value pair where the key is the
-     * internal recording ID and the value is a list of key/value pairs of
-     * recording properties
-     */
-    public function recordingsGet( $recordingID=null )
-    {
-        $this->_logger->log(__METHOD__, 7);
-
-        if (true) {
-            $records = $this->execute('LSTR', $recordingID);
-
-            if (!$recordingID) {
-                while (list(, $line) = each($records))
-                {
-                    $line = trim($line);
-                    $partA = explode(' ', substr($line, 0, 23));
-                    $partB = substr($line, 23, 1);
-
-                    $title = str_replace('|', ':', substr($line, 25) );
-                    $date = explode('.', $partA[1]);
-                    $dateString = sprintf('20%1$s-%2$s-%3$s', $date[2], $date[1], $date[0]);
-                    $options = array(
-                        'id' => $partA[0],
-                        'date' => $dateString,
-                        'time_start' => $partA[2],
-                        'duration' => substr($partA[3], 0, 5),
-                        'new' => (($partB == '*') ? 1 : 0),
-                        'title' => $title,
-                    );
-
-                    $this->_recordings[$partA[0]] = $options;
-                }
-            } else {
-                $records[0]['id'] = $recordingID;
-                $this->_recordings = $records;
-            }
-        }
-        unset($records, $options, $recordId, $partA, $partB, $line);
-
-        return $this->_recordings;
-    }
-
-
-    /**
-     * Test if connect() was called successfully.
+     * Api note: [nummer] aktiv:Kanalnummer:Tag_des_Monats:Startzeit:Endzeit:Priorität:Dauerhaftigkeit:Titel:
      *
-     * @return boolean Returns true if connection was opend successfully or
-     * false on failure or the connection was closed
+     * @param integer $activ Aktiv (1) or inactiv (0)
+     * @param integer $channelID Channel ID
+     * @param integer $dayOfMonth Day of the month
+     * @param integer $timeStart Number of the start time eg.: 2015
+     * @param integer $timeEnd Number of the ending of the recording eg.: 2231
+     * @param integer $priority Recording priority 0-99
+     * @param integer $lifetime Lifetime 0-99
+     * @param string $title Title/ name of the timer
+     * @param string $notes Additional Informations, optional
+     * @param integer $id ID of the timer. Null for a new one or id to modify/update
+     *
+     * @return string Timer string to be used to add or update a timer
      */
-    public function isOpen()
+    private function _timerStringGet( $activ, $channelID, $dayOfMonth, $timeStart, $timeEnd,
+        $priority, $lifetime, $title, $notes, $id = null )
     {
-        if (is_resource($this->_connection)) {
-            return true;
-        }
+        $timerString = sprintf(
+            '%10$s %1$s:%2$s:%3$s:%4$s:%5$s:%6$s:%7$s:%8$s:%9$s',
+            $activ,
+            $channelID,
+            $dayOfMonth,
+            $timeStart,
+            $timeEnd,
+            $priority,
+            $lifetime,
+            str_replace(':', '|', $title),
+            $notes,
+            $id
+        );
 
-        return false;
+        return $timerString;
     }
-
-
-
 
 }

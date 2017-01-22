@@ -43,15 +43,12 @@ class Mumsys_Service_VdrTest
 
         try
         {
-            $this->_object = new Mumsys_Service_Vdr($this->_context);
+            $this->_object = new Mumsys_Service_Vdr($this->_context, 'localhost');
         }
         catch ( Exception $ex ) {
-            $this->_object->disconnect();
-            $this->markTestSkipped(
-                'Service error or not available, skip test. Message: ' . $ex->getMessage()
-            );
+            $message = 'Service error or not available, skip test. Message: ' . $ex->getMessage();
+            $this->markTestSkipped($message);
         }
-
     }
 
 
@@ -72,6 +69,32 @@ class Mumsys_Service_VdrTest
 
 
     /**
+     * @covers Mumsys_Service_Vdr::__construct
+     */
+    public function test__construct()
+    {
+        $actual2 = $this->_object->__destruct();
+        $this->_object = new Mumsys_Service_Vdr($this->_context);
+
+        $this->assertTrue($actual2);
+        $this->assertInstanceOf('Mumsys_Service_Vdr', $this->_object);
+    }
+
+
+    /**
+     * @covers Mumsys_Service_Vdr::__destruct
+     */
+    public function test__destruct()
+    {
+        $actual2 = $this->_object->__destruct();
+        $actual3 = $this->_object->isOpen();
+
+        $this->assertTrue($actual2);
+        $this->assertFalse($actual3);
+    }
+
+
+    /**
      * @covers Mumsys_Service_Vdr::connect
      */
     public function testConnect()
@@ -87,15 +110,13 @@ class Mumsys_Service_VdrTest
 
 
     /**
-     * @covers Mumsys_Service_Vdr::__destruct
+     * @covers Mumsys_Service_Vdr::connect
      */
-    public function test__destruct()
+    public function testConnectException1()
     {
-        $actual2 = $this->_object->__destruct();
-        $actual3 = $this->_object->isOpen();
-
-        $this->assertTrue($actual2);
-        $this->assertFalse($actual3);
+        $regex = '/(Connection to server "nohostexist" failt)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+        $this->_object = new Mumsys_Service_Vdr($this->_context, 'nohostexist', 666, 5);
     }
 
 
@@ -119,22 +140,57 @@ class Mumsys_Service_VdrTest
      */
     public function testExecute()
     {
-        $actual2 = $this->_object->execute('SCAN');
-        $expected2 = array('EPG scan triggered');
+        $actual1 = $this->_object->execute('SCAN');
+        $expected1 = array('EPG scan triggered');
 
-        $this->assertEquals($expected2, $actual2);
+        // epg data channel 2
+        $actual2 = $this->_object->execute('LSTE', 2);
+
+        // list some recordings. this can end up in a tomeout first because vdr
+        // caches the results which can be a huge list
+        $actual3 = $this->_object->execute('LSTR', 1);
+
+        $this->assertEquals($expected1, $actual1);
+        $this->assertTrue( (count($actual2) > 2 ));
+        $this->assertTrue( (count($actual3) == 1 ));
+    }
+
+
+    /**
+     * @covers Mumsys_Service_Vdr::execute
+     */
+    public function testExecuteException1()
+    {
+        $this->_object->disconnect();
+        $regex = '/(Not connected)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+
+        $this->_object->execute('SCAN');
+    }
+
+
+    /**
+     * @covers Mumsys_Service_Vdr::execute
+     */
+    public function testExecuteException2()
+    {
+        $regex = '/(Command unknown or not implemented yet. Exiting)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+
+        $this->_object->execute('ImACommandThatNotExists');
     }
 
 
     /**
      * @covers Mumsys_Service_Vdr::channelsGet
      * @covers Mumsys_Service_Vdr::channelGet
-     * @covers Mumsys_Service_Vdr::channelsSearch
+     * @covers Mumsys_Service_Vdr::channelSearch
      * @covers Mumsys_Service_Vdr::_channelsGet
      */
     public function testChannelsGet()
     {
         $channelsList = $this->_object->channelsGet();
+
         if ( count($channelsList) <= 0 ) {
             $this->markTestSkipped('No channels found. Pls check your vdr config. Skip test');
         }
@@ -145,7 +201,7 @@ class Mumsys_Service_VdrTest
             $this->assertEquals($current, $parts);
         }
 
-        $chanSearch = $this->_object->channelsSearch('sat');
+        $chanSearch = $this->_object->channelSearch('sat');
         if ( count($chanSearch) <= 0 ) {
             $this->markTestSkipped('No channels found. Pls check the search option in ' . __METHOD__ . '');
         }
@@ -153,67 +209,118 @@ class Mumsys_Service_VdrTest
         foreach ( $chanSearch as $id => $parts ) {
             $this->assertEquals($channelsList[$id], $parts);
         }
+
+        $regex = '/(Invalid channel parameter)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+        $this->_object->channelSearch(0);
     }
+
+
+
 
 
     /**
-     * @covers Mumsys_Service_Vdr::timersGet
-     * @todo   Implement testTimersGet().
+     * @covers Mumsys_Service_Vdr::recordingGet
      */
-    public function testTimersGet()
+    public function testRecordingGet()
     {
+        $expectedKeys = array(
+            'channel_key'
+            ,'channel_name'
+            ,'event_id'
+            ,'timestamp'
+            ,'duration'
+            ,'e_tableid'
+            ,'e_version'
+            ,'description'
+            ,'subtitle'
+            ,'title'
+            //optional ,'advisory'
+            //optional ,'vps'
+            ,'genre'
+            //optional ,'extras'
+            ,'framerate'
+            ,'priority'
+            ,'lifetime'
+            //optional ,'notes'
+        );
 
+        $actual1 = $this->_object->recordingGet(1, false);
+
+        foreach ( $expectedKeys as $key ) {
+            if ( $key == 'extras' ) {
+                $extras = array('stream_kind', 'stream_type', 'stream_lang', 'stream_desc');
+                foreach ( $extras as $extr ) {
+                    $acEx = reset($actual1['extras']);
+                    $this->assertTrue( isset($acEx[$extr]));
+                }
+            }
+
+            $this->assertTrue( isset($actual1[$key]), 'Error: "'. $key . '" not set' );
+        }
+
+        $actual2 = $this->_object->recordingGet(1, true);
+        $this->assertTrue(is_dir($actual2 . '/'), 'Directory "' . $actual2 . '" not found');
+
+        $regex = '/(Invalid recording ID)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+        $this->_object->recordingGet(0);
     }
-
-
-    /**
-     * @covers Mumsys_Service_Vdr::timerRecordGet
-     * @todo   Implement testTimerRecordGet().
-     */
-    public function testTimerRecordGet()
-    {
-
-    }
-
-
-    /**
-     * @covers Mumsys_Service_Vdr::timerStringGet
-     * @todo   Implement testTimerStringGet().
-     */
-    public function testTimerStringGet()
-    {
-
-    }
-
-
-    /**
-     * @covers Mumsys_Service_Vdr::timerString2RecordGet
-     * @todo   Implement testTimerString2RecordGet().
-     */
-    public function testTimerString2RecordGet()
-    {
-
-    }
-
-
-    /**
-     * @covers Mumsys_Service_Vdr::timerRecord2StringGet
-     * @todo   Implement testTimerRecord2StringGet().
-     */
-    public function testTimerRecord2StringGet()
-    {
-
-    }
-
 
     /**
      * @covers Mumsys_Service_Vdr::recordingsGet
-     * @todo   Implement testRecordingsGet().
      */
     public function testRecordingsGet()
     {
 
     }
+
+
+
+//
+//    /**
+//     * @covers Mumsys_Service_Vdr::timersGet
+//     */
+//    public function testTimersGet()
+//    {
+//
+//    }
+//
+//
+//    /**
+//     * @covers Mumsys_Service_Vdr::timerRecordGet
+//     */
+//    public function testTimerRecordGet()
+//    {
+//
+//    }
+//
+//
+//    /**
+//     * @covers Mumsys_Service_Vdr::_timerStringGet
+//     */
+//    public function testTimerStringGet()
+//    {
+//
+//    }
+//
+//
+//    /**
+//     * @covers Mumsys_Service_Vdr::timerString2RecordGet
+//     */
+//    public function testTimerString2RecordGet()
+//    {
+//
+//    }
+//
+//
+//    /**
+//     * @covers Mumsys_Service_Vdr::timerArray2StringGet
+//     */
+//    public function testTimerArray2StringGet()
+//    {
+//
+//    }
 
 
     /**
