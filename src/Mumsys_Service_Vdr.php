@@ -128,7 +128,6 @@ class Mumsys_Service_Vdr
     public function channelAdd( $name, $transponder, $frequency, $parameter, $source, $symbolrate,
             $VPID, $APID, $TPID, $CAID, $SID, $NID, $TID, $RID, $channelID=null )
     {
-xxx here we are
          $channelString = $this->_channelStringGet(
             null, $name, $transponder, $frequency, $parameter, $source, $symbolrate,
             $VPID, $APID, $TPID, $CAID, $SID, $NID, $TID, $RID
