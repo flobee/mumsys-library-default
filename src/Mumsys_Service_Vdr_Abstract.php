@@ -327,6 +327,8 @@ abstract class Mumsys_Service_Vdr_Abstract
 
                 case '501':
                     // also for "Not found"
+                    // also for "channel not unique"
+                    // trim($data[3]);
                     break;
 
                 default:

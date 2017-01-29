@@ -104,6 +104,121 @@ class Mumsys_Service_Vdr
         return $this->_channelsGet($key);
     }
 
+    /**
+     * Adds a new channel to the vdr.
+     *
+     * @param string $name Chanel name
+     * @param type $transponder
+     * @param type $frequency
+     * @param type $parameter
+     * @param type $source
+     * @param type $symbolrate
+     * @param type $VPID
+     * @param type $APID
+     * @param type $TPID
+     * @param type $CAID
+     * @param type $SID
+     * @param type $NID
+     * @param type $TID
+     * @param type $RID
+     * @param integer $channelID Internal channel ID
+     *
+     * @return array Channel item containing the new ID
+     */
+    public function channelAdd( $name, $transponder, $frequency, $parameter, $source, $symbolrate,
+            $VPID, $APID, $TPID, $CAID, $SID, $NID, $TID, $RID, $channelID=null )
+    {
+xxx here we are
+         $channelString = $this->_channelStringGet(
+            null, $name, $transponder, $frequency, $parameter, $source, $symbolrate,
+            $VPID, $APID, $TPID, $CAID, $SID, $NID, $TID, $RID
+        );
+
+echo __METHOD__ .':$channelString: '. $channelString . PHP_EOL;
+
+        $response = $this->execute('NEWC', $channelString);
+
+echo __METHOD__ .':$response: '. print_r($response, true) . PHP_EOL;
+
+        $result = reset($response);
+
+echo __METHOD__ .':$result: '. print_r($result, true) . PHP_EOL;
+
+        $item = $this->_channelString2ItemGet($result);
+
+
+echo __METHOD__ .':$item: '. print_r($item, true) . PHP_EOL;
+
+        return $item;
+    }
+
+    /**
+     * Removes given channel from vdr.
+     *
+     * @param integer $channelID Internal ID of the channel
+     *
+     * @return boolean True on success
+     *
+     * @throws Mumsys_Service_Exception If channel ID <= 0
+     */
+    public function channelDelete( $channelID=null )
+    {
+        if ( !(int) $channelID ) {
+            throw new Mumsys_Service_Exception('Invalid channel ID');
+        }
+
+        $response = $this->execute('DELC', $channelID);
+        $result = reset($response);
+echo __METHOD__ . print_r($response, true);
+        return true;
+    }
+
+
+    /**
+     * Returns a channel item.
+     *
+     * @param integer $channelID
+     * @param string $name
+     * @param string $transponder
+     * @param string $frequency
+     * @param string $parameter
+     * @param string $source
+     * @param string $symbolrate
+     * @param string $VPID
+     * @param string $APID
+     * @param string $TPID
+     * @param string $CAID
+     * @param string $SID
+     * @param string $NID
+     * @param string $TID
+     * @param string $RID
+     *
+     * @return array List of key/value pairs of a channel item.
+     */
+    public function channelItemCreate($channelID, $name = '', $transponder, $frequency, $parameter,
+        $source, $symbolrate, $VPID, $APID, $TPID, $CAID, $SID, $NID, $TID, $RID )
+    {
+        $item = array(
+            'channel_id' => $channelID,
+            'name' => $name,
+            'bouquet' => $transponder,
+            'frequency' => $frequency,
+            'parameter' => trim($parameter),
+            'source' => trim($source),
+            'symbolrate' => trim($symbolrate),
+            'VPID' => trim($VPID),
+            'APID' => trim($APID),
+            'TPID' => trim($TPID),
+            'CAID' => trim($CAID),
+            'SID' => trim($SID),
+            'NID' => trim($NID),
+            'TID' => trim($TID),
+            'RID' => trim($RID),
+        );
+
+        return $item;
+    }
+
 
     /**
      * Returns a list of channels.
@@ -136,32 +251,96 @@ class Mumsys_Service_Vdr
             $posStart = strpos($parts[0], ' ');
             $posEnd = strpos($parts[0], ';');
 
-            $recordId = substr($parts[0], 0, $posStart);
+            $channelID = substr($parts[0], 0, $posStart);
             $names = explode(';', (substr($parts[0], $posStart + 1)));
             $recordName = str_replace('|', ':', $names[0]);
-            $recordTransponder = $names[1];
 
-            $channelList[$recordId] = array(
-                'vdr_id' => $recordId,
-                'name' => $recordName,
-                'bouquet' => $recordTransponder,
-                'frequency' => trim($parts[1]),
-                'parameter' => trim($parts[2]),
-                'source' => trim($parts[3]),
-                'symbolrate' => trim($parts[4]),
-                'VPID' => trim($parts[5]),
-                'APID' => trim($parts[6]),
-                'TPID' => trim($parts[7]),
-                'CAID' => trim($parts[8]),
-                'SID' => trim($parts[9]),
-                'NID' => trim($parts[10]),
-                'TID' => trim($parts[11]),
-                'RID' => trim($parts[12]),
+
+            $channelList[$channelID] = $this->channelItemCreate(
+                $channelID, $recordName, $names[1], $parts[1], $parts[2],$parts[3],
+                $parts[4], $parts[5], $parts[6], $parts[7], $parts[8], $parts[9],
+                $parts[10], $parts[11], $parts[12]
             );
+
         }
 
         return $channelList;
     }
+
+
+    /**
+     * Returns the channel string to execute.
+     *
+     * @param integer $channelID
+     * @param string $name
+     * @param string $transponder
+     * @param string $frequency
+     * @param string $parameter
+     * @param string $source
+     * @param string $symbolrate
+     * @param string $VPID
+     * @param string $APID
+     * @param string $TPID
+     * @param string $CAID
+     * @param string $SID
+     * @param string $NID
+     * @param string $TID
+     * @param string $RID
+     *
+     * @return type
+     */
+    private function _channelStringGet( $channelID, $name, $transponder, $frequency, $parameter,
+        $source, $symbolrate, $VPID, $APID, $TPID, $CAID, $SID, $NID, $TID, $RID )
+    {
+        if (isset($channelID)) {
+            $template = '%15$s %1$s;%2$s:%3$s:%4$s:%5$s:%6$s:%7$s:%8$s:%9$s:%10$s:%11$s:%12$s:%13$s:%14$s';
+        } else {
+            $template = '%1$s;%2$s:%3$s:%4$s:%5$s:%6$s:%7$s:%8$s:%9$s:%10$s:%11$s:%12$s:%13$s:%14$s';
+        }
+
+        $timerString = sprintf(
+            $template,
+            $name,
+            $transponder,
+            $frequency,
+            $parameter,
+            $source,
+            $symbolrate,
+            $VPID,
+            $APID,
+            $TPID,
+            $CAID,
+            $SID,
+            $NID,
+            $TID,
+            $RID,
+            $channelID
+        );
+
+        return $timerString;
+    }
+
+    private function _channelString2ItemGet( $line )
+    {
+        $parts = explode(':', $line);
+        $posStart = strpos($parts[0], ' ');
+        $posEnd = strpos($parts[0], ';');
+
+        $channelID = substr($parts[0], 0, $posStart);
+        $names = explode(';', (substr($parts[0], $posStart + 1)));
+        $recordName = str_replace('|', ':', $names[0]);
+
+
+        $item = $this->channelItemCreate(
+            $channelID, $recordName, $names[1], $parts[1], $parts[2], $parts[3], $parts[4],
+            $parts[5], $parts[6], $parts[7], $parts[8], $parts[9], $parts[10], $parts[11],
+            $parts[12]
+        );
+
+        return $item;
+    }
+
+    // --- recordings ------------------------------------------------------------------------------
 
 
     /**
@@ -305,7 +484,7 @@ class Mumsys_Service_Vdr
         $records = $this->execute('LSTT', $id);
 
         while ( list(, $line) = each($records) ) {
-            $options = $this->_timerString2ArrayGet($line);
+            $options = $this->_timerString2ItemGet($line);
             $timers[$options['id']] = $options;
         }
 
@@ -337,7 +516,7 @@ class Mumsys_Service_Vdr
         );
 
         $response = $this->execute('NEWT', $timerString);
-        $result = $this->_timerString2ArrayGet($response);
+        $result = $this->_timerString2ItemGet($response);
 
         return $result;
     }
@@ -369,7 +548,7 @@ class Mumsys_Service_Vdr
         $param = $id . ' ' . $status;
         $response = $this->execute('MODT', $timerID);
 
-        return $this->_timerString2ArrayGet($response);
+        return $this->_timerString2ItemGet($response);
     }
 
 
@@ -420,7 +599,7 @@ class Mumsys_Service_Vdr
      * @param string $timerString The timer string from svdrp program
      * @return array|false Returns the timer record or false if record ID is missing.
      */
-    private function _timerString2ArrayGet( $timerString=null )
+    private function _timerString2ItemGet( $timerString=null )
     {
         $line = trim($timerString);
 
@@ -453,7 +632,7 @@ class Mumsys_Service_Vdr
      * @param string $timerString The timer string from svdrp program
      * @return string Returns the timer string.
      */
-    public function timerArray2StringGet( array $record = array() )
+    public function timerItem2StringGet( array $record = array() )
     {
         if (empty($record['id'])) {
             $record['id'] = null;
@@ -481,6 +660,7 @@ class Mumsys_Service_Vdr
      *
      * Api note: [nummer] aktiv:Kanalnummer:Tag_des_Monats:Startzeit:Endzeit:Priorität:Dauerhaftigkeit:Titel:
      *
+     * @param integer|nul $id ID of the timer. Null for a new one or id to modify/update
      * @param integer $activ Aktiv (1) or inactiv (0)
      * @param integer $channelID Channel ID
      * @param integer $dayOfMonth Day of the month
@@ -490,15 +670,20 @@ class Mumsys_Service_Vdr
      * @param integer $lifetime Lifetime 0-99
      * @param string $title Title/ name of the timer
      * @param string $notes Additional Informations, optional
-     * @param integer $id ID of the timer. Null for a new one or id to modify/update
      *
      * @return string Timer string to be used to add or update a timer
      */
-    private function _timerStringGet( $activ, $channelID, $dayOfMonth, $timeStart, $timeEnd,
-        $priority, $lifetime, $title, $notes, $id = null )
+    private function _timerStringGet($id, $activ, $channelID, $dayOfMonth, $timeStart, $timeEnd,
+        $priority, $lifetime, $title, $notes )
     {
+        if (isset($id)) {
+            $template = '%1$s:%2$s:%3$s:%4$s:%5$s:%6$s:%7$s:%8$s:%9$s';
+        } else {
+            $template = '%10$s %1$s:%2$s:%3$s:%4$s:%5$s:%6$s:%7$s:%8$s:%9$s';
+        }
+
         $timerString = sprintf(
-            '%10$s %1$s:%2$s:%3$s:%4$s:%5$s:%6$s:%7$s:%8$s:%9$s',
+            $template,
             $activ,
             $channelID,
             $dayOfMonth,

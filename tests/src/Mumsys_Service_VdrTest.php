@@ -80,106 +80,120 @@ class Mumsys_Service_VdrTest
         $this->assertInstanceOf('Mumsys_Service_Vdr', $this->_object);
     }
 
+//
+//    /**
+//     * @covers Mumsys_Service_Vdr::__destruct
+//     */
+//    public function test__destruct()
+//    {
+//        $actual2 = $this->_object->__destruct();
+//        $actual3 = $this->_object->isOpen();
+//
+//        $this->assertTrue($actual2);
+//        $this->assertFalse($actual3);
+//    }
+//
+//
+//    /**
+//     * @covers Mumsys_Service_Vdr::connect
+//     */
+//    public function testConnect()
+//    {
+//        $actual1 = $this->_object->connect();
+//        $actual2 = $this->_object->disconnect();
+//        $actual3 = $this->_object->connect();
+//
+//        $this->assertTrue($actual1);
+//        $this->assertTrue($actual2);
+//        $this->assertTrue($actual3);
+//    }
+//
+//
+//    /**
+//     * @covers Mumsys_Service_Vdr::connect
+//     */
+//    public function testConnectException1()
+//    {
+//        $regex = '/(Connection to server "nohostexist" failt)/i';
+//        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+//        $this->_object = new Mumsys_Service_Vdr($this->_context, 'nohostexist', 666, 5);
+//    }
+//
+//
+//    /**
+//     * @covers Mumsys_Service_Vdr::disconnect
+//     */
+//    public function testDisconnect()
+//    {
+//        $actual1 = $this->_object->connect();
+//        $actual2 = $this->_object->disconnect();
+//
+//        $this->assertTrue($actual1);
+//        $this->assertTrue($actual2);
+//    }
+//
+//
+//    /**
+//     * Expect one or more existing channels.
+//     *
+//     * @covers Mumsys_Service_Vdr::execute
+//     */
+//    public function testExecute()
+//    {
+//        $actual1 = $this->_object->execute('SCAN');
+//        $expected1 = array('EPG scan triggered');
+//
+//        // epg data channel 2
+//        $actual2 = $this->_object->execute('LSTE', 2);
+//
+//        // list some recordings. this can end up in a tomeout first because vdr
+//        // caches the results which can be a huge list
+//        $actual3 = $this->_object->execute('LSTR', 1);
+//
+//        $this->assertEquals($expected1, $actual1);
+//        $this->assertTrue( (count($actual2) > 2 ));
+//        $this->assertTrue( (count($actual3) == 1 ));
+//    }
+//
+//
+//    /**
+//     * @covers Mumsys_Service_Vdr::execute
+//     */
+//    public function testExecuteException1()
+//    {
+//        $this->_object->disconnect();
+//        $regex = '/(Not connected)/i';
+//        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+//
+//        $this->_object->execute('SCAN');
+//    }
+//
+//
+//    /**
+//     * @covers Mumsys_Service_Vdr::execute
+//     */
+//    public function testExecuteException2()
+//    {
+//        $regex = '/(Command unknown or not implemented yet. Exiting)/i';
+//        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+//
+//        $this->_object->execute('ImACommandThatNotExists');
+//    }
 
     /**
-     * @covers Mumsys_Service_Vdr::__destruct
+     * @covers Mumsys_Service_Vdr::channelAdd
      */
-    public function test__destruct()
+    public function testChannelAdd()
     {
-        $actual2 = $this->_object->__destruct();
-        $actual3 = $this->_object->isOpen();
+        // $str = 'TestChannel;NDR:000000001:TESTCHANNEL:T:0:1=2:3=deu@3,4=mis@4:5:6:7:8:9:0';
+        $actual = $this->_object->channelAdd('TestChannel', 'NDR', '000000001', 'TESTCHANNEL', 'T', 0, '1=2', '3=deu@3,4=mis@4', '5', '6', '7', '8', '9', '0');
 
-        $this->assertTrue($actual2);
-        $this->assertFalse($actual3);
+        $expected = array();
+
+        $this->assertEquals($expected, $actual);
+xxx here we are
+        //$this->_object->channelDelete($actual['id']);
     }
-
-
-    /**
-     * @covers Mumsys_Service_Vdr::connect
-     */
-    public function testConnect()
-    {
-        $actual1 = $this->_object->connect();
-        $actual2 = $this->_object->disconnect();
-        $actual3 = $this->_object->connect();
-
-        $this->assertTrue($actual1);
-        $this->assertTrue($actual2);
-        $this->assertTrue($actual3);
-    }
-
-
-    /**
-     * @covers Mumsys_Service_Vdr::connect
-     */
-    public function testConnectException1()
-    {
-        $regex = '/(Connection to server "nohostexist" failt)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
-        $this->_object = new Mumsys_Service_Vdr($this->_context, 'nohostexist', 666, 5);
-    }
-
-
-    /**
-     * @covers Mumsys_Service_Vdr::disconnect
-     */
-    public function testDisconnect()
-    {
-        $actual1 = $this->_object->connect();
-        $actual2 = $this->_object->disconnect();
-
-        $this->assertTrue($actual1);
-        $this->assertTrue($actual2);
-    }
-
-
-    /**
-     * Expect one or more existing channels.
-     *
-     * @covers Mumsys_Service_Vdr::execute
-     */
-    public function testExecute()
-    {
-        $actual1 = $this->_object->execute('SCAN');
-        $expected1 = array('EPG scan triggered');
-
-        // epg data channel 2
-        $actual2 = $this->_object->execute('LSTE', 2);
-
-        // list some recordings. this can end up in a tomeout first because vdr
-        // caches the results which can be a huge list
-        $actual3 = $this->_object->execute('LSTR', 1);
-
-        $this->assertEquals($expected1, $actual1);
-        $this->assertTrue( (count($actual2) > 2 ));
-        $this->assertTrue( (count($actual3) == 1 ));
-    }
-
-
-    /**
-     * @covers Mumsys_Service_Vdr::execute
-     */
-    public function testExecuteException1()
-    {
-        $this->_object->disconnect();
-        $regex = '/(Not connected)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
-
-        $this->_object->execute('SCAN');
-    }
-
-
-    /**
-     * @covers Mumsys_Service_Vdr::execute
-     */
-    public function testExecuteException2()
-    {
-        $regex = '/(Command unknown or not implemented yet. Exiting)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
-
-        $this->_object->execute('ImACommandThatNotExists');
-    }
-
 
     /**
      * @covers Mumsys_Service_Vdr::channelsGet
