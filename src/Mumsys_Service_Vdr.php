@@ -124,29 +124,26 @@ class Mumsys_Service_Vdr
      * @param integer $channelID Internal channel ID
      *
      * @return array Channel item containing the new ID
+     *
+     * @throws Exception
      */
     public function channelAdd( $name, $transponder, $frequency, $parameter, $source, $symbolrate,
             $VPID, $APID, $TPID, $CAID, $SID, $NID, $TID, $RID, $channelID=null )
     {
-         $channelString = $this->_channelStringGet(
-            null, $name, $transponder, $frequency, $parameter, $source, $symbolrate,
-            $VPID, $APID, $TPID, $CAID, $SID, $NID, $TID, $RID
-        );
+        try
+        {
+            $channelString = $this->_channelStringGet(
+                null, $name, $transponder, $frequency, $parameter, $source, $symbolrate, $VPID,
+                $APID, $TPID, $CAID, $SID, $NID, $TID, $RID
+            );
 
-echo __METHOD__ .':$channelString: '. $channelString . PHP_EOL;
-
-        $response = $this->execute('NEWC', $channelString);
-
-echo __METHOD__ .':$response: '. print_r($response, true) . PHP_EOL;
-
-        $result = reset($response);
-
-echo __METHOD__ .':$result: '. print_r($result, true) . PHP_EOL;
-
-        $item = $this->_channelString2ItemGet($result);
-
-
-echo __METHOD__ .':$item: '. print_r($item, true) . PHP_EOL;
+            $response = $this->execute('NEWC', $channelString);
+            $result = reset($response);
+            $item = $this->_channelString2ItemGet($result);
+        }
+        catch ( Exception $ex ) {
+            throw new Mumsys_Service_Exception($ex->getMessage(), $ex->getCode());
+        }
 
         return $item;
     }

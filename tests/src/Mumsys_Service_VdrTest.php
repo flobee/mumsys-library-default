@@ -204,13 +204,13 @@ class Mumsys_Service_VdrTest
     public function testChannelAdd()
     {
         // $str = 'TestChannel;NDR:000000001:TESTCHANNEL:T:0:1=2:3=deu@3,4=mis@4:5:6:7:8:9:0';
-        $actual = $this->_object->channelAdd(
+        $actual1 = $this->_object->channelAdd(
             'TestChannel', 'NDR', '000000001', 'TESTCHANNEL', 'T', 0, '1=2',
             '3=deu@3,4=mis@4', '5', '6', '7', '8', '9', '0'
         );
 
         $expected = array(
-            'channel_id' => $actual['channel_id'],
+            'channel_id' => $actual1['channel_id'],
             'name' => 'TestChannel',
             'bouquet' => 'NDR',
             'frequency' => '1',
@@ -227,9 +227,17 @@ class Mumsys_Service_VdrTest
             'RID' => '0',
         );
 
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expected, $actual1);
 
-        $this->_object->channelDelete($actual['channel_id']);
+        // add again expect failure/ exists
+        $regex = '/(Channel settings are not unique)/i';
+        $this->setExpectedExceptionRegex('Mumsys_Service_Exception', $regex);
+        $actual2 = $this->_object->channelAdd(
+            'TestChannel', 'NDR', '000000001', 'TESTCHANNEL', 'T', 0, '1=2',
+            '3=deu@3,4=mis@4', '5', '6', '7', '8', '9', '0'
+        );
+
+        $this->_object->channelDelete($actual1['channel_id']);
     }
 
     /**
