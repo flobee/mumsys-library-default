@@ -73,9 +73,12 @@ class Mumsys_Service_VdrTest
 
     /**
      * @covers Mumsys_Service_Vdr::connect
+     * @covers Mumsys_Service_Vdr::__construct
      */
     public function testConnect()
     {
+         $this->_object = new Mumsys_Service_Vdr($this->_context);
+
         $actual1 = $this->_object->connect();
         $actual2 = $this->_object->disconnect();
         $actual3 = $this->_object->connect();
