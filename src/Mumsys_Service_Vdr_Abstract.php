@@ -329,6 +329,7 @@ abstract class Mumsys_Service_Vdr_Abstract
                     // also for "Not found"
                     // also for "channel not unique"
                     // trim($data[3]);
+                    throw new Mumsys_Service_Exception($data[3], $data[1]);
                     break;
 
                 default:
