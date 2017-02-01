@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Mumsys_Service_Vdr
+ * {{{ Mumsys_Service_Vdr
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -13,11 +13,11 @@
  * @subpackage  Service
  * @version     1.0.0
  * 0.1 Created: 2015-10-08
- */
+ }}} */
 
 
-/**
- * Wrapper class to deal with svdrpsend command from vdr project (Simple VDR Protocol).
+/** 
+ * {{{ Wrapper class to deal with svdrpsend command from vdr project (Simple VDR Protocol).
  *
  * SVDRP give you the possibility to run the svdrpsend commands in php context.
  * So it is easy now to work with vdr in php. E.g: Dump the EPG to
@@ -36,7 +36,7 @@
  * @subpackage  Service
  *
  * @uses Mumsys_Logger Logger obejct in context item
- */
+ }}} */
 class Mumsys_Service_Vdr
     extends Mumsys_Service_Vdr_Abstract
 {
@@ -125,7 +125,7 @@ class Mumsys_Service_Vdr
      *
      * @return array Channel item containing the new ID
      *
-     * @throws Exception
+     * @throws Mumsys_Service_Exception If execution fails (E.g.: Existing, not existing record)
      */
     public function channelAdd( $name, $transponder, $frequency, $parameter, $source, $symbolrate,
             $VPID, $APID, $TPID, $CAID, $SID, $NID, $TID, $RID, $channelID=null )
@@ -148,6 +148,7 @@ class Mumsys_Service_Vdr
         return $item;
     }
 
+
     /**
      * Removes given channel from vdr.
      *
@@ -165,7 +166,7 @@ class Mumsys_Service_Vdr
 
         $response = $this->execute('DELC', $channelID);
         $result = reset($response);
-echo __METHOD__ . print_r($response, true);
+
         return true;
     }
 
@@ -316,6 +317,7 @@ echo __METHOD__ . print_r($response, true);
         return $timerString;
     }
 
+
     private function _channelString2ItemGet( $line )
     {
         $parts = explode(':', $line);
@@ -335,6 +337,7 @@ echo __METHOD__ . print_r($response, true);
 
         return $item;
     }
+
 
     // --- recordings ------------------------------------------------------------------------------
 

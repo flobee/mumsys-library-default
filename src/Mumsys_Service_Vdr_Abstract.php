@@ -1,7 +1,7 @@
 <?php
 
-/**
- * Mumsys_Service_Vdr_Abstract
+/** 
+ * {{{ Mumsys_Service_Vdr_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -13,11 +13,11 @@
  * @subpackage  Service
  * @version     1.0.0
  * 0.1 Created: 2015-10-08
- */
+ }}} */
 
 
 /**
- * Abstract class to deal with svdrpsend command from vdr project (Simple VDR Protocol).
+ * {{{ Abstract class to deal with svdrpsend command from vdr project (Simple VDR Protocol).
  *
  * SVDRP give you the possibility to run the svdrpsend commands in php context.
  * So it is easy now to work with vdr in php. E.g: Dump the EPG to
@@ -30,7 +30,7 @@
  * @subpackage  Service
  *
  * @uses Mumsys_Logger Logger mobejct in context item
- */
+ }}} */
 abstract class Mumsys_Service_Vdr_Abstract
     extends Mumsys_Abstract
 {
@@ -329,7 +329,6 @@ abstract class Mumsys_Service_Vdr_Abstract
                     // also for "Not found"
                     // also for "channel not unique"
                     // trim($data[3]);
-                    // $message = 'Error: ' . print_r($data, true);
                     throw new Mumsys_Service_Exception($data[3], $data[1]);
                     break;
 
@@ -469,7 +468,5 @@ abstract class Mumsys_Service_Vdr_Abstract
 
         return $record;
     }
-
-
 
 }
