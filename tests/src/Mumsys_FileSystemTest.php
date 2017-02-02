@@ -178,6 +178,10 @@ class Mumsys_FileSystemTest
 
 
 
+        // view: https://regex101.com/r/sAt2MT/5
+        // delete: https://regex101.com/delete/kYuk1QZ2z5xxxr7O73pPrWAz
+        //  '/^(?!.*?(16x16|250x250|50x50))(?:\w+|.*)/' sub path containing the values should be ignored
+
         $this->assertFalse($actual3);
     }
 
