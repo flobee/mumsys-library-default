@@ -521,7 +521,7 @@ class Mumsys_FileSystem
         }
         catch (Exception $e)
         {
-            if (is_dir($dir)) {
+            if (is_dir($dir . DIRECTORY_SEPARATOR)) {
                 return false;
             }
 
