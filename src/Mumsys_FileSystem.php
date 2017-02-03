@@ -2,22 +2,18 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_FileSystem
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright (c) 2006 by Florian Blasel
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright (c) 2006 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category Mumsys
  * @package Mumsys_Library
  * @subpackage Mumsys_FileSystem
  * @version 3.0.6
  * Created on 2006-12-01
- * -----------------------------------------------------------------------
  */
 /*}}}*/
 
@@ -36,8 +32,13 @@ class Mumsys_FileSystem
     /**
      * Version ID information
      */
-    const VERSION = '3.0.6';
+    const VERSION = '3.0.7';
 
+    /**
+     * List of scanned directorys.
+     *
+     * @var array
+     */
     private $_dirInfo;
 
 
@@ -54,6 +55,8 @@ class Mumsys_FileSystem
      * $this->_dirinfo and all of it will be returned! Dont be confused if you
      * think records are scanned twice or you think you have dublicate records.
      *
+     * Links if can be detected will be ignored. Depending on start path.
+     *
      * @todo follow symlinks?
      *
      * @param string $dir Directory/ Path to start the scan
@@ -68,9 +71,15 @@ class Mumsys_FileSystem
      */
     public function scanDirInfo($dir, $hideHidden=true, $recursive=false, array $filters=array(), $offset=0, $limit=0)
     {
+        if ($offset < 0) {
+            $offset = 0;
+        }
+
         if ($limit && $limit > 1000) {
             $limit = 500;
         }
+
+        $ds = DIRECTORY_SEPARATOR;
 
         if (@is_dir($dir) && is_readable($dir) && !is_link($dir)) {
             $cnt=0;
@@ -85,10 +94,9 @@ class Mumsys_FileSystem
                         continue;
                     }
 
-                    $test = $dir . DIRECTORY_SEPARATOR . $file;
-
-                    if ($recursive && is_dir($test.DIRECTORY_SEPARATOR)) {
-                        $newdir = $dir . DIRECTORY_SEPARATOR . $file;
+                    $test = $dir . $ds . $file;
+                    if ($recursive && is_dir($test.$ds)) {
+                        $newdir = $dir . $ds . $file;
                         $this->_dirInfo[$newdir] = $this->getFileDetails($newdir);
                         $this->scanDirInfo($newdir, $hideHidden, $recursive, $filters, $offset, $limit);
                     }
@@ -198,7 +206,7 @@ class Mumsys_FileSystem
      * the second parameter contains the file or link name for an optimal usage.
      *
      * Note: This methode is made for scaning for files in cli enviroment to feed
-     * a media database etc. Use it only if know what you are doing. Things can
+     * a media database. Use it only if know what you are doing. Things can
      * run in a timeout when using in web enviroment.
      *
      * @param string $fileOrPath Location of the file including the filename or the
@@ -298,6 +306,7 @@ class Mumsys_FileSystem
      * Returning examples: "UTF-8 Unicode text", "ASCII Text"
      *
      * @param string $file Location of the file
+     *
      * @return string Returns the content file type or an empty string
      */
     public function getFileType($file)
@@ -379,7 +388,7 @@ class Mumsys_FileSystem
             // test type of source and destionation?
             if ( !file_exists($source) || empty($source) ) {
                 $message = 'Source "' . $source . '" is no directory and no file';
-                throw new Mumsys_FileSystem_Exception($message);
+                throw new Mumsys_FileSystem_Exception($message, Mumsys_Exception::ERRCODE_DEFAULT);
             }
 
 //		if ( is_dir($source . '/') ) {
