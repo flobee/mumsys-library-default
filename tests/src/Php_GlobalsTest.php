@@ -149,18 +149,18 @@ class Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::getFileVar
+     * @covers Php_Globals::getFilesVar
      */
-    public function testGetFileVar()
+    public function testGetFilesVar()
     {
         $expected1 = array($this->_file['test']);
-        $actual1 = $this->_object->getFileVar('test', false);
+        $actual1 = $this->_object->getFilesVar('test', false);
 
         $expected2 = 'noFile';
-        $actual2 = $this->_object->getFileVar('noFile', $expected2);
+        $actual2 = $this->_object->getFilesVar('noFile', $expected2);
 
         $expected3 = array('test'=> array($this->_file['test']));
-        $actual3 = $this->_object->getFileVar(null, false);
+        $actual3 = $this->_object->getFilesVar(null, false);
 
         $this->assertEquals($expected1, $actual1);
         $this->assertEquals($expected2, $actual2);
@@ -168,10 +168,10 @@ class Php_GlobalsTest
     }
 
     /**
-     * @covers Php_Globals::getFileVar
+     * @covers Php_Globals::getFilesVar
      * @runInSeparateProcess
      */
-    public function testGetFileVar2()
+    public function testGetFilesVar2()
     {
         // some more files as "test[]" upload
         // in php standard style
@@ -214,7 +214,7 @@ class Php_GlobalsTest
                 ),
             )
         );
-        $actual4 = $this->_object->getFileVar(null, false);
+        $actual4 = $this->_object->getFilesVar(null, false);
 
         $this->assertEquals($expected4, $actual4);
     }
