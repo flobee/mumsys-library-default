@@ -174,20 +174,20 @@ class Php_Globals
 
 
     /**
-     * Returns a list of uploaded file variables by given key.
+     * Returns a list of uploaded _FILES variables by given key.
      *
      * If $key is NULL it will return all file parameter BUT in a new/
      * normalised way.: E.g:
-     * upload file[] or file
-     * files[file][0][name] and files[file][1][name] are available and NOT:
-     * files[file][name][0] and files[file][name][1] (PHP default style)
+     * upload "file[]" or "file"
+     *  - files[file][0][name] and files[file][1][name] are available and NOT:
+     *  - files[file][name][0] and files[file][name][1] (PHP default style)
      *
      * @param string $key ID to check for
      * @param mixed $default Default return value if key not exists
      *
      * @return mixed Value or $default if $key is not set/null
      */
-    public static function getFileVar( $key = null, $default = null )
+    public static function getFilesVar( $key = null, $default = null )
     {
         if ( isset($_FILES) ) {
             if ( self::$_files === null ) {
