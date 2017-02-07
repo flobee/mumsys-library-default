@@ -178,7 +178,7 @@ class Php_Globals
      *
      * If $key is NULL it will return all file parameter BUT in a new/
      * normalised way.: E.g:
-     * upload file[] and file[]
+     * upload file[] or file
      * files[file][0][name] and files[file][1][name] are available and NOT:
      * files[file][name][0] and files[file][name][1] (PHP default style)
      *
