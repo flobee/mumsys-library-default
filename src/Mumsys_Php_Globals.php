@@ -10,7 +10,7 @@
  *
  * @category    Mumsys
  * @package     Library
- * @subpackage  Php_Globals
+ * @subpackage  Php
  */
 
 
@@ -31,7 +31,7 @@
  *
  * @category    Mumsys
  * @package     Library
- * @subpackage  Php_Globals
+ * @subpackage  Php
  */
 class Mumsys_Php_Globals
     extends Mumsys_Abstract

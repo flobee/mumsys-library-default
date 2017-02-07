@@ -9,8 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Php
- * @subpackage  Globals
+ * @package     Library
+ * @subpackage  Php
  */
 
 
@@ -32,8 +32,8 @@
  * performace way. With or without this class.
  *
  * @category    Mumsys
- * @package     Php
- * @subpackage  Globals
+ * @package     Library
+ * @subpackage  Php
  */
 class Php_Globals
     extends Mumsys_Php_Globals
