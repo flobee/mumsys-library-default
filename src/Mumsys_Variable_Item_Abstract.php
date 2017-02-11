@@ -64,7 +64,7 @@ abstract class Mumsys_Variable_Item_Abstract
      * List of possible states to render the value.
      * @var array
      */
-    private $_states = array('onEdit', 'onView', 'onSave');
+    private $_states = array('onEdit', 'onView', 'onSave', 'before', 'after');
 
     /**
      * Current status to use filters or callbacks for.
@@ -355,6 +355,7 @@ abstract class Mumsys_Variable_Item_Abstract
         return $return;
     }
 
+    
     // --- private methodes ---------------------------------------------------
 
 
@@ -404,7 +405,7 @@ abstract class Mumsys_Variable_Item_Abstract
      * in some cases.
      *
      * @param string $type Type of the variable to init: filters or callbacks
-     * 
+     *
      * @return boolean Returns true to init existing callbacks from construction,
      * false if there are no callbacks or filters set
      */
@@ -511,7 +512,7 @@ abstract class Mumsys_Variable_Item_Abstract
     /**
      * Sets the current state for filters and callbacks.
      *
-     * @param string $state State to be set: 'onEdit','onView', 'onSave'
+     * @param string $state State to be set: 'onEdit','onView', 'onSave', 'before', 'after'
      *
      * @throws Mumsys_Variable_Item_Exception If state not part of {@link $_states}
      */
