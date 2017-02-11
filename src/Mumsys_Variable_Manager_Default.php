@@ -219,8 +219,10 @@ class Mumsys_Variable_Manager_Default
      * Example:
      * <code>
      * $config = array(
-     *  'user.name' => array(           // address/name of the item to work with withing the manager
-     *      'name' => 'name',           // real name of the item; optional if the address contains the same name
+     *  'user.name' => array(           // address/name of the item to work with within the manager
+     *                                  // optional if the "name" property exists
+     *      'name' => 'name',           // real name of the item; keep them synced with the
+     *                                  // "address/name" to avoid understanding problems.
      *      'label' => 'User name',
      *      'desc' => 'User group name',
      *      'info' => "Allowed characters: a-z A-Z 0-9 _ - \nMin. 5 chars max. 45 chars.",
@@ -237,22 +239,24 @@ class Mumsys_Variable_Manager_Default
      *          )
      * ), ...
      * $values = $_REQUEST;
-     * $validator = new Mumsys_Validate_Manager_Default($config, $values);
+     * $manager = new Mumsys_Variable_Manager_Default($config, $values);
      *
      * // Sets the state and applys it to the items so that filters are ready befor validatation.
-     * //default is "onView"; for maximum performance user the state on construction, this is just
-     * a helper to force the state for all reqistered items.
-     * $validator->setAttributes( array('state' => 'onSave') );
-     * $validator->filtersApply()
-     * $success = $validator->validate();
+     * //default is "onView"; for maximum performance use the state on construction, this is just
+     * a helper to force the state for all registered items.
+     * $manager->setAttributes( array('state' => 'onSave') );
+     * $manager->filtersApply()
+     * // check all existing items; Read the docs about the order of checking filters and callbacks
+     * // see externalsApply()
+     * $success = $manager->validate();
      *
-     * $userItem = $validator->getItem('user.name');
+     * $userItem = $manager->getItem('user.name');
      * $userItem->setValue('I\'m your user name');
      * echo $userItem->getLabel();
      * echo $userItem->getDescription();
      * echo $userItem->getInformation();
      * print_r($userItem->getErrorMessages());
-     * $itemSuccess = $validator->isValid($userItem);
+     * $itemSuccess = $manager->isValid($userItem);
      * </code>
      *
      * @param array $config List of key/value configuration pairs containing item properties for the item construction
