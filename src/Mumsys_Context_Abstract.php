@@ -73,7 +73,7 @@ abstract class Mumsys_Context_Abstract
     protected function _get( $key )
     {
         if ( !isset($this->_config[$key]) ) {
-            throw new Mumsys_Exception('"' . $key . '" not set');
+            throw new Mumsys_Context_Exception('"' . $key . '" not set');
         }
 
         return $this->_config[$key];
@@ -91,7 +91,7 @@ abstract class Mumsys_Context_Abstract
     protected function _register( $key, $value )
     {
         if ( isset($this->_config[$key]) ) {
-            throw new Mumsys_Exception('"' . $key . '" already set');
+            throw new Mumsys_Context_Exception('"' . $key . '" already set');
         }
 
         $this->_config[$key] = $value;
