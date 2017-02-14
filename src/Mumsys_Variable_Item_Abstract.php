@@ -257,31 +257,36 @@ abstract class Mumsys_Variable_Item_Abstract
     /**
      * Returns a list of filter configurations.
      *
-     * If flag $all is set to true all filters will return otherwise just the
-     * filters of the current {@link $_state}.
+     * If flag $state is set to true all filters will return otherwise if string
+     * given: the selected filters will return or the filters of the current
+     * {@link $_state} (default).
      *
-     * @param boolean $all Flag to return all filters.
+     * @param true|string $state Value to return one, all (true) or the current
+     * filter like (onView, onEdit, before, after...).
      *
      * @return array List of filter rules or empty array if none exists.
      *
      * @throws Mumsys_Variable_Item_Exception If state not part of {@link $_states}
      */
-    public function filtersGet( $all = null )
+    public function filtersGet( $state = null )
     {
         if ( $this->_initExternalType('filters') ) {
             $this->_initExternalCalls('filters', $this->_input['filters']);
         }
 
-        if ( $all === true ) {
-            $return = $this->_filters;
+        if ( $state === true ) {
+            return $this->_filters;
+        } else if ( is_string($state) ) {
+            $this->_stateCheck($state);
+            $_state = $state;
         } else {
-            $this->_stateCheck($this->_state);
+            $_state = $this->_state;
+        }
 
-            if ( !isset($this->_filters[$this->_state]) ) {
-                $return = array();
-            } else {
-                $return = $this->_filters[$this->_state];
-            }
+        if ( !isset($this->_filters[$_state]) ) {
+            $return = array();
+        } else {
+            $return = $this->_filters[$_state];
         }
 
         return $return;
@@ -325,37 +330,44 @@ abstract class Mumsys_Variable_Item_Abstract
     /**
      * Returns a list of callback configurations.
      *
-     * If flag $all is set to true all callbacks will return otherwise just the
-     * filters of the current {@link $_state}.
+     * If flag $state is set to true all cllbacks will return otherwise if string
+     * given: the selected callbacks will return or the filters of the current
+     * {@link $_state} (default).
      *
-     * @param boolean $all Flag to return all callbacks.
+     * @param true|string $state Value to return one, all (true) or the current
+     * callback of current state like (onView, onEdit, before, after...).
      *
      * @return array List of callbacks rules or empty array if none exists.
      *
      * @throws Mumsys_Variable_Item_Exception If state not part of {@link $_states}
      */
-    public function callbacksGet( $all = null )
+    public function callbacksGet( $state = null )
     {
         if ( $this->_initExternalType('callbacks') ) {
             $this->_initExternalCalls('callbacks', $this->_input['callbacks']);
         }
 
-        if ( $all === true ) {
-            $return = $this->_callbacks;
-        } else {
-            $this->_stateCheck($this->_state);
+        if ( $state === true ) {
+            return $this->_callbacks;
+        }
+        else if ( is_string($state) ) {
+            $this->_stateCheck($state);
+            $_state = $state;
+        }
+        else {
+            $_state = $this->_state;
+        }
 
-            if ( !isset($this->_callbacks[$this->_state]) ) {
-                $return = array();
-            } else {
-                $return = $this->_callbacks[$this->_state];
-            }
+        if (  !isset($this->_callbacks[$_state]) ) {
+            $return = array();
+        } else {
+            $return = $this->_callbacks[$_state];
         }
 
         return $return;
     }
 
-    
+
     // --- private methodes ---------------------------------------------------
 
 
