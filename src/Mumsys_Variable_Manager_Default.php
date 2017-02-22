@@ -501,7 +501,7 @@ class Mumsys_Variable_Manager_Default
                     $errorMessage = sprintf($this->_messageTemplates['MINMAX_TOO_LONG_NUM'], $value, $max);
                 }
                 break;
-                
+
             default:
                 $errorKey = self::MINMAX_TYPE_ERROR;
                 $errorMessage = sprintf($this->_messageTemplates['MINMAX_TYPE_ERROR'], $type);
@@ -782,14 +782,17 @@ class Mumsys_Variable_Manager_Default
      * Additional and possible attributes to set in $attr are: "values" and
      * "labels" where you can set some of the items and set an individual value.
      * E.g: Item A gets value 1, item B gets value 2, item C gets value 3:
-     * <code>
+     * <pre>
      *  // for some
      *  $attr = array('values' => array(a => '1', b => 2, c => 3 );
      *  // dont work!
      *  $attr = array('values' => 'new value');
      *  // this works for all
      *  $attr = array('value' => 'new value');
-     * </code>
+     * </pre>
+     * Hint:
+     *  - "value" for all items managed in this manager.
+     *  - "values" must include a list of key/value pairs to set specific item values.
      *
      * @param array $attr List of key->value pairs to be set
      *
