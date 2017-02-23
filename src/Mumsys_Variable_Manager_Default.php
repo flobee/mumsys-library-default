@@ -154,7 +154,7 @@ class Mumsys_Variable_Manager_Default
     const MINMAX_TYPE_ERROR = 'MINMAX_TYPE_ERROR';
 
     /**
-     * Filter "%1$s" failt for name: "%2$s"
+     * Filter "%1$s" failt for label/name: "%2$s"
      */
     const FILTER_ERROR = 'FILTER_ERROR';
 
@@ -212,7 +212,7 @@ class Mumsys_Variable_Manager_Default
         self::MINMAX_TYPE_ERROR => 'Min/max type error "%1$s". Must be "string", "integer", "numeric", "float"'
         . ' or "double"',
 
-        self::FILTER_ERROR => 'Filter "%1$s" failt for value: "%2$s"',
+        self::FILTER_ERROR => 'Filter "%1$s" failt for label/name: "%2$s"',
         self::FILTER_NOTFOUND => 'Filter function "%1$s" not found for item: "%2$s"',
 
         self::CALLBACK_ERROR => 'Callback "%1$s" for "%2$s" failt for value: "%3$s"',
@@ -463,6 +463,21 @@ class Mumsys_Variable_Manager_Default
 
         switch ( $type )
         {
+//            case 'array':
+//                if ( isset($min) && count($value) < $min ) {
+//                    $errorKey = self::MINMAX_TOO_SHORT_ARRAY;
+//                    $errorMessage = sprintf(
+//                        $this->_messageTemplates['MINMAX_TOO_SHORT_ARRAY'], $value, $min
+//                    );
+//                }
+//                if ( isset($max) && count($value) > $max ) {
+//                    $errorKey = self::MINMAX_TOO_LONG_ARRAY;
+//                    $errorMessage = sprintf(
+//                        $this->_messageTemplates['MINMAX_TOO_LONG_ARRAY'], $value, $min
+//                    );
+//                }
+//                break;
+
             case 'string':
             case 'char':
             case 'varchar':
@@ -501,7 +516,7 @@ class Mumsys_Variable_Manager_Default
                     $errorMessage = sprintf($this->_messageTemplates['MINMAX_TOO_LONG_NUM'], $value, $max);
                 }
                 break;
-                
+
             default:
                 $errorKey = self::MINMAX_TYPE_ERROR;
                 $errorMessage = sprintf($this->_messageTemplates['MINMAX_TYPE_ERROR'], $type);
@@ -782,14 +797,17 @@ class Mumsys_Variable_Manager_Default
      * Additional and possible attributes to set in $attr are: "values" and
      * "labels" where you can set some of the items and set an individual value.
      * E.g: Item A gets value 1, item B gets value 2, item C gets value 3:
-     * <code>
+     * <pre>
      *  // for some
      *  $attr = array('values' => array(a => '1', b => 2, c => 3 );
      *  // dont work!
      *  $attr = array('values' => 'new value');
      *  // this works for all
      *  $attr = array('value' => 'new value');
-     * </code>
+     * </pre>
+     * Hint:
+     *  - "value" for all items managed in this manager.
+     *  - "values" must include a list of key/value pairs to set specific item values.
      *
      * @param array $attr List of key->value pairs to be set
      *
@@ -872,7 +890,8 @@ class Mumsys_Variable_Manager_Default
     public function externalsApply()
     {
         $status = false;
-        if ( $this->filtersApply() && $this->callbacksApply() ) {
+
+        if ( $this->filtersApply() === true && $this->callbacksApply() === true) {
             $status = true;
         }
 
@@ -1016,6 +1035,8 @@ class Mumsys_Variable_Manager_Default
     /**
      * Apply callbacks of the given item based on the current state.
      *
+     * @todo toggle $data and $params in function call! $data is in less use (mor individual) ???
+     *
      * Callback function signature is:
      * functionName(Mumsys_Variable_Item_Interface object, mixed $dataFromExtenrnalCallerFunc=null,
      * array optionalParams=null);
@@ -1080,7 +1101,7 @@ class Mumsys_Variable_Manager_Default
                     /* false as return or false of the callback ?
                      * boolean values should not be filtered! */
                     $message = sprintf(
-                        $this->_messageTemplates['CALLBACK_ERROR'], $cmd, $itemName, $value
+                        $this->_messageTemplates['CALLBACK_ERROR'], $cmd, $itemName, (is_array($value)?print_r($value, true):$value)
                     );
                     $item->setErrorMessage( self::CALLBACK_ERROR, $message );
                 } else {
@@ -1096,9 +1117,7 @@ class Mumsys_Variable_Manager_Default
             }
         }
 
-
         $item->setValidated( $status );
-
 
         return $status;
     }
