@@ -19,7 +19,7 @@ $patterns = array();
 $o = new Mumsys_Parser_Logline($logFormat, $patterns);
 
 // add patters, the others map to the defaults
-$o->setPattern('time', '(?P<time>(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{2} \d{2}:\d{2}:\d{2})'); 
+$o->setPattern('time', '(?P<time>(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{2} \d{2}:\d{2}:\d{2})');
 $o->setPattern('host', '(?P<host>.+?)');
 $o->setPattern('prog', '(?P<prog>.+?)');
 $o->setPattern('msg', '(?P<message>.+?)');
@@ -80,7 +80,7 @@ while (!$file->eof())
 
         //echo $i .':' . __FILE__ . ':' . __LINE__ . PHP_EOL;
 
-        //$db->speichern();
+
         echo "Line: $line";
         echo 'Result: ';
         print_r($item);

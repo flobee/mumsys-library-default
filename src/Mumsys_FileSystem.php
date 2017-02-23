@@ -2,22 +2,18 @@
 
 /*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_FileSystem
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright (c) 2006 by Florian Blasel
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright (c) 2006 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category Mumsys
  * @package Mumsys_Library
  * @subpackage Mumsys_FileSystem
  * @version 3.0.6
  * Created on 2006-12-01
- * -----------------------------------------------------------------------
  */
 /*}}}*/
 
@@ -36,8 +32,13 @@ class Mumsys_FileSystem
     /**
      * Version ID information
      */
-    const VERSION = '3.0.6';
+    const VERSION = '3.0.7';
 
+    /**
+     * List of scanned directorys.
+     *
+     * @var array
+     */
     private $_dirInfo;
 
 
@@ -54,18 +55,34 @@ class Mumsys_FileSystem
      * $this->_dirinfo and all of it will be returned! Dont be confused if you
      * think records are scanned twice or you think you have dublicate records.
      *
+     * Links if can be detected will be ignored. Depending on start path.
+     *
      * @todo follow symlinks?
      *
      * @param string $dir Directory/ Path to start the scan
      * @param boolean $hideHidden Flag to decide to skip hidden files or directories
      * @param boolean $recursive Flag to deside to scan recursive or not
-     * @param array $filters List of regular expressions look for a match (the list will used AND conditions)
+     * @param array $filters List of regular expressions to look for a match
+     * (the list will used AND conditions)
+     * @param integer $offset Optional; Start point to collet data
+     * @param integer $limit Optional; Limit of results. 0 (zero): no limit, Max 500 default: 0
      *
      * @return array|false Returns list of file/link/directory details like path, name, size, type
      */
-    public function scanDirInfo($dir, $hideHidden=true, $recursive=false, array $filters=array())
+    public function scanDirInfo($dir, $hideHidden=true, $recursive=false, array $filters=array(), $offset=0, $limit=0)
     {
+        if ($offset < 0) {
+            $offset = 0;
+        }
+
+        if ($limit && $limit > 1000) {
+            $limit = 500;
+        }
+
+        $ds = DIRECTORY_SEPARATOR;
+
         if (@is_dir($dir) && is_readable($dir) && !is_link($dir)) {
+            $cnt=0;
             if ($dh = @opendir($dir)) {
                 while(($file = readdir($dh)) !== false)
                 {
@@ -77,14 +94,15 @@ class Mumsys_FileSystem
                         continue;
                     }
 
-                    $test = $dir . DIRECTORY_SEPARATOR . $file;
-                    if ($recursive && is_dir($test.DIRECTORY_SEPARATOR)) {
-                        $newdir = $dir . DIRECTORY_SEPARATOR . $file;
+                    $test = $dir . $ds . $file;
+                    if ($recursive && is_dir($test.$ds)) {
+                        $newdir = $dir . $ds . $file;
                         $this->_dirInfo[$newdir] = $this->getFileDetails($newdir);
-                        $this->scanDirInfo($newdir, $hideHidden, $recursive, $filters);
+                        $this->scanDirInfo($newdir, $hideHidden, $recursive, $filters, $offset, $limit);
                     }
                     else {
                         $this->_dirInfo[$test] = $this->getFileDetails($dir, $file);
+                        $cnt++;
                     }
                 }
             }
@@ -92,15 +110,19 @@ class Mumsys_FileSystem
         } else {
             return false;
         }
-        
-        if ($filters) 
-        {
-            while(list($location,) = each( $this->_dirInfo) )
-                foreach($filters as $regex) {
-                    if (!preg_match($regex, $location)) {
-                        unset($this->_dirInfo[$location]);
+
+        if ( $filters ) {
+            while ( list($location, ) = each( $this->_dirInfo ) ) {
+                foreach ( $filters as $regex ) {
+                    if ( !preg_match( $regex, $location ) ) {
+                        unset( $this->_dirInfo[$location] );
                     }
                 }
+            }
+        }
+
+        if ($limit) {
+            $this->_dirInfo = array_slice($this->_dirInfo, $offset, $limit, true);
         }
 
         return $this->_dirInfo;
@@ -184,7 +206,7 @@ class Mumsys_FileSystem
      * the second parameter contains the file or link name for an optimal usage.
      *
      * Note: This methode is made for scaning for files in cli enviroment to feed
-     * a media database etc. Use it only if know what you are doing. Things can
+     * a media database. Use it only if know what you are doing. Things can
      * run in a timeout when using in web enviroment.
      *
      * @param string $fileOrPath Location of the file including the filename or the
@@ -278,18 +300,28 @@ class Mumsys_FileSystem
 
     /**
      * Returns the content file type of a file.
-     * It uses the shell command "file" to get its information.
-     * Returning examples: "UTF-8 Unicode text", ASCII Text",,
+     *
+     * It uses fileinfo extension first or the shell command "file" to get
+     * the information.
+     * Returning examples: "UTF-8 Unicode text", "ASCII Text"
      *
      * @param string $file Location of the file
+     *
      * @return string Returns the content file type or an empty string
      */
     public function getFileType($file)
     {
         $info = '';
-        if (PHP_SHLIB_SUFFIX != 'dll') {
-            $info = shell_exec('file -b -p "' . $file . '";');
+
+        if ( class_exists( 'finfo' ) ) {
+            $finfo = new finfo( FILEINFO_PRESERVE_ATIME );
+            $info = $finfo->file( $file , FILEINFO_DEVICES);
+        } else if ( function_exists( 'mime_content_type' ) ) {
+            $info = mime_content_type( $file );
+        } else if ( PHP_SHLIB_SUFFIX != 'dll' ) {
+            $info = shell_exec( 'file -b -p "' . $file . '";' );
         }
+
         return $info;
     }
 
@@ -356,7 +388,7 @@ class Mumsys_FileSystem
             // test type of source and destionation?
             if ( !file_exists($source) || empty($source) ) {
                 $message = 'Source "' . $source . '" is no directory and no file';
-                throw new Mumsys_FileSystem_Exception($message);
+                throw new Mumsys_FileSystem_Exception($message, Mumsys_Exception::ERRCODE_DEFAULT);
             }
 
 //		if ( is_dir($source . '/') ) {
@@ -489,7 +521,7 @@ class Mumsys_FileSystem
         }
         catch (Exception $e)
         {
-            if (is_dir($dir)) {
+            if (is_dir($dir . DIRECTORY_SEPARATOR)) {
                 return false;
             }
 
