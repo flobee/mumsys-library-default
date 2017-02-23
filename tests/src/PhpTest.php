@@ -287,7 +287,7 @@ class PhpTest extends Mumsys_Unittest_Testcase
 //        }
 //        $this->fail('Php_Exception: "file://" not allowed, use "file:///" three slashes "///"!');
 
-        $this->setExpectedException('Php_Exception');
+        $this->setExpectedExceptionRegExp('Php_Exception');
         $this->object->parseUrl('file://'); // raise exception
     }
 
@@ -312,7 +312,7 @@ class PhpTest extends Mumsys_Unittest_Testcase
         $this->assertEquals($expected1, $actual1);
 
         // empty string will throw error, php will return array()
-        $this->setExpectedException('Php_Exception', 'Php::parseStr() failt.');
+        $this->setExpectedExceptionRegExp('Php_Exception', '/(Php::parseStr\(\) failt)/i');
         $actual1 = $this->object->parseStr('');
         // parse_str('', $expected1);
         // $this->assertEquals($expected1, $actual1);
@@ -466,16 +466,16 @@ class PhpTest extends Mumsys_Unittest_Testcase
         // not an array argurment exception
         $array1 = array('Uta ruf');
         $array2 = 'foo';
-        $message = 'Php::array_merge_recursive given argument is not an array "foo"';
-        $this->setExpectedException('Mumsys_Exception', $message);
+        $message = '/(Php::array_merge_recursive given argument is not an array "foo")/i';
+        $this->setExpectedExceptionRegExp('Mumsys_Exception', $message);
         $this->object->array_merge_recursive($array1, $array2);
     }
 
 
     public function testArrayMergeRecursiveExceptionNumArgs()
     {
-        $message = 'Php::array_merge_recursive needs at least two arrays as arguments';
-        $this->setExpectedException('Mumsys_Exception', $message);
+        $message = '/(Php::array_merge_recursive needs at least two arrays as arguments)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_Exception', $message);
         $this->object->array_merge_recursive(array());
     }
 

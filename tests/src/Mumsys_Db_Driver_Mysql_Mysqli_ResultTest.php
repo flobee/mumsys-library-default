@@ -117,8 +117,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends Mumsys_Unittest_Testcase
 
         $this->assertEquals(1, $n);
 
-        $this->setExpectedException(
-            'Mumsys_Db_Exception', 'Error getting number of found rows.'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Db_Exception', '/(Error getting number of found rows)/i'
         );
         $n = $o->numRows(true); // fakin result as parameter
     }
@@ -210,7 +210,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends Mumsys_Unittest_Testcase
         $this->assertEquals(false, $xD);
         $this->assertEquals(1, $xE);
 
-        $this->setExpectedException('Mumsys_Db_Exception', 'Seeking to row 10 failed');
+        $this->setExpectedExceptionRegExp('Mumsys_Db_Exception', '/(Seeking to row 10 failed)/i');
         $result = $this->_dbDriver->query('SELECT * FROM ' . $table);
         $result->sqlResult(10);
 
@@ -256,8 +256,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends Mumsys_Unittest_Testcase
         $this->assertEquals(true, $xA);
         $this->assertEquals(true, $xB);
 
-        $msg = 'mysqli_free_result() expects parameter 1 to be mysqli_result, string given';
-        $this->setExpectedException('Mumsys_Db_Exception', $msg);
+        $msg = '/(mysqli_free_result\(\) expects parameter 1 to be mysqli_result, string given)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_Db_Exception', $msg);
         $xC = $result->free('crapRx');
     }
 

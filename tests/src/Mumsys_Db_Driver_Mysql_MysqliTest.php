@@ -98,7 +98,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actual3);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException('Mumsys_Db_Exception', 'Setting client character set failt');
+        $this->setExpectedExceptionRegExp('Mumsys_Db_Exception', '/(Setting client character set failt)/i');
         $this->_object->setCharset('invalid charset');
     }
 
@@ -117,7 +117,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
 
         $config['throwErrors'] = true;
         $object = Mumsys_Db_Factory::getInstance($this->_context, $config);
-        $this->setExpectedException('Mumsys_Db_Exception', 'Getting character set failt');
+        $this->setExpectedExceptionRegExp('Mumsys_Db_Exception', '/(Getting character set failt)/i');
         $object->getCharset();
     }
 
@@ -135,7 +135,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertTrue($actual2);
         $this->assertTrue($actual3); // for code coverage
         // access denied message expected
-        $this->setExpectedException('Mumsys_Db_Exception');
+        $this->setExpectedExceptionRegExp('Mumsys_Db_Exception');
         $this->_object->selectDB('testdbnotexists');
     }
 
@@ -205,8 +205,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actual5);
 
         $this->_object->setThrowErrors(true);
-        $error = 'Query empty. Cant not query empty sql statment';
-        $this->setExpectedException('Mumsys_Db_Exception', $error);
+        $error = '/(Query empty. Cant not query empty sql statment)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_Db_Exception', $error);
         $this->_object->query('');
     }
 
@@ -228,7 +228,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
 
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException('Mumsys_Db_Exception', $errorMsg);
+        $this->setExpectedExceptionRegExp('Mumsys_Db_Exception', '/(' .$errorMsg.')/i');
         $this->_object->queryUnbuffered('SELECT \'abc\', \'def\'');
     }
 
@@ -363,7 +363,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
             $errorMsg = null;
         }
 
-        $this->setExpectedException('Mumsys_Db_Exception', $errorMsg);
+        $this->setExpectedExceptionRegExp('Mumsys_Db_Exception', '/(' . $errorMsg . ')/i');
         $this->_object->showColumns();
     }
 
@@ -388,8 +388,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
     {
         $this->_object->setThrowErrors(true);
         $this->_object->setDebugMode(false); // disable debug output
-        $this->setExpectedException(
-            'Mumsys_Db_Exception', 'Error getting columns. Does the columne "fieldNotExists" exists?'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Db_Exception', '/(Error getting columns. Does the columne "fieldNotExists" exists\?)/'
         );
         $this->_object->showColumns($this->_tempTable, 'fieldNotExists');
     }
@@ -455,8 +455,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
 
         // test failure Exception
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException(
-            'Mumsys_Db_Exception', 'Unknown key or empty values. No "update" action'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Db_Exception', '/(Unknown key or empty values. No "update" action)/i'
         );
         $this->_object->update($params);
     }
@@ -518,8 +518,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actual);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException(
-            'Mumsys_Db_Exception', 'Duplicate entry \'4\' for key \'PRIMARY\''
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Db_Exception', '/(Duplicate entry \'4\' for key \'PRIMARY\')/i'
         );
         $actual = $this->_object->insert($params);
     }
@@ -571,8 +571,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($this->_object->replace(array()));
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException(
-            'Mumsys_Db_Exception', 'Unknown key or empty values. No "replace" action'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Db_Exception', '/(Unknown key or empty values. No "replace" action)/i'
         );
         $this->assertFalse($this->_object->replace(array()));
     }
@@ -620,8 +620,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actualA);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException(
-            'Mumsys_Db_Exception', 'Invalid expression key "0" for where expression: values (json): "value"'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Db_Exception', '/(Invalid expression key "0" for where expression: values \(json\): "value")/i'
         );
         $this->_object->compileQueryExpression($exprA);
     }
@@ -643,10 +643,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actualB);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException(
+        $this->setExpectedExceptionRegExp(
             'Mumsys_Db_Exception',
-            'Invalid input for where expression. Array expected. Operator: '
-            . '"=" values (json): "key\/value string"'
+            '/(Invalid input for where expression. Array expected. Operator: '
+            . '"=" values \(json\): "key\/value string")/i'
         );
         $this->_object->compileQueryExpression($exprB);
     }
@@ -669,10 +669,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actualC);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException(
+        $this->setExpectedExceptionRegExp(
             'Mumsys_Db_Exception',
-            'Invalid value list for where expression. Strings|numbers '
-            . 'expected. operator: "IN" values (json): {"key":[[1],[2]]}'
+            '/(Invalid value list for where expression. Strings|numbers '
+            . 'expected. operator: "IN" values \(json\): {"key":[[1],[2]]})/i'
         );
         $this->_object->compileQueryExpression($exprC);
     }
@@ -694,10 +694,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actualD);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException(
+        $this->setExpectedExceptionRegExp(
             'Mumsys_Db_Exception',
-            'Invalid value list for where expression. String expected. '
-            . 'Operator: "_" values (json): "["a < b",["err < here"]]"'
+            '/(Invalid value list for where expression. String expected. '
+            . 'Operator: "_" values \(json\): "["a < b",["err < here"]]")/i'
         );
         $this->_object->compileQueryExpression($exprD);
     }
@@ -719,10 +719,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actualE);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException(
+        $this->setExpectedExceptionRegExp(
             'Mumsys_Db_Exception',
-            'Invalid value for where expression. Array|string expected. '
-            . 'Operator: "_" values (json): "12345"'
+            '/(Invalid value for where expression. Array|string expected. '
+            . 'Operator: "_" values \(json\): "12345")/i'
         );
         $this->_object->compileQueryExpression($exprE);
     }
@@ -744,8 +744,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actual);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException(
-            'Mumsys_Db_Exception', 'Unknown operator "notExists" to create expression'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Db_Exception', '/(Unknown operator "notExists" to create expression)/i'
         );
         $this->_object->compileQueryExpression($expr);
     }
@@ -823,8 +823,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actualD);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException(
-            'Mumsys_Db_Exception', 'No tables given to compile.'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Db_Exception', '/(No tables given to compile)/i'
         );
         $actualD = $this->_object->compileQuery($optionsD);
     }
@@ -868,10 +868,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
 
         $this->_object->setThrowErrors(true);
 
-        $this->setExpectedException(
+        $this->setExpectedExceptionRegExp(
             'Mumsys_Db_Exception',
-            'Error casting column "array" to string. '
-            . 'Values (json) {"0":"A","b":"B"}'
+            '/(Error casting column "array" to string. '
+            . 'Values \(json\) {"0":"A","b":"B"})/i'
         );
         $this->_object->compileQuerySelect($fieldsD);
     }
@@ -886,8 +886,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setDebugMode(false);
         $fields = array(array('A'), array('B'));
 
-        $this->setExpectedException(
-            'Mumsys_Db_Exception', 'Escape failt. Not a scalar type: "array"'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Db_Exception', '/(Escape failt. Not a scalar type: "array")/i'
         );
         $this->_object->compileQuerySelect($fields);
     }
@@ -1034,10 +1034,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
 
         $this->_object->setThrowErrors(true);
         $this->_object->setDebugMode(false);
-        $this->setExpectedException(
+        $this->setExpectedExceptionRegExp(
             'Mumsys_Db_Exception',
-            'Invalid sub-expression. Must be \'[operator] => [key/value]\'. '
-            . 'Found (json): "expression not an array"'
+            '/(Invalid sub-expression. Must be \'[operator] => [key/value]\'. '
+            . 'Found \(json\): "expression not an array")/i'
         );
         $this->_object->compileQueryWhere($array);
     }
@@ -1199,8 +1199,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
 
         // as exception
         $this->_object->setThrowErrors(true);
-        $this->setExpectedException(
-            'Mumsys_Db_Exception', 'Value could not be used. Value warp: "array"'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Db_Exception', '/(Value could not be used. Value warp: "array")/i'
         );
 
         $actual = $this->_object->sqlImplode(
@@ -1256,7 +1256,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertEquals('\\\n', $actual);
 
         // not scalar exception
-        $this->setExpectedException('Mumsys_Db_Exception', 'Not a scalar type: "array"');
+        $this->setExpectedExceptionRegExp('Mumsys_Db_Exception', '/(Not a scalar type: "array")/i');
         $this->_object->escape(array(1, 2, 3));
     }
 
