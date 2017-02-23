@@ -44,7 +44,7 @@ class Mumsys_Variable_Item_Default
     /**
      * List of key/value pairs (property/[boolean: en|dis-abled] handled by this item as whitelist.
      *
-     * @todo Do we need a getProperties() methode?
+     * @todo Do we need a getProperties() methode? 
      * 
      * @var array
      */
