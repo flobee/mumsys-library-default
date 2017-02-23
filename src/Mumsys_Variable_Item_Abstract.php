@@ -34,7 +34,7 @@ abstract class Mumsys_Variable_Item_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.1.1';
+    const VERSION = '1.2.1';
 
     /**
      * List of initial incoming variable properties to be set on construction.
