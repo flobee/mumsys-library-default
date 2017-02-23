@@ -91,7 +91,7 @@ abstract class Mumsys_Abstract
      * Check given key to be a valid string.
      *
      * @param string $key Key to register
-     * @throws Mumsys_Registry_Exception Throws exception if key is not a string
+     * @throws Mumsys_Exception Throws exception if key is not a string
      */
     protected static function _checkKey( $key )
     {

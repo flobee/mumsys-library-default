@@ -42,6 +42,12 @@ class Php_Globals
      */
     private static $_files;
 
+    /**
+     * Remote user to be detected via {@link getRemoteUser()}
+     * @var string
+     */
+    private static $_remoteuser = null;
+
 
     /**
      * Returns an eviroment variable in this order: getenv() befor _ENV befor _SERVER.
@@ -53,7 +59,7 @@ class Php_Globals
      */
     public static function getServerVar( $key, $default = null )
     {
-        return self::_getEnvVar( $key, $default );
+        return self::_getEnvVar($key, $default);
     }
 
 
@@ -235,6 +241,7 @@ class Php_Globals
             if ( isset( self::$_files[$key] ) ) {
                 $default = self::$_files[$key];
             }
+
         }
 
         return $default;
@@ -305,6 +312,35 @@ class Php_Globals
         }
 
         return $return;
+    }
+
+    /**
+     * Returns the remote user.
+     *
+     * This can be the http autenticated user or the remote user when using
+     * apache, a logname from the envoroment or the user from a shell account.
+     *
+     * @return string remote username
+     */
+    public static function getRemoteUser()
+    {
+        if (self::$_remoteuser !== null) {
+            return self::$_remoteuser;
+        }
+
+        if ( isset($_SERVER['PHP_AUTH_USER']) ) {
+            self::$_remoteuser = (string) $_SERVER['PHP_AUTH_USER'];
+        } else if ( isset($_SERVER['REMOTE_USER']) ) {
+            self::$_remoteuser = (string) $_SERVER['REMOTE_USER'];
+        } else if ( isset($_SERVER['USER']) ) {
+            self::$_remoteuser = (string) $_SERVER['USER'];
+        } else if ( isset($_SERVER['LOGNAME']) ) {
+            self::$_remoteuser = (string) $_SERVER['LOGNAME'];
+        } else {
+            self::$_remoteuser = 'unknown';
+        }
+
+        return self::$_remoteuser;
     }
 
 }

@@ -338,6 +338,18 @@ class Mumsys_Pager_Default
     }
 
     /**
+     * more to come via upstream-
+     *
+     * @param array $templates
+     */
+    public function setMessageTemplates(array $templates)
+    {
+        foreach ( $templates as $key => $value ) {
+            $this->_messageTemplates[ $key ] = $value;
+        }
+    }
+
+    /**
      * Renders the pagination.
      *
      * @return string Returns the generated prev-next navigation based on
