@@ -39,13 +39,13 @@ class Mumsys_Variable_Item_Default
     /**
      * Version ID information
      */
-    const VERSION = '1.1.1';
+    const VERSION = '1.1.2';
 
     /**
      * List of key/value pairs (property/[boolean: en|dis-abled] handled by this item as whitelist.
      *
-     * @todo Do we need a getProperties() methode? 
-     * 
+     * @todo Do we need a getProperties() methode?
+     *
      * @var array
      */
     private $_properties = array(
@@ -81,6 +81,10 @@ class Mumsys_Variable_Item_Default
             if ( isset($properties[$key]) ) {
                 $this->_input[$key] = $properties[$key];
             }
+        }
+
+        if (isset($properties['state'])) {
+            $this->stateSet($properties['state']);
         }
     }
 
