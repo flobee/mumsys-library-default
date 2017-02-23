@@ -55,7 +55,7 @@ class Mumsys_ContextTest
      */
     public function testGetSetConfig()
     {
-        $config = new Mumsys_Config($this->_object, array('x' => 'y'));
+        $config = new Mumsys_Config(array('x' => 'y'));
         $this->_object->registerConfig($config);
 
         $this->assertInstanceOf('Mumsys_Config_Interface', $this->_object->getConfig());

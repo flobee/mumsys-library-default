@@ -25,7 +25,7 @@ class Mumsys_ConfigTest
 
         $this->_config = MumsysTestHelper::getConfigs();
 
-        $this->_object = new Mumsys_Config($this->_context, $this->_config);
+        $this->_object = new Mumsys_Config($this->_config);
     }
 
 
@@ -77,16 +77,6 @@ class Mumsys_ConfigTest
     }
 
 
-    public function testGetSubValues()
-    {
-        $actual1 = $this->_object->getSubValues(array('database'), array('type'));
-        $expected1 = array('type' => 'mysql:mysqli');
-
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals(false, $this->_object->getSubValues(array('noConfig'), array(), false));
-    }
-
-
     public function testRegister()
     {
         // simple
@@ -96,24 +86,10 @@ class Mumsys_ConfigTest
 
         $this->assertEquals($expected1, $testvalue1);
 
-        $this->setExpectedException(
-            'Mumsys_Config_Exception', 'Config key "testkey" exists'
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_Config_Exception', '/(Config key "testkey" exists)/i'
         );
         $this->_object->register('testkey', new stdClass());
-    }
-
-
-    public function testAdd()
-    {
-        $config = array('flo' => 'bee');
-        $this->_object->add($config);
-
-        $this->assertEquals($config, $this->_object->get('flo'));
-
-        $this->setExpectedException(
-            'Mumsys_Config_Exception', 'Config key "flo" exists'
-        );
-        $this->_object->add($config);
     }
 
 

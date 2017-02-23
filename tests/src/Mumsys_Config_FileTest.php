@@ -30,7 +30,7 @@ class Mumsys_Config_FileTest
             __DIR__ . '/../config/', //credentials.php and sub paths
         );
         $this->_context = new Mumsys_Context();
-        $this->_object = new Mumsys_Config_File($this->_context, $this->_configs, $this->_paths);
+        $this->_object = new Mumsys_Config_File($this->_configs, $this->_paths);
     }
 
 
@@ -50,7 +50,7 @@ class Mumsys_Config_FileTest
      */
     public function test__construct()
     {
-        $this->_object = new Mumsys_Config_File($this->_context, $this->_configs, $this->_paths);
+        $this->_object = new Mumsys_Config_File($this->_configs, $this->_paths);
     }
 
 
@@ -130,7 +130,7 @@ class Mumsys_Config_FileTest
         $this->assertEquals('test', $actual);
         $this->assertEquals($expected3, $actual3);
 
-        $this->setExpectedException('Mumsys_Config_Exception', 'Config key "tests/somevalues" already exists');
+        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(Config key "tests\/somevalues" already exists)/i');
         $this->_object->register('tests/somevalues', array());
     }
 
@@ -156,6 +156,7 @@ class Mumsys_Config_FileTest
         $this->_object->load();
     }
 
+    
     /**
      * Checks current version
      */

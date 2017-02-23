@@ -23,7 +23,7 @@ class Mumsys_Config_DefaultTest
             __DIR__ . '/../config/', //credentials.php and sub paths
         );
         $this->_context = new Mumsys_Context();
-        $this->_object = new Mumsys_Config_Default($this->_context, $this->_configs, $this->_paths);
+        $this->_object = new Mumsys_Config_Default($this->_configs, $this->_paths);
     }
 
     /**
@@ -41,7 +41,7 @@ class Mumsys_Config_DefaultTest
      */
     public function test__construct()
     {
-        $this->_object = new Mumsys_Config_Default($this->_context, $this->_configs, $this->_paths);
+        $this->_object = new Mumsys_Config_Default($this->_configs, $this->_paths);
     }
 
     /**
