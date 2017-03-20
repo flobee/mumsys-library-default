@@ -64,7 +64,7 @@ class Mumsys_FileSystem
      * @param boolean $recursive Flag to deside to scan recursive or not
      * @param array $filters List of regular expressions to look for a match
      * (the list will used AND conditions)
-     * @param integer $offset Optional; Start point to collet data
+     * @param integer $offset Optional; Start point to collect data
      * @param integer $limit Optional; Limit of results. 0 (zero): no limit, Max 500 default: 0
      *
      * @return array|false Returns list of file/link/directory details like path, name, size, type
