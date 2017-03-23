@@ -189,7 +189,8 @@ class Mumsys_Variable_Manager_Default
         self::ALLOWEMPTY_ERROR => 'Missing value',
 
         //regex checks
-        self::REGEX_FAILURE => 'Value "%1$s" does not match the regular expression/s (json): "%2$s"',
+        self::REGEX_FAILURE => 'Value "%1$s" does not match the regular '
+            . 'expression/s (json): "%2$s"',
         self::REGEX_ERROR => 'Error in regular expression. Check syntax!',
 
         // type checks
@@ -206,11 +207,12 @@ class Mumsys_Variable_Manager_Default
 
         //min max checks
         self::MINMAX_TOO_SHORT_STR => 'Value "%1$s" must contain at least "%2$s" characters',
-        self::MINMAX_TOO_LONG_STR => 'Value "%1$s" must contain maximum of "%2$s" characters, "%3$s" given',
+        self::MINMAX_TOO_LONG_STR => 'Value "%1$s" must contain maximum of '
+            . '"%2$s" characters, "%3$s" given',
         self::MINMAX_TOO_SHORT_NUM => 'Value "%1$s" must be minimum "%2$s"',
         self::MINMAX_TOO_LONG_NUM => 'Value "%1$s" can be maximum "%2$s"',
-        self::MINMAX_TYPE_ERROR => 'Min/max type error "%1$s". Must be "string", "integer", "numeric", "float"'
-        . ' or "double"',
+        self::MINMAX_TYPE_ERROR => 'Min/max type error "%1$s". Must be "string"'
+            . ', "integer", "numeric", "float" or "double"',
 
         self::FILTER_ERROR => 'Filter "%1$s" failt for label/name: "%2$s"',
         self::FILTER_NOTFOUND => 'Filter function "%1$s" not found for item: "%2$s"',
