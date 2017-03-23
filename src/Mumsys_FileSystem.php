@@ -504,6 +504,48 @@ class Mumsys_FileSystem
     }
 
 
+     /**
+     * Removes/ unlinks a file.
+     *
+     * @todo What about symlinks ?
+     *
+     * @param string $file Location to the file to be deleted
+     * @param $context Stream context
+     *
+     * @return boolean TRUE on success.
+     *
+     * @throws Mumsys_FileSystem_Exception
+     */
+    public function unlink( $file, $context=null )
+    {
+        if (!is_file($file)) {
+            return true;
+        }
+
+        if ( @unlink( $file ) === false ) {
+            $message = sprintf('Can not delete file "%1$s"', $file);
+            throw new Mumsys_FileSystem_Exception( $message );
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Alias methode for unlink().
+     *
+     * @param string $file Location to the file to be deleted
+     * @param $context Stream context
+     *
+     * @return boolean TRUE on success.
+     *
+     * @throws Mumsys_FileSystem_Exception
+     */
+    public function rmFile($file, $context=null)
+    {
+        return $this->unlink($file, $context);
+    }
+
 
     /**
      * Creates a directory if not exists.
@@ -601,38 +643,8 @@ class Mumsys_FileSystem
             return true;
         }
 
-        if ( rmdir( $path ) === false ) {
-            $message = sprintf(
-                'Can not delete directory "%1$s"', $path
-            );
-            throw new Mumsys_FileSystem_Exception( $message );
-        }
-
-        return true;
-    }
-
-
-    /**
-     * Removes/ unlinks a file.
-     *
-     * @todo What about symlinks ?
-     *
-     * @param string $file Location to the file to be deleted
-     *
-     * @return boolean TRUE on success.
-     *
-     * @throws Mumsys_FileSystem_Exception
-     */
-    public function unlink( $file, $context=null )
-    {
-        if (!is_file($file)) {
-            return true;
-        }
-
-        if ( unlink( $file ) === false ) {
-            $message = sprintf(
-                'Can not delete file "%1$s"', $file
-            );
+        if ( @rmdir( $path ) === false ) {
+            $message = sprintf('Can not delete directory "%1$s"', $path);
             throw new Mumsys_FileSystem_Exception( $message );
         }
 
@@ -647,7 +659,7 @@ class Mumsys_FileSystem
      *
      * @throws Mumsys_FileSystem_Exception
      */
-    public function rmdirs( $basePath )
+    public function rmdirs($basePath)
     {
         $basePath = (string)$basePath;
         if (!is_dir( $basePath ) ) {
