@@ -585,6 +585,100 @@ class Mumsys_FileSystem
 
 
     /**
+     * Removes a path.
+     *
+     * @todo What about symlinks ?
+     *
+     * @param string $basePath Path to be deleted
+     *
+     * @return boolean TRUE on success.
+     *
+     * @throws Mumsys_FileSystem_Exception
+     */
+    public function rmdir( $path, $context=null )
+    {
+        if ( rmdir( $basePath ) === false ) {
+            $message = sprintf(
+                'Can not delete "%1$s"', $fileinfo->getPathname()
+            );
+            throw new Mumsys_FileSystem_Exception( $message );
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Removes/ unlinks a file.
+     *
+     * @todo What about symlinks ?
+     *
+     * @param string $file Location to the file to be deleted
+     *
+     * @return boolean TRUE on success.
+     *
+     * @throws Mumsys_FileSystem_Exception
+     */
+    public function unlink( $file, $context=null )
+    {
+        if (!is_file($file)) {
+            return true;
+        }
+
+        if ( unlink( $file ) === false ) {
+            $message = sprintf(
+                'Can not delete file "%1$s"', $file
+            );
+            throw new Mumsys_FileSystem_Exception( $message );
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Removes a path recursivly.
+     *
+     * @param string $basePath Path to be deleted
+     *
+     * @throws Mumsys_FileSystem_Exception
+     */
+    public function rmdirs( $basePath )
+    {
+        $basePath = (string)$basePath;
+        if (!is_dir( $basePath ) ) {
+            return true;
+        }
+
+        try
+        {
+            $iterator = new DirectoryIterator( $basePath );
+            foreach ( $iterator as $fileinfo )
+            {
+                if ( $fileinfo->isDot() ) {
+                    continue;
+                }
+
+                if ( $fileinfo->isDir() && $this->rmdirs( $fileinfo->getPathname() ) ) {
+                    $this->rmdir( $fileinfo->getPathname() );
+                }
+
+                if ( $fileinfo->isFile() ) {
+                    $this->unlink( $fileinfo->getPathname() );
+                }
+            }
+
+            $this->rmdir( $basePath );
+        }
+        catch ( Exception $e ) {
+            throw $e;
+        }
+
+        return true;
+    }
+
+
+    /**
      * Returns the relative path for the target.
      * Note: This method can not decide between path and a file e.g: /myfile
      * It will be handled as directory /myfile/.
