@@ -597,9 +597,13 @@ class Mumsys_FileSystem
      */
     public function rmdir( $path, $context=null )
     {
-        if ( rmdir( $basePath ) === false ) {
+        if (!is_dir($path)) {
+            return true;
+        }
+
+        if ( rmdir( $path ) === false ) {
             $message = sprintf(
-                'Can not delete "%1$s"', $fileinfo->getPathname()
+                'Can not delete directory "%1$s"', $path
             );
             throw new Mumsys_FileSystem_Exception( $message );
         }
@@ -659,8 +663,10 @@ class Mumsys_FileSystem
                     continue;
                 }
 
-                if ( $fileinfo->isDir() && $this->rmdirs( $fileinfo->getPathname() ) ) {
-                    $this->rmdir( $fileinfo->getPathname() );
+                if ( $fileinfo->isDir() ) {
+                    if ($this->rmdirs( $fileinfo->getPathname() ) ) {
+                        $this->rmdir( $fileinfo->getPathname() );
+                    }
                 }
 
                 if ( $fileinfo->isFile() ) {
