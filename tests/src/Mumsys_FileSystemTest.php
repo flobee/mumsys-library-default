@@ -29,7 +29,8 @@ class Mumsys_FileSystemTest
             'rm3' => $this->_testsDir . '/tmp/mkdirs',
             'rm4' => $this->_testsDir . '/tmp/unittest-mkdir.lnk',
         );
-        @mkdir($this->_testsDir);
+        
+        @mkdir($this->_testsDir . '/tmp');
         touch($this->_testdirs['file']);
 
         $this->_object = new Mumsys_FileSystem();
