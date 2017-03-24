@@ -322,6 +322,7 @@ class Mumsys_FileSystemTest
             "ERROR: cannot open `/usr/bin/sh' (No such file or directory)\n",
             "finfo::file(/usr/bin/sh): failed to open stream: No such file or directory",
             "ELF 32-bit LSB shared object, Intel 80386, version 1 (SYSV)",
+            'ELF 64-bit LSB executable, x86-64, version 1 (SYSV)',
         );
         $actual2 = $this->_object->getFileType('/bin/ls');
 
