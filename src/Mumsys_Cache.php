@@ -1,23 +1,18 @@
 <?php
 
-/* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Cache
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Cache
  * Created: 2013-12-10
  */
-/* }}} */
 
 /**
  * Class for standard file caching
@@ -32,7 +27,7 @@ class Mumsys_Cache
     /**
      * Version ID information
      */
-    const VERSION = '1.1.1';
+    const VERSION = '1.2.1';
 
     /**
      * Flag if caching is enabled or not
@@ -51,6 +46,12 @@ class Mumsys_Cache
      * @var string
      */
     protected $_prefix = 'cache_';
+
+    /**
+     * Suffix for cache files
+     * @var string
+     */
+    protected $_suffix = '';
 
     /**
      * Initialize the cache object and sets group and id to store it.
@@ -74,7 +75,7 @@ class Mumsys_Cache
      */
     public function write($ttl, $data)
     {
-        $filename = $this->_getFilename();
+        $filename = $this->getFilename();
 
         if ($fp = fopen($filename, 'wb')) {
             if (flock($fp, LOCK_EX)) {
@@ -92,7 +93,7 @@ class Mumsys_Cache
      */
     public function read()
     {
-        $filename = $this->_getFilename();
+        $filename = $this->getFilename();
 
         return file_get_contents($filename);
     }
@@ -108,7 +109,7 @@ class Mumsys_Cache
     public function isCached()
     {
         if ($this->_enabled) {
-            $filename = $this->_getFilename();
+            $filename = $this->getFilename();
 
             if (file_exists($filename) && filemtime($filename) > time()) {
                 return true;
@@ -127,7 +128,7 @@ class Mumsys_Cache
      */
     public function removeCache()
     {
-        $filename = $this->_getFilename();
+        $filename = $this->getFilename();
 
         if (file_exists($filename)) {
             @unlink($filename);
@@ -152,6 +153,24 @@ class Mumsys_Cache
     public function getPrefix()
     {
         return $this->_prefix;
+    }
+
+    /**
+     * Sets the filename suffix.
+     *
+     * @param string $suffix Filename suffix to set
+     */
+    public function setSuffix($suffix)
+    {
+        $this->_suffix = (string) $suffix;
+    }
+
+    /**
+     * Returns the filename prefix.
+     */
+    public function getSuffix()
+    {
+        return $this->_suffix;
     }
 
     /**
@@ -185,9 +204,9 @@ class Mumsys_Cache
     /**
      * Builds a filename/path from group, id and path.
      */
-    protected function _getFilename()
+    public function getFilename()
     {
-        return $this->_path . $this->_prefix . $this->_group . '_' . $this->_id;
+        return $this->_path . $this->_prefix . $this->_group . '_' . $this->_id . $this->_suffix;
     }
 
 }
