@@ -6,6 +6,6 @@ php:
   - nightly
   
 before_script: cd tests
-before_script: composer require phpunit/phpunit ^5.*
+before_script: composer require phpunit/phpunit ^5.7.*
 # phpunit --configuration phpunit.xml
 script: phpunit
