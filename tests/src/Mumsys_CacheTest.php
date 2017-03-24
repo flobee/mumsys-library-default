@@ -18,7 +18,7 @@ class Mumsys_CacheTest
      */
     protected function setUp()
     {
-        $this->_version = '1.1.1';
+        $this->_version = '1.2.1';
         $this->_object = new Mumsys_Cache('group', 'id');
         $this->_object->setPath('/tmp/');
     }
@@ -37,7 +37,7 @@ class Mumsys_CacheTest
      * @covers Mumsys_Cache::__construct
      * @covers Mumsys_Cache::write
      * @covers Mumsys_Cache::isCached
-     * @covers Mumsys_Cache::_getFilename
+     * @covers Mumsys_Cache::getFilename
      */
     public function testWrite()
     {
@@ -62,7 +62,7 @@ class Mumsys_CacheTest
 
     /**
      * @covers Mumsys_Cache::isCached
-     * @covers Mumsys_Cache::_getFilename
+     * @covers Mumsys_Cache::getFilename
      */
     public function testIsCached()
     {
@@ -71,7 +71,7 @@ class Mumsys_CacheTest
 
     /**
      * @covers Mumsys_Cache::removeCache
-     * @covers Mumsys_Cache::_getFilename
+     * @covers Mumsys_Cache::getFilename
      */
     public function testRemoveCache()
     {
@@ -86,10 +86,20 @@ class Mumsys_CacheTest
      * @covers Mumsys_Cache::setPrefix
      * @covers Mumsys_Cache::getPrefix
      */
-    public function testSetPrefix()
+    public function testGetSetPrefix()
     {
         $this->_object->setPrefix('fx');
         $this->assertEquals('fx', $this->_object->getPrefix());
+    }
+
+    /**
+     * @covers Mumsys_Cache::setSuffix
+     * @covers Mumsys_Cache::getSuffix
+     */
+    public function testGetSetSuffix()
+    {
+        $this->_object->setSuffix('suff');
+        $this->assertEquals('suff', $this->_object->getSuffix());
     }
 
     /**
