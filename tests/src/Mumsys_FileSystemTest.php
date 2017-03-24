@@ -325,7 +325,7 @@ class Mumsys_FileSystemTest
         );
         $actual2 = $this->_object->getFileType('/bin/ls');
 
-        $this->assertTrue(in_array($actual, $expecteds));
+        $this->assertTrue(in_array($actual, $expecteds), $actual);
         $this->assertTrue(in_array($actual2, $expecteds), $actual2);
     }
 
