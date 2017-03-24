@@ -551,7 +551,7 @@ class Mumsys_Variable_Manager_DefaultTest extends PHPUnit_Framework_TestCase
         $expected8 = array(
             'unittest' => array(
                 'FILTER_NOTFOUND'=>'Filter function "functionNotExistsError" not found for item: "unittest"',
-                'FILTER_ERROR' => 'Filter "is_object" failt for value: "unittest"',
+                'FILTER_ERROR' => 'Filter "is_object" failt for label/name: "unittest"',
             )
         );
 
