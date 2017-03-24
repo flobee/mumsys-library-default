@@ -1,12 +1,14 @@
 language: php
 php:
-  - '5.4'
-  - '5.5'
+# Off because of phpunnit version and dependency issues
+#  - '5.4' 
+# Off because of phpunnit version and dependency issues
+#  - '5.5'
   - '5.6'
   - '7.0'
   - '7.1'
-#  - hhvm
-  - nightly
+# Off because its too upfront
+#  - nightly
   
 before_script: 
   - cd tests
