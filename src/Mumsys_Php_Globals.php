@@ -39,7 +39,7 @@ class Mumsys_Php_Globals
     /**
      * Version ID information.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * Cache container for uploaded files
@@ -179,7 +179,7 @@ class Mumsys_Php_Globals
      * If $key is NULL it will return all file parameter BUT in a new/
      * normalised way.: E.g:
      * upload "file[]" or "file"
-     *  - files[file][0][name] and files[file][1][name] are available and NOT:
+     *  - files[file][0][name] and files[file][1][name] is available and NOT:
      *  - files[file][name][0] and files[file][name][1] (PHP default style)
      *
      * @param string $key ID to check for
@@ -264,7 +264,7 @@ class Mumsys_Php_Globals
      *      befor _SERVER
      *      befor _SESSION
      *      before _COOKIE
-     *      befor _REQUEST:
+     *      befor _REQUEST: (binding through gpc order in php ini)
      *
      * Dont use it until you really need to look for a global variable!
      * Returns a global variable and looks in all super globals.
