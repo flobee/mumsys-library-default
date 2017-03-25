@@ -56,7 +56,7 @@ class Mumsys_Variable_Manager_Default
     /**
      * Version ID information
      */
-    const VERSION = '1.2.2';
+    const VERSION = '1.2.3';
 
     /**
      * Value "%1$s" does not match the regex rule: "%2$s"
@@ -151,12 +151,12 @@ class Mumsys_Variable_Manager_Default
     /**
      * Found "%1$s" values, minimum "%2$s" values
      */
-    const MINMAX_TOO_SHORT_ARRAY = 'Found "%1$s" values, minimum "%2$s" values';
+    const MINMAX_TOO_SHORT_ARRAY = 'MINMAX_TOO_SHORT_ARRAY';
 
     /**
      * Found "%1$s" values, maximum "%2$s" values
      */
-    const MINMAX_TOO_LONG_ARRAY = 'Found "%1$s" values, maximum "%2$s" values';
+    const MINMAX_TOO_LONG_ARRAY = 'MINMAX_TOO_LONG_ARRAY';
 
     /**
      * Min/max type error "%1$s". Must be "string", "integer", "numeric", "float" or "double"
