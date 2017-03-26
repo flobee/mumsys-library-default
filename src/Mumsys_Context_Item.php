@@ -53,7 +53,7 @@ class Mumsys_Context_Item
      *
      * @return Mumsys_Config_Interface
      *
-     * @throws Mumsys_Exception if config was not set
+     * @throws Mumsys_Context_Exception if config was not set
      */
     public function getConfig()
     {
@@ -66,7 +66,7 @@ class Mumsys_Context_Item
      *
      * @param Mumsys_Config_Interface $config
      *
-     * @throws Mumsys_Exception if config was already set
+     * @throws Mumsys_Context_Exception if config was already set
      */
     public function registerConfig( Mumsys_Config_Interface $config )
     {
@@ -79,7 +79,7 @@ class Mumsys_Context_Item
      *
      * @return Mumsys_Session_Interface Returns the Mumsys_Session object
      *
-     * @throws Mumsys_Exception Throws exception if object was not set
+     * @throws Mumsys_Context_Exception Throws exception if object was not set
      */
     public function getSession()
     {
@@ -92,7 +92,7 @@ class Mumsys_Context_Item
      *
      * @param Mumsys_Session_Interface $session Session object
      *
-     * @throws Mumsys_Exception Throws exception if object was already set
+     * @throws Mumsys_Context_Exception Throws exception if object was already set
      */
     public function registerSession( Mumsys_Session_Interface $session )
     {
@@ -104,7 +104,7 @@ class Mumsys_Context_Item
      * Returns the database object.
      *
      * @return Mumsys_Db_Driver_Interface Returns the database object
-     * @throws Mumsys_Exception If database was not set
+     * @throws Mumsys_Context_Exception If database was not set
      */
     public function getDatabase()
     {
@@ -116,7 +116,7 @@ class Mumsys_Context_Item
      * Sets the default database object.
      *
      * @param Mumsys_Db_Driver_Interface $db Database object
-     * @throws Mumsys_Exception Throws exception if object was already set
+     * @throws Mumsys_Context_Exception Throws exception if object was already set
      */
     public function registerDatabase( Mumsys_Db_Driver_Interface $db )
     {
@@ -140,7 +140,7 @@ class Mumsys_Context_Item
      *
      * @return Mumsys_I18n_Interface Returns display object
      *
-     * @throws Mumsys_Exception If object was not set
+     * @throws Mumsys_Context_Exception If object was not set
      */
     public function getTranslation()
     {
@@ -153,7 +153,7 @@ class Mumsys_Context_Item
      *
      * @param Mumsys_I18n_Interface $translate Translation object
      *
-     * @throws Mumsys_Exception Throws exception if object was already set
+     * @throws Mumsys_Context_Exception Throws exception if object was already set
      */
     public function registerTranslation( Mumsys_I18n_Interface $translate )
     {
@@ -166,7 +166,7 @@ class Mumsys_Context_Item
      *
      * @return Mumsys_Logger Returns the logger object
      *
-     * @throws Mumsys_Exception If class was not set
+     * @throws Mumsys_Context_Exception If class was not set
      */
     public function getLogger()
     {
@@ -178,7 +178,7 @@ class Mumsys_Context_Item
      * Sets the logger object.
      *
      * @param $logger $logger Logger object
-     * @throws Mumsys_Exception Throws exception if the object was already set
+     * @throws Mumsys_Context_Exception Throws exception if the object was already set
      */
     public function registerLogger( Mumsys_Logger_Interface $logger )
     {
@@ -202,7 +202,7 @@ class Mumsys_Context_Item
      *
      * @param Mumsys_Request_Interface $request Request object
      *
-     * @throws Mumsys_Exception Throws exception if object was already set
+     * @throws Mumsys_Context_Exception Throws exception if object was already set
      */
     public function registerRequest( Mumsys_Request_Interface $request )
     {
@@ -217,7 +217,8 @@ class Mumsys_Context_Item
      * @param mixed $default Default value to return if interface not exists
      *
      * @return object Retuns the requested interface/object
-     * @throws Mumsys_Exception Throws exception if the object was not set before and if default was not set
+     * @throws Mumsys_Context_Exception Throws exception if the object was not
+     * set before and if default was not set
      */
     public function getGeneric( $interface, $default = null )
     {
@@ -229,7 +230,7 @@ class Mumsys_Context_Item
                 $message = sprintf(
                     'Generic interface "%1$s" not found. Message: "%2$s"', $interface, $e->getMessage()
                 );
-                throw new Mumsys_Exception($message);
+                throw new Mumsys_Context_Exception($message);
             } else {
                 $return = $default;
             }
@@ -245,14 +246,14 @@ class Mumsys_Context_Item
      * @param string $interface Name of the Interface the object implements
      * @param object $value Object to register
      *
-     * @throws Mumsys_Exception Throws exception if the object exists or if
+     * @throws Mumsys_Context_Exception Throws exception if the object exists or if
      * incoming type is invalid
      */
     public function registerGeneric( $interface, $value )
     {
         if ( !is_object($value) || !is_a($value, $interface) ) {
             $message = sprintf('Value does not implement the interface "%1$s"', $interface);
-            throw new Mumsys_Exception($message);
+            throw new Mumsys_Context_Exception($message);
         }
 
         $this->_register($interface, $value);

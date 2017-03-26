@@ -21,11 +21,11 @@ class Mumsys_Logger_DefaultTest
      */
     protected function setUp()
     {
-        $this->_version = '1.0.0';
+        $this->_version = '3.0.0';
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Logger_Default' => $this->_version,
-            'Mumsys_Logger_Abstract' => '1.2.0'
+            'Mumsys_Logger_Abstract' => '3.2.0'
         );
 
         $this->_testsDir = realpath(dirname(__FILE__) . '/../');
@@ -248,11 +248,18 @@ class Mumsys_Logger_DefaultTest
      */
     public function testgetVersions()
     {
+        $message = 'A new version exists. You should have a look at '
+            . 'the code coverage to verify all code was tested and not only '
+            . 'all existing tests where checked!';
+        $this->assertEquals($this->_version, Mumsys_Logger_Default::VERSION, $message);
+
+
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
+            $message = 'Invalid: ' . $must . '::' . $value;
+            $this->assertTrue(isset($possible[$must]), $message);
+            $this->assertTrue(($possible[$must] == $value), $message);
         }
     }
 

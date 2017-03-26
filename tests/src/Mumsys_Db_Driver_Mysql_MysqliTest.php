@@ -1036,8 +1036,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setDebugMode(false);
         $this->setExpectedExceptionRegExp(
             'Mumsys_Db_Exception',
-            '/(Invalid sub-expression. Must be \'[operator] => [key/value]\'. '
-            . 'Found \(json\): "expression not an array")/i'
+            '/(Invalid sub-expression. Must be \'\[operator\] => \[key\/value\]\'. Found \(json\): "expression not an array")/i'
+
         );
         $this->_object->compileQueryWhere($array);
     }

@@ -52,7 +52,7 @@ class Mumsys_Variable_Manager_DefaultTest
      * @var Mumsys_Variable_Manager_Default
      */
     protected $_object;
-    protected $_version = '1.1.1';
+    protected $_version = '1.2.3';
     protected $_values = array();
     protected $_config = array();
 
@@ -207,13 +207,14 @@ class Mumsys_Variable_Manager_DefaultTest
         }
 
         // for code coverage
-        $item = $this->_object->createItem(array('value' => 'unittest'));
+        $item = $this->_object->createItem(array('value' => array('unittest', 'a'=>'b', 'c'=>'d')));
 
         $actual = $this->_object->validateMinMax($item);
         $this->assertTrue($actual); // no min/max set, just return
 
         $item->setType('array');
-        $item->setMaxLength(0);
+        $item->setMinLength(4);
+        $item->setMaxLength(1);
         $actual = $this->_object->validateMinMax($item);
         $this->assertFalse($actual);
     }
@@ -469,7 +470,7 @@ class Mumsys_Variable_Manager_DefaultTest
 
         $this->setExpectedExceptionRegExp(
             'Mumsys_Variable_Manager_Exception',
-            '/(Set item attributes for "unittest" not implemented.)/i'
+            '/(Set item attributes for "unittest" not implemented)/i'
         );
         $attributes = array('unittest' => 'throw an exception');
         $this->_object->setAttributes($attributes);
@@ -582,7 +583,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $expected8 = array(
             'unittest' => array(
                 'FILTER_NOTFOUND' => 'Filter function "functionNotExistsError" not found for item: "unittest"',
-                'FILTER_ERROR' => 'Filter "is_object" failt for value: "unittest"',
+                'FILTER_ERROR' => 'Filter "is_object" failt for label/name: "unittest"',
             )
         );
 
@@ -644,7 +645,10 @@ class Mumsys_Variable_Manager_DefaultTest
      */
     public function testConstants()
     {
-        $this->assertEquals($this->_version, Mumsys_Variable_Manager_Default::VERSION);
+        $message = 'A new version exists. You should have a look at '
+            . 'the code coverage to verify all code was tested and not only '
+            . 'all existing tests where checked!';
+        $this->assertEquals($this->_version, Mumsys_Variable_Manager_Default::VERSION, $message);
     }
 
 }

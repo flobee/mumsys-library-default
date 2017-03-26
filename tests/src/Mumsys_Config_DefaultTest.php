@@ -17,6 +17,7 @@ class Mumsys_Config_DefaultTest
      */
     protected function setUp()
     {
+        $this->_version = '3.0.0';
         $this->_configs = array('testkey' => 'test value');
         $this->_paths = array(
             __DIR__ . '/', //testconfig.php
@@ -102,6 +103,17 @@ class Mumsys_Config_DefaultTest
     }
 
     /**
+     * @covers Mumsys_Config_File::addPath
+     */
+    public function testAddpath()
+    {
+        $this->_object->addPath(__DIR__ . '/../config');
+
+        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(Path not found: "(.*)")/i');
+        $this->_object->addPath(__DIR__ . '/config');
+    }
+
+    /**
      * @covers Mumsys_Config_Default::register
      */
     public function testRegister()
@@ -117,7 +129,7 @@ class Mumsys_Config_DefaultTest
         $this->assertEquals('test', $actual);
         $this->assertEquals($expected3, $actual3);
 
-        $this->setExpectedException('Mumsys_Config_Exception', 'Config key "tests/somevalues" already exists');
+        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(Config key "tests\/somevalues" already exists)/i');
         $this->_object->register('tests/somevalues', array());
     }
 
@@ -126,8 +138,19 @@ class Mumsys_Config_DefaultTest
      */
     public function testLoad()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(exit in: Mumsys_Config)/i');
+        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(Not implemented yet)/i');
         $this->_object->load();
+    }
+
+    /**
+     * Version check
+     */
+    public function testCheckVersion()
+    {
+        $message = 'A new version exists. You should have a look at '
+            . 'the code coverage to verify all code was tested and not only '
+            . 'all existing tests where checked!';
+        $this->assertEquals($this->_version, Mumsys_Config_File::VERSION, $message);
     }
 
 }

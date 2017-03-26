@@ -65,6 +65,31 @@ class Mumsys_Request_AbstractTest
         $this->assertEquals('controllerTest', $this->_object->getControllerKey());
         $this->assertEquals('actionTest', $this->_object->getActionKey());
     }
+
+    /**
+     * @covers Mumsys_Request_Abstract::getRequestId
+     */
+    public function testGetRequestId()
+    {
+        $actual1 = $this->_object->getRequestId();
+
+        $this->assertTrue( (strlen($actual1)===23) );
+        $this->assertEquals($actual1, $this->_object->getRequestId());
+    }
+
+    /**
+     * @covers Mumsys_Request_Abstract::getRequestId
+     * @runInSeparateProcess
+     */
+    public function testGetRequestIdWithUuid5()
+    {
+        $uuid5 = 'e129f27c-5103-5c5c-844b-cdf0a15e160d-err';
+        $_SERVER['HTTP_X_REQUEST_ID'] = $uuid5;
+        $actual1 = $this->_object->getRequestId();
+
+        $this->assertNotEquals($uuid5, $actual1);
+    }
+
     /**
      * @covers Mumsys_Request_Abstract::getProgramName
      * @covers Mumsys_Request_Abstract::setProgramName

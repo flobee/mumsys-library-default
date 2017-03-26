@@ -280,7 +280,7 @@ class Mumsys_Html
      */
     public static function strip( $htmlcode = '', $againstWhitelist = false )
     {
-        $htmlcode = Php::stripslashes($htmlcode);
+        $htmlcode = Mumsys_Php::stripslashes($htmlcode);
 
         if ($againstWhitelist)
         {
@@ -312,7 +312,7 @@ class Mumsys_Html
     {
         $htmlTags = self::$htmlTagsDefaultAllowed;
 
-        $str = Php::stripslashes($htmlcode);
+        $str = Mumsys_Php::stripslashes($htmlcode);
 
         // Delete all spaces from html tags eg: < h1 >, <h1 > to be <h1>
         // Attibutes which can have also more whitespaces eg: <h1   class=...>

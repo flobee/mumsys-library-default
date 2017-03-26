@@ -16,7 +16,7 @@ class Mumsys_Config_FileTest
      * Version ID
      * @var string
      */
-    protected $_version = '2.1.0';
+    protected $_version = '3.0.0';
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -152,11 +152,11 @@ class Mumsys_Config_FileTest
      */
     public function testLoad()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(exit in: Mumsys_Config)/i');
+        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(Not implemented yet)/i');
         $this->_object->load();
     }
 
-    
+
     /**
      * Checks current version
      */

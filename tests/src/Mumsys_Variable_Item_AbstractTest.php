@@ -25,7 +25,7 @@ class Mumsys_Variable_Item_AbstractTest
      */
     protected function setUp()
     {
-        $this->_version = '1.1.1';
+        $this->_version = '1.2.1';
 
         $this->_config = array(
             'name' => 'somevariable',
@@ -350,7 +350,10 @@ class Mumsys_Variable_Item_AbstractTest
      */
     public function testCheckVersion()
     {
-        $this->assertEquals($this->_version, Mumsys_Variable_Item_Abstract::VERSION);
+        $message = 'A new version exists. You should have a look at '
+            . 'the code coverage to verify all code was tested and not only '
+            . 'all existing tests where checked!';
+        $this->assertEquals($this->_version, Mumsys_Variable_Item_Abstract::VERSION, $message);
     }
 
 }

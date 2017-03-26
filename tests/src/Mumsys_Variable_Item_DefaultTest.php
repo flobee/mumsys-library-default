@@ -30,7 +30,7 @@ class Mumsys_Variable_Item_DefaultTest
      */
     protected function setUp()
     {
-        $this->_version = '1.1.1';
+        $this->_version = '1.1.2';
 
         $this->_config = array(
             'name' => 'some name',
@@ -68,7 +68,11 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function test_constructor()
     {
+        $this->_config['state'] = 'before';
         $object = new Mumsys_Variable_Item_Default($this->_config);
+        $this->assertInstanceOf('Mumsys_Variable_Item_Interface', $object);
+        $this->assertInstanceOf('Mumsys_Variable_Item_Abstract', $object);
+        $this->assertInstanceOf('Mumsys_Variable_Item_Default', $object);
     }
 
 
@@ -251,7 +255,10 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testCheckVersion()
     {
-        $this->assertEquals($this->_version, Mumsys_Variable_Item_Default::VERSION);
+        $message = 'A new version exists. You should have a look at '
+            . 'the code coverage to verify all code was tested and not only '
+            . 'all existing tests where checked!';
+        $this->assertEquals($this->_version, Mumsys_Variable_Item_Default::VERSION, $message);
     }
 
 }

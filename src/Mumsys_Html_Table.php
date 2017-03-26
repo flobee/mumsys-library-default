@@ -142,10 +142,6 @@ class Mumsys_Html_Table
      */
     public function __construct( array $attributes = array() )
     {
-        if (!defined('_NL')) {
-            define('_NL', "\n");
-        }
-
         $this->_tblProps = $attributes;
         $this->_headlines['values'] = false;
         $this->_headlines['attr'] = array();

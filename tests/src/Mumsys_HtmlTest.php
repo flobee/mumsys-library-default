@@ -5,7 +5,7 @@
  * Mumsys_Html Test
  */
 class Mumsys_HtmlTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Html
@@ -23,7 +23,7 @@ class Mumsys_HtmlTest
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Html' => $this->_version,
-            'Mumsys_Xml_Abstract' => '3.2.1',
+            'Mumsys_Xml_Abstract' => '3.0.0',
         );
         $this->_object = new Mumsys_Html;
     }
@@ -45,7 +45,7 @@ class Mumsys_HtmlTest
         $string = $this->_object->attributesCreate($array);
         $this->assertEquals('id="123" name="attributeName"', $string);
 
-        $this->setExpectedException('Mumsys_Html_Exception');
+        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception');
         $array2 = array('id' => 123, 'name' => array(1, 2));
         $string2 = $this->_object->attributesCreate($array2);
     }
@@ -165,15 +165,18 @@ class Mumsys_HtmlTest
      */
     public function testVersionsInAbstractClass()
     {
-        $this->assertEquals(get_class($this->_object) . ' ' . $this->_version, $this->_object->getVersion());
+        $message = 'A new version exists. You should have a look at '
+            . 'the code coverage to verify all code was tested and not only '
+            . 'all existing tests where checked!';
+        $this->assertEquals($this->_version, Mumsys_Html::VERSION, $message);
 
-        $this->assertEquals($this->_version, $this->_object->getVersionID());
 
         $possible = $this->_object->getVersions();
 
-        foreach ($this->_versions as $must => $value) {
-            $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
+        foreach ( $this->_versions as $must => $value ) {
+            $message = 'Invalid: ' . $must . '::' . $value;
+            $this->assertTrue(isset($possible[$must]), $message);
+            $this->assertTrue(($possible[$must] == $value), $message);
         }
     }
 

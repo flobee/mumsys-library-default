@@ -68,7 +68,7 @@ abstract class Mumsys_Context_Abstract
      *
      * @return object Returns the object by given key if it was set
      *
-     * @throws Mumsys_Exception Throws exception if the object was not set
+     * @throws Mumsys_Context_Exception Throws exception if the object was not set
      */
     protected function _get( $key )
     {
@@ -86,7 +86,7 @@ abstract class Mumsys_Context_Abstract
      * @param string $key Name of the object to register
      * @param object $value The object to be register
      *
-     * @throws Mumsys_Exception Throws exception if object already set
+     * @throws Mumsys_Context_Exception Throws exception if object already set
      */
     protected function _register( $key, $value )
     {
@@ -104,7 +104,7 @@ abstract class Mumsys_Context_Abstract
      * @param string $key Name of the object to set
      * @param object $value The object to be register
      *
-     * @throws Mumsys_Exception Throws exception if object was already set
+     * @throws Mumsys_Context_Exception Throws exception if object was already set
      */
     protected function _replace( $key, $value )
     {

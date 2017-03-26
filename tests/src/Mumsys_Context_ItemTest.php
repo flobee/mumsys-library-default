@@ -4,7 +4,7 @@
 /**
  * Mumsys_Context Test
  */
-class Mumsys_ContextTest
+class Mumsys_Context_ItemTest
     extends Mumsys_Unittest_Testcase
 {
     /**
@@ -19,13 +19,13 @@ class Mumsys_ContextTest
      */
     protected function setUp()
     {
-        $this->_version = '2.0.0';
+        $this->_version = '3.0.0';
         $this->_versions = array(
             'Mumsys_Abstract' => '3.0.2',
-            'Mumsys_Context' => $this->_version,
+            'Mumsys_Context_Item' => $this->_version,
         );
         $this->_logfile = '/tmp/' . basename(__FILE__) . '.log';
-        $this->_object = new Mumsys_Context();
+        $this->_object = new Mumsys_Context_Item();
     }
 
 
@@ -68,7 +68,7 @@ class Mumsys_ContextTest
      */
 //    public function testGetSetPermissions()
 //    {
-//        $oPerms = new Mumsys_Permissions_Shell($this->_object, array('x' => 'y'));
+//        $oPerms = new Mumsys_Permissions_Console($this->_object, array('x' => 'y'));
 //        $this->_object->registerPermissions($oPerms);
 //
 //        $this->assertInstanceOf('Mumsys_Permissions_Console', $this->_object->getPermissions());
@@ -81,6 +81,7 @@ class Mumsys_ContextTest
      * @covers Mumsys_Context::registerSession
      * @covers Mumsys_Context::_get
      * @covers Mumsys_Context::_register
+     * @runInSeparateProcess
      */
     public function testGetSetSession()
     {
@@ -213,15 +214,23 @@ class Mumsys_ContextTest
      */
     public function testGetVersion()
     {
-        $this->assertEquals('Mumsys_Context ' . $this->_version, $this->_object->getVersion());
+        $message = 'A new version exists. You should have a look at '
+            . 'the code coverage to verify all code was tested and not only '
+            . 'all existing tests where checked!';
+        $this->assertEquals($this->_version, Mumsys_Config_File::VERSION, $message);
+
+        
+        $this->assertEquals('Mumsys_Context_Item ' . $this->_version, $this->_object->getVersion());
         $this->assertEquals($this->_version, $this->_object->getVersionID());
 
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
+            $message = 'Invalid: ' . $must . '::' . $value;
+            $this->assertTrue(isset($possible[$must]), $message);
+            $this->assertTrue(($possible[$must] == $value), $message);
         }
+
     }
 
 }

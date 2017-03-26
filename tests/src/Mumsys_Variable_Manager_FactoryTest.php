@@ -21,7 +21,7 @@ class Mumsys_Variable_Manager_FactoryTest
 
     protected function setUp()
     {
-        $this->_version = '1.1.1';
+        $this->_version = '1.2.1';
     }
 
 
@@ -71,7 +71,10 @@ class Mumsys_Variable_Manager_FactoryTest
      */
     public function testCheckVersion()
     {
-        $this->assertEquals($this->_version, Mumsys_Variable_Item_Abstract::VERSION);
+        $message = 'On error a new Version exists. You should have a look at '
+            . 'the code coverage to verify all code was tested and not only '
+            . 'the tests!';
+        $this->assertEquals($this->_version, Mumsys_Variable_Item_Abstract::VERSION, $message);
     }
 
 }

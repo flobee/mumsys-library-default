@@ -75,19 +75,6 @@ class Mumsys_RegistryTest
 
 
     /**
-     * @covers Mumsys_Registry::set
-     */
-    public function testSet()
-    {
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Registry_Exception',
-            '/(Unknown meaning for set\(\). Use register\(\) or replace\(\) methodes)/'
-        );
-        Mumsys_Registry::set($this->_key, 'new value');
-    }
-
-
-    /**
      * @covers Mumsys_Registry::get
      * @covers Mumsys_Registry::register
      */
@@ -100,9 +87,6 @@ class Mumsys_RegistryTest
 
         $this->assertEquals('new value', $actual1);
         $this->assertFalse($actual2);
-        
-        $this->setExpectedExceptionRegExp('Mumsys_Registry_Exception','/(Registry key "was not set" not found)/');
-        Mumsys_Registry::get('was not set');
     }
 
 
@@ -112,10 +96,9 @@ class Mumsys_RegistryTest
     public function testRemove()
     {
         Mumsys_Registry::register($this->_key, 'new value');
-        $actual1 = Mumsys_Registry::remove('unittest');
-        $actual2 = Mumsys_Registry::remove('unittest');
-        $this->assertTrue($actual1);
-        $this->assertFalse($actual2);
+        Mumsys_Registry::remove('unittest');
+        $actual1 = Mumsys_Registry::get('unittest', false);
+        $this->assertFalse($actual1);
     }
 
     // test abstracts
@@ -126,7 +109,10 @@ class Mumsys_RegistryTest
      */
     public function testGetVersion()
     {
-        $this->assertEquals('Mumsys_Registry ' . $this->_version, Mumsys_Registry::getVersion());
+        $message = 'A new version exists. You should have a look at '
+            . 'the code coverage to verify all code was tested and not only '
+            . 'all existing tests where checked!';
+        $this->assertEquals('Mumsys_Registry ' . $this->_version, Mumsys_Registry::getVersion(), $message);
     }
 
 
@@ -135,7 +121,10 @@ class Mumsys_RegistryTest
      */
     public function testgetVersionID()
     {
-        $this->assertEquals($this->_version, Mumsys_Registry::getVersionID());
+        $message = 'A new version exists. You should have a look at '
+            . 'the code coverage to verify all code was tested and not only '
+            . 'all existing tests where checked!';
+        $this->assertEquals($this->_version, Mumsys_Registry::VERSION, $message);
     }
 
 
