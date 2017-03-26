@@ -4,7 +4,7 @@
 /**
  * Php_Globals Test
  */
-class Php_GlobalsTest
+class Mumsys_Php_GlobalsTest
     extends Mumsys_Unittest_Testcase
 {
     /**
@@ -23,6 +23,12 @@ class Php_GlobalsTest
      * @var array
      */
     protected $_files;
+    /**
+     * Version ID
+     * @var string
+     */
+    private $_version;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -30,6 +36,7 @@ class Php_GlobalsTest
      */
     protected function setUp()
     {
+        $this->_version = '1.0.1';
         // in
         $this->_file = $_FILES = array(
             'test' => array(
@@ -150,6 +157,7 @@ class Php_GlobalsTest
 
     /**
      * @covers Php_Globals::getFilesVar
+     * @runInSeparateProcess
      */
     public function testGetFilesVar()
     {
@@ -345,4 +353,11 @@ class Php_GlobalsTest
         $this->assertEquals('unittest', $this->_object->getRemoteUser());
     }
 
+    /**
+     * Version check
+     */
+    public function testCheckVersion()
+    {
+        $this->assertEquals($this->_version, Mumsys_Php_Globals::VERSION);
+    }
 }

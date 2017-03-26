@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Php_Exception
+ * Mumsys_Php_Exception
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -16,16 +16,14 @@
 
 
 /**
- * @deprecated since version 1.0.0 use Mumsys_Php_Exception
- * 
- * Exception thrown by Php class.
+ * Exception thrown by Mumsys_Php class.
  *
  * @category    Mumsys
  * @package     Php
  * @subpackage  Exception
  */
-class Php_Exception
-    extends Exception
+class Mumsys_Php_Exception
+    extends Mumsys_Exception
 {
 
 }
