@@ -207,6 +207,68 @@ abstract class Mumsys_Logger_Abstract
 
 
     /**
+     * Alias wrapper to extra methode calls.
+     *
+     * Implements calls: emerge(), emergency(), alert(), crit(), critical(), err()
+     * error(), warn(), warning(), notice(), info(), debug().
+     * Dont use it. Just compatibilty.
+     *
+     * @param string $key Methode string to wrap to
+     * @param string $value Log message value
+     *
+     * @throws Mumsys_Logger_Exception if key not implemented
+     */
+    public function __call($key, $value)
+    {
+        $level = null;
+
+        switch ( strtolower($key) )
+        {
+            case 'emerg':
+            case 'emergency':
+                $level = 0;
+                break;
+
+            case 'alert':
+                $level = 1;
+                break;
+
+            case 'crit':
+            case 'critical':
+                $level = 2;
+                break;
+
+            case 'err':
+            case 'error':
+                $level = 3;
+                break;
+
+            case 'warn':
+            case 'warning':
+                $level = 4;
+                break;
+
+            case 'notice':
+                $level = 5;
+                break;
+
+            case 'info':
+                $level = 6;
+                break;
+
+            case 'debug':
+                $level = 7;
+                break;
+
+            default:
+                throw new Mumsys_Logger_Exception('Invalid method call');
+        }
+
+        $this->log($value, $level);
+    }
+
+
+    /**
      * Sets the new log level to react from now on (0 - 7).
      *
      * @param integer $level Log level to set
