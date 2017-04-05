@@ -217,7 +217,7 @@ class Mumsys_Variable_Manager_Default
         self::FILTER_ERROR => 'Filter "%1$s" failt for label/name: "%2$s"',
         self::FILTER_NOTFOUND => 'Filter function "%1$s" not found for item: "%2$s"',
 
-        self::CALLBACK_ERROR => 'Callback "%1$s" for "%2$s" failt for value: "%3$s"',
+        self::CALLBACK_ERROR => 'Callback "%1$s" for "%2$s" failt for value (json): "%3$s"',
         self::CALLBACK_NOTFOUND => 'Callback function "%1$s" not found for item: "%2$s"',
     );
 
@@ -1103,7 +1103,10 @@ class Mumsys_Variable_Manager_Default
                     /* false as return or false of the callback ?
                      * boolean values should not be filtered! */
                     $message = sprintf(
-                        $this->_messageTemplates['CALLBACK_ERROR'], $cmd, $itemName, (is_array($value)?print_r($value, true):$value)
+                        $this->_messageTemplates['CALLBACK_ERROR'],
+                        $cmd,
+                        $itemName,
+                        (is_array($value)? json_encode($value):$value)
                     );
                     $item->setErrorMessage( self::CALLBACK_ERROR, $message );
                 } else {
