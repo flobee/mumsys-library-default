@@ -282,10 +282,8 @@ class Mumsys_FileSystemTest
             "cannot open `/usr/bin/sh' (No such file or directory)\n",
             "ERROR: cannot open `/usr/bin/sh' (No such file or directory)\n"
         );
-        $actual2 = $this->_object->getFileType('/bin/ls');
 
         $this->assertTrue( in_array($actual, $expecteds) );
-        $this->assertEquals(1, preg_match('/executable/i', $actual2));
     }
 
 
