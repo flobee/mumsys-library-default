@@ -52,7 +52,7 @@ class Mumsys_MultirenameTest
     protected function setUp()
     {
         $this->_oldHome = $_SERVER['HOME'];
-        $this->_version = '1.4.2';
+        $this->_version = '1.4.3';
         $this->_versions = array(
             'Mumsys_Abstract' => '3.0.1',
             'Mumsys_Multirename' => $this->_version,
@@ -87,8 +87,10 @@ class Mumsys_MultirenameTest
             'history-size' => 3,
         );
 
-        $opts = array('way' => 'a', 'logfile' => $logfile);
-        $this->_logger = new Mumsys_Logger($opts);
+        $opts = array('way' => 'a', 'logfile' => $logfile, 'msglogLevel' => -1);
+
+        $fileLogger = new Mumsys_Logger_File($opts);
+        $this->_logger = new Mumsys_Logger_Decorator_None($fileLogger, $opts);
         $this->_oFiles = new Mumsys_FileSystem();
 
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
@@ -153,7 +155,7 @@ class Mumsys_MultirenameTest
             'Mumsys_Abstract                     ' . Mumsys_Abstract::VERSION . PHP_EOL,
             'Mumsys_FileSystem_Common_Abstract   ' . Mumsys_FileSystem_Common_Abstract::VERSION . PHP_EOL,
             'Mumsys_FileSystem                   ' . Mumsys_FileSystem::VERSION . PHP_EOL,
-            'Mumsys_Logger                       ' . Mumsys_Logger::VERSION . PHP_EOL,
+            'Mumsys_Logger_File                  ' . Mumsys_Logger_File::VERSION . PHP_EOL,
             'Mumsys_File                         ' . Mumsys_File::VERSION . PHP_EOL,
             'Mumsys_Multirename                  ' . Mumsys_Multirename::VERSION . PHP_EOL,
         );
@@ -264,7 +266,7 @@ class Mumsys_MultirenameTest
 
         $config = array(
             'test' => false,
-            //'link' => 'soft;abs',
+            //'link' => 'soft:abs',
             'fileextensions' => 'txt',
             'keepcopy' => true,
             'recursive' => false,
@@ -320,7 +322,7 @@ class Mumsys_MultirenameTest
         $this->_logger->log(__METHOD__ . ' RENAME and UNDO: symlink mode check 3', 6);
         $config['undo'] = false;
         $config['run'] = true;
-        $config['link'] = 'soft;abs';
+        $config['link'] = 'soft:abs';
         $this->_object->run($config);
         $actual1 = is_link($this->_testsDir . '/tmp/unittest_testfile_-_15.txt');
         $actual2 = file_exists($this->_testsDir . '/tmp/multirenametestfile_-_15.txt');
@@ -346,7 +348,7 @@ class Mumsys_MultirenameTest
         $this->_logger->log(__METHOD__ . ' RENAME and UNDO: invalid mode check 4', 6);
         $config['run'] = true;
         $config['undo'] = false;
-        $config['link'] = 'invalid;abs';
+        $config['link'] = 'invalid:abs';
         $this->_object->run($config);
         $actual1 = !file_exists($this->_testsDir . '/tmp/unittest_testfile_-_15.txt');
         $actual2 = file_exists($this->_testsDir . '/tmp/multirenametestfile_-_15.txt');
@@ -465,7 +467,7 @@ class Mumsys_MultirenameTest
             'keepcopy' => true,
             'hidden' => false,
             'test' => false,
-            'link' => 'soft;rel',
+            'link' => 'soft:rel',
             'linkway' => 'rel',
             'recursive' => true,
             'sub-paths' => true,
@@ -594,7 +596,7 @@ class Mumsys_MultirenameTest
         $this->_testFiles[] = $this->_testsDir . '/tmp/tmp2/.multirename/config';
         $this->_testDirs[] = $this->_testsDir . '/tmp/tmp2/.multirename/';
         $actual = $this->_object->saveConfig($this->_testsDir . '/tmp/tmp2/');
-        $this->assertTrue(($actual >= 1291));
+        $this->assertTrue(($actual >= 1291), 'Error, current value: '.$actual);
     }
 
 
@@ -647,13 +649,14 @@ class Mumsys_MultirenameTest
         ob_start();
 
         $opts = array('msgEcho' => true, 'msgLineFormat' => '%5$s', 'logfile' => $this->_testsDir . '/tmp/test_' . basename(__FILE__) . '.log');
-        $this->_logger = new Mumsys_Logger($opts);
+        $this->_logger = new Mumsys_Logger_Decorator_Messages($this->_logger, $opts);
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
 
         $this->_object->showConfigs();
         $output = ob_get_clean();
 
         $results = explode("\n", $output);
+
         $actual = $results[count($results) - 2];
         $expected = "cmd#> multirename --path '" . $this->_testsDir . "/tmp' --fileextensions '*' "
             . "--substitutions 'doNotFind=doNotReplace;regex:/doNotFind/i' "
