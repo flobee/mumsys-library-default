@@ -49,7 +49,7 @@ class Mumsys_Multirename
     private $_config;
 
     /**
-     * Current list of working settings.
+     * Current list of working settings. Since version 1.3.4++
      * @var array
      */
     private $_configs = array();
@@ -129,7 +129,7 @@ class Mumsys_Multirename
      * or show the output when using as shell script or cronjob
      */
     public function __construct( array $config = array(), Mumsys_FileSystem $oFiles,
-            Mumsys_Logger_Interface $logger )
+            Mumsys_Logger_Decorator_Interface $logger )
     {
         $logger->log('### multirename (' . self::VERSION . ') starts', 7);
 
@@ -498,7 +498,7 @@ class Mumsys_Multirename
                     $message .= 'overwrite target';
                 }
                 $message .= ': "' . str_replace($config['path'], '...', $destination) . "'";
-                $this->_logger->warn($message);
+                $this->_logger->log($message, Mumsys_Logger_Abstract::WARN);
             }
 
             $this->_logger->log(
