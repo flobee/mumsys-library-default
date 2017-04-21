@@ -33,7 +33,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.4.2';
+    const VERSION = '1.4.3';
 
     /**
      * Logger to log and output messages.
@@ -289,10 +289,12 @@ class Mumsys_Multirename
         }
 
         if (!empty($config['link'])) {
-            $linkParts = explode(';', $config['link']);
+            $linkParts = explode(':', $config['link']);
             $config['link'] = $linkParts[0];
             if (isset($linkParts[1])) {
                 $config['linkway'] = $linkParts[1];
+            } else {
+                $config['linkway'] = 'rel';
             }
         }
 
@@ -1381,7 +1383,7 @@ class Mumsys_Multirename
             '--hidden' => 'Include hidden files (dot files)',
 
             '--link:' => 'Don\'t rename, create symlinks or hardlinks, relativ or absolut to target '
-            . '(Values: soft|hard[;rel|abs]). If the second parameter is not given relativ links will be created',
+            . '(Values: soft|hard[:rel|abs]). If the second parameter is not given relativ links will be created',
 
             '--linkway:' => 'Type of the link to be created relative or absolut: ("rel"|"abs"), default: "rel". '
             . 'This will be used internally if you use --link soft;rel the linkway will be extracted from that line',
