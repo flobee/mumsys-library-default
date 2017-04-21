@@ -261,7 +261,8 @@ abstract class Mumsys_Logger_Abstract
                 break;
 
             default:
-                throw new Mumsys_Logger_Exception('Invalid method call');
+                $message = sprintf('Invalid method call: "%1$s"',$key);
+                throw new Mumsys_Logger_Exception($message);
         }
 
         $this->log($value, $level);
