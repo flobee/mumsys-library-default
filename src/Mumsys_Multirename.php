@@ -4,14 +4,14 @@
 /**
  * Multirename
  * for MUMSYS Library for Multi User Management System
- * ----------------------------------------------------------------------------
+ * 
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright (c) 2015 by Florian Blasel
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Multirename
+ * @package     Library
+ * @subpackage  Multirename
  * Created on 2015-02-28
  */
 /* }}} */
