@@ -9,7 +9,7 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
+ * @package     Library
  * @subpackage  Unittest
  */
 
@@ -17,10 +17,8 @@
 /**
  * PhpUnit test case class as wrapper for PHPUnit_Framework_TestCase.
  *
- * phpunit >= phpunit 3.4
- *
  * @category    Mumsys
- * @package     Mumsys_Library
+ * @package     Library
  * @subpackage  Unittest
  */
 class Mumsys_Unittest_Testcase
