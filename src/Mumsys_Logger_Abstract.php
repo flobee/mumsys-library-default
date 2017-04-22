@@ -211,7 +211,7 @@ abstract class Mumsys_Logger_Abstract
      *
      * Implements calls: emerge(), emergency(), alert(), crit(), critical(), err()
      * error(), warn(), warning(), notice(), info(), debug().
-     * Dont use it. Just compatibilty.
+     * Dont use it if you can (performace). Just compatibilty to psr.
      *
      * @param string $key Methode string to wrap to
      * @param string $value Log message value
