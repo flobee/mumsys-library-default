@@ -33,7 +33,7 @@ abstract class Mumsys_Logger_Decorator_Abstract
      * Interface to decorate.
      * @var Mumsys_Logger_Interface
      */
-    private $_object;
+    protected $_object;
 
     /**
      * Initialize the decorated logger object
