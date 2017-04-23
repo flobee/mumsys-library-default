@@ -95,12 +95,6 @@ class Mumsys_Logger_Decorator_Messages
      */
     private $_lf = "\n";
 
-    /**
-     * Interface to decorate.
-     * @var Mumsys_Logger_Interface
-     */
-    private $_object;
-
 
     /**
      * Initialize the decorator messages logger object
