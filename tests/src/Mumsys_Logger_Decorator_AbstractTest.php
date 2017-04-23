@@ -3,9 +3,9 @@
 /**
  *  Test class for tests
  */
-class Mumsys_Logger_Decorator_AbstractTestTestClass extends Mumsys_Logger_Decorator_Abstract
+class Mumsys_Logger_Decorator_AbstractTestTestClass
+    extends Mumsys_Logger_Decorator_Abstract
 {
-
 }
 
 
@@ -13,13 +13,14 @@ class Mumsys_Logger_Decorator_AbstractTestTestClass extends Mumsys_Logger_Decora
  * Mumsys_Logger_Decorator_Abstract Test
  */
 class Mumsys_Logger_Decorator_AbstractTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Logger_Decorator_Abstract
      */
     protected $_object;
 
+    private $_testsDir;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -27,7 +28,20 @@ class Mumsys_Logger_Decorator_AbstractTest
      */
     protected function setUp()
     {
-        $this->_object = new Mumsys_Logger_Decorator_AbstractTestTestClass();
+        $this->_testsDir = MumsysTestHelper::getTestsBaseDir();
+        $this->_logfile = $this->_testsDir . '/tmp/' . basename(__FILE__) .'.test';
+
+        $this->_opts = $opts = array(
+            'logfile' => $this->_logfile,
+            'way' => 'a',
+            'logLevel' => 7,
+            'msglogLevel' => 999,
+            'maxfilesize' => 1024 * 2,
+            'msgLineFormat' => '%5$s',
+        );
+        $this->_logger = new Mumsys_Logger_File($this->_opts);
+
+        $this->_object = new Mumsys_Logger_Decorator_AbstractTestTestClass($this->_logger);
     }
 
 
@@ -67,110 +81,6 @@ class Mumsys_Logger_Decorator_AbstractTest
 
 
     /**
-     * @covers Mumsys_Logger_Decorator_Abstract::emerg
-     * @todo   Implement testEmerg().
-     */
-    public function testEmerg()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-
-    /**
-     * @covers Mumsys_Logger_Decorator_Abstract::alert
-     * @todo   Implement testAlert().
-     */
-    public function testAlert()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-
-    /**
-     * @covers Mumsys_Logger_Decorator_Abstract::crit
-     * @todo   Implement testCrit().
-     */
-    public function testCrit()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-
-    /**
-     * @covers Mumsys_Logger_Decorator_Abstract::err
-     * @todo   Implement testErr().
-     */
-    public function testErr()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-
-    /**
-     * @covers Mumsys_Logger_Decorator_Abstract::warn
-     * @todo   Implement testWarn().
-     */
-    public function testWarn()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-
-    /**
-     * @covers Mumsys_Logger_Decorator_Abstract::notice
-     * @todo   Implement testNotice().
-     */
-    public function testNotice()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-
-    /**
-     * @covers Mumsys_Logger_Decorator_Abstract::info
-     * @todo   Implement testInfo().
-     */
-    public function testInfo()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-
-    /**
-     * @covers Mumsys_Logger_Decorator_Abstract::debug
-     * @todo   Implement testDebug().
-     */
-    public function testDebug()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-
-    /**
      * @covers Mumsys_Logger_Decorator_Abstract::checkLevel
      * @todo   Implement testCheckLevel().
      */
@@ -183,3 +93,4 @@ class Mumsys_Logger_Decorator_AbstractTest
     }
 
 }
+

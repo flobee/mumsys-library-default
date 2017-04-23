@@ -28,7 +28,7 @@ class Mumsys_FileSystem
     /**
      * Version ID information.
      */
-    const VERSION = '3.0.6';
+    const VERSION = '3.0.7';
 
     /**
      * Buffer/ memory keeper of scanned directories.
@@ -418,7 +418,9 @@ class Mumsys_FileSystem
             if ( $keepCopy && (file_exists($to) || is_link($to)) ) {
                 return $this->link($file, $to . '.lnk', $type, $keepCopy);
             }
-            if ( $way == 'rel' ) {
+
+            if ( $way == 'rel' )
+            {
                 $dirTo = realpath(dirname($to));
                 if ( $dirTo === false ) {
                     $message = 'Real path not found for "' . dirname($to) . '"';
@@ -427,16 +429,21 @@ class Mumsys_FileSystem
                 chdir($dirTo);
                 $linkName = basename($to);
                 // from and to in reverse as parameter
-                $srcFile = $this->getRelativeDir($dirTo, dirname($file));
-                $srcFile = $srcFile . '/' . basename($file);
+                if ( ($relDir = $this->getRelativeDir($dirTo, dirname($file) ) ) > ''  ) {
+                    $srcFile = $relDir .'/' . basename($file);
+                } else {
+                    $srcFile = basename($file);
+                }
             } else {
                 $way = 'abs';
                 $linkName = $to;
                 $srcFile = $file;
             }
+
             if ( is_link($to) ) {
                 return $to;
             }
+
             switch ( $type )
             {
                 case 'soft':

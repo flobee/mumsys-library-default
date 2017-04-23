@@ -16,7 +16,7 @@ class Mumsys_FileSystemTest
 
     protected function setUp()
     {
-        $this->_version = '3.0.6';
+        $this->_version = '3.0.7';
         $this->_versions = array(
             'Mumsys_FileSystem' => $this->_version,
             'Mumsys_FileSystem_Common_Abstract' => '3.1.0',
@@ -282,10 +282,8 @@ class Mumsys_FileSystemTest
             "cannot open `/usr/bin/sh' (No such file or directory)\n",
             "ERROR: cannot open `/usr/bin/sh' (No such file or directory)\n"
         );
-        $actual2 = $this->_object->getFileType('/bin/ls');
 
         $this->assertTrue( in_array($actual, $expecteds) );
-        $this->assertEquals(1, preg_match('/executable/i', $actual2));
     }
 
 

@@ -29,7 +29,6 @@ class Mumsys_Logger_Decorator_MessagesTest
             'msglogLevel' => 999,
             'maxfilesize' => 1024 * 2,
             'msgLineFormat' => '%5$s',
-
         );
         $this->_logger = new Mumsys_Logger_File($this->_opts);
         $this->_object = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
@@ -161,21 +160,21 @@ class Mumsys_Logger_Decorator_MessagesTest
 
         $this->_opts['username'] = 'flobeeunit';
         $this->_opts['msgColors'] = true;
-        $decoratorB = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
+        $decorator = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
         //$decoratorB = new Mumsys_Logger_Decorator_ConsoleColor($decoratorA, $this->_opts);
 
 
 //        ob_start();
         echo PHP_EOL;
-        echo $decoratorB->log('level 0', 0);
-        echo $decoratorB->log('level 1 ', 1);
-        echo $decoratorB->log('level 2 ', 2);
-        echo $decoratorB->log('level 3 ', 3);
-        echo $decoratorB->log('level 4 ', 4);
-        echo $decoratorB->log('level 5 ', 5);
-        echo $decoratorB->log('level 6 ', 6);
-        echo $decoratorB->log('level 7 ', 7);
-        echo $decoratorB->log('level 99 ', 99);
+        echo $decorator->log('level 0', 0);
+        echo $decorator->log('level 1 ', 1);
+        echo $decorator->log('level 2 ', 2);
+        echo $decorator->log('level 3 ', 3);
+        echo $decorator->log('level 4 ', 4);
+        echo $decorator->log('level 5 ', 5);
+        echo $decorator->log('level 6 ', 6);
+        echo $decorator->log('level 7 ', 7);
+        echo $decorator->log('level 99 ', 99);
 
 //        $actual = ob_get_clean();
 
@@ -183,3 +182,4 @@ class Mumsys_Logger_Decorator_MessagesTest
     }
 
 }
+

@@ -33,7 +33,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.4.2';
+    const VERSION = '1.4.3';
 
     /**
      * Logger to log and output messages.
@@ -49,7 +49,7 @@ class Mumsys_Multirename
     private $_config;
 
     /**
-     * Current list of working settings.
+     * Current list of working settings. Since version 1.3.4++
      * @var array
      */
     private $_configs = array();
@@ -129,7 +129,7 @@ class Mumsys_Multirename
      * or show the output when using as shell script or cronjob
      */
     public function __construct( array $config = array(), Mumsys_FileSystem $oFiles,
-            Mumsys_Logger_Interface $logger )
+            Mumsys_Logger_Decorator_Interface $logger )
     {
         $logger->log('### multirename (' . self::VERSION . ') starts', 7);
 
@@ -289,10 +289,12 @@ class Mumsys_Multirename
         }
 
         if (!empty($config['link'])) {
-            $linkParts = explode(';', $config['link']);
+            $linkParts = explode(':', $config['link']);
             $config['link'] = $linkParts[0];
             if (isset($linkParts[1])) {
                 $config['linkway'] = $linkParts[1];
+            } else {
+                $config['linkway'] = 'rel';
             }
         }
 
@@ -496,7 +498,7 @@ class Mumsys_Multirename
                     $message .= 'overwrite target';
                 }
                 $message .= ': "' . str_replace($config['path'], '...', $destination) . "'";
-                $this->_logger->warn($message);
+                $this->_logger->log($message, Mumsys_Logger_Abstract::WARN);
             }
 
             $this->_logger->log(
@@ -1381,7 +1383,7 @@ class Mumsys_Multirename
             '--hidden' => 'Include hidden files (dot files)',
 
             '--link:' => 'Don\'t rename, create symlinks or hardlinks, relativ or absolut to target '
-            . '(Values: soft|hard[;rel|abs]). If the second parameter is not given relativ links will be created',
+            . '(Values: soft|hard[:rel|abs]). If the second parameter is not given relativ links will be created',
 
             '--linkway:' => 'Type of the link to be created relative or absolut: ("rel"|"abs"), default: "rel". '
             . 'This will be used internally if you use --link soft;rel the linkway will be extracted from that line',
