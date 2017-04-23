@@ -1357,9 +1357,9 @@ class Mumsys_Multirename
             . 'information see --sub-paths but only use --sub-paths if you really need '
             . 'it. It can became strange side effects when enabling it. * Required',
 
-            '--sub-paths' => 'Flag; Enable substitution for paths. Feature for the substitution: '
+            '--sub-paths' => 'Flag; Enable substitution using paths. Feature for the substitution: '
             . 'Breadcrumbs of the --path can be found/ substituted with %path1% - %pathN% '
-            . ' in reverse. If you want to rename files and want to add the folder '
+            . 'in reverse. If you want to rename files and want to add the folder '
             . 'the file belongs to you can use %path1%. One folder above is %path2% '
             . 'and so on until the given root in --path. Example: /var/files/records '
             . '=> %path1% = records, %path2% = files, %path3% = var; With this option '
@@ -1387,8 +1387,8 @@ class Mumsys_Multirename
 
             '--linkway:' => 'Type of the link to be created relative or absolut: ("rel"|"abs"), default: "rel". '
             . 'This will be used internally if you use --link soft;rel the linkway will be extracted from that line',
-            '--history|-h' => 'Flag; If set this will enable the history/ for the moment ONLY the last action log with '
-            . 'the option to undo it',
+            
+            '--history|-h' => 'Flag; If set this will enable the history and tracks all actions for a later undo',
 
             '--history-size:' => 'Integer; Number of history entrys if --history is enabled; Default: 10; '
             . 'Note: If you run on much more than hundreds of files you may set the memory'
@@ -1426,8 +1426,11 @@ class Mumsys_Multirename
             '--version|-v' => 'Flag; Return version informations',
         );
 
-        if ($shellOptions !== true) {
-            foreach ($result as $key => $value) {
+        if ($shellOptions !== true) 
+        {
+            $res = array();
+            foreach ($result as $key => $value) 
+            {
                 $key = str_replace(':', '', $key);
                 $key = substr($key, 2);
                 $pos = strpos($key, '|');
@@ -1438,6 +1441,7 @@ class Mumsys_Multirename
             }
             $result = $res;
         }
+        
         return $result;
     }
 
