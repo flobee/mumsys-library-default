@@ -3,9 +3,14 @@
 /**
  *  Test class for tests
  */
-class Mumsys_Logger_Decorator_AbstractTestTestClass
+class Mumsys_Logger_Decorator_Abstract_TestClass
     extends Mumsys_Logger_Decorator_Abstract
+    implements Mumsys_Logger_Decorator_Interface
 {
+    public function testGetObject()
+    {
+        return $this->_getObject();
+    }
 }
 
 
@@ -41,7 +46,7 @@ class Mumsys_Logger_Decorator_AbstractTest
         );
         $this->_logger = new Mumsys_Logger_File($this->_opts);
 
-        $this->_object = new Mumsys_Logger_Decorator_AbstractTestTestClass($this->_logger);
+        $this->_object = new Mumsys_Logger_Decorator_Abstract_TestClass($this->_logger);
     }
 
 
@@ -54,6 +59,14 @@ class Mumsys_Logger_Decorator_AbstractTest
         $this->_object =null;
     }
 
+    /**
+     * @covers Mumsys_Logger_Decorator_Abstract::__construct
+     */
+    public function test__construct()
+    {
+        $this->_object = new Mumsys_Logger_Decorator_Abstract_TestClass($this->_logger);
+        $this->assertInstanceOf('Mumsys_Logger_Decorator_Interface', $this->_object);
+    }
 
     /**
      * @covers Mumsys_Logger_Decorator_Abstract::__clone
@@ -66,31 +79,50 @@ class Mumsys_Logger_Decorator_AbstractTest
         $this->assertNotSame($obj, $this->_object);
     }
 
+    /**
+     * @covers Mumsys_Logger_Decorator_Abstract::getLevelName
+     */
+    public function testGetLevelName()
+    {
+        $obj = clone $this->_object;
+        $actual = $this->_object->getLevelName(3);
+        $expected = 'ERR';
+
+        $this->assertEquals($actual, $expected);
+    }
 
     /**
      * @covers Mumsys_Logger_Decorator_Abstract::log
-     * @todo   Implement testLog().
      */
     public function testLog()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $obj = clone $this->_object;
+        $actual = $obj->log(__METHOD__,6);
+
+        $regex = '/(' . __METHOD__ . ')/i';
+        $this->assertTrue( (preg_match($regex, $actual)===1) );
     }
 
-
-    /**
     /**
      * @covers Mumsys_Logger_Decorator_Abstract::checkLevel
-     * @todo   Implement testCheckLevel().
      */
     public function testCheckLevel()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $obj = clone $this->_object;
+        $actual1 = $obj->checkLevel(3);
+        $actual2 = $obj->checkLevel(99);
+
+        $this->assertTrue($actual1);
+        $this->assertFalse($actual2);
     }
 
+    /**
+     * @covers Mumsys_Logger_Decorator_Abstract::_getObject
+     */
+    public function test_GetObject()
+    {
+        $obj = $this->_object->testGetObject();
+        $this->assertSame($obj, $this->_logger);
+
+    }
 }
