@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Mumsys_Logger_Decorator_Messages Test
  */
@@ -13,10 +12,6 @@ class Mumsys_Logger_Decorator_MessagesTest
     protected $_object;
 
 
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
     protected function setUp()
     {
         $this->_testsDir = realpath(dirname(__FILE__) . '/../');
@@ -34,11 +29,6 @@ class Mumsys_Logger_Decorator_MessagesTest
         $this->_object = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
     }
 
-
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
     protected function tearDown()
     {
         //@unlink($this->_logfile);
@@ -79,6 +69,7 @@ class Mumsys_Logger_Decorator_MessagesTest
 
     /**
      * @covers Mumsys_Logger_Decorator_Messages::log
+     * @covers Mumsys_Logger_Decorator_Messages::getMessageColored
      */
     public function testLog()
     {
@@ -86,13 +77,17 @@ class Mumsys_Logger_Decorator_MessagesTest
         $this->_opts['msgDatetimeFormat'] = 'H:i';
         $this->_opts['msgLineFormat'] = '%1$s %2$s [%3$s] %5$s';
         $this->_opts['lf'] = " end\n";
+        $this->_opts['msgColors'] = true;
         $object = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
 
         $object->setMessageLoglevel(1);
         ob_start();
         $baseExpected = $object->log('bam', Mumsys_Logger_Abstract::ALERT);
         $actual = ob_get_clean();
-        $expected = date('H:i', time()) . ' flobeeunit [ALERT] bam end' . "\n";
+        $expected = chr(27) . '[41m'
+            . date('H:i', time()) . ' flobeeunit [ALERT] bam'
+            . chr(27) . '[0m'
+            .' end' . "\n";
 
         $this->assertEquals($expected, $actual);
     }
@@ -147,17 +142,18 @@ class Mumsys_Logger_Decorator_MessagesTest
     {
         $object = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
 
-        $this->setExpectedExceptionRegExp('Mumsys_Logger_Exception', '/(Level "99" unknown to set the message log level)/i    ');
+        $regex = '/(Level "99" unknown to set the message log level)/i';
+        $this->setExpectedExceptionRegExp('Mumsys_Logger_Exception', $regex);
         $object->setMessageLoglevel(99);
     }
 
 
     /**
      * @covers Mumsys_Logger_Decorator_Messages::setMessageLoglevel
+     * @covers Mumsys_Logger_Decorator_Messages::__construct
      */
     public function testabc()
     {
-
         $this->_opts['username'] = 'flobeeunit';
         $this->_opts['msgColors'] = true;
         $decorator = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
