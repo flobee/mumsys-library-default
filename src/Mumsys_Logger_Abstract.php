@@ -270,6 +270,25 @@ abstract class Mumsys_Logger_Abstract
 
 
     /**
+     * Sets the new message log format.
+     *
+     * Format of a log message.
+     * Default:
+     *  1 = dateformat string
+     *  2 = username
+     *  3 = name of the log level
+     *  4 = id of the log level
+     *  5 = the message
+     *
+     * @param string $format Log format parameters to be replaced
+     */
+    public function setLogFormat( $format = '%1$s [%2$s] [%3$s](%4$s) %5$s' )
+    {
+        $this->_logFormat = (string) $format;
+    }
+
+
+    /**
      * Sets the new log level to react from now on (0 - 7).
      *
      * @param integer $level Log level to set
