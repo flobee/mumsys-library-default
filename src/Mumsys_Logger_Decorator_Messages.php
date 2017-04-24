@@ -81,6 +81,22 @@ class Mumsys_Logger_Decorator_Messages
     private $_msgColors = false;
 
     /**
+     * Color setup for level 0-7, default color
+     * @var array
+     */
+    private $_colors = array(
+        0 => '[41m',  //Red background
+        1 => '[41m',
+        2 => '[41m',
+        3 => '[41m',
+        4 => '[43m', // Yellow or orange background (term related)
+        5 => '[43m',
+        6 => '[42m', // Green background
+        7 => '[44m', // Blue background
+        'default' => '[7m', // invert white bg, black text
+    );
+
+    /**
      * Flag to enable debugging or not.
      * Debug mode will print out all log messages.
      *
@@ -219,36 +235,72 @@ class Mumsys_Logger_Decorator_Messages
      */
     public function getMessageColored( $message, $level = 0 )
     {
-        $chr27 = chr(27);// escape sequence
+        $chr27 = chr(27); // escape sequence
 
         switch ( $level )
         {
             case Mumsys_Logger_Abstract::EMERG:
+                $color = $this->_colors[0];
+                break;
+
             case Mumsys_Logger_Abstract::ALERT:
+                $color = $this->_colors[1];
+                break;
+
             case Mumsys_Logger_Abstract::ERR:
+                $color = $this->_colors[2];
+                break;
+
             case Mumsys_Logger_Abstract::CRIT:
-                $color = "[41m"; //Red background
+                $color = $this->_colors[3];
                 break;
 
             case Mumsys_Logger_Abstract::WARN:
+                $color = $this->_colors[4];
+                break;
+
             case Mumsys_Logger_Abstract::NOTICE:
-                $color = "[43m"; //Yellow or orange background (term related)
+                $color = $this->_colors[5];
                 break;
 
             case Mumsys_Logger_Abstract::INFO:
-                $color = "[42m"; //Green background
+                $color = $this->_colors[6];
                 break;
 
             case Mumsys_Logger_Abstract::DEBUG:
-                $color = "[44m"; //Blue background
+                $color = $this->_colors[7];
                 break;
 
             default:
-                $color = '[7m'; // invert white bg, black text
-
+                if ( isset($this->_colors[$level]) ) {
+                    $color = $this->_colors[$level];
+                } else {
+                    $color = $this->_colors['default'];
+                }
+                break;
         }
 
         return sprintf('%1$s%2$s%3$s%4$s[0m', $chr27, $color, $message, $chr27);
+    }
+
+
+    /**
+     * Sets the message log format.
+     *
+     * Default:
+     *  1 = dateformat string
+     *  2 = username
+     *  3 = name of the log level
+     *  4 = id of the log level
+     *  5 = the message
+     *
+     * E.g: "[%3$s] %5$s"
+     *
+     * @param string $format Substitution parameters for the log message
+     */
+    public function setMessageLogFormat( $format = '%1$s [%2$s] [%3$s](%4$s) %5$s' )
+    {
+        $this->_logFormatMsg = (string) $format;
     }
 
 
