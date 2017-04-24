@@ -91,7 +91,7 @@ abstract class Mumsys_Abstract
     protected static function _checkKey( $key )
     {
         if (!is_string($key)) {
-            $message = 'Invalid initialisation key for a setter.'
+            $message = 'Invalid initialisation key for a setter. '
                 . 'A string is required!';
             throw new Mumsys_Exception($message);
         }
