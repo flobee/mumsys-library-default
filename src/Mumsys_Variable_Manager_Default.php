@@ -165,6 +165,9 @@ class Mumsys_Variable_Manager_Default
 
     /**
      * Callback "%1$s" for "%2$s" failt for value: "%3$s"'
+     * %1$s = __METHODE__
+     * %2$s = item label
+     * %3$s = values
      */
     const CALLBACK_ERROR = 'CALLBACK_ERROR';
 
