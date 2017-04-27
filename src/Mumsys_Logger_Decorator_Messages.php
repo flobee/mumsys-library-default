@@ -93,7 +93,7 @@ class Mumsys_Logger_Decorator_Messages
         5 => '[43m',
         6 => '[42m', // Green background
         7 => '[44m', // Blue background
-        'default' => '[7m', // invert white bg, black text
+        -1 => '[7m', // invert white bg, black text
     );
 
     /**
@@ -275,12 +275,12 @@ class Mumsys_Logger_Decorator_Messages
                 if ( isset($this->_colors[$level]) ) {
                     $color = $this->_colors[$level];
                 } else {
-                    $color = $this->_colors['default'];
+                    $color = $this->_colors[-1];
                 }
                 break;
         }
 
-        return sprintf('%1$s%2$s%3$s%4$s[0m', $chr27, $color, $message, $chr27);
+        return sprintf('%1$s%2$s%3$s%1$s[0m', $chr27, $color, $message);
     }
 
 
@@ -318,6 +318,28 @@ class Mumsys_Logger_Decorator_Messages
         }
 
         $this->_msgLogLevel = (int) $level;
+    }
+
+
+    /**
+     * Returns the list of loglevel/shellcolor confgurations.
+     *
+     * @return array List of console colors for each existing level
+     */
+    public function getColors()
+    {
+        return $this->_colors;
+    }
+
+
+    /**
+     * Sets/ replaces the list of loglevel/console colors.
+     *
+     * @param array $colors List of loglevel/console color pairs
+     */
+    public function setColors( array $colors )
+    {
+        $this->_colors = $colors;
     }
 
 }
