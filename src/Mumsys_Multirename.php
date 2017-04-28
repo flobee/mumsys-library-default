@@ -820,6 +820,7 @@ class Mumsys_Multirename
      * Creates a config directory to store a config or action history.
      *
      * @param string $path Action/ start directory for renaming files.
+     *
      * @return boolean Returns true on success of false if the config dir could not be created
      */
     private function _mkConfigDir( $path )
@@ -979,8 +980,8 @@ class Mumsys_Multirename
         $configs = array();
 
         foreach ($this->_configs as $i => $values) {
-            unset($values['test'], $values['save-config'], $values['show-config'], $values['from-config'],
-                $values['loglevel']);
+            unset($values['test'], $values['save-config'], $values['show-config'],
+                $values['from-config'], $values['loglevel']);
             $configs[$i] = $values;
         }
 
