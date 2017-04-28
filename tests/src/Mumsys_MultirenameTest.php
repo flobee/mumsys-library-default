@@ -571,7 +571,7 @@ class Mumsys_MultirenameTest
 
 
     /**
-     * See at testSetSetup() for more tests.
+     * See at testInitSetup() for more tests.
      */
     public function testSaveGetConfig()
     {
@@ -593,10 +593,10 @@ class Mumsys_MultirenameTest
         $this->assertTrue(is_array($actual));
 
         // test _gethistory
-        $this->_testFiles[] = $this->_testsDir . '/tmp/tmp2/.multirename/config';
-        $this->_testDirs[] = $this->_testsDir . '/tmp/tmp2/.multirename/';
-        $actual = $this->_object->saveConfig($this->_testsDir . '/tmp/tmp2/');
-        $this->assertTrue(($actual >= 1291), 'Error, current value: '.$actual);
+//        $this->_testFiles[] = $this->_testsDir . '/tmp/tmp2/.multirename/config';
+//        $this->_testDirs[] = $this->_testsDir . '/tmp/tmp2/.multirename/';
+//        $actual = $this->_object->saveConfig($this->_testsDir . '/tmp/tmp2/');
+//        $this->assertTrue(($actual >= 1291), 'Error, current value: ' . $actual);
     }
 
 
