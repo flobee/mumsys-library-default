@@ -20,8 +20,23 @@ class Mumsys_MultirenameTest
      * @var Mumsys_FileSystem
      */
     protected $_oFiles;
+
+    /**
+     * Version string ID eg: 1.2.3
+     * @var string
+     */
     protected $_version;
+
+    /**
+     * List of versiones of required library files
+     * @var array
+     */
     protected $_versions;
+
+    /**
+     * List of test files
+     * @var array
+     */
     protected $_testFiles = array();
 
     /**
@@ -35,13 +50,18 @@ class Mumsys_MultirenameTest
      * @var array
      */
     protected $_testDirs = array();
-    protected $_config;
-    protected $_oldHome;
 
-//    public function __construct($name=null, $data=array(), $dataName='')
-//    {
-//        parent::__construct($name, $data, $dataName);
-//    }
+    /**
+     * List of config parameters to init. multirename
+     * @var array
+     */
+    protected $_config;
+
+    /**
+     * $_SERVER['HOME'] variable to reset
+     * @var string
+     */
+    protected $_oldHome;
 
 
     /**
