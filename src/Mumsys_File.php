@@ -1,37 +1,30 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_File
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright Copyright (c) 2007 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2007 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_File
+ * @package     Library
+ * @subpackage  File
  * @version     3.1.0
- * 0.1 - Created on 2007/11
- * -----------------------------------------------------------------------
  */
-/* }}} */
 
 
 /**
  * Class for standard File handling open close read and write a file.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_File
+ * @package     Library
+ * @subpackage  File
  */
 class Mumsys_File
     extends Mumsys_Abstract
-    implements Mumsys_File_Interface
+    implements Mumsys_File_Interface, Mumsys_Logger_Writer_Interface
 {
     /**
      * Version ID information
@@ -98,14 +91,14 @@ class Mumsys_File
      */
     public function __construct(array $params=array( ))
     {
-        if ( !empty($params['file']) ) {
+        if ( isset($params['file']) ) {
             $this->_file = $params['file'];
         }
 
-        if ( !empty($params['way']) ) {
+        if ( isset($params['way']) ) {
             $this->setMode($params['way']);
         }
-        if ( !empty($params['buffer']) ) {
+        if ( isset($params['buffer']) ) {
             $this->_buffer = intval($params['buffer']);
         }
 
@@ -136,12 +129,14 @@ class Mumsys_File
     {
         if ( ($this->_fh = @fopen($this->_file, $this->_way)) === false ) {
             $msg = sprintf(
-                'Can not open file "%1$s" with mode "%2$s". Directory is writeable: "%3$s", readable: "%4$s".',
+                'Can not open file "%1$s" with mode "%2$s". Directory is '
+                . 'writeable: "%3$s", readable: "%4$s".',
                 $this->_file,
                 $this->_way,
                 (self::bool2str($this->isWriteable())),
                 (self::bool2str($this->isReadable()))
             );
+
             throw new Mumsys_File_Exception($msg);
         }
 
@@ -182,18 +177,19 @@ class Mumsys_File
      * @param string|binary $content Content to write to the file
      *
      * @return boolean Returns true on success.
-     * @throws Mumsys_File_Exception Throws exception if writing to file is
-     * impossible
+     *
+     * @throws Mumsys_File_Exception If writing to file is impossible
      */
-    public function write($content)
+    public function write( $content )
     {
-        if ( !$this->isOpen() )
-        {
-            $message = sprintf( 'File not open. Can not write to file: "%1$s".', $this->_file );
-            throw new Mumsys_File_Exception( $message );
+        if ( !$this->_isOpen ) {
+            $message = sprintf(
+                'File not open. Can not write to file: "%1$s".', $this->_file
+            );
+            throw new Mumsys_File_Exception($message);
         }
 
-        if ( !$this->isWriteable() )
+        if ( !$this->_isWriteable )
         {
             $message = sprintf('File not writeable: "%1$s".', $this->_file);
             throw new Mumsys_File_Exception( $message );
@@ -218,11 +214,12 @@ class Mumsys_File
      * Read from file or number of bytes set in setBuffer().
      *
      * @return string|boolean Returns file contents or false on errors
+     *
      * @throws Mumsys_File_Exception Throws exception if reading fails
      */
     public function read()
     {
-        if ( !$this->isOpen() ) {
+        if ( !$this->_isOpen ) {
             throw new Mumsys_File_Exception(
                 sprintf(
                     'File not open. Can not read from file: "%1$s".',
@@ -235,7 +232,10 @@ class Mumsys_File
             $msg = sprintf(
                 'File "%1$s" not readable with mode "%2$s". Is writeable '
                 . '"%3$s", readable: "%4$s".'
-                , $this->_file, $this->_way, self::bool2str($this->isWriteable()), self::bool2str($this->isReadable())
+                , $this->_file,
+                $this->_way,
+                self::bool2str($this->isWriteable()),
+                self::bool2str($this->isReadable())
             );
             throw new Mumsys_File_Exception($msg);
         }
@@ -256,6 +256,28 @@ class Mumsys_File
             throw new Mumsys_File_Exception($msg);
         }
         return $r;
+    }
+
+
+    /**
+     * Truncate storrage
+     *
+     * This will clean a file to zero byte or truncate the database table
+     *
+     * @return boolean true on success or false on failure
+     *
+     * @throws Mumsys_File_Exception If file not opened before
+     */
+    public function truncate()
+    {
+        if ( !$this->_isOpen ) {
+            $message = sprintf(
+                'Can not truncate file "%1$s". File not open', $this->_file
+            );
+            throw new Mumsys_File_Exception($message);
+        }
+
+        return ftruncate($this->_fh, 0);
     }
 
 
@@ -335,6 +357,7 @@ class Mumsys_File
 
     /**
      * Set the buffer.
+     *
      * @param integer $n Set number of bytes to fetch when reading a file.
      * Set to 0 will read the entire file
      */
@@ -384,8 +407,7 @@ class Mumsys_File
     public function isReadable()
     {
         if ($this->_isReadable === null) {
-            if ($this->isOpen()) {
-                // test if file is readable
+            if ($this->_isOpen) {
                 if ( is_readable($this->_file) ) {
                     $this->_isReadable = true;
                 } else {
@@ -409,8 +431,8 @@ class Mumsys_File
     /**
      * Test if open() was called successfully.
      *
-     * @return boolean Returns true if file connection was opend successfully or
-     * false on failure or the connection was closed
+     * @return boolean Returns true if file connection was opend successfully
+     * or false on failure or the connection was closed
      */
     public function isOpen()
     {

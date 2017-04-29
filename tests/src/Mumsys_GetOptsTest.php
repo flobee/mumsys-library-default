@@ -3,7 +3,7 @@
 /**
  * Test class for Mumsys_GetOpts.
  */
-class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
+class Mumsys_GetOptsTest extends Mumsys_Unittest_Testcase
 {
 
     /**
@@ -94,21 +94,24 @@ class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
         $inp = $this->_input;
         $inp[] = '--no-unknown';
 
-        $this->setExpectedException('Mumsys_GetOpts_Exception',
-            'Option "--no-unknown" not found in option list/configuration');
+        $this->setExpectedExceptionRegExp('Mumsys_GetOpts_Exception',
+            '/(Option "--no-unknown" not found in option list\/configuration)/');
         $x = new Mumsys_GetOpts($this->opts, $inp);
     }
 
     public function testConstructException()
     {
-        $this->setExpectedException('Mumsys_GetOpts_Exception', 'Empty options detected. Can not parse shell arguments');
+        $this->setExpectedExceptionRegExp(
+            'Mumsys_GetOpts_Exception',
+            '/(Empty options detected. Can not parse shell arguments)/'
+        );
         $x = new Mumsys_GetOpts(array(), $input = array());
     }
 
 
     public function testConstructException2()
     {
-        $this->setExpectedException('Mumsys_GetOpts_Exception', 'Missing value for parameter "-h"' . PHP_EOL);
+        $this->setExpectedExceptionRegExp('Mumsys_GetOpts_Exception', '/(Missing value for parameter "-h"' . PHP_EOL .')/m');
         $options = array(
             '-h:',
             '--action:' => 'Action to call: finalize, cron, import',
@@ -180,7 +183,7 @@ class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
         $expected = '-y yes';
         $this->assertEquals($expected, $actual);
 
-        $this->setExpectedException('Mumsys_GetOpts_Exception', 'Missing value for parameter "-x"');
+        $this->setExpectedExceptionRegExp('Mumsys_GetOpts_Exception', '/(Missing value for parameter "-x")/');
         $o = new Mumsys_GetOpts(array('-x:'), array('cmd', '-x'));
         $actual = $o->getCmd();
     }

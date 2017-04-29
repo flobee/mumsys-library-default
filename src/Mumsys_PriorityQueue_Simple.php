@@ -3,7 +3,6 @@
 
 /* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_PriorityQueue_Simple
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
@@ -35,8 +34,10 @@
  */
 class Mumsys_PriorityQueue_Simple
 {
-
-
+    /**
+     * Internal counter
+     * @var integer
+     */
     private $_cnt = PHP_INT_MAX;
 
     /**
@@ -55,7 +56,7 @@ class Mumsys_PriorityQueue_Simple
      *  array('afterdefault2 => mixed content),
      * )
      *
-     * @param array $stack Optional; Predefined and ready to go list of items.
+     * @param array $stack Optional; Predefined and ready to go list of key/item pairs.
      */
     public function __construct( array $stack = array() )
     {
@@ -97,7 +98,8 @@ class Mumsys_PriorityQueue_Simple
     public function add( $identifier, $value, $positionWay = 'after', $positionID = null )
     {
         if (isset($this->_stack[$identifier])) {
-            throw new Mumsys_Exception('Identifier already set');
+            $message = sprintf('Identifier "%1$s" already set', $identifier);
+            throw new Mumsys_PriorityQueue_Exception($message);
         }
 
         if (isset($this->_stack[$positionID])) {
@@ -140,7 +142,7 @@ class Mumsys_PriorityQueue_Simple
                 break;
             default:
                 $message = sprintf('Position way "%1$s" not implemented', $posWay);
-                throw new Mumsys_Exception($message);
+                throw new Mumsys_PriorityQueue_Exception($message);
         }
 
         return $pos;
@@ -158,4 +160,3 @@ class Mumsys_PriorityQueue_Simple
     }
 
 }
-

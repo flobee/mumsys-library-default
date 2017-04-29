@@ -18,7 +18,7 @@ require_once  __DIR__ . '/../src/Mumsys_Loader.php';
 spl_autoload_register(array('Mumsys_Loader', 'autoload'));
 
 
-class MumsysTestHelper extends PHPUnit_Framework_TestSuite
+class MumsysTestHelper
 {
     private static $_config;
 

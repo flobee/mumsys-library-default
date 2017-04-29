@@ -5,7 +5,7 @@
  * Test class for Mumsys_Timer.
  */
 class Mumsys_TimerTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_TimerTest

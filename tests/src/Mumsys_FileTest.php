@@ -3,7 +3,7 @@
 /**
  * Test class for File.
  */
-class Mumsys_FileTest extends PHPUnit_Framework_TestCase
+class Mumsys_FileTest extends Mumsys_Unittest_Testcase
 {
 
     /**
@@ -71,9 +71,9 @@ class Mumsys_FileTest extends PHPUnit_Framework_TestCase
     {
         $this->_object->setFile($this->_fileNotOk);
 
-        $this->setExpectedException('Mumsys_File_Exception',
-            'Can not open file "'. $this->_testsDir . '/tmp/notExists/file.tmp" '
-            . 'with mode "w+". Directory is writeable: "No", readable: "No".');
+        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
+            '/(Can not open file "'. str_replace('/', '\/', $this->_testsDir) . '\/tmp\/notExists\/file.tmp" '
+            . 'with mode "w\+". Directory is writeable: "No", readable: "No")/');
         $this->_object->open();
     }
 
@@ -99,9 +99,9 @@ class Mumsys_FileTest extends PHPUnit_Framework_TestCase
     {
         $this->_object->close();
 
-        $this->setExpectedException('Mumsys_File_Exception',
-            'File not open. Can not write to file: "'. $this->_testsDir
-            . '/tmp/Mumsys_FileTest.php.tmp".');
+        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
+            '/(File not open. Can not write to file: "'. str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/Mumsys_FileTest.php.tmp".)/');
         $x = $this->_object->write('hello world');
     }
 
@@ -121,8 +121,8 @@ class Mumsys_FileTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($o->isReadable());
         $this->assertFalse($o->isWriteable());
 
-        $this->setExpectedException('Mumsys_File_Exception', 'File not writeable: '
-            . '"'. $this->_testsDir . '/tmp/Mumsys_FileTest.php.tmp".');
+        $this->setExpectedExceptionRegExp('Mumsys_File_Exception', '/(File not writeable: '
+            . '"'. str_replace('/', '\/', $this->_testsDir) . '\/tmp\/Mumsys_FileTest.php.tmp".)/');
         $x = $o->write('hello world');
     }
 
@@ -135,9 +135,9 @@ class Mumsys_FileTest extends PHPUnit_Framework_TestCase
         $o = new Mumsys_File(array('file' => $this->_fileOk, 'way' => 'r'));
         $o->setFile($this->_fileOk);
 
-        $this->setExpectedException('Mumsys_File_Exception',
-            'Can not write to file: "'. $this->_testsDir . '/tmp/Mumsys_FileTest.php.tmp". '
-            . 'IsOpen: "Yes", Is writeable: "Yes".');
+        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
+            '/(Can not write to file: "'. str_replace('/', '\/', $this->_testsDir) . '\/tmp\/Mumsys_FileTest.php.tmp". '
+            . 'IsOpen: "Yes", Is writeable: "Yes".)/');
         $x = $o->write($this);
     }
 
@@ -165,8 +165,8 @@ class Mumsys_FileTest extends PHPUnit_Framework_TestCase
         $o = new Mumsys_File(array('way' => 'w'));
         $o->setFile($this->_fileNotOk);
 
-        $this->setExpectedException('Mumsys_File_Exception',
-            'File not open. Can not read from file: "'.$this->_testsDir . '/tmp/notExists/file.tmp".');
+        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
+            '/(File not open. Can not read from file: "'.str_replace('/', '\/', $this->_testsDir) . '\/tmp\/notExists\/file.tmp".)/');
         $text1 = $o->read();
     }
 
@@ -187,9 +187,9 @@ class Mumsys_FileTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($o->isReadable());
         $this->assertTrue($o->isWriteable());
 
-        $this->setExpectedException('Mumsys_File_Exception',
-            'File "'.$this->_testsDir . '/tmp/Mumsys_FileTest.php.tmp" not readable with mode "w". '
-            . 'Is writeable "Yes", readable: "No".');
+        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
+            '/(File "'.str_replace('/', '\/', $this->_testsDir) . '\/tmp\/Mumsys_FileTest.php.tmp" not readable with mode "w". '
+            . 'Is writeable "Yes", readable: "No".)/');
         $x = $o->read();
     }
 
@@ -199,8 +199,8 @@ class Mumsys_FileTest extends PHPUnit_Framework_TestCase
     {
         $o = new Mumsys_File(array('file' => $this->_fileOk, 'way' => 'w'));
 
-        $this->setExpectedException('Mumsys_File_Exception',
-            'Error when reading the file: "'.$this->_testsDir . '/tmp/Mumsys_FileTest.php.tmp". IsOpen: "Yes".');
+        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
+            '/(Error when reading the file: "'.str_replace('/', '\/', $this->_testsDir) . '\/tmp\/Mumsys_FileTest.php.tmp". IsOpen: "Yes".)/');
         $text1 = $o->read();
     }
 
@@ -233,8 +233,8 @@ class Mumsys_FileTest extends PHPUnit_Framework_TestCase
         $this->_object->write("hello world\nhello flobee");
 
         $o = new Mumsys_File(array('file' => $this->_fileOk, 'way' => 'r'));
-        $this->setExpectedException('Mumsys_File_Exception', 'Invalid mode');
-        $o->setMode('this it wrong');
+        $this->setExpectedExceptionRegExp('Mumsys_File_Exception', '/(Invalid mode)/');
+        $o->setMode('this is wrong');
     }
 
 

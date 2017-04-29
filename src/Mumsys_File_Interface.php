@@ -31,6 +31,8 @@
  */
 interface Mumsys_File_Interface
 {
+
+
     /**
      * Initialise the File object.
      * If a file and mode is given the open() methode will be called automaticly.
@@ -41,7 +43,8 @@ interface Mumsys_File_Interface
      * 		[buffer] Number of bytes to be read from the file. @see setBuffer()
      * @return void
      */
-    public function __construct(array $params=array());
+    public function __construct( array $params = array() );
+
 
     /**
      * Open connection to read or write to a file.
@@ -51,6 +54,7 @@ interface Mumsys_File_Interface
      */
     public function open();
 
+
     /**
      * Close current file connection if exists.
      *
@@ -58,6 +62,7 @@ interface Mumsys_File_Interface
      * or true by default even if no connection was made
      */
     public function close();
+
 
     /**
      * Write given content to the file.
@@ -67,7 +72,8 @@ interface Mumsys_File_Interface
      * @return boolean Returns true on success.
      * @throws Mumsys_File_Exception Throws exception if writing to file is impossible
      */
-    public function write($content);
+    public function write( $content );
+
 
     /**
      * Read from file or number of bytes set in setBuffer().
@@ -76,6 +82,19 @@ interface Mumsys_File_Interface
      * @throws Mumsys_File_Exception Throws exception if reading fails
      */
     public function read();
+
+
+    /**
+     * Truncate storrage
+     *
+     * This will clean a file to zero byte or truncate the database table
+     *
+     * @return boolean true on success or false on failure
+     *
+     * @throws Mumsys_File_Exception If file not opened before
+     */
+    public function truncate();
+
 
     /**
      * Set write or read mode.
@@ -100,7 +119,8 @@ interface Mumsys_File_Interface
      *
      * @param string $string Return the mode for the file operation
      */
-    public function setMode($string);
+    public function setMode( $string );
+
 
     /**
      * Sets the name and location of the file to read or write from.
@@ -110,7 +130,8 @@ interface Mumsys_File_Interface
      *
      * @param string $file File to read or write from
      */
-    public function setFile($file);
+    public function setFile( $file );
+
 
     /**
      * Returns the location of the file.
@@ -119,12 +140,14 @@ interface Mumsys_File_Interface
      */
     public function getFile();
 
+
     /**
      * Set the buffer.
      * @param integer $n Set number of bytes to fetch when reading a file.
      * Set to 0 will read the entire file
      */
-    public function setBuffer($n);
+    public function setBuffer( $n );
+
 
     /**
      * Get writable status.
@@ -134,6 +157,7 @@ interface Mumsys_File_Interface
      */
     public function isWriteable();
 
+
     /**
      * Get readable status.
      * The flag will be set when using open() method
@@ -141,6 +165,7 @@ interface Mumsys_File_Interface
      * @return boolean Return if file is readable (true) or not (false)
      */
     public function isReadable();
+
 
     /**
      * Test if open() was called successfully.

@@ -1,5 +1,23 @@
 # Changes
 
+2016-07-14
+    Mumsys_Variable_*
+    Mumsys_Variable_Item_*
+    Mumsys_Variable_Manager_*
+    - Migrate from old Mumsys_Field classes
+    - Adds tests
+
+2016-04-24
+    Mumsys_Multirename
+    - Adding --stats flag to output some stats
+    Mumsys_Mvc_Router*
+    - Init Mumsys_Mvc_Router_Abstract
+    - Init Mumsys_Mvc_Router_Default
+    - Init Mumsys_Mvc_Router_Interface
+    Mumsys_PriorityQueue_Simple
+    - Init Mumsys_PriorityQueue_Simple + tests
+
+
 2016-04-19
     Mumsys_Request
     - Init Mumsys_Request_Interface
@@ -9,12 +27,14 @@
     Mumsys_Session
     - Rename Mumsys_Session to Mumsys_Session_Default
     - Updates tests
-    Mumsys_Time
+    Mumsys_Timer
     - Improves timer, updates tests
     Mumsys_FileSystem
     - Doesnt flollow symlinks now
     Mumsys_Multirename
     - Updates in coding style
+    Mumsys_PriorityQueue_Simple 
+    - Init class and tests
 
 
 2016-03-10

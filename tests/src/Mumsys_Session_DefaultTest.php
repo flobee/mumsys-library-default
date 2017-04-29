@@ -5,7 +5,7 @@
  * Mumsys_Session_Default Test
  */
 class Mumsys_Session_DefaultTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Session_Default
@@ -101,7 +101,7 @@ class Mumsys_Session_DefaultTest
         $this->assertEquals('Mumsys_Session_Default 1.0.2', $this->_object->getVersion());
 
         // test register existing
-        $this->setExpectedException('Mumsys_Session_Exception', 'Session key "testkey" exists');
+        $this->setExpectedExceptionRegExp('Mumsys_Session_Exception', '/(Session key "testkey" exists)/i');
         $this->_object->register('testkey', array('val5', 'val6'));
     }
 
