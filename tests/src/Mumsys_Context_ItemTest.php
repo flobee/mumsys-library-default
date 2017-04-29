@@ -40,7 +40,7 @@ class Mumsys_Context_ItemTest
 
 
     /**
-     * @covers Mumsys_Context::_get
+     * @covers Mumsys_Context_Item::_get
      */
     public function test_get()
     {
@@ -50,8 +50,8 @@ class Mumsys_Context_ItemTest
 
 
     /**
-     * @covers Mumsys_Context::getConfig
-     * @covers Mumsys_Context::registerConfig
+     * @covers Mumsys_Context_Item::getConfig
+     * @covers Mumsys_Context_Item::registerConfig
      */
     public function testGetSetConfig()
     {
@@ -63,8 +63,8 @@ class Mumsys_Context_ItemTest
 
 
     /**
-     * @covers Mumsys_Context::getPermissions
-     * @covers Mumsys_Context::registerPermissions
+     * @covers Mumsys_Context_Item::getPermissions
+     * @covers Mumsys_Context_Item::registerPermissions
      */
 //    public function testGetSetPermissions()
 //    {
@@ -77,10 +77,10 @@ class Mumsys_Context_ItemTest
 
 
     /**
-     * @covers Mumsys_Context::getSession
-     * @covers Mumsys_Context::registerSession
-     * @covers Mumsys_Context::_get
-     * @covers Mumsys_Context::_register
+     * @covers Mumsys_Context_Item::getSession
+     * @covers Mumsys_Context_Item::registerSession
+     * @covers Mumsys_Context_Item::_get
+     * @covers Mumsys_Context_Item::_register
      * @runInSeparateProcess
      */
     public function testGetSetSession()
@@ -96,10 +96,10 @@ class Mumsys_Context_ItemTest
 
 
     /**
-     * @covers Mumsys_Context::getDisplay
-     * @covers Mumsys_Context::registerDisplay
-     * @covers Mumsys_Context::replaceDisplay
-     * @covers Mumsys_Context::_replace
+     * @covers Mumsys_Context_Item::getDisplay
+     * @covers Mumsys_Context_Item::registerDisplay
+     * @covers Mumsys_Context_Item::replaceDisplay
+     * @covers Mumsys_Context_Item::_replace
      */
 //    public function testGetSetDisplay()
 //    {
@@ -124,8 +124,8 @@ class Mumsys_Context_ItemTest
 
 
     /**
-     * @covers Mumsys_Context::getControllerFrontend
-     * @covers Mumsys_Context::registerControllerFrontend
+     * @covers Mumsys_Context_Item::getControllerFrontend
+     * @covers Mumsys_Context_Item::registerControllerFrontend
      */
 //    public function testGetSetControllerFrontend()
 //    {
@@ -138,8 +138,8 @@ class Mumsys_Context_ItemTest
 
 
     /**
-     * @covers Mumsys_Context::getTranslation
-     * @covers Mumsys_Context::registerTranslation
+     * @covers Mumsys_Context_Item::getTranslation
+     * @covers Mumsys_Context_Item::registerTranslation
      */
     public function testGetSetTranslation()
     {
@@ -152,10 +152,10 @@ class Mumsys_Context_ItemTest
 
 
     /**
-     * @covers Mumsys_Context::getLogger
-     * @covers Mumsys_Context::registerLogger
-     * @covers Mumsys_Context::_get
-     * @covers Mumsys_Context::_register
+     * @covers Mumsys_Context_Item::getLogger
+     * @covers Mumsys_Context_Item::registerLogger
+     * @covers Mumsys_Context_Item::_get
+     * @covers Mumsys_Context_Item::_register
      */
     public function testGetSetLogger()
     {
@@ -170,8 +170,8 @@ class Mumsys_Context_ItemTest
 
 
     /**
-     * @covers Mumsys_Context::getGeneric
-     * @covers Mumsys_Context::registerGeneric
+     * @covers Mumsys_Context_Item::getGeneric
+     * @covers Mumsys_Context_Item::registerGeneric
      */
     public function testGetSetGeneric()
     {
@@ -192,8 +192,8 @@ class Mumsys_Context_ItemTest
 
 
     /**
-     * @covers Mumsys_Context::getGeneric
-     * @covers Mumsys_Context::registerGeneric
+     * @covers Mumsys_Context_Item::getGeneric
+     * @covers Mumsys_Context_Item::registerGeneric
      */
     public function testRegisterGerneicException()
     {
@@ -208,9 +208,9 @@ class Mumsys_Context_ItemTest
     /**
      * Test abstract class
      *
-     * @covers Mumsys_Context::getVersion
-     * @covers Mumsys_Context::getVersionID
-     * @covers Mumsys_Context::getVersions
+     * @covers Mumsys_Context_Item::getVersion
+     * @covers Mumsys_Context_Item::getVersionID
+     * @covers Mumsys_Context_Item::getVersions
      */
     public function testGetVersion()
     {
@@ -219,7 +219,7 @@ class Mumsys_Context_ItemTest
             . 'all existing tests where checked!';
         $this->assertEquals($this->_version, Mumsys_Config_File::VERSION, $message);
 
-        
+
         $this->assertEquals('Mumsys_Context_Item ' . $this->_version, $this->_object->getVersion());
         $this->assertEquals($this->_version, $this->_object->getVersionID());
 
