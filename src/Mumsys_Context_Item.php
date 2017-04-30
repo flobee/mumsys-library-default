@@ -108,7 +108,7 @@ class Mumsys_Context_Item
      */
     public function getDatabase()
     {
-        return $this->_get('Mumsys_Db');
+        return $this->_get('Mumsys_Db_Driver_Interface');
     }
 
 
@@ -120,7 +120,7 @@ class Mumsys_Context_Item
      */
     public function registerDatabase( Mumsys_Db_Driver_Interface $db )
     {
-        $this->_register('Mumsys_Db', $db);
+        $this->_register('Mumsys_Db_Driver_Interface', $db);
     }
 
 
@@ -131,7 +131,7 @@ class Mumsys_Context_Item
      */
     public function replaceDatabase( Mumsys_Db_Driver_Interface $db )
     {
-        $this->_replace('Mumsys_Db', $db);
+        $this->_replace('Mumsys_Db_Driver_Interface', $db);
     }
 
 
