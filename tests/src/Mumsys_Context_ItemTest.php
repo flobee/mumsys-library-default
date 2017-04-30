@@ -94,6 +94,16 @@ class Mumsys_Context_ItemTest
         $this->_object->registerSession($session);
     }
 
+    /**
+     *
+     */
+    public function testGetSetDatabase()
+    {
+        $options = array(
+            'type' => 'None:None',
+        );
+        $odb = new Mumsys_Db_Factory::getInstance($this->_object, $options);
+    }
 
     /**
      * @covers Mumsys_Context_Item::getDisplay
