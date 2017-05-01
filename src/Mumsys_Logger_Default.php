@@ -18,6 +18,8 @@
 /**
  * Class to generate log messages to a writer mechanism e.g. a logfile
  *
+ * If no writer is given Mumsys_File class will be used.
+ *
  * @todo psr-3 compatible http://www.php-fig.org/psr/psr-3/
  *
  * Example:
@@ -29,10 +31,7 @@
  * $writer = new Mumsys_File($fileopts);
  *
  * $opts = array(
- *     'logLevel'=>7,
- *     'msglogLevel'=>6,
- *     'msgEcho'=>true,
- *     'msgReturn'=>true
+ *     'logLevel'=>7
  * ),
  * $oLog = new Mumsys_Logger_Default($opts, $writer);
  * </code>
@@ -55,19 +54,13 @@ class Mumsys_Logger_Default
      * Initialize the default logger object
      *
      * @param array $args Associativ array with additional params
-     * - [username] optional otherwise PHP_AUTH_USER will be taken
-     * - [lineFormat] optional format of log line;see $_logformat.
-     * - [timeFormat] optional format of a timestamp format
-     * - [logLevel] integer Optional Number of the loglevel
-     *  Default: 7 (debug mode, log all)
-     * - [msglogLevel] integer Optional Message log level for messages which
-     *  should be printed (if msgEcho=true)
-     * - [msgLineFormat] optional Output format which should be printed (if msgEcho=true)
-     * - [msgEcho] boolean Optional Echo a log event Default: false
-     * - [msgReturn] boolean Optional Return current log event Default: true
-     * - [debug] boolean Default: false
-     * - [verbose] boolean Default: false
-     * - [lf] string Optional Linefeed Default: \n
+     *  - [username] optional otherwise PHP_AUTH_USER will be taken
+     *  - [lineFormat] optional format of log line;see $_logformat.
+     *  - [timeFormat] optional format of a timestamp format
+     *  - [logLevel] integer Optional Number of the loglevel; Default: 7 (debug mode)
+     *  - [debug] boolean Default: false
+     *  - [verbose] boolean Default: false
+     *  - [lf] string Optional Linefeed Default: \n
      * @param Mumsys_Logger_Writer_Interface $writer Writer interface to store messages
      */
     public function __construct( array $options = array(), Mumsys_Logger_Writer_Interface $writer = null )

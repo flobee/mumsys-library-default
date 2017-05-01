@@ -11,10 +11,15 @@ class Mumsys_Logger_Decorator_MessagesTest
      */
     protected $_object;
 
+    /**
+     * @var Mumsys_Logger_File
+     */
+    protected $_logger;
+
 
     protected function setUp()
     {
-        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
+        $this->_testsDir = MumsysTestHelper::getTestsBaseDir();
         $this->_logfile = $this->_testsDir . '/tmp/' . basename(__FILE__) .'.test';
 
         $this->_opts = $opts = array(
@@ -149,32 +154,53 @@ class Mumsys_Logger_Decorator_MessagesTest
 
 
     /**
-     * @covers Mumsys_Logger_Decorator_Messages::setMessageLoglevel
      * @covers Mumsys_Logger_Decorator_Messages::__construct
+     * @covers Mumsys_Logger_Decorator_Messages::setMessageLogFormat
+     * @covers Mumsys_Logger_Decorator_Messages::getColors
+     * @covers Mumsys_Logger_Decorator_Messages::setColors
+     * @covers Mumsys_Logger_Decorator_Messages::log
+     * @covers Mumsys_Logger_Decorator_Messages::getMessageColored
      */
-    public function testabc()
+    public function testLogColored()
     {
         $this->_opts['username'] = 'flobeeunit';
         $this->_opts['msgColors'] = true;
         $decorator = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
-        //$decoratorB = new Mumsys_Logger_Decorator_ConsoleColor($decoratorA, $this->_opts);
+
+        $colorTemplate = chr(27) . '%1$s%2$s' . chr(27) . '[0m' . "\n";
 
 
-//        ob_start();
-        echo PHP_EOL;
-        echo $decorator->log('level 0', 0);
-        echo $decorator->log('level 1 ', 1);
-        echo $decorator->log('level 2 ', 2);
-        echo $decorator->log('level 3 ', 3);
-        echo $decorator->log('level 4 ', 4);
-        echo $decorator->log('level 5 ', 5);
-        echo $decorator->log('level 6 ', 6);
-        echo $decorator->log('level 7 ', 7);
-        echo $decorator->log('level 99 ', 99);
+        $this->_logger->setLogFormat('%5$s');
+        $decorator->setMessageLogFormat('%5$s');
 
-//        $actual = ob_get_clean();
+        $colors = $decorator->getColors();
+        $colors[99] = '[47m';
+        $decorator->setColors($colors);
+        $colors[98] = '[7m';
+        foreach($colors as $level => $color)
+        {
+            $message = 'level '. $level;
+            ob_start();
+            $decorator->log($message, $level);
+            $actual = ob_get_clean();
+
+            $expected = sprintf($colorTemplate, $color, $message);
+            $this->assertEquals($expected, $actual, 'error with level: ' . $level);
+        }
+    }
 
 
+    /**
+     * @covers Mumsys_Logger_Decorator_Messages::getColors
+     * @covers Mumsys_Logger_Decorator_Messages::setColors
+     */
+    public function testGetSetColors()
+    {
+        $expected = $this->_object->getColors();
+        $expected[99] = '[49m';
+        $this->_object->setColors($expected);
+
+        $this->assertEquals($expected, $this->_object->getColors());
     }
 
 }
