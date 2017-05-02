@@ -94,16 +94,25 @@ class Mumsys_Context_ItemTest
         $this->_object->registerSession($session);
     }
 
+
     /**
-     *
+     * @covers Mumsys_Context_Item::getDatabase
+     * @covers Mumsys_Context_Item::registerDatabase
+     * @covers Mumsys_Context_Item::replaceDatabase
+     * @covers Mumsys_Context_Item::_replace
      */
     public function testGetSetDatabase()
     {
         $options = array(
             'type' => 'None:None',
         );
-        $odb = new Mumsys_Db_Factory::getInstance($this->_object, $options);
+        $odb = Mumsys_Db_Factory::getInstance($this->_object, $options);
+        $this->_object->registerDatabase($odb);
+        $this->_object->replaceDatabase($odb);
+
+        $this->assertInstanceOf('Mumsys_Db_Driver_Interface', $this->_object->getDatabase());
     }
+
 
     /**
      * @covers Mumsys_Context_Item::getDisplay
@@ -179,6 +188,24 @@ class Mumsys_Context_ItemTest
     }
 
 
+    /**
+     * @covers Mumsys_Context_Item::getRequest
+     * @covers Mumsys_Context_Item::registerRequest
+     * @covers Mumsys_Context_Item::_get
+     * @covers Mumsys_Context_Item::_register
+     */
+    public function testGetSetRequest()
+    {
+        $object = new Mumsys_Request_Console();
+        $this->_object->registerRequest($object);
+
+        $this->assertInstanceOf('Mumsys_Request_Interface', $this->_object->getRequest());
+
+        $this->setExpectedExceptionRegExp('Mumsys_Request_Exception', '/("Mumsys_Logger_Interface" already set)/');
+        $this->_object->registerRequest($object);
+    }
+
+    
     /**
      * @covers Mumsys_Context_Item::getGeneric
      * @covers Mumsys_Context_Item::registerGeneric
