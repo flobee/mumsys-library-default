@@ -42,7 +42,7 @@ interface Mumsys_Db_Driver_Interface
      * - 'compress' boolean optional Deside to compress the connection or not
      * - mixed other parameters you may need for your own connection/ driver
      */
-    public function __construct(  Mumsys_Context $context, array $args );
+    public function __construct(  Mumsys_Context_Item $context, array $args );
 
     /**
      * Destructor. Close current connection.
