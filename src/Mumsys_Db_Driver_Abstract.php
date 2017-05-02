@@ -266,7 +266,7 @@ abstract class Mumsys_Db_Driver_Abstract
      * - 'throwErrors' boolean optional default: true
      * - 'compress' boolean optional Deside to compress the connection or not.
      */
-    public function __construct(Mumsys_Context $context, array $args = array() )
+    public function __construct(Mumsys_Context_Item $context, array $args = array() )
     {
         if ( isset($args['host']) ) {
             $this->_host = (string)$args['host'];
