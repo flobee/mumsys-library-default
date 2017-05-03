@@ -9,6 +9,17 @@ class Mumsys_GetOptsTest extends Mumsys_Unittest_Testcase
      * @var Mumsys_GetOpts
      */
     protected $_object;
+    /**
+     * Initial options/configuration
+     * @var array
+     */
+    private $opts;
+
+    /**
+     * Input parameters to work with.
+     * @var array
+     */
+    private $_input;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -16,9 +27,9 @@ class Mumsys_GetOptsTest extends Mumsys_Unittest_Testcase
      */
     protected function setUp()
     {
-        $this->markTestSkipped();
-        return false;
-        $this->_version = '3.3.2';
+//        $this->markTestSkipped();
+//        return false;
+        $this->_version = '3.4.0';
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_GetOpts' => $this->_version,
@@ -51,7 +62,7 @@ class Mumsys_GetOptsTest extends Mumsys_Unittest_Testcase
 ////            'import' => 'Task: Create new jobs (see this code and csv demo file for a howto)',
 ////            '--file:' => 'csv file location to/for import',
 ////        );
-//        $this->_object = new Mumsys_GetOpts($this->opts, $input);
+        $this->_object = new Mumsys_GetOpts($this->opts, $input);
     }
 
 
@@ -64,14 +75,19 @@ class Mumsys_GetOptsTest extends Mumsys_Unittest_Testcase
         $this->_object = null;
     }
 
-//
-//    // for 100% code coverage
-//    public function testConstruct1()
-//    {
-//        // use server vars, not input parameters
-//        $x = new Mumsys_GetOpts($this->opts);
-//    }
-//
+
+    /**
+     * for 100% code coverage
+     * @covers Mumsys_GetOpts::__construct
+     */
+    public function testConstruct1()
+    {
+        // use server vars, not input parameters
+        $x = new Mumsys_GetOpts($this->opts);
+
+        $this->assertInstanceOf('Mumsys_GetOpts', $x);
+    }
+
 //
 //    // for 100% code coverage
 //    // first come first serves not in this kind of setters: --no- options
@@ -132,12 +148,7 @@ class Mumsys_GetOptsTest extends Mumsys_Unittest_Testcase
 //        $this->assertEquals($expected, $actual1);
 //    }
 
-    // for 100% code coverage
-    public function testConstruct1()
-    {
-        // use server vars, not input parameters
-        $x = new Mumsys_GetOpts($this->opts);
-    }
+
 
     // for 100% code coverage
     public function testConstructWithNoFlag()
