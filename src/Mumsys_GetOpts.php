@@ -9,8 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_GetOpts
+ * @package     Library
+ * @subpackage  GetOpts
  * @version     3.4.0
  * Created: 2011-04-11
  */
