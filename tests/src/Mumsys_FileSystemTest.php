@@ -17,7 +17,13 @@ class Mumsys_FileSystemTest
 
     protected function setUp()
     {
-        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
+        $this->_version = '3.0.6';
+        $this->_versions = array(
+            'Mumsys_FileSystem' => $this->_version,
+            'Mumsys_FileSystem_Common_Abstract' => '3.1.0',
+        );
+
+        $this->_testsDir = realpath(dirname(__FILE__) .'/../');
         $this->_testdirs = array(
             'rm1' => $this->_testsDir . '/tmp/unittest-mkdir/mkdirs/testfile',
             'rm2' => $this->_testsDir . '/tmp/unittest-mkdir/testfile',
@@ -219,8 +225,8 @@ class Mumsys_FileSystemTest
     {
         // info for a file
         $curFile = __FILE__;
-        $actual1 = $this->_object->getFileDetailsExtended($curFile);
         $stat = @lstat($curFile);
+        $actual1 = $this->_object->getFileDetailsExtended($curFile);
         $expected1 = array(
             'file' => $curFile,
             'name' => basename($curFile),
@@ -363,14 +369,9 @@ class Mumsys_FileSystemTest
      */
     public function testCopyException()
     {
-
-        //Failed asserting that exception message '
-        //Copy error for: "/home/flobee/workspace/github/mumsys-library-default/tests/tmp/unittest" copy (to: //unittest) fails
-        //Copy error for: "/home/flobee/workspace/github/mumsys-library-default/tests/tmp/unittest" copy (to: //unittest): failed to open stream: Permission denied'.
-
-        $regex = '/(Copy error for)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $regex);
-        $this->_object->copy($this->_testdirs['file'], '/');
+        $msg = 'Copy error for: "'.$this->_testsDir . '/tmp/unittest" copy (to: /root/unittest) fails';
+        $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
+        $this->_object->copy($this->_testdirs['file'], '/root');
     }
 
 
@@ -656,6 +657,20 @@ class Mumsys_FileSystemTest
             '1000 TB',
         );
         $this->assertEquals($expected, $actual);
+    }
+
+
+    // --- test abstract and versions
+
+
+    public function testgetVersions()
+    {
+        $possible = $this->_object->getVersions();
+
+        foreach ($this->_versions as $must => $value) {
+            $this->assertTrue( isset($possible[$must]) );
+            $this->assertEquals($possible[$must], $value);
+        }
     }
 
 }

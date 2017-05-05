@@ -243,6 +243,8 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * Tests for max. code coverage.
+     * 
      * @covers Mumsys_Multirename::run
      * @covers Mumsys_Multirename::__destruct
      * @covers Mumsys_Multirename::_getRelevantFiles
