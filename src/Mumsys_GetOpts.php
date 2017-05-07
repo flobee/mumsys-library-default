@@ -11,7 +11,6 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  GetOpts
- * @version     3.4.0
  * Created: 2011-04-11
  */
 
@@ -19,19 +18,23 @@
 /**
  * Class to handle/ pipe shell arguments in php context.
  *
- * Shell arguments will be parsed and an array list of key value pairs will be created.
- * When using long and shot options the longer one will be used and the short
- * one will map to it. Short options always have a single character.
- * Dublicate options can't be handled. First comes first serves will take affect.
+ * Shell arguments will be parsed and an array list of key/value pairs will be
+ * created.
+ * When using long and shot options the long options will be used and the short
+ * one will map to it.
+ * Short options always have a single character. Dublicate options can't be
+ * handled. First comes first serves will take affect (fifo).
  *
  * Flags will be handled as boolean true if set.
  * The un-flag option take affect when: Input args begin with a "--no-" string.
  * E.g. --no-history. It will check if the option --history was set and will
- * unset it like it wasn't set in the cmd line. This is usfule when working with
- * different options. One from a config file and the cmd line adds or replace
- * some options. But this must be handled in your buissness logic. E.g. see
- * Mumsys_Multirename class. The un-flag option will always disable a value
+ * unset it like it wasn't set in the cmd line. This is usefule when working
+ * with different options. One from a config file and the cmd line adds or
+ * replace some options. But this must be handled in your buissness logic. E.g. see
+ * Mumsys_Multirename class.
+ * The un-flag option will always disable/ remove a value.
  *
+ * @todo dosent work when several actions exists. find count for each action!
  * @todo global config parameters like "help", "version" or "cron" ?
  * @todo Actions groups must be validated, extend whitelist configuration
  *
@@ -44,10 +47,10 @@
  * // follow. Otherwise is will be handled as flag (boolean set or not set) and
  * // if this do not match an error will be thrown.
  * $paramerterOptions = array(
- *  '--cmd:', // No help message or:
+ *  '--cmd:',        // A required value; No help message or:
  *  '--program:' => 'optional: your help/ usage information as value',
  *  '--pathstart:', => 'Path where your files are'
- *  '--delsource'
+ *  '--delsource' // optional
  * );
  * // Advanced usage (including several actions like):
  * // e.g.: action1 --param1 val1 --param2 val2 action2 --param1 val1 ...
@@ -86,9 +89,9 @@
  * //      'action2' => array( ...
  * </code>
  *
- * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_GetOpts
+ * @category Mumsys
+ * @package Library
+ * @subpackage GetOpts
  */
 class Mumsys_GetOpts
     extends Mumsys_Abstract
@@ -96,7 +99,7 @@ class Mumsys_GetOpts
     /**
      * Version ID information
      */
-    const VERSION = '3.4.0';
+    const VERSION = '3.5.0';
 
     /**
      * Cmd line.
@@ -109,6 +112,8 @@ class Mumsys_GetOpts
      * Note: When using several keys e.g.: -a|--append: the longer one will be
      * used, the short will map to it and: first come, first serves.
      * E.g: /program -a "X" --append "Y" -> --append will be "X", "Y" ignored!
+     * Output: array("append" => "X")
+     *
      * @var array
      */
     private $_options;
@@ -138,6 +143,12 @@ class Mumsys_GetOpts
     private $_argv;
 
     /**
+     * Argument count.
+     * @var integer
+     */
+    private $_argc;
+
+    /**
      * Internal flag to deside if action handling will be activated or not.
      * @var boolean
      */
@@ -158,6 +169,8 @@ class Mumsys_GetOpts
      *
      * @param array $configOptions List of configuration parameters to look for
      * @param array $input List of input arguments. Optional, uses default input handling then
+     *
+     * @throws Mumsys_GetOpts_Exception On error initialsing the object
      */
     public function __construct( array $configOptions = array(), array $input = null )
     {
@@ -167,35 +180,42 @@ class Mumsys_GetOpts
         }
 
         if (empty($input)) {
-            $argv = $_SERVER['argv'];
-            $argc = $_SERVER['argc'];
+            $this->_argv = $_SERVER['argv'];
+            $this->_argc = $_SERVER['argc'];
         } else {
-            $argv = $input;
-            $argc = count($input);
+            $this->_argv = $input;
+            $this->_argc = count($input);
         }
+//print_r($this->_argc);
+//print_r($this->_argv);
+        $this->_options = $this->verifyOptions($configOptions);
+        $this->setMappingOptions($this->_options);
 
-        $this->_argv = $argv;
+        $this->parse();
+    }
 
 
-        $options = $this->_checkOptions($configOptions);
-
-        $this->_mapping = $map = $this->_mapOptions($options);
-
-        $this->_options = $options;
-//        print_r($argv);
-
-        $argPos = 1; // zero is the called program
+    /**
+     *
+     * @throws Mumsys_GetOpts_Exception
+     */
+    public function parse()
+    {
+        $argPos = 1; // zero is the calling program
+        $argv = & $this->_argv;
         $var = null;
         $return = array();
         $errorMsg = '';
         $unflag = array();
 
-
-        foreach ($options as $action => $params) {
-            while ($argPos < $argc) {
+        foreach ($this->_options as $action => $params)
+        {
+            /** @todo dosent work when several actions exists. find count for each action! */
+            while ($argPos < $this->_argc)
+            {
                 $arg = $argv[$argPos];
 
-// skip values as they are expected in argPos + 1, if any
+                // skip values as they are expected in argPos + 1, if any
                 if (isset($arg[0]) && $arg[0] == '-') {
                     if ($arg[1] == '-') {
                         $argTag = '--' . substr($arg, 2, strlen($arg));
@@ -203,31 +223,37 @@ class Mumsys_GetOpts
                         $argTag = '-' . $arg[1]; // take the short flag
                     }
 
-                    if (isset($map[$action][$argTag])) {
-                        $var = $map[$action][$argTag];
+                    if (isset($this->_mapping[$action][$argTag])) {
+                        $var = $this->_mapping[$action][$argTag];
                     } else {
-// a --no-FLAG' to unset?
+                        // a --no-FLAG' to unset?
                         $test = substr($argTag, 5, strlen($argTag));
                         if (strlen($test) == 1) {
                             $unTag = '-' . $test;
+                            if (isset($this->_mapping[$action][$unTag])) {
+                                // use the long opt, the short one maps to
+                                $unTag = $this->_mapping[$action][$unTag];
+                            }
                         } else {
                             $unTag = '--' . $test;
                         }
 
-                        if (isset($map[$action][$unTag])) {
+                        if (isset($this->_mapping[$action][$unTag])) {
                             $unflag[$action][] = $unTag;
                         } else {
                             $errorMsg .= sprintf(
-                                'Option "%1$s" not found in option list/configuration for action "%2$s"' . PHP_EOL,
-                                $argTag, $action
+                                'Option "%1$s" not found in option list/configuration for action "%2$s"%3$s',
+                                $argTag,
+                                $action,
+                                PHP_EOL
                             );
                             $argPos++;
                             continue;
                         }
                     }
 
-// whitelist check
-                    foreach ($options[$action] as $_opk => $_opv) {
+                    // whitelist check
+                    foreach ($this->_options[$action] as $_opk => $_opv) {
                         if (is_string($_opk)) {
                             $_opv = $_opk;
                         }
@@ -235,34 +261,37 @@ class Mumsys_GetOpts
                         if (!isset($return[$action][$var])) {
                             if (strpos($_opv, $arg) !== false) {
                                 if (strpos($_opv, ':') !== false) {
-                                    if (isset($argv[$argPos + 1]) && isset($argv[$argPos + 1][0]) && $argv[$argPos + 1][0]
-                                        != '-') {
+                                    if (isset($argv[$argPos + 1]) && isset($argv[$argPos + 1][0]) && $argv[$argPos + 1][0] != '-') {
                                         $return[$action][$var] = $argv[++$argPos];
                                     } else {
                                         /* @todo value[1] is a "-" ... missing parameter or is it the value ? */
-                                        $errorMsg .= sprintf('Missing value for parameter "%1$s" in action "%2$s"' . PHP_EOL,
-                                            $var, $action);
+                                        $errorMsg .= sprintf(
+                                            'Missing value for parameter "%1$s" in action "%2$s"%3$s',
+                                            $var,
+                                            $action,
+                                            PHP_EOL
+                                        );
                                     }
                                 } else {
                                     $return[$action][$var] = true;
                                 }
 
-//unset($options[$_opk]);
+                                //unset($this->_options[$_opk]);
                             } else {
-// ???
+                                // ???
                             }
                         } else {
-// we got it already: was it req and had a value?
-//echo PHP_EOL . 'xx: ';print_r($argv[$argPos]); print_r($argv[++$argPos]) ;
-//$argPos+=2;
-//break;
+                            // we got it already: was it req and had a value?
+                            //echo PHP_EOL . 'xx: ';print_r($argv[$argPos]); print_r($argv[++$argPos]) ;
+                            //$argPos+=2;
+                            //break;
                         }
                     }
                 } else {
-// action / sub program call or flag detected!
-//$action = $arg;
-//$return[$action] = array();
-//throw new Mumsys_GetOpts_Exception('action / sub program call or flag detected' . $arg);
+                    // action / sub program call or flag detected!
+                    //$action = $arg;
+                    //$return[$action] = array();
+                    //throw new Mumsys_GetOpts_Exception('action / sub program call or flag detected' . $arg);
                 }
 
                 $argPos++;
@@ -271,7 +300,7 @@ class Mumsys_GetOpts
 
 
         if ($errorMsg) {
-            $errorMsg .= PHP_EOL . 'Help: ' . PHP_EOL . $this->getHelp() . PHP_EOL;
+            //$errorMsg .= PHP_EOL . 'Help: ' . PHP_EOL . $this->getHelp() . PHP_EOL;
             $message = 'Invalid input parameters detected!' . PHP_EOL . $errorMsg;
             throw new Mumsys_GetOpts_Exception($message);
         }
@@ -291,28 +320,34 @@ class Mumsys_GetOpts
         } else {
             $this->_hasActions = true;
         }
-//print_r($return);
+
         $this->_result = $return;
     }
 
 
     /**
+     * Checks and verfiy incomming options.
      *
      * @param array $configOptions
+     *
+     * @return array Options list to work with internally
+     *
+     * @throws Exception On errors with the input
      */
-    private function _checkOptions( array $config )
+    public function verifyOptions( array $config )
     {
         $key = key($config);
 
-        if (
-            ( isset($config[$key]) && isset($config[$key][0]) && $config[$key][0] == '-') || ( $key[0] == '-' && (is_string($config[$key])
-            || is_bool($config[$key]) ) )
-        ) {
+        if ( ( isset($config[$key]) && isset($config[$key][0]) && $config[$key][0] === '-')
+            || ( $key[0] === '-' && (is_string($config[$key]) || is_bool($config[$key]) ) ) )
+        {
             $return = array('_default_' => $config);
-        } else if (isset($config[$key]) && is_integer($config[$key])) {
-            $message = 'Invalid input config found' . print_r($config, true);
+        }
+        else if (isset($config[$key]) && is_integer($config[$key])) {
+            $message = sprintf('Invalid input config found for value: "%1$s"' , $key);
             throw new Mumsys_GetOpts_Exception($message);
-        } else {
+        }
+        else {
             $keys = array_keys($config);
             if (is_string($keys[0]) && $keys[0][0] != '-') {
                 $return = $config;
@@ -342,22 +377,26 @@ class Mumsys_GetOpts
                 if ($action != '_default_') {
                     $result[$action] = array();
                 }
-                foreach ($params as $k => $v) {
-// drop - and -- from keys
-                    if (isset($k[1]) && $k[1] == '-') {
-                        $n = 2;
+                foreach ($params as $key => $value) {
+                    // drop - and -- from keys
+                    if (isset($key[1]) && $key[1] == '-') {
+                        $num = 2;
                     } else {
-                        $n = 1;
+                        $num = 1;
                     }
 
-                    $result[$action][substr($k, $n)] = $v;
+                    $result[$action][substr($key, $num)] = $value;
                 }
             }
 
             if ($this->_hasActions) {
                 $this->_resultCache = $result;
             } else {
-                $this->_resultCache = $result['_default_'];
+                if (isset($result['_default_'])) {
+                    $this->_resultCache = $result['_default_'];
+                } else {
+                    $this->_resultCache = $result;
+                }
                 $this->_hasActions = false;
             }
 
@@ -502,18 +541,20 @@ class Mumsys_GetOpts
 
 
     /**
-     * Returns the mapping of options if several short and long options exists.
+     * Sets and returns the mapping of options if several short and long options exists.
      *
      * @param array $options List of incoming options
+     *
      * @return array List of key value pair which is the mapping of options
      */
-    private function _mapOptions( array $options = array() )
+    public function setMappingOptions( array $options = array() )
     {
         $mapping = array();
 
-
-        foreach ($options as $action => $values) {
-            foreach ($values as $opkey => $opValue) {
+        foreach ($options as $action => $values)
+        {
+            foreach ($values as $opkey => $opValue)
+            {
                 if (is_string($opkey)) {
                     $opValue = $opkey;
                 }
@@ -522,25 +563,22 @@ class Mumsys_GetOpts
 
                 $parts = explode('|', $opValue);
 
-//            foreach($parts as $pk => & $pv) {
-//                $parts[$pk] = preg_replace('/^(--|-)/', '', $pv, -1);
-//            }
-
                 if (isset($parts[1])) {
                     if (strlen($parts[0]) > strlen($parts[1])) {
-                        $mapping[$action][$parts[0]] = $parts[0];
-                        $mapping[$action][$parts[1]] = $parts[0];
+                        $_key = 0;
                     } else {
-                        $mapping[$action][$parts[0]] = $parts[1];
-                        $mapping[$action][$parts[1]] = $parts[1];
+                        $_key = 1;
                     }
+
+                    $mapping[$action][$parts[0]] = $parts[$_key];
+                    $mapping[$action][$parts[1]] = $parts[$_key];
                 } else {
                     $mapping[$action][$parts[0]] = $parts[0];
                 }
             }
         }
 
-        return $mapping;
+        $this->_mapping = $mapping;
     }
 
 
@@ -549,7 +587,7 @@ class Mumsys_GetOpts
      */
     public function __toString()
     {
-        echo $this->getHelp();
+        return $this->getHelp();
     }
 
 }
