@@ -37,6 +37,7 @@ svn/*
 logs/
 /docs/CodeCoverage/*
 /docs/API/*
+/docs/gitstat*
 /tests/testfiles/*
 /tests/tmp/*
 /tests/tmp/*
