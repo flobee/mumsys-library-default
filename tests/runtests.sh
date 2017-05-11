@@ -20,4 +20,11 @@ if [ "$2" != "" ]; then
 	codeCoverage="--coverage-html $pathCodeCoverage"
 fi
 
-php7.0 ../vendor/bin/phpunit  --colors --configuration phpunit.xml --bootstrap ./bootstrap.php $codeCoverage $verbose ./src/
+if [ -f $* ]; then
+    cript="./$*";
+else 
+    cript="./";
+fi
+
+php7.0 ../vendor/bin/phpunit  --colors --configuration phpunit.xml --bootstrap ./bootstrap.php $codeCoverage $verbose $cript
+
