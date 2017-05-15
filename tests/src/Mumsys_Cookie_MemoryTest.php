@@ -65,11 +65,15 @@ class Mumsys_Cookie_MemoryTest
 
     /**
      * @covers Mumsys_Cookie_Memory::clear
+     * @covers Mumsys_Cookie_Memory::unsetCookie
      */
     public function testClear()
     {
+        $this->_object->setCookie('a', 'b');
+        $actual = $this->_object->unsetCookie('a');
         $this->_object->clear();
 
+        $this->assertTrue($actual);
         $this->assertInternalType('array', $this->_object->getCookie());
         $this->assertTrue(empty($this->_object->getCookie()));
     }

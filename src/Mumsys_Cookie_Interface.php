@@ -25,6 +25,8 @@
  */
 interface Mumsys_Cookie_Interface
 {
+
+
     /**
      * Initialize the cookie object.
      */
@@ -130,6 +132,19 @@ interface Mumsys_Cookie_Interface
     public function setRawCookie( string $key, string $value = '', int $expire = 0,
         string $path = '', string $domain = '', bool $secure = false,
         bool $httponly = false ): bool;
+
+
+    /**
+     * Removes, unsets a cookie.
+     *
+     * By default implementation the cookie value will be cleared to '' and after
+     * the expiration time set to the past.
+     *
+     * @param string $key Name of the cookie (a-z0-9)
+     *
+     * @return boolean Returns true on success
+     */
+    public function unsetCookie( string $key ): bool;
 
 
     /**

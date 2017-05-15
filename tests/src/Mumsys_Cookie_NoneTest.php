@@ -49,16 +49,19 @@ class Mumsys_Cookie_NoneTest
      * @covers Mumsys_Cookie_None::getCookie
      * @covers Mumsys_Cookie_None::setCookie
      * @covers Mumsys_Cookie_None::setRawCookie
+     * @covers Mumsys_Cookie_None::unsetCookie
      */
     public function testGetSetCookie()
     {
         $actual1 = $this->_object->getCookie();
         $actual2 = $this->_object->setCookie('1', '2');
         $actual3 = $this->_object->setRawCookie('1', '2');
+        $actual4 = $this->_object->unsetCookie('1');
 
         $this->assertNull($actual1);
         $this->assertTrue($actual2);
         $this->assertTrue($actual3);
+        $this->assertTrue($actual4);
     }
 
 

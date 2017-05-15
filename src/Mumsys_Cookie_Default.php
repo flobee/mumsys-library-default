@@ -163,16 +163,33 @@ class Mumsys_Cookie_Default
 
 
     /**
-     * Clears and unsets all cookie values
+     * Removes, unsets a cookie.
+     *
+     * By default implementation the  cookie value will be cleared to '' and after
+     * the expiration time set to the past.
+     *
+     * @param string $key Name of the cookie (a-z0-9)
      *
      * @return boolean Returns true on success
      */
+    public function unsetCookie( string $key ): bool
+    {
+        if ( isset($_COOKIE[$key]) ) {
+            unset($_COOKIE[$key]);
+            $this->setCookie($key, '', (time() - 3600));
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Clears and unsets all cookie values
+     */
     public function clear()
     {
-        $t = time();
-        foreach ( $_COOKIE as $key => $value ) {
-            unset($_COOKIE[$key]);
-            $this->setCookie($key, '', $t - 3600);
+        foreach ( $_COOKIE as $key => &$value ) {
+            $this->unsetCookie($key);
         }
 
         return true;

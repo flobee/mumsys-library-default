@@ -46,51 +46,36 @@ class Mumsys_Cookie_DefaultTest
 
     /**
      * @covers Mumsys_Cookie_Default::getCookie
+     * @covers Mumsys_Cookie_Default::setCookie
+     * @covers Mumsys_Cookie_Default::setRawCookie
+     * @runInSeparateProcess
      */
-    public function testGetCookie()
+    public function testGetSetCookie()
     {
         $_COOKIE = array('unittest' => 'unit value');
         $actual1 = $this->_object->getCookie();
         $actual2 = $this->_object->getCookie('unittest');
+        $actual3 = $this->_object->setCookie("a", 'b');
+        $actual4 = $this->_object->setRawCookie("raw", 'raw');
 
         $this->assertEquals($_COOKIE, $actual1);
         $this->assertEquals($_COOKIE['unittest'], $actual2);
-    }
-
-
-    /**
-     * @covers Mumsys_Cookie_Default::setCookie
-     * @runInSeparateProcess
-     */
-    public function testSetCookie()
-    {
-        $actual = $this->_object->setCookie("a", 'b');
-
-        $this->assertTrue($actual);
-    }
-
-
-    /**
-     * @covers Mumsys_Cookie_Default::setRawCookie
-     * @runInSeparateProcess
-     */
-    public function testSetRawCookie()
-    {
-        $actual = $this->_object->setRawCookie("a", 'b');
-
-        $this->assertTrue($actual);
+        $this->assertTrue($actual3);
+        $this->assertTrue($actual4);
     }
 
 
     /**
      * @covers Mumsys_Cookie_Default::clear
+     * @covers Mumsys_Cookie_Default::unsetCookie
      * @runInSeparateProcess
      */
-    public function testClear()
+    public function testClearUnset()
     {
-        $_COOKIE = array('unittest' => 'unit value');
+        $_COOKIE = array('a', 'b');
+        $actual1 = $this->_object->clear();
 
-        $this->assertTrue($this->_object->clear());
+        $this->assertTrue($actual1);
     }
 
 }

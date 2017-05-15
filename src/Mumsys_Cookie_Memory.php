@@ -120,6 +120,26 @@ class Mumsys_Cookie_Memory
 
 
     /**
+     * Removes, unsets a cookie.
+     *
+     * By default implementation the  cookie value will be cleared to '' and after
+     * the expiration time set to the past.
+     *
+     * @param string $key Name of the cookie (a-z0-9)
+     *
+     * @return boolean Returns true on success
+     */
+    public function unsetCookie( string $key ): bool
+    {
+        if ( isset($this->_cookie[$key]) ) {
+            unset($this->_cookie[$key]);
+        }
+
+        return true;
+    }
+
+
+    /**
      * Clears and unsets all cookie values
      *
      * @return boolean Returns true on success
