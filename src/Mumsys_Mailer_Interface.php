@@ -1,22 +1,20 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Mailer_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2014 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mailer
+ * @package     Library
+ * @subpackage  Mailer
  * @version     1.0.0
  * Created on 01.12.2006 improved since 2016, init interface
  * $Id: class.mailsys.php 2369 2011-12-08 22:02:37Z flobee $
  */
-/* }}} */
 
 
 /**
@@ -27,13 +25,11 @@
  * and possible but: dont use it! Improve the interface then!
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mailer
+ * @package     Library
+ * @subpackage  Mailer
  */
 interface Mumsys_Mailer_Interface
 {
-
-
     /**
      * Call a mail driver method which is not implemented.
      *
