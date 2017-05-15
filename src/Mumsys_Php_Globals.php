@@ -107,7 +107,7 @@ class Mumsys_Php_Globals
      * Returns a session variable if exists.
      *
      * If key parameter is NULL the complete session will return if $_SESSION
-     * was initialised otherwise false returns.
+     * was initialised otherwise $default returns.
      *
      * @param string $key ID to check for
      * @param mixed $default Default return value if key/ID not exists
@@ -176,7 +176,7 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns a get variable by given key.
+     * Returns a cookie variable by given key.
      * If $key is NULL it will return all cookie parameters
      *
      * @param string $key ID to check for
@@ -277,11 +277,11 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns a global value and look in the other super globals if the global
-     * variable could not be found.
+     * Returns a global value and looks in the other super globals if the global
+     * variable value could not be found.
      *
-     * Returns a value of the super global variables except the upload files in
-     * the following order:
+     * Returns a value of the super global variables except the upload files (see
+     * getFileVar()) in the following order:
      *      GLOBALS
      *      befor (if cli mode) argv
      *      befor getenv()
@@ -291,8 +291,8 @@ class Mumsys_Php_Globals
      *      before _COOKIE
      *      befor _REQUEST:
      *
-     * Dont use it until you really need to look for a global variable!
-     * Returns a global variable and looks in all super globals.
+     * Dont use it until you really need to look for a global variable anywhere!
+     *
      *
      * @param string $key ID to check for
      * @param mixed $default Return value if no other can be found
