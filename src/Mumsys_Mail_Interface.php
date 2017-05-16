@@ -30,8 +30,6 @@
  */
 interface Mumsys_Mail_Interface
 {
-
-
     /**
      * Initialize the mail object.
      *
