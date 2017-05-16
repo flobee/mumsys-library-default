@@ -315,6 +315,7 @@ class Mumsys_Mail_PHPMailerTest
         $message = '<html>html string message dummy '
             . 'generated in: ' . __FILE__ . PHP_EOL
             . '<br><br>.</html>';
+
         $mail = $this->_object;
         $mail->addTo($to, 'php unit test mail');
         $mail->setSubject('some subject');
@@ -324,9 +325,11 @@ class Mumsys_Mail_PHPMailerTest
         $mail->setContentType('html');
 
         $actual = $mail->send();
+
         $this->assertTrue($actual);
 
-        echo PHP_EOL . 'A test email to "' . $to . '" was set to the mail server sucessfully. Please check the mail!' . PHP_EOL;
+        echo PHP_EOL . 'A test email to "' . $to . '" was set to the mail server '
+            . 'sucessfully. Please check the mail!' . PHP_EOL;
     }
 
 
