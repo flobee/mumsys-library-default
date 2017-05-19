@@ -17,6 +17,7 @@ class Mumsys_LoaderTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->_version = '3.1.1';
         $this->object = new Mumsys_Loader;
     }
 
@@ -72,7 +73,7 @@ class Mumsys_LoaderTest extends PHPUnit_Framework_TestCase
 
     public function testGetVersionID()
     {
-        $this->assertEquals('3.1.1', Mumsys_Loader::VERSION);
+        $this->assertEquals($this->_version, Mumsys_Loader::VERSION);
     }
 
 }
