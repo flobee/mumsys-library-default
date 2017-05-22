@@ -4,7 +4,7 @@
 /**
  * Multirename
  * for MUMSYS Library for Multi User Management System
- * 
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright (c) 2015 by Florian Blasel
  * @author Florian Blasel <flobee.code@gmail.com>
@@ -1387,7 +1387,7 @@ class Mumsys_Multirename
 
             '--linkway:' => 'Type of the link to be created relative or absolut: ("rel"|"abs"), default: "rel". '
             . 'This will be used internally if you use --link soft;rel the linkway will be extracted from that line',
-            
+
             '--history|-h' => 'Flag; If set this will enable the history and tracks all actions for a later undo',
 
             '--history-size:' => 'Integer; Number of history entrys if --history is enabled; Default: 10; '
@@ -1426,10 +1426,10 @@ class Mumsys_Multirename
             '--version|-v' => 'Flag; Return version informations',
         );
 
-        if ($shellOptions !== true) 
+        if ($shellOptions !== true)
         {
             $res = array();
-            foreach ($result as $key => $value) 
+            foreach ($result as $key => $value)
             {
                 $key = str_replace(':', '', $key);
                 $key = substr($key, 2);
@@ -1441,7 +1441,7 @@ class Mumsys_Multirename
             }
             $result = $res;
         }
-        
+
         return $result;
     }
 
