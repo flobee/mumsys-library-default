@@ -421,15 +421,18 @@ class Mumsys_FileSystem
 
             if ( $way == 'rel' )
             {
+                $dirFrom = realpath(dirname($file));
+                $linkName = basename($to);
+
                 $dirTo = realpath(dirname($to));
                 if ( $dirTo === false ) {
                     $message = 'Real path not found for "' . dirname($to) . '"';
                     throw new Mumsys_FileSystem_Exception($message);
                 }
                 chdir($dirTo);
-                $linkName = basename($to);
-                // from and to in reverse as parameter
-                if ( ($relDir = $this->getRelativeDir($dirTo, dirname($file) ) ) > ''  ) {
+
+                // from and to in reverse as parameter ? why?
+                if ( ($relDir = $this->getRelativeDir($dirTo, $dirFrom ) ) > ''  ) {
                     $srcFile = $relDir .'/' . basename($file);
                 } else {
                     $srcFile = basename($file);
