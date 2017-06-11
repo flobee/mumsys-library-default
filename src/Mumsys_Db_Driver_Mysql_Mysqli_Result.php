@@ -1,58 +1,128 @@
 <?php
 
+/*{{{*/
 /**
- * Mumsys_Db_Driver_Result_Interface
+ * Mumsys_Db_Driver_Mysql_Mysqli_Result
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  * ----------------------------------------------------------------------------
  * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Db
- * @version     3.0.1
  */
+/*}}}*/
 
 
 /**
- * Interface Mumsys_Db_Driver_Result_Interface
+ * Result object of a DB-resultset.
  *
- * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * This class is used to have mysql functions after a query to the database was
+ * placed. Fetching, seeking, count rows etc..
+ *
+ * @category Mumsys
+ * @package Mumsys_Library
+ * @subpackage Mumsys_Db
  */
-interface Mumsys_Db_Driver_Result_Interface
+class Mumsys_Db_Driver_Mysql_Mysqli_Result
+    implements Mumsys_Db_Driver_Result_Interface
 {
     /**
-     * Initialization of database result.
+     * Version ID information
+     */
+    const VERSION = '3.1.0';
+
+    /**
+     * Database resource.
      *
-     * @param Mumsys_Db_Driver_Interface $oDB DB driver
-     * @param resource $result Resultset of the sql query
+     * @var ressorce The database connection (resource)
+     * @access private
+     */
+    private $_dbc;
+
+    /**
+     * @var ressorce Result of a mysql query
+     * @access private
+     */
+    private $_result;
+
+    /**
+     * Count of rows of a sql query
+     * @var integer
+     */
+    private $_numRows;
+
+
+    /**
+     * Initialization of database result (mysqldbr)
+     *
+     * @param object $oDB mysql object
+     * @param resource $result Result set of the sql query
      * @param array $options Array of options; NOT IMPLEMENTED YET!
      */
-    public function __construct( Mumsys_Db_Driver_Interface &$oDB, &$result,
-        array $options=array());
+    public function __construct(Mumsys_Db_Driver_Interface &$oDB, &$result,
+        array $options=array())
+    {
+        $this->_dbc = $oDB->connect();
+        $this->_result = $result;
+    }
+
 
     /**
-     * Returns the resultset of a query.
+     * Returns the resultset of a mysql query.
      *
-     * @return resource|boolean Resultset of the query
+     * @return resource|boolean Result of a mysql query
      */
-    public function getResult();
+    public function getResult()
+    {
+        return $this->_result;
+    }
 
     /**
-     * Fetch data from a query in a given way
+     * Fetch data from a mysql query in a given way
      *
      * @param string $way type to fetch the data, by default assoc will be used.
      * Also possible values are: "num", "array", "row" or "object".
      * @param object $result the resultset of a different sql-resource
      * @return array return an array of fetched values
      */
-    public function fetch( $way='assoc', $result=false );
+    public function fetch( $way = 'assoc', $result = false )
+    {
+        if (!$result) {
+            $result = $this->_result;
+        }
+
+        switch (strtolower($way))
+        {
+            case 'array':
+                $row = mysqli_fetch_array($result, MYSQLI_BOTH);
+                break;
+
+            case 'num':
+                $row = mysqli_fetch_array($result, MYSQLI_NUM);
+                break;
+
+            case 'row':
+                $row = mysqli_fetch_row($result);
+                break;
+
+            case 'object':
+                $row = mysqli_fetch_object($result);
+                break;
+
+            case 'assoc':
+            default:
+                $row = mysqli_fetch_assoc($result);
+        }
+
+        return $row;
+    }
+
 
     /**
-     * Fetch all date from an result set.
+     * Fetch all data from an result set.
      *
      * @todo To be tested
      *
@@ -62,7 +132,28 @@ interface Mumsys_Db_Driver_Result_Interface
      * @param resource $result Result set of the sql query
      * @return array List of records
      */
-    public function fetchAll( $way='assoc', $result=false );
+    public function fetchAll( $way='assoc', $result=null )
+    {
+        $oRes = null;
+        if (!$result) {
+            $oRes = $this->_result;
+        }
+
+        if (!$oRes) {
+            return false;
+        }
+
+        $data = array();
+        $way = strtolower($way);
+
+        while ($row = $this->fetch($way, $oRes)) {
+            $data[] = $row;
+        }
+        $this->free();
+
+        return $data;
+    }
+
 
     /**
      * Returns the number of rows found.
@@ -78,7 +169,30 @@ interface Mumsys_Db_Driver_Result_Interface
      * @return integer Returns the number of rows
      * @throws Mumsys_Db_Exception If calculation of num rows fails
      */
-    public function numRows( $result=false );
+    public function numRows( $result=null )
+    {
+        $numRows = null;
+        if ( $result ) {
+            $numRows = @mysqli_num_rows($result);
+        } else {
+            if ( $this->_numRows !== null ) {
+                $numRows = $this->_numRows;
+            } else {
+                $numRows = mysqli_num_rows($this->_result);
+            }
+        }
+
+        if ( $numRows === null ) {
+            throw new Mumsys_Db_Exception(
+                'Error getting number of found rows.', 1
+            );
+        }
+
+        $this->_numRows = $numRows;
+
+        return $numRows;
+    }
+
 
     /**
      * Get the number of affected rows by the last INSERT, UPDATE, REPLACE or
@@ -107,7 +221,14 @@ interface Mumsys_Db_Driver_Result_Interface
      *
      * @todo Seems to be buggy!! $result with $this->_result
      */
-    public function affectedRows($dbc=false);
+    public function affectedRows($dbc=false)
+    {
+        if ( $dbc ) {
+            return mysqli_affected_rows($dbc);
+        }
+        return mysqli_affected_rows($this->_dbc);
+    }
+
 
     /**
      * Retrieves the ID generated for an AUTO_INCREMENT column by the previous
@@ -129,13 +250,30 @@ interface Mumsys_Db_Driver_Result_Interface
      * previous query on success, 0 if the previous query does not generate an
      * AUTO_INCREMENT value, or FALSE if no MySQL connection was established.
      */
-    public function lastInsertId($dbc=false);
+    public function lastInsertId($dbc=false)
+    {
+        if ( $dbc ) {
+            return mysqli_insert_id($dbc);
+        }
+
+        return mysqli_insert_id($this->_dbc);
+    }
 
 
     /**
-     * Retrieves the contents of one cell from a result set. the first row
+     * alias method of lastInsertId().
      *
-     * old: sqlResult() method
+     * @see lastInsertId()
+     */
+    public function insertID($dbc=false)
+    {
+        return $this->lastInsertId($dbc);
+    }
+
+
+    /**
+     * Get a mysql_result()
+     * Retrieves the contents of one cell from a MySQL result set.
      *
      * When working on large result sets, you should consider using one of the
      * functions that fetch an entire row (specified below). As these functions
@@ -153,14 +291,54 @@ interface Mumsys_Db_Driver_Result_Interface
      * column name. If undefined, the first field is retrieved.
      * @param resource $res The result resource that is being evaluated. This
      * result comes from a call to mysql_query().
-     * @return s|false The contents of one cell from a MySQL result set on
-     * success, or FALSE on failure.
+     * @return string|false The contents of one cell or FALSE on failure or for
+     * no results.
+     * @throws Mumsys_Db_Exception On errors
      */
-    public function getFirst($row=0, $field=0, $res=false);
+    public function getFirst( $row = 0, $field = 0, $res = false )
+    {
+        if (!$res) {
+            $res = $this->_result;
+        }
+
+        try
+        {
+            if (!$this->seek($row, $res)) {
+                throw new Mumsys_Db_Exception('Seeking to row '. $row . ' failed');
+            }
+            $data = $this->fetch('array', $res);
+            $this->free($res);
+
+            if (isset($data[$field])) {
+                return $data[$field];
+            }
+
+        } catch (Exception $e) {
+            throw $e;
+        }
+
+        return false;
+    }
 
 
     /**
-     * mysql_data_seek() moves the internal row pointer of the MySQL result
+     * Alias of getFirst() method
+     *
+     * @deprecated since version interface 3.0.0
+     *
+     * @param type $row
+     * @param type $field
+     * @param type $res
+     * @return type
+     */
+    public function sqlResult($row=0, $field=0, $res=false)
+    {
+        return $this->getFirst($row, $field, $res);
+    }
+
+
+    /**
+     * Seek() moves the internal row pointer of the MySQL result
      * associated with the specified result identifier to point to the specified
      * row number. The next call to a MySQL fetch function, such as
      * mysql_fetch_assoc(), would return that row.
@@ -173,7 +351,19 @@ interface Mumsys_Db_Driver_Result_Interface
      * @param resource $res Result set of a mysql query
      * @return boolean Returns TRUE on success or FALSE on failure.
      */
-    public function seek( $n=0, $res=false );
+    public function seek( $n = 0, $res = null )
+    {
+        if ( $this->numRows($res) <= $n ) {
+            return false;
+        }
+
+        $_res = $this->_result;
+        if ($res) {
+            $_res = $res;
+        }
+
+        return mysqli_data_seek($_res, $n);
+    }
 
 
     /**
@@ -187,10 +377,20 @@ interface Mumsys_Db_Driver_Result_Interface
      * @param resource $res The result resource that is being evaluated. This
      * result comes from a call to mysql_query().
      * @return boolean Returns TRUE on success or FALSE on failure.
-     * If a non-resource is used for the result , an error of level E_WARNING
-     * will be emitted. It's worth noting that mysql_query() only returns a
-     * resource for SELECT, SHOW, EXPLAIN, and DESCRIBE queries.
      */
-    public function free($res=false);
+    public function free($res=false)
+    {
+        if (!$res) {
+            $res = $this->_result;
+        }
+
+        try {
+            mysqli_free_result($res);
+        } catch (Exception $e) {
+            throw new Mumsys_Db_Exception($e->getMessage(), $e->getCode(), $e->getPrevious());
+        }
+
+        return true;
+    }
 
 }
