@@ -22,7 +22,8 @@
  * @package     Library
  * @subpackage  Logger
  */
-interface Mumsys_Logger_Decorator_Interface extends Mumsys_Logger_Interface
+interface Mumsys_Logger_Decorator_Interface
+    extends Mumsys_Logger_Interface
 {
     /**
      * Initialize the decorator logger object
@@ -30,4 +31,5 @@ interface Mumsys_Logger_Decorator_Interface extends Mumsys_Logger_Interface
      * @param Mumsys_Logger_Interface Logger object to be decorated
      */
     public function __construct( Mumsys_Logger_Interface $object );
+
 }

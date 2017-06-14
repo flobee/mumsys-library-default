@@ -29,6 +29,11 @@ abstract class Mumsys_Logger_Decorator_Abstract
      */
     const VERSION = '3.0.0';
 
+    /**
+     * Interface to decorate.
+     * @var Mumsys_Logger_Interface
+     */
+    protected $_object;
 
     /**
      * Initialize the decorated logger object
@@ -47,6 +52,19 @@ abstract class Mumsys_Logger_Decorator_Abstract
     public function __clone()
     {
         $this->_object = clone $this->_object;
+    }
+
+
+    /**
+     * Get the name of a log level.
+     *
+     * @param integer $level Nuber of the Log level
+     *
+     * @return string Returns the string of the errorlevel
+     */
+    public function getLevelName( $level )
+    {
+        return $this->_object->getLevelName($level);
     }
 
 
@@ -75,7 +93,20 @@ abstract class Mumsys_Logger_Decorator_Abstract
 
 
     /**
-     * Returns the decorated object.
+     * Checks if a loglevel is registered or not
+     *
+     * @param integer $level 0-7 Log level to be checked
+     *
+     * @return boolean Returns true for OK otherwise false
+     */
+    public function checkLevel( $level = 0 )
+    {
+        return $this->_object->checkLevel($level);
+    }
+
+
+    /**
+     * Returns the decorated/ the base object.
      *
      * @return Mumsys_Logger_Interface Config object
      */
