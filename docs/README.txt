@@ -2,7 +2,7 @@
 
 Library for the MUMSYS project. 
 
-MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - 2016, now
+MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - 2017, now
 
 
 In that time an admin CMS system to 
