@@ -129,22 +129,22 @@ class Mumsys_Variable_Manager_Default
     const TYPE_INVALID_IPV6 = 'TYPE_INVALID_IPV6';
 
     /**
-     * Value "%1$s" must contain at least "%2$s" characters
+     * "%1$s": Value "%2$s" must contain at least "%3$s" characters
      */
     const MINMAX_TOO_SHORT_STR = 'MINMAX_TOO_SHORT_STR';
 
     /**
-     * Value "%1$s" must contain maximum of "%2$s" characters, "%3$s" given
+     * "%1$s": Value "%2$s" must contain maximum of "%3$s" characters, "%4$s" given
      */
     const MINMAX_TOO_LONG_STR = 'MINMAX_TOO_LONG_STR';
 
     /**
-     * Value "%1$s" must be minimum "%2$s"
+     * "%1$s": Value "%2$s" must be minimum "%3$s"
      */
     const MINMAX_TOO_SHORT_NUM = 'MINMAX_TOO_SHORT_NUM';
 
     /**
-     * Value "%1$s" can be maximum "%2$s"
+     * "%1$s": Value "%2$s" can be maximum "%3$s"
      */
     const MINMAX_TOO_LONG_NUM = 'MINMAX_TOO_LONG_NUM';
 
