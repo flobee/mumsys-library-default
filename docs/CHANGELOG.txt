@@ -1,5 +1,10 @@
 # Changes
 
+2016-02-14
+    Mumsys_GetOpts
+    - Bugfix to work with php7+
+    - Improves tests with versions checks
+
 2016-01-31
     Mumsys_Registry
     - Init class and tests for LGPL
