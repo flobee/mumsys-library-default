@@ -410,7 +410,7 @@ class Mumsys_Php
 
             default:
                 if ( !is_numeric( $value ) ) {
-                    throw new Exception( 'Detection size failt for "' . $last . '"' );
+                    throw new Exception( 'Detection of size failt for "' . $value . '"' );
                 }
                 break;
         }
