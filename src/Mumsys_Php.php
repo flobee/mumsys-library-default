@@ -328,41 +328,96 @@ class Mumsys_Php
      * E.g: If memory limit returns 32M -> 32*1048576 will be returned
      *
      * @param string $key Key to get from php.ini
-     * @return string Returns the translated nummeric value if a nummeric value was detekted
+     * @return integer|null Returns the ini value or translated nummeric value if a
+     * nummeric value was detected
      */
     public static function ini_get( $key )
     {
-        $val = ini_get($key);
-        $val = trim($val);
-        if ( empty($val) ) {
+        $value = ini_get($key);
+        $value = trim($value);
+
+        if ( empty($value) ) {
             return null;
-        } else {
-            $last = $val{strlen($val) - 1};
-            switch ( $last )
-            {
-                case 'k':
-                case 'K':
-                    return (int) $val * 1024;
-                    break;
-                case 'm':
-                case 'M':
-                    return (int) $val * 1048576;
-                    break;
-                case 'g':
-                case 'G':
-                    $val = $val * 1048576 * 1000;
-                    break;
-                default:
-                    return $val;
-                    break;
-            }
-            return $val;
         }
+
+        try{
+            $result = self::str2bytes($value, true);
+        } catch (Exception $ex) {
+            if ( is_nummeric($value) ) {
+                throw $ex;
+            }
+            $result = $value;
+        }
+
+        return $result;
     }
 
 
     //
     // --- String methodes -----------------------------------------------------
+
+
+    /**
+     * Returns given size representation in bytes. IEC prefix form.
+     *
+     * @param string $value Size string. E.g: 1G 15K 10b
+     * @param boolean $binType IEC prefix calculation or not. Not implemented
+     * yet for false.
+     *
+     * @return integer Number of bytes.
+     *
+     * @throws Exception If detection/ calculation fails
+     */
+    public static function str2bytes( $value , $binType=true)
+    {
+        $value = trim($value);
+
+        if ( $value < 0 ) {
+            return $value;
+        }
+
+        if ( empty($value) ) {
+            return 0;
+        }
+
+        $last = $value[ strlen($value) - 1 ];
+        switch ( $last )
+        {
+            case 'k':
+            case 'K':
+                return (int) $value * 1024;
+                break;
+
+            case 'm':
+            case 'M':
+                return (int) $value * 1048576;
+                break;
+
+            case 'g':
+            case 'G':
+                $value = $value * 1073741824;
+                break;
+
+            case 't':
+            case 'T':
+                $value = $value * 1099511627776;
+                break;
+
+            case 'p':
+            case 'P':
+                $value = $value * 1125899906842624;
+                break;
+
+            default:
+                if ( !is_nummeric( $value ) ) {
+                    throw new Exception( 'Detection size failt for "' . $last . '"' );
+                }
+                break;
+        }
+
+        return $value;
+
+    }
 
 
     /**
