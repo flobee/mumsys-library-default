@@ -343,7 +343,7 @@ class Mumsys_Php
         try{
             $result = self::str2bytes($value, true);
         } catch (Exception $ex) {
-            if ( is_nummeric($value) ) {
+            if ( is_numeric($value) ) {
                 throw $ex;
             }
             $result = $value;
@@ -409,7 +409,7 @@ class Mumsys_Php
                 break;
 
             default:
-                if ( !is_nummeric( $value ) ) {
+                if ( !is_numeric( $value ) ) {
                     throw new Exception( 'Detection size failt for "' . $last . '"' );
                 }
                 break;
