@@ -11,25 +11,36 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Logger
- * @version     1.0.0
+ * @version     1.1.0
  * Created on 2011/02
  */
 
 
 /**
- * Writer interface for Mumsys_Logger object
+ * Writer interface for the logger object.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Logger
+ * @package     Library
+ * @subpackage  Logger
  */
 interface Mumsys_Logger_Writer_Interface
 {
     /**
      * Write given content to the writer
      *
-     * @param string $content String to save to the logfile
-     * @return true Returns true on success.
+     * @param string $content String to save
+     *
+     * @return boolean Returns true on success
+     *
+     * @throws Exception on errors.
      */
     public function write( $content );
+
+
+    /**
+     * Truncate storage
+     *
+     * This will clean a file to zero byte or truncate the database table
+     */
+    public function truncate();
 }

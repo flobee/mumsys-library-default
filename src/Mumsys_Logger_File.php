@@ -31,7 +31,7 @@ class Mumsys_Logger_File
     /**
      * Version ID information
      */
-    const VERSION = '3.0.1';
+    const VERSION = '3.0.2';
 
     /**
      * path and filename to the log file.
@@ -47,34 +47,34 @@ class Mumsys_Logger_File
     protected $_logway;
 
     /**
-     * Number of bytes for a logfile befor it will be purged to zero lenght
-     * zero means no limit.
-     * If $_debug or verbose is enabled $_maxfilesize will not take affect.
+     * Number of bytes for a logfile befor the contents it will be cleaned.
+     * If zero (0): no limit.
+     * If $_debug is enabled $_maxfilesize will not take affect.
      *
      * @var integer
      */
     protected $_maxfilesize = 0;
 
+    /**
+     * Component to write log messages to e.g. a file or database.
+     *
+     * @var Mumsys_Logger_Writer_Interface
+     */
+    protected $_writer;
 
     /**
-     * Initialize the logger object
+     * Initialize the logger file object
      *
      * @param array $args Associativ array with additional params
      * - [logfile] string Location of the logfile; optional, if not set
-     *  logs will be stored to /tmp/ ! Make sure you have access to it.
+     *      logs will be stored to /tmp/ ! Make sure you have access to it.
      * - [way] string Default: fopen "a"
      * - [username] optional otherwise PHP_AUTH_USER will be taken
      * - [lineFormat] optional format of log line;see $_logformat.
      * - [timeFormat] optional format of a timestamp format
-     * - [logLevel] integer Optional Number of the loglevel
-     *  Default: 7 (debug mode, log all)
-     * - [msglogLevel] integer Optional Message log level for messages which
-     *  should be printed (if msgEcho=true)
-     * - [msgLineFormat] optional Output format which should be printed (if msgEcho=true)
-     * - [msgEcho] boolean Optional Echo a log event Default: false
-     * - [msgReturn] boolean Optional Return current log event Default: true
+     * - [logLevel] integer Optional Number of the loglevel Default: 7 (debug
+     * mode, log all)
      * - [debug] boolean Default: false
-     * - [verbose] boolean Default: false
      * - [lf] string Optional Linefeed Default: \n
      * - [maxfilesize] integer Optional Number of Bytes for the logfile Default: 0 (no limit)
      *
@@ -99,23 +99,70 @@ class Mumsys_Logger_File
             $this->_maxfilesize = $options['maxfilesize'];
         }
 
-        if ( !$writer ) {
+        if ( $writer === null ) {
             $fileOptions = array(
                 'file' => $this->_logfile,
                 'way' => $this->_logway
             );
-            $writer = new Mumsys_File($fileOptions);
+            $this->_writer = new Mumsys_File($fileOptions);
         }
 
-        parent::__construct($options, $writer);
+        parent::__construct($options);
 
-        // maxfilesize feature
-        /** @todo to be removed, to set in writer class? */
-        $message = $this->checkMaxFilesize();
-
-        if ( $message ) {
+        if ( ($message = $this->checkMaxFilesize() ) !== false ) {
             $this->log($message, Mumsys_Logger_Abstract::INFO);
         }
+    }
+
+
+    /**
+     * Create a log entry by a given log level.
+     *
+     * 0 EMERG    emerg()   System is unusable
+     * 1 ALERT    alert()   Immediate action required
+     * 2 CRIT     crit()    Critical conditions
+     * 3 ERR      err()     Error conditions
+     * 4 WARN     warn()    Warn conditions
+     * 5 NOTICE   notice()  Normal but significant
+     * 6 INFO     info()    Informational
+     * 7 DEBUG    debug()   Debug-level messages
+     *
+     * @param string|array $input Message or list of messages to be logged
+     * @param integer $level Level number of log priority
+     *
+     * @return string Returns the formated log message string
+     */
+    public function log( $input, $level = 0 )
+    {
+        try
+        {
+            $datesting = date($this->_timeFormat, time());
+            $levelName = $this->getLevelName($level);
+
+            if ( !is_scalar($input) ) {
+                $input = json_encode($input);
+            }
+
+            $message = sprintf(
+                $this->_logFormat,
+                $datesting,
+                $this->_username,
+                $levelName,
+                $level,
+                $input
+            );
+
+            $message .= $this->_lf;
+
+            if ( $level <= $this->_logLevel || $this->_debug ) {
+                $this->_writer->write($message);
+            }
+        }
+        catch ( Exception $e ) {
+            throw $e;
+        }
+
+        return $message;
     }
 
 
@@ -133,7 +180,7 @@ class Mumsys_Logger_File
     /**
      * Checks if the max filesize reached and drops the logfile.
      *
-     * If debug or verbose mode is enabled this methode will return false.
+     * If debug mode is enabled this methode will return false.
      *
      * @return string|false Returns string with information that the log was
      * purged or false.
@@ -142,15 +189,14 @@ class Mumsys_Logger_File
     {
         $message = false;
 
-        if ( empty($this->_maxfilesize) ) {
+        if ( $this->_maxfilesize <= 0 ) {
             return $message;
         }
 
-        if ( !($this->_verbose || $this->_debug)
+        if ( !$this->_debug
             && ($fsize = @filesize($this->_logfile)) > $this->_maxfilesize ) {
-            unlink($this->_logfile);
-            $message = 'Max filesize (' . ($this->_maxfilesize / 1000) 
-                . ' KB) reached. Log purged now';
+            file_put_contents($this->_logfile, '');
+            $message = 'Max filesize reached. Log purged now';
         }
 
         return $message;
