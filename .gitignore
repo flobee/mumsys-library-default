@@ -4,6 +4,8 @@ vendor/
 
 # Local configs
 config/autoload/*.local.php
+*/config/credentials.php
+tests/config/default.php
 
 # Binary gettext files
 *.mo
@@ -30,6 +32,7 @@ svn/*
 /phpunit.log.xml
 logs/
 /docs/CodeCoverage/*
+/docs/gitstats
 /docs/API/*
 /tests/testfiles/*
 /tests/tmp/*

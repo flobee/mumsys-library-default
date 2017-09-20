@@ -1,26 +1,18 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Cache
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Cache
- * @version     1.0.0
  * Created: 2013-12-10
- * @filesource
  */
-/*}}}*/
-
 
 /**
  * Class for standard file caching
@@ -29,12 +21,13 @@
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Cache
  */
-class Mumsys_Cache extends Mumsys_Abstract
+class Mumsys_Cache
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.2.1';
 
     /**
      * Flag if caching is enabled or not
@@ -54,6 +47,11 @@ class Mumsys_Cache extends Mumsys_Abstract
      */
     protected $_prefix = 'cache_';
 
+    /**
+     * Suffix for cache files
+     * @var string
+     */
+    protected $_suffix = '';
 
     /**
      * Initialize the cache object and sets group and id to store it.
@@ -63,77 +61,91 @@ class Mumsys_Cache extends Mumsys_Abstract
      * @param string $group Groupname
      * @param string $id Unique ID e.g. requested area + userid
      */
-    public function __construct( $group, $id )
+    public function __construct($group, $id)
     {
-        $this->_id = md5((string)$id);
-        $this->_group = (string)$group;
+        $this->_id = md5((string) $id);
+        $this->_group = (string) $group;
     }
-
 
     /**
      * Cache the content.
      *
      * @param int $ttl Time to live in seconds
-     * @param mixed $data Content to be cached
+     * @param mixed $data Content to be cached. You may serialise it before.
      */
-    public function write( $ttl, $data )
+    public function write($ttl, $data)
     {
-        $filename = $this->_getFilename();
+        $filename = $this->getFilename();
 
-        if ($fp = fopen($filename, 'xb')) {
+        if ($fp = fopen($filename, 'wb')) {
             if (flock($fp, LOCK_EX)) {
                 fwrite($fp, $data);
             }
             fclose($fp);
 
             // Set filemtime
-            touch($filename, time() + (int)$ttl);
+            touch($filename, time() + (int) $ttl);
         }
     }
-
 
     /**
      * Returns the cached content.
      */
     public function read()
     {
-        $filename = $this->_getFilename();
+        $filename = $this->getFilename();
 
         return file_get_contents($filename);
     }
-
 
     /**
      * Checks if an entry is cached.
      *
      * @param string $group Groupname
      * @param string $id Unique ID
+     *
+     * @return boolean True if cache exists or false
      */
     public function isCached()
     {
         if ($this->_enabled) {
-            $filename = $this->_getFilename();
+            $filename = $this->getFilename();
 
             if (file_exists($filename) && filemtime($filename) > time()) {
                 return true;
             }
+
             @unlink($filename);
         }
 
         return false;
     }
 
+    /**
+     * Removes the specific cache file.
+     *
+     * @return boolean True on success
+     */
+    public function removeCache()
+    {
+        $filename = $this->getFilename();
+
+        if (file_exists($filename)) {
+            @unlink($filename);
+        }
+
+        return true;
+    }
 
     /**
      * Sets the filename prefix.
      *
      * @param string $prefix Filename Prefix to use
      */
-    public function setPrefix( $prefix )
+    public function setPrefix($prefix)
     {
-        $this->_prefix = (string)$prefix;
+        $this->_prefix = (string) $prefix;
     }
-
 
     /**
      * Returns the filename prefix.
@@ -143,17 +155,33 @@ class Mumsys_Cache extends Mumsys_Abstract
         return $this->_prefix;
     }
 
+    /**
+     * Sets the filename suffix.
+     *
+     * @param string $suffix Filename suffix to set
+     */
+    public function setSuffix($suffix)
+    {
+        $this->_suffix = (string) $suffix;
+    }
+
+    /**
+     * Returns the filename prefix.
+     */
+    public function getSuffix()
+    {
+        return $this->_suffix;
+    }
 
     /**
      * Sets the path for cache files.
      *
      * @param string $store The dir where to store the cache files
      */
-    public function setPath( $path )
+    public function setPath($path)
     {
-        $this->_path = (string)$path;
+        $this->_path = rtrim((string) $path, '/') . '/';
     }
-
 
     /**
      * Returns the path for cache files.
@@ -163,24 +191,22 @@ class Mumsys_Cache extends Mumsys_Abstract
         return $this->_path;
     }
 
-
     /**
      * Sets caching mode to enabled or not.
      *
      * @param boolean $flag True to enable the cache, false to disable
      */
-    public function setEnable( $flag )
+    public function setEnable($flag)
     {
-        $this->_enabled = (bool)$flag;
+        $this->_enabled = (bool) $flag;
     }
-
 
     /**
      * Builds a filename/path from group, id and path.
      */
-    protected function _getFilename()
+    public function getFilename()
     {
-        return $this->_path . $this->_prefix . $this->_group . '_' . $this->_id;
+        return $this->_path . $this->_prefix . $this->_group . '_' . $this->_id . $this->_suffix;
     }
 
 }

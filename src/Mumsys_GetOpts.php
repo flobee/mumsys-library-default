@@ -85,7 +85,7 @@ class Mumsys_GetOpts
     /**
      * Version ID information
      */
-    const VERSION = '3.3.1';
+    const VERSION = '3.3.2';
 
     /**
      * Cmd line.
@@ -269,14 +269,16 @@ class Mumsys_GetOpts
         if ($this->_resultClean) {
             return $this->_resultClean;
         } else {
+            $result = $this->_result;
+            $this->_resultClean[] = array_shift($result);
             // drop - and -- from keys
-            foreach ($this->_result as $key => $value) {
+            foreach ($result as $key => $value) {
                 if (isset($key[1]) && $key[1] == '-') {
                     $n = 2;
                 } else {
                     $n = 1;
                 }
-                $this->_resultClean[ substr($key, $n)] = $value;
+                $this->_resultClean[substr($key, $n)] = $value;
             }
             return $this->_resultClean;
         }

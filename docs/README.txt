@@ -2,7 +2,7 @@
 
 Library for the MUMSYS project. 
 
-MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - now
+MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - 2016, now
 
 
 In that time an admin CMS system to 
@@ -23,4 +23,19 @@ beginning with version 1
 If you like it, use it, feel free to make it better. Commits should be done to 
 the unstable branch.
 
+Benefits: 
+- PHP 7+ (Also PHP 5 support, PHP4 Off!)
+- Speed, speed speed. The library dosnt cost much ressources
+- No namespaces
+- No complicated autoloader
+- Nearly a framework but: KISS (Keep It Simple St... develpoper :-) )
+- Has interfaces to be staight. Downgrade maintainance time
+- Simple interfaces
+- Convention over configuration
+- Tests are nearly 100% and always a must have
+- For Web and shell
 
+
+    [![Build Status: stable](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=stable "Build Status: stable")](https://travis-ci.org/flobee/mumsys-library-default)
+    [![Build Status: testing](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=testing "Build Status: testing")](https://travis-ci.org/flobee/mumsys-library-default)
+    [![Build Status: unstable](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/flobee/mumsys-library-default)

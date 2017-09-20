@@ -54,7 +54,7 @@ abstract class Mumsys_Registry extends Mumsys_Abstract
      */
     public static function replace( $key, $value )
     {
-        self::_checkKey($key);
+        parent::_checkKey($key);
         self::$_registry[$key] = $value;
     }
 
@@ -69,7 +69,7 @@ abstract class Mumsys_Registry extends Mumsys_Abstract
      */
     public static function register( $key, $value )
     {
-        self::_checkKey($key);
+        parent::_checkKey($key);
 
         if (array_key_exists($key, self::$_registry)) {
             $message = sprintf('Registry key "%1$s" exists', $key);
@@ -127,20 +127,6 @@ abstract class Mumsys_Registry extends Mumsys_Abstract
         }
 
         return false;
-    }
-
-    /**
-     * Check given key to be a valid type.
-     *
-     * @param string $key Key to register
-     * @throws Mumsys_Registry_Exception Throws exception if key is not a string
-     */
-    private function _checkKey( $key )
-    {
-        if (!is_string($key)) {
-            $message = 'Invalid registry key. It\'s not a string';
-            throw new Mumsys_Registry_Exception($message);
-        }
     }
 
 }

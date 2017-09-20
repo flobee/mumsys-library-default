@@ -520,8 +520,9 @@ class Mumsys_Logger
         if ( $this->_maxfilesize )
         {
             if ( !($this->verbose || $this->debug)
-                && ($fsize=@filesize($this->_logfile)) > $this->_maxfilesize) {
-                unlink($this->_logfile);
+                && ($fsize=@filesize($this->_logfile)) > $this->_maxfilesize)
+            {
+                file_put_contents($this->_logfile, '');
                 $message = 'Max filesize reached. Log purged now';
             }
         }

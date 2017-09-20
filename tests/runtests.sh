@@ -21,3 +21,4 @@ if [ "$3" != "" ]; then
 fi
 
 /usr/bin/php -d memory_limit=128M -d include_path=".:/usr/share/php:../src" /usr/bin/phpunit --colors --no-configuration --bootstrap ./bootstrap.php $codeCoverage $verbose ./$3
+

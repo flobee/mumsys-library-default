@@ -3,13 +3,14 @@
 /**
  * Php
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- *
+ * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- *
+ * ----------------------------------------------------------------------------
  * @category    Mumsys
  * @package     Php
+ * Created on 2006-04-30
  */
 
 
@@ -49,6 +50,8 @@ if ( PHP_VERSION_ID < 50207 ) {
  *
  * Improved or missing functionality you will find here. Missing functionality
  * you will find at its best @pear's "Compat" package.
+ *
+ * Improved or missing functionality you will find here.
  * This comes from old times where functionality not exists but still implemented
  * somewhere.
  * All methodes should be called staticly.
@@ -115,6 +118,7 @@ class Mumsys_Php
         return $return;
     }
 
+
     /**
      * Magic setter
      *
@@ -133,8 +137,8 @@ class Mumsys_Php
             case 'get_magic_quotes_gpc':
                 self::$getMagicQuotesGpc = boolval($v);
                 break;
-            default:
 
+            default:
                 throw new PHP_Exception('__set: "' . $k . '"="' . $v . '" not allowed.');
                 break;
         }
@@ -328,6 +332,7 @@ class Mumsys_Php
      * E.g: If memory limit returns 32M -> 32*1048576 will be returned
      *
      * @param string $key Key to get from php.ini
+     *
      * @return integer|null Returns the ini value or translated nummeric value if a
      * nummeric value was detected
      */
@@ -416,7 +421,6 @@ class Mumsys_Php
         }
 
         return $value;
-
     }
 
 
@@ -532,14 +536,14 @@ class Mumsys_Php
 
 
     /**
-     * {{{ Re Convert HTML entities (htmlspecialchars reverse)
+     * Re Convert HTML entities (htmlspecialchars reverse)
      *
      * @param string $str The string being converted.
      * @param mixed $style by default: ENT_QUOTES ; ENT_COMPAT (convert "); ENT_QUOTES convert
      * both; ENT_NOQUOTES no quote conversation
      *
      * @return stringreturns the re-converted html entity
-     * }}} */
+     **/
     public static function xhtmlspecialchars( $str = '', $style = ENT_QUOTES )
     {
         $str = str_replace('&amp;', '&', $str);
@@ -1040,3 +1044,4 @@ class Mumsys_Php
     }
 
 }
+

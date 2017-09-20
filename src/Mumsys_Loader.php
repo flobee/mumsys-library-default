@@ -90,7 +90,7 @@ class Mumsys_Loader
         if (!class_exists($instance)) {
             $path = dirname(__FILE__) . '/';
 
-            if (substr($instance, 0, 6) == 'Mumsys') {
+            if (substr($instance, 0, 6) == 'Mumsys' || substr( $instance,0,3 ) == 'Php') {
                 $classfile = $path . $instance . '.php';
             } else {
                 $classfile = $path . 'class.' . $instance . '.php';
