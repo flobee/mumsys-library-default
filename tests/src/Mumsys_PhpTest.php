@@ -9,7 +9,13 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
      * @var Mumsys_Php
      */
     protected $object;
+
     protected $_testsDir;
+    /**
+     * Test are made vor version: ...
+     * @var string
+     */
+    protected $_version;
 
 
     /**
@@ -18,6 +24,8 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
      */
     protected function setUp()
     {
+        $this->_version = '3.1.1';
+
         $this->_testsDir = MumsysTestHelper::getTestsBaseDir();
         $this->object = new Mumsys_Php();
     }
@@ -577,5 +585,11 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
     {
         // call by callback of a nativ php function
         $this->assertEquals( 'ABCDEF' , $this->object->strstr('ABCDEF', 'ABC') );
+    }
+
+    
+    public function testVersion()
+    {
+        $this->assertEquals($this->_version, Mumsys_Php::VERSION);
     }
 }
