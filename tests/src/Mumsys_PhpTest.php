@@ -64,6 +64,9 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
             $actual = get_magic_quotes_gpc();
             $expected = false;
             $this->assertEquals($expected, $actual);
+
+            $this->expectException('Mumsys_Php_Exception');
+            $this->object->none = 123;
         }
     }
 
@@ -462,16 +465,17 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
         $matchedKeys1 = Mumsys_Php::array_keys_search_recursive('key1', $bigarray, true);
         $this->assertEquals(array($bigarray), $matchedKeys1);
 
-        $matchedKeys1 = Mumsys_Php::array_keys_search_recursive('name', $bigarray, true);
-        $this->assertEquals(array(0 => array('name' => 'me'), 1 => array('name' => 'me2'), 2 => array('name' => 'me3')), $matchedKeys1);
-        //
-        // check reference, check current
-        $this->assertEquals('me', $bigarray['key1']['key2']['c']['name']);
+        $matchedKeys2 = Mumsys_Php::array_keys_search_recursive('name', $bigarray, false);
+        $this->assertEquals(array(0 => array('name' => 'me'), 1 => array('name' => 'me2'), 2 => array('name' => 'me3')), $matchedKeys2);
+
+        $matchedKeys3 = Mumsys_Php::array_keys_search_recursive('text', $bigarray, true);
+        $this->assertEquals(array(0 => array('text' => 'something')), $matchedKeys3);
+
         // check reference,
         $matchedKeys1[0]['name'] = 'new value';
         // print_r($bigarray['key1']['key2']);
         // print_r($matchedKeys1);
-        $this->assertEquals($matchedKeys1[0]['name'], $bigarray['key1']['key2']['c']['name']);
+        $this->assertEquals($matchedKeys2[0]['name'], $bigarray['key1']['key2']['c']['name']);
     }
 
 
