@@ -123,7 +123,7 @@ class Mumsys_Php
      * @param string $k Key to be set.
      * @param mixed $v Value to be set
      *
-     * @throws PHP_Exception If key is not implemented to react on. This will
+     * @throws Mumsys_Php_Exception If key is not implemented to react on. This will
      * prevent public access to this class
      */
     public function __set( $k, $v )
@@ -135,7 +135,7 @@ class Mumsys_Php
                 break;
             default:
 
-                throw new PHP_Exception('__set: "' . $k . '"="' . $v . '" not allowed.');
+                throw new Mumsys_Php_Exception('__set: "' . $k . '"="' . $v . '" not allowed.');
                 break;
         }
     }
@@ -638,7 +638,7 @@ class Mumsys_Php
      * instead of an array. If the requested component doesn't exist within the
      * given URL, NULL will be returned.
      *
-     * @thows Php_Exception Throws exception if parseUrl would return false.
+     * @thows Mumsys_Php_Exception Throws exception if parseUrl would return false.
      * }}} */
     public static function parseUrl( $url, $component = null )
     {
@@ -889,12 +889,12 @@ class Mumsys_Php
      *
      * @return array Returns the merged array
      *
-     * @throws Mumsys_Exception Throws exception on unexpercted behaviour
+     * @throws Mumsys_Php_Exception Throws exception on unexpercted behaviour
      */
     public static function array_merge_recursive()
     {
         if ( func_num_args() < 2 ) {
-            throw new Mumsys_Exception(__METHOD__ . ' needs at least two arrays as arguments');
+            throw new Mumsys_Php_Exception(__METHOD__ . ' needs at least two arrays as arguments');
         }
 
         $arrays = func_get_args();
@@ -904,7 +904,7 @@ class Mumsys_Php
             $array = array_shift($arrays);
 
             if ( !is_array($array) ) {
-                throw new Mumsys_Exception(__METHOD__ . ' given argument is not an array "' . $array . '"');
+                throw new Mumsys_Php_Exception(__METHOD__ . ' given argument is not an array "' . $array . '"');
             }
 
             if ( !$array ) {
@@ -1006,7 +1006,7 @@ class Mumsys_Php
             $return = null;
             $result = exec($cmd, $data, $return);
             if ( !$result || $return !== 0 ) {
-                throw new Exception(__METHOD__ . ': cmd error: "' . $cmd . '"', 1);
+                throw new Mumsys_Php_Exception(__METHOD__ . ': cmd error: "' . $cmd . '"', 1);
             }
             $logger->log(__METHOD__ . ': cmd: "' . $cmd . '"', 7);
 
