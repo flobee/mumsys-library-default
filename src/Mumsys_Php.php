@@ -82,6 +82,11 @@ class Mumsys_Php
      */
     public static $getMagicQuotesGpc;
 
+    /**
+     * Flag for array_keys_search_recursive()
+     * @var mixed
+     */
+    private static $_stopOnMatch;
 
     /**
      * Initialisation of PHP class
@@ -849,23 +854,25 @@ class Mumsys_Php
      * }}} */
     public static function array_keys_search_recursive( $needle, & $haystack, $stopOnFirstMatch = false )
     {
+        self::$_stopOnMatch = $stopOnFirstMatch;
+
         $matches = array();
         foreach ( $haystack as $key => &$value ) {
 
-            if ( $stopOnFirstMatch && $stopOnFirstMatch === 'break' ) {
+            if ( self::$_stopOnMatch && self::$_stopOnMatch === 'break' ) {
                 break;
             }
-            // echo ":$needle:=:$key: m: $stopOnFirstMatch\n";
+            // echo ":$needle:=:$key: m: $stopOnMatch\n";
             if ( $key === $needle ) {
                 $matches[] = & $haystack;
-                if ( $stopOnFirstMatch ) {
-                    $stopOnFirstMatch = 'break';
+                if ( self::$_stopOnMatch ) {
+                    self::$_stopOnMatch = 'break';
                     break;
                 }
             } else {
                 // go deeper
                 if ( is_array($value) ) {
-                    $array = self::array_keys_search_recursive($needle, $value, $stopOnFirstMatch);
+                    $array = self::array_keys_search_recursive($needle, $value, self::$_stopOnMatch);
                     $matches = array_merge($matches, $array);
                 }
             }
