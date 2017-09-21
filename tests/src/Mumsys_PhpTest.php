@@ -128,32 +128,33 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
      */
     public function test_ini_get()
     {
-        $oldLimit = Mumsys_Php::ini_get( 'memory_limit' );
+        $oldLimit = Mumsys_Php::ini_get('memory_limit');
 
         $c = ini_set('memory_limit', '1K');
-        $this->assertEquals( (1024) , Mumsys_Php::ini_get( 'memory_limit' ) ) ;
+        $this->assertEquals((1024), Mumsys_Php::ini_get('memory_limit'));
 
         $c = ini_set('memory_limit', '32M');
-        $this->assertEquals( (32*1048576) , Mumsys_Php::ini_get( 'memory_limit' ) ) ;
+        $this->assertEquals((32 * 1048576), Mumsys_Php::ini_get('memory_limit'));
 
         $c = ini_set('memory_limit', '1G');
-        $this->assertEquals( 1073741824 , Mumsys_Php::ini_get( 'memory_limit' ) ) ;
+        $this->assertEquals(1073741824, Mumsys_Php::ini_get('memory_limit'));
         $c = ini_set('memory_limit', '1T');
-        $this->assertEquals( 1099511627776 , Mumsys_Php::ini_get( 'memory_limit' ) ) ;
+        $this->assertEquals(1099511627776, Mumsys_Php::ini_get('memory_limit'));
 
         $c = ini_set('memory_limit', '1P');
-        $this->assertEquals( 1125899906842624 , Mumsys_Php::ini_get( 'memory_limit' ) ) ;
+        $this->assertEquals(1125899906842624, Mumsys_Php::ini_get('memory_limit'));
 
 
 
-        $this->assertEquals( ini_get('display_errors'), Mumsys_Php::ini_get('display_errors') );
-        $this->assertFalse( Mumsys_Php::ini_get('html_errors') );
+        $this->assertEquals(ini_get('display_errors'), Mumsys_Php::ini_get('display_errors'));
+        $this->assertFalse(Mumsys_Php::ini_get('html_errors'));
 
         $this->assertEquals('', Mumsys_Php::ini_get('hä?WhatsThis?') );
 
 
         // inside the exception w/o throwing it
-        $this->expectExceptionMessage( 'Detection of size failt or not implemented for "100000000X"' );
+        $message = 'Detection of size failt or not implemented for "100000000X"';
+        $this->expectExceptionMessage( $message );
         $c = ini_set('memory_limit', '100000000X');
         Mumsys_Php::ini_get( 'memory_limit' );
 
@@ -171,20 +172,19 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
             0 => 0,
             1024 => 1024,
             '1k' => 1024,
-            '1m' => 1024*1024,
-            '1g' => 1024*1024*1024,
-            '1t' => 1024*1024*1024*1024,
-            '1p' => 1024*1024*1024*1024*1024,
+            '1m' => 1024 * 1024,
+            '1g' => 1024 * 1024 * 1024,
+            '1t' => 1024 * 1024 * 1024 * 1024,
+            '1p' => 1024 * 1024 * 1024 * 1024 * 1024,
         );
-        foreach($tests as $key => $expected) {
-            $actual = $this->object->str2bytes( $key );
+        foreach ( $tests as $key => $expected ) {
+            $actual = $this->object->str2bytes($key);
             $message = $key . ' doesn\'t match ' . $expected;
             $this->assertEquals($expected, $actual, $message);
         }
 
-        $this->expectExceptionMessage( 'Detection of size failt or not implemented for "1X"' );
-        $actual = $this->object->str2bytes( '1X' );
-
+        $this->expectExceptionMessage('Detection of size failt or not implemented for "1X"');
+        $actual = $this->object->str2bytes('1X');
     }
 
 
