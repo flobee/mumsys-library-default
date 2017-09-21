@@ -69,7 +69,7 @@ class Mumsys_Php
     /**
      * Version ID information.
      */
-    const VERSION = '3.0.0';
+    const VERSION = '3.1.1';
 
     /**
      * @var string
@@ -811,8 +811,11 @@ class Mumsys_Php
     public static function array_keys_search_recursive_check( $needle, $haystack )
     {
         foreach ( $haystack as $key => $value ) {
-            if ( $key === $needle || ( is_array($value) && ( $x = self::array_keys_search_recursive($needle, $value,
-                    true) ) ) ) {
+            if ( $key === $needle || (
+                is_array($value) &&
+                ( $x = self::array_keys_search_recursive($needle, $value, true) )
+                )
+            ) {
                 return true;
             }
         }
@@ -830,16 +833,14 @@ class Mumsys_Php
      * <code>
      * <?php
      * $bigarray =  array(
-     *             'key1' =>
-     *                    array(
-     *                       'key2' =>
-     *                          array(
-     *                              'a' => array( 'text'=>'something'),
-     *                              'b' => array( 'id'=>737),
-     *                              'c' => array( 'name'=>'me'),
-     *                          ),
-     *                 )
-     *            );
+     *      'key1' => array(
+     *          'key2' => array(
+     *              'a' => array( 'text'=>'something'),
+     *              'b' => array( 'id'=>737),
+     *              'c' => array( 'name'=>'me'),
+     *          ),
+     *      )
+     * );
      * $matchedKeys = array_keys_search_recursive( 'name',$bigarray);
      * // returns by reference: array( 0=>array( 'name'=>'me');
      * ?>
