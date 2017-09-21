@@ -168,16 +168,17 @@ class Mumsys_Php
     }
 
 
-    // +-- start features ----------------------------------------
+    // +-- start helper methodes  ---------------------------------------------
 
 
-    // --- Variable handling Functions -----------------------------------------
+    // --- Variable handling Functions ----------------------------------------
 
 
     /**
      * Check if a value is an integer
      *
      * @param interger $value Value to be checked
+     *
      * @return integer|false Returns the casted interger value or false if value
      * is not a nummeric type
      */
@@ -208,8 +209,10 @@ class Mumsys_Php
         return floatval($value);
     }
 
+
     //
     // --- Filesystem functions ------------------------------------------------
+
 
     /** {{{
      * Test if a file exists
@@ -328,8 +331,11 @@ class Mumsys_Php
      * E.g: If memory limit returns 32M -> 32*1048576 will be returned
      *
      * @param string $key Key to get from php.ini
-     * @return integer|null Returns the ini value or translated nummeric value if a
-     * nummeric value was detected
+     *
+     * @return string|integer|false Returns the ini value or translated nummeric value if a
+     * nummeric value was detected or false if the key was not found
+     *
+     * @throws Mumsys_Php_Exception If detection/ calculation numeric values fails
      */
     public static function ini_get( $key )
     {
@@ -337,16 +343,18 @@ class Mumsys_Php
         $value = trim($value);
 
         if ( empty($value) ) {
-            return null;
+            return false;
         }
 
-        try{
-            $result = self::str2bytes($value, true);
-        } catch (Exception $ex) {
-            if ( is_numeric($value) ) {
-                throw $ex;
+        try {
+            if ( (int) $value !== 0 ) {
+                $result = self::str2bytes($value, true);
+            } else {
+                $result = $value;
             }
-            $result = $value;
+        }
+        catch ( Exception $ex ) {
+            throw $ex;
         }
 
         return $result;
@@ -366,7 +374,7 @@ class Mumsys_Php
      *
      * @return integer Number of bytes.
      *
-     * @throws Exception If detection/ calculation fails
+     * @throws Mumsys_Php_Exception If detection/ calculation fails
      */
     public static function str2bytes( $value , $binType=true)
     {
@@ -410,7 +418,9 @@ class Mumsys_Php
 
             default:
                 if ( !is_numeric( $value ) ) {
-                    throw new Exception( 'Detection of size failt for "' . $value . '"' );
+                    $message = 'Detection of size failt or not implemented for '
+                        . '"' . $value . '"';
+                    throw new Mumsys_Php_Exception( $message );
                 }
                 break;
         }
