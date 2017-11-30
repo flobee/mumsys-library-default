@@ -112,7 +112,7 @@ class Mumsys_FileSystem
         }
 
         if ( $filters ) {
-            while ( list($location, ) = each( $this->_dirInfo ) ) {
+            foreach($this->_dirInfo as $location => & $none) {
                 foreach ( $filters as $regex ) {
                     if ( !preg_match( $regex, $location ) ) {
                         unset( $this->_dirInfo[$location] );

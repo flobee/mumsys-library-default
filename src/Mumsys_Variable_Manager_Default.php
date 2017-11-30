@@ -129,22 +129,22 @@ class Mumsys_Variable_Manager_Default
     const TYPE_INVALID_IPV6 = 'TYPE_INVALID_IPV6';
 
     /**
-     * Value "%1$s" must contain at least "%2$s" characters
+     * "%1$s": Value "%2$s" must contain at least "%3$s" characters
      */
     const MINMAX_TOO_SHORT_STR = 'MINMAX_TOO_SHORT_STR';
 
     /**
-     * Value "%1$s" must contain maximum of "%2$s" characters, "%3$s" given
+     * "%1$s": Value "%2$s" must contain maximum of "%3$s" characters, "%4$s" given
      */
     const MINMAX_TOO_LONG_STR = 'MINMAX_TOO_LONG_STR';
 
     /**
-     * Value "%1$s" must be minimum "%2$s"
+     * "%1$s": Value "%2$s" must be minimum "%3$s"
      */
     const MINMAX_TOO_SHORT_NUM = 'MINMAX_TOO_SHORT_NUM';
 
     /**
-     * Value "%1$s" can be maximum "%2$s"
+     * "%1$s": Value "%2$s" can be maximum "%3$s"
      */
     const MINMAX_TOO_LONG_NUM = 'MINMAX_TOO_LONG_NUM';
 
@@ -165,6 +165,9 @@ class Mumsys_Variable_Manager_Default
 
     /**
      * Callback "%1$s" for "%2$s" failt for value: "%3$s"'
+     * %1$s = __METHODE__
+     * %2$s = item label
+     * %3$s = values
      */
     const CALLBACK_ERROR = 'CALLBACK_ERROR';
 
@@ -181,6 +184,12 @@ class Mumsys_Variable_Manager_Default
 
     /**
      * List of error messages used in this manager
+     *
+     * @todo generalize order of error parameters! E.g:
+     *      "subject name",
+     *      "current value",
+     *      "expected value"
+     *
      * @var array
      */
     private $_messageTemplates = array(
@@ -189,8 +198,7 @@ class Mumsys_Variable_Manager_Default
         self::ALLOWEMPTY_ERROR => 'Missing value',
 
         //regex checks
-        self::REGEX_FAILURE => 'Value "%1$s" does not match the regular '
-            . 'expression/s (json): "%2$s"',
+        self::REGEX_FAILURE => 'Value "%1$s" does not match the regular expression/s (json): "%2$s"',
         self::REGEX_ERROR => 'Error in regular expression. Check syntax!',
 
         // type checks
@@ -206,18 +214,17 @@ class Mumsys_Variable_Manager_Default
         self::TYPE_INVALID_IPV6 => 'Value (json):"%1$s" is not an "ipv6" address',
 
         //min max checks
-        self::MINMAX_TOO_SHORT_STR => 'Value "%1$s" must contain at least "%2$s" characters',
-        self::MINMAX_TOO_LONG_STR => 'Value "%1$s" must contain maximum of '
-            . '"%2$s" characters, "%3$s" given',
-        self::MINMAX_TOO_SHORT_NUM => 'Value "%1$s" must be minimum "%2$s"',
-        self::MINMAX_TOO_LONG_NUM => 'Value "%1$s" can be maximum "%2$s"',
+        self::MINMAX_TOO_SHORT_STR => '"%1$s": Value "%2$s" must contain at least "%3$s" characters',
+        self::MINMAX_TOO_LONG_STR => '"%1$s": Value "%2$s" must contain maximum of "%3$s" characters, "%4$s" given',
+        self::MINMAX_TOO_SHORT_NUM => '"%1$s": Value "%2$s" must be minimum "%3$s"',
+        self::MINMAX_TOO_LONG_NUM => '"%1$s": Value "%2$s" can be maximum "%3$s"',
         self::MINMAX_TYPE_ERROR => 'Min/max type error "%1$s". Must be "string"'
             . ', "integer", "numeric", "float" or "double"',
 
         self::FILTER_ERROR => 'Filter "%1$s" failt for label/name: "%2$s"',
         self::FILTER_NOTFOUND => 'Filter function "%1$s" not found for item: "%2$s"',
 
-        self::CALLBACK_ERROR => 'Callback "%1$s" for "%2$s" failt for value: "%3$s"',
+        self::CALLBACK_ERROR => 'Callback "%1$s" for "%2$s" failt for value (json): "%3$s"',
         self::CALLBACK_NOTFOUND => 'Callback function "%1$s" not found for item: "%2$s"',
     );
 
@@ -493,12 +500,23 @@ class Mumsys_Variable_Manager_Default
                 $strlen = strlen($value);
                 if ( isset($min) && $strlen < $min ) {
                     $errorKey = self::MINMAX_TOO_SHORT_STR;
-                    $errorMessage = sprintf($this->_messageTemplates['MINMAX_TOO_SHORT_STR'], $value, $min);
+                    $errorMessage = sprintf(
+                        $this->_messageTemplates['MINMAX_TOO_SHORT_STR'],
+                        $item->getLabel(),
+                        $value,
+                        $min
+                    );
                 }
 
                 if ( isset($max) && $strlen > $max ) {
                     $errorKey = self::MINMAX_TOO_LONG_STR;
-                    $errorMessage = sprintf($this->_messageTemplates['MINMAX_TOO_LONG_STR'], $value, $max, $strlen);
+                    $errorMessage = sprintf(
+                        $this->_messageTemplates['MINMAX_TOO_LONG_STR'],
+                        $item->getLabel(),
+                        $value,
+                        $max,
+                        $strlen
+                    );
                 }
                 break;
 
@@ -510,12 +528,22 @@ class Mumsys_Variable_Manager_Default
             case 'numeric':
                 if ( isset($min) && $value < $min ) {
                     $errorKey = self::MINMAX_TOO_SHORT_NUM;
-                    $errorMessage = sprintf($this->_messageTemplates['MINMAX_TOO_SHORT_NUM'], $value, $min);
+                    $errorMessage = sprintf(
+                        $this->_messageTemplates['MINMAX_TOO_SHORT_NUM'],
+                        $item->getLabel(),
+                        $value,
+                        $min
+                    );
                 }
 
                 if ( isset($max) && $value > $max ) {
                     $errorKey = self::MINMAX_TOO_LONG_NUM;
-                    $errorMessage = sprintf($this->_messageTemplates['MINMAX_TOO_LONG_NUM'], $value, $max);
+                    $errorMessage = sprintf(
+                        $this->_messageTemplates['MINMAX_TOO_LONG_NUM'],
+                        $item->getLabel(),
+                        $value,
+                        $max
+                    );
                 }
                 break;
 
@@ -1103,7 +1131,10 @@ class Mumsys_Variable_Manager_Default
                     /* false as return or false of the callback ?
                      * boolean values should not be filtered! */
                     $message = sprintf(
-                        $this->_messageTemplates['CALLBACK_ERROR'], $cmd, $itemName, (is_array($value)?print_r($value, true):$value)
+                        $this->_messageTemplates['CALLBACK_ERROR'],
+                        $cmd,
+                        $itemName,
+                        (is_array($value)? json_encode($value):$value)
                     );
                     $item->setErrorMessage( self::CALLBACK_ERROR, $message );
                 } else {

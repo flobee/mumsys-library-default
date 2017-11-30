@@ -19,7 +19,7 @@
  * Created on 2015-02-28
  * @since       File available since Release 0.1
  * @filesource
- * -----------------------------------------------------------------------
+ * ----------------------------------------------------------------------------
  */
 /*}}}*/
 
@@ -100,7 +100,7 @@ class Mumsys_Multirename
      */
     private $_pathHome = '/tmp/';
 
-    
+
     /**
      * Initialise Multirename object.
      *

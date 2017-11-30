@@ -172,7 +172,7 @@ abstract class Mumsys_Variable_Item_Abstract
 
 
     /**
-     * Sets an error message by given key. Existing key will be replaced.
+     * Sets/ replaces an error message by given key.
      *
      * @param string $key Internal ID of the error (e.g: TOO_LONG, TOO_SHORT message)
      * @param string $value Error message value
