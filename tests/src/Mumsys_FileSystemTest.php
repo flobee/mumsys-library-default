@@ -17,7 +17,7 @@ class Mumsys_FileSystemTest
 
     protected function setUp()
     {
-        $this->_version = '3.0.6';
+        $this->_version = '3.0.7';
         $this->_versions = array(
             'Mumsys_FileSystem' => $this->_version,
             'Mumsys_FileSystem_Common_Abstract' => '3.1.0',
@@ -329,6 +329,7 @@ class Mumsys_FileSystemTest
             "finfo::file(/usr/bin/sh): failed to open stream: No such file or directory",
             "ELF 32-bit LSB shared object, Intel 80386, version 1 (SYSV)",
             'ELF 64-bit LSB executable, x86-64, version 1 (SYSV)',
+            'ELF 64-bit LSB shared object, x86-64, version 1 (SYSV)',
         );
         $actual2 = $this->_object->getFileType('/bin/ls');
 

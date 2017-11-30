@@ -598,7 +598,7 @@ class Mumsys_Variable_Manager_DefaultTest extends PHPUnit_Framework_TestCase
         $expected2 = array(
             'unittest'=>array(
                 'CALLBACK_NOTFOUND' => 'Callback function "callbackNotExists" not found for item: "unittest"',
-                'CALLBACK_ERROR' => 'Callback "cbtest_class::runFalse" for "unittest" failt for value: "1"',
+                'CALLBACK_ERROR' => 'Callback "cbtest_class::runFalse" for "unittest" failt for value (json): "1"',
             )
         );
 
