@@ -25,7 +25,7 @@
  * @package     Library
  * @subpackage  Service
  */
-abstract class Mumsys_Service_Spss_Abstract
+abstract class Mumsys_Service_Spss_Abstract extends Mumsys_Service_Abstract
 {
     /**
      * Version ID information.
@@ -33,20 +33,29 @@ abstract class Mumsys_Service_Spss_Abstract
     const VERSION = '1.0.0';
 
     /**
-     * Location of the file to read from/ write to.
-     * @var string
+     * SPSS interface to be used Reader|Writer interface
+     * @var \SPSS\Sav\Reader|\SPSS\Sav\Writer
      */
-    private $_file = '';
-
+    protected $_spss;
 
     /**
      * Initialise the object.
      *
-     * @param string $file Location of the file to read from/ write to.
+     * @param mixed $iface Reader|Writer interface to be used
      */
-    public function __construct($file)
+    public function __construct( $iface )
     {
-        $this->_file = $file;
+        $this->_spss = $iface;
+    }
+
+    /**
+     * Returns the parser interface.
+     *
+     * @return Reader|Writer interface based on construction
+     */
+    public function getInterface()
+    {
+        return $this->_spss;
     }
 
 }
