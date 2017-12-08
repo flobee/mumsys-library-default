@@ -46,13 +46,25 @@ class Mumsys_Service_Spss_Reader
      */
     private $_varMapping;
 
+    /**
+     * Character encoding.
+     * @var string
+     */
+    private $_encoding;
+
+    /**
+     * Floating point informations.
+     * @var array
+     */
+    private $_floatInfo;
+
 
     /**
      * Returns a list of \Variable items by given list of public variable names.
      *
      * @param array $labels list of public keys to return the respresented item
      *
-     * @return array List of key|ID/Variable items pairs
+     * @return array List of key|ID/Variable item pairs
      */
     public function getVariableItems( array $labels = array() ) : array
     {
@@ -69,7 +81,7 @@ class Mumsys_Service_Spss_Reader
             }
         }
 
-        // re-map initial order
+        // re-map to initial order
         foreach($map as $internal => & $public) {
             foreach($tmp as $id => & $obj) {
                 if ($obj->name === $internal) {
@@ -89,7 +101,7 @@ class Mumsys_Service_Spss_Reader
      *
      * @return array List of public name/internal key name variables
      */
-    public function getVariableMapByLabels( array $labels = array() ): array
+    public function getVariableMapByLabels( array $labels = array() ) : array
     {
         $map = $this->getVariableMap();
         $result = array();
@@ -120,7 +132,7 @@ class Mumsys_Service_Spss_Reader
      *
      * @return array List of internal/public name pairs
      */
-    public function getVariableMapByKeys( array $keys = array() )
+    public function getVariableMapByKeys( array $keys = array() ) : array
     {
         $map = $this->getVariableMap();
         $result = array();
@@ -145,7 +157,7 @@ class Mumsys_Service_Spss_Reader
      *
      * @return array List of internal key /public name variables
      */
-    public function getVariableMapByRegex( array $regexs = array() )
+    public function getVariableMapByRegex( array $regexs = array() ) : array
     {
         $result = array();
 
@@ -158,7 +170,7 @@ class Mumsys_Service_Spss_Reader
                 foreach($regexs as $req)
                 {
                     if ( ($match = preg_match($req, $public)) === false ) {
-                        throw new Toolbox_Program_Exception('Regex error');
+                        throw new Mumsys_Service_Spss_Exception('Regex error');
                     }
 
                     if ( $match ) {
@@ -177,8 +189,8 @@ class Mumsys_Service_Spss_Reader
     /**
      * Return the variable mapping list of key(internal)/value(external) pairs.
      *
-     * Internal is used in the data, external used in SPSS tables to show the
-     * variable name.
+     * Internal is used for the data, external used in SPSS tables to show the
+     * variable names including camel case.
      *
      * @return array List of key(internal)/value(external) pairs or empty array
      * for not found/exists.
@@ -222,6 +234,98 @@ class Mumsys_Service_Spss_Reader
         }
 
         return $result;
+    }
+
+
+    /**
+     * Returns the list of values/ results.
+     *
+     * @return array List of key/records pairs
+     */
+    public function getData() : array
+    {
+        return $this->_spss->data;
+    }
+
+
+    /**
+     * Returns the custom document info.
+     *
+     * @return array List of messages
+     */
+    public function getDocumentInfo() : array
+    {
+        return $this->_spss->documents;
+    }
+
+
+    /**
+     * Returns the character encoding.
+     *
+     * @return string String of the character encoding, e.g. UTF-8
+     */
+    public function getEncoding()
+    {
+        if ($this->_encoding !== null) {
+            return $this->_encoding;
+        }
+
+        foreach($this->_spss->info as $obj) {
+            if ($obj instanceof \SPSS\Sav\Record\Info\CharacterEncoding) {
+                $this->_encoding = $obj;
+                break;
+            }
+        }
+
+        return $this->_encoding;
+    }
+
+
+    /**
+     * Returns the SPSS or PSPP version of the .sav file.
+     *
+     * @return array List of [Major, Minor, Revision] information
+     */
+    public function getVersionOfSource()
+    {
+        if ( $this->_version !== null ) {
+            return $this->_version;
+        }
+
+        foreach ( $this->_spss->info as $obj ) {
+            if ( $obj instanceof \SPSS\Sav\Record\Info\MachineInteger ) {
+                $this->_version = $obj->version;
+                break;
+            }
+        }
+
+        return $this->_version;
+    }
+
+
+    /**
+     * Returns the machine floating point info.
+     *
+     * @return array Information of: sysmis, highest, lowest.
+     */
+    public function getFloatingPointInfo()
+    {
+        if ( $this->_floatInfo !== null ) {
+            return $this->_floatInfo;
+        }
+
+        foreach ( $this->_spss->info as $obj ) {
+            if ( $obj instanceof \SPSS\Sav\Record\Info\MachineFloatingPoint ) {
+                $this->_floatInfo = array(
+                    'sysmis' => $obj->sysmis,
+                    'highest' => $obj->highest,
+                    'lowest' => $obj->lowest
+                );
+                break;
+            }
+        }
+
+        return $this->_floatInfo;
     }
 
 }
