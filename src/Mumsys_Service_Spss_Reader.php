@@ -53,6 +53,12 @@ class Mumsys_Service_Spss_Reader
     private $_encoding;
 
     /**
+     * [Major, Minor, Revision] information
+     * @var array
+     */
+    private $_version;
+
+    /**
      * Floating point informations.
      * @var array
      */
@@ -215,29 +221,6 @@ class Mumsys_Service_Spss_Reader
 
 
     /**
-     * Check if a \Variable item is in the list of mapping we want.
-     *
-     * @param array $labelMap List of internal/public map
-     * @param \Variable $oVar Variable item
-     *
-     * @return boolean true for found, otherwise false
-     */
-    private function _checkVariableNameExists( $labelMap, $oVar ) : bool
-    {
-        $result = false;
-
-        foreach ( $labelMap as $internal => $public ) {
-            if ( $oVar->name === $internal ) {
-                $result = true;
-                break;
-            }
-        }
-
-        return $result;
-    }
-
-
-    /**
      * Returns the list of values/ results.
      *
      * @return array List of key/records pairs
@@ -266,13 +249,13 @@ class Mumsys_Service_Spss_Reader
      */
     public function getEncoding()
     {
-        if ($this->_encoding !== null) {
+        if ( $this->_encoding !== null ) {
             return $this->_encoding;
         }
 
-        foreach($this->_spss->info as $obj) {
-            if ($obj instanceof \SPSS\Sav\Record\Info\CharacterEncoding) {
-                $this->_encoding = $obj;
+        foreach ( $this->_spss->info as $obj ) {
+            if ( $obj instanceof \SPSS\Sav\Record\Info\CharacterEncoding ) {
+                $this->_encoding = $obj->data;
                 break;
             }
         }
@@ -326,6 +309,29 @@ class Mumsys_Service_Spss_Reader
         }
 
         return $this->_floatInfo;
+    }
+
+
+    /**
+     * Check if a \Variable item is in the list of mapping we want.
+     *
+     * @param array $labelMap List of internal/public map
+     * @param \Variable $oVar Variable item
+     *
+     * @return boolean true for found, otherwise false
+     */
+    private function _checkVariableNameExists( $labelMap, $oVar ) : bool
+    {
+        $result = false;
+
+        foreach ( $labelMap as $internal => $public ) {
+            if ( $oVar->name === $internal ) {
+                $result = true;
+                break;
+            }
+        }
+
+        return $result;
     }
 
 }
