@@ -33,15 +33,17 @@ abstract class Mumsys_Service_Spss_Abstract extends Mumsys_Service_Abstract
     const VERSION = '1.0.0';
 
     /**
-     * SPSS interface to be used Reader|Writer interface
+     * SPSS Reader|Writer interface
      * @var \SPSS\Sav\Reader|\SPSS\Sav\Writer
      */
     protected $_spss;
 
+    
     /**
      * Initialise the object.
      *
-     * @param mixed $iface Reader|Writer interface to be used
+     * @param SPSS\Sav\Reader|\SPSS\Sav\Writer $iface Reader|Writer interface
+     * to be used
      */
     public function __construct( $iface )
     {
