@@ -1,6 +1,6 @@
 {
     "name": "mumsys/library",
-    "description": "Library for the MUMSYS project written in PHP",
+    "description": "PHP library for the MUMSYS project",
     "license": "LGPL3",
     "type": "library",
     "keywords": ["php", "library", "web", "shell", "DTO", "DAO"],
