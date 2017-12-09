@@ -1,6 +1,6 @@
 {
     "name": "flobee/mumsys-library-default",
-    "description": "Mumsys library",
+    "description": "Library for the MUMSYS project written in PHP",
     "license": "LGPL3",
     "type": "library",
     "keywords": ["php", "library", "DTO", "DAO"],
