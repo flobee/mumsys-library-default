@@ -1,5 +1,5 @@
 {
-    "name": "flobee/mumsys-library-default",
+    "name": "mumsys/library",
     "description": "Library for the MUMSYS project written in PHP",
     "license": "LGPL3",
     "type": "library",
