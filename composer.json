@@ -3,7 +3,7 @@
     "description": "Library for the MUMSYS project written in PHP",
     "license": "LGPL3",
     "type": "library",
-    "keywords": ["php", "library", "DTO", "DAO"],
+    "keywords": ["php", "library", "web", "shell", "DTO", "DAO"],
     "homepage": "https://github.com/mumsys/library",
     "authors": [
         {
