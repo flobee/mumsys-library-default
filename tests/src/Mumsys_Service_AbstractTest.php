@@ -1,5 +1,21 @@
 <?php
 
+/**
+ * Mumsys_Service_AbstractTest
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2015 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Service
+ * @version     1.0.0
+ * Created: 2017-11-30
+ */
+
+
 class Mumsys_Service_AbstractTestClass
     extends Mumsys_Service_Abstract
 {
@@ -38,7 +54,7 @@ class Mumsys_Service_AbstractTest extends Mumsys_Unittest_Testcase
         $this->_object = null;
     }
 
-    
+
     /**
      * @c o v e r s Mumsys_Service_Abstract::VERSION
      */
