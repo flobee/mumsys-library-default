@@ -25,7 +25,8 @@
  * @package     Library
  * @subpackage  Service
  */
-abstract class Mumsys_Service_Spss_Abstract extends Mumsys_Service_Abstract
+abstract class Mumsys_Service_Spss_Abstract
+    extends Mumsys_Service_Abstract
 {
     /**
      * Version ID information.
@@ -38,17 +39,26 @@ abstract class Mumsys_Service_Spss_Abstract extends Mumsys_Service_Abstract
      */
     protected $_spss;
 
-    
+
     /**
      * Initialise the object.
      *
-     * @param SPSS\Sav\Reader|\SPSS\Sav\Writer $iface Reader|Writer interface
+     * @param \SPSS\Sav\Reader|\SPSS\Sav\Writer $iface Reader|Writer interface
      * to be used
      */
     public function __construct( $iface )
     {
+        if (
+            !( $iface instanceof \SPSS\Sav\Reader)
+            && !($iface instanceof \SPSS\Sav\Writer)
+        ) {
+            $mesg = 'Invalid Reader/Writer instance';
+            throw new Mumsys_Service_Spss_Exception( $mesg );
+        }
+
         $this->_spss = $iface;
     }
+
 
     /**
      * Returns the parser interface.
@@ -61,4 +71,3 @@ abstract class Mumsys_Service_Spss_Abstract extends Mumsys_Service_Abstract
     }
 
 }
-
