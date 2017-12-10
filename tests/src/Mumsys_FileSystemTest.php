@@ -368,7 +368,8 @@ class Mumsys_FileSystemTest
         $msg[] = 'Rename failt for reason: Copy error for: "'.$this->_testsDir . '/tmp/unittest" '
             . 'copy(/root//unittest): failed to open stream: Permission denied';
         $msg[] = 'Rename failt for reason: rename(): Permission denied';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception');
+        
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->rename($this->_testdirs['file'], '/root/');
     }
 
