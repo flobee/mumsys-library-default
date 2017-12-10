@@ -12,7 +12,7 @@
  * @package     Library
  * @subpackage  Service
  * @version     1.0.0
- * Created: 2016-11-30
+ * Created: 2017-11-30
  */
 
 /**
@@ -22,7 +22,8 @@
  * @package     Library
  * @subpackage  Service
  */
-class Mumsys_Sevice_Exception extends Mumsys_Exception
+class Mumsys_Service_Exception
+    extends Mumsys_Exception
 {
 
 }
