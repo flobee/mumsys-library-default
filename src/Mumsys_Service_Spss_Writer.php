@@ -32,5 +32,12 @@ class Mumsys_Service_Spss_Writer
      * Version ID information.
      */
     const VERSION = '1.0.0';
+
+
+    public function __construct( $iface )
+    {
+        throw new Mumsys_Service_Spss_Exception( 'Not implemented yet' );
+    }
+    
 }
 
