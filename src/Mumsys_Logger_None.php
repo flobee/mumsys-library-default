@@ -54,7 +54,7 @@ class Mumsys_Logger_None
      */
     public function log( $input, $level = 0 )
     {
-        return;
+        return $input;
     }
 
 }
