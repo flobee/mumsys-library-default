@@ -29,6 +29,7 @@ class Mumsys_Logger_AbstractTest
      */
     protected function setUp()
     {
+        $this->_version = '3.3.0';
         $this->_testsDir = realpath(dirname(__FILE__) . '/../');
 
         $this->_logfile = $this->_testsDir
@@ -277,6 +278,14 @@ class Mumsys_Logger_AbstractTest
         $this->assertEquals('DEBUG', $this->_object->getLevelName(7));
 
         $this->assertEquals('unknown', $this->_object->getLevelName(999));
+    }
+
+    /**
+     * VERSION check
+     */
+    public function testVersion()
+    {
+        $this->assertEquals($this->_version, Mumsys_Logger_Abstract::VERSION);
     }
 
 }
