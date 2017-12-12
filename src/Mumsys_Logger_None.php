@@ -32,7 +32,7 @@ class Mumsys_Logger_None
     /**
      * Version ID information
      */
-    const VERSION = '3.0.0';
+    const VERSION = '3.0.1';
 
 
     /**
@@ -50,11 +50,29 @@ class Mumsys_Logger_None
      * @param string|array $input Message or list of messages to be logged
      * @param integer $level Level number of log priority
      *
-     * @return void
+     * @return string Log message
      */
     public function log( $input, $level = 0 )
     {
-        return $input;
+        $datesting = date( $this->_timeFormat, time() );
+        $levelName = $this->getLevelName( $level );
+
+        if ( !is_scalar( $input ) ) {
+            $input = json_encode( $input );
+        }
+
+        $message = sprintf(
+            $this->_logFormat,
+            $datesting,
+            $this->_username,
+            $levelName,
+            $level,
+            $input
+        );
+
+        $message .= $this->_lf;
+
+        return $message;
     }
 
 }
