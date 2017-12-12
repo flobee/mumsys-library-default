@@ -17,6 +17,11 @@ class Mumsys_Logger_FileTest
      */
     protected $_testsDir;
 
+    /**
+     * Version string.
+     * @var string
+     */
+    protected $_version;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -24,6 +29,8 @@ class Mumsys_Logger_FileTest
      */
     protected function setUp()
     {
+        $this->_version = '3.0.3';
+
         $this->_testsDir = realpath(dirname(__FILE__) . '/../');
 
         $this->_logfile = $this->_testsDir . '/tmp/Mumsys_LoggerTest_defaultfile.test';
@@ -219,6 +226,14 @@ class Mumsys_Logger_FileTest
 
         $actual = $object->checkMaxFilesize();
         $this->assertEquals('', $actual);
+    }
+
+    /**
+     * VERSION check
+     */
+    public function testVersion()
+    {
+        $this->assertEquals($this->_version, Mumsys_Logger_File::VERSION);
     }
 
 }
