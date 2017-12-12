@@ -1,5 +1,10 @@
 # Changes
 
+2017-12
+    Mumsys_Logger_*
+    - Improves setup and tests
+
+
 2016-07-14
     Mumsys_Variable_*
     Mumsys_Variable_Item_*
