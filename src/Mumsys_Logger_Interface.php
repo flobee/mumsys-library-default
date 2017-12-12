@@ -40,7 +40,8 @@ interface Mumsys_Logger_Interface
      * @param string|array $input Message or list of messages to log
      * @param integer $level Level number of log priority
      *
-     * @return string|void Returns the log message if needed
+     * @return string Returns the log message
      */
-    public function log( $input, $level=0 );
+    public function log( $input, $level = 0 );
+
 }
