@@ -265,8 +265,8 @@ class Mumsys_FileSystemTest
             "finfo::file(/usr/bin/sh): failed to open stream: No such file or directory",
             "ELF 32-bit LSB shared object, Intel 80386, version 1 (SYSV)",
             'ELF 64-bit LSB executable, x86-64, version 1 (SYSV)',
+            'ELF 64-bit LSB shared object, x86-64, version 1 (SYSV)',
             "symbolic link to dash\n",
-            "ELF 32-bit LSB shared object, Intel 80386, version 1 (SYSV)"
         );
         $actual2 = $this->_object->getFileType('/bin/ls');
 
@@ -355,7 +355,7 @@ class Mumsys_FileSystemTest
         $msg[] = 'Rename failt for reason: Copy error for: "'.$this->_testsDir . '/tmp/unittest" '
             . 'copy(/root//unittest): failed to open stream: Permission denied';
         $msg[] = 'Rename failt for reason: rename(): Permission denied';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception');
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->rename($this->_testdirs['file'], '/root/');
     }
 
@@ -524,7 +524,8 @@ class Mumsys_FileSystemTest
         $this->assertTrue($this->_object->rmdirs($this->_testdirs['dir']));
 
         $regex = '/(Can not delete directory "\/tmp")/';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $regex);
+        $this->expectException( 'Mumsys_FileSystem_Exception' );
+        $this->expectExceptionMessageRegExp( $regex );
         $this->assertTrue($this->_object->rmdir('/tmp'));
     }
 
