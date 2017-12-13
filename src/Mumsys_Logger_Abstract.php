@@ -31,7 +31,7 @@ abstract class Mumsys_Logger_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '3.3.0';
+    const VERSION = '3.3.1';
 
     /**
      * System is unusable emerg()
@@ -214,11 +214,12 @@ abstract class Mumsys_Logger_Abstract
      * Dont use it if you can (performace). Just compatibilty to psr.
      *
      * @param string $key Methode string to wrap to
-     * @param string $value Log message value
+     * @param string $values Log message value
      *
+     * @return string Log message
      * @throws Mumsys_Logger_Exception if key not implemented
      */
-    public function __call($key, $value)
+    public function __call($key, $values)
     {
         $level = null;
 
@@ -265,7 +266,13 @@ abstract class Mumsys_Logger_Abstract
                 throw new Mumsys_Logger_Exception($message);
         }
 
-        $this->log($value, $level);
+        if ( count( $values ) == 1 ) {
+            $_value = $values[0];
+        } else {
+            $_value = $values;
+        }
+
+        return $this->log($_value, $level);
     }
 
 
