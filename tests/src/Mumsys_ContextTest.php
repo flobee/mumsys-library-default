@@ -158,7 +158,7 @@ class Mumsys_ContextTest
      */
     public function testGetSetLogger()
     {
-        $logger = new Mumsys_Logger(array('logfile' => $this->_logfile));
+        $logger = new Mumsys_Logger_File(array('logfile' => $this->_logfile));
         $this->_object->registerLogger($logger);
 
         $this->assertInstanceOf('Mumsys_Logger_Interface', $this->_object->getLogger());

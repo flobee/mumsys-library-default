@@ -178,7 +178,7 @@ class Mumsys_Context_ItemTest
      */
     public function testGetSetLogger()
     {
-        $logger = new Mumsys_Logger(array('logfile' => $this->_logfile));
+        $logger = new Mumsys_Logger_File(array('logfile' => $this->_logfile));
         $this->_object->registerLogger($logger);
 
         $this->assertInstanceOf('Mumsys_Logger_Interface', $this->_object->getLogger());
@@ -197,15 +197,16 @@ class Mumsys_Context_ItemTest
     public function testGetSetRequest()
     {
         $object = new Mumsys_Request_Console();
-        $this->_object->registerRequest($object);
+        $this->_object->replaceRequest($object);
 
         $this->assertInstanceOf('Mumsys_Request_Interface', $this->_object->getRequest());
 
-        $this->setExpectedExceptionRegExp('Mumsys_Request_Exception', '/("Mumsys_Logger_Interface" already set)/');
+        $this->expectException('Mumsys_Context_Exception');
+        $this->expectExceptionMessageRegExp('/("Mumsys_Request_Interface" already set)/');
         $this->_object->registerRequest($object);
     }
 
-    
+
     /**
      * @covers Mumsys_Context_Item::getGeneric
      * @covers Mumsys_Context_Item::registerGeneric
