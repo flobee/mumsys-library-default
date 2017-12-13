@@ -209,6 +209,16 @@ class Mumsys_Context_Item
         $this->_register('Mumsys_Request_Interface', $request);
     }
 
+    /**
+     * Replace the request object.
+     *
+     * @param Mumsys_Request_Interface $request Request object
+     */
+    public function replaceRequest( Mumsys_Request_Interface $request )
+    {
+        $this->_replace('Mumsys_Request_Interface', $request);
+    }
+
 
     /**
      * Returns a generic, already registered, interface/ object.
