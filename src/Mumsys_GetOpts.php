@@ -344,7 +344,11 @@ class Mumsys_GetOpts
             $return = array('_default_' => $config);
         }
         else if (isset($config[$key]) && is_integer($config[$key])) {
-            $message = sprintf('Invalid input config found for value: "%1$s"' , $key);
+            $message = sprintf(
+                'Invalid input config found for key: "%1$s", value: "%2$s"' ,
+                $key,
+                $config[$key]
+            );
             throw new Mumsys_GetOpts_Exception($message);
         }
         else {
@@ -490,6 +494,36 @@ class Mumsys_GetOpts
             $str = trim($str);
             return $str;
         }
+    }
+
+    /**
+     * Returns help/ parameter informations by given options on initialisation
+     * including usage informations.
+     *
+     * @return string Long help informations
+     */
+    public function getLongHelp()
+    {
+        $string = <<<TEXT
+Class to handle/ pipe shell arguments in php context.
+
+Shell arguments will be parsed and an array list of key/value pairs will be
+created.
+When using long and shot options the long options will be used and the short
+one will map to it.
+Short options always have a single character. Dublicate options can't be
+handled. First comes first serves will take affect (fifo).
+Flags will be handled as boolean true if set.
+The un-flag option take affect when: Input args begin with a "--no-" string.
+E.g. --no-history. It will check if the option --history was set and will
+unset it like it wasn't set in the cmd line. This is usefule when working
+with different options. One from a config file and the cmd line adds or
+replace some options. But this must be handled in your buissness logic. E.g. see
+Mumsys_Multirename class.
+The un-flag option will always disable/ remove a value.
+
+TEXT;
+        return $string . $this->getHelp();
     }
 
 
