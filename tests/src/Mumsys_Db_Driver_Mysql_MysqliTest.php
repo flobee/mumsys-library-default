@@ -135,7 +135,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertTrue($actual2);
         $this->assertTrue($actual3); // for code coverage
         // access denied message expected
-        $this->setExpectedExceptionRegExp('Mumsys_Db_Exception');
+        $this->expectException('Mumsys_Db_Exception');
         $this->_object->selectDB('testdbnotexists');
     }
 
@@ -620,8 +620,9 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actualA);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Db_Exception', '/(Invalid expression key "0" for where expression: values \(json\): "value")/i'
+        $this->expectException('Mumsys_Db_Exception');
+        $this->expectExceptionMessageRegExp(
+            '/(Invalid expression key "0" for where expression: values \(json\): "value")/i'
         );
         $this->_object->compileQueryExpression($exprA);
     }
@@ -643,10 +644,9 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actualB);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Db_Exception',
-            '/(Invalid input for where expression. Array expected. Operator: '
-            . '"=" values \(json\): "key\/value string")/i'
+        $this->expectException('Mumsys_Db_Exception');
+        $this->expectExceptionMessage(
+            'Invalid input for where expression. Array expected. Operator: "=" values (json): "key\/value string'
         );
         $this->_object->compileQueryExpression($exprB);
     }
@@ -669,8 +669,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actualC);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Db_Exception',
+        $this->expectException('Mumsys_Db_Exception');
+        $this->expectExceptionMessageRegExp(
             '/(Invalid value list for where expression. Strings|numbers '
             . 'expected. operator: "IN" values \(json\): {"key":[[1],[2]]})/i'
         );
@@ -694,10 +694,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->assertFalse($actualD);
 
         $this->_object->setThrowErrors(true);
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Db_Exception',
+        $this->expectException('Mumsys_Db_Exception');
+        $this->expectExceptionMessageRegExp(
             '/(Invalid value list for where expression. String expected. '
-            . 'Operator: "_" values \(json\): "["a < b",["err < here"]]")/i'
+            . 'Operator: "_" values \(json\))/i'
         );
         $this->_object->compileQueryExpression($exprD);
     }
