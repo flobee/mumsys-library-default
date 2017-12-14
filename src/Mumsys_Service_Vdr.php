@@ -16,7 +16,7 @@
  }}} */
 
 
-/** 
+/**
  * {{{ Wrapper class to deal with svdrpsend command from vdr project (Simple VDR Protocol).
  *
  * SVDRP give you the possibility to run the svdrpsend commands in php context.
@@ -242,21 +242,32 @@ class Mumsys_Service_Vdr
         $records = $this->execute('LSTC', $search);
         $channelList = array();
 
-        while ( list(, $line) = each($records) )
+        while ( list($idx, $line) = each($records) )
         {
             $parts = explode(':', $line);
             $posStart = strpos($parts[0], ' ');
-            $posEnd = strpos($parts[0], ';');
+            //$posEnd = strpos($parts[0], ';');
 
             $channelID = substr($parts[0], 0, $posStart);
             $names = explode(';', (substr($parts[0], $posStart + 1)));
             $recordName = str_replace('|', ':', $names[0]);
 
-
             $channelList[$channelID] = $this->channelItemCreate(
-                $channelID, $recordName, $names[1], $parts[1], $parts[2],$parts[3],
-                $parts[4], $parts[5], $parts[6], $parts[7], $parts[8], $parts[9],
-                $parts[10], $parts[11], $parts[12]
+                $channelID,
+                $recordName,
+                (isset($names[1]) ? $names[1] : $names[0]),
+                $parts[1],
+                $parts[2],
+                $parts[3],
+                $parts[4],
+                $parts[5],
+                $parts[6],
+                $parts[7],
+                $parts[8],
+                $parts[9],
+                $parts[10],
+                $parts[11],
+                $parts[12]
             );
 
         }
