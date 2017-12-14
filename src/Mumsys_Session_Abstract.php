@@ -106,7 +106,7 @@ abstract class Mumsys_Session_Abstract
      * in $_SESSION after initialisation of this class are not listed!
      *
      * @param string $key value of the key to return to
-     * @return mixed Stored value
+     * @return array Stored value
      */
     public function getAll()
     {
