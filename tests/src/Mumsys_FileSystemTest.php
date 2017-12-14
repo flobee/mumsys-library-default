@@ -212,7 +212,8 @@ class Mumsys_FileSystemTest
         $this->assertEquals($expected1, $actual1);
         $this->assertEquals($expected1, $actual2);
 
-        $this->setExpectedException('Mumsys_FileSystem_Exception', 'File "/i/don/t/exist" not found');
+        $this->expectException('Mumsys_FileSystem_Exception');
+        $this->expectExceptionMessageRegExp('File "/i/don/t/exist" not found');
         $actual2 = $this->_object->getFileDetails('/i/don/t/exist');
     }
 
@@ -360,7 +361,8 @@ class Mumsys_FileSystemTest
 
         // source is a dir exception
         $msg = 'Source file: A directory was found. only file copying is implemented';
-        $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
+        $this->expectExceptionMessage($msg);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->copy($this->_testsDir . '/tmp/', '/home/');
     }
 
@@ -371,7 +373,8 @@ class Mumsys_FileSystemTest
     public function testCopyException()
     {
         $msg = 'Copy error for: "'.$this->_testsDir . '/tmp/unittest" copy (to: /root/unittest) fails';
-        $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
+        $this->expectExceptionMessage($msg);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->copy($this->_testdirs['file'], '/root');
     }
 
@@ -407,7 +410,8 @@ class Mumsys_FileSystemTest
 
         // source emty exception
         $msg = 'Rename failt for reason: Source "" is no directory and no file';
-        $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
+        $this->expectExceptionMessage($msg);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->rename('', $this->_testsDir . '/tmp/something');
     }
 
@@ -421,7 +425,7 @@ class Mumsys_FileSystemTest
         $msg[] = 'Rename failt for reason: Copy error for: "' . $this->_testsDir . '/tmp/unittest" '
             . 'copy(/root//unittest): failed to open stream: Permission denied';
         $msg[] = 'Rename failt for reason: rename(): Permission denied';
-        $this->setExpectedException('Mumsys_FileSystem_Exception');
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->rename($this->_testdirs['file'], '/root/');
     }
 
@@ -463,7 +467,8 @@ class Mumsys_FileSystemTest
         $msg = 'Linking failt for source: "' . $this->_testsDir . '/tmp"; target: "'
             . $this->_testsDir . '/tmp/unittest-mkdir/mkdirs". '
             . 'Real path not found for "' . $this->_testsDir . '/tmp/unittest-mkdir"';
-        $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
+        $this->expectExceptionMessage($msg);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->link($this->_testsDir . '/tmp', $this->_testdirs['dirs'], 'soft', 'rel', false);
     }
 
@@ -477,7 +482,8 @@ class Mumsys_FileSystemTest
         $msg = 'Linking failt for source: "' . $this->_testsDir . '/tmp"; target: "'
             . $this->_testsDir . '/tmp/unittest-mkdir". '
             . 'Invalid link type "invalidType"  (Use soft|hard)';
-        $this->setExpectedException('Mumsys_FileSystem_Exception', $msg);
+        $this->expectExceptionMessage($msg);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->link($this->_testsDir . '/tmp', $this->_testdirs['dir'], 'invalidType', 'rel', false);
     }
 
@@ -502,7 +508,7 @@ class Mumsys_FileSystemTest
 
         // test exception
         /** @todo file with different ownership */
-//        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', '/(Can not delete file "'.$file.'")/i');
+//        $this->expectException('Mumsys_FileSystem_Exception', '/(Can not delete file "'.$file.'")/i');
 //        $this->_object->unlink($file);
     }
 
@@ -519,7 +525,8 @@ class Mumsys_FileSystemTest
         $this->assertFalse($this->_object->mkdir($dir)); // exists error
 
         $exMesg = 'Can not create dir: "/xyz" mode: "755". Message: mkdir(): Permission denied';
-        $this->setExpectedException('Mumsys_FileSystem_Exception', $exMesg);
+        $this->expectExceptionMessage($exMesg);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->mkdir('/xyz');
     }
 
@@ -577,7 +584,7 @@ class Mumsys_FileSystemTest
 
         // test exception
         $regex = '/(Can not delete directory ")/i';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception');
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->rmdir('/root/');
     }
 
@@ -606,7 +613,7 @@ class Mumsys_FileSystemTest
         $this->assertFalse(is_dir($dir));
 
         // test exception
-        $this->setExpectedExceptionRegExp('Exception');
+        $this->expectException('Exception');
         $this->_object->rmdirs('/root/');
     }
 
