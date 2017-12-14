@@ -45,7 +45,7 @@ class Mumsys_HtmlTest
         $string = $this->_object->attributesCreate($array);
         $this->assertEquals('id="123" name="attributeName"', $string);
 
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception');
+        $this->expectException('Mumsys_Html_Exception');
         $array2 = array('id' => 123, 'name' => array(1, 2));
         $string2 = $this->_object->attributesCreate($array2);
     }
