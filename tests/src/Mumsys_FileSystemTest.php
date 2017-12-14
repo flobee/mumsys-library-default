@@ -213,7 +213,7 @@ class Mumsys_FileSystemTest
         $this->assertEquals($expected1, $actual2);
 
         $this->expectException('Mumsys_FileSystem_Exception');
-        $this->expectExceptionMessageRegExp('File "/i/don/t/exist" not found');
+        $this->expectExceptionMessage('File "/i/don/t/exist" not found');
         $actual2 = $this->_object->getFileDetails('/i/don/t/exist');
     }
 
