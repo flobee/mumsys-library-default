@@ -1,21 +1,18 @@
 <?php
 
-
-/* {{{ */
 /**
- * Multirename
+ * Mumsys_Multirename
  * for MUMSYS Library for Multi User Management System
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright (c) 2015 by Florian Blasel
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright (c) 2015 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Multirename
+ * @package     Library
+ * @subpackage  Multirename
  * Created on 2015-02-28
  */
-/* }}} */
 
 
 /**
@@ -34,7 +31,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.4.2';
+    const VERSION = '1.4.3';
 
     /**
      * Logger to log and output messages.
@@ -50,7 +47,7 @@ class Mumsys_Multirename
     private $_config;
 
     /**
-     * Current list of working settings.
+     * Current list of working settings. Since version 1.3.4++
      * @var array
      */
     private $_configs = array();
@@ -129,12 +126,13 @@ class Mumsys_Multirename
      * @param Mumsys_Logger_Interface $logger Log object to track the work and/
      * or show the output when using as shell script or cronjob
      */
-    public function __construct( array $config = array(), Mumsys_FileSystem $oFiles, Mumsys_Logger_Interface $logger )
+    public function __construct( array $config = array(), Mumsys_FileSystem $oFiles,
+            Mumsys_Logger_Decorator_Interface $logger )
     {
         $logger->log('### multirename (' . self::VERSION . ') starts', 7);
 
         // nothing which belongs to root is allowed at the moment!
-        if (php_sapi_name() === 'cli' && in_array('root', $_SERVER)) {
+        if (PHP_SAPI === 'cli' && in_array('root', $_SERVER)) {
             $message = 'Something which belongs to "root" is forbidden. '
                 . 'Sorry! Use a different user!' . PHP_EOL;
             throw new Mumsys_Multirename_Exception($message);
@@ -181,7 +179,8 @@ class Mumsys_Multirename
 
             $actions = array();
 
-            /** @todo to be replace with new getopts features: action1 options action2 options */
+            /** @todo to be replace with new getopts features:
+             * action1 options action2 options */
             if (!empty($config['undo'])) {
                 $actions['undo'] = 'undo';
             } else {
@@ -203,6 +202,10 @@ class Mumsys_Multirename
 
             if (isset($config['version'])) {
                 $actions = array('version' => 'version');
+            }
+
+            if (isset($config['stats'])) {
+                $actions['stats'] = 'stats';
             }
 
             foreach ($actions as $action)
@@ -255,6 +258,7 @@ class Mumsys_Multirename
      * help/ a complete list!
      *
      * @return array Returns the new, checked configuration.
+     *
      * @throws Mumsys_Exception Throws exception on any error happen with the
      * incoming data.
      */
@@ -283,10 +287,12 @@ class Mumsys_Multirename
         }
 
         if (!empty($config['link'])) {
-            $linkParts = explode(';', $config['link']);
+            $linkParts = explode(':', $config['link']);
             $config['link'] = $linkParts[0];
             if (isset($linkParts[1])) {
                 $config['linkway'] = $linkParts[1];
+            } else {
+                $config['linkway'] = 'rel';
             }
         }
 
@@ -474,7 +480,8 @@ class Mumsys_Multirename
      *
      * @return integer Number of occurances.
      */
-    private function _executeTest( array $config, $source, $destination, $file, $newName, $extension, $txtMode )
+    private function _executeTest( array $config, $source, $destination, $file,
+            $newName, $extension, $txtMode )
     {
         $cntMatchesRelevant = 0;
 
@@ -489,7 +496,7 @@ class Mumsys_Multirename
                     $message .= 'overwrite target';
                 }
                 $message .= ': "' . str_replace($config['path'], '...', $destination) . "'";
-                $this->_logger->warn($message);
+                $this->_logger->log($message, Mumsys_Logger_Abstract::WARN);
             }
 
             $this->_logger->log(
@@ -592,8 +599,6 @@ class Mumsys_Multirename
      * @param string $keepCopy Flag to set to what to do if old file already
      * exists again on undo. On true the existing file will be kept, on false
      * overwriting take affect.
-     *
-     * @return void
      */
     protected function _undo( array $config, $keepCopy = true )
     {
@@ -772,6 +777,7 @@ class Mumsys_Multirename
      *
      * @param string $path Action/ start directory for renaming
      * @param integer $index History index to return
+     *
      * @return array|false Returns a list of action historys or false on error
      */
     protected function _getActionHistory( $path, $index = -1 )
@@ -802,6 +808,7 @@ class Mumsys_Multirename
      * @param string $path Action/ start directory for renaming
      *
      * @return boolean Returns true on success or false on error
+     *
      * @throws Mumsys_Multirename_Exception On any other errors
      */
     public function removeActionHistory( $path )
@@ -933,7 +940,9 @@ class Mumsys_Multirename
      * Merge config list from loaded config file into config from shell input.
      * Note: shell input overwrites config items from config file.
      *
-     * @param array $config Configuration/ setup parameters. see initSetup() for help/ a complete list!
+     * @param array $config Configuration/ setup parameters. see initSetup() for
+     * help/ a complete list!
+     *
      * @throws Mumsys_Multirename_Exception On errors
      */
     public function _mergeConfigs( array $config = array() )
@@ -967,6 +976,7 @@ class Mumsys_Multirename
      *
      * @param string $path Action/ start directory for renaming files
      * @param integer|string $configID Config ID to set. Optional, for the future.
+     *
      * @return integer|false Returns number of bytes written or false on error
      */
     public function saveConfig( $path, $configID = '_' )
@@ -980,8 +990,8 @@ class Mumsys_Multirename
         $configs = array();
 
         foreach ($this->_configs as $i => $values) {
-            unset($values['test'], $values['save-config'], $values['show-config'],
-                $values['from-config'], $values['loglevel']);
+            unset($values['test'], $values['save-config'], $values['show-config'], $values['from-config'],
+                $values['loglevel']);
             $configs[$i] = $values;
         }
 
@@ -1008,6 +1018,7 @@ class Mumsys_Multirename
      * Removes/ purges the complete configuration file.
      *
      * @param string $path Action/ start directory for renaming files
+     *
      * @return boolean Returns true on success or false
      */
     public function deleteConfig( $path = '' )
@@ -1095,6 +1106,7 @@ class Mumsys_Multirename
      *
      * @param string $path Path of the current file
      * @param string $conifgPath Path of the current config, recursiv scans may differ
+     *
      * @return array List of path-breadcrumbs of the current file.
      */
     private function _buildPathBreadcrumbs( $path = '', $configPath )
@@ -1153,6 +1165,7 @@ class Mumsys_Multirename
      * Replace path informations in substitution configuration
      *
      * @param array $paths List of path-breadcrumbs of the current working file for substitution.
+     *
      * @return array Returns the compiled list of substitution to substitude
      */
     private function _substitutePaths( array $substitutions = array(), array $paths = array() )
@@ -1329,18 +1342,22 @@ class Mumsys_Multirename
     {
         $result = array(
             '--test|-t' => 'Flag: test before execute',
+
             '--path|-p:' => 'Path to scann for files (tailing slash is important!) * Required',
+
             '--fileextensions|-e:' => 'Semicolon separated list of file extensions to scan for '
             . 'eg. "avi;AVI;mpg;MPG" or "*" (with quotes) for all files * Required',
+
             '--substitutions|-s:' => 'Semicolon separated list with key value pairs for substitution eg:'
             . ' --substitutions ä=ae;ö=oe;ß=ss; =_;\'regex:/^(\d{5})$/i=x_\$1\'... .'
             . 'As simple feature you can use %path1%...%pathN% parameters to substitute '
             . 'path informations in substitution values the file belongs to. For more'
             . 'information see --sub-paths but only use --sub-paths if you really need '
             . 'it. It can became strange side effects when enabling it. * Required',
-            '--sub-paths' => 'Flag; Enable substitution for paths. Feature for the substitution: '
+
+            '--sub-paths' => 'Flag; Enable substitution using paths. Feature for the substitution: '
             . 'Breadcrumbs of the --path can be found/ substituted with %path1% - %pathN% '
-            . ' in reverse. If you want to rename files and want to add the folder '
+            . 'in reverse. If you want to rename files and want to add the folder '
             . 'the file belongs to you can use %path1%. One folder above is %path2% '
             . 'and so on until the given root in --path. Example: /var/files/records '
             . '=> %path1% = records, %path2% = files, %path3% = var; With this option '
@@ -1348,49 +1365,70 @@ class Mumsys_Multirename
             . 'Use the --test flag and test and check the results carefully! '
             . 'WARNING: Enabling this feature can change the behavior of existing substitutions '
             . ' in your cmd line!',
+
             '--find|-f:' => 'Find files. Semicolon seperated list of search keywords or '
             . 'regular expressions (starting with "regex:"). The list will be handled in OR conditons.'
             . 'The keyword checks for matches in any string of the file location (path and filename). Optional',
+
             '--exclude:' => 'Exclude files. Semicolon seperated list of search keywords or regular expressions ('
             . 'starting with "regex:"). The list will be handled in OR conditons.'
             . 'The keyword will be checked for matches in any string of the file location (path and filename). Exclude '
             . 'will also ignore matches from the --find option; Optional',
+
             '--recursive|-r' => 'Flag, if set read all files under each directory starting from --path recursively',
             '--keepcopy' => 'Flag. If set keep all existing files',
+
             '--hidden' => 'Include hidden files (dot files)',
+
             '--link:' => 'Don\'t rename, create symlinks or hardlinks, relativ or absolut to target '
-            . '(Values: soft|hard[;rel|abs]). If the second parameter is not given relativ links will be created',
+            . '(Values: soft|hard[:rel|abs]). If the second parameter is not given relativ links will be created',
+
             '--linkway:' => 'Type of the link to be created relative or absolut: ("rel"|"abs"), default: "rel". '
             . 'This will be used internally if you use --link soft;rel the linkway will be extracted from that line',
-            '--history|-h' => 'Flag; If set this will enable the history/ for the moment ONLY the last action log with '
-            . 'the option to undo it',
+
+            '--history|-h' => 'Flag; If set this will enable the history and tracks all actions for a later undo',
+
             '--history-size:' => 'Integer; Number of history entrys if --history is enabled; Default: 10; '
             . 'Note: If you run on much more than hundreds of files you may set the memory'
             . ' limit to a higher value and/or reduce this number to 1. This feature may consume much memory. '
             . 'Using the --test mode with loglevel 6 or higher will give you informations about the memory usage.',
+
             '--batch' => 'Flag; Not implemented yet. Run the job recusiv from given --path as start directory and '
             . 'start renaming. If a new configuration in the sub directories exists is trys to load the '
             . 'configuration for batch-mode and execute it. This enables --recursiv and --history',
-            '--plugins' => 'Not implemented yet. Semicolon separated list of plugins to use. Plugins to use to do the '
-            . 'renameing: eg.: You have a text file including the new name of the file to be renameed: The pluging '
-            . 'gets the file location and you return the new filename befor or after the other rules take affect! '
-            . 'Example: --plugins \'TitleOfVDRInfoFile:before;CutAdvertising:after\'',
+
+            '--plugins' => 'Not implemented yet. Semicolon separated list of plugins to include. Plugins to assist you'
+            . 'for the renaming. Eg.: You have a text file including the new name of the file, or parts of it: '
+            . 'The pluging gets the content and uses it befor or after the other rules take affect! '
+            . 'Example: --plugins \'GetTheTitleFromVDRsInfoFile:before;CutAdvertising:after\'',
+
             '--undo' => 'Flag; Revers/ undo the last action',
+
             '--from-config:' => 'Read saved configuration from given path and execute it',
+
             '--set-config' => 'disabled; see --save-config',
+
             '--save-config' => 'Flag; Saves the configuration to the --path of the config which adds a new folder '
             . '".multirename" for later use with --from-config',
+
             '--del-config' => 'Flag; Deletes the config from given --path',
+
             '--show-config' => 'Flag; Shows the config parameter from a saved config to check or rebuild it. '
             . 'Use it with --from-config',
+
             '--loglevel|--ll:' => 'Logging level for the output of messages (0=Emerg ... 7=verbose/debug). '
             . 'For testing use 6 or 7; For cronjob etc. do not use lower than 5 to get important messages',
+
             '--stats' => 'Print some stats after execution',
+
             '--version|-v' => 'Flag; Return version informations',
         );
 
-        if ($shellOptions !== true) {
-            foreach ($result as $key => $value) {
+        if ($shellOptions !== true)
+        {
+            $res = array();
+            foreach ($result as $key => $value)
+            {
                 $key = str_replace(':', '', $key);
                 $key = substr($key, 2);
                 $pos = strpos($key, '|');
@@ -1401,6 +1439,7 @@ class Mumsys_Multirename
             }
             $result = $res;
         }
+
         return $result;
     }
 
