@@ -17,4 +17,4 @@ before_script:
   - cd tests
 #  - composer require --dev phpunit/phpunit ^5
 # phpunit --configuration phpunit.xml
-script: vendor/bin/phpunit
+script: phpunit
