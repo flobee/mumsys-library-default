@@ -94,11 +94,12 @@ class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
         $inp = $this->_input;
         $inp[] = '--no-unknown';
 
-        $this->expectException('Mumsys_GetOpts_Exception');
-        $this->expectExceptionMessage(
-            'Option "--no-unknown" not found in option list/configuration'
-        );
+        ob_start();
         $x = new Mumsys_GetOpts($this->opts, $inp);
+        $actual = ob_get_clean();
+
+        $regex = 'Option "--no-unknown" not found in option list\/configuration';
+        $this->assertTrue( (preg_match('/'.$regex.'/im', $actual) === 1 ) );
     }
 
     public function testConstructException()
