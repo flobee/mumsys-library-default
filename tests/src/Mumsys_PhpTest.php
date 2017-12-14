@@ -336,7 +336,7 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
 //        }
 //        $this->fail('Mumsys_Php_Exception: "file://" not allowed, use "file:///" three slashes "///"!');
 
-        $this->setExpectedExceptionRegExp('Mumsys_Php_Exception');
+        $this->expectException('Mumsys_Php_Exception');
         $this->object->parseUrl('file://'); // raise exception
     }
 
@@ -361,7 +361,8 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
         $this->assertEquals($expected1, $actual1);
 
         // empty string will throw error, php will return array()
-        $this->setExpectedExceptionRegExp('Mumsys_Php_Exception', '/(Mumsys_Php::parseStr\(\) failt)/i');
+        $this->expectException('Mumsys_Php_Exception');
+        $this->expectExceptionMessageRegExp('/(Mumsys_Php::parseStr\(\) failt)/i');
         $actual1 = $this->object->parseStr('');
         // parse_str('', $expected1);
         // $this->assertEquals($expected1, $actual1);
@@ -378,6 +379,8 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
         $this->assertEquals($expected1, $actual1);
         $this->assertEquals($expected2, $actual2);
     }
+
+
     /**
      * @todo: to be checked! "by reference!"
      */
@@ -517,7 +520,8 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
         $array1 = array('Uta ruf');
         $array2 = 'foo';
         $message = '/(Mumsys_Php::array_merge_recursive given argument is not an array "foo")/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Exception', $message);
+        $this->expectException('Mumsys_Exception');
+        $this->expectExceptionMessageRegExp($message);
         $this->object->array_merge_recursive($array1, $array2);
     }
 
@@ -525,7 +529,8 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
     public function testArrayMergeRecursiveExceptionNumArgs()
     {
         $message = '/(Mumsys_Php::array_merge_recursive needs at least two arrays as arguments)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Exception', $message);
+        $this->expectException('Mumsys_Exception');
+        $this->expectExceptionMessageRegExp($message);
         $this->object->array_merge_recursive(array());
     }
 
@@ -587,7 +592,7 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
         $this->assertEquals( 'ABCDEF' , $this->object->strstr('ABCDEF', 'ABC') );
     }
 
-    
+
     public function testVersion()
     {
         $this->assertEquals($this->_version, Mumsys_Php::VERSION);
