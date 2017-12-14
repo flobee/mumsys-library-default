@@ -105,8 +105,9 @@ class Mumsys_Service_VdrTest
      */
     public function testConnectException1()
     {
+        $this->expectException('Mumsys_Service_Exception');
         $regex = '/(Connection to server "nohostexist" failt)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
         $this->_object = new Mumsys_Service_Vdr($this->_context, 'nohostexist', 666, 5);
     }
 
@@ -147,7 +148,8 @@ class Mumsys_Service_VdrTest
     {
         $this->_object->disconnect();
         $regex = '/(Not connected)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+        $this->expectException('Mumsys_Service_Exception');
+        $this->expectExceptionMessageRegExp($regex);
 
         $this->_object->execute('SCAN');
     }
@@ -159,7 +161,8 @@ class Mumsys_Service_VdrTest
     public function testExecuteException2()
     {
         $regex = '/(Command unknown or not implemented yet. Exiting)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+        $this->expectException('Mumsys_Service_Exception');
+        $this->expectExceptionMessageRegExp($regex);
 
         $this->_object->execute('ImACommandThatNotExists');
     }
@@ -224,11 +227,11 @@ class Mumsys_Service_VdrTest
      */
     public function testChannelDeleteException()
     {
+        $this->expectException('Mumsys_Service_Exception');
         $regex ='/(Invalid channel ID)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
         $this->_object->channelDelete(0);
     }
-
 
 
     /**
@@ -262,7 +265,8 @@ class Mumsys_Service_VdrTest
         }
 
         $regex = '/(Invalid channel parameter)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+        $this->expectException('Mumsys_Service_Exception');
+        $this->expectExceptionMessageRegExp($regex);
         $this->_object->channelSearch(0);
     }
 
@@ -314,7 +318,8 @@ class Mumsys_Service_VdrTest
 //        $this->assertTrue(is_dir($actual2 . '/'), 'Directory "' . $actual2 . '" not found');
 //
 //        $regex = '/(Invalid recording ID)/i';
-//        $this->setExpectedExceptionRegExp('Mumsys_Service_Exception', $regex);
+//        $this->expectException('Mumsys_Service_Exception');
+//        $this->expectExceptionMessageRegExp($regex);
 //        $this->_object->recordingGet(0);
 //    }
 //
