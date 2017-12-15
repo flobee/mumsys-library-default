@@ -1,17 +1,16 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Db_Driver_Mysql_Mysqli
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * @package     Library
+ * @subpackage  Db
  * Created: 2013-12-13
  */
 /* }}} */
@@ -20,9 +19,9 @@
 /**
  * Mysqli Driver for database purpose
  *
- * @category Mumsys
- * @package Mumsys_Library
- * @subpackage Mumsys_Db
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Db
  */
 class Mumsys_Db_Driver_Mysql_Mysqli
     extends Mumsys_Db_Driver_Abstract
@@ -35,10 +34,13 @@ class Mumsys_Db_Driver_Mysql_Mysqli
 
 
     /**
-     * Create a database connection an select current database and client charset if given.
+     * Create a database connection an select current database and client
+     * charset if given.
      *
-     * @return mysqli|resource|false Retruns the database resource on succsess or throws exception
-     * @throws Mumsys_Db_Exception On connection error or current database can not be selected
+     * @return mysqli|resource|false Retruns the database resource on succsess
+     * or throws exception
+     * @throws Mumsys_Db_Exception On connection error or current database can
+     * not be selected
      */
     public function connect()
     {
@@ -89,7 +91,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             }
 
         } catch (Exception $e) {
-            $msg = 'Connection to database failed. Messages: "' . $e->getMessage() .'", "'. $this->sqlError() .'"';
+            $msg = 'Connection to database failed. Messages: "'
+                . $e->getMessage() .'", "'. $this->sqlError() .'"';
             return $this->_setError($msg, null, $e);
         }
 
@@ -102,7 +105,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      *
      * This methode will be called at least when __destuct event occur.
      *
-     * @return bool Returns the result of mysqli_close() function. True = success
+     * @return bool Returns the result of mysqli_close() function. True for
+     * success
      */
     public function close()
     {
@@ -156,8 +160,10 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * Select a database.
      *
      * @param string $db Name of the db
-     * @return boolean Returns true on success or false or throws exception if set
-     * @throws Mumsys_Db_Exception Throws exception if database can not be selected
+     * @return boolean Returns true on success or false or throws exception if
+     * set
+     * @throws Mumsys_Db_Exception Throws exception if database can not be
+     * selected
      */
     public function selectDB($dbName)
     {
@@ -232,7 +238,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         if ( $sql ) {
             $this->_sql = (string)$sql;
         } else {
-            return $this->_setError('Query empty. Cant not query empty sql statment');
+            return $this->_setError(
+                'Query empty. Cant not query empty sql statment'
+            );
         }
 
         if ( $this->_dbc === null ) {
@@ -337,7 +345,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @param string $way The type, in lower or upper case, to return the data
      * set. Default: 'assoc'; possible values: 'OBJECT', 'ARRAY', 'NUM',
      * 'GETIDS', 'LINE', 'ROW', 'KEYGOVAL', 'KEYGOKEY'.
-     * @return array Returns the result as array or false on failure or if no more record exists
+     * @return array Returns the result as array or false on failure or if no
+     * more record exists
      */
     public function fetchData($sql, $way='ASSOC')
     {
@@ -422,7 +431,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             $this->selectDB($this->_dbName);
             $oRes = $this->query('DESCRIBE ' . $table . ' ' . $field);
         } else {
-            $oRes = $this->query('SHOW COLUMNS FROM ' . $this->_dbName . '.' . $table);
+            $oRes = $this->query(
+                'SHOW COLUMNS FROM ' . $this->_dbName . '.' . $table
+            );
         }
 
         if ( $oRes===false ) {
@@ -443,7 +454,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             if ( preg_match($rule, $row['type'], $tmp) ) {
                 $row['type'] = preg_replace('@\(.*@s', '', $row['type']);
             }
-            // echo '<pre>'; print_r($tmp); echo '</pre>';
+
             switch ( $row['type'] )
             {
                 /**
@@ -731,15 +742,18 @@ class Mumsys_Db_Driver_Mysql_Mysqli
 
     /**
      * Sets the current error.
+     *
      * If $_throwErrors flag is enabled (default) the error will be thrown
-     * otherwise a list of errors will be created an the program will go on except on connection errors!
+     * otherwise a list of errors will be created an the program will go on
+     * except on connection errors!
      *
      * @param string $message The error message
      * @param integer $code The error code
      * @param Exception $previous = NULL The previous exception used for the
      * exception chaining.
      *
-     * @throws Mumsys_Db_Exception If connection can't be made or ThrowErrors was set
+     * @throws Mumsys_Db_Exception If connection can't be made or ThrowErrors
+     * was set
      */
     protected function _setError($message, $code=null, $previous=null)
     {
@@ -982,8 +996,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * to update or delete ALL existing data without any restrictions.
      * be careful to use it<br/>
      * [order] optional; Set the order for select or update statements<br/>
-     * [limit] optional array containing the offset (the start value), limit count
-     * or just the limit count e.g. array(limit count)
+     * [limit] optional array containing the offset (the start value), limit
+     * count or just the limit count e.g. array(limit count)
      * @return Mumsys_Db_Driver_Mysql_Result|false Returns false on error
      */
     public function delete(array $params = array())
@@ -1029,7 +1043,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      *
      * @param array $expression
      * @return string|boolean Returns the created expression or false on error
-     * @throws Mumsys_Db_Exception Throws exception on errors if throw errors was set
+     * @throws Mumsys_Db_Exception Throws exception on errors if throw errors
+     * was set
      */
     public function compileQueryExpression( array $expression )
     {
@@ -1345,7 +1360,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @param array $fields List of fields to select.
      *
      * @return string|flase Column list for the select statment or false on error
-     * @throws Mumsys_Db_Exception Throws exception on errors if throw errors was set
+     * @throws Mumsys_Db_Exception Throws exception on errors if throw errors
+     * was set
      */
     public function compileQuerySelect( array $fields )
     {
@@ -1664,7 +1680,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     /**
      * Implode sql conditions.
      *
-     * @todo this method should be available in a xml creator too e.g. for attributes
+     * @todo this method should be available in a xml creator too e.g. for
+     * attributes
      *
      * @param string $glue
      * @param array $array values of items to implode to make a valid statement.
