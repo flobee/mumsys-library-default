@@ -1,6 +1,5 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Db_Factory
  * for MUMSYS Library for Multi User Management System (MUMSYS)
@@ -10,19 +9,17 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
- * @filesource
+ * @package     Library
+ * @subpackage  Db
  */
-/*}}}*/
 
 
 /**
  * Factory for a database object.
  *
- * @category Mumsys
- * @package Mumsys_Library
- * @subpackage Mumsys_Db
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Db
  */
 class Mumsys_Db_Factory
 {
@@ -50,8 +47,8 @@ class Mumsys_Db_Factory
      *
      * @param array $options Arguments to pass to the driver and for the current
      * implementation e.g.:
-     *  'type' => required; driver "servertype:drivertype" e.g. mysql:mysql, mysql:mysqli,
-     * mysql:pdo, postges:default, oracle:default, sqlite3:default
+     *  'type' => required; driver "servertype:drivertype" e.g. mysql:mysql,
+     * mysql:mysqli, mysql:pdo, postges:default, oracle:default, sqlite3:default
      *  'debug' => boolean, optional, default: false
      *  'throwErrors' => boolean, optional, default: true
      * More common options:see Mumsys_Db_Driver_Abstract::__construct
@@ -67,7 +64,9 @@ class Mumsys_Db_Factory
             $cnt = count($types);
 
             if ($cnt != 2) {
-                throw new Mumsys_Db_Exception('Invalid Db driver. Can not create instance', 1);
+                throw new Mumsys_Db_Exception(
+                    'Invalid Db driver. Can not create instance', 1
+                );
             }
 
             $class = 'Mumsys_Db_Driver_' . ucwords($types[0]) .'_'. ucwords($types[1]);
