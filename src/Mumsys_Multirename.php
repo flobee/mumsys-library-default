@@ -1,6 +1,5 @@
 <?php
 
-/* {{{ */
 /**
  * Multirename
  * for MUMSYS Library for Multi User Management System
@@ -14,7 +13,6 @@
  * @subpackage  Multirename
  * Created on 2015-02-28
  */
-/* }}} */
 
 
 /**
