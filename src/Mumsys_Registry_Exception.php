@@ -19,7 +19,7 @@
 
 
 /**
- * Generic exception class Mumsys_Registry_Exception
+ * Generic exception class.
  *
  * @category    Mumsys
  * @package     Library
