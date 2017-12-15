@@ -1,37 +1,32 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Registry
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright Copyright (c) 2014 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Registry
+ * @package     Library
+ * @subpackage  Registry
  * @version     1.0.0
  * Created: 2014-01-07
- * @filesource
  */
-/*}}}*/
 
 
 /**
  * Mumsys registry class.
  *
- * @uses Singleton pattern
+ * @uses Singleton ANTI pattern
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Registry
+ * @package     Library
+ * @subpackage  Registry
  */
-abstract class Mumsys_Registry extends Mumsys_Abstract
+abstract class Mumsys_Registry
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
@@ -89,7 +84,8 @@ abstract class Mumsys_Registry extends Mumsys_Abstract
      */
     public static function set( $key, $value )
     {
-        $message = 'Unknown meaning for set(). Use register() or replace() methodes';
+        $message = 'Unknown meaning for set(). Use register() or replace() '
+            . 'methodes';
         throw new Mumsys_Registry_Exception($message);
     }
 
