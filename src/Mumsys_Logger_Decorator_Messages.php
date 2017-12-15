@@ -121,13 +121,16 @@ class Mumsys_Logger_Decorator_Messages
      *  - [msgDatetimeFormat] optional format of a timestamp format
      *  - [msglogLevel] integer Optional Message log level for messages which
      *      should be printed (if msgEcho=true)
-     *  - [msgLineFormat] optional Output format which should be printed (if msgEcho=true)
-     *  - [msgColors] optional, Enable console colors for the "messages" only (not the hole string)
+     *  - [msgLineFormat] optional Output format which should be printed (if
+     *    msgEcho=true)
+     *  - [msgColors] optional, Enable console colors for the "messages" only
+     *    (not the hole string)
      *
      *  - [debug] boolean Default: false
      *  - [lf] string Optional Linefeed Default: \n
      */
-    public function __construct( Mumsys_Logger_Interface $object, array $options = array() )
+    public function __construct( Mumsys_Logger_Interface $object,
+        array $options = array() )
     {
         parent::__construct($object);
 
