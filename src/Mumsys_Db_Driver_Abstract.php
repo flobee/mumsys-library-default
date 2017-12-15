@@ -1,21 +1,18 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Db_Driver_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * @package     Library
+ * @subpackage  Db
  * @version     3.1.0
  * Created: 2009-11-27
- * -----------------------------------------------------------------------
  */
 /* }}} */
 
@@ -61,10 +58,6 @@
 
 
 
-
-// -----------------------------------------------------------------------------
-
-
 /**
  * Common class for all database drivers
  *
@@ -75,8 +68,8 @@
  * Note: most implementation is close to the mysql functionality
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * @package     Library
+ * @subpackage  Db
  */
 abstract class Mumsys_Db_Driver_Abstract
 {
@@ -260,7 +253,8 @@ abstract class Mumsys_Db_Driver_Abstract
      * - 'password' optional Database password
      * - 'host' optional Database hostname/ip
      * - 'port' optional Database port
-     * - 'charset' client character set to be used. If given it will be set when connection will be made
+     * - 'charset' client character set to be used. If given it will be set when
+     *    connection will be made
      * - 'socket' boolean optional
      * - 'debug' boolean optional
      * - 'throwErrors' boolean optional default: true
@@ -372,7 +366,7 @@ abstract class Mumsys_Db_Driver_Abstract
      * @param string $string String to be escaped
      * @return string Returns the escaped string
      */
-    public function escape( $string='' )
+    public function escape( $string = '' )
     {
         return addslashes($string);
     }
@@ -385,10 +379,11 @@ abstract class Mumsys_Db_Driver_Abstract
      * @param string $q Quote type to be added
      * @return string The quoted string
      */
-    public function quote( $s, $q='\'' )
+    public function quote( $s, $q = '\'' )
     {
         return $q . $s . $q;
     }
+
 
     /**
      * Returns the name of the database.
@@ -400,6 +395,7 @@ abstract class Mumsys_Db_Driver_Abstract
         return $this->_dbName;
     }
 
+
     /**
      * Returns the number of querys.
      *
@@ -409,6 +405,7 @@ abstract class Mumsys_Db_Driver_Abstract
     {
         return $this->_numQuerys;
     }
+
 
     /**
      * Returns the latest sql statment which was executed.
@@ -420,6 +417,7 @@ abstract class Mumsys_Db_Driver_Abstract
         return $this->_sql;
     }
 
+
     /**
      * Returns the list of sql statments.
      *
@@ -429,6 +427,7 @@ abstract class Mumsys_Db_Driver_Abstract
     {
         return $this->_querys;
     }
+
 
     /**
      * Returns the sql compare values.
@@ -459,12 +458,15 @@ abstract class Mumsys_Db_Driver_Abstract
     {
         foreach ($comparison as $key => $list) {
             if (is_numeric($key) || count($list) != 2) {
-                return $this->_setError('Invalid query compare value configuration');
+                return $this->_setError(
+                    'Invalid query compare value configuration'
+                );
             }
         }
 
         $this->_queryCompareValues = $comparison;
     }
+
 
     /**
      * Returns the query operators. Multi-dimensional array
@@ -523,8 +525,8 @@ abstract class Mumsys_Db_Driver_Abstract
      */
     public function replaceQuerySortations( array $sortations )
     {
-        foreach ($sortations as $key => $value) {
-            if (is_numeric($key) || !is_string($value)) {
+        foreach ( $sortations as $key => $value ) {
+            if ( is_numeric($key) || !is_string($value) ) {
                 return $this->_setError('Invalid query sortations configuration');
             }
         }
@@ -544,6 +546,7 @@ abstract class Mumsys_Db_Driver_Abstract
         return $this->_errorList;
     }
 
+
     /**
      * Returns the latest error message.
      * @return string Error message
@@ -552,6 +555,7 @@ abstract class Mumsys_Db_Driver_Abstract
     {
         return $this->_errorMessage;
     }
+
 
     /**
      * Returns the latest error number/code (depending on DB driver)
@@ -562,15 +566,17 @@ abstract class Mumsys_Db_Driver_Abstract
         return $this->_errorNumber;
     }
 
+
     /**
      * Sets the flag to throw errors or not.
      *
      * @param boolean $flag True for throw errors or false to collect errors.
      */
-    public function setThrowErrors($flag)
+    public function setThrowErrors( $flag )
     {
-        $this->_throwErrors = (boolean)$flag;
+        $this->_throwErrors = (boolean) $flag;
     }
+
 
     /**
      * Returns the status if throw errors is enabled or not.
@@ -587,10 +593,11 @@ abstract class Mumsys_Db_Driver_Abstract
      *
      * @param boolean $flag True for enable debug mode.
      */
-    public function setDebugMode($flag)
+    public function setDebugMode( $flag )
     {
-        $this->_debug = (boolean)$flag;
+        $this->_debug = (boolean) $flag;
     }
+
 
     /**
      * Returns debug mode is enabled or not.
@@ -613,7 +620,8 @@ abstract class Mumsys_Db_Driver_Abstract
      * @param Exception $previous = NULL The previous exception used for the
      * exception chaining.
      */
-    abstract protected function _setError($message, $code=null, $previous=null);
+    abstract protected function _setError( $message, $code = null,
+        $previous = null );
 
 
     /**
@@ -624,5 +632,4 @@ abstract class Mumsys_Db_Driver_Abstract
      * @return boolean True on success or false
      */
     abstract public function close();
-
 }
