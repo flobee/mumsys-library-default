@@ -159,6 +159,7 @@ class Mumsys_GetOpts
         $argPos = 1; // zero is the called program
         $return = array($argv[0]);
         $errorMsg = '';
+        $errorNotice = '';
         $unflag = array();
 
         while ( $argPos < $argc )
@@ -187,7 +188,7 @@ class Mumsys_GetOpts
                     if ( isset($map[ $unTag ]) ) {
                         $unflag[] = $unTag;
                     } else {
-                        $errorMsg .= sprintf(
+                        $errorNotice .= sprintf(
                             'Option "%1$s" not found in option list/configuration' . PHP_EOL,
                             $argTag
                         );
@@ -233,15 +234,20 @@ class Mumsys_GetOpts
             $argPos++;
         }
 
-        foreach ($unflag as $unTag) {
-                $return[$unTag] = false;
+        foreach ( $unflag as $unTag ) {
+            $return[$unTag] = false;
         }
 
         $this->_result = $return;
 
-        if ($errorMsg) {
+        if ( $errorMsg ) {
             $errorMsg .= PHP_EOL . 'Help: ' . PHP_EOL . $this->getHelp() . PHP_EOL;
             throw new Mumsys_GetOpts_Exception($errorMsg);
+        }
+        
+        if ( $errorNotice ) {
+            $errorNotice .= PHP_EOL . 'Help: ' . PHP_EOL . $this->getHelp() . PHP_EOL;
+            echo $errorNotice . PHP_EOL;
         }
     }
 
