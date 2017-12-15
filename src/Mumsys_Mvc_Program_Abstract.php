@@ -1,23 +1,20 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Program_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
  * @copyright Copyright (c) 2010 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc
  * @version     1.0.0
  * Created: 2010-08-19
- * @filesource
  */
-/*}}}*/
+
 
 /**
  * Mumsys program abstract contains methodes to be used in program controllers.
@@ -64,12 +61,14 @@ abstract class Mumsys_Mvc_Program_Abstract extends Mumsys_Abstract
      * @param Mumsys_Mvc_Program_Config $programConfig Program config object
      * containing all configuration values which may comes from setting.php
      */
-    public function __construct( Mumsys_Context $context, Mumsys_Mvc_Program_Config $programConfig )
+    public function __construct( Mumsys_Context $context,
+        Mumsys_Mvc_Program_Config $programConfig )
     {
         $this->_programConfig = $programConfig;
         $this->_context = $context;
         $this->_config = $context->getConfig();
     }
+
 
     /**
      * Returns the display/ view.
@@ -86,7 +85,8 @@ abstract class Mumsys_Mvc_Program_Abstract extends Mumsys_Abstract
      * Mumsys_Mvc_Display_Control_Http_Default|
      * Mumsys_Mvc_Display_Control_Stdout_Default
      */
-    protected function _getDisplay( array $params = array(), $outputType = 'default', $outputComplexity = 'default' )
+    protected function _getDisplay( array $params = array(),
+        $outputType = 'default', $outputComplexity = 'default' )
     {
         $display = new Mumsys_Mvc_Display_Factory($this->_context);
         return $display->load($params, $outputType, $outputComplexity);
