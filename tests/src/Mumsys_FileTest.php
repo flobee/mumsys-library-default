@@ -18,7 +18,7 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
      */
     protected function setUp()
     {
-        $this->_version = '3.1.0';
+        $this->_version = '3.2.0';
 
         $this->_testsDir = realpath(dirname(__FILE__) .'/../');
 
@@ -205,6 +205,26 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
     }
 
 
+    /**
+     * @covers Mumsys_File::truncate
+     */
+    public function testTruncate()
+    {
+        $o = new Mumsys_File(array('file' => $this->_fileOk, 'way' => 'w'));
+        $current1 = $o->truncate();
+
+        $this->assertTrue($current1);
+
+        $o->close();
+        $this->expectException( 'Mumsys_File_Exception' );
+        $mesg = 'Can not truncate file "/home/flobee/workspace/multirename/'
+            . 'externals/mumsys-library-default/tests/tmp/Mumsys_FileTest.'
+            . 'php.tmp". File not open';
+        $this->expectExceptionMessage( $mesg );
+        $o->truncate();
+    }
+
+
     public function testSetBuffer()
     {
         $this->_object->write("hello world\nhello flobee");
@@ -323,7 +343,7 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
     {
         $expected = array(
             'Mumsys_Abstract' => '3.0.1',
-            'Mumsys_File' => '3.1.0',
+            'Mumsys_File' => $this->_version,
         );
 
         $possible = $this->_object->getVersions();

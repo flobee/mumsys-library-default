@@ -20,4 +20,11 @@ if [ "$2" != "" ]; then
 	codeCoverage="--coverage-html $pathCodeCoverage"
 fi
 
-/usr/bin/php -d memory_limit=128M -d include_path=".:/usr/share/php:../src" /usr/bin/phpunit --colors --configuration phpunit.xml --bootstrap ./bootstrap.php $codeCoverage $verbose ./
+if [ -f $* ]; then
+    cript="./$*";
+else 
+    cript="./";
+fi
+
+php7.0 ../vendor/bin/phpunit  --colors --configuration phpunit.xml --bootstrap ./bootstrap.php $codeCoverage $verbose $cript
+

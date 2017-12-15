@@ -1,23 +1,19 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Db_Driver_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2007 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2007 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Db
  * @version     3.1.0
  * 0.1 - Created: 2010-12-29
- * -----------------------------------------------------------------------
  */
-/* }}} */
 
 
 /**
@@ -42,11 +38,11 @@ interface Mumsys_Db_Driver_Interface
      * - 'charset' client character set to be used. If given it will be set when connection will be made
      * - 'socket' boolean optional
      * - 'debug' boolean optional
-     * - 'throw_errors' boolean optional default: true
+     * - 'throwErrors' boolean optional default: true
      * - 'compress' boolean optional Deside to compress the connection or not
      * - mixed other parameters you may need for your own connection/ driver
      */
-    public function __construct( array $args );
+    public function __construct(  Mumsys_Context_Item $context, array $args );
 
     /**
      * Destructor. Close current connection.
@@ -325,7 +321,7 @@ interface Mumsys_Db_Driver_Interface
 
 
     /**
-     * Replace existing data.
+     * Replace existing data at the database.
      *
      * @param array $params Parameters to be set/ replaced:<br/>
      * [fields] required Fields to set in the replace command<br/>

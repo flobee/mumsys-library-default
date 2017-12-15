@@ -1,37 +1,67 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Mailer_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2014 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mailer
+ * @package     Library
+ * @subpackage  Mail
  * @version     1.0.0
  * Created on 01.12.2006 improved since 2016, init interface
  * $Id: class.mailsys.php 2369 2011-12-08 22:02:37Z flobee $
  */
-/* }}} */
 
 
 /**
- * Mumsys mailer interface as part of MailSYS newsletter system.
+ * Mumsys mail interface as part of MailSYS newsletter system.
  *
  * This is the interface which uses MUMSYS at all.
  * Calling the driver class directly is not prohibited
  * and possible but: dont use it! Improve the interface then!
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mailer
+ * @package     Library
+ * @subpackage  Mail
  */
-interface Mumsys_Mailer_Interface
+interface Mumsys_Mail_Interface
 {
+    /**
+     * Initialize the mail object.
+     *
+     * @param array $config Config array containing credetials/ mail interface
+     * properties like:
+     *  - adapter - mail, smtp, sendmail
+     *  - username - login name for the mail server
+     *  - password - Password for the mailserver
+     *  - hostname - Hostname or IP of the mailserver
+     *  - port - Port of the mail sever
+     *  - smtp_auth - boolean using smtp auth or not
+     *  - smtp_keepalive - boolean keep connection alive or not
+     *  - smtp_debug - Debugging options, driver specific 0=Off,1=client,2=server and client
+     *  - smtp_secure - Sets the encryption system to use - ssl (deprecated) or tls (new)
+     *  - smtp_options - Futher smtp option driver specific
+     *  - wordwrap -  Mail text wordwrap. Leave it (default is 78) change it only
+     *              if you know what you are doing,
+     *  - mail_from_email - Sender email address. Uses setFrom() on construction
+     *  - mail_from_name  - Sender name. Uses setFrom() on construction
+     *  - xmailer     X-Mailer header to replace.
+     *  - charset     mail character set defaut: utf-8
+     *  - certificate (array)  certOptions
+     *      'cert' The location of your certificate file e.g '/path/to/cert.crt',
+     *      'privateKey' - The location of your private key file e.g: '/path/to/cert.key',
+     *      'pass' - The password you protected your private key with (not the Import
+     *              Password! may be empty but parameter must not be omitted!)
+     *      'chain' - Optional path to chain certificateThe location to your
+     *              chain file e.g.: '/path/to/certchain.pem'
+     *
+     * @throws Exception If config not set
+     */
+    public function __construct( array $config );
 
 
     /**
@@ -42,7 +72,7 @@ interface Mumsys_Mailer_Interface
      * @param string $name Name of the methode to call
      * @param mixed $params Parameter/s to pipe the the methode
      */
-    public function __call( $name, $params );
+    public function __call( $name, array $params = array() );
 
 
     /**
@@ -101,8 +131,10 @@ interface Mumsys_Mailer_Interface
      * 'MAIL FROM' in smtp mode. For more @see setFrom() "auto" property
      *
      * @param string $email Return-Path email address
+     *
+     * @return bool Returns true on success
      */
-    public function setReturnTo( $email );
+    public function setReturnTo( string $email ): bool;
 
 
     /**
@@ -111,16 +143,20 @@ interface Mumsys_Mailer_Interface
      * @param string $htmlCode Html code to set as message
      * @param string $pathInlineAttachments Path to the files to add images as
      * inline attachments if given/set in html code
+     *
+     * @return string Html message string
      */
-    public function setMessageHtml( $htmlCode, $pathInlineAttachments = null );
+    public function setMessageHtml( string $htmlCode, string $pathInlineAttachments = null ): string;
 
 
     /**
      * Sets the mail message as text format.
      *
-     * @param string $text Plain text to set as message
+     * @param string $text Plain text message string
+     *
+     * @return string $message Message text
      */
-    public function setMessageText( $text );
+    public function setMessageText( $text ): string;
 
 
     /**
@@ -134,22 +170,23 @@ interface Mumsys_Mailer_Interface
      *
      * @return boolean Returns false if the file could not be found or read.
      */
-    public function addAttachment( $path, $encoding = 'base64', $type = '', $disposition = 'attachment' );
+    public function addAttachment( $path, $encoding = 'base64', $type = '',
+        $disposition = 'attachment' ): bool;
 
 
     /**
      * Return the list of attachments.
      * @return array
      */
-    public function getAttachments();
+    public function getAttachments(): array;
 
 
     /**
      * Sends a mail message.
      *
-     * @return boolean  True on success or false on error
+     * @return boolean True on success or false on error
      */
-    public function send();
+    public function send(): bool;
 
 
     /**
@@ -159,8 +196,11 @@ interface Mumsys_Mailer_Interface
      * @param string $privateKeyFile Location to private key file
      * @param string $keyPwd Password for private key if set/needed
      * @param string $chain Optional path to chain certificate
+     *
+     * @return boolean Returns true on success
      */
-    public function setCertificates( $certFile, $privateKeyFile, $keyPwd = null, $chain = '' );
+    public function setCertificate( string $certFile, string $privateKeyFile,
+        string $keyPwd = null, string $chain = '' ): bool;
 
 
     /**
@@ -169,14 +209,14 @@ interface Mumsys_Mailer_Interface
      * @param string $name Header name
      * @param string $value Header value
      */
-    public function addCustomHeader( $name, $value = null );
+    public function addCustomHeader( string $name, string $value = null ): bool;
 
 
     /**
      * Returns all custom headers.
      *
-     * @return array List of all headers
+     * @return array List of key value pairs of all headers set
      */
-    public function getCustomHeaders();
+    public function getCustomHeaders(): array;
 
 }

@@ -45,8 +45,8 @@ class Mumsys_Variable_Item_Default
      * @var array
      */
     private $_properties = array(
-        'name' => true, 'value' => true,
-        'type' => true, 'minlen' => true, 'maxlen' => true, 'regex' => true, 'allowEmpty'=>true, 'required' =>true,
+        'name' => true, 'value' => true, 'type' => true, 'minlen' => true,
+        'maxlen' => true, 'regex' => true, 'allowEmpty'=>true, 'required' =>true,
         'label' => true, 'desc' => true, 'info' => true, 'default' => true,
     );
 
@@ -247,7 +247,7 @@ class Mumsys_Variable_Item_Default
         $return = null;
 
         if ( isset($this->_input['label']) ) {
-            $return = $this->_input['label'];
+            $return = (string) $this->_input['label'];
         } else if ( isset($this->_input[$altnKey]) ) {
             $return = (string) $this->_input[$altnKey];
         }
