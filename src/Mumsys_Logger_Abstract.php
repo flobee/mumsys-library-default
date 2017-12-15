@@ -209,8 +209,8 @@ abstract class Mumsys_Logger_Abstract
     /**
      * Alias wrapper to extra methode calls.
      *
-     * Implements calls: emerge(), emergency(), alert(), crit(), critical(), err()
-     * error(), warn(), warning(), notice(), info(), debug().
+     * Implements calls: emerge(), emergency(), alert(), crit(), critical(),
+     * err() error(), warn(), warning(), notice(), info(), debug().
      * Dont use it if you can (performace). Just compatibilty to psr.
      *
      * @param string $key Methode string to wrap to
