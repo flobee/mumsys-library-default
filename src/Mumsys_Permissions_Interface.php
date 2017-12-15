@@ -1,22 +1,20 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Permissions_Interface
  * for MUMSYS (Multi User Management System)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Permissions
+ * @package     Library
+ * @subpackage  Permissions
  * @version     1.0.0
  * Created: 2016-01-19
- * @filesource
  */
-/*}}}*/
+
 
 /**
  * Class to deal with the permissions (acl)
@@ -68,7 +66,8 @@ interface Mumsys_Permissions_Interface
 
 
     /**
-     * Get name of given module and or Submodule name if $m is false the current module name will be returned
+     * Get name of given module and or Submodule name if $m is false the current
+     * module name will be returned
      *
      * @param $program string modul/program name
      * @param $controller Controller/ Sub- programm name
@@ -93,7 +92,8 @@ interface Mumsys_Permissions_Interface
 
     /**
      * Get the password of the current user (remote user).
-     * Note: this depens on PHP_SAPI value. apache handle will return the password, cli/cgi will return true.
+     * Note: this depens on PHP_SAPI value. apache handle will return the
+     * password, cli/cgi will return true.
      *
      * @return string|boolean Returns the password of the current user or true for:
      * authentication was set or false if authentification was not set.
@@ -153,13 +153,16 @@ interface Mumsys_Permissions_Interface
      * get accesslevels based on a setted level or by its own usergrouplevel
      * old: get_auth_levels()
      * @param integer $level optional the highes level to find lower levels (0-5)
-     * @return array returns a one dimensional array with integer level => string level-name
+     *
+     * @return array returns a one dimensional array with integer level =>
+     * string level-name
      */
     public function getAuthLevels( $level=null );
 
     /**
      * Get label/ name of a level.
      * @param integer $level Level to get the label/name from
+     *
      * @return string Return the label/name for the requested level
      */
     public function getAuthName( $level );
@@ -194,7 +197,8 @@ interface Mumsys_Permissions_Interface
      * get/set language (get_language)
      * load basic language and module language
      *
-     * @param string|false $l Languge to load otherwise default language will be loaded
+     * @param string|false $l Languge to load otherwise default language will
+     * be loaded
      * @return boolean
      */
     public function languageLoad( $l=false );
