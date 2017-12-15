@@ -4,14 +4,14 @@
 /**
  * Mumsys_Db_Driver_Query_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
  * @copyright Copyright (c) 2007 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * @package     Library
+ * @subpackage  Db
  * @version     1.0.0
  * Created on 2007-06-23 as querytool.php
  */
@@ -22,8 +22,8 @@
  * Query generator interface
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * @package     Library
+ * @subpackage  Db
  */
 interface Mumsys_Db_Driver_Query_Interface
 {
@@ -173,14 +173,16 @@ interface Mumsys_Db_Driver_Query_Interface
      *
      * @param array $fields List of fields to select.
      *
-     * @return string|flase Column list for the select statment or false on error
-     * @throws Mumsys_Db_Exception Throws exception on errors if throw errors was set
+     * @return string|flase Column list for the select statment or false on
+     * error
+     * @throws Mumsys_Db_Exception Throws exception on errors if throw errors
+     * was set
      */
     public function compileQuerySelect( array $fields );
 
     /**
-     * Returns set statement for insert or update statement by given configuration
-     * list.
+     * Returns set statement for insert or update statement by given
+     * configuration list.
      * Example:
      * <code>
      * array('text' => 'textaNew', 'textb' => null, 'textc' => 'now()');
@@ -282,7 +284,8 @@ interface Mumsys_Db_Driver_Query_Interface
     /**
      * Implode sql conditions.
      *
-     * @todo this method should be available in a xml creator too e.g. for attributes
+     * @todo this method should be available in a xml creator too e.g. for
+     * attributes
      * @todo example needed!
      *
      * @param string $glue
