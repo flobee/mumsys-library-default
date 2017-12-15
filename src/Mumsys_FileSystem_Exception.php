@@ -19,8 +19,8 @@
  * Generic exception class.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_FileSystem
+ * @package     Library
+ * @subpackage  FileSystem
  */
 class Mumsys_FileSystem_Exception
     extends Mumsys_Exception
