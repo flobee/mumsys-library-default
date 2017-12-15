@@ -34,7 +34,8 @@ class Mumsys_Cookie_Factory
     /**
      * Initialise cookie object by given name.
      *
-     * @param string $adapter Name of the adapter to initialise (e.g> Default|Memory)
+     * @param string $adapter Name of the adapter to initialise (e.g> Default|
+     * Memory)
      *
      * @return Mumsys_Cookie_Interface Object to get set cookie values.
      *
@@ -44,7 +45,9 @@ class Mumsys_Cookie_Factory
     {
         if ( ctype_alnum($adapter) === false ) {
             $adaptername = 'Mumsys_Cookie_' . $adapter;
-            $message = sprintf('Invalid characters in adapter name "%1$s"', $adaptername);
+            $message = sprintf(
+                'Invalid characters in adapter name "%1$s"', $adaptername
+            );
             throw new Mumsys_Cookie_Exception($message);
         }
 
@@ -60,7 +63,8 @@ class Mumsys_Cookie_Factory
 
         if ( !( $object instanceof $iface ) ) {
             $message = sprintf(
-                'Adapter "%1$s" does not implement interface "%2$s"', $adaptername, $iface
+                'Adapter "%1$s" does not implement interface "%2$s"',
+                $adaptername, $iface
             );
             throw new Mumsys_Cookie_Exception($message);
         }
