@@ -3,15 +3,15 @@
 /**
  * {{{ Mumsys_Html_Table
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @category Mumsys
- * @package Mumsys_Library
- * @subpackage Mumsys_Html
- }}} */
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Html
+ */
 
 
 /**
@@ -54,9 +54,9 @@
 /**
  * Class for generating a Html-Table
  *
- * @category Mumsys
- * @package Mumsys_Library
- * @subpackage Mumsys_Html
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Html
  */
 class Mumsys_Html_Table
     extends Mumsys_Xml_Abstract
@@ -138,7 +138,8 @@ class Mumsys_Html_Table
     /**
      * 	Initialize the table object.
      *
-     * 	@param array $attributes List of key/value pairs for the table tag attributes
+     * 	@param array $attributes List of key/value pairs for the table tag
+     * attributes
      */
     public function __construct( array $attributes = array() )
     {
@@ -155,7 +156,8 @@ class Mumsys_Html_Table
     /**
      * Set attributes for the <table> tag.
      *
-     * @param array $attributes List of key/value pairs for the table tag attributes
+     * @param array $attributes List of key/value pairs for the table tag
+     * attributes
      */
     public function setTableProps( array $attributes )
     {
@@ -182,7 +184,9 @@ class Mumsys_Html_Table
      */
     function setHeadlinesAttributes( $attr = array() )
     {
-        if (!isset($this->_headlines['attr']['attr']) || !is_array($this->_headlines['attr']['attr'])) {
+        if ( !isset($this->_headlines['attr']['attr'])
+            || !is_array($this->_headlines['attr']['attr'])
+        ) {
             $this->_headlines['attr']['attr'] = array();
         }
         $this->_headlines['attr']['attr'] = $attr;
@@ -196,7 +200,9 @@ class Mumsys_Html_Table
     {
         $attrib = '';
         if (!empty($this->_headlines['attr']['attr'])) {
-            $attrib = ' ' . parent::attributesCreate($this->_headlines['attr']['attr']);
+            $attrib = ' ' . parent::attributesCreate(
+                $this->_headlines['attr']['attr']
+            );
         }
 
         return $attrib;
@@ -208,7 +214,9 @@ class Mumsys_Html_Table
      */
     public function setHeadlinesAttribute( $col = 0, $attr = array() )
     {
-        if (!isset($this->_headlines['attr'][$col]) || !is_array($this->_headlines['attr'][$col])) {
+        if ( !isset($this->_headlines['attr'][$col])
+            || !is_array($this->_headlines['attr'][$col])
+        ) {
             $this->_headlines['attr'][$col] = array();
         }
 
@@ -226,7 +234,9 @@ class Mumsys_Html_Table
     {
         $result = '';
         if (!empty($this->_headlines['attr'][$col])) {
-            $result = ' ' . parent::attributesCreate($this->_headlines['attr'][$col]);
+            $result = ' ' . parent::attributesCreate(
+                $this->_headlines['attr'][$col]
+            );
         }
 
         return $result;
@@ -286,7 +296,8 @@ class Mumsys_Html_Table
 
 
     /**
-     * Return the number of columns based on the number of elements of the first row.
+     * Return the number of columns based on the number of elements of the first
+     * row.
      *
      * @return integer Number of columns
      */
@@ -329,7 +340,8 @@ class Mumsys_Html_Table
     /**
      * Returns the alternativ row color if possible/ was set befor.
      *
-     * @param integer $num Row number the color should be used for (NOT IMPLEMENTED)
+     * @param integer $num Row number the color should be used for (NOT
+     * IMPLEMENTED YET)
      * @param string $val Value to detect a color change
      *
      * @return string|false New color sting or false for no change
@@ -339,7 +351,7 @@ class Mumsys_Html_Table
         $return = false;
         if ($this->_altRowColor)
         {
-            if (isset($this->_altRowColorKeyChange) && $this->_colorChangeVal == $val) {
+            if ( isset($this->_altRowColorKeyChange) && $this->_colorChangeVal == $val ) {
                 $return = current($this->_altRowColor);
             } else {
                 $return = ($c = next($this->_altRowColor)) ? $c : reset($this->_altRowColor);
@@ -378,22 +390,28 @@ class Mumsys_Html_Table
                     $attr = '';
                 }
 
-                if ($this->_headlines['values'] !== true) {
+                if ( $this->_headlines['values'] !== true ) {
                     // creating by content
-                    if (!$this->_headlines['values'][$i] || is_int($this->_headlines['values'][$i])) {
-                        $html .= '   <th' . $attr . '>' . $this->_autoFill . '</th>' . _NL;
+                    if ( !$this->_headlines['values'][$i]
+                        || is_int($this->_headlines['values'][$i])
+                    ) {
+                        $html .= '   <th' . $attr . '>' . $this->_autoFill
+                            . '</th>' . _NL;
                     } else {
-                        $html .= '   <th' . $attr . '>' . $this->_headlines['values'][$i] . '</th>' . _NL;
+                        $html .= '   <th' . $attr . '>'
+                            . $this->_headlines['values'][$i] . '</th>' . _NL;
                     }
                 } else {
                     // creating by array indexes
-                    if (!$tmp) {
+                    if ( !$tmp ) {
                         $tmp = array_keys($this->_content[0]);
                     }
-                    if (is_int($tmp[$i])) {
-                        $html .= '   <th' . $attr . '>' . $this->_autoFill . '</th>' . _NL;
+                    if ( is_int($tmp[$i]) ) {
+                        $html .= '   <th' . $attr . '>'
+                            . $this->_autoFill . '</th>' . _NL;
                     } else {
-                        $html .= '   <th' . $attr . '>' . $tmp[$i] . '</th>' . _NL;
+                        $html .= '   <th' . $attr . '>' . $tmp[$i] . '</th>'
+                            . _NL;
                     }
                 }
             }
@@ -407,21 +425,25 @@ class Mumsys_Html_Table
     /**
      * Sets/ replaces attributes for a specified row or column.
      *
-     * @param integer|string $row Number of the row where attributes should be placed or "_" for all rows
-     * @param integer $col Number of the column where attributes should be placed
+     * @param integer|string $row Number of the row where attributes should be
+     * placed or "_" for all rows
+     * @param integer $col Number of the column where attributes should be
+     * placed
      * @param array $attributes Attributes as key/value pairs
      */
     public function setColAttributes( $row, $col, $attributes = array() )
     {
-        if (!isset($this->_structure[$row])) {
+        if ( !isset($this->_structure[$row]) ) {
             $this->_structure[$row] = array();
         }
-        if (!isset($this->_structure[$row][$col]) || !is_array($this->_structure[$row][$col])) {
+        if ( !isset($this->_structure[$row][$col])
+            || !is_array($this->_structure[$row][$col])
+        ) {
             $this->_structure[$row][$col] = array();
         }
 
         // global attributes for each col
-        if ($row == '_') {
+        if ( $row == '_' ) {
             $this->_structure['_'][$col]['attr'] = $attributes;
         } else {
             $this->_structure[$row][$col] = array('attr' => $attributes);
@@ -440,13 +462,17 @@ class Mumsys_Html_Table
     public function getColAttributes( $row, $col )
     {
         $result = '';
-        if (isset($this->_structure[$row][$col]['attr'])) {
-            $result .= ' ' . parent::attributesCreate($this->_structure[$row][$col]['attr']);
+        if ( isset($this->_structure[$row][$col]['attr']) ) {
+            $result .= ' ' . parent::attributesCreate(
+                $this->_structure[$row][$col]['attr']
+            );
         }
 
         // global attributes for each col
-        if (isset($this->_structure['_'][$col]['attr'])) {
-            $result .= ' ' . parent::attributesCreate($this->_structure['_'][$col]['attr']);
+        if ( isset($this->_structure['_'][$col]['attr']) ) {
+            $result .= ' ' . parent::attributesCreate(
+                $this->_structure['_'][$col]['attr']
+            );
         }
 
         return $result;
@@ -457,17 +483,20 @@ class Mumsys_Html_Table
      * Sets/ replaces attributes for a specified row.
      * For all rows you can set '_' as row.
      *
-     * @param integer|string $row Number of the row where attributes should be placed or "_" for all rows
+     * @param integer|string $row Number of the row where attributes should be
+     * placed or "_" for all rows
      * @param array $attributes List of key/value pairs for the attributes
      */
     public function setRowAttributes( $row, $attributes = array() )
     {
-        if (!isset($this->_structure[$row]) || !is_array($this->_structure[$row])) {
+        if ( !isset($this->_structure[$row])
+            || !is_array($this->_structure[$row])
+        ) {
             $this->_structure[$row] = array();
         }
 
         // global attributes
-        if ($row == '_') {
+        if ( $row == '_' ) {
             $this->_structure['_']['attr'] = $attributes;
         } else {
             $this->_structure[$row]['attr'] = $attributes;
@@ -484,13 +513,15 @@ class Mumsys_Html_Table
     public function getRowAttributes( $row )
     {
         $attributes = false;
-        if (isset($this->_structure[$row]['attr'])) {
-            $attributes .= ' ' . parent::attributesCreate($this->_structure[$row]['attr']);
+        if ( isset($this->_structure[$row]['attr']) ) {
+            $attributes .= ' '
+                . parent::attributesCreate($this->_structure[$row]['attr']);
         }
 
         // global attributes
-        if (isset($this->_structure['_']['attr'])) {
-            $attributes .= ' ' . parent::attributesCreate($this->_structure['_']['attr']);
+        if ( isset($this->_structure['_']['attr']) ) {
+            $attributes .= ' '
+                . parent::attributesCreate($this->_structure['_']['attr']);
         }
 
         return $attributes;
@@ -512,13 +543,14 @@ class Mumsys_Html_Table
     public function setColContents( $str, $row, $col )
     {
         try {
-            if (!is_int($row) && $row != '_') {
+            if ( !is_int($row) && $row != '_' ) {
                 throw new Exception('Invalid row value to set col contents');
             }
-            if (!is_int($col) && $col != '_') {
+            if ( !is_int($col) && $col != '_' ) {
                 throw new Exception('Invalid column value to set col contents');
             }
-        } catch (Exception $e) {
+        }
+        catch ( Exception $e ) {
             throw new Mumsys_Html_Exception($e->getMessage());
         }
 
@@ -534,8 +566,9 @@ class Mumsys_Html_Table
      */
     public function getColContents( $row, $col, $str = 'n/a' )
     {
-        if (isset($this->_structure[$row][$col]['replacement'])) {
-            $text = str_replace('%s', $str, $this->_structure[$row][$col]['replacement']);
+        if ( isset($this->_structure[$row][$col]['replacement']) ) {
+            $text = str_replace('%s', $str,
+                $this->_structure[$row][$col]['replacement']);
         } else {
             $text = $str;
         }
@@ -565,7 +598,8 @@ class Mumsys_Html_Table
      * Returns the source as html representation.
      * NOT the html code to use!
      *
-     * @return string html enterties encoded string of the generated html code of the table
+     * @return string html enterties encoded string of the generated html code
+     * of the table
      */
     public function getSource()
     {
@@ -584,7 +618,9 @@ class Mumsys_Html_Table
     public function toHtml()
     {
         if (!$this->_content) {
-            throw new Mumsys_Html_Exception('No content found to create a table');
+            throw new Mumsys_Html_Exception(
+                'No content found to create a table'
+            );
         } else  {
             $records = $this->_content;
         }
