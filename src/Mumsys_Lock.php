@@ -1,26 +1,19 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Lock
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright (c) 2006 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Lock
+ * @package     Library
+ * @subpackage  Lock
  * @version     3.0.0
  * 0.1 - Created: 2006-04-28
- * @filesource
- * -----------------------------------------------------------------------
  */
-/*}}}*/
 
 
 /**
@@ -29,10 +22,11 @@
  * processes should not go on to avoid conflicts.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Lock
+ * @package     Library
+ * @subpackage  Lock
  */
-class Mumsys_Lock extends Mumsys_Abstract
+class Mumsys_Lock
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
