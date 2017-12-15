@@ -1,29 +1,25 @@
 <?php
 
-
-/* {{{ */
 /**
  * Mumsys_Request_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
- * @filesource
+ * @package     Library
+ * @subpackage  Request
  */
-/* }}} */
 
 
 /**
  * Default request class to get input parameters $_GET, $POST, $_COOKIE.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
+ * @package     Library
+ * @subpackage  Request
  */
 class Mumsys_Request_Default
     extends Mumsys_Request_Abstract
