@@ -1,23 +1,19 @@
 <?php
 
-
-/* {{{ */
 /**
  * Mumsys_PriorityQueue_Simple
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_PriorityQueue
+ * @package     Library
+ * @subpackage  PriorityQueue
  * @version     1.0.0
  * Created: 2016-03-20
- * @filesource
  */
-/* }}} */
 
 
 /**
@@ -31,6 +27,9 @@
  * C => befor prio99
  * Result: C, A, B
  *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  PriorityQueue
  */
 class Mumsys_PriorityQueue_Simple
 {
@@ -56,7 +55,8 @@ class Mumsys_PriorityQueue_Simple
      *  array('afterdefault2 => mixed content),
      * )
      *
-     * @param array $stack Optional; Predefined and ready to go list of key/item pairs.
+     * @param array $stack Optional; Predefined and ready to go list of key/item
+     * pairs.
      */
     public function __construct( array $stack = array() )
     {
@@ -95,7 +95,8 @@ class Mumsys_PriorityQueue_Simple
      *
      * @throws Mumsys_Exception If Key/ID already exists
      */
-    public function add( $identifier, $value, $positionWay = 'after', $positionID = null )
+    public function add( $identifier, $value, $positionWay = 'after',
+        $positionID = null )
     {
         if (isset($this->_stack[$identifier])) {
             $message = sprintf('Identifier "%1$s" already set', $identifier);
@@ -105,7 +106,9 @@ class Mumsys_PriorityQueue_Simple
         if (isset($this->_stack[$positionID])) {
             $pos = $this->_getPos($positionID, $positionWay);
             $part = array_splice($this->_stack, 0, $pos);
-            $this->_stack = array_merge($part, array($identifier => $value), $this->_stack);
+            $this->_stack = array_merge(
+                $part, array($identifier => $value), $this->_stack
+            );
         } else {
             $this->_stack[$identifier] = $value;
         }
@@ -141,7 +144,9 @@ class Mumsys_PriorityQueue_Simple
                 $pos = $pos + 1;
                 break;
             default:
-                $message = sprintf('Position way "%1$s" not implemented', $posWay);
+                $message = sprintf(
+                    'Position way "%1$s" not implemented', $posWay
+                );
                 throw new Mumsys_PriorityQueue_Exception($message);
         }
 
