@@ -76,7 +76,8 @@ class Mumsys_Logger_File
      * mode, log all)
      * - [debug] boolean Default: false
      * - [lf] string Optional Linefeed Default: \n
-     * - [maxfilesize] integer Optional Number of Bytes for the logfile Default: 0 (no limit)
+     * - [maxfilesize] integer Optional Number of Bytes for the logfile Default:
+     *   0 (no limit)
      *
      * @uses Mumsys_File Uses Mumsys_File object for file logging
      */
