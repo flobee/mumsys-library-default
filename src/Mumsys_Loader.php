@@ -1,26 +1,19 @@
 <?php
 
-/* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Loader
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright Copyright (c) 2010 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Loader
+ * @package     Library
+ * @subpackage  Loader
  * @version     3.1.1
  * 0.4 Created on 28.08.2010
- * @filesource
- * ----------------------------------------------------------------------------
  */
-/* }}} */
 
 
  /**
@@ -65,7 +58,9 @@ class Mumsys_Loader
         try {
             // autoload will be called for "new $instance($args)"
             if (!class_exists($instance) && !isset(self::$loadedClasses[$instance])) {
-                throw new Mumsys_Loader_Exception(sprintf('Error! could not load: "%1$s".', $instance));
+                throw new Mumsys_Loader_Exception(
+                    sprintf('Error! could not load: "%1$s".', $instance)
+                );
             } else {
                 $x = new $instance($args);
             }
@@ -82,7 +77,8 @@ class Mumsys_Loader
      *
      * @param string $instance Name of the class to be loaded.
      *
-     * @return boolean Returns true on success or false if class could not be loaded
+     * @return boolean Returns true on success or false if class could not be
+     * loaded
      */
     public static function autoload($instance)
     {
