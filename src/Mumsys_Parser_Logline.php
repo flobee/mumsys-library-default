@@ -1,25 +1,19 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Parser_Logline
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright Copyright (c) 2015 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Parser
+ * @package     Library
+ * @subpackage  Parser
  * @version     1.1.1
  * Created: 2015-08-11
- * @filesource
  */
-/*}}}*/
 
 
 /**
@@ -87,7 +81,8 @@ class Mumsys_Parser_Logline
 
     /**
      * Flag for the way the filter will perform.
-     * By default (false) the filter is set as whitelist which means only matches of the filter will return.
+     * By default (false) the filter is set as whitelist which means only
+     * matches of the filter will return.
      * @var boolean
      */
     private $_filteredHide = false;
@@ -147,7 +142,8 @@ class Mumsys_Parser_Logline
      * of patterns.
      *
      * @param string $format Format of a log line.
-     * @param array $patterns Initial patterns to be set. Otherwise default patterns will be used
+     * @param array $patterns Initial patterns to be set. Otherwise default
+     * patterns will be used
      */
     public function __construct($format='', array $patterns=array())
     {
@@ -233,7 +229,8 @@ class Mumsys_Parser_Logline
      * Sets the filter condition mode. Apply all filters in AND or OR condition.
      *
      * @param string $orOrAnd Condition to be set: "AND" or "OR"; Default: "AND"
-     * @throws Exception If incoming parameter is whether the string "AND" nor "OR"
+     * @throws Exception If incoming parameter is whether the string "AND" nor
+     * "OR"
      */
     public function setFilterCondition($orOrAnd)
     {
@@ -255,9 +252,12 @@ class Mumsys_Parser_Logline
      * Adds a filter/ search rule.
      * Note: Don't forget to escape spesial chars for the regular expressions.
      *
-     * @param string $key Keyword based on the pattern rules to be expected: eg.: httpcode, user, time ...
-     * @param array|string $value Value or list of values to look/ search for. matching tests! not exact tests!
-     * @param type $sensitive Flag to enable sensitive mode or not. Default: false (case insensitive)
+     * @param string $key Keyword based on the pattern rules to be expected:
+     * eg.: httpcode, user, time ...
+     * @param array|string $value Value or list of values to look/ search for.
+     * matching tests! not exact tests!
+     * @param type $sensitive Flag to enable sensitive mode or not. Default:
+     * false (case insensitive)
      */
     public function addFilter($key, $value=array(), $sensitive=false)
     {
@@ -292,7 +292,8 @@ class Mumsys_Parser_Logline
 
         if (!preg_match($regex, $line, $matches)) {
             $message = sprintf(
-                'Format of log line invalid (expected:"%1$s"); Line was "%2$s"; regex: "%3$s"',
+                'Format of log line invalid (expected:"%1$s"); Line was "%2$s";'
+                . ' regex: "%3$s"',
                 $this->_logFormat,
                 $line,
                 $regex
