@@ -1,23 +1,18 @@
 <?php
 
-/* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_File_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright Copyright (c) 2011 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_File
+ * @package     Library
+ * @subpackage  File
  * @version     3.0.0
  * 0.1 - Created on 2011/02
- * ----------------------------------------------------------------------------
  */
 /* }}} */
 
@@ -26,16 +21,16 @@
  * Interface for file object
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_File
+ * @package     Library
+ * @subpackage  File
  */
 interface Mumsys_File_Interface
 {
-
-
     /**
      * Initialise the File object.
-     * If a file and mode is given the open() methode will be called automaticly.
+     *
+     * If a file and mode is given the open() methode will be called
+     * automaticly.
      *
      * @param array $params Params to set on initialisation the object
      *      [file] Location to the file to read or to write
@@ -58,8 +53,8 @@ interface Mumsys_File_Interface
     /**
      * Close current file connection if exists.
      *
-     * @return boolean Returns the status of the close() command. True on success
-     * or true by default even if no connection was made
+     * @return boolean Returns the status of the close() command. True on
+     * success or true by default even if no connection was made
      */
     public function close();
 
@@ -70,7 +65,8 @@ interface Mumsys_File_Interface
      * @param string|binary $content Content to write to the file
      *
      * @return boolean Returns true on success.
-     * @throws Mumsys_File_Exception Throws exception if writing to file is impossible
+     * @throws Mumsys_File_Exception Throws exception if writing to file is
+     * impossible
      */
     public function write( $content );
 
