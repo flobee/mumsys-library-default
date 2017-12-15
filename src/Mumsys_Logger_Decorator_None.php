@@ -38,7 +38,8 @@ class Mumsys_Logger_Decorator_None
      * @param Mumsys_Logger_Interface Logger object to be decorated
      * @param array $options List of options to be set on construction; Optional
      */
-    public function __construct( Mumsys_Logger_Interface $object, array $options = array() )
+    public function __construct( Mumsys_Logger_Interface $object,
+        array $options = array() )
     {
         parent::__construct($object);
     }
