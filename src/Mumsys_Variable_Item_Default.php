@@ -1,17 +1,16 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Variable_Item_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
+ * @package     Library
+ * @subpackage  Variable
  * Created: 2006 based on Mumsys_Field, renew 2016
  */
 /*}}}*/
@@ -28,8 +27,8 @@
  * With this you already have a powerful set to handle and validate variables.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
+ * @package     Library
+ * @subpackage  Variable
  */
 class Mumsys_Variable_Item_Default
     extends Mumsys_Variable_Item_Abstract
@@ -239,7 +238,8 @@ class Mumsys_Variable_Item_Default
     /**
      * Returns the item label.
      *
-     * @param string $altnKey Alternativ property key to get if label not exists (default: "name" for getName().
+     * @param string $altnKey Alternativ property key to get if label not exists
+     * (default: "name" for getName().
      * @return string Item/ variable label
      */
     public function getLabel( $altnKey = 'name' )
@@ -280,7 +280,8 @@ class Mumsys_Variable_Item_Default
 
     /**
      * Sets the item description.
-     * Note: Description of what kind of value will be expected e.g. in a form. E.g: "Enter your email address"
+     * Note: Description of what kind of value will be expected e.g. in a form.
+     * E.g: "Enter your email address"
      *
      * @param string $value Description to set
      */
@@ -303,7 +304,9 @@ class Mumsys_Variable_Item_Default
 
     /**
      * Sets the item additional information value.
-     * Note: Information about the item of what kind of value will be expected or how things will go.
+     * 
+     * Note: Information about the item of what kind of value will be expected
+     * or how things will go.
      *
      * @param string $value Additional information value
      */
