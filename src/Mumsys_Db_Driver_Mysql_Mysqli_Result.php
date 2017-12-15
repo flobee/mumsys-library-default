@@ -1,19 +1,17 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Db_Driver_Mysql_Mysqli_Result
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * @package     Library
+ * @subpackage  Db
  */
-/*}}}*/
 
 
 /**
@@ -304,7 +302,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
         try
         {
             if (!$this->seek($row, $res)) {
-                throw new Mumsys_Db_Exception('Seeking to row '. $row . ' failed');
+                throw new Mumsys_Db_Exception(
+                    'Seeking to row '. $row . ' failed'
+                );
             }
             $data = $this->fetch('array', $res);
             $this->free($res);
@@ -387,7 +387,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
         try {
             mysqli_free_result($res);
         } catch (Exception $e) {
-            throw new Mumsys_Db_Exception($e->getMessage(), $e->getCode(), $e->getPrevious());
+            throw new Mumsys_Db_Exception(
+                $e->getMessage(), $e->getCode(), $e->getPrevious()
+            );
         }
 
         return true;
