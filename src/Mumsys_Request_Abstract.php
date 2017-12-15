@@ -1,29 +1,25 @@
 <?php
 
-
-/* {{{ */
 /**
  * Mumsys_Request_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
- * @filesource
+ * @package     Library
+ * @subpackage  Request
  */
-/* }}} */
 
 
 /**
- * Abstract request class to get input parameters.
+ * Abstract class to get input parameters.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
+ * @package     Library
+ * @subpackage  Request
  */
 abstract class Mumsys_Request_Abstract
     extends Mumsys_Abstract
