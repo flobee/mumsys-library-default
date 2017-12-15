@@ -35,13 +35,17 @@ interface Mumsys_FileSystem_Interface
      * @todo follow symlinks?
      *
      * @param string $dir Directory/ Path to start the scan
-     * @param boolean $hideHidden Flag to decide to skip hidden files or directories
+     * @param boolean $hideHidden Flag to decide to skip hidden files or
+     * directories
      * @param boolean $recursive Flag to deside to scan recursive or not
-     * @param array $filters List of regular expressions look for a match (the list will used AND conditions)
+     * @param array $filters List of regular expressions look for a match (the
+     * list will used AND conditions)
      *
-     * @return array|false Returns list of file/link/directory details like path, name, size, type
+     * @return array|false Returns list of file/link/directory details like
+     * path, name, size, type
      */
-    public function scanDirInfo( $dir, $hideHidden = true, $recursive = false, array $filters = array() );
+    public function scanDirInfo( $dir, $hideHidden = true, $recursive = false,
+        array $filters = array() );
 
 
     /**
@@ -49,15 +53,16 @@ interface Mumsys_FileSystem_Interface
      * Best usage for a directory scan: The first parameter contains the path,
      * the second parameter contains the filename.
      *
-     * @param string $fileOrPath Location of the file including the filename or the
-     * path (if it is a directory) or the path of a file but then the filename
-     * will be required as second parameter.
+     * @param string $fileOrPath Location of the file including the filename or
+     * the path (if it is a directory) or the path of a file but then the
+     * filename will be required as second parameter.
      * @param string|false $filename Optional; Name of the file without the path
      *
-     * @return array Returns an array containing the filename "name", "path", "filesize"
-     * and the filetype "type" (like: "link", file", "dir")
+     * @return array Returns an array containing the filename "name", "path",
+     * "filesize" and the filetype "type" (like: "link", file", "dir")
      *
-     * @throws Mumsys_FileSystem_Exception Throws exception if file, link or directory could not be found
+     * @throws Mumsys_FileSystem_Exception Throws exception if file, link or
+     * directory could not be found
      */
     public function getFileDetails( $fileOrPath, $filename = false );
 
@@ -67,13 +72,13 @@ interface Mumsys_FileSystem_Interface
      * Best usage for a directory scan: The first parameter contains the path,
      * the second parameter contains the file or link name for an optimal usage.
      *
-     * Note: This methode is made for scaning for files in cli enviroment to feed
-     * a media database etc. Use it only if know what you are doing. Things can
-     * run in a timeout when using in web enviroment.
+     * Note: This methode is made for scaning for files in cli enviroment to
+     * feed a media database etc. Use it only if know what you are doing. Things
+     * can run in a timeout when using in web enviroment.
      *
-     * @param string $fileOrPath Location of the file including the filename or the
-     * path (if it is a directory) or the path of a file but then the filename
-     * will be required as second parameter.
+     * @param string $fileOrPath Location of the file including the filename or
+     * the path (if it is a directory) or the path of a file but then the
+     * filename will be required as second parameter.
      * @param string|false $filename Optional; Name of the file without the path
      *
      * @return array Returns an array containing the following array keys (if
@@ -97,7 +102,8 @@ interface Mumsys_FileSystem_Interface
      *  'owner_name' string owner name
      *  'group_name' string group name
      *
-     * @throws Mumsys_FileSystem_Exception Throws exception if file, link or directory not exists.
+     * @throws Mumsys_FileSystem_Exception Throws exception if file, link or
+     * directory not exists.
      */
     public function getFileDetailsExtended( $file, $filename = false );
 
@@ -125,7 +131,8 @@ interface Mumsys_FileSystem_Interface
      * @return string Returns the new/target filename
      * @throws Mumsys_FileSystem_Exception Throws exception on error
      */
-    public function copy( $fileSource, $fileTarget, $keepCopy = false, $tries = 0 );
+    public function copy( $fileSource, $fileTarget, $keepCopy = false,
+        $tries = 0 );
 
 
     /**
@@ -139,24 +146,29 @@ interface Mumsys_FileSystem_Interface
      * @return string Returns the new/target filename on success
      * @throws Mumsys_FileSystem_Exception Throws exception on error
      */
-    public function rename( $source, $destination, $keepCopy = true, $streamContext = null );
+    public function rename( $source, $destination, $keepCopy = true,
+        $streamContext = null );
 
 
     /**
      * Creates a link (hard or soft) and returns the link location.
      *
-     * @todo check how to remove realpath function or what is important in controller?
+     * @todo check how to remove realpath function or what is important in
+     * controller?
      *
      * @param string $file Absolut location to the file
      * @param string $to Absolut location of the link name
-     * @param string $type Link type to be created "soft" for symlinks, "hard" for hardlinks
+     * @param string $type Link type to be created "soft" for symlinks, "hard"
+     * for hardlinks
      * @param string $way Setter to create absolut or relative links (rel|abs)
      * @param boolean $keepCopy Flag to keep existing files or links
      *
      * @return string Returns the link name
-     * @throws Mumsys_FileSystem_Exception Throws exception on errors. Eg: if link type is invalid
+     * @throws Mumsys_FileSystem_Exception Throws exception on errors. Eg: if
+     * link type is invalid
      */
-    public function link( $file, $to, $type = 'soft', $way = 'rel', $keepCopy = false );
+    public function link( $file, $to, $type = 'soft', $way = 'rel',
+        $keepCopy = false );
 
 
     /**
