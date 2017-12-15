@@ -1,33 +1,27 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_GetOpts
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright Copyright (c) 2011 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_GetOpts
+ * @package     Library
+ * @subpackage  GetOpts
  * @version     3.3.0
  * Created: 2011-04-11
- * @filesource
  */
-/*}}}*/
 
 
 /**
  * Class to handle/ pipe shell arguments in php context.
  *
- * Shell arguments will be parsed and an array list of key value pairs will be created.
- * When using long and shot options the longer one will be used and the short
- * one will map to it. Short options always have a single character.
+ * Shell arguments will be parsed and an array list of key value pairs will be
+ * created. When using long and shot options the longer one will be used and the
+ * short one will map to it. Short options always have a single character.
  * Dublicate options can't be handled. First comes first serves will take affect.
  *
  * Flags will be handled as boolean true if set.
@@ -42,8 +36,8 @@
  *
  * Example:
  * <code>
- * // Parameter options: A list of options or a list of key value pairs where the
- * // value contains help/ usage informations.
+ * // Parameter options: A list of options or a list of key value pairs where
+ * // the value contains help/ usage informations.
  * // The colon at the end of an option shows that an input must
  * // follow. Otherwise is will be handled as flag (boolean set or not set) and
  * // if this do not match an error will be thrown.
@@ -76,8 +70,8 @@
  * </code>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_GetOpts
+ * @package     Library
+ * @subpackage  GetOpts
  */
 class Mumsys_GetOpts
     extends Mumsys_Abstract
