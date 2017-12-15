@@ -1,28 +1,20 @@
 <?php
 
-
-/* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Timer
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright (c) 2006 by Florian Blasel
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright (c) 2006 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Timer
+ * @package     Library
+ * @subpackage  Timer
  * @version     3.2.0
  * V1 - Created 2006-01-12
  * @since       File available since Release 2
- * @filesource
- * -----------------------------------------------------------------------
  */
-/* }}} */
 
 
 /**
@@ -51,8 +43,8 @@
  * </code>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Timer
+ * @package     Library
+ * @subpackage  Timer
  */
 class Mumsys_Timer
     extends Mumsys_Abstract
@@ -76,8 +68,8 @@ class Mumsys_Timer
      * time.
      *
      * @param boolean|float $start If true enable "start now"
-     * function otherwise given float value will be used as starttime in mictotime format
-     * If true time recording starts now
+     * function otherwise given float value will be used as starttime in
+     * mictotime format; If true time recording starts now
      */
     public function __construct( $start = false )
     {
