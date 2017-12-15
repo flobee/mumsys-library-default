@@ -1,20 +1,18 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Mvc_Display_Control_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc
  * Created: 2016-01-30
  */
-/*}}}*/
 
 
 /**
@@ -25,8 +23,8 @@
  * collects, applys, shows or returns given content.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc
  */
 abstract class Mumsys_Mvc_Display_Control_Abstract extends Mumsys_Abstract
 {
