@@ -3,13 +3,14 @@
 /**
  * Php
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Php
+ * @package     Library
+ * @subpackage  Php
  * Created on 2006-04-30
  */
 
@@ -52,8 +53,8 @@ if ( PHP_VERSION_ID < 50207 ) {
  * you will find at its best @pear's "Compat" package.
  *
  * Improved or missing functionality you will find here.
- * This comes from old times where functionality not exists but still implemented
- * somewhere.
+ * This comes from old times where functionality not exists but still
+ * implemented somewhere.
  * All methodes should be called staticly.
  *
  * Example:
@@ -64,7 +65,8 @@ if ( PHP_VERSION_ID < 50207 ) {
  * </code>
  *
  * @category    Mumsys
- * @package     Php
+ * @package     Library
+ * @subpackage  Php
  */
 class Mumsys_Php
     extends Mumsys_Abstract
@@ -139,7 +141,9 @@ class Mumsys_Php
                 break;
 
             default:
-                throw new PHP_Exception('__set: "' . $k . '"="' . $v . '" not allowed.');
+                throw new PHP_Exception(
+                    '__set: "' . $k . '"="' . $v . '" not allowed.'
+                );
                 break;
         }
     }
@@ -150,7 +154,8 @@ class Mumsys_Php
      * public Mixed __call():
      * Re-route all function calls to the PHP-functions
      *
-     * Note: Don't use it! if you have a better/ different solution. Performance reasons!
+     * Note: Don't use it! if you have a better/ different solution. Performance
+     * reasons!
      */
     public static function __callStatic( $function, $arguments )
     {
@@ -160,7 +165,8 @@ class Mumsys_Php
 
     /**
      * Re-route php function calls to the PHP-functions.
-     * Note: Don't use it! if you have a better/ different solution. Performance reasons!
+     * Note: Don't use it! if you have a better/ different solution. Performance
+     * reasons!
      *
      * @param string $function Function to call
      * @param mixed $arguments Mixed arguments
@@ -205,8 +211,10 @@ class Mumsys_Php
     public static function floatval( $value )
     {
         if ( strstr($value, ',') ) {
-            $value = str_replace('.', '', $value);  // replace dots (thousand seps) with blancs
-            $value = str_replace(',', '.', $value); // replace ',' with '.'
+            // replace dots (thousand seps) with blancs
+            $value = str_replace('.', '', $value);
+            // replace ',' with '.'
+            $value = str_replace(',', '.', $value);
         }
 
         return floatval($value);
@@ -333,8 +341,8 @@ class Mumsys_Php
      *
      * @param string $key Key to get from php.ini
      *
-     * @return integer|null Returns the ini value or translated nummeric value if a
-     * nummeric value was detected
+     * @return integer|null Returns the ini value or translated nummeric value
+     * if a nummeric value was detected
      */
     public static function ini_get( $key )
     {
@@ -415,7 +423,9 @@ class Mumsys_Php
 
             default:
                 if ( !is_nummeric( $value ) ) {
-                    throw new Exception( 'Detection size failt for "' . $last . '"' );
+                    throw new Exception(
+                        'Detection size failt for "' . $last . '"'
+                    );
                 }
                 break;
         }
@@ -426,6 +436,7 @@ class Mumsys_Php
 
     /**
      * Quote string with slashes.
+     *
      * If magic_quotes_gpc() is true the string will return or the escaped string.
      *
      * @param string $string String to add slashes if needed
@@ -443,11 +454,14 @@ class Mumsys_Php
 
     /**
      * Un-quotes a quoted string.
-     * If magic_quotes_gpc() is true the string will return or the stripped string.
+     *
+     * If magic_quotes_gpc() is true the string will return or the stripped
+     * string.
      *
      * @param string $string String to strrip slashes from
      * @return string Returns a string with backslashes stripped off.
-     * \' becomes ' and so on. Double backslashes (\\) are made into a single backslash (\).
+     * \' becomes ' and so on. Double backslashes (\\) are made into a single
+     * backslash (\).
      */
     public static function stripslashes( $string )
     {
@@ -472,9 +486,11 @@ class Mumsys_Php
      * @param boolean $beforeNeedle If TRUE, strstr() returns the part of the
      * haystack before the first occurrence of the needle.
      *
-     * @return string|false Returns the portion of string, or FALSE if needle is not found.
+     * @return string|false Returns the portion of string, or FALSE if needle
+     * is not found.
      */
-    public static function in_string( $needle, $haystack, $insensitive = false, $beforeNeedle = false )
+    public static function in_string( $needle, $haystack, $insensitive = false,
+        $beforeNeedle = false )
     {
         if ( $beforeNeedle ) {
             if ( $insensitive ) {
@@ -507,10 +523,11 @@ class Mumsys_Php
      *
      * @see http://php.net/manual/en/function.htmlspecialchars.php
      * @param string $str The string being converted.
-     * @param mixed $style by default: ENT_QUOTES ; ENT_COMPAT (convert "); ENT_QUOTES convert
-     * both; ENT_NOQUOTES no quote conversation
+     * @param mixed $style by default: ENT_QUOTES ; ENT_COMPAT (convert ");
+     * ENT_QUOTES convert both; ENT_NOQUOTES no quote conversation
+     *
      * @return string
-     * }}} */
+     */
     public static function htmlspecialchars( $str = '', $style = ENT_QUOTES )
     {
         // use forward look up to only convert & not &#abc; and not &amp;
@@ -539,8 +556,8 @@ class Mumsys_Php
      * Re Convert HTML entities (htmlspecialchars reverse)
      *
      * @param string $str The string being converted.
-     * @param mixed $style by default: ENT_QUOTES ; ENT_COMPAT (convert "); ENT_QUOTES convert
-     * both; ENT_NOQUOTES no quote conversation
+     * @param mixed $style by default: ENT_QUOTES ; ENT_COMPAT (convert ");
+     * ENT_QUOTES convert both; ENT_NOQUOTES no quote conversation
      *
      * @return stringreturns the re-converted html entity
      **/
@@ -800,8 +817,10 @@ class Mumsys_Php
     public static function array_keys_search_recursive_check( $needle, $haystack )
     {
         foreach ( $haystack as $key => $value ) {
-            if ( $key === $needle || ( is_array($value) && ( $x = self::array_keys_search_recursive($needle, $value,
-                    true) ) ) ) {
+            if ( $key === $needle || ( is_array($value)
+                && ( $x = self::array_keys_search_recursive($needle,
+                    $value, true) ) )
+            ) {
                 return true;
             }
         }
@@ -809,11 +828,12 @@ class Mumsys_Php
     }
 
 
-    /** {{{
+    /**
      * Search for a given key in a multidimensional associative array.
      * If a match was found a list of matches will be returned by reference
      *
-     * @todo $stopOnFirstMatch do not work! break nested stuff; static $stopOnFirstMatch ?
+     * @todo $stopOnFirstMatch do not work! break nested stuff; static
+     * $stopOnFirstMatch ?
      *
      * Example:
      * <code>
@@ -838,10 +858,12 @@ class Mumsys_Php
      * @param array $haystack Array to be scanned
      * @param boolean $stopOnFirstMatch Flag
      *
-     * @return array Returns a list of key->value pairs by reference  array indexes to the specified key. Last value
+     * @return array Returns a list of key->value pairs by reference  array
+     * indexes to the specified key. Last value
      * contains the searched $needle; if the array is empty nothing were found
-     * }}} */
-    public static function array_keys_search_recursive( $needle, & $haystack, $stopOnFirstMatch = false )
+     */
+    public static function array_keys_search_recursive( $needle, & $haystack,
+        $stopOnFirstMatch = false )
     {
         $matches = array();
         foreach ( $haystack as $key => &$value ) {
@@ -859,7 +881,9 @@ class Mumsys_Php
             } else {
                 // go deeper
                 if ( is_array($value) ) {
-                    $array = self::array_keys_search_recursive($needle, $value, $stopOnFirstMatch);
+                    $array = self::array_keys_search_recursive(
+                        $needle, $value, $stopOnFirstMatch
+                    );
                     $matches = array_merge($matches, $array);
                 }
             }
