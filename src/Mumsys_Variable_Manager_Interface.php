@@ -1,21 +1,19 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Variable_Manager_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
+ * @package     Library
+ * @subpackage  Variable
  * @version     1.1.1
  * Created: 2006 based on Mumsys_Field, renew 2016
  */
-/* }}} */
 
 
 /**
@@ -30,8 +28,10 @@ interface Mumsys_Variable_Manager_Interface
     /**
      * Initialises the default manager and variable item objects.
      *
-     * @param array $config List of key/value configuration pairs containing item properties for the item construction
-     * @param array $values List of key/value pairs to set/bind to the item values e.g: the post parameters
+     * @param array $config List of key/value configuration pairs containing
+     * item properties for the item construction
+     * @param array $values List of key/value pairs to set/bind to the item
+     * values e.g: the post parameters
      */
     public function __construct( array $config, array $values );
 
@@ -128,7 +128,8 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @see Mumsys_Variable_Item_Default
      *
-     * @param array $properties List of key/value pairs to initialize the variable item object
+     * @param array $properties List of key/value pairs to initialize the
+     * variable item object
      *
      * @return Mumsys_Variable_Item_Interface
      */
@@ -160,7 +161,8 @@ interface Mumsys_Variable_Manager_Interface
      * Hint: The key is the message identifier to easyly find it where the
      * massage can vari depending on the values.
      *
-     * @param array $templates List of key/value pairs for the message templates.
+     * @param array $templates List of key/value pairs for the message
+     * templates.
      */
     public function setMessageTemplates( array $templates );
 
