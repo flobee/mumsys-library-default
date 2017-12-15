@@ -1,31 +1,27 @@
 <?php
 
-
-/* {{{ */
 /**
  * Mumsys_Session
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @copyright Copyright (c) 2005 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Session
+ * @package     Library
+ * @subpackage  Session
  * @version     1.0.0
  * Created: 2005-01-01
- * @filesource
  */
-/* }}} */
 
 
 /**
  * Class to deal with the php session
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Session
+ * @package     Library
+ * @subpackage  Session
  */
 class Mumsys_Session_Default
     extends Mumsys_Abstract
@@ -148,7 +144,7 @@ class Mumsys_Session_Default
     {
         $key = (string)$key;
 
-        if (array_key_exists($key, $this->_records[$this->_id][$this->_appKey])) {
+        if ( array_key_exists($key, $this->_records[$this->_id][$this->_appKey]) ) {
             $message = sprintf('Session key "%1$s" exists', $key);
             throw new Mumsys_Session_Exception($message);
         }
