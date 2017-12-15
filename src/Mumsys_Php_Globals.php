@@ -39,7 +39,7 @@ class Mumsys_Php_Globals
     /**
      * Version ID information.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '2.0.0';
 
     /**
      * Cache container for uploaded files
@@ -55,7 +55,8 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns an eviroment variable in this order: getenv() befor _ENV befor _SERVER.
+     * Returns an eviroment variable in this order: getenv() befor _ENV befor
+     * _SERVER.
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
@@ -69,7 +70,8 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns an eviroment variable in this order: getenv() befor _ENV befor _SERVER.
+     * Returns an eviroment variable in this order: getenv() befor _ENV befor
+     * _SERVER.
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
@@ -83,7 +85,8 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns an eviroment variable in this order: getenv() befor _ENV befor _SERVER.
+     * Returns an eviroment variable in this order: getenv() befor _ENV befor
+     * _SERVER.
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
@@ -159,7 +162,7 @@ class Mumsys_Php_Globals
      *
      * @return mixed Value or $default if $key is not set/null
      */
-    public static function getCookieVar( $key = null, $default = null )
+    public static function getCookieVar( $key = null, $default = array() )
     {
         if ( isset($_COOKIE) && $key === null ) {
             return $_COOKIE;
