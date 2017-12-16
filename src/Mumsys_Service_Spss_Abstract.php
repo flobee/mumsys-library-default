@@ -61,13 +61,43 @@ abstract class Mumsys_Service_Spss_Abstract
 
 
     /**
-     * Returns the parser interface.
+     * Returns the Reader or Writer interface.
      *
      * @return Reader|Writer interface based on construction
      */
     public function getInterface()
     {
         return $this->_spss;
+    }
+
+
+    /**
+     * Returns the status of the curent used reader interface.
+     *
+     * @return boolean True if spss instance is a "reader" otherwise false
+     */
+    public function isReader(): bool
+    {
+        if ( $this->_spss instanceof \SPSS\Sav\Reader) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Returns the status of the curent used writer interface.
+     *
+     * @return boolean True if spss instance is a "writer" otherwise false
+     */
+    public function isWriter(): bool
+    {
+        if ( $this->_spss instanceof \SPSS\Sav\Writer) {
+            return true;
+        }
+
+        return false;
     }
 
 }
