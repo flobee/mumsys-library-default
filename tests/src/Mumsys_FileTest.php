@@ -204,7 +204,6 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $text1 = $o->read();
     }
 
-
     /**
      * @covers Mumsys_File::truncate
      */
@@ -217,10 +216,9 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
 
         $o->close();
         $this->expectException( 'Mumsys_File_Exception' );
-        $mesg = 'Can not truncate file "/home/flobee/workspace/multirename/'
-            . 'externals/mumsys-library-default/tests/tmp/Mumsys_FileTest.'
-            . 'php.tmp". File not open';
-        $this->expectExceptionMessage( $mesg );
+        $mesg = '/(Can not truncate file ")(.*)(\/tests\/tmp\/Mumsys_FileTest\.'
+            . 'php\.tmp"\. File not open)/';
+        $this->expectExceptionMessageRegExp( $mesg );
         $o->truncate();
     }
 
