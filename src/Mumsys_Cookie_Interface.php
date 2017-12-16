@@ -153,7 +153,7 @@ interface Mumsys_Cookie_Interface
      * @return boolean Returns true on success
      */
     public function unsetCookie( string $key, string $path = '',
-        string $domain = '', bool $secure = false, bool $httponly = false );
+        string $domain = '', bool $secure = false, bool $httponly = false ): bool;
 
 
     /**
@@ -161,6 +161,5 @@ interface Mumsys_Cookie_Interface
      *
      * @return boolean Returns true on success
      */
-    public function clear();
-
+    public function clear(): bool;
 }

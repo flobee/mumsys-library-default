@@ -105,11 +105,16 @@ class Mumsys_Cookie_None
      * By default implementation the cookie value will be cleared to '' and after
      * the expiration time set to the past.
      *
-     * @param string $key Name of the cookie (a-z0-9)
+     * @param string $key Name of the cookie (a-z 0-9)
+     * @param string $path @see setCookie()
+     * @param string $domain @see setCookie()
+     * @param boolean $secure @see setCookie()
+     * @param boolean $httponly @see setCookie()
      *
      * @return boolean Returns true on success
      */
-    public function unsetCookie( string $key ): bool
+    public function unsetCookie( string $key, string $path = '',
+        string $domain = '', bool $secure = false, bool $httponly = false ): bool
     {
         return true;
     }
@@ -120,7 +125,7 @@ class Mumsys_Cookie_None
      *
      * @return boolean Returns true
      */
-    public function clear()
+    public function clear(): bool
     {
         return true;
     }

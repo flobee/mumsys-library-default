@@ -195,7 +195,7 @@ class Mumsys_Cookie_Default
     /**
      * Clears and unsets all cookie values
      */
-    public function clear()
+    public function clear(): bool
     {
         foreach ( Mumsys_Php_Globals::getCookieVar() as $key => & $value ) {
             $this->unsetCookie($key);
