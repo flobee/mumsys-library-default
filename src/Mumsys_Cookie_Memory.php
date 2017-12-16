@@ -152,8 +152,9 @@ class Mumsys_Cookie_Memory
     public function clear(): bool
     {
         unset($this->_cookie);
-
         $this->_cookie = array();
+
+        return true;
     }
 
 }
