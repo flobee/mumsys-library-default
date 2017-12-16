@@ -176,6 +176,9 @@ class Mumsys_Cookie_Mock
 
     /**
      * Clears and unsets all cookie values
+     *
+     * @return boolean True on success of false if the cookie file could not be
+     * truncated
      */
     public function clear(): bool
     {
@@ -185,7 +188,7 @@ class Mumsys_Cookie_Mock
 
         $this->_cookie = array();
 
-        file_put_contents($this->_cookieFile, json_encode($this->_cookie));
+        return file_put_contents($this->_cookieFile, json_encode($this->_cookie));
     }
 
 
