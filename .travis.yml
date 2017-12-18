@@ -12,6 +12,7 @@ php:
 #  - nightly
   
 before_script: 
+  - pwd
   - cd /home/travis/build/flobee/mumsys-library-default
   - composer install
   - cd tests
