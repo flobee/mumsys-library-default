@@ -12,7 +12,6 @@ php:
 #  - nightly
   
 before_script: 
-# - cd /home/travis/build/flobee/mumsys-library-default
   - composer install
   - cd tests
 #  - composer require --dev phpunit/phpunit ^5
