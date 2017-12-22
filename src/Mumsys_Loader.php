@@ -88,7 +88,7 @@ class Mumsys_Loader
     {
         $test = true;
         if (!class_exists($instance)) {
-            $path = dirname(__FILE__) . '/';
+            $path = __DIR__ . '/';
 
             if (substr($instance, 0, 6) == 'Mumsys' || substr( $instance,0,3 ) == 'Php') {
                 $classfile = $path . $instance . '.php';
@@ -103,6 +103,42 @@ class Mumsys_Loader
             if ($test !== false) {
                 self::$loadedClasses[$instance] = $instance;
             }
+        }
+
+        return $test;
+    }
+
+
+    /**
+     * Requires/ loads a class file.
+     *
+     * @param string $location Location to the class file
+     *
+     * @return boolean true on success or false if the class could not be loaded
+     */
+    protected static function _require($location)
+    {
+        $test = false;
+        if ($location && file_exists($location)) {
+            $test = require_once $location;
+        }
+
+        return $test;
+    }
+
+
+    /**
+     * Includes/ loads a class file.
+     *
+     * @param string $location Location to the class file
+     *
+     * @return boolean true on success or false if the class could not be loaded
+     */
+    protected static function _include($location)
+    {
+        $test = false;
+        if ($location && file_exists($location)) {
+            $test = include_once $location;
         }
 
         return $test;
