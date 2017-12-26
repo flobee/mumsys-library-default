@@ -17,6 +17,8 @@
 /**
  * Class for the file system and tools to handle files or directories
  *
+ * @deprecated since version 3.0.7 Use Mumsys_FileSystem_Default
+ *
  * @category    Mumsys
  * @package     Library
  * @subpackage  FileSystem
