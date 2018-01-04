@@ -132,7 +132,8 @@ class Mumsys_Php_Globals
 
     /**
      * Returns a get variable by given key.
-     * If $key is NULL it will return all get parameters
+     *
+     * If $key is NULL and get vars exists it will return all get parameters
      *
      * @param string $key ID to check for
      * @param mixed $default Default return value if key not exists
@@ -154,8 +155,9 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns a get variable by given key.
-     * If $key is NULL it will return all cookie parameters
+     * Returns a cookie variable by given key.
+     *
+     * If $key is NULL and a cookie exists it will return all cookie parameters.
      *
      * @param string $key ID to check for
      * @param mixed $default Default return value if key not exists
@@ -178,6 +180,8 @@ class Mumsys_Php_Globals
 
     /**
      * Returns a list of uploaded file variables by given key.
+     *
+     * @todo create list of upload item interfaces to return
      *
      * If $key is NULL it will return all file parameter BUT in a new/
      * normalised way.: E.g:
@@ -203,6 +207,7 @@ class Mumsys_Php_Globals
                     }
 
                     foreach ( $file['name'] as $idx => $name ) {
+                        // Mumsys_Upload_Item_Default() ?
                         $newFiles[$index][$idx] = array(
                             'name' => $name,
                             'type' => $file['type'][$idx],
