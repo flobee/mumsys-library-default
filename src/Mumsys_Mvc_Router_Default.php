@@ -1,21 +1,17 @@
 <?php
 
-
-/* {{{ */
 /**
  * Mumsys_Mvc_Router_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
- * @filesource
+ * @package     Library
+ * @subpackage  Mvc
  */
-/* }}} */
 
 
 /**
@@ -25,8 +21,8 @@
  * action/subcalls are the parameters the router will working on in the mvc
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc
  */
 class Mumsys_Mvc_Router_Default
     extends Mumsys_Mvc_Router_Abstract
