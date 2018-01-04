@@ -53,15 +53,19 @@ class Mumsys_Request_Default
      */
     public function __construct( array $options = array() )
     {
-        if (isset($_GET) && is_array($_GET)) {
-            $this->_inputGet = $_GET;
-            $this->_input += $_GET;
+        $_get = Mumsys_Php_Globals::getGetVar();
+        if ( isset($_get) && is_array($_get) ) {
+            $this->_inputGet = $_get;
+            $this->_input += $_get;
         }
 
-        if (isset($_POST) && is_array($_POST)) {
-            $this->_inputPost = $_POST;
-            $this->_input += $_POST;
+        $_post = Mumsys_Php_Globals::getPostVar();
+        if ( isset($_post) && is_array($_post) ) {
+            $this->_inputPost = $_post;
+            $this->_input += $_post;
         }
+
+        unset($_get, $_post);
     }
 
 
@@ -77,13 +81,63 @@ class Mumsys_Request_Default
 
 
     /**
+     * Sets an input post and standard input parameter.
+     *
+     * If value is NULL it will be unset if key exists
+     *
+     * @param string $key Parameter key to set
+     * @param mixed $value Parameter value to set
+     * @return self
+     */
+    public function setInputPost( $key, $value )
+    {
+        $key = (string) $key;
+
+        if ( (null === $value) && isset($this->_inputPost[$key]) ) {
+            unset($this->_inputPost[$key]);
+            unset($this->_input[$key]);
+        } elseif ( null !== $value ) {
+            $this->_inputPost[$key] = $value;
+            $this->_input[$key] = $value;
+        }
+
+        return $this;
+    }
+
+
+    /**
      * Returns _GET parameters.
      *
-     * @return type Copy of the _GET parameters
+     * @return array Copy of the _GET parameters on initialisation
      */
     public function getInputGet()
     {
         return $this->_inputGet;
+    }
+
+
+    /**
+     * Sets an input get and standard input parameter.
+     *
+     * If value is NULL it will be unset if key exists
+     *
+     * @param string $key Parameter key to set
+     * @param mixed $value Parameter value to set
+     * @return self
+     */
+    public function setInputGet( $key, $value )
+    {
+        $key = (string) $key;
+
+        if ( (null === $value) && isset($this->_inputGet[$key]) ) {
+            unset($this->_inputGet[$key]);
+            unset($this->_input[$key]);
+        } elseif ( null !== $value ) {
+            $this->_inputGet[$key] = $value;
+            $this->_input[$key] = $value;
+        }
+
+        return $this;
     }
 
 }
