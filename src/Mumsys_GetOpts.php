@@ -34,7 +34,6 @@
  * Mumsys_Multirename class.
  * The un-flag option will always disable/ remove a value.
  *
- * @todo dosent work when several actions exists. find count for each action!
  * @todo global config parameters like "help", "version" or "cron" ?
  * @todo Actions groups must be validated, extend whitelist configuration
  *
@@ -99,7 +98,7 @@ class Mumsys_GetOpts
     /**
      * Version ID information
      */
-    const VERSION = '3.5.0';
+    const VERSION = '3.6.0';
 
     /**
      * Cmd line.
@@ -131,7 +130,8 @@ class Mumsys_GetOpts
     private $_result;
 
     /**
-     * List (key value pairs) of all parameter without - and -- parameter prefixes
+     * List (key value pairs) of all parameter without - and -- parameter
+     * prefixes
      * @var array
      */
     private $_resultCache;
@@ -155,7 +155,8 @@ class Mumsys_GetOpts
     private $_hasActions;
 
     /**
-     * Internal flag to deside if data has changed so that the results must be created again.
+     * Internal flag to deside if data has changed so that the results must be
+     * created again.
      * @var boolean
      */
     private $_isModified;
@@ -168,7 +169,8 @@ class Mumsys_GetOpts
      * @todo Some parameters can be required in combination
      *
      * @param array $configOptions List of configuration parameters to look for
-     * @param array $input List of input arguments. Optional, uses default input handling then
+     * @param array $input List of input arguments. Optional, uses default input
+     * handling then
      *
      * @throws Mumsys_GetOpts_Exception On error initialsing the object
      */
@@ -186,8 +188,7 @@ class Mumsys_GetOpts
             $this->_argv = $input;
             $this->_argc = count($input);
         }
-//print_r($this->_argc);
-//print_r($this->_argv);
+
         $this->_options = $this->verifyOptions($configOptions);
         $this->setMappingOptions($this->_options);
 
@@ -196,6 +197,7 @@ class Mumsys_GetOpts
 
 
     /**
+     * Parse parameters to create the result.
      *
      * @throws Mumsys_GetOpts_Exception
      */
@@ -210,10 +212,14 @@ class Mumsys_GetOpts
 
         foreach ($this->_options as $action => $params)
         {
-            /** @todo dosent work when several actions exists. find count for each action! */
             while ($argPos < $this->_argc)
             {
                 $arg = $argv[$argPos];
+
+                // new action detect
+                if ( isset($this->_options[$arg]) && $arg !== $action) {
+                    break;
+                }
 
                 // skip values as they are expected in argPos + 1, if any
                 if (isset($arg[0]) && $arg[0] == '-') {
@@ -326,13 +332,12 @@ class Mumsys_GetOpts
 
 
     /**
-     * Checks and verfiy incomming options.
+     * Checks and verfiy incomming options for he parser.
      *
-     * @param array $configOptions
+     * @param array $config Configuration to check for actions and validity
      *
-     * @return array Options list to work with internally
-     *
-     * @throws Exception On errors with the input
+     * @return array action/options list to work with internally
+     * @throws Mumsys_GetOpts_Exception On errors with the input
      */
     public function verifyOptions( array $config )
     {
@@ -412,42 +417,50 @@ class Mumsys_GetOpts
     /**
      * Returns the validated string of incoming arguments.
      *
+     * @todo add script to cmd line
+     *
      * @return string Argument string
      */
     public function getCmd()
     {
-        $cmd = false;
-        foreach ($this->_result AS $action => $values) {
+        $parts = '';
+        $cmd = ''; /** @todo add script to cmd line */
+
+        foreach ($this->_result AS $action => $values)
+        {
             if ($action != '_default_') {
-                $cmd .= $action . ' ';
+                $parts .= $action . ' ';
             }
 
-            foreach ($values AS $k => $v) {
-                if ($k === 0) {
-                    continue;
-                }
+            foreach ($values AS $k => $v)
+            {
+//                if ($k === 0) {
+//                    continue;
+//                }
 
-                if ($v === false || $v === true) {
-                    foreach ($this->_options as $opk => $opv) {
+                if ($v === false || $v === true)
+                {
+                    foreach ($this->_options[$action] as $opk => $opv)
+                    {
                         if (is_string($opk)) {
                             $opv = $opk;
                         }
 
                         if (preg_match('/(' . $k . ')/', $opv)) {
                             if ($v === false) {
-                                $cmd .= '--no' . str_replace('--', '-', $this->_mapping[$k]) . ' ';
+                                $parts .= '--no' . str_replace('--', '-', $this->_mapping[$action][$k]) . ' ';
                             } else {
-                                $cmd .= $k . ' ';
+                                $parts .= $k . ' ';
                             }
                         }
                     }
                 } else {
-                    $cmd .= sprintf('%1$s %2$s ', $k, $v);
+                    $parts .= sprintf('%1$s %2$s ', $k, $v);
                 }
             }
         }
 
-        $this->_cmd = trim($cmd);
+        $this->_cmd = $cmd . '' . trim($parts);
 
         return $this->_cmd;
     }
@@ -463,16 +476,23 @@ class Mumsys_GetOpts
         $str = '';
         $tab = '';
 
-        foreach ($this->_options AS $action => $values) {
+        foreach ($this->_options AS $action => $values)
+        {
             if ($action != '_default_') {
-                $str .= $action . '' . PHP_EOL;
+                $str .=  $action . '' . PHP_EOL;
                 $tab = "\t";
             }
 
             foreach ($values AS $k => $v) {
-                if (is_string($k)) {
+                if (is_string($k))
+                {
                     $option = $k;
-                    $desc = $v;
+
+                    if ( is_bool($v) ) {
+                        $desc = '';
+                    } else {
+                        $desc = $v;
+                    }
                 } else {
                     $option = $v;
                     $desc = '';
@@ -491,9 +511,10 @@ class Mumsys_GetOpts
 
                 $str .= $tab . $option . $desc . '' . PHP_EOL;
             }
-            $str = trim($str);
-            return $str;
+            $str = trim($str) . PHP_EOL . PHP_EOL;
         }
+
+        return $str;
     }
 
     /**
@@ -502,7 +523,7 @@ class Mumsys_GetOpts
      *
      * @return string Long help informations
      */
-    public function getLongHelp()
+    public function getHelpLong()
     {
         $string = <<<TEXT
 Class to handle/ pipe shell arguments in php context.

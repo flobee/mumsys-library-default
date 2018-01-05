@@ -4,27 +4,17 @@ Mumsys_Abstract
 - [ ] All tests must contain test against the Mumsys_Abstract class if 
       implemented
 
+
 Mumsys_GetOpts
 ==============
 
-- [ ] Mumsys_GetOpts: Actions groups must be validated/checked. Extend the 
-      whitelist -> the configuration options
-- [ ] A value can contain a "-" or '--' or -9. Extend the parser or redesign?
-- [ ] Some parameters can be required in combination
-- [ ] Mumsys_GetOpts: add actions/operation mode(s) e.g.: 
-      call thisAction --opt1 --opt2 or
-      call secondAction --dryrun --no-history anotherAction --thatFlag
-
-Still in todo: 2016-XX-XX
-    Mumsys_GetOpts >> 3.4.0
-    - Adds action groups (or optional parameters handling as groups) like: 
-        eg: script.php --globalOption action1 --host ab action2 --host cd
-        eg: script.php doThis -p 123 doThat now
-        - Existing configurations will be used as is as global whitelist or 
-          needs to be extended to new action groups.
-        - Return values will return like befor when not using the addition.
-    - Improves phpdoc/ code
-    - Updates Tests
+- [99%] Mumsys_GetOpts: Actions groups must be validated/checked. Extend the 
+        whitelist -> the configuration options
+- [99%] Mumsys_GetOpts: add actions/operation mode(s) e.g.: 
+        call thisAction --opt1 --opt2 or
+        call secondAction --dryrun --no-history anotherAction --thatFlag
+- [00%] A value can contain a "-" or '--' or -9. Extend the parser or redesign?
+- [00%] Some parameters can be required in combination
 
 
 Mumsys_Multirename
