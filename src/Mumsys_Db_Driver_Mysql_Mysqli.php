@@ -13,7 +13,6 @@
  * @subpackage  Db
  * Created: 2013-12-13
  */
-/* }}} */
 
 
 /**
@@ -998,6 +997,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * [order] optional; Set the order for select or update statements<br/>
      * [limit] optional array containing the offset (the start value), limit
      * count or just the limit count e.g. array(limit count)
+     *
      * @return Mumsys_Db_Driver_Mysql_Result|false Returns false on error
      */
     public function delete(array $params = array())
@@ -1042,6 +1042,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @todo this code is CRAP and too complex! to be replaced soon!
      *
      * @param array $expression
+     *
      * @return string|boolean Returns the created expression or false on error
      * @throws Mumsys_Db_Exception Throws exception on errors if throw errors
      * was set

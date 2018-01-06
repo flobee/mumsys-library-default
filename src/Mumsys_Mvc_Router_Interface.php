@@ -11,6 +11,7 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Mvc
+ * @version     1.0.0
  */
 
 
@@ -30,7 +31,8 @@ interface Mumsys_Mvc_Router_Interface
      * @param array $options Optional initial options e.g.: 'programKey',
      * 'controllerKey', 'actionKey' mappings to initialize the object
      */
-    public function __construct( Mumsys_Request_Interface $request, array $options = array() );
+    public function __construct( Mumsys_Request_Interface $request,
+        array $options = array() );
 
 
     /**
@@ -133,5 +135,5 @@ interface Mumsys_Mvc_Router_Interface
      * @return self
      */
     public function setActionKey( $key = 'action' );
-
+    
 }

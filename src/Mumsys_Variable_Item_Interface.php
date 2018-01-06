@@ -11,7 +11,7 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Variable
- * @verion 1.0.0
+ * @verion      1.1.1
  * Created: 2006 based on Mumsys_Field, renew 2016
  */
 
@@ -46,6 +46,7 @@ interface Mumsys_Variable_Item_Interface
      * Note: From a list of key/value pairs: this is the key used as name.
      *
      * @param mixed $default Default (null) return value if name was not set
+     *
      * @return string|mixed|null Item name key/identifier
      */
     public function getName( $default = null );
@@ -95,6 +96,7 @@ interface Mumsys_Variable_Item_Interface
      * {@link Mumsys_Variable_Abstract::TYPES} for a complete list.
      *
      * @param string $value Type to be set
+     *
      * @return void
      */
     public function setType( $value );
@@ -194,6 +196,7 @@ interface Mumsys_Variable_Item_Interface
      *
      * @param string $altnKey Alternativ property key to get if label not exists
      * (default: "name" for getName().
+     * 
      * @return string Item/ variable label
      */
     public function getLabel( $altnKey = 'name' );
@@ -258,5 +261,4 @@ interface Mumsys_Variable_Item_Interface
      * @return array List of key/value pairs of error messages
      */
     public function getErrorMessages();
-
 }

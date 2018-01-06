@@ -4,6 +4,11 @@ vendor/
 
 # Local configs
 config/autoload/*.local.php
+
+*/config/*.php
+
+# credentials.php
+tests/config/config4tests.php
 */config/credentials.php
 tests/config/default.php
 
@@ -17,8 +22,7 @@ data/sessions/
 data/tmp/
 temp/
 
-# Legacy ZF1
-demos/
+# Legacy
 extras/documentation
 
 .gitmodules
@@ -34,6 +38,7 @@ logs/
 /docs/CodeCoverage/*
 /docs/gitstats/*
 /docs/API/*
+/docs/gitstat*
 /tests/testfiles/*
 /tests/tmp/*
 /tests/tmp/*

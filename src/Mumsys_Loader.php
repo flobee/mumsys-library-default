@@ -11,29 +11,32 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Loader
- * @version     3.1.1
  * 0.4 Created on 28.08.2010
  */
 
 
- /**
-  * Factory for mumsys library
-  * Base Class handle: loads the relevant class if needed, else save inclusion
-  * or code.
-  * eg.: $db = Mumsys_Loader::load("database");
-  *
-  * @todo autoload needs to be checked, do tests!!!
-  *
-  * @category Mumsys
-  * @package Mumsys_Library
-  * @subpackage Mumsys_Loader
-  */
+/**
+ * Factory/loader for mumsys library classes.
+ *
+ * Basic class handle: loads the relevant mumsys class if needed
+ * eg.: $db = Mumsys_Loader::load("Mumsys_Timer");
+ *
+ * Note: in your bootstrap the following should be added:
+ * <code>
+ * require_once  '/path/to/src/Mumsys_Loader.php';
+ * spl_autoload_register(array('Mumsys_Loader', 'autoload'));
+ * </code>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Loader
+ */
 class Mumsys_Loader
 {
     /**
      * Version ID information
      */
-    const VERSION = '3.1.1';
+    const VERSION = '3.1.2';
 
     /**
      * Container of objects which are loaded.
@@ -53,18 +56,18 @@ class Mumsys_Loader
      *
      * @throws Mumsys_Exception Throws exception if loading of class file fails.
      */
-    public static function load($instance, array $args = array())
+    public static function load( $instance, array $args = array() )
     {
-        try {
-            // autoload will be called for "new $instance($args)"
-            if (!class_exists($instance) && !isset(self::$loadedClasses[$instance])) {
-                throw new Mumsys_Loader_Exception(
-                    sprintf('Error! could not load: "%1$s".', $instance)
-                );
+        try
+        {
+            if ( !class_exists($instance) && !isset(self::$loadedClasses[$instance]) ) {
+                $message = sprintf('Could not load: "%1$s".', $instance);
+                throw new Mumsys_Loader_Exception($message);
             } else {
                 $x = new $instance($args);
             }
-        } catch (Exception $e) {
+        }
+        catch ( Exception $e ) {
             throw $e;
         }
 
@@ -80,23 +83,20 @@ class Mumsys_Loader
      * @return boolean Returns true on success or false if class could not be
      * loaded
      */
-    public static function autoload($instance)
+    public static function autoload( $instance )
     {
-        $test = true;
-        if (!class_exists($instance)) {
-            $path = dirname(__FILE__) . '/';
+        $test = false;
+        if ( !class_exists($instance) )
+        {
+            // default lib path
+            $path = __DIR__ . '/';
+            $classfile = $path . $instance . '.php';
 
-            if (substr($instance, 0, 6) == 'Mumsys') {
-                $classfile = $path . $instance . '.php';
-            } else {
-                $classfile = $path . 'class.' . $instance . '.php';
-            }
-
-            if (($test = file_exists($classfile))) {
+            if ( ($test = file_exists($classfile) ) ) {
                 $test = require_once $classfile;
             }
 
-            if ($test !== false) {
+            if ( $test !== false ) {
                 self::$loadedClasses[$instance] = $instance;
             }
         }
@@ -106,7 +106,7 @@ class Mumsys_Loader
 
 
     /**
-     * Get instanceiated classes.
+     * Get loaded classes.
      *
      * @return array Returns a list of loaded classes
      */

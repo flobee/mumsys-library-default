@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="pcsg-generated-ruleset">
+<description>Created with the PHP Coding Standard Generator. http://edorian.github.com/php-coding-standard-generator/
+</description>
+<rule ref="Generic.Classes.DuplicateClassName"/>
+<rule ref="Generic.CodeAnalysis.EmptyStatement"/>
+<rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>
+<rule ref="Generic.CodeAnalysis.ForLoopWithTestFunctionCall"/>
+<rule ref="Generic.CodeAnalysis.JumbledIncrementer"/>
+<rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
+<rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
+<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+<rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
+<rule ref="Generic.Commenting.Todo"/>
+<rule ref="Generic.Commenting.Fixme"/>
+<rule ref="Generic.ControlStructures.InlineControlStructure">
+    <properties>
+        <property name="error" value="false"/>
+    </properties>
+</rule>
+<rule ref="Generic.Files.ByteOrderMark"/>
+<rule ref="Generic.Files.LineEndings">
+    <properties>
+        <property name="eolChar" value="\nnnnnnnnnnn"/>
+    </properties>
+</rule>
+<rule ref="Generic.Files.LineLength">
+    <properties>
+        <property name="lineLimit" value="79"/>
+        <property name="absoluteLineLimit" value="119"/>
+    </properties>
+</rule>
+<rule ref="Generic.Formatting.DisallowMultipleStatements"/>
+<rule ref="Generic.Formatting.MultipleStatementAlignment">
+    <properties>
+        <property name="error" value="false"/>
+        <property name="maxPadding" value="999"/>
+        <property name="ignoreMultiLine" value="true"/>
+    </properties>
+</rule>
+<rule ref="Generic.Functions.CallTimePassByReference"/>
+<rule ref="Generic.Functions.FunctionCallArgumentSpacing"/>
+<rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman"/>
+<rule ref="Generic.Metrics.CyclomaticComplexity">
+    <properties>
+        <property name="complexity" value="11"/>
+        <property name="absoluteComplexity" value="19"/>
+    </properties>
+</rule>
+<rule ref="Generic.Metrics.NestingLevel">
+    <properties>
+        <property name="nestingLevel" value="6"/>
+        <property name="absoluteNestingLevel" value="11"/>
+    </properties>
+</rule>
+<rule ref="Generic.NamingConventions.ConstructorName">
+    <properties>
+        <property name="error" value="false"/>
+    </properties>
+</rule>
+<rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
+<rule ref="Generic.NamingConventions.CamelCapsFunctionName"/>
+<rule ref="Generic.PHP.DeprecatedFunctions"/>
+<rule ref="Generic.PHP.DisallowShortOpenTag"/>
+<rule ref="Generic.PHP.ForbiddenFunctions">
+    <properties>
+        <property name="error" value="false"/>
+    </properties>
+</rule>
+<rule ref="Generic.PHP.LowerCaseConstant"/>
+<rule ref="Generic.PHP.NoSilencedErrors"/>
+<rule ref="Generic.Strings.UnnecessaryStringConcat">
+    <properties>
+        <property name="error" value="false"/>
+    </properties>
+</rule>
+<rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
+<rule ref="Generic.WhiteSpace.ScopeIndent">
+    <properties>
+        <property name="indent" value="3"/>
+        <property name="exact" value="false"/>
+    </properties>
+</rule>
+</ruleset>
+

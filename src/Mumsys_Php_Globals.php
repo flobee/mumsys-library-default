@@ -272,7 +272,7 @@ class Mumsys_Php_Globals
      *      befor _SERVER
      *      befor _SESSION
      *      before _COOKIE
-     *      befor _REQUEST:
+     *      befor _REQUEST: (binding through gpc order in php ini)
      *
      * Dont use it until you really need to look for a global variable!
      * Returns a global variable and looks in all super globals.

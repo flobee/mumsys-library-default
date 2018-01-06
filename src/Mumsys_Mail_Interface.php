@@ -68,7 +68,7 @@ interface Mumsys_Mail_Interface
 
 
     /**
-     * Call a mail driver method which is not implemented.
+     * Call a mail driver method which is not implemented in this interface.
      *
      * @note Dont use it! update the interface would be the best choice!
      *
@@ -165,7 +165,6 @@ interface Mumsys_Mail_Interface
 
     /**
      * Adds an attachment from a path on the filesystem.
-     *
      *
      * @param string $location Location to the attachment on the filesystem.
      * @param string $encoding File encoding (e.g base64)

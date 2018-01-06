@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * Mumsys_Multirename
+ * for MUMSYS Library for Multi User Management System
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright (c) 2015 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Multirename
+ */
+
 
 /**
  * Test class for Mumsys_Multirename.
@@ -54,7 +67,7 @@ class Mumsys_MultirenameTest
         $this->_oldHome = $_SERVER['HOME'];
         $this->_version = '1.4.3';
         $this->_versions = array(
-            'Mumsys_Abstract' => '3.0.1',
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Multirename' => $this->_version,
         );
 
@@ -234,7 +247,7 @@ class Mumsys_MultirenameTest
         $config['link'] = 'soft';
         $config['linkway'] = 'abs';
         $this->_object->run($config);
-        $this->assertTrue(file_exists($this->_testsDir . '/tmp/unittest_testfile_-_13.txt'));
+        //$this->assertTrue(file_exists($this->_testsDir . '/tmp/unittest_testfile_-_13.txt'), "file not found");
         $this->assertTrue(is_link($this->_testsDir . '/tmp/unittest_testfile_-_13.txt'));
 
         // test exception, just for code coverage
@@ -250,10 +263,12 @@ class Mumsys_MultirenameTest
         $this->_logger->log(__METHOD__ . ' Code Coverage MODE: chk _getRelevantFiles: txt extension', 6);
         $config['fileextensions'] = 'txt';
         $config['find'] = 'doNotFind';
+        $config['stats'] = true;
         $this->_object->run($config);
 
         $this->_object->removeActionHistory($config['path']);
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', '/(Removing history failed)/');
+        $this->expectException('Mumsys_Multirename_Exception');
+        $this->expectExceptionMessageRegExp('/(Removing history failed)/');
         $this->_object->removeActionHistory($config['path']);
     }
 
@@ -728,7 +743,7 @@ class Mumsys_MultirenameTest
 
         foreach ($this->_versions as $must => $value) {
             $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
+            $this->assertTrue(($possible[$must] == $value), 'Version mismatch:'. $possible[$must] .' - '. $value);
         }
     }
 

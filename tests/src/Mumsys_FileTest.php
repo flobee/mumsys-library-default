@@ -1,16 +1,17 @@
 <?php
 
+
 /**
  * Test class for File.
  */
-class Mumsys_FileTest extends Mumsys_Unittest_Testcase
+class Mumsys_FileTest
+    extends Mumsys_Unittest_Testcase
 {
-
     /**
-     *
      * @var Mumsys_File
      */
     protected $_object;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -19,8 +20,12 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
     protected function setUp()
     {
         $this->_version = '3.2.0';
+        $this->_versions = array(
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
+            'Mumsys_File' => $this->_version,
+        );
 
-        $this->_testsDir = realpath(dirname(__FILE__) .'/../');
+        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
 
         $this->_fileOk = $this->_testsDir . '/tmp/' . basename(__FILE__) . '.tmp';
         $this->_fileNotOk = $this->_testsDir . '/tmp/notExists/file.tmp';
@@ -74,6 +79,7 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
             '/(Can not open file "'. str_replace('/', '\/', $this->_testsDir) . '\/tmp\/notExists\/file.tmp" '
             . 'with mode "w\+". Directory is writeable: "No", readable: "No")/');
+
         $this->_object->open();
     }
 
@@ -246,6 +252,7 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $this->assertEquals("hello world\nhello", $string);
     }
 
+
     public function testSetModeException()
     {
         $this->_object->write("hello world\nhello flobee");
@@ -314,7 +321,6 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $this->assertTrue($actual); // the owner always can read!
     }
 
-
     // test abstracts
 
 
@@ -326,6 +332,7 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $this->assertEquals('Mumsys_File ' . $this->_version, $this->_object->getVersion());
     }
 
+
     /**
      * @covers Mumsys_File::getVersionID
      */
@@ -333,6 +340,7 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
     {
         $this->assertEquals($this->_version, $this->_object->getVersionID());
     }
+
 
     /**
      * @covers Mumsys_File::getVersions
@@ -346,7 +354,7 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
 
         $possible = $this->_object->getVersions();
 
-        foreach ($expected as $must => $value) {
+        foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }

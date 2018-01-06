@@ -24,7 +24,7 @@
  * @subpackage  Service
  */
 abstract class Mumsys_Service_Abstract
-//extends Mumsys_Abstract
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information.

@@ -20,6 +20,9 @@
  * In detail: Incomming parameters like program/module, controler/subprogram
  * action/subcalls are the parameters the router will working on in the mvc
  *
+ * The default is to use standard parameters to map and call the requested
+ * program parts. E.g: program=User&controller=Index=action=show
+ *
  * @category    Mumsys
  * @package     Library
  * @subpackage  Mvc
@@ -50,15 +53,15 @@ class Mumsys_Mvc_Router_Default
     {
         $this->_request = $request;
 
-        if (isset($options['programKey'])) {
+        if ( isset($options['programKey']) ) {
             $this->setProgramKey($options['programKey']);
         }
 
-        if (isset($options['controllerKey'])) {
+        if ( isset($options['controllerKey']) ) {
             $this->setControllerKey($options['controllerKey']);
         }
 
-        if (isset($options['actionKey'])) {
+        if ( isset($options['actionKey']) ) {
             $this->setActionKey($options['actionKey']);
         }
     }

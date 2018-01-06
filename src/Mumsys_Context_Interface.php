@@ -143,7 +143,7 @@ interface Mumsys_Context_Interface
      *
      * @return Mumsys_Request_Interface Returns the request object
      */
-    public function getRequest();
+    public function getRequest(): Mumsys_Request_Interface;
 
 
     /**
@@ -154,6 +154,14 @@ interface Mumsys_Context_Interface
      * @throws Mumsys_Exception Throws exception if object was already set
      */
     public function registerRequest( Mumsys_Request_Interface $request );
+
+
+    /**
+     * Replace the request object.
+     *
+     * @param Mumsys_Request_Interface $request Request object
+     */
+    public function replaceRequest( Mumsys_Request_Interface $request );
 
 
     /**

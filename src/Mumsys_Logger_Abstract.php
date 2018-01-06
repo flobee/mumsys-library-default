@@ -12,7 +12,6 @@
  * @package     Library
  * @subpackage  Logger
  */
-/* }}} */
 
 
 /**
@@ -29,9 +28,9 @@ abstract class Mumsys_Logger_Abstract
     implements Mumsys_Logger_Interface
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
-    const VERSION = '3.3.0';
+    const VERSION = '3.3.1';
 
     /**
      * System is unusable emerg()
@@ -112,7 +111,6 @@ abstract class Mumsys_Logger_Abstract
      * @var string
      */
     protected $_logFormat = '%1$s [%2$s] [%3$s](%4$s) %5$s';
-
 
     /**
      * Flag to enable debugging or not.
@@ -211,6 +209,7 @@ abstract class Mumsys_Logger_Abstract
      *
      * Implements calls: emerge(), emergency(), alert(), crit(), critical(),
      * err() error(), warn(), warning(), notice(), info(), debug().
+
      * Dont use it if you can (performace). Just compatibilty to psr.
      *
      * @param string $key Methode string to wrap to
@@ -219,7 +218,7 @@ abstract class Mumsys_Logger_Abstract
      * @return string Log message
      * @throws Mumsys_Logger_Exception if key not implemented
      */
-    public function __call($key, $values)
+    public function __call( $key, $values )
     {
         $level = null;
 
@@ -262,11 +261,11 @@ abstract class Mumsys_Logger_Abstract
                 break;
 
             default:
-                $message = sprintf('Invalid method call: "%1$s"',$key);
+                $message = sprintf('Invalid method call: "%1$s"', $key);
                 throw new Mumsys_Logger_Exception($message);
         }
 
-        if ( count( $values ) == 1 ) {
+        if ( count($values) == 1 ) {
             $_value = $values[0];
         } else {
             $_value = $values;
@@ -311,6 +310,7 @@ abstract class Mumsys_Logger_Abstract
 
         $this->_logLevel = (int) $level;
     }
+
 
     /**
      * Checks if a loglevel is registered or not

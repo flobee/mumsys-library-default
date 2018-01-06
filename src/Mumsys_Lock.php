@@ -98,9 +98,17 @@ class Mumsys_Lock
      * Returns the status if a lock exists or not.
      *
      * @return boolean Returns true if lock exists or false for no lock.
+     *
+     * @throws Mumsys_Exception If target directory not exists. maybe mounted
+     * directory which must be reported
      */
     public function isLocked()
     {
+        if (!is_dir(dirname($this->_file))) {
+            $message = sprintf('Lock directory "%1$s" not exists', $this->_file);
+            throw new Mumsys_Exception($message);
+        }
+
         if ( file_exists($this->_file) ) {
             return true;
         }

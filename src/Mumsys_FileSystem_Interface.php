@@ -7,7 +7,7 @@
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright (c) 2006 by Florian Blasel
  * @author Florian Blasel <flobee.code@gmail.com>
- * 
+ *
  * @category    Mumsys
  * @package     Library
  * @subpackage  FileSystem

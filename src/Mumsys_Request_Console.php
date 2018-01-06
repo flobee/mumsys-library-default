@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Mumsys_Request_Abstract
+ * Mumsys_Request_Console
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -28,37 +28,24 @@ class Mumsys_Request_Console
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
-
-    /**
-     * Incomming request parameters
-     * @var array
-     */
-    protected $_input = array();
+    const VERSION = '1.1.1';
 
 
     /**
-     * Initialize the request object using.
+     * Initialise the request object using servers argv array.
      *
      * @param array $options Optional initial options e.g.:
      * 'programKey','controllerKey', 'actionKey',
      */
     public function __construct( array $options = array() )
     {
-        if (isset($_SERVER['argv']) && is_array($_SERVER['argv']))
-        {
-            foreach ($_SERVER['argv'] as $keyValue)
-            {
-                $res = explode('=', $keyValue);
-                if (isset($res[1])) {
-                    $list[$res[0]] = $res[1];
-                } else {
-                    $list[] = $res[0];
-                }
-            }
+        parent::__construct($options);
 
-            $this->_input = $list;
+        if (isset($_SERVER['argv']) && is_array($_SERVER['argv'])) {
+            $this->_input += $_SERVER['argv'];
         }
+
+        $_SERVER['argv'] = array();
     }
 
 }

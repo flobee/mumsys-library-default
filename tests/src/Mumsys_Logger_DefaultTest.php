@@ -91,6 +91,15 @@ class Mumsys_Logger_DefaultTest
     }
 
 
+    /**
+     * VERSION check
+     */
+    public function testVersion()
+    {
+        $this->assertEquals($this->_version, Mumsys_Logger_Default::VERSION);
+    }
+
+
 
 //    /**
 //     * Just for code coverage

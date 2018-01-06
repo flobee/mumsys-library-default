@@ -22,7 +22,8 @@
  * @package     Library
  * @subpackage  Variable
  */
-abstract class Mumsys_Variable_Abstract extends Mumsys_Abstract
+abstract class Mumsys_Variable_Abstract
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
@@ -37,15 +38,27 @@ abstract class Mumsys_Variable_Abstract extends Mumsys_Abstract
      * @var array List of types
      */
     protected static $_types = array(
-        'string', 'char', 'varchar', 'text', 'tinytext', 'longtext',
-        'int', 'integer', 'smallint',
-        'float', 'double',
+        'string',
+        'char',
+        'varchar',
+        'text',
+        'tinytext',
+        'longtext',
+        'int',
+        'integer',
+        'smallint',
+        'float',
+        'double',
         'numeric',
-        'boolean', 'array', 'object',
+        'boolean',
+        'array',
+        'object',
         'date',
-        'datetime', 'timestamp',
+        'datetime',
+        'timestamp',
         'email',
-        'ipv4', 'ipv6',
+        'ipv4',
+        'ipv6',
         'unittest'
     );
 
@@ -62,4 +75,3 @@ abstract class Mumsys_Variable_Abstract extends Mumsys_Abstract
     }
 
 }
-

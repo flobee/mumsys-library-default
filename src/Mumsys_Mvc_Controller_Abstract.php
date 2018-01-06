@@ -31,8 +31,8 @@ abstract class Mumsys_Mvc_Controller_Abstract
     const VERSION = '1.0.0';
 
     /**
-     * Mumsys_Context
-     * @var Mumsys_Context
+     * Mumsys context
+     * @var Mumsys_Context_Interface
      */
     protected $_context;
 
@@ -66,7 +66,7 @@ abstract class Mumsys_Mvc_Controller_Abstract
      *
      * @param Mumsys_Context $context
      */
-    public function __construct( Mumsys_Context $context )
+    public function __construct( Mumsys_Context_Interface $context )
     {
         $this->_context = $context;
         /** @todo Timing problem? when are all configs loaded? */

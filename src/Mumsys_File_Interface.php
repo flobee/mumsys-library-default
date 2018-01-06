@@ -26,6 +26,8 @@
  */
 interface Mumsys_File_Interface
 {
+
+
     /**
      * Initialise the File object.
      *

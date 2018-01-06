@@ -1,7 +1,7 @@
 <?php
 
 /**
- * {{{ Mumsys_Html_Table
+ * Mumsys_Html_Table
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -143,10 +143,6 @@ class Mumsys_Html_Table
      */
     public function __construct( array $attributes = array() )
     {
-        if (!defined('_NL')) {
-            define('_NL', "\n");
-        }
-
         $this->_tblProps = $attributes;
         $this->_headlines['values'] = false;
         $this->_headlines['attr'] = array();

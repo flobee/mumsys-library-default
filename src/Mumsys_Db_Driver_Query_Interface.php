@@ -15,7 +15,6 @@
  * @version     1.0.0
  * Created on 2007-06-23 as querytool.php
  */
-/* }}} */
 
 
 /**

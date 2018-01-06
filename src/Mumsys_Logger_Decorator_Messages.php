@@ -125,7 +125,6 @@ class Mumsys_Logger_Decorator_Messages
      *    msgEcho=true)
      *  - [msgColors] optional, Enable console colors for the "messages" only
      *    (not the hole string)
-     *
      *  - [debug] boolean Default: false
      *  - [lf] string Optional Linefeed Default: \n
      */

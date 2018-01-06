@@ -13,10 +13,9 @@
 
 - Mumsys_Logger_Default
     Rewrite of Mumsys_Logger.php / class.logger.php. 
-    This is the new version containing all the old 
-    features in a new costume. For maximum performance and minimum features 
-    please check Mumsys_Logger_File or with some decorators you may interested
-    in to output log messages.
+    This is the new version containing all the old features in a new costume. 
+    For maximum performance and minimum features please check Mumsys_Logger_File 
+    or with some decorators you may interested in to output/change log messages.
 
 - Mumsys_Logger_File
     Simple logger to store log messages to a log file for maximum performance.

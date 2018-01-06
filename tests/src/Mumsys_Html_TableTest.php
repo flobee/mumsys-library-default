@@ -29,7 +29,7 @@ class Mumsys_Html_TableTest
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Html_Table' => $this->_version,
-            'Mumsys_Xml_Abstract' => '3.2.1',
+            'Mumsys_Xml_Abstract' => '3.0.0',
         );
         $this->_colors = array('#ffffff', '#333333', '#666666', '#999999');
         $this->_object = new Mumsys_Html_Table(array('width' => '600'));
@@ -477,15 +477,18 @@ class Mumsys_Html_TableTest
      */
     public function testVersionsInAbstractClass()
     {
-        $this->assertEquals(get_class($this->_object) . ' ' . $this->_version, $this->_object->getVersion());
+        $message = 'A new version exists. You should have a look at '
+            . 'the code coverage to verify all code was tested and not only '
+            . 'all existing tests where checked!';
+        $this->assertEquals($this->_version, Mumsys_Html_Table::VERSION, $message);
 
-        $this->assertEquals($this->_version, $this->_object->getVersionID());
 
         $possible = $this->_object->getVersions();
 
-        foreach ($this->_versions as $must => $value) {
-            $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
+        foreach ( $this->_versions as $must => $value ) {
+            $message = 'Invalid: ' . $must . '::' . $value;
+            $this->assertTrue(isset($possible[$must]), $message);
+            $this->assertTrue(($possible[$must] == $value), $message);
         }
     }
 

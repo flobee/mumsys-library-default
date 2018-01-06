@@ -25,9 +25,9 @@ abstract class Mumsys_Xml_Abstract
     extends Mumsys_Abstract
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
-    const VERSION = '3.2.1';
+    const VERSION = '3.0.0';
 
 
     /**

@@ -1,11 +1,10 @@
 <?php
 
-// $Id$
-
 /**
  * Test class for Mumsys_Counter.
  */
-class Mumsys_CounterTest extends Mumsys_Unittest_Testcase
+class Mumsys_CounterTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_CounterTest
@@ -20,6 +19,10 @@ class Mumsys_CounterTest extends Mumsys_Unittest_Testcase
     protected function setUp()
     {
         $this->_version = '3.1.0';
+        $this->_versions = array(
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
+            'Mumsys_Counter' => $this->_version,
+        );
         $this->_object = new Mumsys_Counter();
     }
 
@@ -82,11 +85,11 @@ class Mumsys_CounterTest extends Mumsys_Unittest_Testcase
         $this->assertEquals(0, $this->_object->result());
     }
 
+
     public function testtoString()
     {
         $this->assertEquals(0, $this->_object->__toString());
     }
-
 
     // test abstracts
 
@@ -99,6 +102,7 @@ class Mumsys_CounterTest extends Mumsys_Unittest_Testcase
         $this->assertEquals('Mumsys_Counter ' . $this->_version, $this->_object->getVersion());
     }
 
+
     /**
      * @covers Mumsys_Counter::getVersionID
      */
@@ -107,21 +111,18 @@ class Mumsys_CounterTest extends Mumsys_Unittest_Testcase
         $this->assertEquals($this->_version, $this->_object->getVersionID());
     }
 
+
     /**
      * @covers Mumsys_Counter::getVersions
      */
     public function testgetVersions()
     {
-        $expected = array(
-            'Mumsys_Abstract' => '3.0.1',
-            'Mumsys_Counter' => '3.1.0',
-        );
-
         $possible = $this->_object->getVersions();
 
-        foreach ($expected as $must => $value) {
+        foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }
     }
+
 }

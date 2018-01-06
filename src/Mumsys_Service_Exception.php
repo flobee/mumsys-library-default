@@ -28,4 +28,3 @@ class Mumsys_Service_Exception
 {
 
 }
-

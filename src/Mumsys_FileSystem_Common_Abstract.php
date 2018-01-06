@@ -16,7 +16,7 @@
 
 /**
  * Common class for file system usage.
- * 
+ *
  * Here you will find basic methodes used in several filesystem-classes
  *
  * @category    Mumsys
@@ -37,7 +37,7 @@ abstract class Mumsys_FileSystem_Common_Abstract
      *
      * @param string $file Filename or file location
      *
-     * @return string string of the extension or '' (empty string)
+     * @return string String of the extension or '' (empty string)
      */
     public static function extGet( $file )
     {
@@ -67,5 +67,16 @@ abstract class Mumsys_FileSystem_Common_Abstract
             return substr(basename($file), 0, $pos);
         }
     }
+
+
+    /**
+     * Get extension of current file
+     *
+     * @return string Returns a string of the extension or '' (empty string)
+     */
+//    public function extensionGet()
+//    {   // $this->extension =
+//        return $this->extGet($this->file);
+//    }
 
 }

@@ -17,7 +17,7 @@
 
 
 /**
- * Generic exception class
+ * Generic exception class.
  *
  * @category    Mumsys
  * @package     Library

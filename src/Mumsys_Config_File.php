@@ -1,50 +1,42 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Config_File
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Config
- * Created: 2009-11-29
+ * @package     Library
+ * @subpackage  Config
  */
-/*}}}*/
 
 
 /**
- * Mumsys config file
+ * Mumsys config file driver
+ *
  * Handling configurations based on configuration files.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Config
+ * @package     Library
+ * @subpackage  Config
  */
 class Mumsys_Config_File
     extends Mumsys_Abstract
     implements Mumsys_Config_Interface
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
-    const VERSION = '2.0.0';
+    const VERSION = '3.0.0';
 
     /**
      * Configuration vars in an array container.
      * @var array
      */
-    private $_config = array();
-
-    /**
-     * Context item which must be available for all mumsys objects
-     * @var Mumsys_Context
-     */
-    protected $_context = array();
+    private $_configs = array();
 
     /**
      * List of file locations containing config parameters.
@@ -62,14 +54,11 @@ class Mumsys_Config_File
     /**
      * Initialize the config object.
      *
-     * @param Mumsys_Context $context Context object
      * @param array $config Config parameters to be set
      * @param array $paths List of locations for config files
      */
-    public function __construct( Mumsys_Context $context, array $config =
-        array(), array $paths = array() )
+    public function __construct( array $config = array(), array $paths = array() )
     {
-        $this->_context = $context;
         $this->_configs = $config;
         $this->_paths = $paths;
     }
@@ -77,33 +66,34 @@ class Mumsys_Config_File
 
     /**
      * Get config parameter/s by given path.
+     *
      * The path can be a string like: frontend/plugins/jquery-ui or an array
-     * defining the path: array('frontend','plugins', 'jquery-ui')
+     * defining the path: array('frontend','plugins', 'jquery-ui') (recommend way)
      *
      * @param string|array $key Path to the config to get config value/s from
      * e.g. frontend/pageTitle or array('frontend', 'pageTitle)
-     * @param mixed|null $default Expectd value or the default value to return
+     * @param mixed|null $default Expected value or the default value to return
      * if key does not exists
      *
      * @return array Value/s of the requested key or the default will return.
      */
     public function get( $key, $default = null )
     {
-        if (is_array($key)) {
+        if ( is_array($key) ) {
             $parts = $key; // old getsubValues() feature
         } else {
             $parts = explode('/', trim($key, '/'));
         }
 
-        if (( $value = $this->_get($this->_configs, $parts) ) !== null) {
+        if ( ( $value = $this->_get($this->_configs, $parts) ) !== null ) {
             return $value;
         }
 
-        foreach ($this->_paths as $path) {
+        foreach ( $this->_paths as $path ) {
             $this->_configs = $this->_load($this->_configs, $path, $parts);
         }
 
-        if (( $value = $this->_get($this->_configs, $parts) ) !== null) {
+        if ( ( $value = $this->_get($this->_configs, $parts) ) !== null ) {
             return $value;
         }
 
@@ -114,25 +104,12 @@ class Mumsys_Config_File
     /**
      * Get all config parameters
      *
-     * @return array
+     * @return array List of all config parameters
      */
     public function getAll()
     {
         return $this->_configs;
     }
-
-    /**
-     * Adds/ registers config parameters to the current state if possible.
-     *
-     * @param array $config Configuration parameters to register
-     * @throws Mumsys_Config_Exception On errors or if a config already exists
-     */
-//    public function add(array $config = array())
-//    {
-//        foreach ($config as $key => & $value) {
-//            $this->register($key, $value);
-//        }
-//    }
 
 
     /**
@@ -145,8 +122,7 @@ class Mumsys_Config_File
      */
     public function register( $key, $value = null )
     {
-
-        if ( ($test = $this->get($key)) !== null) {
+        if ( ($test = $this->get($key)) !== null ) {
             $message = sprintf('Config key "%1$s" already exists', $key);
             throw new Mumsys_Config_Exception($message);
         }
@@ -159,7 +135,7 @@ class Mumsys_Config_File
      * Replace/ sets a config parameter.
      *
      * @param string $key Path to the value e.g: frontend/pageTitle
-	 * @param mixed $value Value to be set
+     * @param mixed $value Value to be set
      */
     public function replace( $key, $value = null )
     {
@@ -170,20 +146,22 @@ class Mumsys_Config_File
 
     /**
      * Adds a path to the config.
+     *
      * On runtime you may set additional paths to the config object. Note that
-     * the configs will be avalivable only sinse this the time you add the path.
+     * the configs will be avalivable only since this time you add the path.
+     *
      * @param string $path Additionl path where config files exists.
      *
      * @throws Mumsys_Config_Exception If path not exists
      */
     public function addPath( $path )
     {
-        if (!is_dir($path . '/')) {
+        if ( !is_dir($path . '/') ) {
             $message = sprintf('Path not found: "%1$s"', $path);
             throw new Mumsys_Config_Exception($message);
         }
 
-        $this->_paths[] = (string)$path;
+        $this->_paths[] = (string) $path;
     }
 
 
@@ -193,12 +171,12 @@ class Mumsys_Config_File
      * @param array $config Config array
      * @param array $parts List of sub paths to look for
      *
-     * @return mixed Config value/s or null config does not exists
+     * @return mixed Config value/s or null if config does not exists
      */
     protected function _get( $config, $parts )
     {
-        if (( $cur = array_shift($parts) ) !== NULL && isset($config[$cur])) {
-            if (count($parts) > 0) {
+        if ( ( $cur = array_shift($parts) ) !== null && isset($config[$cur]) ) {
+            if ( count($parts) > 0 ) {
                 return $this->_get($config[$cur], $parts);
             }
 
@@ -216,24 +194,24 @@ class Mumsys_Config_File
      * @param string $curPath Path of the config file
      * @param array $parts List of config parts to look for
      *
-     * @return array The merged config
+     * @return array The merged confiiguration settings
      */
     protected function _load( array $config, $curPath, array $parts )
     {
 
-        if (( $key = array_shift($parts) ) !== NULL) {
+        if ( ( $key = array_shift($parts) ) !== null ) {
             $newPath = $curPath . DIRECTORY_SEPARATOR . $key;
 
-            if (is_dir($newPath)) {
-                if (!isset($config[$key])) {
+            if ( is_dir($newPath) ) {
+                if ( !isset($config[$key]) ) {
                     $config[$key] = array();
                 }
 
                 $config[$key] = $this->_load($config[$key], $newPath, $parts);
             }
 
-            if (file_exists($newPath . '.php')) {
-                if (!isset($config[$key])) {
+            if ( file_exists($newPath . '.php') ) {
+                if ( !isset($config[$key]) ) {
                     $config[$key] = array();
                 }
 
@@ -246,15 +224,16 @@ class Mumsys_Config_File
 
 
     /**
-     * Merges the configs, leaves existing key.
+     * Merges the configuration, existing keys will be untouched (FIFO).
      *
-     * @param array $left Array to be merged into
+     * @param array $left Array to be merged
      * @param array $right Array to be merged
      */
     protected function _merge( array $left, array $right )
     {
-        foreach ($right as $key => $value) {
-            if (isset($left[$key]) && is_array($left[$key]) && is_array($value)) {
+        foreach ( $right as $key => $value )
+        {
+            if ( isset($left[$key]) && is_array($left[$key]) && is_array($value) ) {
                 $left[$key] = $this->_merge($left[$key], $value);
             } else {
                 $left[$key] = $value;
@@ -274,7 +253,7 @@ class Mumsys_Config_File
      * */
     protected function _include( $file )
     {
-        if (!isset($this->_incCache[$file])) {
+        if ( !isset($this->_incCache[$file]) ) {
             $this->_incCache[$file] = include $file;
         }
 
@@ -293,8 +272,8 @@ class Mumsys_Config_File
      */
     protected function _replace( $config, $path, $value )
     {
-        if (( $current = array_shift($path) ) !== NULL) {
-            if (isset($config[$current])) {
+        if ( ( $current = array_shift($path) ) !== null ) {
+            if ( isset($config[$current]) ) {
                 $config[$current] = $this->_replace($config[$current], $path, $value);
             } else {
                 $config[$current] = $this->_replace(array(), $path, $value);
@@ -308,7 +287,7 @@ class Mumsys_Config_File
 
 
     /**
-     * Load configuration by a given application config key and replace existing
+     * Load configuration by a given application config key and merge existing
      * values if exists.
      *
      * @uses Mumsys_Db_Interface Database interface will be used
@@ -320,7 +299,7 @@ class Mumsys_Config_File
      */
     public function load( $appKey = 'mumsys' )
     {
-        throw new Mumsys_Config_Exception('exit in: ' . basename(__FILE__) . ':' . __LINE__);
+        throw new Mumsys_Config_Exception('Not implemented yet.');
     }
 
 }

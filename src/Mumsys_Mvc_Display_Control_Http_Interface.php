@@ -4,9 +4,9 @@
  * Mumsys_Mvc_Display_Control_Http_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
  * @package     Library
@@ -14,7 +14,6 @@
  * @version     1.0.0
  * Created: 2016-12-01
  */
-/*}}}*/
 
 
 /**
@@ -26,12 +25,16 @@
  * @subpackage  Mvc
  */
 interface Mumsys_Mvc_Display_Control_Http_Interface
+    extends Mumsys_Mvc_Display_Control_Interface
 {
+
+
     /**
      * Adds header to be send on output.
      * @param string $s content of a Html header line
      */
     public function addHeader( $header = '' );
+
 
     /**
      * Returns headers.
@@ -40,10 +43,12 @@ interface Mumsys_Mvc_Display_Control_Http_Interface
      */
     public function getHeaders();
 
+
     /**
      * Output all headers which were set.
      */
     public function applyHeaders();
+
 
     /**
      * Sends given header to the output directly.
@@ -55,5 +60,4 @@ interface Mumsys_Mvc_Display_Control_Http_Interface
      * or not a string
      */
     public function sendHeader( $header = '' );
-
 }

@@ -30,7 +30,7 @@ class Mumsys_Logger_None
     implements Mumsys_Logger_Interface
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '3.0.1';
 

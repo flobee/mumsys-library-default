@@ -29,7 +29,7 @@ class Mumsys_Logger_FileTest
      */
     protected function setUp()
     {
-        $this->_version = '3.0.3';
+        $this->_version = '3.0.4';
 
         $this->_testsDir = realpath(dirname(__FILE__) . '/../');
 

@@ -9,15 +9,15 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Php
- * @subpackage  Globals
+ * @package     Library
+ * @subpackage  Php
  */
 
 
 /**
- * Nice interface for php's GLOBAL VARIABLES.
- *
  * @deprecated since version 1.0.0 Use \Mumsys_Php_Globals
+ *
+ * Nice interface for php's GLOBAL VARIABLES.
  *
  * Wraper for $GLOBALS, $_SERVER, $_GET, $_POST, $_FILES, $_COOKIE, $_SESSION,
  * $_REQUEST and $_ENV and getenv().
@@ -32,8 +32,8 @@
  * performace way. With or without this class.
  *
  * @category    Mumsys
- * @package     Php
- * @subpackage  Globals
+ * @package     Library
+ * @subpackage  Php
  */
 class Php_Globals
     extends Mumsys_Php_Globals

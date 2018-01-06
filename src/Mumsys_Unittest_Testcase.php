@@ -17,6 +17,8 @@
 /**
  * PhpUnit test case class as wrapper for PHPUnit_Framework_TestCase.
  *
+ * Helper for deprecated or removed methodes to keep you informed.
+ *
  * @category    Mumsys
  * @package     Library
  * @subpackage  Unittest

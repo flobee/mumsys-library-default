@@ -11,9 +11,7 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Timer
- * @version     3.2.0
  * V1 - Created 2006-01-12
- * @since       File available since Release 2
  */
 
 
@@ -50,12 +48,26 @@ class Mumsys_Timer
     extends Mumsys_Abstract
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '3.2.0';
 
+    /**
+     * Float start time in seconds or microtime format
+     * @var float
+     */
     private $_start = 0;
+
+    /**
+     * Float stop time in microtime format
+     * @var float
+     */
     private $_stop = 0;
+
+    /**
+     * The number of seconds, micro seconds
+     * @var string
+     */
     private $_elapsed = 0;
 
 
@@ -73,11 +85,11 @@ class Mumsys_Timer
      */
     public function __construct( $start = false )
     {
-        if ($start === true) {
+        if ( $start === true ) {
             $this->start();
         }
 
-        if (is_float($start)) {
+        if ( is_float($start) ) {
             $this->startTimeSet($start);
         }
     }
@@ -124,7 +136,7 @@ class Mumsys_Timer
      */
     public function startTimeSet( $time )
     {
-        $this->_start = (float)$time;
+        $this->_start = (float) $time;
     }
 
 
@@ -168,7 +180,7 @@ class Mumsys_Timer
      */
     public function __toString()
     {
-        return (string)$this->stop();
+        return (string) $this->stop();
     }
 
 }

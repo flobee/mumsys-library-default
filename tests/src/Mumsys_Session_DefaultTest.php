@@ -12,14 +12,11 @@ class Mumsys_Session_DefaultTest
      */
     protected $_object;
 
-
     /**
-     * needed to test the session.
+     * Version ID string
+     * @var string
      */
-    public function __construct()
-    {
-        ob_start();
-    }
+    protected $_version;
 
 
     /**
@@ -28,6 +25,7 @@ class Mumsys_Session_DefaultTest
      */
     protected function setUp()
     {
+        $this->_version = '1.1.0';
         $this->_object = new Mumsys_Session_Default();
     }
 
@@ -40,12 +38,14 @@ class Mumsys_Session_DefaultTest
     {
         $this->_object->clear();
         $this->_object = NULL;
+        session_write_close();
     }
 
 
     /**
      * Test nearly all methodes because of the problematic of php sessions
      * itselves to test them.
+     * @runInSeparateProcess
      */
     public function testAllMethodes()
     {
@@ -73,7 +73,7 @@ class Mumsys_Session_DefaultTest
         $expected3 = key($_SESSION);
 
         $actual5 = $this->_object->getCurrent();
-        $expected5 = $expected2[$expected3]['mumsys'];
+        $expected5 = $expected2[$expected3];
 
         $this->_object->register('newkey', array('val5', 'val6'));
         $actual4 = $this->_object->get('newkey');
@@ -81,6 +81,9 @@ class Mumsys_Session_DefaultTest
         // test default return
         $actual7 = $this->_object->get('notsetbefor', 'dingding');
         $expected7 = 'dingding';
+
+        $actual8 = $this->_object->remove('notsetbefor');
+        $actual9 = $this->_object->remove('newkey');
 
         // get
         $this->assertEquals($expected1, $actual1);
@@ -96,9 +99,12 @@ class Mumsys_Session_DefaultTest
         $this->assertEquals($expected6, $actual6);
         // test default return
         $this->assertEquals($expected7, $actual7);
+        // removed but wasnt set before
+        $this->assertFalse($actual8);
+        $this->assertTrue($actual9);
 
         // version checks
-        $this->assertEquals('Mumsys_Session_Default 1.0.2', $this->_object->getVersion());
+        $this->assertEquals($this->_version, $this->_object->getVersionID());
 
         // test register existing
         $this->setExpectedExceptionRegExp('Mumsys_Session_Exception', '/(Session key "testkey" exists)/i');

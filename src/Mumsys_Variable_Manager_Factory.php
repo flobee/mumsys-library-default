@@ -25,7 +25,7 @@
 class Mumsys_Variable_Manager_Factory
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '1.1.1';
 
@@ -41,9 +41,10 @@ class Mumsys_Variable_Manager_Factory
      *
      * @return Mumsys_Variable_Manager_Interface|Mumsys_Variable_Manager_Default|
      * Mumsys_Variable_Manager_{name} Manager object
+     *
      * @throws Mumsys_Variable_Manager_Exception If name not an alnum type
      */
-    public static function createManager( Mumsys_Context $context, $name = 'Default', array $config = array(),
+    public static function createManager( $name = 'Default', array $config = array(),
         array $values = array() )
     {
         if ( ctype_alnum($name) ) {

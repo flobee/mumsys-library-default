@@ -28,31 +28,31 @@ class Mumsys_Request_Default
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.1.0';
 
     /**
-     * _POST parameters container
-     * In case they are cleared or modified
+     * Incomming get parameters
      * @var array
      */
-    private $_inputPost = array();
+    protected $_inputGet = array();
 
     /**
-     * _GET parameters container
-     * In case they are cleared or modified
+     * Incomming post parameters
      * @var array
      */
-    private $_inputGet = array();
+    protected $_inputPost = array();
 
 
     /**
-     * Initialise the request class using _GET and _POST arrays.
+     * Initialise the request object using _GET and _POST arrays.
      *
      * @param array $options Optional initial options e.g.:
      * 'programKey','controllerKey', 'actionKey',
      */
     public function __construct( array $options = array() )
     {
+        parent::__construct($options);
+
         $_get = Mumsys_Php_Globals::getGetVar();
         if ( isset($_get) && is_array($_get) ) {
             $this->_inputGet = $_get;
@@ -70,13 +70,25 @@ class Mumsys_Request_Default
 
 
     /**
-     * Returns _POST parameters.
+     * Returns a post parameter by requested key.
      *
-     * @return array Copy of the _POST parameters
+     * If $key is empty it will return all incoming posts parameters
+     *
+     * @param string $key Key to get
+     * @param mixed $default Value to return if key not exists
+     * @return mixed
      */
-    public function getInputPost()
+    public function getInputPost( $key = null, $default = null )
     {
-        return $this->_inputPost;
+        if (empty($key)) {
+            return $this->_inputPost;
+        }
+
+        if (isset($this->_inputPost[$key])) {
+            return $this->_inputPost[$key];
+        } else {
+            return $default;
+        }
     }
 
 
@@ -106,13 +118,25 @@ class Mumsys_Request_Default
 
 
     /**
-     * Returns _GET parameters.
+     * Returns a get parameter by requested key.
      *
-     * @return array Copy of the _GET parameters on initialisation
+     * If $key is empty it will return all incomming get parameters
+     *
+     * @param string $key Array key to get
+     * @param mixed $default Value to return if key not exists
+     *
+     * @return mixed
      */
-    public function getInputGet()
+    public function getInputGet( $key = null, $default = null )
     {
-        return $this->_inputGet;
+        if (empty($key)) {
+            return $this->_inputGet;
+        }
+        if (isset($this->_inputGet[$key])) {
+            return $this->_inputGet[$key];
+        } else {
+            return $default;
+        }
     }
 
 

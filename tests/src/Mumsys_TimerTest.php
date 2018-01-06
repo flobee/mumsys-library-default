@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Test class for Mumsys_Timer.
  */
@@ -10,7 +9,7 @@ class Mumsys_TimerTest
     /**
      * @var Mumsys_TimerTest
      */
-    protected $object;
+    protected $_object;
 
 
     /**
@@ -48,7 +47,6 @@ class Mumsys_TimerTest
         $this->_object = new Mumsys_Timer($_SERVER['REQUEST_TIME_FLOAT']);
         $this->assertEquals($_SERVER['REQUEST_TIME_FLOAT'], $this->_object->startTimeGet());
     }
-
 
     public function testStart()
     {
@@ -98,7 +96,6 @@ class Mumsys_TimerTest
 
         $this->assertEquals(round($expected, 1), round($actual, 1));
     }
-
 
     // Abstract class
 

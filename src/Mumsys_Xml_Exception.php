@@ -11,7 +11,8 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Xml
- }}} */
+ * @version     3.0.0
+ */
 
 
 /**

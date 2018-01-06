@@ -55,6 +55,7 @@ if ( PHP_VERSION_ID < 50207 ) {
  * Improved or missing functionality you will find here.
  * This comes from old times where functionality not exists but still
  * implemented somewhere.
+
  * All methodes should be called staticly.
  *
  * Example:
@@ -74,7 +75,7 @@ class Mumsys_Php
     /**
      * Version ID information.
      */
-    const VERSION = '3.0.0';
+    const VERSION = '3.1.1';
 
     /**
      * @var string
@@ -87,6 +88,11 @@ class Mumsys_Php
      */
     public static $getMagicQuotesGpc;
 
+    /**
+     * Flag for array_keys_search_recursive()
+     * @var mixed
+     */
+    private static $_stopOnMatch;
 
     /**
      * Initialisation of PHP class
@@ -129,7 +135,7 @@ class Mumsys_Php
      * @param string $k Key to be set.
      * @param mixed $v Value to be set
      *
-     * @throws PHP_Exception If key is not implemented to react on. This will
+     * @throws Mumsys_Php_Exception If key is not implemented to react on. This will
      * prevent public access to this class
      */
     public function __set( $k, $v )
@@ -141,9 +147,8 @@ class Mumsys_Php
                 break;
 
             default:
-                throw new PHP_Exception(
-                    '__set: "' . $k . '"="' . $v . '" not allowed.'
-                );
+                throw new Mumsys_Php_Exception(
+                    '__set: "' . $k . '"="' . $v . '" not allowed.');
                 break;
         }
     }
@@ -178,16 +183,17 @@ class Mumsys_Php
     }
 
 
-    // +-- start features ----------------------------------------
+    // +-- start helper methodes  ---------------------------------------------
 
 
-    // --- Variable handling Functions -----------------------------------------
+    // --- Variable handling Functions ----------------------------------------
 
 
     /**
      * Check if a value is an integer
      *
      * @param interger $value Value to be checked
+     *
      * @return integer|false Returns the casted interger value or false if value
      * is not a nummeric type
      */
@@ -220,8 +226,10 @@ class Mumsys_Php
         return floatval($value);
     }
 
+
     //
     // --- Filesystem functions ------------------------------------------------
+
 
     /** {{{
      * Test if a file exists
@@ -341,8 +349,11 @@ class Mumsys_Php
      *
      * @param string $key Key to get from php.ini
      *
-     * @return integer|null Returns the ini value or translated nummeric value
-     * if a nummeric value was detected
+     * @return string|integer|false Returns the ini value or translated nummeric value if a
+     * nummeric value was detected or false if the key was not found
+     *
+     * @throws Mumsys_Php_Exception If detection/ calculation numeric values fails
+
      */
     public static function ini_get( $key )
     {
@@ -353,7 +364,7 @@ class Mumsys_Php
             return null;
         }
 
-        try{
+        try {
             $result = self::str2bytes($value, true);
         } catch (Exception $ex) {
             if ( is_nummeric($value) ) {
@@ -378,8 +389,7 @@ class Mumsys_Php
      * yet for false.
      *
      * @return integer Number of bytes.
-     *
-     * @throws Exception If detection/ calculation fails
+     * @throws Mumsys_Php_Exception If detection/ calculation fails
      */
     public static function str2bytes( $value , $binType=true)
     {
@@ -423,8 +433,8 @@ class Mumsys_Php
 
             default:
                 if ( !is_nummeric( $value ) ) {
-                    throw new Exception(
-                        'Detection size failt for "' . $last . '"'
+                    throw new Mumsys_Php_Exception(
+                        'Detection of size failt for "' . $last . '"'
                     );
                 }
                 break;
@@ -486,6 +496,7 @@ class Mumsys_Php
      * @param boolean $beforeNeedle If TRUE, strstr() returns the part of the
      * haystack before the first occurrence of the needle.
      *
+
      * @return string|false Returns the portion of string, or FALSE if needle
      * is not found.
      */
@@ -625,7 +636,7 @@ class Mumsys_Php
     }
 
 
-    /** {{{
+    /**
      * parseUrl — Parse a URL and return its components.
      *
      * @param string $url The URL to parse. Invalid characters are replaced by _.
@@ -649,8 +660,8 @@ class Mumsys_Php
      * instead of an array. If the requested component doesn't exist within the
      * given URL, NULL will be returned.
      *
-     * @thows Php_Exception Throws exception if parseUrl would return false.
-     * }}} */
+     * @thows Mumsys_Php_Exception Throws exception if parseUrl would return false.
+     */
     public static function parseUrl( $url, $component = null )
     {
         if ( isset($component) ) {
@@ -839,16 +850,14 @@ class Mumsys_Php
      * <code>
      * <?php
      * $bigarray =  array(
-     *             'key1' =>
-     *                    array(
-     *                       'key2' =>
-     *                          array(
-     *                              'a' => array( 'text'=>'something'),
-     *                              'b' => array( 'id'=>737),
-     *                              'c' => array( 'name'=>'me'),
-     *                          ),
-     *                 )
-     *            );
+     *      'key1' => array(
+     *          'key2' => array(
+     *              'a' => array( 'text'=>'something'),
+     *              'b' => array( 'id'=>737),
+     *              'c' => array( 'name'=>'me'),
+     *          ),
+     *      )
+     * );
      * $matchedKeys = array_keys_search_recursive( 'name',$bigarray);
      * // returns by reference: array( 0=>array( 'name'=>'me');
      * ?>
@@ -907,12 +916,12 @@ class Mumsys_Php
      *
      * @return array Returns the merged array
      *
-     * @throws Mumsys_Exception Throws exception on unexpercted behaviour
+     * @throws Mumsys_Php_Exception Throws exception on unexpercted behaviour
      */
     public static function array_merge_recursive()
     {
         if ( func_num_args() < 2 ) {
-            throw new Mumsys_Exception(__METHOD__ . ' needs at least two arrays as arguments');
+            throw new Mumsys_Php_Exception(__METHOD__ . ' needs at least two arrays as arguments');
         }
 
         $arrays = func_get_args();
@@ -922,7 +931,7 @@ class Mumsys_Php
             $array = array_shift($arrays);
 
             if ( !is_array($array) ) {
-                throw new Mumsys_Exception(__METHOD__ . ' given argument is not an array "' . $array . '"');
+                throw new Mumsys_Php_Exception(__METHOD__ . ' given argument is not an array "' . $array . '"');
             }
 
             if ( !$array ) {
@@ -1024,7 +1033,7 @@ class Mumsys_Php
             $return = null;
             $result = exec($cmd, $data, $return);
             if ( !$result || $return !== 0 ) {
-                throw new Exception(__METHOD__ . ': cmd error: "' . $cmd . '"', 1);
+                throw new Mumsys_Php_Exception(__METHOD__ . ': cmd error: "' . $cmd . '"', 1);
             }
             $logger->log(__METHOD__ . ': cmd: "' . $cmd . '"', 7);
 
@@ -1068,4 +1077,3 @@ class Mumsys_Php
     }
 
 }
-

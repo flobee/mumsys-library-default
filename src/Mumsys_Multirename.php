@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Multirename
+ * Mumsys_Multirename
  * for MUMSYS Library for Multi User Management System
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -132,7 +132,7 @@ class Mumsys_Multirename
         $logger->log('### multirename (' . self::VERSION . ') starts', 7);
 
         // nothing which belongs to root is allowed at the moment!
-        if (php_sapi_name() === 'cli' && in_array('root', $_SERVER)) {
+        if (PHP_SAPI === 'cli' && in_array('root', $_SERVER)) {
             $message = 'Something which belongs to "root" is forbidden. '
                 . 'Sorry! Use a different user!' . PHP_EOL;
             throw new Mumsys_Multirename_Exception($message);

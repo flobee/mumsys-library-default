@@ -53,7 +53,9 @@ class Mumsys_Logger_Default
     /**
      * Initialize the default logger object
      *
-     * @param array $args Associativ array with additional params
+     * @see Mumsys_Logger_File::__construct() for more prameters.
+     *
+     * @param array $args Key/value pairs with additional params. 
      *  - [username] optional otherwise PHP_AUTH_USER will be taken
      *  - [lineFormat] optional format of log line;see $_logformat.
      *  - [timeFormat] optional format of a timestamp format

@@ -4,9 +4,9 @@
  * Mumsys_Mvc_Program_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2010 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2010 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
  * @package     Library
@@ -26,13 +26,14 @@
  * $view = $this->_getDisplay()
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
+ * @package     Library
+ * @subpackage  Mvc_Program
  */
-abstract class Mumsys_Mvc_Program_Abstract extends Mumsys_Abstract
+abstract class Mumsys_Mvc_Program_Abstract
+    extends Mumsys_Abstract
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '1.0.0';
 
@@ -57,7 +58,7 @@ abstract class Mumsys_Mvc_Program_Abstract extends Mumsys_Abstract
     /**
      * Initializes the program object.
      *
-     * @param Mumsys_Context $context Context item
+     * @param Mumsys_Context_Interface $context Context item
      * @param Mumsys_Mvc_Program_Config $programConfig Program config object
      * containing all configuration values which may comes from setting.php
      */

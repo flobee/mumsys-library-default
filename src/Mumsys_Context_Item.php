@@ -191,7 +191,7 @@ class Mumsys_Context_Item
      *
      * @return Mumsys_Request_Interface Returns the request object
      */
-    public function getRequest()
+    public function getRequest(): Mumsys_Request_Interface
     {
         return $this->_get('Mumsys_Request_Interface');
     }
@@ -207,6 +207,17 @@ class Mumsys_Context_Item
     public function registerRequest( Mumsys_Request_Interface $request )
     {
         $this->_register('Mumsys_Request_Interface', $request);
+    }
+
+
+    /**
+     * Replace the request object.
+     *
+     * @param Mumsys_Request_Interface $request Request object
+     */
+    public function replaceRequest( Mumsys_Request_Interface $request )
+    {
+        $this->_replace('Mumsys_Request_Interface', $request);
     }
 
 
@@ -228,7 +239,9 @@ class Mumsys_Context_Item
         catch ( Exception $e ) {
             if ( $default === null ) {
                 $message = sprintf(
-                    'Generic interface "%1$s" not found. Message: "%2$s"', $interface, $e->getMessage()
+                    'Generic interface "%1$s" not found. Message: "%2$s"',
+                    $interface,
+                    $e->getMessage()
                 );
                 throw new Mumsys_Context_Exception($message);
             } else {

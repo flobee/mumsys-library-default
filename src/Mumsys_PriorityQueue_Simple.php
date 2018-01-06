@@ -17,9 +17,10 @@
 
 
 /**
- * Simple priority Queue using priority names to place to order of items.
+ * Simple priority queue uses priority names to place and to sort prirority items.
+ *
  * With "befor" and "after" keys given priroities can be set in the order you
- * which to use. Altn. hav a look into the SplPriorityQueue.
+ * which to use. Altn. have a look into the SplPriorityQueue.
  *
  * Example:
  * A => prio99 <- curently higest prio
@@ -32,7 +33,13 @@
  * @subpackage  PriorityQueue
  */
 class Mumsys_PriorityQueue_Simple
+    extends Mumsys_Abstract
 {
+    /**
+     * Version ID information.
+     */
+    const VERSION = '1.0.0';
+
     /**
      * Internal counter
      * @var integer
@@ -49,10 +56,11 @@ class Mumsys_PriorityQueue_Simple
     /**
      * Initialize the object with an optional List of Key/ID => value pairs to
      * be set as initial and ready to go stack.
+     *
      * Example: array(
-     *  array('default' => mixed content),
-     *  array('afterdefault1 => mixed content),
-     *  array('afterdefault2 => mixed content),
+     *      array('default' => mixed content),
+     *      array('afterdefault1 => mixed content),
+     *      array('afterdefault2 => mixed content),
      * )
      *
      * @param array $stack Optional; Predefined and ready to go list of key/item
@@ -93,7 +101,7 @@ class Mumsys_PriorityQueue_Simple
      * @param string $positionID Name of the key/ID where to set (before/
      * after) this new entrys
      *
-     * @throws Mumsys_Exception If Key/ID already exists
+     * @throws Mumsys_PriorityQueue_Exception If Key/ID already exists
      */
     public function add( $identifier, $value, $positionWay = 'after',
         $positionID = null )
@@ -121,8 +129,11 @@ class Mumsys_PriorityQueue_Simple
      * @param string $posKey Name of the key/ID where to set (before/
      * after) this new entrys
      * @param string $posWay String "before" | "after" (default)
+     *
      * @return integer Number of the position the found key is placed
-     * @throws Mumsys_Exception
+     *
+     * @throws Mumsys_PriorityQueue_Exception If the way dosnt contain "after"
+     * or "before"
      */
     private function _getPos( $posKey, $posWay = 'after' )
     {
