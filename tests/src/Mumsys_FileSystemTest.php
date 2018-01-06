@@ -536,7 +536,8 @@ class Mumsys_FileSystemTest
      */
     public function testRmDirsException()
     {
-        $this->markTestIncomplete();
+        $this->expectException( 'Exception' );
+        $this->_object->rmdirs('/root/');
     }
 
 
