@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Test class for Mumsys_FileSystem.
+ * Test class for Mumsys_FileSystem_Default.
  */
-class Mumsys_FileSystemTest
+class Mumsys_FileSystem_DefaultTest
     extends Mumsys_Unittest_Testcase
 {
 /**
-     * @var Mumsys_FileSystem
+     * @var Mumsys_FileSystem_Default
      */
     protected $_object;
     protected $_testdirs;
@@ -16,9 +16,9 @@ class Mumsys_FileSystemTest
 
     protected function setUp()
     {
-        $this->_version = '3.0.7';
+        $this->_version = '3.1.0';
         $this->_versions = array(
-            'Mumsys_FileSystem' => $this->_version,
+            'Mumsys_FileSystem_Default' => $this->_version,
             'Mumsys_FileSystem_Common_Abstract' => '3.1.0',
         );
 
@@ -36,7 +36,7 @@ class Mumsys_FileSystemTest
         );
         touch($this->_testdirs['file']);
 
-        $this->_object = new Mumsys_FileSystem();
+        $this->_object = new Mumsys_FileSystem_Default();
     }
 
 
@@ -51,16 +51,16 @@ class Mumsys_FileSystemTest
 
 
     /**
-     * @covers Mumsys_FileSystem::__construct
+     * @covers Mumsys_FileSystem_Default::__construct
      */
     public function test__constructor()
     {
-        $this->_object = new Mumsys_FileSystem();
-        $this->assertInstanceOf('Mumsys_FileSystem', $this->_object);
+        $this->_object = new Mumsys_FileSystem_Default();
+        $this->assertInstanceOf('Mumsys_FileSystem_Default', $this->_object);
         $this->assertInstanceOf('Mumsys_Abstract', $this->_object);
     }
     /**
-     * @covers Mumsys_FileSystem::scanDirInfo
+     * @covers Mumsys_FileSystem_Default::scanDirInfo
      */
     public function testScanDirInfo()
     {
@@ -129,8 +129,8 @@ class Mumsys_FileSystemTest
 
 
     /**
-     * @covers Mumsys_FileSystem::getFileDetails
-     * @covers Mumsys_FileSystem::_getFileDetailsPrepare
+     * @covers Mumsys_FileSystem_Default::getFileDetails
+     * @covers Mumsys_FileSystem_Default::_getFileDetailsPrepare
      */
     public function testGetFileDetails()
     {
@@ -154,8 +154,8 @@ class Mumsys_FileSystemTest
 
 
     /**
-     * @covers Mumsys_FileSystem::getFileDetailsExtended
-     * @covers Mumsys_FileSystem::_getFileDetailsPrepare
+     * @covers Mumsys_FileSystem_Default::getFileDetailsExtended
+     * @covers Mumsys_FileSystem_Default::_getFileDetailsPrepare
      */
     public function testGetFileDetailsExtended()
     {
@@ -252,7 +252,7 @@ class Mumsys_FileSystemTest
 
 
     /**
-     * @covers Mumsys_FileSystem::getFileType
+     * @covers Mumsys_FileSystem_Default::getFileType
      */
     public function testGetFileType()
     {
@@ -274,7 +274,7 @@ class Mumsys_FileSystemTest
 
 
     /**
-     * @covers Mumsys_FileSystem::copy
+     * @covers Mumsys_FileSystem_Default::copy
      */
     public function testCopy()
     {
@@ -299,7 +299,7 @@ class Mumsys_FileSystemTest
         $this->_object->copy($this->_testsDir . '/tmp/', '/home/');
     }
     /**
-     * @covers Mumsys_FileSystem::copy
+     * @covers Mumsys_FileSystem_Default::copy
      */
     public function testCopyException()
     {
@@ -310,7 +310,7 @@ class Mumsys_FileSystemTest
 
 
     /**
-     * @covers Mumsys_FileSystem::rename
+     * @covers Mumsys_FileSystem_Default::rename
      */
     public function testRename()
     {
@@ -345,7 +345,7 @@ class Mumsys_FileSystemTest
     }
 
     /**
-     * @covers Mumsys_FileSystem::rename
+     * @covers Mumsys_FileSystem_Default::rename
      */
     public function testRenameException()
     {
@@ -359,7 +359,7 @@ class Mumsys_FileSystemTest
     }
 
     /**
-     * @covers Mumsys_FileSystem::link
+     * @covers Mumsys_FileSystem_Default::link
      */
     public function testLink()
     {
@@ -400,7 +400,7 @@ class Mumsys_FileSystemTest
     }
 
     /**
-     * @covers Mumsys_FileSystem::link
+     * @covers Mumsys_FileSystem_Default::link
      */
     public function testLinkException()
     {
@@ -416,8 +416,8 @@ class Mumsys_FileSystemTest
     }
 
     /**
-     * @covers Mumsys_FileSystem::unlink
-     * @covers Mumsys_FileSystem::rmFile
+     * @covers Mumsys_FileSystem_Default::unlink
+     * @covers Mumsys_FileSystem_Default::rmFile
      */
     public function testUnlinkRmFile()
     {
@@ -454,7 +454,7 @@ class Mumsys_FileSystemTest
 
 
     /**
-     * @covers Mumsys_FileSystem::mkdir
+     * @covers Mumsys_FileSystem_Default::mkdir
      */
     public function testMkdir()
     {
@@ -471,8 +471,8 @@ class Mumsys_FileSystemTest
 
 
     /**
-     * @covers Mumsys_FileSystem::mkdirs
-     * @covers Mumsys_FileSystem::mkdir
+     * @covers Mumsys_FileSystem_Default::mkdirs
+     * @covers Mumsys_FileSystem_Default::mkdir
      *
      * @todo how to test for 100% code coverage?
      */
@@ -488,8 +488,8 @@ class Mumsys_FileSystemTest
     /**
      * Test mkdir fails and rm already created.
      *
-     * @covers Mumsys_FileSystem::mkdirs
-     * @covers Mumsys_FileSystem::mkdir
+     * @covers Mumsys_FileSystem_Default::mkdirs
+     * @covers Mumsys_FileSystem_Default::mkdir
      *
      */
     public function testMkdirsException()
@@ -507,8 +507,8 @@ class Mumsys_FileSystemTest
 
 
     /**
-     * @covers Mumsys_FileSystem::rmdir
-     * @covers Mumsys_FileSystem::rmdirs
+     * @covers Mumsys_FileSystem_Default::rmdir
+     * @covers Mumsys_FileSystem_Default::rmdirs
      */
     public function testRmDir()
     {
@@ -531,7 +531,7 @@ class Mumsys_FileSystemTest
 
     /**
      * Removes a directory recusivly.
-     * @covers Mumsys_FileSystem::rmdirs
+     * @covers Mumsys_FileSystem_Default::rmdirs
      */
     public function testRmDirsException()
     {
@@ -541,7 +541,7 @@ class Mumsys_FileSystemTest
 
 
     /**
-     * @covers Mumsys_FileSystem::getRelativeDir
+     * @covers Mumsys_FileSystem_Default::getRelativeDir
      * @todo   Implement testGetRelativeDir().
      */
     public function testGetRelativeDir()
@@ -566,7 +566,7 @@ class Mumsys_FileSystemTest
 
 
     /**
-     * @covers Mumsys_FileSystem::coolfilesize
+     * @covers Mumsys_FileSystem_Default::coolfilesize
      */
     public function testCoolfilesize()
     {
@@ -626,7 +626,7 @@ class Mumsys_FileSystemTest
         $message = 'A new version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
-        $this->assertEquals($this->_version, Mumsys_FileSystem::VERSION, $message);
+        $this->assertEquals($this->_version, Mumsys_FileSystem_Default::VERSION, $message);
 
         $possible = $this->_object->getVersions();
 

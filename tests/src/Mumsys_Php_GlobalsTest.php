@@ -2,13 +2,13 @@
 
 
 /**
- * Php_Globals Test
+ * Mumsys_Php_Globals Test
  */
 class Mumsys_Php_GlobalsTest
     extends Mumsys_Unittest_Testcase
 {
     /**
-     * @var Php_Globals
+     * @var Mumsys_Php_Globals
      */
     protected $_object;
 
@@ -36,7 +36,7 @@ class Mumsys_Php_GlobalsTest
      */
     protected function setUp()
     {
-        $this->_version = '1.0.1';
+        $this->_version = '2.0.0';
         // in
         $this->_file = $_FILES = array(
             'test' => array(
@@ -50,7 +50,7 @@ class Mumsys_Php_GlobalsTest
 
         $this->_files = array();
 
-        $this->_object = new Php_Globals;
+        $this->_object = new Mumsys_Php_Globals;
     }
 
 
@@ -65,8 +65,8 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::getServerVar
-     * @covers Php_Globals::_getEnvVar
+     * @covers Mumsys_Php_Globals::getServerVar
+     * @covers Mumsys_Php_Globals::_getEnvVar
      */
     public function testGetServerVar()
     {
@@ -82,8 +82,8 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::getEnvVar
-     * @covers Php_Globals::_getEnvVar
+     * @covers Mumsys_Php_Globals::getEnvVar
+     * @covers Mumsys_Php_Globals::_getEnvVar
      */
     public function testGetEnvVar()
     {
@@ -108,7 +108,7 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::getPostVar
+     * @covers Mumsys_Php_Globals::getPostVar
      */
     public function testGetPostVar()
     {
@@ -124,7 +124,7 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::getGetVar
+     * @covers Mumsys_Php_Globals::getGetVar
      */
     public function testGetGetVar()
     {
@@ -140,7 +140,7 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::getCookieVar
+     * @covers Mumsys_Php_Globals::getCookieVar
      */
     public function testGetCookieVar()
     {
@@ -156,7 +156,7 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::getFilesVar
+     * @covers Mumsys_Php_Globals::getFilesVar
      * @runInSeparateProcess
      */
     public function testGetFilesVar()
@@ -176,7 +176,7 @@ class Mumsys_Php_GlobalsTest
     }
 
     /**
-     * @covers Php_Globals::getFilesVar
+     * @covers Mumsys_Php_Globals::getFilesVar
      * @runInSeparateProcess
      */
     public function testGetFilesVar2()
@@ -229,7 +229,7 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::getGlobalVar
+     * @covers Mumsys_Php_Globals::getGlobalVar
      */
     public function testGetGlobalVar()
     {
@@ -253,7 +253,7 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::get
+     * @covers Mumsys_Php_Globals::get
      */
     public function testGet()
     {
@@ -293,7 +293,7 @@ class Mumsys_Php_GlobalsTest
     }
 
     /**
-     * @covers Php_Globals::getRemoteUser
+     * @covers Mumsys_Php_Globals::getRemoteUser
      * @runInSeparateProcess
      */
     public function testGetRemoteUser()
@@ -310,7 +310,7 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::getRemoteUser
+     * @covers Mumsys_Php_Globals::getRemoteUser
      * @runInSeparateProcess
      */
     public function testGetRemoteUserPHP_AUTH_USER()
@@ -321,7 +321,7 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::getRemoteUser
+     * @covers Mumsys_Php_Globals::getRemoteUser
      * @runInSeparateProcess
      */
     public function testGetRemoteUserREMOTE_USER()
@@ -332,7 +332,7 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::getRemoteUser
+     * @covers Mumsys_Php_Globals::getRemoteUser
      * @runInSeparateProcess
      */
     public function testGetRemoteUserUSER()
@@ -343,7 +343,7 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Php_Globals::getRemoteUser
+     * @covers Mumsys_Php_Globals::getRemoteUser
      * @runInSeparateProcess
      */
     public function testGetRemoteUserLOGNAME()

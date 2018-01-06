@@ -28,6 +28,6 @@ class Mumsys_FileSystem_Default
     /**
      * Version ID information.
      */
-    const VERSION = '3.0.9';
+    const VERSION = '3.1.0';
 
 }

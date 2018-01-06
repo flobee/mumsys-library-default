@@ -26,5 +26,5 @@ else
     cript="./";
 fi
 
-php7.0 ../vendor/bin/phpunit  --colors --configuration phpunit.xml --bootstrap ./bootstrap.php $codeCoverage $verbose $cript
+php7.0 -d memory_limit=128M ../vendor/bin/phpunit  --colors --configuration phpunit.xml --bootstrap ./bootstrap.php $codeCoverage $verbose $cript
 
