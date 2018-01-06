@@ -194,7 +194,7 @@ class Mumsys_Php_Globals
      *
      * @return mixed Value or $default if $key is not set/null
      */
-    public static function getFileVar( $key = null, $default = null )
+    public static function getFilesVar( $key = null, $default = null )
     {
         if ( isset($_FILES) ) {
             if ( self::$_files === null ) {
