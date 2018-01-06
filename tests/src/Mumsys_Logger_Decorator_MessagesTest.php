@@ -204,3 +204,4 @@ class Mumsys_Logger_Decorator_MessagesTest
     }
 
 }
+
