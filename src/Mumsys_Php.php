@@ -432,7 +432,7 @@ class Mumsys_Php
                 break;
 
             default:
-                if ( !is_nummeric( $value ) ) {
+                if ( !is_numeric( $value ) ) {
                     throw new Mumsys_Php_Exception(
                         'Detection of size failt for "' . $last . '"'
                     );
