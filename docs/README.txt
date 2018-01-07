@@ -22,7 +22,7 @@ MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - 
 ## Test status
 
 Builds run on phpunit tests for all branches (stable, testing, unstable) and 
-for php versions: 5.3, 5.4, 5.5, 5.6, 7.0 and hhvm
+for php versions: 5.6, 7.0, 7.1, 7.2
     Stable branch: [![Build Status: stable](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=stable "Build Status: stable")](https://travis-ci.org/flobee/mumsys-library-default)
     Testing branch: [![Build Status: testing](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=testing "Build Status: testing")](https://travis-ci.org/flobee/mumsys-library-default)
     Unstable branch: [![Build Status: unstable](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/flobee/mumsys-library-default)
