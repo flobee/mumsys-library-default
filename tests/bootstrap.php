@@ -14,6 +14,7 @@ date_default_timezone_set('Europe/Berlin');
 
 setlocale(LC_ALL, 'POSIX'); // "C" style
 
+spl_autoload_extensions('.php');
 require_once __DIR__ . '/../src/Mumsys_Loader.php';
 spl_autoload_register(array('Mumsys_Loader', 'autoload'));
 
