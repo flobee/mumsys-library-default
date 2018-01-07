@@ -9,9 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Array2Xml
- * @version     1.3.1
+ * @package     Library
+ * @subpackage  Array2Xml
  * Created on 2005-01-15
  */
 
@@ -20,10 +19,10 @@
  * Generic exception class.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Array2Xml
+ * @package     Library
+ * @subpackage  Array2Xml
  */
 class Mumsys_Array2Xml_Exception extends Mumsys_Exception
 {
-
+    const VERSION = '1.3.1';
 }
