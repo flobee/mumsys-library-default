@@ -43,7 +43,7 @@ class Mumsys_Loader
      *
      * @staticvar array
      */
-    protected static $loadedClasses;
+    protected static $_loadedClasses;
 
 
     /**
@@ -60,11 +60,12 @@ class Mumsys_Loader
     {
         try
         {
-            if ( !class_exists($instance) && !isset(self::$loadedClasses[$instance]) ) {
+            if ( !class_exists($instance) && !isset(self::$_loadedClasses[$instance]) ) {
                 $message = sprintf('Could not load: "%1$s".', $instance);
                 throw new Mumsys_Loader_Exception($message);
             } else {
                 $x = new $instance($args);
+                self::$_loadedClasses[$instance] = $instance;
             }
         }
         catch ( Exception $e ) {
@@ -97,7 +98,7 @@ class Mumsys_Loader
             }
 
             if ( $test !== false ) {
-                self::$loadedClasses[$instance] = $instance;
+                self::$_loadedClasses[$instance] = $instance;
             }
         }
 
@@ -112,7 +113,7 @@ class Mumsys_Loader
      */
     public static function loadedClassesGet()
     {
-        return self::$loadedClasses;
+        return self::$_loadedClasses;
     }
 
 }
