@@ -60,9 +60,9 @@ class Mumsys_LoaderTest
     public function testLoadedClassesGet()
     {
         $actual = $this->object->loadedClassesGet();
-        $expected = array();
+        $expected = array('Mumsys_Timer' => 'Mumsys_Timer');
 
-        $this->assertEquals(is_array($expected), is_array($actual));
+        $this->assertEquals($expected['Mumsys_Timer'], $actual['Mumsys_Timer']);
     }
 
     public function testGetVersionID()
