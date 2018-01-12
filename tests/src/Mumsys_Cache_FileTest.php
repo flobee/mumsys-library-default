@@ -5,7 +5,7 @@
  * Mumsys_Cache_File Tests
  */
 class Mumsys_Cache_FileTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Cache

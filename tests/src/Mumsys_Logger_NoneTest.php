@@ -5,7 +5,7 @@
  * Mumsys_Logger_None Test
  */
 class Mumsys_Logger_NoneTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Logger_None

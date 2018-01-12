@@ -12,7 +12,7 @@ class Mumsys_Mail_MyTestMailer {
  * Mumsys_Mail_Factory Test
  */
 class Mumsys_Mail_FactoryTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Mail_Factory
