@@ -24,3 +24,4 @@
 # Using ApiGen
 # cd ./
 apigen generate --source ../src/ --destination ../docs/API/
+# php5 ../../phpDocumentor.phar run -d ../src -t ../docs/API
