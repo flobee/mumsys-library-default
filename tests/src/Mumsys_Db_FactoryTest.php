@@ -56,8 +56,9 @@ class Mumsys_Db_FactoryTest extends Mumsys_Unittest_Testcase
         $options = $this->_configs['database'];
         $options['type'] = 'xxx';
 
-        $this->setExpectedExceptionRegExp('Mumsys_Db_Exception', '/(Invalid Db driver. Can not create instance)/i');
-        $actual = $this->_object->getInstance($this->_context, $options);
+        $this->expectExceptionMessageRegExp('/(Invalid Db driver. Can not create instance)/i' );
+        $this->expectException( 'Mumsys_Db_Exception' );
+        $actual = $this->_object->getInstance( $this->_context, $options );
     }
 
 }
