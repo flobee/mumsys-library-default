@@ -14,7 +14,7 @@
     ],
     "require": {
         "php"   :   "7.*",
-        "phpmailer/phpmailer": "^5.2",
+        "phpmailer/phpmailer": "^5",
         "flobee/spss": "^2"
     },
     "require-dev": {
