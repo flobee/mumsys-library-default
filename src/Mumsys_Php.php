@@ -349,11 +349,10 @@ class Mumsys_Php
      *
      * @param string $key Key to get from php.ini
      *
-     * @return string|integer|false Returns the ini value or translated nummeric value if a
-     * nummeric value was detected or false if the key was not found
+     * @return string|integer Returns the ini value or translated nummeric value if a
+     * nummeric value was detected or null if the key was not found
      *
      * @throws Mumsys_Php_Exception If detection/ calculation numeric values fails
-
      */
     public static function ini_get( $key )
     {
@@ -365,9 +364,10 @@ class Mumsys_Php
         }
 
         try {
-            $result = self::str2bytes($value, true);
-        } catch (Exception $ex) {
-            if ( is_nummeric($value) ) {
+            $result = self::str2bytes( $value, true );
+        }
+        catch ( Exception $ex ) {
+            if ( is_numeric( $value ) ) {
                 throw $ex;
             }
             $result = $value;
@@ -828,10 +828,12 @@ class Mumsys_Php
     public static function array_keys_search_recursive_check( $needle, $haystack )
     {
         foreach ( $haystack as $key => $value ) {
-            if ( $key === $needle || ( is_array($value)
-                && ( $x = self::array_keys_search_recursive($needle,
-                    $value, true) ) )
-            ) {
+            if ( $key === $needle ) {
+                return true;
+            }
+
+            $match = self::array_keys_search_recursive( $needle, $value, true );
+            if ( is_array( $value ) && $match ) {
                 return true;
             }
         }
@@ -877,7 +879,7 @@ class Mumsys_Php
         $matches = array();
         foreach ( $haystack as $key => &$value ) {
 
-            if ( $stopOnFirstMatch && $stopOnFirstMatch === 'break' ) {
+            if ( ($stopOnFirstMatch && $stopOnFirstMatch === 'break') ) {
                 break;
             }
             // echo ":$needle:=:$key: m: $stopOnFirstMatch\n";
