@@ -80,7 +80,7 @@ class Mumsys_Mail_PHPMailer
      */
     public function __construct( array $config )
     {
-        $dirs = array('PHPMailer', 'libphp-phpmailer');
+        $dirs = array('../vendor/phpmailer/phpmailer', 'PHPMailer', 'libphp-phpmailer');
         foreach ( $dirs as $dir ) {
             if ( is_dir($dir) ) {
                 break;
