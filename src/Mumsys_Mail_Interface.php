@@ -150,7 +150,7 @@ interface Mumsys_Mail_Interface
      * @return string Html message string
      */
     public function setMessageHtml( string $htmlCode,
-        string $pathInlineAttachments = null ): string;
+        string $pathInlineAttachments = '' ): string;
 
 
     /**
