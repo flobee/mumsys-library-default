@@ -11,8 +11,9 @@ class Mumsys_RegistryTest
      * @var Mumsys_Registry
      */
     protected $_object;
-    protected $_version;
-    protected $_key;
+    private $_version;
+    private $_versions;
+    private $_key;
 
 
     /**
