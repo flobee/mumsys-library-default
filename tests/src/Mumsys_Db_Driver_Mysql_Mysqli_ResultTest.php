@@ -31,6 +31,13 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends Mumsys_Unittest_Testcase
 
         $this->_dbConfig = $this->_configs['database'];
 
+        try {
+            $oDB = Mumsys_Db_Factory::getInstance($this->_context, $this->_configs['database']);
+            $oDB->connect();
+        } catch (Exception $ex) {
+            $this->markTestSkipped('Connection failure. Check DB config to connect to the db');
+        }
+
         $this->_dbDriver = new Mumsys_Db_Driver_Mysql_Mysqli($this->_context, $this->_dbConfig);
 
         $this->_object = $this->_dbDriver->query('SELECT 1+1 AS colname');

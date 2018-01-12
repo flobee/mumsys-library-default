@@ -28,8 +28,12 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_configs = MumsysTestHelper::getConfigs();
         $this->_configs['database']['type'] = 'mysql:mysqli';
 
-        $this->_object = Mumsys_Db_Factory::getInstance($this->_context, $this->_configs['database']);
-        $this->_object->connect();
+        try {
+            $this->_object = Mumsys_Db_Factory::getInstance($this->_context, $this->_configs['database']);
+            $this->_object->connect();
+        } catch (Exception $ex) {
+            $this->markTestSkipped('Connection failure. Check DB config to connect to the db');
+        }
 
         $this->_tempTable = 'mumsysunittesttemp';
         $this->_createTempTable($this->_tempTable);
