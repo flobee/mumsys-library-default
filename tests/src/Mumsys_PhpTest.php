@@ -360,26 +360,27 @@ class Mumsys_PhpTest
      */
     public function testArray_keys_search_recursive_check()
     {
-        $bigarray =  array(
-            'key1' =>
-                array(
-                    'key2' =>
-                        array(
-                            'a' => array( 'text'=>'something'),
-                            'b' => array( 'id'=>737),
-                            'c' => array( 'name'=>'me'),
-                        ),
-                        array(
-                            'a' => array( 'text'=>'something3'),
-                            'b' => array( 'id'=>3),
-                            'c' => array( 'name'=>'me3'),
-                        ),
-                )
+        $bigarray = array(
+            'key1' => array(
+                'key2' => array(
+                    'a' => array('text' => 'something'),
+                    'b' => array('id' => 737),
+                    'c' => array('name' => 'me'),
+                ),
+                0 => array(
+                    'a' => array('text' => 'something3'),
+                    'b' => array('id' => 3),
+                    'c' => array('name' => 'me3'),
+                ),
+            )
         );
-        $matchedKeys = Mumsys_Php::array_keys_search_recursive_check( 'name', $bigarray);
+
+        $matchedKeys1 = Mumsys_Php::array_keys_search_recursive_check( 'key1', $bigarray);
+        $matchedKeys2 = Mumsys_Php::array_keys_search_recursive_check( 'name', $bigarray);
         $notFound = Mumsys_Php::array_keys_search_recursive_check('noKey', $bigarray);
 
-        $this->assertTrue($matchedKeys);
+        $this->assertTrue($matchedKeys1);
+        $this->assertTrue($matchedKeys2);
         $this->assertFalse($notFound);
     }
 
