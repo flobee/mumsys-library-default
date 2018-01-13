@@ -135,7 +135,7 @@ class Mumsys_Multirename
         if (PHP_SAPI === 'cli' && in_array('root', $_SERVER)) {
             $message = 'Something which belongs to "root" is forbidden. '
                 . 'Sorry! Use a different user!' . PHP_EOL;
-            throw new Mumsys_Multirename_Exception($message);
+            $logger->log($message, 4);
         }
 
         $this->_pathHome = is_dir($_SERVER['HOME']) ? $_SERVER['HOME'] : $this->_pathHome;
