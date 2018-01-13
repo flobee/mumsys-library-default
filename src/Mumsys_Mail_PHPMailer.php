@@ -84,8 +84,8 @@ class Mumsys_Mail_PHPMailer
         require_once $dir . '/PHPMailer.php';
         require_once $dir . '/SMTP.php';
         require_once $dir . '/Exception.php';
-        
-        $this->_mailer = new PHPMailer(true);
+
+        $this->_mailer = new PHPMailer\PHPMailer\PHPMailer;
 
         $this->_config = $config;
 
