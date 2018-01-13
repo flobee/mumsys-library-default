@@ -1049,10 +1049,14 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function compileQueryExpression( array $expression )
     {
-        list($operator, $keyval) = each($expression);
+        //list($operator, $keyval) = each($expression);
+        $operator = key($expression);
+        $keyval = current($expression);
 
         if ( is_array($keyval) && $operator !== '_' ) {
-            list($key, $value) = each($keyval);
+            //list($key, $value) = each($keyval);
+            $key = key($keyval);
+            $value = current($keyval);
             if ( !is_string($key) ) {
                 $msg = sprintf(
                     'Invalid expression key "%1$s" for where expression: '
@@ -1708,7 +1712,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     {
         if ( $withKeys ) {
             $r = array();
-            while ( list($key, $value) = each($array) ) {
+            //while ( list($key, $value) = each($array) ) {
+            foreach($array as $key => $value) {
                 // e.g.: value = "db.col IS NOT NULL"
                 if ( $value === false ) {
                     $_keyValWrap = '';
