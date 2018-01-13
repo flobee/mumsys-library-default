@@ -291,58 +291,6 @@ class Mumsys_Php
 
 
     /**
-     * Get the contens of a specified file
-     *
-     * @deprecated since version 2016-07-01
-     *
-     * This function is similar to file(), except that file_get_contents() returns
-     * the file in a string, starting at the specified offset up to maxlen bytes.
-     * On failure, file_get_contents() will return FALSE.
-     *
-     * @desc file_get_contents( string $filename  [, int $flags = 0  [, resource $context
-     * [, int $offset = -1  [, int $maxlen = -1  ]]]] )
-     *
-     * @param string $path Location of the file to get to contents
-     * @param mixed $flags Optional Flag to be set. Available flags:
-     * # FILE_USE_INCLUDE_PATH   	 Search for filename  in the include directory.
-     * See include_path for more information.
-     * # FILE_TEXT 	As of PHP 6, the default encoding of the read data is UTF-8.
-     * You can specify a different encoding by creating a custom context or by
-     * changing the default using stream_default_encoding(). This flag cannot be
-     * used with FILE_BINARY.
-     * # FILE_BINARY 	With this flag, the file is read in binary mode. This is
-     * the default setting and cannot be used with FILE_TEXT.
-     *
-     * Note: Prior to PHP 6, this parameter is called use_include_path  and is a
-     * bool. As of PHP 5 the FILE_USE_INCLUDE_PATH can be used to trigger
-     * include path  search.
-     * The value of flags  can be any combination of the following flags (with
-     * some restrictions), joined with the binary OR (|) operator.
-     *
-     * @param resource $stream_context A valid context resource created with stream_context_create().
-     * If you don't need to use a custom context, you can skip this parameter by NULL.
-     * @param <type> $offset
-     * @param <type> $maxlen
-     *
-     * @return string|false Returns the contents of the given file or false on error (too old php version for this)
-     */
-    public static function file_get_contents( $path, $flags = 0, $streamContext = null, $offset = -1, $maxlen = -1 )
-    {
-        $data = false;
-
-        if ( PHP_VERSION_ID >= '40300' ) {
-            if ( $maxlen >= 0 ) {
-                $data = file_get_contents($path, $flags, $streamContext, $offset, $maxlen);
-            } else {
-                $data = file_get_contents($path, $flags, $streamContext, $offset);
-            }
-        }
-
-        return $data;
-    }
-
-
-    /**
      * Get a php.ini variable and return a more technical useable value
      *
      * E.g: If memory limit returns 32M -> 32*1048576 will be returned
@@ -386,7 +334,7 @@ class Mumsys_Php
      *
      * @param string $value Size string. E.g: 1G 15K 10b
      * @param boolean $binType IEC prefix calculation or not. Not implemented
-     * yet for false.
+     * yet.
      *
      * @return integer Number of bytes.
      * @throws Mumsys_Php_Exception If detection/ calculation fails
@@ -418,17 +366,17 @@ class Mumsys_Php
 
             case 'g':
             case 'G':
-                $value = $value * 1073741824;
+                $value = (int) $value * 1073741824;
                 break;
 
             case 't':
             case 'T':
-                $value = $value * 1099511627776;
+                $value = (int) $value * 1099511627776;
                 break;
 
             case 'p':
             case 'P':
-                $value = $value * 1125899906842624;
+                $value = (int) $value * 1125899906842624;
                 break;
 
             default:

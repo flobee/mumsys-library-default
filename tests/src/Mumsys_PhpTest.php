@@ -3,7 +3,8 @@
 /**
  * Test class for php class.
  */
-class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
+class Mumsys_PhpTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Php
@@ -121,19 +122,7 @@ class Mumsys_PhpTest extends Mumsys_Unittest_Testcase
         $this->assertFalse( Mumsys_Php::file_exists('file://noWay') );
     }
 
-    /**
-     * test_file_get_contents
-     */
-    public function test_file_get_contents()
-    {
-        $max = 10;
-        $c1 = file_get_contents(__FILE__);
-        $c2 = file_get_contents(__FILE__, null, null, null, $max);
-
-        $this->assertEquals($c1, Mumsys_Php::file_get_contents(__FILE__) ) ;
-        $this->assertEquals($c2, Mumsys_Php::file_get_contents(__FILE__, null, null, null, $max) ) ;
-    }
-
+    
     /**
      * @covers Mumsys_Php::ini_get
      * @runInSeparateProcess
