@@ -28,8 +28,8 @@ class Mumsys_Mail_PHPMailerTest
      */
     protected function setUp()
     {
-        $this->markTestSkipped('New phpmailer version needs to be checked/ implemented');
-        
+        //$this->markTestSkipped('New phpmailer version needs to be checked/ implemented');
+
         $this->_version = '3.0.1';
 
         $this->_config = array(
@@ -87,16 +87,12 @@ class Mumsys_Mail_PHPMailerTest
 
     /**
      * @covers Mumsys_Mail_PHPMailer::getMailer
-     * @covers Mumsys_Mail_PHPMailer::setMailer
      */
-    public function testGetSetMailer()
+    public function testGetMailer()
     {
         $actual = $this->_object->getMailer();
-        $this->_object->setMailer($actual);
-        $expected = $this->_object->getMailer();
 
-        $this->assertInstanceOf('PHPMailer', $actual);
-        $this->assertEquals($expected, $actual);
+        $this->assertInstanceOf('PHPMailer\PHPMailer\PHPMailer', $actual);
     }
 
 

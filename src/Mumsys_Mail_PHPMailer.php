@@ -183,18 +183,6 @@ class Mumsys_Mail_PHPMailer
         return $this->_mailer;
     }
 
-
-    /**
-     * Sets the mail driver to be used.
-     *
-     * @param object $mailer Mailer driver e.g.: PHPMailer
-     */
-    public function setMailer( $mailer )
-    {
-        $this->_mailer = $mailer;
-    }
-
-
     /**
      * Adds a reciepient (To) address.
      *
