@@ -782,7 +782,7 @@ class Mumsys_Multirename
      */
     protected function _getActionHistory( $path, $index = -1 )
     {
-        $result = false;
+        $result = array();
         $file = $path . $this->_historyFile;
 
         if (file_exists($file)) {
@@ -1289,6 +1289,8 @@ class Mumsys_Multirename
 //                echo 'paths where configs exists to upgrade:' . PHP_EOL;
 //                print_r($list);
         }
+
+        return true;
     }
 
 

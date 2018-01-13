@@ -134,6 +134,7 @@ class Mumsys_MultirenameTest
 
     /**
      * Test and also fill data for the code coverage.
+
      */
     public function testConstructor()
     {
@@ -144,11 +145,10 @@ class Mumsys_MultirenameTest
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
         $this->assertInstanceOf('Mumsys_Multirename', $this->_object);
 
+        // for CC
         $tmp = $_SERVER['USER'];
         $_SERVER['USER'] = 'root';
-        $regex = '/(Something which belongs to "root" is forbidden. Sorry! Use a different user!)/' . PHP_EOL;
-        $this->expectExceptionMessageRegExp($regex);
-        $this->expectException('Mumsys_Multirename_Exception');
+        //$regex = '/(Something which belongs to "root" is forbidden. Sorry! Use a different user!)/' . PHP_EOL;
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
         $_SERVER['USER'] = $tmp;
     }
@@ -465,6 +465,8 @@ class Mumsys_MultirenameTest
 
         $config['substitutions'] = 'multirenametestfile_-_17=multirenametestfile_-_16';
         $this->_object->run($config);
+
+        $this->assertTrue(true);
     }
 
 //    public function testRemoveHistory()
@@ -514,7 +516,7 @@ class Mumsys_MultirenameTest
 
         // config dir error
         $regex = '/(Invalid --path <your value>)/';
-        $this->expectExceptionMessageRegExp('Mumsys_Multirename_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
         $this->expectException('Mumsys_Multirename_Exception');
         $config['path'] = $this->_testsDir . '/tmp/dirNotExists';
         $this->_object->initSetup($config);
@@ -554,7 +556,7 @@ class Mumsys_MultirenameTest
     {
         $regex = '/(Missing --substitutions "<your value\/s>")/';
         $this->expectExceptionMessageRegExp($regex);
-        $this->expectExceptionMessageRegExp('Mumsys_Multirename_Exception');
+        $this->expectException('Mumsys_Multirename_Exception');
         $this->_config['substitutions'] = null;
         $this->_object->initSetup($this->_config);
     }
@@ -695,6 +697,7 @@ class Mumsys_MultirenameTest
     {
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
         $this->_object->install();
+        $this->_object->install(); // 4 CC
 
         $this->assertTrue(file_exists($this->_config['path']));
 
@@ -712,7 +715,9 @@ class Mumsys_MultirenameTest
         $_SERVER['HOME'] = $this->_oldHome;
 
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
-        $this->_object->upgrade();
+        $actual = $this->_object->upgrade();
+
+        $this->assertTrue($actual);
     }
 
 
