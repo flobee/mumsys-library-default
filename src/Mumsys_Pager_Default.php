@@ -286,7 +286,8 @@ class Mumsys_Pager_Default
                     'basiclink', 'showPageNumbers', 'showSummary', 'dynamic',
                     'slidersteps', 'cssClassName'
                 );
-                while ( list($key, $val) = each($params) ) {
+
+                foreach( $params as $key => $val ) {
                     if ( in_array($key, $defaults) ) {
                         $this->{'_' . $key } = $val;
                     } else {
