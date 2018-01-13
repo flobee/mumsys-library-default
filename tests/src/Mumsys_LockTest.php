@@ -51,10 +51,8 @@ class Mumsys_LockTest
     public function testLockException1()
     {
         $this->_object->lock();
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Exception',
-            '/(Can not lock! Lock "\/tmp\/Mumsys_Lock.php_default.lock" exists)/'
-        );
+        $this->expectExceptionMessageRegExp('/(Can not lock! Lock "\/tmp\/Mumsys_Lock.php_default.lock" exists)/');
+        $this->expectException('Mumsys_Exception');
         $this->_object->lock();
     }
 
@@ -63,9 +61,8 @@ class Mumsys_LockTest
     public function testLockException2()
     {
         $this->_object = new Mumsys_Lock('/root/nix.tmp');
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Exception', '/(Locking failt for file "\/root\/nix.tmp")/'
-        );
+        $this->expectExceptionMessageRegExp('/(Locking failt for file "\/root\/nix.tmp")/');
+        $this->expectException('Mumsys_Exception');
 
         $this->_object->lock();
     }
@@ -82,9 +79,8 @@ class Mumsys_LockTest
     {
         $tmpFile = '/tmp/.ICE-unix';
         $o = new Mumsys_Lock($tmpFile); //file with different owner
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Exception', '/(Unlock failt for: "' . str_replace('/', '\/', $tmpFile) . '")/'
-        );
+        $this->expectExceptionMessageRegExp('/(Unlock failt for: "' . str_replace('/', '\/', $tmpFile) . '")/');
+        $this->expectException('Mumsys_Exception');
         $o->unlock();
     }
 
@@ -102,9 +98,8 @@ class Mumsys_LockTest
     {
         $tmpFile = '/tmp/where/the/hell/are/you';
         $o = new Mumsys_Lock($tmpFile);
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Exception', '#(Lock directory "/tmp/where/the/hell/are/you" not exists)#i'
-        );
+        $this->expectExceptionMessageRegExp('#(Lock directory "/tmp/where/the/hell/are/you" not exists)#i');
+        $this->expectException('Mumsys_Exception');
         $o->isLocked();
     }
 

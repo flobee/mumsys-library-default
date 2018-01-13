@@ -78,9 +78,8 @@ class Mumsys_ConfigTest
 
         $this->assertEquals($expected1, $testvalue1);
 
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Config_Exception', '/(Config key "testkey" already exists)/i'
-        );
+        $this->expectExceptionMessageRegExp('/(Config key "testkey" already exists)/i');
+        $this->expectException('Mumsys_Config_Exception');
         $this->_object->register('testkey', new stdClass());
     }
 
@@ -96,7 +95,8 @@ class Mumsys_ConfigTest
 
     public function testLoad()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(Not implemented yet)/i');
+        $this->expectExceptionMessageRegExp('/(Not implemented yet)/i');
+        $this->expectException('Mumsys_Config_Exception');
         $this->_object->load('mumsys2');
     }
 

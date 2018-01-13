@@ -54,7 +54,8 @@ class Mumsys_RegistryTest
 
         // invalid key exception
         $regex = '/(Invalid initialisation key for a setter. A string is required!)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Exception');
         Mumsys_Registry::replace(new stdClass, 'new value');
     }
 
@@ -71,7 +72,8 @@ class Mumsys_RegistryTest
         $this->assertEquals('new value', $actual);
 
         // invalid key exception
-        $this->setExpectedExceptionRegExp('Mumsys_Registry_Exception','/(Registry key "unittest" exists)/i');
+        $this->expectExceptionMessageRegExp('/(Registry key "unittest" exists)/i');
+        $this->expectException('Mumsys_Registry_Exception');
         Mumsys_Registry::register($this->_key, 'new value');
     }
 

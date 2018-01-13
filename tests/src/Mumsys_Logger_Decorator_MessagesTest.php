@@ -148,7 +148,8 @@ class Mumsys_Logger_Decorator_MessagesTest
         $object = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
 
         $regex = '/(Level "99" unknown to set the message log level)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Logger_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Logger_Exception');
         $object->setMessageLoglevel(99);
     }
 

@@ -44,7 +44,8 @@ class Mumsys_ContextTest
      */
     public function test_get()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Context_Exception', '/("Mumsys_Config_Interface" not set)/i');
+        $this->expectExceptionMessageRegExp('/("Mumsys_Config_Interface" not set)/i');
+        $this->expectException('Mumsys_Context_Exception');
         $this->_object->getConfig();
     }
 
@@ -89,7 +90,8 @@ class Mumsys_ContextTest
 
         $this->assertInstanceOf('Mumsys_Session_Interface', $this->_object->getSession());
 
-        $this->setExpectedExceptionRegExp('Mumsys_Context_Exception', '/("Mumsys_Session_Interface" already set)/i');
+        $this->expectExceptionMessageRegExp('/("Mumsys_Session_Interface" already set)/i');
+        $this->expectException('Mumsys_Context_Exception');
         $this->_object->registerSession($session);
     }
 
@@ -117,7 +119,8 @@ class Mumsys_ContextTest
 //        $this->assertInstanceOf('Mumsys_Mvc_Display_Control_Abstract', $actual2);
 //
 //
-//        $this->setExpectedExceptionRegExp('Mumsys_Context_Exception', '/("Mumsys_Mvc_Display_Control_Interface" already set)/i');
+//        $this->expectExceptionMessageRegExp('/("Mumsys_Mvc_Display_Control_Interface" already set)/i');
+//        $this->expectException('Mumsys_Context_Exception');
 //        $this->_object->registerDisplay($display2);
 //    }
 
@@ -163,7 +166,8 @@ class Mumsys_ContextTest
 
         $this->assertInstanceOf('Mumsys_Logger_Interface', $this->_object->getLogger());
 
-        $this->setExpectedExceptionRegExp('Mumsys_Context_Exception', '/("Mumsys_Logger_Interface" already set)/');
+        $this->expectExceptionMessageRegExp('/("Mumsys_Logger_Interface" already set)/');
+        $this->expectException('Mumsys_Context_Exception');
         $this->_object->registerLogger($logger);
     }
 
@@ -184,8 +188,9 @@ class Mumsys_ContextTest
         $this->assertEquals($value, $actual1);
         $this->assertFalse($actual2);
 
-        $message = '/(Generic interface "imNotSetInterface" not found)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Context_Exception', $message);
+        $regex = '/(Generic interface "imNotSetInterface" not found)/i';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Context_Exception');
         $this->_object->getGeneric('imNotSetInterface', null);
     }
 
@@ -199,7 +204,8 @@ class Mumsys_ContextTest
         $interface = 'badInterface';
         $value = new stdClass();
 
-        $this->setExpectedExceptionRegExp('Mumsys_Context_Exception', '/(Value does not implement the interface "badInterface")/i');
+        $this->expectExceptionMessageRegExp('/(Value does not implement the interface "badInterface")/i');
+        $this->expectException('Mumsys_Context_Exception');
         $this->_object->registerGeneric($interface, $value);
     }
 

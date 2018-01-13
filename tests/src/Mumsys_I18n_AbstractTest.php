@@ -48,7 +48,8 @@ class Mumsys_I18n_AbstractTest
     {
         $this->setUp();
 
-        $this->setExpectedExceptionRegExp('Mumsys_I18n_Exception', '/(Invalid locale "biglocale")/i');
+        $this->expectExceptionMessageRegExp('/(Invalid locale "biglocale")/i');
+        $this->expectException('Mumsys_I18n_Exception');
         $o = new Mumsys_I18n_Default('biglocale');
     }
 
@@ -65,7 +66,8 @@ class Mumsys_I18n_AbstractTest
 
         $this->assertEquals($expected, $actual);
 
-        $this->setExpectedExceptionRegExp('Mumsys_I18n_Exception', '/(Invalid locale "invalid")/');
+        $this->expectExceptionMessageRegExp('/(Invalid locale "invalid")/');
+        $this->expectException('Mumsys_I18n_Exception');
         $this->_object->setlocale('invalid');
     }
 

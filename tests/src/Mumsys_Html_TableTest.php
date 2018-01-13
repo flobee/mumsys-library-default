@@ -53,7 +53,8 @@ class Mumsys_Html_TableTest
     public function test_construct()
     {
         $this->_object = new Mumsys_Html_Table(array('width' => '600'));
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception', '/(No content found to create a table)/');
+        $this->expectExceptionMessageRegExp('/(No content found to create a table)/');
+        $this->expectException('Mumsys_Html_Exception');
         $actual = $this->_object->getSource();
     }
 
@@ -338,7 +339,8 @@ class Mumsys_Html_TableTest
         $this->assertEquals($expected2, $actual2);
         $this->assertEquals($expected3, $actual3);
 
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception', '/(Invalid row value to set col contents)/');
+        $this->expectExceptionMessageRegExp('/(Invalid row value to set col contents)/');
+        $this->expectException('Mumsys_Html_Exception');
         $this->_object->setColContents('str1', 'invalidRowID', 1);
     }
 
@@ -349,7 +351,8 @@ class Mumsys_Html_TableTest
      */
     public function testGetSetColContentsException2()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception', '/(Invalid column value to set col contents)/');
+        $this->expectExceptionMessageRegExp('/(Invalid column value to set col contents)/');
+        $this->expectException('Mumsys_Html_Exception');
         $this->_object->setColContents('str1', 1, 'invalidColID');
     }
 
@@ -404,7 +407,8 @@ class Mumsys_Html_TableTest
         $this->assertEquals(htmlentities($expected1), $this->_object->getSource());
 
         $regex = '/(Column key not exists to change a color for rows: "3")/';
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Html_Exception');
         $this->_object->setAltRowColor($this->_colors, 3);
         $this->_object->setContent($data1);
         $this->_object->toHtml();
@@ -453,7 +457,8 @@ class Mumsys_Html_TableTest
      */
     public function testGetHtmlException()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception', '/(No content found to create a table)/');
+        $this->expectExceptionMessageRegExp('/(No content found to create a table)/');
+        $this->expectException('Mumsys_Html_Exception');
         $this->_object->getHtml();
     }
 
@@ -465,7 +470,8 @@ class Mumsys_Html_TableTest
      */
     public function testToHtmlException()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception', '/(No content found to create a table)/');
+        $this->expectExceptionMessageRegExp('/(No content found to create a table)/');
+        $this->expectException('Mumsys_Html_Exception');
         $this->_object->toHtml();
     }
 

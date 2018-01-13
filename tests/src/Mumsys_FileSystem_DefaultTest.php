@@ -148,7 +148,8 @@ class Mumsys_FileSystem_DefaultTest
         $this->assertEquals($expected1, $actual1);
         $this->assertEquals($expected1, $actual2);
 
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', '/(File "\/i\/don\/t\/exist" not found)/');
+        $this->expectExceptionMessageRegExp('/(File "\/i\/don\/t\/exist" not found)/');
+        $this->expectException('Mumsys_FileSystem_Exception');
         $actual2 = $this->_object->getFileDetails('/i/don/t/exist');
     }
 
@@ -294,8 +295,9 @@ class Mumsys_FileSystem_DefaultTest
         $this->assertEquals($expected3, $actual3);
 
         // source is a dir exception
-        $msg = '/(Source file: A directory was found. only file copying is implemented)/';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $msg);
+        $regex = '/(Source file: A directory was found. only file copying is implemented)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->copy($this->_testsDir . '/tmp/', '/home/');
     }
     /**
@@ -304,7 +306,8 @@ class Mumsys_FileSystem_DefaultTest
     public function testCopyException()
     {
         $regex = '/(Copy error)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->copy($this->_testdirs['file'], '/');
     }
 
@@ -339,8 +342,9 @@ class Mumsys_FileSystem_DefaultTest
         $this->assertEquals($expected3, $actual3);
 
         // source emty exception
-        $msg = '/(Rename failt for reason: Source "" is no directory and no file)/';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $msg);
+        $regex = '/(Rename failt for reason: Source "" is no directory and no file)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->rename('', $this->_testsDir . '/tmp/something');
     }
 
@@ -392,10 +396,11 @@ class Mumsys_FileSystem_DefaultTest
 
         // test realpath exception + last, catched exception
         unlink($this->_testdirs['dir']);
-        $msg = '/(Linking failt for source: "'. str_replace('/', '\/', $this->_testsDir) . '\/tmp"; target: "'
+        $regex = '/(Linking failt for source: "'. str_replace('/', '\/', $this->_testsDir) . '\/tmp"; target: "'
             . str_replace('/', '\/', $this->_testsDir) . '\/tmp\/unittest-mkdir\/mkdirs". '
             . 'Real path not found for "'. str_replace('/', '\/', $this->_testsDir) . '\/tmp\/unittest-mkdir")/';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $msg);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->link($this->_testsDir . '/tmp', $this->_testdirs['dirs'], 'soft', 'rel', false);
     }
 
@@ -405,13 +410,14 @@ class Mumsys_FileSystem_DefaultTest
     public function testLinkException()
     {
         // invalid link type
-        $msg = '/('
+        $regex = '/('
             . 'Linking failt for source: "'.str_replace('/', '\/', $this->_testsDir)
             . '\/tmp"; target: "' . str_replace('/', '\/', $this->_testsDir)
             . '\/tmp\/unittest-mkdir"\. Invalid link type "invalidType" '
             . '\(Use soft\|hard\)'
             . ')/';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $msg);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->link($this->_testsDir . '/tmp', $this->_testdirs['dir'], 'invalidType', 'rel', false);
     }
 
@@ -464,8 +470,9 @@ class Mumsys_FileSystem_DefaultTest
         $this->assertTrue(file_exists($dir));
         $this->assertFalse( $this->_object->mkdir($dir) ); // exists error
 
-        $exMesg = '/(Can not create dir: "\/xyz" mode: "755". Message: mkdir\(\): Permission denied)/';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $exMesg);
+        $regex = '/(Can not create dir: "\/xyz" mode: "755". Message: mkdir\(\): Permission denied)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->mkdir('/xyz');
     }
 

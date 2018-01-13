@@ -331,7 +331,8 @@ class Mumsys_Variable_Item_AbstractTest
         $this->_object->stateSet( 'onEdit' );
         $this->assertEquals( 'onEdit', $this->_object->stateGet() );
 
-        $this->setExpectedExceptionRegExp('Mumsys_Variable_Item_Exception', '/(State "xxx" unknown)/i');
+        $this->expectExceptionMessageRegExp('/(State "xxx" unknown)/i');
+        $this->expectException('Mumsys_Variable_Item_Exception');
         $this->_object->stateSet( 'xxx' );
     }
 

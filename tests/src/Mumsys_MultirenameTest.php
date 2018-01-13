@@ -147,7 +147,8 @@ class Mumsys_MultirenameTest
         $tmp = $_SERVER['USER'];
         $_SERVER['USER'] = 'root';
         $regex = '/(Something which belongs to "root" is forbidden. Sorry! Use a different user!)/' . PHP_EOL;
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Multirename_Exception');
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
         $_SERVER['USER'] = $tmp;
     }
@@ -512,8 +513,9 @@ class Mumsys_MultirenameTest
         $this->assertEquals($expected2, $actual2);
 
         // config dir error
-        $msg = '/(Invalid --path <your value>)/';
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $msg);
+        $regex = '/(Invalid --path <your value>)/';
+        $this->expectExceptionMessageRegExp('Mumsys_Multirename_Exception', $regex);
+        $this->expectException('Mumsys_Multirename_Exception');
         $config['path'] = $this->_testsDir . '/tmp/dirNotExists';
         $this->_object->initSetup($config);
     }
@@ -524,8 +526,9 @@ class Mumsys_MultirenameTest
      */
     public function testInitSetupException2()
     {
-        $msg = '/(Invalid --test value)/';
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $msg);
+        $regex = '/(Invalid --test value)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Multirename_Exception');
         $this->_config['test'] = 'wrongValue';
         $this->_object->initSetup($this->_config);
     }
@@ -536,8 +539,9 @@ class Mumsys_MultirenameTest
      */
     public function testInitSetupException3()
     {
-        $msg = '/(Missing --fileextensions "<your value\/s>")/';
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $msg);
+        $regex = '/(Missing --fileextensions "<your value\/s>")/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Multirename_Exception');
         $this->_config['fileextensions'] = null;
         $this->_object->initSetup($this->_config);
     }
@@ -548,8 +552,9 @@ class Mumsys_MultirenameTest
      */
     public function testInitSetupException4()
     {
-        $msg = '/(Missing --substitutions "<your value\/s>")/';
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $msg);
+        $regex = '/(Missing --substitutions "<your value\/s>")/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectExceptionMessageRegExp('Mumsys_Multirename_Exception');
         $this->_config['substitutions'] = null;
         $this->_object->initSetup($this->_config);
     }
@@ -618,7 +623,8 @@ class Mumsys_MultirenameTest
     public function testGetConfigException()
     {
         $regex = '/(Could not read config in path: "' . str_replace('/', '\/', $this->_config['path']) . '")/';
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Multirename_Exception');
         $this->_object->getConfig($this->_config['path']);
     }
 
@@ -633,7 +639,8 @@ class Mumsys_MultirenameTest
 
         // invalid path
         $regex = '/(Invalid --from-config <your value> parameter. Path not found)/';
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Multirename_Exception');
         $config['from-config'] = '/hello/';
         $this->_object->run($config);
     }
@@ -694,7 +701,8 @@ class Mumsys_MultirenameTest
         $_SERVER['HOME'] = '/root/';
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
         $regex = '/(Can not create dir: "\/root\/.multirename" mode: "755". Message: mkdir\(\): Permission denied)/';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->install();
     }
 

@@ -108,7 +108,8 @@ class Mumsys_Logger_DefaultTest
 //    {
 //        $this->_object->setLoglevel(3);
 //
-//        $this->setExpectedExceptionRegExp('Mumsys_Logger_Exception', '/(Level unknown "9" to set the log level)/');
+//        $this->expectExceptionMessageRegExp('/(Level unknown "9" to set the log level)/');
+//        $this->expectException('Mumsys_Logger_Exception');
 //        $this->_object->setLoglevel(9);
 //    }
 //
@@ -117,9 +118,8 @@ class Mumsys_Logger_DefaultTest
 //    {
 //        $this->_object->setMessageLoglevel(3);
 //
-//        $this->setExpectedExceptionRegExp(
-//            'Mumsys_Logger_Exception', '/(Level unknown "9" to set the message log level)/'
-//        );
+//        $this->expectExceptionMessageRegExp('/(Level unknown "9" to set the message log level)/');
+//        $this->expectException('Mumsys_Logger_Exception' );
 //        $this->_object->setMessageLoglevel(9);
 //    }
 //
@@ -198,7 +198,7 @@ class Mumsys_Logger_DefaultTest
 //
 //    public function testLogException()
 //    {
-//        $this->setExpectedExceptionRegExp('PHPUnit_Framework_Error_Notice');
+//        $this->expectException('PHPUnit_Framework_Error_Notice');
 //        $this->_object->log('invalid log level', 99);
 //    }
 //
@@ -236,7 +236,8 @@ class Mumsys_Logger_DefaultTest
 //    {
 //        $opts = $this->_opts;
 //        $opts['lineFormat'] = '';
-//        $this->setExpectedExceptionRegExp('Mumsys_Logger_Exception', '/(Log format empty)/i');
+//        $this->expectExceptionMessageRegExp('/(Log format empty)/i');
+//        $this->expectException('Mumsys_Logger_Exception');
 //
 //        $object = new Mumsys_Logger_Default($opts, $this->_writer);
 //    }
@@ -244,7 +245,8 @@ class Mumsys_Logger_DefaultTest
 //
 //    public function testWrite()
 //    {
-//        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
+//        $this->expectException('Mumsys_File_Exception');
+//        $this->expectExceptionMessageRegExp(
 //            '#(Can not write to file: "' . $this->_testsDir . '/tmp/Mumsys_LoggerTest_defaultfile.test". IsOpen: "Yes", Is writeable: "Yes")#i');
 //        $this->_object->write($this);
 //    }

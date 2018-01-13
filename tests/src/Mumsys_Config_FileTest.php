@@ -130,7 +130,8 @@ class Mumsys_Config_FileTest
         $this->assertEquals('test', $actual);
         $this->assertEquals($expected3, $actual3);
 
-        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(Config key "tests\/somevalues" already exists)/i');
+        $this->expectExceptionMessageRegExp('/(Config key "tests\/somevalues" already exists)/i');
+        $this->expectException('Mumsys_Config_Exception');
         $this->_object->register('tests/somevalues', array());
     }
 
@@ -142,7 +143,8 @@ class Mumsys_Config_FileTest
     {
         $this->_object->addPath(__DIR__ . '/../config');
 
-        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(Path not found: "(.*)")/i');
+        $this->expectExceptionMessageRegExp('/(Path not found: "(.*)")/i');
+        $this->expectException('Mumsys_Config_Exception');
         $this->_object->addPath(__DIR__ . '/config');
     }
 
@@ -152,7 +154,8 @@ class Mumsys_Config_FileTest
      */
     public function testLoad()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Config_Exception', '/(Not implemented yet)/i');
+        $this->expectExceptionMessageRegExp('/(Not implemented yet)/i');
+        $this->expectException('Mumsys_Config_Exception');
         $this->_object->load();
     }
 

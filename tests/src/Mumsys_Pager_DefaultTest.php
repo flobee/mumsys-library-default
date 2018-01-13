@@ -65,7 +65,8 @@ class Mumsys_Pager_DefaultTest
         $this->assertEquals($expected, $actual);
 
         $regex = '/(Invalid parameter "test" found)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Pager_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Pager_Exception');
         new Mumsys_Pager_Default(array('test'=> 'value'));
     }
 

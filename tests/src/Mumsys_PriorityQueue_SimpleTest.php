@@ -61,7 +61,8 @@ class Mumsys_PriorityQueue_SimpleTest
     {
         $this->_object->add('AAA', 'AAA');
 
-        $this->setExpectedExceptionRegExp('Mumsys_PriorityQueue_Exception', '/(Identifier "AAA" already set)/i');
+        $this->expectExceptionMessageRegExp('/(Identifier "AAA" already set)/i');
+        $this->expectException('Mumsys_PriorityQueue_Exception');
         $this->_object->add('AAA', 'AAA');
     }
 
@@ -99,7 +100,8 @@ class Mumsys_PriorityQueue_SimpleTest
      */
     public function testAddExtendedExeption()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_PriorityQueue_Exception', '/(Position way "WayNotExists" not implemented)/i');
+        $this->expectExceptionMessageRegExp('/(Position way "WayNotExists" not implemented)/i');
+        $this->expectException('Mumsys_PriorityQueue_Exception');
         $this->_object->add('AAA', 'AAA', 'WayNotExists', 'default');
     }
 

@@ -169,8 +169,8 @@ class Mumsys_Variable_Manager_DefaultTest
             $this->assertFalse($actual);
         }
 
-        $this->setExpectedExceptionRegExp('Mumsys_Variable_Manager_Exception',
-            '/(Type "unittest" not implemented)/i');
+        $this->expectExceptionMessageRegExp('/(Type "unittest" not implemented)/i');
+        $this->expectException('Mumsys_Variable_Manager_Exception');
         $item->setType('unittest');
         $this->_object->validateType($item);
     }
@@ -353,8 +353,8 @@ class Mumsys_Variable_Manager_DefaultTest
 
         $this->assertEquals($item, $this->_object->getItem('user2'));
 
-        $this->setExpectedExceptionRegExp('Mumsys_Variable_Manager_Exception',
-            '/(Item "username" already set)/i');
+        $this->expectExceptionMessageRegExp('/(Item "username" already set)/i');
+        $this->expectException('Mumsys_Variable_Manager_Exception');
         $this->_object->registerItem('username', $item);
     }
 
@@ -468,10 +468,8 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->assertEquals('unittest label', $item->getLabel());
 
 
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Variable_Manager_Exception',
-            '/(Set item attributes for "unittest" not implemented)/i'
-        );
+        $this->expectExceptionMessageRegExp('/(Set item attributes for "unittest" not implemented)/i');
+        $this->expectException('Mumsys_Variable_Manager_Exception');
         $attributes = array('unittest' => 'throw an exception');
         $this->_object->setAttributes($attributes);
     }

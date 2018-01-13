@@ -76,9 +76,11 @@ class Mumsys_FileTest
     {
         $this->_object->setFile($this->_fileNotOk);
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
-            '/(Can not open file "'. str_replace('/', '\/', $this->_testsDir) . '\/tmp\/notExists\/file.tmp" '
-            . 'with mode "w\+". Directory is writeable: "No", readable: "No")/');
+        $regex = '/(Can not open file "'. str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/notExists\/file.tmp" with mode "w\+". Directory is '
+            . 'writeable: "No", readable: "No")/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_File_Exception');
 
         $this->_object->open();
     }
@@ -105,9 +107,11 @@ class Mumsys_FileTest
     {
         $this->_object->close();
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
-            '/(File not open. Can not write to file: "'. str_replace('/', '\/', $this->_testsDir)
-            . '\/tmp\/Mumsys_FileTest.php.tmp".)/');
+        $regex = '/(File not open. Can not write to file: "'
+            . str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/Mumsys_FileTest.php.tmp".)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_File_Exception');
         $x = $this->_object->write('hello world');
     }
 
@@ -127,8 +131,11 @@ class Mumsys_FileTest
         $this->assertTrue($o->isReadable());
         $this->assertFalse($o->isWriteable());
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception', '/(File not writeable: '
-            . '"'. str_replace('/', '\/', $this->_testsDir) . '\/tmp\/Mumsys_FileTest.php.tmp".)/');
+        $regex = '/(File not writeable: "'
+            . str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/Mumsys_FileTest.php.tmp".)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_File_Exception');
         $x = $o->write('hello world');
     }
 
@@ -141,9 +148,12 @@ class Mumsys_FileTest
         $o = new Mumsys_File(array('file' => $this->_fileOk, 'way' => 'r'));
         $o->setFile($this->_fileOk);
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
-            '/(Can not write to file: "'. str_replace('/', '\/', $this->_testsDir) . '\/tmp\/Mumsys_FileTest.php.tmp". '
-            . 'IsOpen: "Yes", Is writeable: "Yes".)/');
+        $regex = '/(Can not write to file: "'
+            . str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/Mumsys_FileTest.php.tmp". '
+            . 'IsOpen: "Yes", Is writeable: "Yes".)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_File_Exception');
         $x = $o->write($this);
     }
 
@@ -171,8 +181,11 @@ class Mumsys_FileTest
         $o = new Mumsys_File(array('way' => 'w'));
         $o->setFile($this->_fileNotOk);
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
-            '/(File not open. Can not read from file: "'.str_replace('/', '\/', $this->_testsDir) . '\/tmp\/notExists\/file.tmp".)/');
+        $regex = '/(File not open. Can not read from file: "'
+            . str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/notExists\/file.tmp".)/';
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException('Mumsys_File_Exception');
         $text1 = $o->read();
     }
 
@@ -193,9 +206,11 @@ class Mumsys_FileTest
         $this->assertFalse($o->isReadable());
         $this->assertTrue($o->isWriteable());
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
-            '/(File "'.str_replace('/', '\/', $this->_testsDir) . '\/tmp\/Mumsys_FileTest.php.tmp" not readable with mode "w". '
-            . 'Is writeable "Yes", readable: "No".)/');
+        $regex = '/(File "' . str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/Mumsys_FileTest.php.tmp" not readable with mode "w". '
+            . 'Is writeable "Yes", readable: "No".)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_File_Exception');
         $x = $o->read();
     }
 
@@ -205,8 +220,11 @@ class Mumsys_FileTest
     {
         $o = new Mumsys_File(array('file' => $this->_fileOk, 'way' => 'w'));
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
-            '/(Error when reading the file: "'.str_replace('/', '\/', $this->_testsDir) . '\/tmp\/Mumsys_FileTest.php.tmp". IsOpen: "Yes".)/');
+        $regex = '/(Error when reading the file: "'
+            . str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/Mumsys_FileTest.php.tmp". IsOpen: "Yes".)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_File_Exception');
         $text1 = $o->read();
     }
 
@@ -258,7 +276,8 @@ class Mumsys_FileTest
         $this->_object->write("hello world\nhello flobee");
 
         $o = new Mumsys_File(array('file' => $this->_fileOk, 'way' => 'r'));
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception', '/(Invalid mode)/');
+        $this->expectException('Mumsys_File_Exception');
+        $this->expectExceptionMessageRegExp('/(Invalid mode)/');
         $o->setMode('this is wrong');
     }
 

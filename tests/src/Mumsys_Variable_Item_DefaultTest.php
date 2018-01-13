@@ -86,7 +86,8 @@ class Mumsys_Variable_Item_DefaultTest
         $this->_object->setType('integer');
         $this->assertEquals('integer', $this->_object->getType());
 
-        $this->setExpectedExceptionRegExp('Mumsys_Variable_Item_Exception', '/Type "xxx" not implemented/i');
+        $this->expectExceptionMessageRegExp('/Type "xxx" not implemented/i');
+        $this->expectException('Mumsys_Variable_Item_Exception');
         $this->_object->setType('xxx');
     }
 

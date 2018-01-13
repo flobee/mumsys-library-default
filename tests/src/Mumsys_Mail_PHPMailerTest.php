@@ -221,10 +221,9 @@ class Mumsys_Mail_PHPMailerTest
     public function testAddAttachment()
     {
         $this->assertEquals(array(), $this->_object->getAttachments());
-        $this->setExpectedExceptionRegExp('phpmailerException',
-            '/(Could not access file: no\/location)/i');
-        $this->_object->addAttachment('no/location', 'somename', 'base64', 'txt',
-            'attachment');
+        $this->expectException('phpmailerException');
+        $this->expectExceptionMessageRegExp('/(Could not access file: no\/location)/i');
+        $this->_object->addAttachment('no/location', 'somename', 'base64', 'txt', 'attachment');
     }
 
 
@@ -300,8 +299,8 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testSend()
     {
-        $this->setExpectedExceptionRegExp('phpmailerException',
-            '/(You must provide at least one recipient email address.)/i');
+        $this->expectException('phpmailerException');
+        $this->expectExceptionMessageRegExp('/(You must provide at least one recipient email address.)/i');
         $this->_object->send();
     }
 

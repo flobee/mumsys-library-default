@@ -46,9 +46,8 @@ class Mumsys_Variable_Manager_FactoryTest
      */
     public function testCreateManagerException1()
     {
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Variable_Manager_Exception', '/(Invalid manager name: "1 - \$5DefaultExit")/i'
-        );
+        $this->expectExceptionMessageRegExp('/(Invalid manager name: "1 - \$5DefaultExit")/i');
+        $this->expectException('Mumsys_Variable_Manager_Exception');
         Mumsys_Variable_Manager_Factory::createManager('1 - $5DefaultExit');
     }
 
@@ -58,10 +57,8 @@ class Mumsys_Variable_Manager_FactoryTest
      */
     public function testCreateManagerException2()
     {
-        $this->setExpectedExceptionRegExp(
-            'Mumsys_Variable_Manager_Exception',
-            '/(Initialisation of "Mumsys_Variable_Manager_Xxx" failed. Not found\/ exists)/i'
-        );
+        $this->expectExceptionMessageRegExp('/(Initialisation of "Mumsys_Variable_Manager_Xxx" failed. Not found\/ exists)/i');
+        $this->expectException( 'Mumsys_Variable_Manager_Exception');
         Mumsys_Variable_Manager_Factory::createManager('xxx');
     }
 

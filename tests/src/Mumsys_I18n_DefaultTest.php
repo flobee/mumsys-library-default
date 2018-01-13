@@ -48,7 +48,8 @@ class Mumsys_I18n_DefaultTest
     {
         $this->setUp();
 
-        $this->setExpectedExceptionRegExp('Mumsys_I18n_Exception', '/(Invalid locale "biglocale")/i');
+        $this->expectExceptionMessageRegExp('/(Invalid locale "biglocale")/i');
+        $this->expectException('Mumsys_I18n_Exception');
         $o = new Mumsys_I18n_Default('biglocale');
     }
 
