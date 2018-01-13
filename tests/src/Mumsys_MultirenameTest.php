@@ -134,7 +134,7 @@ class Mumsys_MultirenameTest
 
     /**
      * Test and also fill data for the code coverage.
-
+     * @runInSeparateProcess
      */
     public function testConstructor()
     {
