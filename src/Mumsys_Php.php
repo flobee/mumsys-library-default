@@ -83,12 +83,6 @@ class Mumsys_Php
     public static $os;
 
     /**
-     * get_magic_quotes_gpc() value PHP < 7
-     * @var boolean
-     */
-    public static $getMagicQuotesGpc;
-
-    /**
      * Flag for array_keys_search_recursive()
      * @var mixed
      */
@@ -100,7 +94,6 @@ class Mumsys_Php
     public function __construct()
     {
         self::$os = strtoupper(substr(PHP_OS, 0, 3));
-        self::$getMagicQuotesGpc = false;
     }
 
 
@@ -142,10 +135,6 @@ class Mumsys_Php
     {
         switch ( $k )
         {
-            case 'get_magic_quotes_gpc':
-                self::$getMagicQuotesGpc = boolval($v);
-                break;
-
             default:
                 throw new Mumsys_Php_Exception(
                     '__set: "' . $k . '"="' . $v . '" not allowed.');
@@ -297,9 +286,8 @@ class Mumsys_Php
      *
      * @param string $key Key to get from php.ini
      *
-     * @return string|integer Returns the ini value or translated nummeric value if a
-     * nummeric value was detected or null if the key was not found
-     *
+     * @return string|integer Returns the ini value or translated numeric value
+     * if a numeric value was detected or null if the key was not found
      * @throws Mumsys_Php_Exception If detection/ calculation numeric values fails
      */
     public static function ini_get( $key )
@@ -311,15 +299,7 @@ class Mumsys_Php
             return null;
         }
 
-        try {
-            $result = self::str2bytes( $value, true );
-        }
-        catch ( Exception $ex ) {
-            if ( is_numeric( $value ) ) {
-                throw $ex;
-            }
-            $result = $value;
-        }
+        $result = self::str2bytes( $value, true );
 
         return $result;
     }

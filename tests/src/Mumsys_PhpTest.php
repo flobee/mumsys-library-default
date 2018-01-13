@@ -45,9 +45,7 @@ class Mumsys_PhpTest
     public function test__get()
     {
         $this->assertEquals( strtoupper(substr(PHP_OS,0,3)) , Mumsys_Php::$os );
-        $this->assertEquals( get_magic_quotes_gpc() , Mumsys_Php::$getMagicQuotesGpc );
         $this->assertEquals( $this->object->os , Mumsys_Php::$os );
-        $this->assertFalse($this->object->get_magic_quotes_gpc);
     }
 
     public function test__set()
@@ -150,16 +148,6 @@ class Mumsys_PhpTest
 
 
         ini_set('memory_limit', $oldLimit);
-    }
-
-    public function test_ini_getException()
-    {
-        // inside the exception w/o throwing it
-        $message = 'Detection of size failt or not implemented for "100000000X"';
-        $this->expectException( 'Mumsys_Php_Exception' );
-        $this->expectExceptionMessage( $message );
-//        $c = ini_set('memory_limit', '1000X');
-//        Mumsys_Php::ini_get( 'memory_limit' );
     }
 
 
