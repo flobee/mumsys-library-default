@@ -80,13 +80,11 @@ class Mumsys_Mail_PHPMailer
      */
     public function __construct( array $config )
     {
-        $dirs = array('../vendor/phpmailer/phpmailer', 'PHPMailer', 'libphp-phpmailer');
-        foreach ( $dirs as $dir ) {
-            if ( is_dir($dir) ) {
-                break;
-            }
-        }
-        require_once $dir . '/PHPMailerAutoload.php';
+        $dir = '../vendor/phpmailer/phpmailer/src';
+        require_once $dir . '/PHPMailer.php';
+        require_once $dir . '/SMTP.php';
+        require_once $dir . '/Exception.php';
+        
         $this->_mailer = new PHPMailer(true);
 
         $this->_config = $config;
