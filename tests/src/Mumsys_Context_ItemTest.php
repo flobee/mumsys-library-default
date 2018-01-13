@@ -244,7 +244,7 @@ class Mumsys_Context_ItemTest
         $value = new stdClass();
 
         $this->expectExceptionMessageRegExp('/(Value does not implement the interface "badInterface")/i');
-        $this->expectException('/(Value does not implement the interface "badInterface")/i');
+        $this->expectException('Mumsys_Context_Exception');
         $this->_object->registerGeneric($interface, $value);
     }
 

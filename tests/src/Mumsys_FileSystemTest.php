@@ -148,7 +148,7 @@ class Mumsys_FileSystemTest
         $this->assertEquals($expected1, $actual1);
         $this->assertEquals($expected1, $actual2);
 
-        $this->expectExceptionRegExp('/(File "\/i\/don\/t\/exist" not found)/');
+        $this->expectExceptionMessageRegExp('/(File "\/i\/don\/t\/exist" not found)/');
         $this->expectException('Mumsys_FileSystem_Exception');
         $actual2 = $this->_object->getFileDetails('/i/don/t/exist');
     }
@@ -297,7 +297,7 @@ class Mumsys_FileSystemTest
         // source is a dir exception
         $regex = '/(Source file: A directory was found. only file copying is '
             . 'implemented)/';
-        $this->expectExceptionRegExp($regex);
+        $this->expectExceptionMessageRegExp($regex);
         $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->copy($this->_testsDir . '/tmp/', '/home/');
     }
@@ -309,7 +309,7 @@ class Mumsys_FileSystemTest
     public function testCopyException()
     {
         $regex = '/(Copy error)/i';
-        $this->expectExceptionRegExp($regex);
+        $this->expectExceptionMessageRegExp($regex);
         $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->copy($this->_testdirs['file'], '/');
     }
@@ -346,7 +346,7 @@ class Mumsys_FileSystemTest
 
         // source emty exception
         $regex = '/(Rename failt for reason: Source "" is no directory and no file)/';
-        $this->expectExceptionRegExp($regex);
+        $this->expectExceptionMessageRegExp($regex);
         $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->rename('', $this->_testsDir . '/tmp/something');
     }
