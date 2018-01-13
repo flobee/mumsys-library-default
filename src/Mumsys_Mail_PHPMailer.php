@@ -40,7 +40,7 @@ class Mumsys_Mail_PHPMailer
 
     /**
      * Mail driver to be used.
-     * @var PHPMailer
+     * @var PHPMailer\PHPMailer\PHPMailer
      */
     private $_mailer;
 
