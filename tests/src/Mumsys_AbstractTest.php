@@ -86,7 +86,7 @@ class Mumsys_AbstractTest
             'Mumsys_Unittest_Testcase' => '- unknown version -',
         );
 
-        $this->assertEquals($expected, $actual);
+        $this->_checkVersionList($actual, $expected);
     }
 
 
@@ -97,12 +97,27 @@ class Mumsys_AbstractTest
     {
         $this->_object->checkKey('validkey');
 
-        
+
         $this->expectException('Mumsys_Exception');
         $regex = '/(Invalid initialisation key for a setter. '
             . 'A string is required)/';
         $this->expectExceptionMessageRegExp( $regex );
 
         $this->_object->checkKey( array('somekey') );
+    }
+
+
+    // --- helper -------------------------------------------------------------
+
+
+    private function _checkVersionList($allList, $myList )
+    {
+        foreach($myList as $className => $version ) {
+            $test = ($allList[$className] === $version);
+            $message = 'Failure: ' . $className . ':' . $allList[$className] . ' !== ' . $version;
+            $this->assertTrue($test, $message);
+        }
+
+        return true;
     }
 }

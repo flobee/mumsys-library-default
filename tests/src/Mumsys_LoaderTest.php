@@ -19,7 +19,7 @@ class Mumsys_LoaderTest
      */
     protected function setUp()
     {
-        $this->_version = '3.1.2';
+        $this->_version = '3.2.2';
         $this->object = new Mumsys_Loader;
     }
 
@@ -34,6 +34,9 @@ class Mumsys_LoaderTest
     }
 
 
+    /**
+     * @covers Mumsys_Loader::load
+     */
     public function testLoad()
     {
         $o3 = $this->object->load('Mumsys_Timer');
@@ -45,6 +48,9 @@ class Mumsys_LoaderTest
     }
 
 
+    /**
+     * @covers Mumsys_Loader::load
+     */
     public function testLoadException1()
     {
         $this->expectExceptionMessageRegExp('/(Could not load: "Mumsys_NoExists".)/');
@@ -53,6 +59,9 @@ class Mumsys_LoaderTest
     }
 
 
+    /**
+     * @covers Mumsys_Loader::load
+     */
     public function testLoadException2()
     {
         $this->expectExceptionMessageRegExp('/(Could not load: "Mumsys_Templates_Base".)/');
@@ -61,25 +70,49 @@ class Mumsys_LoaderTest
     }
 
 
+    /**
+     * @covers Mumsys_Loader::autoload
+     * @covers Mumsys_Loader::loadedClassesGet
+     */
     public function testAutoload()
     {
-        $this->object->autoload('Mumsys_Timer');
-        $this->assertTrue(class_exists('Mumsys_Timer', $autoload = true));
+        $this->object->autoload('Mumsys_Counter');
+
+        $this->assertTrue(class_exists('Mumsys_Counter', $autoload = false));
+
+        $loadedList = $this->object->loadedClassesGet();
+        $expectedList = array('Mumsys_Counter', 'Mumsys_Timer', 'Mumsys_Abstract');
+
+        $this->assertTrue( $this->_checkClassList($loadedList, $expectedList), 'Check class list failed' );
     }
 
-
+    /**
+     * @covers Mumsys_Loader::loadedClassesGet
+     */
     public function testLoadedClassesGet()
     {
-        $actual = $this->object->loadedClassesGet();
-        $expected = array('Mumsys_Timer' => 'Mumsys_Timer');
+        $loadedList = $this->object->loadedClassesGet('');
+        $expectedList = array('Mumsys_Counter', 'Mumsys_Timer', 'Mumsys_Abstract');
 
-        $this->assertEquals($expected['Mumsys_Timer'], $actual['Mumsys_Timer']);
+        $this->assertTrue( $this->_checkClassList($loadedList, $expectedList), 'Check class list failed' );
     }
 
 
-    public function testGetVersionID()
+    public function testVersion()
     {
         $this->assertEquals($this->_version, Mumsys_Loader::VERSION);
     }
 
+
+    // --- helper -------------------------------------------------------------
+
+
+    private function _checkClassList($list, $myList )
+    {
+        foreach($myList as $className) {
+            $this->assertTrue( isset($list[$className]),  $className . ' not found/ exists');
+        }
+
+        return true;
+    }
 }
