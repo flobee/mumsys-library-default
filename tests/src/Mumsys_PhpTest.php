@@ -122,7 +122,7 @@ class Mumsys_PhpTest
         $this->assertFalse( Mumsys_Php::file_exists('file://noWay') );
     }
 
-    
+
     /**
      * @covers Mumsys_Php::ini_get
      * @runInSeparateProcess
@@ -189,49 +189,6 @@ class Mumsys_PhpTest
         $actual = $this->object->str2bytes('1X');
     }
 
-
-    public function test_Addslashes()
-    {
-        //
-        // addslashes works different than Mumsys_Php::addslashes()!!
-        //
-
-        $get_magic_quotes_gpc = $this->object->get_magic_quotes_gpc;
-
-
-        $this->object->get_magic_quotes_gpc = 1;
-        $this->assertEquals('a\'b\'c', $this->object->addslashes('a\'b\'c') ); // ok
-        $this->assertEquals( addslashes('a\'b\'c'), $this->object->addslashes('a\\\'b\\\'c') );
-
-        $this->object->get_magic_quotes_gpc = 0;
-        $this->assertEquals('a\\\'b\\\'c', $this->object->addslashes('a\'b\'c') );
-        $this->assertEquals( addslashes('a\'b\'c'), $this->object->addslashes('a\'b\'c') );
-
-
-        $this->object->get_magic_quotes_gpc = $get_magic_quotes_gpc;
-    }
-
-    public function test_Stripslashes()
-    {
-        //
-        // addslashes works different than Mumsys_Php::addslashes()!!
-        //
-
-        $get_magic_quotes_gpc = $this->object->get_magic_quotes_gpc;
-
-
-        $this->object->get_magic_quotes_gpc = 1;
-        $this->assertEquals('a\'b\'c', $this->object->stripslashes('a\\\'b\\\'c') ); // ok
-        $this->assertEquals( stripslashes('a\'b\'c'), $this->object->stripslashes('a\\\'b\\\'c') );
-        $this->assertEquals( stripslashes('a\\\'b\\\'c'), $this->object->stripslashes('a\\\'b\\\'c') );
-
-        $this->object->get_magic_quotes_gpc = 0;
-        $this->assertEquals('a\\\'b\\\'c', $this->object->stripslashes('a\\\'b\\\'c') );
-        $this->assertEquals( stripslashes('a\\\\\\\'b\\\\\\\'c'), $this->object->stripslashes('a\\\'b\\\'c') );
-
-
-        $this->object->get_magic_quotes_gpc = $get_magic_quotes_gpc;
-    }
 
     public function testIn_string()
     {

@@ -393,45 +393,6 @@ class Mumsys_Php
 
 
     /**
-     * Quote string with slashes.
-     *
-     * If magic_quotes_gpc() is true the string will return or the escaped string.
-     *
-     * @param string $string String to add slashes if needed
-     * @return string Returns the escaped string or the string
-     */
-    public static function addslashes( $string )
-    {
-        if ( self::$getMagicQuotesGpc ) {
-            return $string;
-        } else {
-            return addslashes($string);
-        }
-    }
-
-
-    /**
-     * Un-quotes a quoted string.
-     *
-     * If magic_quotes_gpc() is true the string will return or the stripped
-     * string.
-     *
-     * @param string $string String to strrip slashes from
-     * @return string Returns a string with backslashes stripped off.
-     * \' becomes ' and so on. Double backslashes (\\) are made into a single
-     * backslash (\).
-     */
-    public static function stripslashes( $string )
-    {
-        if ( self::$getMagicQuotesGpc ) {
-            return stripslashes($string);
-        } else {
-            return $string;
-        }
-    }
-
-
-    /**
      * Check if a string is in another string.
      *
      * Alias like function of str(i)str()
