@@ -86,7 +86,7 @@ class Mumsys_Session_AbstractTest
         $this->_object->replace('key1', 'value1');
 
         $this->expectExceptionMessageRegExp('/(Session key "key1" exists)/');
-        $this->expectException('/(Session key "key1" exists)/');
+        $this->expectException('Mumsys_Session_Exception');
         $this->_object->register('key1', 'value1');
     }
 
