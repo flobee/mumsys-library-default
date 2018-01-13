@@ -111,9 +111,6 @@ class Mumsys_Php
             case 'os':
                 $return = self::$os;
                 break;
-            case 'get_magic_quotes_gpc':
-                $return = false;
-                break;
         }
 
         return $return;
