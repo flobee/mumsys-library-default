@@ -254,6 +254,7 @@ class Mumsys_Php_GlobalsTest
 
     /**
      * @covers Mumsys_Php_Globals::get
+     * @runInSeparateProcess
      */
     public function testGet()
     {
@@ -279,7 +280,10 @@ class Mumsys_Php_GlobalsTest
         $expected7 = $GLOBALS['unittest-global'] = 'test';
         $actual7 = $this->_object->get('unittest-global', 'no global');
 
-        $expected8 = is_array($_SERVER['argv']) ? $_SERVER['argv'][0] : null;
+        if (!isset($_SERVER['argv'][0]) ) {
+            $_SERVER['argv'][0] = 'test get';
+        }
+        $expected8 = (is_array($_SERVER['argv']) && isset($_SERVER['argv'][0]) )  ? $_SERVER['argv'][0] : null;
         $actual8 = $this->_object->get(0, 'no argv');
 
         $this->assertEquals($expected1, $actual1);
