@@ -45,8 +45,9 @@ class Mumsys_Session_Default
          * session_cache_expire(180);
          * echo $cache_expire = session_cache_expire();
          */
-        if ( ($sessionId = session_id()) === '' ) {
-            @session_start();
+
+        if ( ($sessionId = session_id()) == '' || !isset($_SESSION) ) {
+            session_start();
             $sessionId = session_id();
         }
 
