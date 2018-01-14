@@ -356,7 +356,7 @@ class Mumsys_PhpTest
 
 
     /**
-     * @todo method not really working
+     * @covers Mumsys_Php::array_keys_search_recursive_check
      */
     public function testArray_keys_search_recursive_check()
     {
@@ -469,44 +469,6 @@ class Mumsys_PhpTest
         $this->expectException('Mumsys_Exception');
         $this->expectExceptionMessageRegExp($message);
         $this->object->array_merge_recursive(array());
-    }
-
-
-    public function testCheck_disk_free_space()
-    {
-        $logfile = $this->_testsDir . '/logs/' . __FUNCTION__ . '.log';
-        $logOpts = array('logfile'=> $logfile);
-        $logger = new Mumsys_Logger_File($logOpts);
-
-        $cmdLine = 'df -a %1$s';
-        if (Mumsys_Php::$os == 'WIN') {
-            $cmdLine = 'c:/cygwin/bin/df.exe -a %1$s';
-        }
-
-        // basic call
-        $basicCall = Mumsys_Php::check_disk_free_space($this->_testsDir . '/tmp', $secCmp=2, $maxSize=92, $logger, $cmdLine);
-
-        // check cache return inside secCmp=60sec.
-        $chkCache = Mumsys_Php::check_disk_free_space($this->_testsDir . '/tmp', $secCmp=60, $maxSize=92, $logger, $cmdLine);
-
-        //disk space overflow in cache if disk usage < 1%
-        $overflow = Mumsys_Php::check_disk_free_space($this->_testsDir . '/tmp', $secCmp=1, $maxSize=1, $logger, $cmdLine);
-
-        // diskOverflowFirstRun
-        $tmp = Mumsys_Php::check_disk_free_space($path='/var', $secCmp=60, $maxSize=2, $logger, $cmdLine);
-
-        // wrong path
-        $tmp = Mumsys_Php::check_disk_free_space($path='/123', $secCmp=60, $maxSize=2, $logger, $cmdLine);
-
-        // error accessing a path
-        $err = Mumsys_Php::check_disk_free_space($path='/root', $secCmp=60, $maxSize=2, $logger, 'test %1$s');
-
-        @unlink($logfile);
-
-        $this->assertFalse($basicCall);
-        $this->assertFalse($chkCache);
-        $this->assertTrue($overflow);
-        $this->assertTrue($err);
     }
 
 
