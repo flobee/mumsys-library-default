@@ -21,6 +21,15 @@ class Mumsys_Request_AbstractTest
      */
     protected $_options;
 
+    /**
+     * @var string
+     */
+    protected $_version;
+
+    /**
+     * @var array
+     */
+    protected $_versions;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -28,6 +37,13 @@ class Mumsys_Request_AbstractTest
      */
     protected function setUp()
     {
+        $this->_version = '1.0.1';
+        $this->_versions = array(
+            'Mumsys_Request_Abstract' => '1.0.1',
+            'Mumsys_Request_Default' => '1.1.0',
+            'Mumsys_Abstract' => '3.0.2',
+        );
+
         $this->_options = array(
             'programKey' => 'programTest',
             'controllerKey' => 'controllerTest',
@@ -241,6 +257,14 @@ class Mumsys_Request_AbstractTest
         $this->assertEquals('COOK', $actual1);
         $this->assertEquals($_COOKIE, $actual2);
         $this->assertFalse($actual3);
+    }
+
+
+    public function testVersions()
+    {
+         $this->assertEquals($this->_version, Mumsys_Request_Abstract::VERSION);
+
+         $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
     }
 
 }
