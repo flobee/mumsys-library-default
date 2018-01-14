@@ -149,4 +149,27 @@ class Mumsys_Unittest_Testcase
         return self::$_methods[$method];
     }
 
+
+    /**
+     * Checks for available class versions.
+     *
+     * Check for Mumsys_Abstract::getVersions()
+     *
+     * @param array $allList List of loaded class versions @see
+     * Mumsys_Abstract::getVersions()
+     * @param array $myList List of expected versions
+     *
+     * @return boolean Returns true on success
+     */
+    protected function _checkVersionList($allList, $myList )
+    {
+        foreach($myList as $className => $version ) {
+            $test = ($allList[$className] === $version);
+            $message = 'Failure: ' . $className . ':' . $allList[$className] . ' !== ' . $version;
+            $this->assertTrue($test, $message);
+        }
+
+        return true;
+    }
+
 }
