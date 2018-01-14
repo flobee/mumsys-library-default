@@ -12,6 +12,7 @@ class Mumsys_Cache_FileTest
      */
     protected $_object;
     protected $_version;
+    protected $_versions;
 
 
     /**
@@ -157,12 +158,7 @@ class Mumsys_Cache_FileTest
      */
     public function testgetVersions()
     {
-        $possible = $this->_object->getVersions();
-
-        foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
-        }
+        $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
     }
 
 }
