@@ -12,12 +12,30 @@ class Mumsys_Config_DefaultTest
     protected $_object;
 
     /**
+     * Version ID
+     * @var string
+     */
+    protected $_version;
+
+    /**
+     * @var array
+     */
+    protected $_versions;
+
+
+    /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
     protected function setUp()
     {
         $this->_version = '3.0.0';
+        $this->_versions = array(
+            'Mumsys_Config_Default' => '3.0.0',
+            'Mumsys_Config_File' => '3.0.0',
+            'Mumsys_Abstract' => '3.0.2',
+        );
+
         $this->_configs = array('testkey' => 'test value');
         $this->_paths = array(
             __DIR__ . '/', //testconfig.php
@@ -43,6 +61,10 @@ class Mumsys_Config_DefaultTest
     public function test__construct()
     {
         $this->_object = new Mumsys_Config_Default($this->_configs, $this->_paths);
+
+        $this->assertInstanceOf('Mumsys_Config_Default', $this->_object);
+        $this->assertInstanceOf('Mumsys_Config_File', $this->_object);
+        $this->assertInstanceOf('Mumsys_Config_Interface', $this->_object);
     }
 
     /**
@@ -148,12 +170,14 @@ class Mumsys_Config_DefaultTest
     /**
      * Version check
      */
-    public function testCheckVersion()
+    public function testVersions()
     {
         $message = 'A new version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
-        $this->assertEquals($this->_version, Mumsys_Config_File::VERSION, $message);
+
+         $this->assertEquals($this->_version, Mumsys_Config_Default::VERSION, $message);
+         $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
     }
 
 }
