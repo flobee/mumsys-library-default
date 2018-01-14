@@ -129,15 +129,15 @@ class Mumsys_Service_VdrTest
      */
     public function testExecute()
     {
-        // epg data channel 2
+        // epg data channel 2 (e.g. ZDF)
         $actual2 = $this->_object->execute('LSTE', 2);
 
         // list some recordings. this can end up in a tomeout first because vdr
         // caches the results which can be a huge list
         $actual3 = $this->_object->execute('LSTR', 1);
 
-        $this->assertTrue( (count($actual2) > 2 ));
-        $this->assertTrue( (count($actual3) == 1 ));
+        $this->assertTrue((count($actual2) >= 1));
+        $this->assertTrue( (count($actual3) == 1 ), 'cnt: '.count($actual3));
     }
 
 
@@ -381,11 +381,16 @@ class Mumsys_Service_VdrTest
 
     /**
      * @covers Mumsys_Service_Vdr::isOpen
-     * @todo   Implement testIsOpen().
      */
     public function testIsOpen()
     {
+        $actual1 = $this->_object->isOpen();
 
+        $this->_object->disconnect();
+        $actual2 = $this->_object->isOpen();
+
+        $this->assertTrue($actual1);
+        $this->assertFalse($actual2);
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-/** 
+/**
  * {{{ Mumsys_Service_Vdr_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
@@ -220,7 +220,7 @@ abstract class Mumsys_Service_Vdr_Abstract
      * Execute given command.
      *
      * @param string $command Command to be executed
-     * @param string $parameters Optional parameters to pipe the the command
+     * @param string $parameters Optional parameters to pipe to the command
      *
      * @return array|false Returns a list of records in raw format or false if the connection is missing
      *
