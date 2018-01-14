@@ -367,7 +367,8 @@ abstract class Mumsys_Request_Abstract
 
 
     /**
-     * Set action parameters en masse; does not overwrite
+     * Set/ add action parameters en masse; does not overwrite or unset existing
+     * keys.
      *
      * If value is NULL it will be unset if key exists
      *
