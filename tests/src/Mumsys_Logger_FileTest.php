@@ -24,12 +24,23 @@ class Mumsys_Logger_FileTest
     protected $_version;
 
     /**
+     * @var array
+     */
+    protected $_versions;
+
+
+    /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
     protected function setUp()
     {
         $this->_version = '3.0.4';
+        $this->_versions = array(
+            'Mumsys_Logger_File' => '3.0.4',
+            'Mumsys_Logger_Abstract' => '3.3.1',
+            'Mumsys_Abstract' => '3.0.2',
+        );
 
         $this->_testsDir = realpath(dirname(__FILE__) . '/../');
 
@@ -229,11 +240,12 @@ class Mumsys_Logger_FileTest
     }
 
     /**
-     * VERSION check
+     * Version checks
      */
-    public function testVersion()
+    public function testVersions()
     {
-        $this->assertEquals($this->_version, Mumsys_Logger_File::VERSION);
+         $this->assertEquals($this->_version, Mumsys_Logger_File::VERSION);
+         $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
     }
 
 }
