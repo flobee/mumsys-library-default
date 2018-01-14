@@ -109,6 +109,8 @@ class Mumsys_Php_GlobalsTest
 
     /**
      * @covers Mumsys_Php_Globals::getPostVar
+     *
+     * @runInSeparateProcess
      */
     public function testGetPostVar()
     {
@@ -125,6 +127,8 @@ class Mumsys_Php_GlobalsTest
 
     /**
      * @covers Mumsys_Php_Globals::getGetVar
+     *
+     * @runInSeparateProcess
      */
     public function testGetGetVar()
     {
@@ -141,6 +145,8 @@ class Mumsys_Php_GlobalsTest
 
     /**
      * @covers Mumsys_Php_Globals::getCookieVar
+     *
+     * @runInSeparateProcess
      */
     public function testGetCookieVar()
     {
