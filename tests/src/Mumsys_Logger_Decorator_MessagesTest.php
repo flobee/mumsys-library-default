@@ -73,6 +73,11 @@ class Mumsys_Logger_Decorator_MessagesTest
         $this->_opts['lf'] = " end\n";
 
         $object2 = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
+
+        $this->assertInstanceOf('Mumsys_Logger_Interface', $object1);
+        $this->assertInstanceOf('Mumsys_Logger_Decorator_Abstract', $object1);
+        $this->assertInstanceOf('Mumsys_Logger_Decorator_Messages', $object1);
+        $this->assertInstanceOf('Mumsys_Logger_Decorator_Interface', $object1);
     }
 
 
