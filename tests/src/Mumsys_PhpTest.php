@@ -390,6 +390,8 @@ class Mumsys_PhpTest
      */
     public function testArray_keys_search_recursive()
     {
+        $this->markTestIncomplete('To be check if php offers improved handling! This methode is really old!');
+
         $bigarray = array(
             'key1' => array(
                 'key2' => array(
@@ -414,13 +416,18 @@ class Mumsys_PhpTest
         $this->assertEquals(array($bigarray), $matchedKeys1);
 
         $matchedKeys2 = Mumsys_Php::array_keys_search_recursive('name', $bigarray, false);
-        $this->assertEquals(array(0 => array('name' => 'me'), 1 => array('name' => 'me2'), 2 => array('name' => 'me3')), $matchedKeys2);
+        $expected2 = array(
+            0 => array('name' => 'me'),
+            1 => array('name' => 'me2'),
+            2 => array('name' => 'me3')
+        );
+        $this->assertEquals($expected2, $matchedKeys2);
 
         $matchedKeys3 = Mumsys_Php::array_keys_search_recursive('text', $bigarray, true);
         $this->assertEquals(array(0 => array('text' => 'something')), $matchedKeys3);
 
         // check reference,
-        $matchedKeys1[0]['name'] = 'new value';
+        //$matchedKeys1[0]['name'] = 'new value';
         // print_r($bigarray['key1']['key2']);
         // print_r($matchedKeys1);
         $this->assertEquals($matchedKeys2[0]['name'], $bigarray['key1']['key2']['c']['name']);
@@ -496,4 +503,5 @@ class Mumsys_PhpTest
     {
         $this->assertEquals($this->_version, Mumsys_Php::VERSION);
     }
+    
 }

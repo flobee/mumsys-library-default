@@ -700,6 +700,8 @@ class Mumsys_Php
      * Search for a given key in a multidimensional associative array.
      * If a match was found a list of matches will be returned by reference
      *
+     * @todo To be check if php offers improved handling! This methode is
+     * really old!
      * @todo $stopOnFirstMatch do not work! break nested stuff; static
      * $stopOnFirstMatch ?
      *
@@ -754,7 +756,7 @@ class Mumsys_Php
                 }
             }
         }
-        // echo "re";
+
         return $matches;
     }
 
