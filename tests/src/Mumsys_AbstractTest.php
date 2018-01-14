@@ -26,6 +26,11 @@ class Mumsys_AbstractTest
      */
     private $_version;
 
+    /**
+     * @var array
+     */
+    protected $_versions;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -34,6 +39,10 @@ class Mumsys_AbstractTest
     protected function setUp()
     {
         $this->_version = '3.0.2';
+        $this->_versions = array(
+            'Mumsys_AbstractTestClass' => '0.0.1',
+            'Mumsys_Abstract' => '3.0.2',
+        );
         $this->_object = new Mumsys_AbstractTestClass();
     }
 
@@ -76,21 +85,6 @@ class Mumsys_AbstractTest
 
 
     /**
-     * @covers Mumsys_Abstract::getVersions
-     */
-    public function testGetVersions()
-    {
-        $actual = $this->_object->getVersions();
-        $expected = array (
-            'Mumsys_Abstract' => '3.0.2',
-            'Mumsys_Unittest_Testcase' => '- unknown version -',
-        );
-
-        $this->_checkVersionList($actual, $expected);
-    }
-
-
-    /**
      * @covers Mumsys_Abstract::_checkKey
      */
     public function test_checkKey()
@@ -107,17 +101,13 @@ class Mumsys_AbstractTest
     }
 
 
-    // --- helper -------------------------------------------------------------
-
-
-    private function _checkVersionList($allList, $myList )
+    /**
+     * @covers Mumsys_Abstract::getVersions
+     */
+    public function testVersions()
     {
-        foreach($myList as $className => $version ) {
-            $test = ($allList[$className] === $version);
-            $message = 'Failure: ' . $className . ':' . $allList[$className] . ' !== ' . $version;
-            $this->assertTrue($test, $message);
-        }
-
-        return true;
+         $this->assertEquals($this->_version, Mumsys_Abstract::VERSION);
+         $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
     }
+
 }
