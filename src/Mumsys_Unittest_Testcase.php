@@ -27,6 +27,11 @@ class Mumsys_Unittest_Testcase
     extends PHPUnit\Framework\TestCase
 {
     /**
+     * Version ID information.
+     */
+    const VERSION = '3.3.2';
+
+    /**
      * Methods memory container
      * @var array
      */
