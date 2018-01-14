@@ -13,6 +13,10 @@ class Mumsys_Parser_LoglineTest
     protected $_object;
     protected $_format;
     protected $_patterns;
+    /**
+     * @var string
+     */
+    private $_version;
 
 
     /**
@@ -21,6 +25,8 @@ class Mumsys_Parser_LoglineTest
      */
     protected function setUp()
     {
+        $this->_version = '1.1.1';
+
         $this->_logContent = '1;whichhas;semicolon;as;delimiter;opt' . PHP_EOL
             . '2;which has;semicolon;as;delimiter;opt' . PHP_EOL
             . '33;"which has";"semicolon";"as";"delimiter";' . PHP_EOL
@@ -84,7 +90,7 @@ class Mumsys_Parser_LoglineTest
     public function testSetFormat()
     {
         $x = $this->_object->setFormat($this->_format);
-        
+
         $this->assertNull($x);
     }
 
@@ -295,6 +301,12 @@ class Mumsys_Parser_LoglineTest
         $this->assertEquals($actual1, $expected1);
         $this->assertEquals($actual2, $expected2);
         $this->assertEquals($actual3, $expected3);
+    }
+
+
+    public function testVersions()
+    {
+        $this->assertEquals($this->_version, Mumsys_Parser_Logline::VERSION);
     }
 
 }
