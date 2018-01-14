@@ -68,6 +68,10 @@ class Mumsys_Db_Driver_AbstractTest
     public function test__construct()
     {
         $x = new Mumsys_Db_Driver_Testdummy($this->_context, $this->_configs['database']);
+
+        $this->assertInstanceOf('Mumsys_Db_Driver_Testdummy', $x);
+        $this->assertInstanceOf('Mumsys_Db_Driver_Abstract', $x);
+        $this->assertNotInstanceOf('Mumsys_Db_Driver_Interface', $x);
     }
 
 
