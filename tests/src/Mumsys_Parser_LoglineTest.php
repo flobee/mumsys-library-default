@@ -73,6 +73,8 @@ class Mumsys_Parser_LoglineTest
             'c5' => '(?P<col_5>\w*)', // optional
         );
         $object = new Mumsys_Parser_Logline($this->_format, $this->_patterns);
+
+        $this->assertInstanceOf('Mumsys_Parser_Logline', $object);
     }
 
 
@@ -81,7 +83,9 @@ class Mumsys_Parser_LoglineTest
      */
     public function testSetFormat()
     {
-        $this->_object->setFormat($this->_format);
+        $x = $this->_object->setFormat($this->_format);
+        
+        $this->assertNull($x);
     }
 
 
@@ -90,7 +94,9 @@ class Mumsys_Parser_LoglineTest
      */
     public function testSetPattern()
     {
-        $this->_object->setPattern('c5', '(?P<col_5>(\w*))');
+        $x = $this->_object->setPattern('c5', '(?P<col_5>(\w*))');
+
+        $this->assertNull($x);
     }
 
 
@@ -99,7 +105,9 @@ class Mumsys_Parser_LoglineTest
      */
     public function testSetHideFilterResults()
     {
-        $this->_object->setHideFilterResults();
+        $x = $this->_object->setHideFilterResults();
+
+        $this->assertNull($x);
     }
 
 
@@ -108,7 +116,9 @@ class Mumsys_Parser_LoglineTest
      */
     public function testSetShowFilterResults()
     {
-        $this->_object->setShowFilterResults();
+        $x = $this->_object->setShowFilterResults();
+
+        $this->assertNull($x);
     }
 
 
@@ -127,12 +137,16 @@ class Mumsys_Parser_LoglineTest
 
 
     /**
+     * Just for CC
      * @covers Mumsys_Parser_Logline::addFilter
      */
     public function testAddFilter()
     {
-        $this->_object->addFilter('c5', 'delim', true);
-        $this->_object->addFilter('c5', array('delim', 'del'), false);
+        $x = $this->_object->addFilter('c5', 'delim', true);
+        $y = $this->_object->addFilter('c5', array('delim', 'del'), false);
+
+        $this->assertNull($x);
+        $this->assertNull($y);
     }
 
 
@@ -203,7 +217,7 @@ class Mumsys_Parser_LoglineTest
             . ')/';
         $this->expectExceptionMessageRegExp($regex);
         $this->expectException('Mumsys_Parser_Exception');
-        
+
         $actual5 = $this->_object->parse(trim($records[4]));
     }
 

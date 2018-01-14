@@ -163,6 +163,8 @@ class Mumsys_Parser_Logline
     /**
      * Set the format of a log line.
      *
+     * E.g: 'id;c1;c2;c3;c4;c5'
+     *
      * @param string $format
      */
     public function setFormat( $format )
