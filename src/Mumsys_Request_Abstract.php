@@ -28,7 +28,7 @@ abstract class Mumsys_Request_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * The current programm name
@@ -107,9 +107,12 @@ abstract class Mumsys_Request_Abstract
             $this->setActionKey($options['actionKey']);
         }
 
-        if ( isset($_COOKIE) && is_array($_COOKIE) ) {
-            $this->_inputCookie = $_COOKIE;
+        $_cookies = Mumsys_Php_Globals::getCookieVar();
+        if ( isset($_cookies) && is_array($_cookies) ) {
+            $this->_inputCookie = $_cookies;
         }
+
+        unset($_cookies, $options);
     }
 
 
@@ -118,7 +121,7 @@ abstract class Mumsys_Request_Abstract
      *
      * If there is already a http header (HTTP_X_REQUEST_ID) for the
      * request ID it will be used otherwise a new individual ID will be
-     * generated and set to the enviroment valiable:
+     * generated to be set to the enviroment valiable:
      * _SERVER['HTTP_X_REQUEST_ID'].
      *
      * @return string x-http-request-id
