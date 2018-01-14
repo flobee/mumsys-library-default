@@ -76,7 +76,9 @@ class Mumsys_Service_Spss_AbstractTest
      */
     public function testGetInterface()
     {
-        $actual = $this->_object->getInterface();
+        $actual = $this->_object->getAdapter();
+        $this->assertInstanceOf('SPSS\Sav\Reader', $actual);
+
     }
 
 }

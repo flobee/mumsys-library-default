@@ -34,7 +34,7 @@ abstract class Mumsys_Service_Spss_Abstract
     const VERSION = '1.0.0';
 
     /**
-     * SPSS Reader|Writer interface
+     * SPSS Reader|Writer adapter/interface
      * @var \SPSS\Sav\Reader|\SPSS\Sav\Writer
      */
     protected $_spss;
@@ -61,11 +61,11 @@ abstract class Mumsys_Service_Spss_Abstract
 
 
     /**
-     * Returns the Reader or Writer interface.
+     * Returns the Reader or Writer adapter/interface.
      *
      * @return Reader|Writer interface based on construction
      */
-    public function getInterface()
+    public function getAdapter()
     {
         return $this->_spss;
     }
