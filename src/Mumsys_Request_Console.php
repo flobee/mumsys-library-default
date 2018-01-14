@@ -28,7 +28,7 @@ class Mumsys_Request_Console
     /**
      * Version ID information
      */
-    const VERSION = '1.1.1';
+    const VERSION = '1.1.2';
 
 
     /**
@@ -41,11 +41,12 @@ class Mumsys_Request_Console
     {
         parent::__construct($options);
 
-        if (isset($_SERVER['argv']) && is_array($_SERVER['argv'])) {
-            $this->_input += $_SERVER['argv'];
+        $argv = $_get = Mumsys_Php_Globals::getServerVar('argv', array());
+        if ($argv && is_array($argv)) {
+            $this->_input += $argv;
         }
 
-        $_SERVER['argv'] = array();
+        unset($argv, $options);
     }
 
 }
