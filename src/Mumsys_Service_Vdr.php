@@ -242,7 +242,7 @@ class Mumsys_Service_Vdr
         $records = $this->execute('LSTC', $search);
         $channelList = array();
 
-        while ( list($idx, $line) = each($records) )
+        foreach ($records as $idx => $line)
         {
             $parts = explode(':', $line);
             $posStart = strpos($parts[0], ' ');
@@ -393,10 +393,10 @@ class Mumsys_Service_Vdr
      */
     public function recordingsGet()
     {
-        $records = $this->execute('LSTR');
-
         $recordings = array();
-        while ( list(, $line) = each($records) )
+
+        $records = $this->execute('LSTR');
+        foreach($records as $line)
         {
             $line = trim($line);
 
@@ -416,7 +416,6 @@ class Mumsys_Service_Vdr
                 'new' => (($partB == '*') ? 1 : 0),
                 'title' => $title,
             );
-
 
             $recordings[$id] = $options;
         }
@@ -493,7 +492,7 @@ class Mumsys_Service_Vdr
 
         $records = $this->execute('LSTT', $id);
 
-        while ( list(, $line) = each($records) ) {
+        foreach($records as $line) {
             $options = $this->_timerString2ItemGet($line);
             $timers[$options['id']] = $options;
         }
