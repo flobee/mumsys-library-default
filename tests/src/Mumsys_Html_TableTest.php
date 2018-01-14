@@ -65,7 +65,9 @@ class Mumsys_Html_TableTest
      */
     public function testSetTableProps()
     {
-        $this->_object->setTableProps(array('width' => '500'));
+        $x = $this->_object->setTableProps(array('width' => '500'));
+
+        $this->assertNull($x);
     }
 
 
@@ -75,8 +77,11 @@ class Mumsys_Html_TableTest
      */
     public function testSetHeadlines()
     {
-        $this->_object->setHeadlines(true);
-        $this->_object->setHeadlines(array('a', 'b', 'c'));
+        $x = $this->_object->setHeadlines(true);
+        $y = $this->_object->setHeadlines(array('a', 'b', 'c'));
+
+        $this->assertNull($x);
+        $this->assertNull($y);
     }
 
 
@@ -134,7 +139,9 @@ class Mumsys_Html_TableTest
      */
     public function testSetAutoFill()
     {
-        $this->_object->setAutoFill('x.x');
+        $x = $this->_object->setAutoFill('x.x');
+
+        $this->assertNull($x);
     }
 
 
@@ -429,6 +436,7 @@ class Mumsys_Html_TableTest
         $this->_object->setHeadlines(true);
         $this->_object->setContent($data1);
         $this->_object->setAltRowColor($this->_colors);
+        $this->_object->setAutoFill('./.');
         $actual1 = $this->_object->getHtml();
         $expected1 = '<table width="600">
 <thead>
@@ -444,11 +452,12 @@ class Mumsys_Html_TableTest
 </tr>
 <tr bgcolor="#666666">
    <td>2</td>
-   <td>row2</td>
+   <td>./.</td>
 </tr>
 </tbody>
 </table>
 ';
+        $this->assertEquals($expected1, $actual1);
     }
 
 
@@ -488,14 +497,7 @@ class Mumsys_Html_TableTest
             . 'all existing tests where checked!';
         $this->assertEquals($this->_version, Mumsys_Html_Table::VERSION, $message);
 
-
-        $possible = $this->_object->getVersions();
-
-        foreach ( $this->_versions as $must => $value ) {
-            $message = 'Invalid: ' . $must . '::' . $value;
-            $this->assertTrue(isset($possible[$must]), $message);
-            $this->assertTrue(($possible[$must] == $value), $message);
-        }
+        $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
     }
 
 }
