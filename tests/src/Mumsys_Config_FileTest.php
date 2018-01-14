@@ -19,11 +19,20 @@ class Mumsys_Config_FileTest
     protected $_version = '3.0.0';
 
     /**
+     * @var array
+     */
+    protected $_versions;
+
+    /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
     protected function setUp()
     {
+        $this->_versions = array(
+            'Mumsys_Config_File' => '3.0.0',
+            'Mumsys_Abstract' => '3.0.2',
+        );
         $this->_configs = array('testkey' => 'test value');
         $this->_paths = array(
             __DIR__ . '/', //testconfig.php
@@ -51,6 +60,9 @@ class Mumsys_Config_FileTest
     public function test__construct()
     {
         $this->_object = new Mumsys_Config_File($this->_configs, $this->_paths);
+
+        $this->assertInstanceOf('Mumsys_Config_File', $this->_object);
+        $this->assertInstanceOf('Mumsys_Config_Interface', $this->_object);
     }
 
 
@@ -161,11 +173,12 @@ class Mumsys_Config_FileTest
 
 
     /**
-     * Checks current version
+     * @covers Mumsys_Abstract::getVersions
      */
-    public function testVersionID()
+    public function testVersions()
     {
-        $this->assertEquals($this->_version, Mumsys_Config_File::VERSION);
+         $this->assertEquals($this->_version, Mumsys_Config_File::VERSION);
+         $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
     }
 
 }
