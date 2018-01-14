@@ -31,7 +31,8 @@
         "phploc/phploc": "*",
         "sebastian/phpcpd": "*",
         
-        "composer/composer": "*"
+        "composer/composer": "*",
+        "phpbench/phpbench": "^0.14.0"
     },
     "autoload": {
         "classmap": [
