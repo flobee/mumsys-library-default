@@ -85,7 +85,9 @@ class Mumsys_Logger_FileTest
     }
 
 
-    // for 100% code coverage
+    /**
+     * For 100% code coverage
+     */
     public function test__constructor2()
     {
         $opts = $this->_opts;
@@ -104,6 +106,9 @@ class Mumsys_Logger_FileTest
 
         $_SERVER['LOGNAME'] = 'God';
         $object = new Mumsys_Logger_File($opts);
+
+        $this->assertInstanceOf('Mumsys_Logger_File', $object);
+        $this->assertInstanceOf('Mumsys_Logger_Interface', $object);
     }
 
 
