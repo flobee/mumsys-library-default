@@ -61,20 +61,26 @@ class Mumsys_Php_Console
      * @param string $path Location to call a df -a command it should be the root
      * path of a mountpoit at least or the path e.g: where to store some data
      * @param integer $secCmp Number of seconds a compare-time will be OK during
-     * a process befor df -a command will be called again (limit the number if you
-     * have huge file movements to beware crashes or "disk-full"- errors)
+     * a process befor df -a command will be called again (limit the number if
+     * you have huge file movements (and good network or disk write speed) to
+     * beware crashes or "disk-full"- errors)
      * @param integer $maxSizeCmp Number in percent. Max size when a disk-full
-     * event should be thrown (max allowed/free size compare Value)
-     * @param Mumsys_Logger $logger Logger object which need at least the log method
-     * @param string $cmd df command to be executed. Maybe different on windows
-     * e.g: 'c:/cygwin/bin/df.exe -a [path]; Parameter %1$s in the cmd line
-     * is the placeholder for the $path.
+     * event should be thrown (max allowed/free size compare Value) Default: 92%
+     * @param Mumsys_Logger $logger Logger object which needs at least the log
+     * method
+     * @param string $cmd 'df' command to be executed. Maybe different on
+     * windows e.g: 'c:/cygwin/bin/df.exe -a [path]; Parameter %1$s is the
+     * placeholder for the $path.
      *
      * @return boolean Returns true if disk size exceed the limit or false for OK
      */
     public static function check_disk_free_space( $path = '', $secCmp = 60,
         $maxSizeCmp = 92, Mumsys_Logger_Interface $logger, $cmd = 'df -a %1$s' )
     {
+        static $paths = null;
+        static $sizes = null;
+        static $times = null;
+
         // key of exec result in $cmd
         $resultKey = 4;
 
@@ -87,10 +93,6 @@ class Mumsys_Php_Console
 
         $now = time();
         $_v = array();
-
-        static $paths = null;
-        static $sizes = null;
-        static $times = null;
 
         if ( $paths === null ) {
             $paths = array();
@@ -117,10 +119,14 @@ class Mumsys_Php_Console
             $tmp = '';
             $data = null;
             $return = null;
+
             $result = exec($cmd, $data, $return);
+
             if ( !$result || $return !== 0 ) {
-                throw new Mumsys_Php_Exception(__METHOD__ . ': cmd error: "' . $cmd . '"', 1);
+                $mesg = __METHOD__ . ': cmd error: "' . $cmd . '"';
+                throw new Mumsys_Php_Exception($mesg, 1);
             }
+
             $logger->log(__METHOD__ . ': cmd: "' . $cmd . '"', 7);
 
             $r = explode(' ', $data[1]);

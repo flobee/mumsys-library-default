@@ -55,14 +55,16 @@ class Mumsys_Php_ConsoleTest
             $cmdLine = 'c:/cygwin/bin/df.exe -a %1$s';
         }
 
+        $dir = $this->_testsDir . '/tmp';
+
         // basic call
-        $basicCall = Mumsys_Php_Console::check_disk_free_space($this->_testsDir . '/tmp', $secCmp=2, $maxSize=92, $logger, $cmdLine);
+        $basicCall = Mumsys_Php_Console::check_disk_free_space($dir, $secCmp=2, $maxSize=92, $logger, $cmdLine);
 
         // check cache return inside secCmp=60sec.
-        $chkCache = Mumsys_Php_Console::check_disk_free_space($this->_testsDir . '/tmp', $secCmp=60, $maxSize=92, $logger, $cmdLine);
+        $chkCache = Mumsys_Php_Console::check_disk_free_space($dir, $secCmp=60, $maxSize=92, $logger, $cmdLine);
 
         //disk space overflow in cache if disk usage < 1%
-        $overflow = Mumsys_Php_Console::check_disk_free_space($this->_testsDir . '/tmp', $secCmp=1, $maxSize=1, $logger, $cmdLine);
+        $overflow = Mumsys_Php_Console::check_disk_free_space($dir, $secCmp=1, $maxSize=1, $logger, $cmdLine);
 
         // diskOverflowFirstRun
         $tmp = Mumsys_Php_Console::check_disk_free_space($path='/var', $secCmp=60, $maxSize=2, $logger, $cmdLine);

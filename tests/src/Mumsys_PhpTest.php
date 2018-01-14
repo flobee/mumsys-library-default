@@ -390,7 +390,7 @@ class Mumsys_PhpTest
      */
     public function testArray_keys_search_recursive()
     {
-        $this->markTestIncomplete('To be check if php offers improved handling! This methode is really old!');
+        $this->markTestSkipped('To be check if php offers improved handling! This methode is really old!');
 
         $bigarray = array(
             'key1' => array(
@@ -503,5 +503,5 @@ class Mumsys_PhpTest
     {
         $this->assertEquals($this->_version, Mumsys_Php::VERSION);
     }
-    
+
 }
