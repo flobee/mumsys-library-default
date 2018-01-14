@@ -72,7 +72,7 @@ class Mumsys_Service_Spss_AbstractTest
 
 
     /**
-     * @covers Mumsys_Service_Spss_Abstract::getInterface
+     * @covers Mumsys_Service_Spss_Abstract::getAdapter
      */
     public function testGetInterface()
     {
