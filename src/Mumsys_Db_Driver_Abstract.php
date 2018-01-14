@@ -629,5 +629,5 @@ abstract class Mumsys_Db_Driver_Abstract
      * @return boolean True on success or false
      */
     abstract public function close();
-    
+
 }
