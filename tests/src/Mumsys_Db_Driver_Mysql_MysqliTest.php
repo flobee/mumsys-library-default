@@ -163,11 +163,14 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
      */
     public function testShowTables()
     {
+        $this->markTestSkipped('Not implementet yet');
+
         $actual1 = $this->_object->showTables();
+
 //        Not implementet yet:
-//        foreach($this->_configs['database']['tables'] as $k => $table) {
-//            $this->assertEquals($table, $actual1[$table]);
-//        }
+        foreach($this->_configs['database']['tables'] as $k => $table) {
+            $this->assertEquals($table, $actual1[$table]);
+        }
     }
 
 
