@@ -45,10 +45,10 @@ class Mumsys_Mail_PHPMailerTest
             'smtp_options' => false, // - Futher smtp option driver specific
             'wordwrap' => 78, // - Mail text wordwrap. Leave it (default is 78) change it only
             //   if you know what you are doing,
-            'mail_from_email' => // - Sender email address. Uses setFrom() on construction
-            'unittest@localhost',
-            'mail_from_name' =>
-            'Unit Test', //- Sender name. Uses setFrom() on construction
+
+            // - Sender email address. Uses setFrom() on construction
+            'mail_from_email' => 'unittest@localhost.localdomain',
+            'mail_from_name' => 'Unit Test', //- Sender name. Uses setFrom() on construction
             'xmailer' => 'unittest', // - X-Mailer header to replace.
             'charset' => 'utf-8', // - mail character set defaut: utf-8
             'certificate' => array(// - cert Options
@@ -110,11 +110,10 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testAddTo()
     {
-        $email = 'root@localhost';
         $name = 'unittest to root @ localhost';
-        $result = $this->_object->addTo($email, $name);
+        $result2 = $this->_object->addTo('root@localhost.localdomian', $name);
 
-        $this->assertTrue($result);
+        $this->assertTrue($result2);
     }
 
 
@@ -123,11 +122,10 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testAddCc()
     {
-        $email = 'root@localhost';
         $name = 'unittest to root @ localhost';
-        $result = $this->_object->addCc($email, $name);
+        $result2 = $this->_object->addCc('root@localhost.localdomian', $name);
 
-        $this->assertTrue($result);
+        $this->assertTrue($result2);
     }
 
 
@@ -136,11 +134,10 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testAddBcc()
     {
-        $email = 'root@localhost';
         $name = 'unittest to root @ localhost';
-        $result = $this->_object->addBcc($email, $name);
+        $result2 = $this->_object->addBcc('root@localhost.localdomian', $name);
 
-        $this->assertTrue($result);
+        $this->assertTrue($result2);
     }
 
 
@@ -150,7 +147,7 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testSetFrom()
     {
-        $email = 'root@localhost';
+        $email = 'root@localhost.localdomian';
         $name = 'unittest to root @ localhost';
         $result = $this->_object->setFrom($email, $name, true);
         $this->_object->setReturnTo($email);
@@ -165,7 +162,7 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testAddReplyTo()
     {
-        $email = 'unittest@localhost';
+        $email = 'unittest@localhost.localdomian';
         $name = 'unittest to unittest @ localhost';
         $result = $this->_object->addReplyTo($email, $name, true);
 
@@ -219,7 +216,7 @@ class Mumsys_Mail_PHPMailerTest
     public function testAddAttachment()
     {
         $this->assertEquals(array(), $this->_object->getAttachments());
-        $this->expectException('phpmailerException');
+        $this->expectException('PHPMailer\PHPMailer\Exception');
         $this->expectExceptionMessageRegExp('/(Could not access file: no\/location)/i');
         $this->_object->addAttachment('no/location', 'somename', 'base64', 'txt', 'attachment');
     }
@@ -297,7 +294,7 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testSend()
     {
-        $this->expectException('phpmailerException');
+        $this->expectException('PHPMailer\PHPMailer\Exception');
         $this->expectExceptionMessageRegExp('/(You must provide at least one recipient email address.)/i');
         $this->_object->send();
     }
@@ -308,7 +305,7 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testSendEmail()
     {
-        $to = 'root@localhost';
+        $to = 'root@localhost.localdomain';
         $message = '<html>html string message dummy '
             . 'generated in: ' . __FILE__ . PHP_EOL
             . '<br><br>.</html>';

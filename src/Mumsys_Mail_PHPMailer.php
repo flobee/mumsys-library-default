@@ -16,6 +16,7 @@
  * $Id: class.mailsys.php 2369 2011-12-08 22:02:37Z flobee $
  */
 
+use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * Mumsys PHPMailer interface
@@ -83,9 +84,9 @@ class Mumsys_Mail_PHPMailer
         $dir = '../vendor/phpmailer/phpmailer/src';
         require_once $dir . '/PHPMailer.php';
         require_once $dir . '/SMTP.php';
+        require_once $dir . '/POP3.php';
         require_once $dir . '/Exception.php';
-
-        $this->_mailer = new PHPMailer\PHPMailer\PHPMailer;
+        $this->_mailer = new PHPMailer(true);
 
         $this->_config = $config;
 
