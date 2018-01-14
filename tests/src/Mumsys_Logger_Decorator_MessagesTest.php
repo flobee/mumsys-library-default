@@ -16,9 +16,25 @@ class Mumsys_Logger_Decorator_MessagesTest
      */
     protected $_logger;
 
+    /**
+     * @var string
+     */
+    private $_version;
+
+    /**
+     * @var array
+     */
+    protected $_versions;
+
 
     protected function setUp()
     {
+        $this->_version = '3.0.0';
+        $this->_versions = array(
+            'Mumsys_Logger_Decorator_Messages' => $this->_version,
+            'Mumsys_Logger_Decorator_Abstract' => '3.0.0',
+        );
+
         $this->_testsDir = MumsysTestHelper::getTestsBaseDir();
         $this->_logfile = $this->_testsDir . '/tmp/' . basename(__FILE__) .'.test';
 
@@ -202,6 +218,15 @@ class Mumsys_Logger_Decorator_MessagesTest
         $this->_object->setColors($expected);
 
         $this->assertEquals($expected, $this->_object->getColors());
+    }
+
+    /**
+     * Version check
+     */
+    public function testVersion()
+    {
+        $this->assertEquals($this->_version, Mumsys_Logger_Decorator_Messages::VERSION);
+        $this->assertEquals($this->_versions['Mumsys_Logger_Decorator_Abstract'], Mumsys_Logger_Decorator_Abstract::VERSION);
     }
 
 }
