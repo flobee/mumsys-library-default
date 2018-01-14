@@ -65,7 +65,7 @@ class Mumsys_Request_Default
             $this->_input += $_post;
         }
 
-        unset($_get, $_post);
+        unset($_get, $_post, $options);
     }
 
 
