@@ -97,6 +97,10 @@ class Mumsys_Logger_AbstractTest
 
         $_SERVER['LOGNAME'] = 'God';
         $object = new Mumsys_Logger_File( $opts );
+
+        $this->assertInstanceOf('Mumsys_Logger_File', $object);
+        $this->assertInstanceOf('Mumsys_Logger_Abstract', $object);
+        $this->assertInstanceOf('Mumsys_Logger_Interface', $object);
     }
 
 
@@ -281,7 +285,7 @@ class Mumsys_Logger_AbstractTest
     }
 
     /**
-     * VERSION check
+     * Version check
      */
     public function testVersion()
     {
