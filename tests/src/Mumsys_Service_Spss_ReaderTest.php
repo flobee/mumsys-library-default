@@ -27,6 +27,18 @@ class Mumsys_Service_Spss_ReaderTest
      */
     protected $_object;
 
+    /**
+     * Spss demo file location
+     * @var string
+     */
+    private $_spssFile;
+
+    /**
+     * Reader dump file to compare
+     * @var string
+     */
+    private $_spssFileDump;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -36,10 +48,11 @@ class Mumsys_Service_Spss_ReaderTest
     {
         $this->_version = '1.0.0';
 
-        $spssFile = __DIR__ . '/../testfiles/Service/Spss/pspp.sav';
-        $parser = \SPSS\Sav\Reader::fromString( file_get_contents( $spssFile ) );
+        $this->_spssFile = __DIR__ . '/../testfiles/Service/Spss/pspp.sav';
+        $this->_spssFileDump = $this->_spssFile . '.php-dump.txt';
+        $parser = \SPSS\Sav\Reader::fromString(file_get_contents($this->_spssFile));
 
-        $this->_object = new Mumsys_Service_Spss_Reader( $parser );
+        $this->_object = new Mumsys_Service_Spss_Reader($parser);
     }
 
 
@@ -52,6 +65,18 @@ class Mumsys_Service_Spss_ReaderTest
         $this->_object = null;
     }
 
+
+    public function testCompareSetup()
+    {
+        $actual = md5_file($this->_spssFile);
+        $expected = '768a8f9e58224b25cd9f7226b7162b16';
+
+        $mesg = sprintf(
+            'The source pspp.sav file "%1$s" seems to be changed.',
+            $this->_spssFile
+        );
+        $this->assertEquals($expected, $actual, $mesg);
+    }
 
     /**
      * @covers Mumsys_Service_Spss_Reader::getVariableItems
@@ -80,9 +105,9 @@ class Mumsys_Service_Spss_ReaderTest
         );
 
         $expected = array($obj);
-        $actual = $this->_object->getVariableItems( $list );
+        $actual = $this->_object->getVariableItems($list);
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertEquals($expected, $actual);
     }
 
 
@@ -94,14 +119,14 @@ class Mumsys_Service_Spss_ReaderTest
         $labels = array(
             'v1int', 'v2float', 'v3string'
         );
-        $actual = $this->_object->getVariableMapByLabels( $labels );
+        $actual = $this->_object->getVariableMapByLabels($labels);
         $expected = array(
             'V1INT' => 'v1int',
             'V2FLOAT' => 'v2float',
             'V3STRING' => 'v3string'
         );
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertEquals($expected, $actual);
     }
 
 
@@ -113,14 +138,14 @@ class Mumsys_Service_Spss_ReaderTest
         $keys = array(
             'V1INT', 'V2FLOAT', 'V3STRING'
         );
-        $actual = $this->_object->getVariableMapByKeys( $keys );
+        $actual = $this->_object->getVariableMapByKeys($keys);
         $expected = array(
             'V1INT' => 'v1int',
             'V2FLOAT' => 'v2float',
             'V3STRING' => 'v3string'
         );
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertEquals($expected, $actual);
     }
 
 
@@ -132,7 +157,7 @@ class Mumsys_Service_Spss_ReaderTest
         $regex = array(
             '/(v)/i'
         );
-        $actual1 = $this->_object->getVariableMapByRegex( $regex );
+        $actual1 = $this->_object->getVariableMapByRegex($regex);
         $actual2 = $this->_object->getVariableMapByRegex();
         $expected1 = array(
             'V1INT' => 'v1int',
@@ -140,14 +165,14 @@ class Mumsys_Service_Spss_ReaderTest
             'V3STRING' => 'v3string'
         );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected1, $actual2 );
+        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals($expected1, $actual2);
 
-        ini_set( "error_reporting", 0 );
-        $this->expectException( 'Mumsys_Service_Spss_Exception' );
-        $this->expectExceptionMessage( 'Regex error' );
-        $this->_object->getVariableMapByRegex( array('/f#') );
-        ini_set( "error_reporting", -1 );
+        ini_set("error_reporting", 0);
+        $this->expectException('Mumsys_Service_Spss_Exception');
+        $this->expectExceptionMessage('Regex error');
+        $this->_object->getVariableMapByRegex(array('/f#'));
+        ini_set("error_reporting", -1);
     }
 
 
@@ -165,8 +190,8 @@ class Mumsys_Service_Spss_ReaderTest
 
         $actual2 = $this->_object->getVariableMap();
 
-        $this->assertEquals( $expected, $actual1 );
-        $this->assertEquals( $expected, $actual2 );
+        $this->assertEquals($expected, $actual1);
+        $this->assertEquals($expected, $actual2);
     }
 
 
@@ -182,7 +207,7 @@ class Mumsys_Service_Spss_ReaderTest
             array(3, 3.45, 'cd')
         );
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertEquals($expected, $actual);
     }
 
 
@@ -199,7 +224,7 @@ class Mumsys_Service_Spss_ReaderTest
             '   (17 Nov 2017 eingegeben)                                                     '
         );
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertEquals($expected, $actual);
     }
 
     /**
@@ -211,8 +236,8 @@ class Mumsys_Service_Spss_ReaderTest
         $actual2 = $this->_object->getEncoding();
         $expected = 'UTF-8';
 
-        $this->assertEquals( $expected, $actual1 );
-        $this->assertEquals( $expected, $actual2 );
+        $this->assertEquals($expected, $actual1);
+        $this->assertEquals($expected, $actual2);
     }
 
 
@@ -225,8 +250,8 @@ class Mumsys_Service_Spss_ReaderTest
         $actual2 = $this->_object->getVersionOfSource();
         $expected = array(0,10,2);
 
-        $this->assertEquals( $expected, $actual1 );
-        $this->assertEquals( $expected, $actual2 );
+        $this->assertEquals($expected, $actual1);
+        $this->assertEquals($expected, $actual2);
     }
 
 
@@ -243,8 +268,8 @@ class Mumsys_Service_Spss_ReaderTest
             'lowest' => -1.7976931348623155E+308,
         );
 
-        $this->assertEquals( $expected, $actual1 );
-        $this->assertEquals( $expected, $actual2 );
+        $this->assertEquals($expected, $actual1);
+        $this->assertEquals($expected, $actual2);
     }
 
 
