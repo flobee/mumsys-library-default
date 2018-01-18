@@ -76,22 +76,21 @@ class Mumsys_Service_Spss_Reader
     {
         $list = array();
         $tmp = array();
-        $map = $this->getVariableMapByLabels( $labels );
+        $map = $this->getVariableMapByLabels($labels);
 
-        foreach ( $this->_spss->variables as $dataID => $varObj )
-        {
+        foreach ( $this->_spss->variables as $dataID => $varObj ) {
             if ( $varObj instanceof SPSS\Sav\Record\Variable ) {
-                if ( $this->_checkVariableNameExists( $map, $varObj ) ) {
+                if ( $this->_checkVariableNameExists($map, $varObj) ) {
                     $tmp[$dataID] = $varObj;
                 }
             }
         }
 
         // re-map to initial order
-        foreach($map as $internal => & $public) {
-            foreach($tmp as $id => & $obj) {
-                if ($obj->name === $internal) {
-                    $list[ $id ] = $obj;
+        foreach ( $map as $internal => & $public ) {
+            foreach ( $tmp as $id => & $obj ) {
+                if ( $obj->name === $internal ) {
+                    $list[$id] = $obj;
                 }
             }
         }
@@ -112,10 +111,8 @@ class Mumsys_Service_Spss_Reader
         $map = $this->getVariableMap();
         $result = array();
 
-        foreach($labels as $key)
-        {
-            foreach($map as $internal => & $public)
-            {
+        foreach ( $labels as $key ) {
+            foreach ( $map as $internal => & $public ) {
                 if (isset($result[$internal])) {
                     continue;
                 }
@@ -145,7 +142,7 @@ class Mumsys_Service_Spss_Reader
 
         foreach ( $map as $internal => & $public ) {
             foreach ( $keys as $key ) {
-                if ( isset( $map[$key] ) && !isset( $result[$internal] ) ) {
+                if ( isset($map[$key]) && !isset($result[$internal]) ) {
                     $result[$internal] = $public;
                 }
             }
@@ -169,12 +166,9 @@ class Mumsys_Service_Spss_Reader
 
         $map = $this->getVariableMap();
 
-        if ( $regexs )
-        {
-            foreach($map as $internal => $public)
-            {
-                foreach($regexs as $req)
-                {
+        if ( $regexs ) {
+            foreach ( $map as $internal => $public ) {
+                foreach ( $regexs as $req ) {
                     if ( ($match = preg_match($req, $public)) === false ) {
                         throw new Mumsys_Service_Spss_Exception('Regex error');
                     }
