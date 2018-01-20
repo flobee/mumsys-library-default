@@ -50,7 +50,7 @@ abstract class Mumsys_Abstract
         $class = get_called_class();
         $version = '%1$s %2$s';
 
-        return sprintf($version, $class, $class::VERSION);
+        return sprintf( $version, $class, $class::VERSION );
     }
 
 
@@ -66,8 +66,8 @@ abstract class Mumsys_Abstract
         $versions = array();
 
         foreach ( $list as $class ) {
-            if ( !preg_match('/(exception|interface)/i', $class) ) {
-                if ( defined($class . '::VERSION') ) {
+            if ( !preg_match( '/(exception|interface)/i', $class ) ) {
+                if ( defined( $class . '::VERSION' ) ) {
                     $versions[$class] = $class::VERSION;
                 } else {
                     $versions[$class] = '- unknown version -';
@@ -89,10 +89,10 @@ abstract class Mumsys_Abstract
      */
     protected static function _checkKey( $key )
     {
-        if ( !is_string($key) ) {
+        if ( !is_string( $key ) ) {
             $message = 'Invalid initialisation key for a setter. '
                 . 'A string is required!';
-            throw new Mumsys_Exception($message);
+            throw new Mumsys_Exception( $message );
         }
     }
 
