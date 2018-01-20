@@ -113,8 +113,19 @@
     <rule ref="PEAR.Classes.ClassDeclaration"/>
     <rule ref="PEAR.ControlStructures.ControlSignature"/>
     
-    <!--    Disabled for Mumsys-->
-    <!--<rule ref="PEAR.Functions.FunctionCallSignature"/>-->
+    <!--    Disabled for Mumsys to ignore -->
+    <!-- Only one argument per line in multi-line function calls -->
+    <!-- To set as must have, eg: is_array( $x ) and not is_array($x) use this: -->
+    <rule ref="PEAR.Functions.FunctionCallSignature">
+        <properties>
+            <!-- default: false -->
+            <property name="allowMultipleArguments" value="true"/> 
+            <!-- default: 0 -->
+            <property name="requiredSpacesAfterOpen" value="1"/>
+            <!-- default: 0 -->
+            <property name="requiredSpacesBeforeClose" value="1"/>
+        </properties>
+    </rule>
 
      <!-- Method arguments with default values MUST go at the end of the argument list. -->
     <rule ref="PEAR.Functions.ValidDefaultValue"/>
