@@ -170,7 +170,7 @@ class Mumsys_Unittest_Testcase
     {
         foreach($myList as $className => $version ) {
             $test = ($allList[$className] === $version);
-            $message = 'Failure: ' . $className . ':' . $allList[$className] . ' !== ' . $version;
+            $message = 'Failure: ' . $className . ':' . $version . ' !== ' . $allList[$className];
             $this->assertTrue($test, $message);
         }
 
