@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<ruleset name="Mumsys2">
+    <description>Mumsys2 based on Zend Framework 1, some of PSR 1 and PSR2. Made for more readability of code. Some sets are too close some too open for me.</description>
+
+
+    <!-- Include some sniffs from all around the place -->
+    <rule ref="Generic.Functions.FunctionCallArgumentSpacing"/>
+    <rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman"/>
+    
+    <rule ref="Generic.PHP.DisallowShortOpenTag"/>
+        
+    
+    
+    <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
+    
+    <!-- PHP code MUST use only UTF-8 without BOM. -->
+    <rule ref="Generic.Files.ByteOrderMark"/>
+    
+     <!-- Use Unix newlines -->
+    <rule ref="Generic.Files.LineEndings">
+        <properties>
+            <property name="eolChar" value="\n"/>
+        </properties>
+    </rule>
+    
+    
+    <!-- There MUST NOT be trailing whitespace at the end of non-blank lines. -->
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
+        <properties>
+            <property name="ignoreBlankLines" value="true"/>
+        </properties>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.StartFile">
+        <severity>0</severity>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.EndFile">
+        <severity>0</severity>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace.EmptyLines">
+        <severity>0</severity>
+    </rule>
+ 
+  <!-- Class constants MUST be declared in all upper case with underscore separators. -->
+  
+ <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
+ 
+ 
+    <rule ref="PEAR.Classes.ClassDeclaration"/>
+    <rule ref="PEAR.ControlStructures.ControlSignature"/>
+    
+<!--    Disabled for Mumsys1-->
+<!--    <rule ref="PEAR.Functions.FunctionCallSignature"/>-->
+
+    <rule ref="PEAR.Functions.ValidDefaultValue"/>
+    <rule ref="PEAR.WhiteSpace.ScopeClosingBrace"/>
+    <rule ref="Squiz.Functions.GlobalFunction"/>
+
+    
+    <!-- Lines can be 80 chars long. Show warning at 90, show errors at 120 chars -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="90"/>
+            <property name="absoluteLineLimit" value="120"/>
+        </properties>
+        <!-- Alternativ for automated processs: show only errors when 120 chars exeed, otherwise show noting -->
+        <!-- 
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+        -->
+    </rule>
+
+   
+
+</ruleset>
