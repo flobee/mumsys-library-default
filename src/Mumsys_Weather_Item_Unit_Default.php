@@ -41,4 +41,10 @@ class Mumsys_Weather_Item_Unit_Default
      */
     const VERSION = '1.0.0';
 
+    /**
+     * Application domain prefix
+     * @var string
+     */
+    protected $_domainPrefix = 'weather.item.unit.default.';
+    
 }
