@@ -37,11 +37,6 @@ class Mumsys_Weather_Item_Unit_Factory
      * @return \Mumsys_Weather_Item_Unit_Interface Unit item interface
      * @throws Mumsys_Weather_Exception
      */
-    /**
-     *
-     * @param string $name
-     * @return \Mumsys_Weather_Item_Unit_Interface
-     */
     public static function createItem(string $name = null, array $input = array() ):Mumsys_Weather_Item_Unit_Interface
     {
         if ( $name === null ) {
