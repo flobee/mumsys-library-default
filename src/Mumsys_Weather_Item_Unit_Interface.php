@@ -136,10 +136,11 @@ interface Mumsys_Weather_Item_Unit_Interface
      * Returns the list of key/values pairs of item properties HTML encoded.
      *
      * Formats item values HTML compilant e.g: & goes &amp; , " goes &quot; ...
+     * Array keys does NOT includes the domain prefix.
      *
      * @return array Returns item properties as key/value pairs
      */
-    public function toHtml(): array;
+    public function toRawArrayHtml(): array;
 
 
     /**
