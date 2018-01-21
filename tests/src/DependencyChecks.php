@@ -25,10 +25,22 @@ class DependencyChecks
         $testing = 'testing/ unit tests';
 
         $this->_requiredExtensions = array(
+            'ctype' => $production,
+            'curl' => $production,
+            'date' => $production,
+            'exif' => $production,
+            'fileinfo' => $production,
+            'filter' => $production,
             'gd' => $production,
+            'pdo' => $production,
+            'pdo_mysql' => $production,
+            'pdo_sqlite' => $production,
+            'sqlite3' => $production,
             'json' => $production,
             'iconv' => $production,
-            'mbstring' => $testing
+            'mbstring' => $testing,
+            'session' => $production,
+            'SPL' => $production,
         );
     }
 
