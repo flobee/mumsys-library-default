@@ -21,11 +21,14 @@ class DependencyChecks
      */
     protected function setUp()
     {
+        $production = 'production';
+        $testing = 'testing/ unit tests';
+
         $this->_requiredExtensions = array(
-            'gd',
-            'json',
-            'iconv',
-            'mbstring'
+            'gd' => $production,
+            'json' => $production,
+            'iconv' => $production,
+            'mbstring' => $testing
         );
     }
 
@@ -42,8 +45,12 @@ class DependencyChecks
 
     public function test_CheckPhpExtensionsLoeaded()
     {
-        foreach ( $this->_requiredExtensions as $ext ) {
-            $mesg = sprintf( '"%1$s" extension not installed/ found', $ext );
+        foreach ( $this->_requiredExtensions as $ext => $usage) {
+            $mesg = sprintf(
+                '"%1$s" extension not installed/ found for: %2$s',
+                $ext,
+                $usage
+            );
             $this->assertTrue( extension_loaded( $ext ), $mesg );
         }
     }
