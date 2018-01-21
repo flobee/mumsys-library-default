@@ -37,17 +37,17 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
     protected $_input = array();
 
     /**
-     * Modification flag. If item properties has changed or not.
-     * @var boolean
-     */
-    protected $_modified;
-
-    /**
      * Application domain prefix to be set in contrete implementation.
      * E.g: 'weather.item.unit.default.' for the default unit item
      * @var string
      */
     protected $_domainPrefix;
+
+    /**
+     * Modification flag. If item properties has changed or not.
+     * @var boolean
+     */
+    private $_modified = false;
 
 
     /**
@@ -88,7 +88,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      */
     public function setKey( string $value ): void
     {
-        if ( isset( $this->_input['key'] ) && $value === $this->_input['key'] ) {
+        if ( $value === $this->getKey() ) {
             return;
         }
 
@@ -214,16 +214,17 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      * Returns the list of key/values pairs of item properties HTML encoded.
      *
      * Formats item values HTML compilant e.g: & goes &amp; , " goes &quot; ...
+     * Array keys does NOT includes the domain prefix.
      *
      * @return array Returns item properties as key/value pairs
      */
-    public function toHtml(): array
+    public function toRawArrayHtml(): array
     {
         return array(
             'key' => htmlspecialchars( $this->getKey(), ENT_QUOTES, 'UTF-8', false ),
             'label' => htmlspecialchars( $this->getLabel(), ENT_QUOTES, 'UTF-8', false ),
             'sign' => htmlspecialchars( $this->getSign(), ENT_QUOTES, 'UTF-8', false ),
-            'code' => $this->getCode(),
+            'code' => htmlspecialchars( $this->getCode(), ENT_QUOTES, 'UTF-8', false ),
         );
     }
 
@@ -259,7 +260,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      *
      * @return array Returns item properties as key/value pairs
      */
-    public function _toArray( $prefix = '' ): array
+    private function _toArray( $prefix = '' ): array
     {
         return array(
             $prefix . 'key' => $this->getKey(),
