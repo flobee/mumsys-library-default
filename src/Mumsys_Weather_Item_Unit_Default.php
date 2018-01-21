@@ -21,7 +21,7 @@
  * Weather informations have a huge list of possible values. This class handles
  * only the unit values e.g. for temperature, pressure, wind speed, wind
  * direction, or other universal units like lengths, distances(miles, km),
- * speed (miles, km) where distances and speed are slitly different or
+ * speed (miles/h, km/h) where distances and speed are slitly different or
  * geographical directions...
  * @link https://en.wikipedia.org/wiki/Conversion_of_units Units in general
  *

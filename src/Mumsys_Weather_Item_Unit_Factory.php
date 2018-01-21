@@ -15,7 +15,7 @@
 
 /**
  * Unit item factory. Loader for specific implementations.
- * *
+ *
  * @category    Mumsys
  * @package     Library
  * @subpackage  Weather
@@ -57,7 +57,7 @@ class Mumsys_Weather_Item_Unit_Factory
             throw new Mumsys_Weather_Exception( $mesg );
         }
 
-        return new $classname($input);
+        return new $classname( $input );
     }
 
 }

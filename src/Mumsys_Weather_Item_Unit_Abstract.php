@@ -70,7 +70,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      */
     public function getKey( $default = null )
     {
-        return (isset($this->_input['key']) ? (string) $this->_input['key'] : $default);
+        return (isset( $this->_input['key'] ) ? (string) $this->_input['key'] : $default);
     }
 
 
@@ -83,7 +83,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      */
     public function setKey( string $value ): void
     {
-        if ( isset($this->_input['key']) && $value === $this->_input['key'] ) {
+        if ( isset( $this->_input['key'] ) && $value === $this->_input['key'] ) {
             return;
         }
 
@@ -101,7 +101,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      */
     public function getLabel( $default = null )
     {
-        return (isset($this->_input['label'])) ? (string) $this->_input['label'] : $default;
+        return (isset( $this->_input['label'] )) ? (string) $this->_input['label'] : $default;
     }
 
 
@@ -132,7 +132,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      */
     public function getSign( $default = null )
     {
-        return (isset($this->_input['sign'])) ? (string) $this->_input['sign'] : $default;
+        return (isset( $this->_input['sign'] )) ? (string) $this->_input['sign'] : $default;
     }
 
 
@@ -153,6 +153,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
         $this->_modified = true;
     }
 
+
     /**
      * Returns the item code (short code of the key name) or $default.
      *
@@ -162,7 +163,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      */
     public function getCode( $default = null )
     {
-        return (isset($this->_input['code'])) ? (string) $this->_input['code'] : $default;
+        return (isset( $this->_input['code'] )) ? (string) $this->_input['code'] : $default;
     }
 
 
@@ -214,9 +215,9 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
     public function toHtml()
     {
         return array(
-            'key' => htmlspecialchars($this->getKey(), ENT_QUOTES, 'UTF-8', false),
-            'label' => htmlspecialchars($this->getLabel(), ENT_QUOTES, 'UTF-8', false),
-            'sign' => htmlspecialchars($this->getSign(), ENT_QUOTES, 'UTF-8', false),
+            'key' => htmlspecialchars( $this->getKey(), ENT_QUOTES, 'UTF-8', false ),
+            'label' => htmlspecialchars( $this->getLabel(), ENT_QUOTES, 'UTF-8', false ),
+            'sign' => htmlspecialchars( $this->getSign(), ENT_QUOTES, 'UTF-8', false ),
             'code' => $this->getCode(),
         );
     }
