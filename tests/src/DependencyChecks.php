@@ -1,10 +1,7 @@
 <?php
 
 
-/**
- * Test class for Mumsys_Array2Xml.
- * $Id: Mumsys_Array2XmlTest.php 3254 2016-02-09 20:57:53Z flobee $
- */
+
 class DependencyChecks
     extends Mumsys_Unittest_Testcase
 {
@@ -13,6 +10,13 @@ class DependencyChecks
      * @var array
      */
     private $_requiredExtensions = array();
+
+    /**
+     * List of php.ini default values to be expected.
+     * key/value pairs like phpini setting/ expected value/s
+     * @var array
+     */
+    private $_requiredPhpiniSetup = array();
 
 
     /**
@@ -42,6 +46,22 @@ class DependencyChecks
             'session' => $production,
             'SPL' => $production,
         );
+
+        $this->_requiredPhpiniSetup = array(
+            /** @see http://php.net/manual/en/ini.core.php#default_charset */
+            /** @see http://php.net/manual/en/function.htmlspecialchars.php */
+            'default_charset' => array(
+                // defaults
+                'UTF-8', 'utf-8', 'ISO-8859-1', 'ISO-8859-5', 'ISO-8859-15', 'cp866',
+                'cp1251', 'cp1252', 'KOI8-R', 'BIG5', 'GB2312', "BIG5-HKSCS",
+                "Shift_JIS", 'EUC-JP', 'MacRoman',
+                // aliases
+                'ISO8859-1', 'ISO8859-5', 'ISO8859-15', 'ibm866', '866',
+                'Windows-1251', 'win-1251', '1251', 'Windows-1252', '1252',
+                'koi8-ru', 'koi8r', '950', '936', 'SJIS', 'SJIS-win', 'cp932',
+                '932', 'EUCJP', 'eucJP-win'
+            )
+        );
     }
 
 
@@ -64,6 +84,33 @@ class DependencyChecks
                 $usage
             );
             $this->assertTrue( extension_loaded( $ext ), $mesg );
+        }
+    }
+
+
+    public function test_CheckPhpIniSettings()
+    {
+        foreach ( $this->_requiredPhpiniSetup as $iniValue => $possible) {
+            if (!is_array($possible)) {
+                $possible = array($possible);
+            }
+
+            // once must fix
+            foreach($possible as $expected) {
+                $actual = ini_get($iniValue);
+
+                if ($actual == $expected) {
+                    break;
+                }
+            }
+
+            $mesg = sprintf(
+                'php.ini: "%1$s"; Expect one of "%2$s"; Found: "%3$s"',
+                $iniValue,
+                '"' . implode( '"|"', $possible ) .'"',
+                $actual
+            );
+            $this->assertEquals($expected, $actual, $mesg );
         }
     }
 
