@@ -55,7 +55,7 @@ class DependencyChecks
     }
 
 
-    public function test_CheckPhpExtensionsLoeaded()
+    public function test_CheckPhpExtensions()
     {
         foreach ( $this->_requiredExtensions as $ext => $usage) {
             $mesg = sprintf(
