@@ -52,6 +52,11 @@ class Mumsys_Weather_Item_Unit_Factory
             throw new Mumsys_Weather_Exception( $mesg );
         }
 
+        if ( !class_exists($classname) ) {
+            $mesg = sprintf( 'Class "%1$s" not found', $classname );
+            throw new Mumsys_Weather_Exception( $mesg );
+        }
+
         return new $classname( $input );
     }
 
