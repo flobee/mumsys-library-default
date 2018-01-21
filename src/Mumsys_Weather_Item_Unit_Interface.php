@@ -123,13 +123,13 @@ interface Mumsys_Weather_Item_Unit_Interface
      *
      * @return boolean True if modified otherwise false
      */
-    public function isModified();
+    public function isModified(): bool;
 
 
     /**
      * Sets the modified flag of the object.
      */
-    public function setModified();
+    public function setModified(): void;
 
 
     /**
@@ -139,7 +139,7 @@ interface Mumsys_Weather_Item_Unit_Interface
      *
      * @return array Returns item properties as key/value pairs
      */
-    public function toHtml();
+    public function toHtml(): array;
 
 
     /**
@@ -147,5 +147,16 @@ interface Mumsys_Weather_Item_Unit_Interface
      *
      * @return array Returns item properties as key/value pairs
      */
-    public function toArray();
+    public function toArray(): array;
+
+
+    /**
+     * Returns the list of key/values pairs of item properties.
+     *
+     * Array keys does NOT includes the domain prefix.
+     *
+     * @return array Returns item properties as key/value pairs
+     */
+    public function toRawArray(): array;
+
 }
