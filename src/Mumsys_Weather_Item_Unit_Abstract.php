@@ -26,6 +26,11 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
     extends Mumsys_Abstract
 {
     /**
+     * Version ID information.
+     */
+    const VERSION = '1.0.0';
+
+    /**
      * Values to be set: 'key', 'label', 'sign', 'code'
      * @var array
      */
@@ -190,7 +195,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      *
      * @return boolean True if modified otherwise false
      */
-    public function isModified()
+    public function isModified(): bool
     {
         return $this->_modified;
     }
@@ -199,7 +204,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
     /**
      * Sets the modified flag of the object.
      */
-    public function setModified()
+    public function setModified(): void
     {
         $this->_modified = true;
     }
@@ -212,7 +217,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      *
      * @return array Returns item properties as key/value pairs
      */
-    public function toHtml()
+    public function toHtml(): array
     {
         return array(
             'key' => htmlspecialchars( $this->getKey(), ENT_QUOTES, 'UTF-8', false ),
@@ -226,15 +231,41 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
     /**
      * Returns the list of key/values pairs of item properties.
      *
+     * Array keys includes the domain prefix.
+     *
      * @return array Returns item properties as key/value pairs
      */
-    public function toArray()
+    public function toArray(): array
+    {
+        return $this->_toArray( $this->_domainPrefix );
+    }
+
+
+    /**
+     * Returns the list of key/values pairs of item properties.
+     *
+     * Array keys does NOT includes the domain prefix.
+     *
+     * @return array Returns item properties as key/value pairs
+     */
+    public function toRawArray(): array
+    {
+        return $this->_toArray( '' );
+    }
+
+
+    /**
+     * Returns the list of key/values pairs of item properties.
+     *
+     * @return array Returns item properties as key/value pairs
+     */
+    public function _toArray( $prefix = '' ): array
     {
         return array(
-            'key' => $this->getKey(),
-            'label' => $this->getLabel(),
-            'sign' => $this->getSign(),
-            'code' => $this->getCode(),
+            $prefix . 'key' => $this->getKey(),
+            $prefix . 'label' => $this->getLabel(),
+            $prefix . 'sign' => $this->getSign(),
+            $prefix . 'code' => $this->getCode(),
         );
     }
 
