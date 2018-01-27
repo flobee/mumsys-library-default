@@ -17,7 +17,7 @@
 
 /**
  * @deprecated since version 1.0.0 use Mumsys_Php_Exception
- * 
+ *
  * Exception thrown by Php class.
  *
  * @category    Mumsys
