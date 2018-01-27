@@ -31,7 +31,7 @@ abstract class Mumsys_Array2Xml_Abstract
      * Version ID information.
      */
     const VERSION = '1.0.0';
-    
+
     /**
      * XML tag case: lower case
      */
