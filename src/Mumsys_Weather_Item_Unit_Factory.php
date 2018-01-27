@@ -43,7 +43,7 @@ class Mumsys_Weather_Item_Unit_Factory
             $name = 'Default';
         }
 
-        $classname = 'Mumsys_Weather_Item_Unit_' . $name;
+        $classname = 'Mumsys_Weather_Item_Unit_' . ucfirst($name);
 
         if ( ctype_alnum( $name ) === false ) {
             $mesg = sprintf(
