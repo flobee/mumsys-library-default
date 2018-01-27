@@ -20,7 +20,7 @@ class MumsysTestHelper
      * New default config object
      * @var Mumsys_Config_Interface
      */
-    private static $_config;
+//not in use yet?    private static $_config;
 
     /**
      * Mixed config pararameters container
@@ -34,12 +34,12 @@ class MumsysTestHelper
      */
     public static function getContext()
     {
-        if ( !isset(self::$_context) ) {
+        if ( !isset( self::$_context ) ) {
             self::$_context = new Mumsys_Context_Item();
 
-            $paths = array(__DIR__ . '/config');
-            $oConfig = new Mumsys_Config_File(array(), $paths);
-            self::$_context->registerConfig($oConfig);
+            $paths = array( __DIR__ . '/config' );
+            $oConfig = new Mumsys_Config_File( array(), $paths );
+            self::$_context->registerConfig( $oConfig );
         }
 
         return self::$_context;
@@ -62,7 +62,7 @@ class MumsysTestHelper
      */
     public static function getConfigs()
     {
-        if ( !isset(self::$_configs) ) {
+        if ( !isset( self::$_configs ) ) {
             self::$_configs = require __DIR__ . '/config/default.php';
         }
 
@@ -77,7 +77,7 @@ class MumsysTestHelper
      */
     public static function getTestsBaseDir()
     {
-        if ( isset(self::$_params['testsBaseDir']) ) {
+        if ( isset( self::$_params['testsBaseDir'] ) ) {
             return self::$_params['testsBaseDir'];
         } else {
             self::$_params['testsBaseDir'] = __DIR__ . '/';
