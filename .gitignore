@@ -1,3 +1,7 @@
+# General files
+*.swp
+*.ctags
+
 # Composer files
 composer.phar
 vendor/
