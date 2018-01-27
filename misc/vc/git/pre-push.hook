@@ -41,15 +41,15 @@ then
 # 	read -p "You're about to push a new branch \"$brCurrent\", are you sure? (Y/y): " -n 1 -r < /dev/tty
 # 	if [[ $REPLY =~ ^[Yy]$ ]]
 	# ash
-	echo "You're about to push a new branch \"$brCurrent\", are you sure? (ctrl c to abort)";
-	sleep 3;
+	echo "You're about to push a new branch \"$brCurrent\", are you sure?";
+	#sleep 3;
 fi
 
 
 
 # last check before pushing
-echo "You're about to push, are you sure you won't break the build? (ctrl c to abort)";
-sleep 3;
+echo "You're about to push, are you sure you won't break the build?";
+# sleep 3;
 # read REPLY;
 # if [ $(echo "$REPLY" | grep -E '^[Yy]') ]
 # then
