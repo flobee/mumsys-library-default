@@ -44,3 +44,4 @@ class Php_Globals
     const VERSION = '1.0.0';
 
 }
+
