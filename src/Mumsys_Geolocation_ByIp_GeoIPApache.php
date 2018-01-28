@@ -88,8 +88,7 @@ class Mumsys_Geolocation_ByIp_GeoIPApache
             return $this->_createItem( $init );
         }
 
-        $mesg = 'Service geoip_apache not available';
-        throw new Mumsys_Geolocation_Exception( $mesg, 503 );
+        return false;
     }
 
 
