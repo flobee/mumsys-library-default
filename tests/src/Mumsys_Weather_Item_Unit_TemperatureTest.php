@@ -75,7 +75,7 @@ class Mumsys_Weather_Item_Unit_TemperatureTest
         $this->assertEquals($options['sign'], $this->_object->getSign());
         $this->assertEquals($options['code'], $this->_object->getCode());
 
-        $this->expectException('Mumsys_Weather_Exception');
+        $this->expectException('Mumsys_Weather_Item_Unit_Exception');
         $this->expectExceptionMessage('Invalid "key" to get a temperature unit item: "fail"');
         $options['key'] = 'fail';
         $this->_object->__construct( $options );
@@ -87,7 +87,7 @@ class Mumsys_Weather_Item_Unit_TemperatureTest
      */
     public function testConstructException()
     {
-        $this->expectException('Mumsys_Weather_Exception');
+        $this->expectException('Mumsys_Weather_Item_Unit_Exception');
         $this->expectExceptionMessage('"Key" must be set to initialise the object');
         $this->_object->__construct( array() );
     }
@@ -111,7 +111,7 @@ class Mumsys_Weather_Item_Unit_TemperatureTest
         $this->assertEquals($expected2, $actual2);
         $this->assertEquals($expected3, $actual3);
 
-        $this->expectException('Mumsys_Weather_Exception');
+        $this->expectException('Mumsys_Weather_Item_Unit_Exception');
         $mesg = 'Invalid unit to convert temperature from: "kelvin" to: "xyz"';
         $this->expectExceptionMessage( $mesg );
         $this->_object->convert(0, 'xyz' );
