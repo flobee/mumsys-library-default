@@ -75,12 +75,14 @@ class Mumsys_Weather_Item_Unit_Temperature
      * '° C' | '° F' | null (for kelvin)
      * if key=fahrenheit)
      *  - 'code' (string) Optional; Code of the unit e.g: 'F'|'C'|'K'
+     *
+     * @throws Mumsys_Weather_Item_Unit_Exception If 'key' is invalid or not set
      */
     public function __construct( array $input = array() )
     {
         if ( !isset( $input['key'] ) ) {
             $mesg = '"Key" must be set to initialise the object';
-            throw new Mumsys_Weather_Exception( $mesg );
+            throw new Mumsys_Weather_Item_Unit_Exception( $mesg );
         }
 
         $parts = $this->_initInputDefaults( $input );
@@ -101,9 +103,9 @@ class Mumsys_Weather_Item_Unit_Temperature
      * "fahrenheit" | "kelvin" (default)
      *
      * @return float New calculated value for the target unit.
-     * @throws Mumsys_Weather_Exception If unit parameter can not be used
+     * @throws Mumsys_Weather_Item_Unit_Exception If unit parameter can not be used
      */
-    public function convert( $value, string $unitTo = 'kelvin')
+    public function convert( $value, string $unitTo = 'kelvin' )
     {
         $unitFrom = $this->getKey();
         if ( $unitFrom === $unitTo ) {
@@ -134,7 +136,7 @@ class Mumsys_Weather_Item_Unit_Temperature
                 'Invalid unit to convert temperature from: "%1$s" to: "%2$s"',
                 $unitFrom, $unitTo
             );
-            throw new Mumsys_Weather_Exception( $msg );
+            throw new Mumsys_Weather_Item_Unit_Exception( $msg );
         }
 
         return $units[$unitFrom][$unitTo];
@@ -149,7 +151,7 @@ class Mumsys_Weather_Item_Unit_Temperature
      * @param array $params Like in constuctor
      *
      * @return array Item properties as mix os defauls or custom if the were set.
-     * @throws Mumsys_Weather_Exception
+     * @throws Mumsys_Weather_Item_Unit_Exception
      */
     private function _initInputDefaults( array $params ): array
     {
@@ -194,7 +196,7 @@ class Mumsys_Weather_Item_Unit_Temperature
                     'Invalid "key" to get a temperature unit item: "%1$s"',
                     $params['key']
                 );
-                throw new Mumsys_Weather_Exception( $mesg );
+                throw new Mumsys_Weather_Item_Unit_Exception( $mesg );
         }
 
         if ( isset( $params['label'] ) ) {
