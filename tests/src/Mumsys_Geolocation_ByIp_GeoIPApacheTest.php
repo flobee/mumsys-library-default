@@ -13,6 +13,7 @@
  * @subpackage  Geolocation
  */
 
+
 /**
  * Mumsys_Geolocation_ByIp_GeoIPApache Test
  * Generated 2018-01-28 at 19:00:34.
@@ -33,7 +34,7 @@ class Mumsys_Geolocation_ByIp_GeoIPApacheTest
     protected function setUp()
     {
         $ip = '127.0.0.1';
-        $this->_object = new Mumsys_Geolocation_ByIp_GeoIPApache($ip,'EUR');
+        $this->_object = new Mumsys_Geolocation_ByIp_GeoIPApache( $ip, 'EUR' );
     }
 
 
@@ -52,7 +53,7 @@ class Mumsys_Geolocation_ByIp_GeoIPApacheTest
      */
     public function testLocate()
     {
-        $this->markTestSkipped('apache setup required');
+        $this->markTestSkipped( 'apache setup required' );
 
 //        $actual = $this->_object->locate();
 //        $expected = '';
@@ -67,7 +68,7 @@ class Mumsys_Geolocation_ByIp_GeoIPApacheTest
     {
         $actual = $this->_object->createItem();
 
-        $this->assertInstanceOf('Mumsys_Geolocation_Item_Default', $actual);
+        $this->assertInstanceOf( 'Mumsys_Geolocation_Item_Default', $actual );
     }
 
 }
