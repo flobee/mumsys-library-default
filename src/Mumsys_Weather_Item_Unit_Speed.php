@@ -33,7 +33,8 @@
  */
 class Mumsys_Weather_Item_Unit_Speed
     extends Mumsys_Weather_Item_Unit_Abstract
-    implements Mumsys_Weather_Item_Unit_Interface, Mumsys_Weather_Item_Unit_Convert_Interface
+    implements Mumsys_Weather_Item_Unit_Interface,
+        Mumsys_Weather_Item_Unit_Convert_Interface
 {
     /**
      * Version ID information.
@@ -121,7 +122,7 @@ class Mumsys_Weather_Item_Unit_Speed
 
 
     /**
-     * Initialize the speed unit temperature item.
+     * Initialize the speed unit item.
      *
      * Returns a unit item and gives conversion posibility for possible codes
      * like: 'm/s', 'mps', 'mph', km/h', 'kn', 'nmiph', 'bf'
@@ -193,12 +194,13 @@ class Mumsys_Weather_Item_Unit_Speed
      *
      * http://de.wikipedia.org/wiki/Windgeschwindigkeit
      * http://en.wikipedia.org/wiki/Knot_%28unit%29
-     * 1 kn 	= 1 nmi (sea/nautical miles;exakt) 	= 1,852.3 km/h (exakt) 	= 0,514444 m/s
-     * 1 m/s 	= 3,6 km/h (exakt) 	= 1,944 kn 	= 2,237 mph
-     * 1 km/h 	= 0,540 kn 	= 0,278 m/s 	= 0,621 mph
-     * 1 mph 	= 1,609344 km/h (exakt) 	= 0,8690 kn 	= 0,447 m/s
+     * 1 kn     = 1 nmi (sea/nautical miles;exakt) = 1,852.3 km/h (exakt)
+     *                                                            = 0,514444 m/s
+     * 1 m/s = 3,6 km/h (exakt) = 1,944 kn = 2,237 mph
+     * 1 km/h = 0,540 kn = 0,278 m/s = 0,621 mph
+     * 1 mph = 1,609344 km/h (exakt) = 0,8690 kn = 0,447 m/s
      * 1 mile = 1609,344 meter
-     * 1.852 meter = 1 Sea/nautical miles, Nautic mile -	international
+     * 1.852 meter = 1 Sea/nautical miles, Nautic mile - international
      *
      *
      * Converts, re-calculates speed units. Possible units to convert vice
@@ -330,7 +332,7 @@ class Mumsys_Weather_Item_Unit_Speed
                     'Invalid "code" to get a speed unit item: "%1$s"',
                     $params['code']
                 );
-                throw new Mumsys_Weather_Item_Unit_Exception($mesg);
+                throw new Mumsys_Weather_Item_Unit_Exception( $mesg );
         }
 
         $result['code'] = $params['code'];

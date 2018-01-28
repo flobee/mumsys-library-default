@@ -77,7 +77,8 @@ class Mumsys_Weather_Item_Unit_SpeedTest
         $this->assertEquals( $options['code'], $this->_object->getCode() );
 
         $this->expectException( 'Mumsys_Weather_Exception' );
-        $this->expectExceptionMessage( 'Invalid "code" to get a speed unit item: "failure"' );
+        $mesg = 'Invalid "code" to get a speed unit item: "failure"';
+        $this->expectExceptionMessage( $mesg );
         $options['code'] = 'failure';
         $this->_object->__construct( $options );
     }
@@ -123,21 +124,20 @@ class Mumsys_Weather_Item_Unit_SpeedTest
             )
         );
 
-        foreach($testsTo as $codeFrom => $testList)
-        {
+        foreach ( $testsTo as $codeFrom => $testList ) {
             $this->_object->__construct( array('code' => $codeFrom) );
 
-            foreach($testList as $codeTo => $expected)
-            {
+            foreach ( $testList as $codeTo => $expected ) {
                 $mesg = 'codeFrom: "' . $codeFrom . '", codeTo: "' . $codeTo . '" failed';
                 if ($codeTo ==='bf') {
-                    $this->assertEquals( (int)$expected, $this->_object->convert( 1, $codeTo ), $mesg );
+                    $actual = $this->_object->convert( 1, $codeTo );
+                    $this->assertEquals( (int)$expected, $actual, $mesg );
                 } else {
-                    $this->assertEquals( $expected, $this->_object->convert( 1, $codeTo ), $mesg );
+                    $actual = $this->_object->convert( 1, $codeTo );
+                    $this->assertEquals( $expected, $actual, $mesg );
                 }
             }
         }
-
 
         $this->expectException( 'Mumsys_Weather_Item_Unit_Exception' );
         $mesg = 'Speed conversion not implemented yet for "mph" to "xyz"';
