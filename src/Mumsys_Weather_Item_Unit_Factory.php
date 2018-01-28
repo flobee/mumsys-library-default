@@ -16,6 +16,8 @@
 /**
  * Unit item factory. Loader for specific implementations.
  *
+ * Current adapters: Default, Speed, Temperature, Direction, Preasure
+ *
  * @category    Mumsys
  * @package     Library
  * @subpackage  Weather
