@@ -83,7 +83,7 @@ class Mumsys_Weather_Item_Unit_Temperature
             throw new Mumsys_Weather_Exception( $mesg );
         }
 
-        $parts = $this->_setInputDefaults( $input );
+        $parts = $this->_initInputDefaults( $input );
 
         $this->_domainPrefix = 'weather.item.unit.temperature.';
 
@@ -151,7 +151,7 @@ class Mumsys_Weather_Item_Unit_Temperature
      * @return array Item properties as mix os defauls or custom if the were set.
      * @throws Mumsys_Weather_Exception
      */
-    private function _setInputDefaults( array $params ): array
+    private function _initInputDefaults( array $params ): array
     {
         $return = array();
         switch ( $params['key'] )

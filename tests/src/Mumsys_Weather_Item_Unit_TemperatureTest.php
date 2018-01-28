@@ -51,7 +51,7 @@ class Mumsys_Weather_Item_Unit_TemperatureTest
 
     /**
      * @covers Mumsys_Weather_Item_Unit_Temperature::__construct
-     * @covers Mumsys_Weather_Item_Unit_Temperature::_setInputDefaults
+     * @covers Mumsys_Weather_Item_Unit_Temperature::_initInputDefaults
      */
     public function testConstruct()
     {
