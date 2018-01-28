@@ -57,15 +57,31 @@ class Mumsys_Geolocation_ByIp_GeoIPApache
                     'language' => 'en',
                 ),
                 'location' => array(
-                    'city' => strip_tags( (string) $_SERVER['GEOIP_CITY'] ),
+                    'city' => filter_input(
+                        INPUT_SERVER, 'GEOIP_CITY', FILTER_SANITIZE_STRING
+                    ),
                     'region' => strip_tags( (string) $region ),
-                    'areaCode' => strip_tags( (string) $_SERVER['GEOIP_AREA_CODE'] ),
-                    'countryCode' => strip_tags( (string) $_SERVER['GEOIP_COUNTRY_CODE'] ),
-                    'countryName' => strip_tags( (string) $_SERVER['GEOIP_COUNTRY_NAME'] ),
-                    'continentCode' => strip_tags( (string) $_SERVER['GEOIP_CONTINENT_CODE'] ),
-                    'latitude' => (float) $_SERVER['GEOIP_LATITUDE'],
-                    'longitude' => (float) $_SERVER['GEOIP_LONGITUDE'],
-                    'dmaCode' => strip_tags( (string) $_SERVER['GEOIP_DMA_CODE'] ),
+                    'areaCode' => filter_input(
+                        INPUT_SERVER, 'GEOIP_AREA_CODE', FILTER_SANITIZE_STRING
+                    ),
+                    'countryCode' => filter_input(
+                        INPUT_SERVER, 'GEOIP_COUNTRY_CODE', FILTER_SANITIZE_STRING
+                    ),
+                    'countryName' => filter_input(
+                        INPUT_SERVER, 'GEOIP_COUNTRY_NAME', FILTER_SANITIZE_STRING
+                    ),
+                    'continentCode' => filter_input(
+                        INPUT_SERVER, 'GEOIP_CONTINENT_CODE', FILTER_SANITIZE_STRING
+                    ),
+                    'latitude' => filter_input(
+                        INPUT_SERVER, 'GEOIP_LATITUDE', FILTER_SANITIZE_NUMBER_FLOAT
+                    ),
+                    'longitude' => filter_input(
+                        INPUT_SERVER, 'GEOIP_LONGITUDE', FILTER_SANITIZE_NUMBER_FLOAT
+                    ),
+                    'dmaCode' => filter_input(
+                        INPUT_SERVER, 'GEOIP_DMA_CODE', FILTER_SANITIZE_STRING
+                    ),
                 )
             );
 
