@@ -1,8 +1,7 @@
 <?php
 
-
 /**
- * Mumsys_Geolocation_ByIp_GeoIPApache
+ * Mumsys_Geolocation_ByIp_GeoIPPhp
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt

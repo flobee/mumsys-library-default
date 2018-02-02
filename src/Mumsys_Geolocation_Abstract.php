@@ -1,33 +1,20 @@
 <?php
 
-
-
-/*{{{*/
 /**
- * MUMSYS 2 Library for Multi User Management Interface
+ * Mumsys_Geolocation_Abstract
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
- * -----------------------------------------------------------------------
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2013 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
  *
- * LICENSE
- *
- * All rights reseved.
- * DO NOT COPY OR CHANGE ANY KIND OF THIS CODE UNTIL YOU  HAVE THE
- * WRITTEN/ BRIFLY PERMISSION FROM THE AUTOR, THANK YOU
- *
- * -----------------------------------------------------------------------
- * @version {VERSION_NUMBER}
- * Created: 2013-11-01
- * $Id: Mumsys_Geolocation_Abstract.php 2910 2013-12-09 11:43:09Z flobee $
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Geolocation
- * @see lib/mumsys2/Mumsys_Geolocation_Abstract.php
- * @filesource
- * @author      Florian Blasel <info@flo-W-orks.com>
- * @copyright   Copyright (c) 2013, Florian Blasel for FloWorks Company
- * @license     All rights reseved
+ * @package     Library
+ * @subpackage  Geolocation
+ * @verion      1.0.0
+ * Created: 2013-11-01, renew 2018
+ * $Id: Mumsys_Geolocation_Abstract.php 2910 2013-12-09 11:43:09Z flobee $
  */
-/*}}}*/
 
 
 /**

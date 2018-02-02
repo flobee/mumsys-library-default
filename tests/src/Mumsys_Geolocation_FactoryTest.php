@@ -1,8 +1,22 @@
 <?php
 
+/**
+ * Mumsys_Geolocation_FactoryTest
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2013 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Geolocation
+ * @verion      1.0.0
+ */
 
 
 /**
+ * Mumsys_Geolocation_Factory Test
  * Generated on 2013-12-06 at 17:40:11.
  */
 class Mumsys_Geolocation_FactoryTest

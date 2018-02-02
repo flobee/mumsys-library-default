@@ -1,34 +1,19 @@
 <?php
 
-
-
-
-/*{{{*/
 /**
- * MUMSYS 2 Library for Multi User Management Interface
+ * Mumsys_Weather_Interface
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
- * -----------------------------------------------------------------------
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2013 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
  *
- * LICENSE
- *
- * All rights reseved.
- * DO NOT COPY OR CHANGE ANY KIND OF THIS CODE UNTIL YOU  HAVE THE
- * WRITTEN/ BRIFLY PERMISSION FROM THE AUTOR, THANK YOU
- *
- * -----------------------------------------------------------------------
- * @version {VERSION_NUMBER}
- * Created: 2013-11-01
- * $Id$
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Weather
- * @see lib/mumsys2/Mumsys_Weather_Interface.php
- * @filesource
- * @author      Florian Blasel <info@flo-W-orks.com>
- * @copyright   Copyright (c) 2013, Florian Blasel for FloWorks Company
- * @license     All rights reseved
+ * @package     Library
+ * @subpackage  Weather
+ * @verion      1.0.0
+ * Created: 2013, renew 2018
  */
-/*}}}*/
 
 
 /**
@@ -79,23 +64,18 @@ interface Mumsys_Weather_Interface
     public function getRequestUrl();
 
     /**
-     * Returns temperature units.
+     * Returns a unit item.
      *
-     * @param string $key Key to identify the unit "metric" (celsius), "imperial" (fahrenheit), "internal" (kelvin)
-     * @return \stdClass Object including name, sign and code
+     * Please check details of the implementation. Some adaptes do not require
+     * additional parameters and some does.
+     *
+     * @param string $type Type of the unit item to get. E.g: Temperature,
+     * Direction, Speed, Default
+     * @param array $parameters List of key/value pairs to initialise the item
+     *
+     * @return Mumsys_Weather_Item_Unit_Interface Object including key, label,
+     * sign and code
+     * @throws
      */
-    public function getUnitTemperature( $unit = '' );
-
-    /**
-     * Returns the code of the wind direction.
-     * E.g. SW for South west wind.
-     *
-     * @param integer $deg wind direction in degrees
-     * @param integer $precision Precision of the wind direction to return. 0 = 45° default,  1 = 22.5° steps
-     *
-     * @return string Code of the wind direction
-     * @throws Mumsys_Weather_Exception
-     */
-    public function getCodeWindDirection( $deg=0, $precision=0 );
-
+    public function getUnitItem( $type, array $parameters = array() );
 }

@@ -1,11 +1,25 @@
 <?php
 
+/**
+ * Mumsys_Geolocation_Item_DefaultTest
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2013 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Geolocation
+ * @verion      1.0.0
+ */
+
 
 /**
- * Mumsys_Geolocation_Item Test
+ * Mumsys_Geolocation_Item_Default Test
  * Generated on 2013-12-08 at 18:50:45.
  */
-class Mumsys_Geolocation_ItemTest
+class Mumsys_Geolocation_Item_DefaultTest
     extends Mumsys_Unittest_Testcase
 {
     /**
@@ -57,7 +71,7 @@ class Mumsys_Geolocation_ItemTest
                 'phonePrefixCode' => '040',
             ),
         );
-        $this->_object = new Mumsys_Geolocation_Item( $this->_defaults, true );
+        $this->_object = new Mumsys_Geolocation_Item_Default( $this->_defaults, true );
     }
 
 
