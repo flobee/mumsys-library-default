@@ -75,19 +75,15 @@ class Mumsys_Geolocation_Item_DefaultTest
     }
 
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
     protected function tearDown()
     {
-        $this->_object = NULL;
+        $this->_object = null;
         unset( $this->_object );
     }
 
 
     /**
-     * @covers Mumsys_Geolocation_Item::getPublisher
+     * @covers Mumsys_Geolocation_Item_Default::getPublisher
      */
     public function testGetPublisher()
     {
@@ -97,19 +93,18 @@ class Mumsys_Geolocation_Item_DefaultTest
 
 
     /**
-     * @covers Mumsys_Geolocation_Item::setPublisher
+     * @covers Mumsys_Geolocation_Item_Default::setPublisher
      */
     public function testSetPublisher()
     {
-        $object = new Mumsys_Geolocation_Item( array(), true );
+        $object = new Mumsys_Geolocation_Item_Default( array(), true );
         $object->setPublisher( $this->_defaults['publisher'] );
-        $this->assertEquals( $this->_defaults['publisher'],
-            $object->getPublisher() );
+        $this->assertEquals( $this->_defaults['publisher'], $object->getPublisher() );
     }
 
 
     /**
-     * @covers Mumsys_Geolocation_Item::getLocation
+     * @covers Mumsys_Geolocation_Item_Default::getLocation
      */
     public function testGetLocation()
     {
@@ -119,19 +114,18 @@ class Mumsys_Geolocation_Item_DefaultTest
 
 
     /**
-     * @covers Mumsys_Geolocation_Item::setLocation
+     * @covers Mumsys_Geolocation_Item_Default::setLocation
      */
     public function testSetLocation()
     {
-        $object = new Mumsys_Geolocation_Item( array(), true );
+        $object = new Mumsys_Geolocation_Item_Default( array(), true );
         $object->setLocation( $this->_defaults['location'] );
-        $this->assertEquals( $this->_defaults['location'],
-            $object->getLocation() );
+        $this->assertEquals( $this->_defaults['location'], $object->getLocation() );
     }
 
 
     /**
-     * @covers Mumsys_Geolocation_Item::toArray
+     * @covers Mumsys_Geolocation_Item_Default::toArray
      */
     public function testToArray()
     {
