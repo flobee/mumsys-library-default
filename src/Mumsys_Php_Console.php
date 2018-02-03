@@ -39,7 +39,7 @@ class Mumsys_Php_Console
     /**
      * Version ID information.
      */
-    const VERSION = '3.0.0';
+    const VERSION = '3.0.1';
 
 
     /**
@@ -66,16 +66,17 @@ class Mumsys_Php_Console
      * beware crashes or "disk-full"- errors)
      * @param integer $maxSizeCmp Number in percent. Max size when a disk-full
      * event should be thrown (max allowed/free size compare Value) Default: 92%
-     * @param Mumsys_Logger $logger Logger object which needs at least the log
-     * method
+     * @param Mumsys_Logger_Interface $logger Logger object which needs at least
+     * the log method
      * @param string $cmd 'df' command to be executed. Maybe different on
      * windows e.g: 'c:/cygwin/bin/df.exe -a [path]; Parameter %1$s is the
      * placeholder for the $path.
      *
-     * @return boolean Returns true if disk size exceed the limit or false for OK
+     * @return boolean Returns true if disk size exceed the limit or false
      */
     public static function check_disk_free_space( $path = '', $secCmp = 60,
-        $maxSizeCmp = 92, Mumsys_Logger_Interface $logger, $cmd = 'df -a %1$s' )
+        $maxSizeCmp = 92, Mumsys_Logger_Interface $logger = null,
+        $cmd = 'df -a %1$s' )
     {
         static $paths = null;
         static $sizes = null;
@@ -84,12 +85,13 @@ class Mumsys_Php_Console
         // key of exec result in $cmd
         $resultKey = 4;
 
-        if ( !is_dir($path . DIRECTORY_SEPARATOR . '/') ) {
-            $logger->log(__METHOD__ . ': path do not exists: "' . $path . '"', 3);
+        if ( !is_dir( $path . DIRECTORY_SEPARATOR ) ) {
+            $message = __METHOD__ . ': path do not exists: "' . $path . '"';
+            $logger->log( $message, 3 );
             return true;
         }
 
-        $cmd = sprintf($cmd, $path);
+        $cmd = sprintf( $cmd, $path );
 
         $now = time();
         $_v = array();
@@ -100,17 +102,20 @@ class Mumsys_Php_Console
             $times = array();
         }
 
-        $logger->log(__METHOD__ . ': using path: ' . $path, 6);
+        $logger->log( __METHOD__ . ': using path: ' . $path, 6 );
 
         // cached data check
-        $i = array_search($path, $paths);
-        if ( $i !== false && isset($times[$i]) && ($now - $times[$i]) <= $secCmp ) {
+        $i = array_search( $path, $paths );
+        if ( $i !== false && isset( $times[$i] ) && ($now - $times[$i]) <= $secCmp ) {
             if ( $sizes[$i] >= $maxSizeCmp ) {
-                $logger->log(__METHOD__ . ': disc space overflow: ' . $sizes[$i] . ' (' . $maxSizeCmp . ' is max limit!)',
-                    3);
+                $message = __METHOD__ . ': disc space overflow: ' . $sizes[$i]
+                    . ' (' . $maxSizeCmp . ' is max limit!)';
+                $logger->log( $message, 3 );
                 return true;
             } else {
-                $logger->log(__METHOD__ . 'disc space OK: ' . $sizes[$i] . '% (' . $maxSizeCmp . ' is max limit!)', 6);
+                $message = __METHOD__ . 'disc space OK: ' . $sizes[$i]
+                    . '% (' . $maxSizeCmp . ' is max limit!)';
+                $logger->log( $message, 6 );
                 return false;
             }
         }
@@ -120,23 +125,23 @@ class Mumsys_Php_Console
             $data = null;
             $return = null;
 
-            $result = exec($cmd, $data, $return);
+            $result = exec( $cmd, $data, $return );
 
             if ( !$result || $return !== 0 ) {
                 $mesg = __METHOD__ . ': cmd error: "' . $cmd . '"';
-                throw new Mumsys_Php_Exception($mesg, 1);
+                throw new Mumsys_Php_Exception( $mesg, 1 );
             }
 
-            $logger->log(__METHOD__ . ': cmd: "' . $cmd . '"', 7);
+            $logger->log( __METHOD__ . ': cmd: "' . $cmd . '"', 7 );
 
-            $r = explode(' ', $data[1]);
-            while ( list($a, $b) = each($r) ) {
-                $b = trim($b);
+            $r = explode( ' ', $data[1] );
+            foreach ( $r as $a => $b ) {
+                $b = trim( $b );
                 if ( $b != '' ) {
                     $_v[] = $b;
                 }
             }
-            $logger->log($_v, 7);
+            $logger->log( $_v, 7 );
 
             $size = (int) $_v[$resultKey];
 
@@ -147,7 +152,8 @@ class Mumsys_Php_Console
             if ( $size >= $maxSizeCmp ) {
                 $logger->log(
                     sprintf(
-                        __METHOD__ . ': disc space overflow: size: "%1$s" (max limit: "%2$s") for path: "%3$s"',
+                        __METHOD__ . ': disc space overflow: size: "%1$s" (max'
+                        . ' limit: "%2$s") for path: "%3$s"',
                         $sizes[$i], $maxSizeCmp, $path
                     ), 3
                 );
@@ -155,7 +161,8 @@ class Mumsys_Php_Console
             } else {
                 $logger->log(
                     sprintf(
-                        __METHOD__ . 'disc space OK: size "%1$s" (max limit: "%2$s") for path: "%3$s"', $sizes[$i],
+                        __METHOD__ . 'disc space OK: size "%1$s" (max limit: '
+                        . '"%2$s") for path: "%3$s"', $sizes[$i],
                         $maxSizeCmp, $path
                     ), 6
                 );
@@ -163,7 +170,10 @@ class Mumsys_Php_Console
                 return false;
             }
         } catch ( Exception $e ) {
-            $logger->log(__METHOD__ . ': Catchable exception. Message: "' . $e->getMessage() . '"', 0);
+            $logger->log(
+                __METHOD__ . ': Catchable exception. Message: "'
+                . $e->getMessage() . '"', 0
+            );
             return true;
         }
     }
