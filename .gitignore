@@ -1,6 +1,7 @@
 # General files
 *.swp
 *.ctags
+cs
 
 # Composer files
 composer.phar
