@@ -45,50 +45,54 @@ class Mumsys_Geolocation_ByIp_GeoIPApache
     {
         // apache city db exists ?
 
-        $remoteAddr = Mumsys_Php_Globals::getServerVar( 'GEOIP_ADDR', false );
-        $region = Mumsys_Php_Globals::getServerVar( 'GEOIP_REGION_NAME', false );
+        $remoteAddr = filter_input(
+            INPUT_SERVER, 'GEOIP_ADDR', FILTER_SANITIZE_STRING
+        );
+        $region = filter_input(
+            INPUT_SERVER, 'GEOIP_REGION_NAME', FILTER_SANITIZE_STRING
+        );
 
-        if ( $remoteAddr && $region ) {
-            $this->_ip = strip_tags( $remoteAddr );
-
-            $init = array(
-                'publisher' => array(
-                    'name' => 'geoip_apache',
-                    'language' => 'en',
-                ),
-                'location' => array(
-                    'city' => filter_input(
-                        INPUT_SERVER, 'GEOIP_CITY', FILTER_SANITIZE_STRING
-                    ),
-                    'region' => strip_tags( (string) $region ),
-                    'areaCode' => filter_input(
-                        INPUT_SERVER, 'GEOIP_AREA_CODE', FILTER_SANITIZE_STRING
-                    ),
-                    'countryCode' => filter_input(
-                        INPUT_SERVER, 'GEOIP_COUNTRY_CODE', FILTER_SANITIZE_STRING
-                    ),
-                    'countryName' => filter_input(
-                        INPUT_SERVER, 'GEOIP_COUNTRY_NAME', FILTER_SANITIZE_STRING
-                    ),
-                    'continentCode' => filter_input(
-                        INPUT_SERVER, 'GEOIP_CONTINENT_CODE', FILTER_SANITIZE_STRING
-                    ),
-                    'latitude' => filter_input(
-                        INPUT_SERVER, 'GEOIP_LATITUDE', FILTER_SANITIZE_NUMBER_FLOAT
-                    ),
-                    'longitude' => filter_input(
-                        INPUT_SERVER, 'GEOIP_LONGITUDE', FILTER_SANITIZE_NUMBER_FLOAT
-                    ),
-                    'dmaCode' => filter_input(
-                        INPUT_SERVER, 'GEOIP_DMA_CODE', FILTER_SANITIZE_STRING
-                    ),
-                )
-            );
-
-            return $this->_createItem( $init );
+        if ( !$remoteAddr || !$region ) {
+            return false;
         }
 
-        return false;
+        $this->_ip = strip_tags( $remoteAddr );
+
+        $init = array(
+            'publisher' => array(
+                'name' => 'geoip_apache',
+                'language' => 'en',
+            ),
+            'location' => array(
+                'city' => filter_input(
+                    INPUT_SERVER, 'GEOIP_CITY', FILTER_SANITIZE_STRING
+                ),
+                'region' => $region,
+                'areaCode' => filter_input(
+                    INPUT_SERVER, 'GEOIP_AREA_CODE', FILTER_SANITIZE_STRING
+                ),
+                'countryCode' => filter_input(
+                    INPUT_SERVER, 'GEOIP_COUNTRY_CODE', FILTER_SANITIZE_STRING
+                ),
+                'countryName' => filter_input(
+                    INPUT_SERVER, 'GEOIP_COUNTRY_NAME', FILTER_SANITIZE_STRING
+                ),
+                'continentCode' => filter_input(
+                    INPUT_SERVER, 'GEOIP_CONTINENT_CODE', FILTER_SANITIZE_STRING
+                ),
+                'latitude' => filter_input(
+                    INPUT_SERVER, 'GEOIP_LATITUDE', FILTER_SANITIZE_NUMBER_FLOAT
+                ),
+                'longitude' => filter_input(
+                    INPUT_SERVER, 'GEOIP_LONGITUDE', FILTER_SANITIZE_NUMBER_FLOAT
+                ),
+                'dmaCode' => filter_input(
+                    INPUT_SERVER, 'GEOIP_DMA_CODE', FILTER_SANITIZE_STRING
+                ),
+            )
+        );
+
+        return $this->_createItem( $init );
     }
 
 
