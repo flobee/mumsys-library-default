@@ -106,14 +106,14 @@ class Mumsys_PriorityQueue_Simple
     public function add( $identifier, $value, $positionWay = 'after',
         $positionID = null )
     {
-        if (isset($this->_stack[$identifier])) {
-            $message = sprintf('Identifier "%1$s" already set', $identifier);
-            throw new Mumsys_PriorityQueue_Exception($message);
+        if ( isset( $this->_stack[$identifier] ) ) {
+            $message = sprintf( 'Identifier "%1$s" already set', $identifier );
+            throw new Mumsys_PriorityQueue_Exception( $message );
         }
 
-        if (isset($this->_stack[$positionID])) {
-            $pos = $this->_getPos($positionID, $positionWay);
-            $part = array_splice($this->_stack, 0, $pos);
+        if ( isset( $this->_stack[$positionID] ) ) {
+            $pos = $this->_getPos( $positionID, $positionWay );
+            $part = array_splice( $this->_stack, 0, $pos );
             $this->_stack = array_merge(
                 $part, array($identifier => $value), $this->_stack
             );
@@ -139,15 +139,15 @@ class Mumsys_PriorityQueue_Simple
     {
         $i = 0;
         $pos = false;
-        while (list($key) = each($this->_stack)) {
-            if ($posKey === $key) {
+        foreach ( $this->_stack as $key => & $tmp ) {
+            if ( $posKey === $key ) {
                 $pos = $i;
                 break;
             }
             $i++;
         }
 
-        switch ($posWay) {
+        switch ( $posWay ) {
             case 'before':
                 //$pos = $pos;
                 break;
@@ -158,7 +158,7 @@ class Mumsys_PriorityQueue_Simple
                 $message = sprintf(
                     'Position way "%1$s" not implemented', $posWay
                 );
-                throw new Mumsys_PriorityQueue_Exception($message);
+                throw new Mumsys_PriorityQueue_Exception( $message );
         }
 
         return $pos;
