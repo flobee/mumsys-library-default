@@ -53,7 +53,7 @@ class Mumsys_Geolocation_ByIp_GeoIPApacheTest
      */
     public function testLocate()
     {
-        $this->markTestSkipped( 'apache setup required' );
+        $this->markTestSkipped( 'OK but apache setup required, skip test' );
 
 //        $actual = $this->_object->locate();
 //        $expected = '';
