@@ -26,7 +26,7 @@ class Mumsys_Weather_FactoryTest
     /**
      * @var Mumsys_Weather_Factory
      */
-    protected $object;
+    protected $_object;
 
 
     /**
@@ -35,7 +35,7 @@ class Mumsys_Weather_FactoryTest
      */
     protected function setUp()
     {
-        $this->object = new Mumsys_Weather_Factory;
+        $this->_object = new Mumsys_Weather_Factory;
     }
 
 
@@ -45,20 +45,24 @@ class Mumsys_Weather_FactoryTest
      */
     protected function tearDown()
     {
-
+        $this->_object = null;
     }
 
 
     /**
      * @covers Mumsys_Weather_Factory::getInstance
-     * @todo   Implement testGetInstance().
      */
     public function testGetInstance()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
+        $options = array(
+            'apikey' => '123',
+            'format' => 'json',
+            'unit' => 'metric',
+            'language' => 'en',
         );
+        $actual = Mumsys_Weather_Factory::getInstance( 'auto', $options );
+        $expected = 'Mumsys_Weather_OpenWeatherMap';
+        $this->assertInstanceOf( $expected, $actual );
     }
 
 }

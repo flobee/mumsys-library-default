@@ -32,24 +32,29 @@ class Mumsys_Weather_Factory
      *
      * @param array $params Basic parameters to be set for the driver:
      * - [format] string Format of service response: json (default), xml, html
-     * - [unit] string Unit can be 'metric', 'imperial', 'internal' (default: metric).
-     * - [language] string A language code like en, de, es, fr up to five characters if a locale is needed.
-     * - [apikey] string Your application key/ token/ access key your need to access the data. Max 40 character
-     * @param string $service Service plugin to be used. Possible implementations: 'autodetect' (to find one of the
-     * following and in this order (to speed up things):) 'openweathermaps'
+     * - [unit] string Unit can be 'metric', 'imperial', 'internal' (default:
+     * metric).
+     * - [language] string A language code like en, de, es, fr up to five
+     * characters if a locale is needed.
+     * - [apikey] string Your application key/ token/ access key your need to
+     * access the data. Max 40 character
+     * @param string $service Service plugin to be used. Possible
+     * implementations: 'autodetect' (to find one of the following and in this
+     * order (to speed up things): 'openweathermaps'
      *
      * @return Mumsys_Weather_Interface
      * @throws Exception
      */
-    public static function getInstance( $service = 'autodetect', array $params = array() )
+    public static function getInstance( $service = 'auto',
+        array $params = array() )
     {
-        if ( $service == 'autodetect' ) {
-            $service = self::autodetectService();
-            $newService = self::_initService($service, $params);
-        } else if ( in_array($service, array('openweathermaps')) ) {
-            $newService = $this->_initService($service, $params);
+        if ( $service === 'auto' || $service === 'autodetect' ) {
+            $service = self::_autodetectService();
+            $newService = self::_initService( $service, $params );
+        } else if ( in_array( $service, array('openweathermaps') ) ) {
+            $newService = $this->_initService( $service, $params );
         } else {
-            $newService = new Mumsys_Weater_OpenWeatherMap($params);
+            $newService = new Mumsys_Weater_OpenWeatherMap( $params );
         }
 
         return $newService;
@@ -61,7 +66,7 @@ class Mumsys_Weather_Factory
      *
      * @return string internal name of the available plugin service
      */
-    private static function autodetectService()
+    private static function _autodetectService()
     {
         $service = 'openweathermaps';
 
@@ -79,12 +84,11 @@ class Mumsys_Weather_Factory
         switch ( $service )
         {
             case 'openweathermaps':
-                $newService = new Mumsys_Weather_OpenWeatherMap($params);
+                $newService = new Mumsys_Weather_OpenWeatherMap( $params );
                 break;
         }
 
         return $newService;
     }
-
 
 }

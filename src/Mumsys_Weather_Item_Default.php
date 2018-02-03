@@ -17,12 +17,15 @@
 
 
 /**
- * Weather item class containing all weather informations from a weather service.
- * Requires php > 5.4. for htmlspecialchars()
+ * Weather item class containing all weather informations from a weather
+ * service.
  *
- * Note: This is a data container as array for the moment. To create sub objects for the main properties or some units
- * does not make sence ... at the moment. if you want to have stdclass's for all propertys use
- * $object = json_decode( json_encode( $this->toArray() ) ); but remind that everyting is public.
+ * Note: This is a data container as array for the moment. To create sub objects
+ * for the main properties or some units
+ * does not make sence ... at the moment. if you want to have stdclass's for all
+ * propertys use
+ * $object = json_decode( json_encode( $this->toArray() ) ); but remind that
+ * everyting is public.
  *
  * @todo check inline docs
  * @todo validation for var types
@@ -33,6 +36,11 @@
  */
 class Mumsys_Weather_Item_Default
 {
+    /**
+     * Version ID information.
+     */
+    const VERSION = '1.0.0';
+
     /**
      * The store for all data. See $_itemDefaults for all possible properties.
      * @var array
@@ -87,7 +95,8 @@ class Mumsys_Weather_Item_Default
             'sea',
             'ground',
             'unit',
-            /* trend of the barometric pressure: steady (0), rising (1), or falling (-1)*/
+            /* trend of the barometric pressure: steady (0), rising (1), or
+             * falling (-1)*/
             'trend',
         ),
         'humidity' => array(
@@ -120,10 +129,13 @@ class Mumsys_Weather_Item_Default
             ),
             /*
              * wind chill
-             * "Windkühle (gefühlte Temperatur) Die über den Windsensor erfassten Windkühledaten werden mit ihren
+             * "Windkühle (gefühlte Temperatur) Die über den Windsensor
+             * erfassten Windkühledaten werden mit ihren
              * aktuellen, minimalen und maximalen Werten angezeigt.
-             * Die innerhalb einer bestimmten Zeitspanne gespeicherten minimalen und maximalen Windkühlewerte werden
-             * zusammen mit Datum und Zeitpunkt der Speicherung ebenfalls angezeigt und bei Eintritt neuer Minimal-
+             * Die innerhalb einer bestimmten Zeitspanne gespeicherten minimalen
+             * und maximalen Windkühlewerte werden
+             * zusammen mit Datum und Zeitpunkt der Speicherung ebenfalls
+             * angezeigt und bei Eintritt neuer Minimal-
              * oder Maximalwerte automatisch aktualisiert." */
             'chill' => array(
                 'value',
@@ -156,7 +168,8 @@ class Mumsys_Weather_Item_Default
 
     /**
      * Initialize the weather item object.
-     * If flag $strictlyAll is true all possible values will be set with NULL. This is helpful to get a complete
+     * If flag $strictlyAll is true all possible values will be set with NULL.
+     * This is helpful to get a complete
      * list for all properties.
      *
      * @see set[property]() methods
@@ -166,62 +179,91 @@ class Mumsys_Weather_Item_Default
      * - 'publisher' possible properties are: 'id', 'name'
      * - 'lastupdate' unix timestamp UTC
      * - 'language' string Language code or locale string
-     * - 'location' possible properties are: 'id', 'name', 'country', 'countryCode', 'sunrise', 'sunset', 'latitude',
+     * - 'location' possible properties are: 'id', 'name', 'country',
+     * 'countryCode', 'sunrise', 'sunset', 'latitude',
      * 'longitude', 'altitude', 'tz_offset'
      * - 'description' array Possible properties are: 'id', 'key', 'name','icon'
-     * - 'temperature' array Possible properties are: 'value', 'min', 'max', 'night', 'eve', 'morn', 'unit
-     * - 'pressure' array Possible properties are: 'value', 'sea', 'ground', 'unit', 'trend'
+     * - 'temperature' array Possible properties are: 'value', 'min', 'max',
+     * 'night', 'eve', 'morn', 'unit
+     * - 'pressure' array Possible properties are: 'value', 'sea', 'ground',
+     * 'unit', 'trend'
      * - 'humidity' array Possible properties are: 'value', 'unit'
      * - 'visibility' array Possible properties are: 'value', 'unit'
-     * - 'wind' array Possible properties for the sub properties are: 'speed', 'direction', 'chill'
+     * - 'wind' array Possible properties for the sub properties are: 'speed',
+     * 'direction', 'chill'
      * - 'clouds' array Possible properties are: 'value', 'unit'
-     * - 'precipitation' array Possible properties for the sub properties are: 'rain', 'snow'
-     * @param boolean $strictlyAll Flag to set all possible values or just the data you have.
+     * - 'precipitation' array Possible properties for the sub properties are:
+     * 'rain', 'snow'
+     * @param boolean $strict Flag to set all possible values or just the
+     * data you have.
      */
-    public function __construct( array $params = array(), $strictlyAll = false )
+    public function __construct( array $params = array(), bool $strict = false )
     {
-        if ( (boolean) $strictlyAll ) {
-            $this->_record = $this->_getItemDefaults($this->_itemDefaults);
+        if ( $strict ) {
+            $this->_record = $this->_getItemDefaults( $this->_itemDefaults );
         }
 
         if ( $params ) {
-            if ( isset($params['publisher']) ) {
-                $this->setPublisher($params['publisher']);
+            if ( isset( $params['publisher'] ) ) {
+                $this->setPublisher( $params['publisher'] );
             }
-            if ( isset($params['lastupdate']) ) {
+            if ( isset( $params['lastupdate'] ) ) {
                 $this->_record['lastupdate'] = (string) $params['lastupdate'];
             }
-            if ( isset($params['language']) ) {
+            if ( isset( $params['language'] ) ) {
                 $this->_record['language'] = (string) $params['language'];
             }
-            if ( isset($params['location']) ) {
-                $this->setLocation($params['location']);
+            if ( isset( $params['location'] ) ) {
+                $this->setLocation( $params['location'] );
             }
-            if ( isset($params['description']) ) {
-                $this->setWeatherDescription($params['description']);
+            if ( isset( $params['description'] ) ) {
+                $this->setWeatherDescription( $params['description'] );
             }
-            if ( isset($params['temperature']) ) {
-                $this->setTemperature($params['temperature']);
+            if ( isset( $params['temperature'] ) ) {
+                $this->setTemperature( $params['temperature'] );
             }
-            if ( isset($params['pressure']) ) {
-                $this->setPressure($params['pressure']);
+            if ( isset( $params['pressure'] ) ) {
+                $this->setPressure( $params['pressure'] );
             }
-            if ( isset($params['humidity']) ) {
-                $this->setHumidity($params['humidity']);
+            if ( isset( $params['humidity'] ) ) {
+                $this->setHumidity( $params['humidity'] );
             }
-            if ( isset($params['visibility']) ) {
-                $this->setVisibility($params['visibility']);
+            if ( isset( $params['visibility'] ) ) {
+                $this->setVisibility( $params['visibility'] );
             }
-            if ( isset($params['wind']) ) {
-                $this->setWind($params['wind']);
+            if ( isset( $params['wind'] ) ) {
+                $this->setWind( $params['wind'] );
             }
-            if ( isset($params['clouds']) ) {
-                $this->setClouds($params['clouds']);
+            if ( isset( $params['clouds'] ) ) {
+                $this->setClouds( $params['clouds'] );
             }
-            if ( isset($params['precipitation']) ) {
-                $this->setPrecipitation($params['precipitation']);
+            if ( isset( $params['precipitation'] ) ) {
+                $this->setPrecipitation( $params['precipitation'] );
             }
         }
+    }
+
+
+    /**
+     * Generic getter to return item properties.
+     *
+     * @param string $key Key of the properties to return @see $_itemDefaults
+     * @param mixed $default Reurn value if $key not exists. Default: null
+     *
+     * @return mixed Returns the value for the given $key or $default
+     * @throws Mumsys_Exception If key is not a string
+     */
+    public function get( string $key = null, $default = null )
+    {
+        if ( $key === null ) {
+            return $this->_record;
+        }
+
+        if ( isset( $this->_record[$key] ) ) {
+            return $this->_record[$key];
+        }
+
+        return $default;
     }
 
 
@@ -229,15 +271,15 @@ class Mumsys_Weather_Item_Default
      * Sets the publisher informations
      *
      * @param array $publ Properties for the publisher:
-     * - 'id' string Unique ID for the publisher on this system/enviroment/serverfarm...
+     * - 'id' string Unique ID for the publisher
      * - 'name' string Name of the publisher
      */
     public function setPublisher( array $publ = array() )
     {
-        if ( isset($publ['id']) ) {
+        if ( isset( $publ['id'] ) ) {
             $this->_record['publisher']['id'] = (string) $publ['id'];
         }
-        if ( isset($publ['name']) ) {
+        if ( isset( $publ['name'] ) ) {
             $this->_record['publisher']['name'] = (string) $publ['name'];
         }
     }
@@ -257,7 +299,8 @@ class Mumsys_Weather_Item_Default
     /**
      * Sets the language.
      *
-     * @param string $lang Language code or locale all text data belongs to in description or 'name' value
+     * @param string $lang Language code or locale all text data belongs to in
+     * description or 'name' value
      */
     public function setLanguage( $lang )
     {
@@ -269,10 +312,12 @@ class Mumsys_Weather_Item_Default
      * Sets the location informations.
      *
      * @param array $location Properties for the location:
-     * - 'id' string Value which belongs to the publisher. The unique id for this location at their end
+     * - 'id' string Value which belongs to the publisher. The unique id for
+     * this location at their end
      * - 'name' string Name of the location
      * - 'country' string Full name of the country
-     * - 'countryCode' string Country code by ISO 3166. E.g.: DE, US, FR, AT, CH, RU, UA
+     * - 'countryCode' string Country code by ISO 3166. E.g.: DE, US, FR, AT,
+     * CH, RU, UA
      * - 'sunrise' int Unix timestamp of the timezone this location belong to
      * - 'sunset' int Unix timestamp of the timezone this location belong to
      * - 'latitude' float Latitude value of this location
@@ -282,34 +327,34 @@ class Mumsys_Weather_Item_Default
      */
     public function setLocation( array $location = array() )
     {
-        if ( isset($location['id']) ) {
+        if ( isset( $location['id'] ) ) {
             $this->_record['location']['id'] = (string) $location['id'];
         }
-        if ( isset($location['name']) ) {
+        if ( isset( $location['name'] ) ) {
             $this->_record['location']['name'] = (string) $location['name'];
         }
-        if ( isset($location['country']) ) {
+        if ( isset( $location['country'] ) ) {
             $this->_record['location']['country'] = (string) $location['country'];
         }
-        if ( isset($location['countryCode']) ) {
+        if ( isset( $location['countryCode'] ) ) {
             $this->_record['location']['countryCode'] = (string) $location['countryCode'];
         }
-        if ( isset($location['sunrise']) ) {
+        if ( isset( $location['sunrise'] ) ) {
             $this->_record['location']['sunrise'] = (int) $location['sunrise'];
         }
-        if ( isset($location['sunset']) ) {
+        if ( isset( $location['sunset'] ) ) {
             $this->_record['location']['sunset'] = (int) $location['sunset'];
         }
-        if ( isset($location['latitude']) ) {
+        if ( isset( $location['latitude'] ) ) {
             $this->_record['location']['latitude'] = (float) $location['latitude'];
         }
-        if ( isset($location['longitude']) ) {
+        if ( isset( $location['longitude'] ) ) {
             $this->_record['location']['longitude'] = (float) $location['longitude'];
         }
-        if ( (isset($location['altitude']) ) ) {
+        if ( (isset( $location['altitude'] ) ) ) {
             $this->_record['location']['altitude'] = (float) $location['altitude'];
         }
-        if ( (isset($location['tz_offset']) ) ) {
+        if ( (isset( $location['tz_offset'] ) ) ) {
             $this->_record['location']['tz_offset'] = (string) $location['tz_offset'];
         }
     }
@@ -320,22 +365,23 @@ class Mumsys_Weather_Item_Default
      *
      * @param array $desc Properties for the the weather description:
      * - 'id' string Unique identifier
-     * - 'key' string Name for the weather description as key, nativ, internal name. E.g.: Mostly Cloudy
+     * - 'key' string Name for the weather description as key, nativ, internal
+     * name. E.g.: Mostly Cloudy
      * - 'name' string Translated name for the weather description key
      * - 'icon' string Code or name for an image/ icon
      */
     public function setWeatherDescription( array $desc = array() )
     {
-        if ( isset($desc['id']) ) {
+        if ( isset( $desc['id'] ) ) {
             $item['id'] = (string) $desc['id'];
         }
-        if ( isset($desc['key']) ) {
+        if ( isset( $desc['key'] ) ) {
             $item['key'] = (string) $desc['key'];
         }
-        if ( isset($desc['name']) ) {
-            $item['name'] = htmlspecialchars($desc['name'], ENT_QUOTES, 'UTF-8', false);
+        if ( isset( $desc['name'] ) ) {
+            $item['name'] = htmlspecialchars( $desc['name'], ENT_QUOTES, 'UTF-8', false );
         }
-        if ( isset($desc['icon']) ) {
+        if ( isset( $desc['icon'] ) ) {
             $item['icon'] = (string) $desc['icon'];
         }
 
@@ -350,14 +396,15 @@ class Mumsys_Weather_Item_Default
      *
      * @see _createUnit() for 'unit' property
      *
-     * @param array $press Properties for temperature:
+     * @param array $temp Properties for temperature:
      * - 'value' float Value which belongs to the unit
      * - 'min' float Min value which belongs to the unit
      * - 'max' float Max value which belongs to the unit
      * - 'night' float Value which belongs to the unit
      * - 'eve' float Value which belongs to the unit for evening
      * - 'morn' float Value which belongs to the unit for moring
-     * - 'unit' array containing 'key', 'name', 'code' and 'sign' keys for the number of the values. This will be
+     * - 'unit' array containing 'key', 'name', 'code' and 'sign' keys for the
+     * number of the values. This will be
      * probably in hectopascal or millibar. E.g.: 1015 hPa or 1015mbar
      */
     public function setTemperature( array $temp = array() )
@@ -397,27 +444,29 @@ class Mumsys_Weather_Item_Default
      * - 'value' float value which belongs to the unit
      * - 'sea' float value which belongs to the unit on sea level
      * - 'ground' float value which belongs to the unit on ground level
-     * - 'unit' array containing 'key', 'name', 'code' and 'sign' keys for the number of the value. This will be
+     * - 'unit' array containing 'key', 'name', 'code' and 'sign' keys for the
+     * number of the value. This will be
      * probably hectopascal or millibar. E.g.: 1015 hPa or 1015mbar
-     * - 'trend' int Trend of the barometric pressure: steady (0), rising (1) or falling (-1). (integer: -1, 0, 1)
+     * - 'trend' int Trend of the barometric pressure: steady (0), rising (1)
+     * or falling (-1). (integer: -1, 0, 1)
      */
     public function setPressure( array $press = array() )
     {
-        if ( isset($press['value']) ) {
+        if ( isset( $press['value'] ) ) {
             $this->_record['pressure']['value'] = (float) $press['value'];
         }
-        if ( isset($press['sea']) ) {
+        if ( isset( $press['sea'] ) ) {
             $this->_record['pressure']['sea'] = (float) $press['sea'];
         }
-        if ( isset($press['ground']) ) {
+        if ( isset( $press['ground'] ) ) {
             $this->_record['pressure']['ground'] = (float) $press['ground'];
         }
-        if ( isset($press['unit']) ) {
-            if ( ($item = $this->_createUnit('Default',$press['unit']) ) ) {
+        if ( isset( $press['unit'] ) ) {
+            if ( ($item = $this->_createUnit( 'Default', $press['unit'] ) ) ) {
                 $this->_record['pressure']['unit'] = $item;
             }
         }
-        if ( isset($press['trend']) ) {
+        if ( isset( $press['trend'] ) ) {
             $this->_record['pressure']['trend'] = (int) $press['trend'];
         }
     }
@@ -430,16 +479,16 @@ class Mumsys_Weather_Item_Default
      *
      * @param array $humidity Properties for
      * - 'value' float value which belongs to the unit
-     * - 'unit' array containing 'key', 'name', 'code' and 'sign' keys for the number of the value. This will be
-     * probably percent. E.g.: 85%
+     * - 'unit' array containing 'key', 'name', 'code' and 'sign' keys for the
+     * number of the value. This will be probably in percent. E.g.: 85%
      */
     public function setHumidity( array $humidity = array() )
     {
-        if ( isset($humidity['value']) ) {
+        if ( isset( $humidity['value'] ) ) {
             $this->_record['humidity']['value'] = (float) $humidity['value'];
         }
-        if ( isset($humidity['unit']) ) {
-            if ( ($item = $this->_createUnit('Default',$humidity['unit']) ) ) {
+        if ( isset( $humidity['unit'] ) ) {
+            if ( ($item = $this->_createUnit( 'Default', $humidity['unit'] ) ) ) {
                 $this->_record['humidity']['unit'] = $item;
             }
         }
@@ -453,16 +502,17 @@ class Mumsys_Weather_Item_Default
      *
      * @param array $visibility Properties for
      * - 'value' float value which belongs to the unit
-     * - 'unit' array containing 'key', 'name', 'code' and 'sign' keys for the number of the value eg. metres, kilo metres,
+     * - 'unit' array containing 'key', 'name', 'code' and 'sign' keys for the
+     * number of the value eg. metres, kilo metres,
      * miles
      */
     public function setVisibility( array $visibility = array() )
     {
-        if ( isset($visibility['value']) ) {
+        if ( isset( $visibility['value'] ) ) {
             $this->_record['visibility']['value'] = (float) $visibility['value'];
         }
-        if ( isset($visibility['unit']) ) {
-            if ( ($item = $this->_createUnit('Default',$visibility['unit']) ) ) {
+        if ( isset( $visibility['unit'] ) ) {
+            if ( ($item = $this->_createUnit( 'Default', $visibility['unit'] ) ) ) {
                 $this->_record['visibility']['unit'] = $item;
             }
         }
@@ -470,27 +520,29 @@ class Mumsys_Weather_Item_Default
 
 
     /**
-     * Sets the wind properties for wind speed, wind direction or wind chill if available.
+     * Sets the wind properties for wind speed, wind direction or wind chill if
+     * available.
      * Alias method for setWindSpeed() setWindDirection() setWindChill().
      *
      * @see setWindSpeed()
      * @see setWindDirection()
      * @see setWindChill()
      *
-     * @param array $cond Properties for 'speed', 'direction' and 'chill' to be set.
+     * @param array $wind Properties for 'speed', 'direction' and 'chill' to be
+     * set.
      */
     public function setWind( array $wind = array() )
     {
-        if ( isset($wind['speed']) ) {
-            $this->setWindSpeed($wind['speed']);
+        if ( isset( $wind['speed'] ) ) {
+            $this->setWindSpeed( $wind['speed'] );
         }
 
-        if ( isset($wind['direction']) ) {
-            $this->setWindDirection($wind['direction']);
+        if ( isset( $wind['direction'] ) ) {
+            $this->setWindDirection( $wind['direction'] );
         }
 
-        if ( isset($wind['chill']) ) {
-            $this->setWindChill($wind['chill']);
+        if ( isset( $wind['chill'] ) ) {
+            $this->setWindChill( $wind['chill'] );
         }
     }
 
@@ -505,9 +557,11 @@ class Mumsys_Weather_Item_Default
      * - 'min' float Min number for the wind speed
      * - 'max' float Max number for the wind speed
      * - 'gust' float Gust number for the wind speed of gusts
-     * - 'unit' containing 'key', 'name', 'code' and 'sign' keys for the wind speed (value,min,max,gust)
+     * - 'unit' containing 'key', 'name', 'code' and 'sign' keys for the wind
+     * speed (value,min,max,gust)
      * This is probably for 'm/s', 'km/h', 'mph' e.g 30 m/s, 9 km/h or 2 mps
-     * - 'key' string Name for the wind speed as key, nativ, internal name. E.g.: Gentle Breeze
+     * - 'key' string Name for the wind speed as key, nativ, internal name.
+     * E.g.: Gentle Breeze
      * - 'name' string Translated name for the wind speed key
      */
     public function setWindSpeed( array $speed = array() )
@@ -530,10 +584,12 @@ class Mumsys_Weather_Item_Default
             }
         }
         if ( isset( $speed['key'] ) ) {
-            $this->_record['wind']['speed']['key'] = htmlspecialchars( $speed['key'], ENT_QUOTES, 'UTF-8', false );
+            $this->_record['wind']['speed']['key'] =
+                htmlspecialchars( $speed['key'], ENT_QUOTES, 'UTF-8', false );
         }
         if ( isset( $speed['name'] ) ) {
-            $this->_record['wind']['speed']['name'] = htmlspecialchars( $speed['name'], ENT_QUOTES, 'UTF-8', false );
+            $this->_record['wind']['speed']['name'] =
+                htmlspecialchars( $speed['name'], ENT_QUOTES, 'UTF-8', false );
         }
     }
 
@@ -547,11 +603,14 @@ class Mumsys_Weather_Item_Default
      * - 'value' float number for the temperature
      * - 'begin' float number wind direction begin
      * - 'end' float number wind direction end
-     * - 'unit' containing 'key', 'name', 'code' and 'sign' keys for the number of the wind directions (value,begin,end)
+     * - 'unit' containing 'key', 'name', 'code' and 'sign' keys for the number
+     * of the wind directions (value,begin,end)
      * This is probably for "degrees" e.g 30°C, 60°F or 273,15 K
-     * - 'key' string Name for the wind direction as key, nativ, internal name. E.g.: West-southwest
+     * - 'key' string Name for the wind direction as key, nativ, internal name.
+     * E.g.: West-southwest
      * - 'name' string Translated name for the wind direction key
-     * - 'code' string code for the wind direction e.g.: 'WSW' for West-southwest
+     * - 'code' string code for the wind direction e.g.: 'WSW' for
+     * West-southwest
      */
     public function setWindDirection( array $direct = array() )
     {
@@ -570,12 +629,12 @@ class Mumsys_Weather_Item_Default
             }
         }
         if ( isset( $direct['key'] ) ) {
-            $this->_record['wind']['direction']['key'] = htmlspecialchars( $direct['key'],
-                ENT_QUOTES, 'UTF-8', false );
+            $this->_record['wind']['direction']['key'] =
+                htmlspecialchars( $direct['key'], ENT_QUOTES, 'UTF-8', false );
         }
         if ( isset( $direct['name'] ) ) {
-            $this->_record['wind']['direction']['name'] = htmlspecialchars( $direct['name'],
-                ENT_QUOTES, 'UTF-8', false );
+            $this->_record['wind']['direction']['name'] =
+                htmlspecialchars( $direct['name'], ENT_QUOTES, 'UTF-8', false );
         }
         if ( isset( $direct['code'] ) ) {
             $this->_record['wind']['direction']['code'] = (string) $direct['code'];
@@ -584,24 +643,25 @@ class Mumsys_Weather_Item_Default
 
 
     /**
-     * Sets the wind chill: Temperature by wind speed or "how do you feed the temperature"
+     * Sets the wind chill: Temperature by wind speed or "how do you feed the
+     * temperature"
      *
      * @see _createUnit() for 'unit' properties
      *
      * @param array $chill Properties to be set are:
      * - 'value' float number for the temperature
-     * - 'unit' containing 'key', 'name', 'code' and 'sign' keys for the number of the temperature (value)
+     * - 'unit' containing 'key', 'name', 'code' and 'sign' keys for the number
+     * of the temperature (value)
      */
     public function setWindChill( array $chill = array() )
     {
-        if ( isset($chill['value']) ) {
+        if ( isset( $chill['value'] ) ) {
             $this->_record['wind']['chill']['value'] = (float) $chill['value'];
         }
 
         if ( isset( $chill['unit'] ) ) {
-            if ( ($item = $this->_createUnit( 'Temperature', $chill['unit'] ) ) ) {
-                $this->_record['wind']['chill']['unit'] = $item;
-            }
+            $item = $this->_createUnit( 'Temperature', $chill['unit'] );
+            $this->_record['wind']['chill']['unit'] = $item;
         }
     }
 
@@ -613,7 +673,8 @@ class Mumsys_Weather_Item_Default
      *
      * @param array $clouds Properties to be set are:
      * - 'value' float number for percent
-     * - 'unit' containing 'key', 'name', 'code' and 'sign' keys for the number of percent (value)
+     * - 'unit' containing 'key', 'name', 'code' and 'sign' keys for the number
+     * of percent (value)
      * - 'key' string Name for the clouds situation. E.g.: overcast clouds
      */
     public function setClouds( array $clouds = array() )
@@ -621,14 +682,16 @@ class Mumsys_Weather_Item_Default
         if ( isset( $clouds['value'] ) ) {
             $this->_record['clouds']['value'] = (float) $clouds['value'];
         }
+
         if ( isset( $clouds['unit'] ) ) {
-            if ( ($item = $this->_createUnit( 'Default', $clouds['unit'] ) ) ) {
-                $this->_record['clouds']['unit'] = $item;
-            }
+            $item = $this->_createUnit( 'Default', $clouds['unit'] );
+            $this->_record['clouds']['unit'] = $item;
         }
+
         if ( isset( $clouds['key'] ) ) {
             $this->_record['clouds']['key'] = (string) $clouds['key'];
         }
+
         if ( isset( $clouds['name'] ) ) {
             $this->_record['clouds']['name'] = (string) $clouds['name'];
         }
@@ -663,7 +726,8 @@ class Mumsys_Weather_Item_Default
      *
      * @param array $rain Properties to be set are:
      * - 'value' number for the quantity of the rain,
-     * - 'unit' containing 'name', 'code' and 'sign' keys for the number of the rain (value),
+     * - 'unit' containing 'name', 'code' and 'sign' keys for the number of the
+     * rain (value),
      * - 'interval' duration for this kind of forecast / value
      */
     public function setPrecipitationRain( array $rain = array() )
@@ -677,7 +741,8 @@ class Mumsys_Weather_Item_Default
             }
         }
         if ( isset( $rain['interval'] ) ) {
-            $this->_record['precipitation']['rain']['interval'] = (string) $rain['interval'];
+            $this->_record['precipitation']['rain']['interval'] =
+                (string) $rain['interval'];
         }
     }
 
@@ -689,21 +754,25 @@ class Mumsys_Weather_Item_Default
      *
      * @param array $rain Properties to be set are:
      * - 'value' number for the quantity of the snow,
-     * - 'unit' containing 'name', 'code' and 'sign' keys for the number of the snow (value),
+     * - 'unit' containing 'name', 'code' and 'sign' keys for the number of the
+     * snow (value),
      * - 'interval' duration for this kind of forecast / value
      */
     public function setPrecipitationSnow( array $snow = array() )
     {
         if ( isset( $snow['value'] ) ) {
-            $this->_record['precipitation']['snow']['value'] = (string) $snow['value'];
+            $this->_record['precipitation']['snow']['value'] =
+                (string) $snow['value'];
         }
+
         if ( isset( $snow['unit'] ) ) {
-            if ( ($item = $this->_createUnit( 'Default', $snow['unit'] ) ) ) {
-                $this->_record['precipitation']['snow']['unit'] = $item;
-            }
+            $item = $this->_createUnit( 'Default', $snow['unit'] );
+            $this->_record['precipitation']['snow']['unit'] = $item;
         }
+
         if ( isset( $snow['interval'] ) ) {
-            $this->_record['precipitation']['snow']['interval'] = (string) $snow['interval'];
+            $this->_record['precipitation']['snow']['interval'] =
+                (string) $snow['interval'];
         }
     }
 
@@ -717,7 +786,49 @@ class Mumsys_Weather_Item_Default
      */
     public function toArray()
     {
-        return $this->_record;
+        $array = $this->_record;
+        if ( isset( $this->_record['temperature']['unit'] ) ) {
+            $array['temperature']['unit'] =
+                $this->_record['temperature']['unit']->toArray();
+        }
+        if ( isset( $this->_record['pressure']['unit'] ) ) {
+            $array['pressure']['unit'] =
+                $this->_record['pressure']['unit']->toArray();
+        }
+        if ( isset( $this->_record['humidity']['unit'] ) ) {
+            $array['humidity']['unit'] =
+                $this->_record['humidity']['unit']->toArray();
+        }
+        if ( isset( $this->_record['visibility']['unit'] ) ) {
+            $array['visibility']['unit'] =
+                $this->_record['visibility']['unit']->toArray();
+        }
+        if ( isset( $this->_record['wind']['speed']['unit'] ) ) {
+            $array['wind']['speed']['unit'] =
+                $this->_record['wind']['speed']['unit']->toArray();
+        }
+        if ( isset( $this->_record['wind']['direction']['unit'] ) ) {
+            $array['wind']['direction']['unit'] =
+                $this->_record['wind']['direction']['unit']->toArray();
+        }
+        if ( isset( $this->_record['wind']['chill']['unit'] ) ) {
+            $array['wind']['chill']['unit'] =
+                $this->_record['wind']['chill']['unit']->toArray();
+        }
+        if ( isset( $this->_record['clouds']['unit'] ) ) {
+            $array['clouds']['unit'] =
+                $this->_record['clouds']['unit']->toArray();
+        }
+        if ( isset( $this->_record['precipitation']['snow']['unit'] ) ) {
+            $array['precipitation']['snow']['unit'] =
+                $this->_record['precipitation']['snow']['unit']->toArray();
+        }
+        if ( isset( $this->_record['precipitation']['rain']['unit'] ) ) {
+            $array['precipitation']['rain']['unit'] =
+                $this->_record['precipitation']['rain']['unit']->toArray();
+        }
+
+        return $array;
     }
 
 

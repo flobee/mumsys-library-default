@@ -26,7 +26,8 @@
 interface Mumsys_Weather_Interface
 {
     /**
-     * Returns a list of Mumsys_Weather_Item's for the current weather specified by query parameter.
+     * Returns a list of Mumsys_Weather_Item's for the current weather specified
+     * by query parameter.
      *
      * @param mixed $query Parameter to get the current weather
      * @return array|false List of Mumsys_Weather_Item's
@@ -34,7 +35,8 @@ interface Mumsys_Weather_Interface
     public function getWeather( $query = '' );
 
     /**
-     * Returns a list of Mumsys_Weather_Item's for the weather forecast specified by query parameter.
+     * Returns a list of Mumsys_Weather_Item's for the weather forecast
+     * specified by query parameter.
      *
      * @param mixed $query Parameter to get the weather forecast
      * @return array|false List of Mumsys_Weather_Item's
@@ -51,7 +53,8 @@ interface Mumsys_Weather_Interface
 
 
     /**
-     * Returns the raw data from a previous request used with getRawWeatherData() or getWeather().
+     * Returns the raw data from a previous request used with
+     * getRawWeatherData() or getWeather().
      *
      * @return mixed Returns the data from the prevous made request.
      */
@@ -77,5 +80,5 @@ interface Mumsys_Weather_Interface
      * sign and code
      * @throws
      */
-    public function getUnitItem( $type, array $parameters = array() );
+//    public function getUnitItem( $type, array $parameters = array() );
 }

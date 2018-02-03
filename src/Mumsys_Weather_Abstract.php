@@ -25,9 +25,7 @@
  */
 abstract class Mumsys_Weather_Abstract
 {
-
-
-
+    const VERSION = '1.0.0';
     /**
      * Application access key. Max length 40 character
      * @var string
@@ -40,26 +38,32 @@ abstract class Mumsys_Weather_Abstract
      *
      * @param array $params Basic parameters to be set for the driver:
      * - [format] string Format of service response: json (default), xml, html
-     * - [unit] string Unit can be 'metric', 'imperial', 'internal' (default: metric).
-     * - [language] string A language code like en, de, es, fr up to five characters if a locale is needed.
-     * - [apikey] string Your application key/ token/ access key your need to access the data. Max 40 character
+     * - [unit] string Unit can be 'metric', 'imperial', 'internal' (default:
+     *  metric).
+     * - [language] string A language code like en, de, es, fr up to five
+     * characters if a locale is needed.
+     * - [apikey] string Your application key/ token/ access key your need to
+     * access the data. Max 40 character
      */
     public function __construct( array $params = array() )
     {
-        if ( isset($params['unit']) && in_array($params['unit'], $this->_units) ) {
+        $unit = isset( $params['unit'] );
+        if ( $unit && in_array( $params['unit'], $this->_units ) ) {
             $this->_unit = $params['unit'];
         }
 
-        if ( isset($params['language']) && in_array($params['language'], $this->_languages)) {
-            $this->_language = substr((string) $params['language'], 0, 5);
+        $lang = isset( $params['language'] );
+        if ( $lang && in_array( $params['language'], $this->_languages ) ) {
+            $this->_language = substr( (string) $params['language'], 0, 5 );
         }
 
-        if ( isset($params['format']) && in_array($params['format'], $this->_formats) ) {
+        $format = isset( $params['format'] );
+        if ( $format && in_array( $params['format'], $this->_formats ) ) {
             $this->_format = $params['format'];
         }
 
-        if ( isset($params['apikey']) ) {
-            $this->_apiKey = substr((string) $params['apikey'], 0, 40);
+        if ( isset( $params['apikey'] ) ) {
+            $this->_apiKey = substr( (string) $params['apikey'], 0, 40 );
         }
     }
 
@@ -67,11 +71,15 @@ abstract class Mumsys_Weather_Abstract
     /**
      * Returns universal unit by given code.
      *
-     * @todo Future: Bring to a unit object with methodes like $unit->getFormated()
+     * @todo Future: Bring to a unit object with methodes like
+     * $unit->getFormated()
      *
-     * @param string $code Code to return the unit item. Possble values are: 'percent', 'millimetre', 'metre'
+     * @param string $code Code to return the unit item. Possble values are:
+     * 'percent', 'millimetre', 'metre'
      * @param number $value Value for plural forms of translation
-     * @return array List of key/value pairs containing array keys: 'key', 'name', 'sign', 'code'
+     *
+     * @return array List of key/value pairs containing array keys: 'key',
+     * 'name', 'sign', 'code'
      * @throws Mumsys_Weather_Exception
      */
     public function getUnitUniversal( $code = '', $value=false )
@@ -87,7 +95,7 @@ abstract class Mumsys_Weather_Abstract
             case 'percent':
                 $result = array(
                     'key' => 'percent',
-                    'name' => _('Percent'),
+                    'name' => _( 'Percent' ),
                     'sign' => '%',
                     'code' => null, // _('pct.') //  engl, p de_DE
                 );
@@ -97,7 +105,7 @@ abstract class Mumsys_Weather_Abstract
             case 'millimetres': // pl.
                 $result = array(
                     'key' => 'millimetre',
-                    'name' => _('Millimetre'), // for plural translation
+                    'name' => _( 'Millimetre' ), // for plural translation
                     'sign' => null,
                     'code' => 'mm'
                 );
@@ -107,7 +115,7 @@ abstract class Mumsys_Weather_Abstract
             case 'metres': // pl.
                 $result = array(
                     'key' => 'metre',
-                    'name' => _('Metre'),
+                    'name' => _( 'Metre' ),
                     'sign' => null,
                     'code' => 'm'
                 );
@@ -117,7 +125,7 @@ abstract class Mumsys_Weather_Abstract
             case 'miles': // pl.
                 $result = array(
                     'key' => 'mile',
-                    'name' => _('mile'),
+                    'name' => _( 'mile' ),
                     'sign' => null,
                     'code' => 'mi'
                 );
@@ -125,7 +133,7 @@ abstract class Mumsys_Weather_Abstract
 
             default:
                 $mesg = 'Invalid code to return units';
-                throw new Mumsys_Weather_Exception($mesg);
+                throw new Mumsys_Weather_Exception( $mesg );
                 break;
         }
 
@@ -136,17 +144,21 @@ abstract class Mumsys_Weather_Abstract
     /**
      * Returns pressure units for hectopascals (hPa) or millibars (mbar).
      *
-     * @todo Future: Bring to a unit object with methodes like $unit->getFormated()
+     * @todo Future: Bring to a unit object with methodes like
+     * $unit->getFormated()
      *
-     * @param string $unit Unit to return. Possible values: 'hectopascals', 'pascals', 'millibars'
+     * @param string $unit Unit to return. Possible values: 'hectopascals',
+     * 'pascals', 'millibars'
+     *
      * @return array Returns pressure units
-     *
-     * @throws Mumsys_Weather_Exception Throws exception if given $unit was invalid
+     * @throws Mumsys_Weather_Exception Throws exception if given $unit was
+     * invalid
      */
     public function getUnitPressure( $unit='hectopascal' )
     {
         // 1 hPa = 100 Pa
-        // 101325 Pa = 1013,25 hPa = 101,325 kPa  (Hektopascal = Millibar) = 1 atm (standard atmosphere)
+        // 101325 Pa = 1013,25 hPa = 101,325 kPa  (Hektopascal = Millibar) = 1
+        // atm (standard atmosphere)
         switch ( $unit )
         {
             case 'pascal':  // pl.
@@ -165,7 +177,7 @@ abstract class Mumsys_Weather_Abstract
             case 'hPa';
                 $result = array(
                     'key' => 'hectopascals', // = millibars
-                    'name' => _('Hectopascals'),
+                    'name' => _( 'Hectopascals' ),
                     'sign' => null,
                     'code' => 'hPa',
                 );
@@ -183,7 +195,7 @@ abstract class Mumsys_Weather_Abstract
 
             default:
                 $mesg = 'Invalid unit get to pressure units: "' . $unit . '"';
-                throw new Mumsys_Weather_Exception($mesg);
+                throw new Mumsys_Weather_Exception( $mesg );
                 break;
         }
 
@@ -203,21 +215,25 @@ abstract class Mumsys_Weather_Abstract
     protected function fetch( $url )
     {
         $data = '';
-        if ( function_exists('curl_init') ) {
+        if ( function_exists( 'curl_init' ) ) {
             $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_USERAGENT, 'Mumsys_Weather_Interface PHP Class v0.1');
-            $data = curl_exec($curl);
-            curl_close($curl);
-        } else if ( ini_get('allow_url_fopen') ) {
-            $data = file_get_contents($url);
+            curl_setopt( $curl, CURLOPT_URL, $url );
+            curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+            $version = 'Mumsys_Weather_Interface ' . parent::VERSION;
+            curl_setopt( $curl, CURLOPT_USERAGENT, $version );
+            $data = curl_exec( $curl );
+            curl_close( $curl );
+        } else if ( ini_get( 'allow_url_fopen' ) ) {
+            $data = file_get_contents( $url );
         } else {
-            $message = sprintf('Can not request the service for "%1$s"', $url);
-            throw new Mumsys_Weather_Exception($message);
+            $message = sprintf(
+                'Can not request the service for "%1$s"',
+                $url
+            );
+            throw new Mumsys_Weather_Exception( $message );
         }
 
-        if (empty($data)) {
+        if ( empty( $data ) ) {
             $data = false;
         }
 
