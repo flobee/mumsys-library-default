@@ -286,28 +286,28 @@ class Mumsys_File
     /**
      * Set write or read mode.
      *
-     * 'r'  	Open for reading only; place the file pointer at the beginning
+     * - 'r'  	Open for reading only; place the file pointer at the beginning
      *          of the file.
-     * 'r+' 	Open for reading and writing; place the file pointer at the
+     * - 'r+' 	Open for reading and writing; place the file pointer at the
      *          beginning of the file.
-     * 'w'      Open for writing only; place the file pointer at the beginning
+     * - 'w'    Open for writing only; place the file pointer at the beginning
      *          of the file and truncate the file to zero length. If the file
      *          does not exist, attempt to create it.
-     * 'w+' 	Open for reading and writing; place the file pointer at the
+     * - 'w+' 	Open for reading and writing; place the file pointer at the
      *          beginning of the file and truncate the file to zero length. If
      *          the file does not exist, attempt to create it.
-     * 'a'      Open for writing only; place the file pointer at the end of the
+     * - 'a'    Open for writing only; place the file pointer at the end of the
      *          file. If the file does not exist, attempt to create it.
-     * 'a+' 	Open for reading and writing; place the file pointer at the end
+     * - 'a+' 	Open for reading and writing; place the file pointer at the end
      *          of the file. If the file does not exist, attempt to create it.
      *
-     * 'x'      Create and open for writing only; place the file pointer at the
+     * - 'x'    Create and open for writing only; place the file pointer at the
      *          beginning of the file. If the file already exists, the fopen()
      *          call will fail by returning FALSE and generating an error of
      *          level E_WARNING. If the file does not exist, attempt to create
      *          it. This is equivalent to specifying O_EXCL|O_CREAT flags for
      *          the underlying open(2) system call.
-     * 'x+' 	Create and open for reading and writing; place the file pointer
+     * - 'x+' 	Create and open for reading and writing; place the file pointer
      *          at the beginning of the file. If the file already exists, the
      *          fopen() call will fail by returning FALSE and generating an
      *          error of level E_WARNING. If the file does not exist, attempt
