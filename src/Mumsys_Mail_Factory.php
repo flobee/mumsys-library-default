@@ -34,8 +34,10 @@ class Mumsys_Mail_Factory
     /**
      * Initialise the mail object by given adapter name.
      *
-     * @param string $adapter Name of the adapter to initialise (e.g> Default|Memory)
-     * @param array $options List of configuration parameters to initialise the object
+     * @param string $adapter Name of the adapter to initialise (e.g> Default|
+     * Memory)
+     * @param array $options List of configuration parameters to initialise the
+     * object
      *
      * @return \Mumsys_Mail_Interface Returns the mail object
      *
@@ -46,7 +48,9 @@ class Mumsys_Mail_Factory
     {
         if ( ctype_alnum($adapter) === false ) {
             $adaptername = 'Mumsys_Mail_' . $adapter;
-            $message = sprintf('Invalid characters in adapter name "%1$s"', $adaptername);
+            $message = sprintf(
+                'Invalid characters in adapter name "%1$s"', $adaptername
+            );
             throw new Mumsys_Mail_Exception($message);
         }
 
@@ -62,7 +66,8 @@ class Mumsys_Mail_Factory
 
         if ( !( $object instanceof $iface ) ) {
             $message = sprintf(
-                'Adapter "%1$s" does not implement interface "%2$s"', $adaptername, $iface
+                'Adapter "%1$s" does not implement interface "%2$s"',
+                $adaptername, $iface
             );
             throw new Mumsys_Mail_Exception($message);
         }

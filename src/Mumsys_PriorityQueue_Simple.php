@@ -1,29 +1,26 @@
 <?php
 
-
-/* {{{ */
 /**
  * Mumsys_PriorityQueue_Simple
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_PriorityQueue
+ * @package     Library
+ * @subpackage  PriorityQueue
  * @version     1.0.0
  * Created: 2016-03-20
- * @filesource
  */
-/* }}} */
 
 
 /**
- * Simple priority Queue using priority names to place to order of items.
+ * Simple priority queue uses priority names to place and to sort prirority items.
+ *
  * With "befor" and "after" keys given priroities can be set in the order you
- * which to use. Altn. hav a look into the SplPriorityQueue.
+ * which to use. Altn. have a look into the SplPriorityQueue.
  *
  * Example:
  * A => prio99 <- curently higest prio
@@ -31,9 +28,18 @@
  * C => befor prio99
  * Result: C, A, B
  *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  PriorityQueue
  */
 class Mumsys_PriorityQueue_Simple
+    extends Mumsys_Abstract
 {
+    /**
+     * Version ID information.
+     */
+    const VERSION = '1.0.0';
+
     /**
      * Internal counter
      * @var integer
@@ -50,13 +56,15 @@ class Mumsys_PriorityQueue_Simple
     /**
      * Initialize the object with an optional List of Key/ID => value pairs to
      * be set as initial and ready to go stack.
+     *
      * Example: array(
-     *  array('default' => mixed content),
-     *  array('afterdefault1 => mixed content),
-     *  array('afterdefault2 => mixed content),
+     *      array('default' => mixed content),
+     *      array('afterdefault1 => mixed content),
+     *      array('afterdefault2 => mixed content),
      * )
      *
-     * @param array $stack Optional; Predefined and ready to go list of key/item pairs.
+     * @param array $stack Optional; Predefined and ready to go list of key/item
+     * pairs.
      */
     public function __construct( array $stack = array() )
     {
@@ -93,19 +101,22 @@ class Mumsys_PriorityQueue_Simple
      * @param string $positionID Name of the key/ID where to set (before/
      * after) this new entrys
      *
-     * @throws Mumsys_Exception If Key/ID already exists
+     * @throws Mumsys_PriorityQueue_Exception If Key/ID already exists
      */
-    public function add( $identifier, $value, $positionWay = 'after', $positionID = null )
+    public function add( $identifier, $value, $positionWay = 'after',
+        $positionID = null )
     {
-        if (isset($this->_stack[$identifier])) {
-            $message = sprintf('Identifier "%1$s" already set', $identifier);
-            throw new Mumsys_PriorityQueue_Exception($message);
+        if ( isset( $this->_stack[$identifier] ) ) {
+            $message = sprintf( 'Identifier "%1$s" already set', $identifier );
+            throw new Mumsys_PriorityQueue_Exception( $message );
         }
 
-        if (isset($this->_stack[$positionID])) {
-            $pos = $this->_getPos($positionID, $positionWay);
-            $part = array_splice($this->_stack, 0, $pos);
-            $this->_stack = array_merge($part, array($identifier => $value), $this->_stack);
+        if ( isset( $this->_stack[$positionID] ) ) {
+            $pos = $this->_getPos( $positionID, $positionWay );
+            $part = array_splice( $this->_stack, 0, $pos );
+            $this->_stack = array_merge(
+                $part, array($identifier => $value), $this->_stack
+            );
         } else {
             $this->_stack[$identifier] = $value;
         }
@@ -118,22 +129,25 @@ class Mumsys_PriorityQueue_Simple
      * @param string $posKey Name of the key/ID where to set (before/
      * after) this new entrys
      * @param string $posWay String "before" | "after" (default)
+     *
      * @return integer Number of the position the found key is placed
-     * @throws Mumsys_Exception
+     *
+     * @throws Mumsys_PriorityQueue_Exception If the way dosnt contain "after"
+     * or "before"
      */
     private function _getPos( $posKey, $posWay = 'after' )
     {
         $i = 0;
         $pos = false;
-        while (list($key) = each($this->_stack)) {
-            if ($posKey === $key) {
+        foreach ( $this->_stack as $key => & $tmp ) {
+            if ( $posKey === $key ) {
                 $pos = $i;
                 break;
             }
             $i++;
         }
 
-        switch ($posWay) {
+        switch ( $posWay ) {
             case 'before':
                 //$pos = $pos;
                 break;
@@ -141,8 +155,10 @@ class Mumsys_PriorityQueue_Simple
                 $pos = $pos + 1;
                 break;
             default:
-                $message = sprintf('Position way "%1$s" not implemented', $posWay);
-                throw new Mumsys_PriorityQueue_Exception($message);
+                $message = sprintf(
+                    'Position way "%1$s" not implemented', $posWay
+                );
+                throw new Mumsys_PriorityQueue_Exception( $message );
         }
 
         return $pos;

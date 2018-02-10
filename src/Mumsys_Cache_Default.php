@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * Mumsys_Cache_Default
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Mumsys_Library
+ * @subpackage  Mumsys_Cache
+ * Created: 2013-12-10
+ */
+
+
+/**
+ * Default class for file caching.
+ *
+ * This class uses Mumsys_Cache_File as default implementation. Future
+ * implementations will use a factory to get the right cache class.
+ *
+ * Example:
+ * <code>
+ * $cache = new Mumsys_Cache_Default('group-ID', 'individual-ID');
+ * $cache->setPath(__DIR__ . '/cache/');
+ * if ($cache->isCached()) {
+ *      // get the cached data
+ *      $data = unserialize( $oCache->read() );
+ * } else {
+ *      $data = array('a' => 1, 'b' => 2, 'c' => 3);
+ *      $cache->write( 3600, serialize($data) );
+ * }
+ * </code>
+ *
+ * @category    Mumsys
+ * @package     Mumsys_Library
+ * @subpackage  Mumsys_Cache
+ */
+class Mumsys_Cache_Default
+    extends Mumsys_Cache_File
+    implements Mumsys_Cache_Interface
+{
+
+}

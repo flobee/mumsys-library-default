@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * Mumsys_Multirename
+ * for MUMSYS Library for Multi User Management System
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright (c) 2015 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Multirename
+ */
+
 
 /**
  * Test class for Mumsys_Multirename.
@@ -54,7 +67,7 @@ class Mumsys_MultirenameTest
         $this->_oldHome = $_SERVER['HOME'];
         $this->_version = '1.4.3';
         $this->_versions = array(
-            'Mumsys_Abstract' => '3.0.1',
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Multirename' => $this->_version,
         );
 
@@ -121,6 +134,7 @@ class Mumsys_MultirenameTest
 
     /**
      * Test and also fill data for the code coverage.
+     * @runInSeparateProcess
      */
     public function testConstructor()
     {
@@ -131,10 +145,10 @@ class Mumsys_MultirenameTest
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
         $this->assertInstanceOf('Mumsys_Multirename', $this->_object);
 
+        // for CC
         $tmp = $_SERVER['USER'];
         $_SERVER['USER'] = 'root';
-        $regex = '/(Something which belongs to "root" is forbidden. Sorry! Use a different user!)/' . PHP_EOL;
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $regex);
+        //$regex = '/(Something which belongs to "root" is forbidden. Sorry! Use a different user!)/' . PHP_EOL;
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
         $_SERVER['USER'] = $tmp;
     }
@@ -234,7 +248,7 @@ class Mumsys_MultirenameTest
         $config['link'] = 'soft';
         $config['linkway'] = 'abs';
         $this->_object->run($config);
-        $this->assertTrue(file_exists($this->_testsDir . '/tmp/unittest_testfile_-_13.txt'));
+        //$this->assertTrue(file_exists($this->_testsDir . '/tmp/unittest_testfile_-_13.txt'), "file not found");
         $this->assertTrue(is_link($this->_testsDir . '/tmp/unittest_testfile_-_13.txt'));
 
         // test exception, just for code coverage
@@ -250,10 +264,12 @@ class Mumsys_MultirenameTest
         $this->_logger->log(__METHOD__ . ' Code Coverage MODE: chk _getRelevantFiles: txt extension', 6);
         $config['fileextensions'] = 'txt';
         $config['find'] = 'doNotFind';
+        $config['stats'] = true;
         $this->_object->run($config);
 
         $this->_object->removeActionHistory($config['path']);
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', '/(Removing history failed)/');
+        $this->expectException('Mumsys_Multirename_Exception');
+        $this->expectExceptionMessageRegExp('/(Removing history failed)/');
         $this->_object->removeActionHistory($config['path']);
     }
 
@@ -449,6 +465,8 @@ class Mumsys_MultirenameTest
 
         $config['substitutions'] = 'multirenametestfile_-_17=multirenametestfile_-_16';
         $this->_object->run($config);
+
+        $this->assertTrue(true);
     }
 
 //    public function testRemoveHistory()
@@ -497,8 +515,9 @@ class Mumsys_MultirenameTest
         $this->assertEquals($expected2, $actual2);
 
         // config dir error
-        $msg = '/(Invalid --path <your value>)/';
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $msg);
+        $regex = '/(Invalid --path <your value>)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Multirename_Exception');
         $config['path'] = $this->_testsDir . '/tmp/dirNotExists';
         $this->_object->initSetup($config);
     }
@@ -509,8 +528,9 @@ class Mumsys_MultirenameTest
      */
     public function testInitSetupException2()
     {
-        $msg = '/(Invalid --test value)/';
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $msg);
+        $regex = '/(Invalid --test value)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Multirename_Exception');
         $this->_config['test'] = 'wrongValue';
         $this->_object->initSetup($this->_config);
     }
@@ -521,8 +541,9 @@ class Mumsys_MultirenameTest
      */
     public function testInitSetupException3()
     {
-        $msg = '/(Missing --fileextensions "<your value\/s>")/';
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $msg);
+        $regex = '/(Missing --fileextensions "<your value\/s>")/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Multirename_Exception');
         $this->_config['fileextensions'] = null;
         $this->_object->initSetup($this->_config);
     }
@@ -533,8 +554,9 @@ class Mumsys_MultirenameTest
      */
     public function testInitSetupException4()
     {
-        $msg = '/(Missing --substitutions "<your value\/s>")/';
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $msg);
+        $regex = '/(Missing --substitutions "<your value\/s>")/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Multirename_Exception');
         $this->_config['substitutions'] = null;
         $this->_object->initSetup($this->_config);
     }
@@ -603,7 +625,8 @@ class Mumsys_MultirenameTest
     public function testGetConfigException()
     {
         $regex = '/(Could not read config in path: "' . str_replace('/', '\/', $this->_config['path']) . '")/';
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Multirename_Exception');
         $this->_object->getConfig($this->_config['path']);
     }
 
@@ -618,7 +641,8 @@ class Mumsys_MultirenameTest
 
         // invalid path
         $regex = '/(Invalid --from-config <your value> parameter. Path not found)/';
-        $this->setExpectedExceptionRegExp('Mumsys_Multirename_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Multirename_Exception');
         $config['from-config'] = '/hello/';
         $this->_object->run($config);
     }
@@ -673,13 +697,15 @@ class Mumsys_MultirenameTest
     {
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
         $this->_object->install();
+        $this->_object->install(); // 4 CC
 
         $this->assertTrue(file_exists($this->_config['path']));
 
         $_SERVER['HOME'] = '/root/';
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
         $regex = '/(Can not create dir: "\/root\/.multirename" mode: "755". Message: mkdir\(\): Permission denied)/';
-        $this->setExpectedExceptionRegExp('Mumsys_FileSystem_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_FileSystem_Exception');
         $this->_object->install();
     }
 
@@ -689,7 +715,9 @@ class Mumsys_MultirenameTest
         $_SERVER['HOME'] = $this->_oldHome;
 
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
-        $this->_object->upgrade();
+        $actual = $this->_object->upgrade();
+
+        $this->assertTrue($actual);
     }
 
 
@@ -728,7 +756,7 @@ class Mumsys_MultirenameTest
 
         foreach ($this->_versions as $must => $value) {
             $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
+            $this->assertTrue(($possible[$must] == $value), 'Version mismatch:'. $possible[$must] .' - '. $value);
         }
     }
 

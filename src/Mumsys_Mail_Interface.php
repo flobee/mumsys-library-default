@@ -42,20 +42,23 @@ interface Mumsys_Mail_Interface
      *  - port - Port of the mail sever
      *  - smtp_auth - boolean using smtp auth or not
      *  - smtp_keepalive - boolean keep connection alive or not
-     *  - smtp_debug - Debugging options, driver specific 0=Off,1=client,2=server and client
-     *  - smtp_secure - Sets the encryption system to use - ssl (deprecated) or tls (new)
+     *  - smtp_debug - Debugging options, driver specific 0=Off,1=client,2=
+     * server and client
+     *  - smtp_secure - Sets the encryption system to use - ssl (deprecated) or
+     * tls (new)
      *  - smtp_options - Futher smtp option driver specific
-     *  - wordwrap -  Mail text wordwrap. Leave it (default is 78) change it only
-     *              if you know what you are doing,
+     *  - wordwrap -  Mail text wordwrap. Leave it (default is 78) change it
+     * only if you know what you are doing,
      *  - mail_from_email - Sender email address. Uses setFrom() on construction
      *  - mail_from_name  - Sender name. Uses setFrom() on construction
      *  - xmailer     X-Mailer header to replace.
      *  - charset     mail character set defaut: utf-8
      *  - certificate (array)  certOptions
      *      'cert' The location of your certificate file e.g '/path/to/cert.crt',
-     *      'privateKey' - The location of your private key file e.g: '/path/to/cert.key',
-     *      'pass' - The password you protected your private key with (not the Import
-     *              Password! may be empty but parameter must not be omitted!)
+     *      'privateKey' - The location of your private key file e.g:
+     * '/path/to/cert.key',
+     *      'pass' - The password you protected your private key with (not the
+     * Import Password! may be empty but parameter must not be omitted!)
      *      'chain' - Optional path to chain certificateThe location to your
      *              chain file e.g.: '/path/to/certchain.pem'
      *
@@ -65,7 +68,7 @@ interface Mumsys_Mail_Interface
 
 
     /**
-     * Call a mail driver method which is not implemented.
+     * Call a mail driver method which is not implemented in this interface.
      *
      * @note Dont use it! update the interface would be the best choice!
      *
@@ -146,7 +149,8 @@ interface Mumsys_Mail_Interface
      *
      * @return string Html message string
      */
-    public function setMessageHtml( string $htmlCode, string $pathInlineAttachments = null ): string;
+    public function setMessageHtml( string $htmlCode,
+        string $pathInlineAttachments = '' ): string;
 
 
     /**
@@ -161,7 +165,6 @@ interface Mumsys_Mail_Interface
 
     /**
      * Adds an attachment from a path on the filesystem.
-     *
      *
      * @param string $location Location to the attachment on the filesystem.
      * @param string $encoding File encoding (e.g base64)
@@ -192,7 +195,8 @@ interface Mumsys_Mail_Interface
     /**
      * Set certificates for private/public key authentication e.g. for S/MIME.
      *
-     * @param string $certFile Location to certificate file e.g. "/etc/certs/cert.crt"
+     * @param string $certFile Location to certificate file e.g.
+     * "/etc/certs/cert.crt"
      * @param string $privateKeyFile Location to private key file
      * @param string $keyPwd Password for private key if set/needed
      * @param string $chain Optional path to chain certificate

@@ -16,9 +16,25 @@ class Mumsys_Logger_Decorator_MessagesTest
      */
     protected $_logger;
 
+    /**
+     * @var string
+     */
+    private $_version;
+
+    /**
+     * @var array
+     */
+    protected $_versions;
+
 
     protected function setUp()
     {
+        $this->_version = '3.0.0';
+        $this->_versions = array(
+            'Mumsys_Logger_Decorator_Messages' => $this->_version,
+            'Mumsys_Logger_Decorator_Abstract' => '3.0.0',
+        );
+
         $this->_testsDir = MumsysTestHelper::getTestsBaseDir();
         $this->_logfile = $this->_testsDir . '/tmp/' . basename(__FILE__) .'.test';
 
@@ -57,6 +73,11 @@ class Mumsys_Logger_Decorator_MessagesTest
         $this->_opts['lf'] = " end\n";
 
         $object2 = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
+
+        $this->assertInstanceOf('Mumsys_Logger_Interface', $object1);
+        $this->assertInstanceOf('Mumsys_Logger_Decorator_Abstract', $object1);
+        $this->assertInstanceOf('Mumsys_Logger_Decorator_Messages', $object1);
+        $this->assertInstanceOf('Mumsys_Logger_Decorator_Interface', $object1);
     }
 
 
@@ -148,7 +169,8 @@ class Mumsys_Logger_Decorator_MessagesTest
         $object = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
 
         $regex = '/(Level "99" unknown to set the message log level)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Logger_Exception', $regex);
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_Logger_Exception');
         $object->setMessageLoglevel(99);
     }
 
@@ -203,4 +225,14 @@ class Mumsys_Logger_Decorator_MessagesTest
         $this->assertEquals($expected, $this->_object->getColors());
     }
 
+    /**
+     * Version check
+     */
+    public function testVersion()
+    {
+        $this->assertEquals($this->_version, Mumsys_Logger_Decorator_Messages::VERSION);
+        $this->assertEquals($this->_versions['Mumsys_Logger_Decorator_Abstract'], Mumsys_Logger_Decorator_Abstract::VERSION);
+    }
+
 }
+

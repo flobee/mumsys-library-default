@@ -12,6 +12,16 @@ class Mumsys_Request_ConsoleTest
      */
     protected $_object;
 
+    /**
+     * @var string
+     */
+    protected $_version;
+
+    /**
+     * @var array
+     */
+    protected $_versions;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -19,6 +29,13 @@ class Mumsys_Request_ConsoleTest
      */
     protected function setUp()
     {
+        $this->_version = '1.1.2';
+        $this->_versions = array(
+            'Mumsys_Request_Console' => '1.1.2',
+            'Mumsys_Request_Abstract' => '1.0.1',
+            'Mumsys_Abstract' => '3.0.2',
+        );
+
         $this->_options['programKey'] = 'prg';
         $this->_options['controllerKey'] = 'cnt';
         $this->_options['actionKey'] = 'act';
@@ -48,7 +65,15 @@ class Mumsys_Request_ConsoleTest
         $this->_object = new Mumsys_Request_Console($this->_options);
         $actual = $this->_object->getParams();
 
+        $this->assertTrue( ($actual['unit'] === 'test') );
+        $this->assertTrue( in_array('unit=test', $actual) );
         $this->assertTrue((count($actual) >= 2));
     }
 
+
+    public function testVersions()
+    {
+         $this->assertEquals($this->_version, Mumsys_Request_Console::VERSION);
+         $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
+    }
 }

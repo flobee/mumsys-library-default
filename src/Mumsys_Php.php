@@ -3,46 +3,16 @@
 /**
  * Php
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Php
+ * @package     Library
+ * @subpackage  Php
  * Created on 2006-04-30
  */
-
-
-/**
- * PHP_VERSION_ID is available as of PHP 5.2.7, if our
- * version is lower than that, then emulate it
- * @see http://php.net/manual/en/function.phpversion.php
- * @see http://php.net/manual/en/reserved.constants.php#reserved.constants.core
- */
-if ( !defined('PHP_VERSION_ID') ) {
-    $version = explode('.', PHP_VERSION);
-    define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
-}
-
-// PHP_VERSION_ID is defined as a number, where the higher the number
-// is, the newer a PHP version is used. It's defined as used in the above
-// expression:
-//
-// $version_id = $major_version * 10000 + $minor_version * 100 + $release_version;
-//
-// Now with PHP_VERSION_ID we can check for features this PHP version
-// may have, this doesn't require to use version_compare() everytime
-// you check if the current PHP version may not support a feature.
-//
-// For example, we may here define the PHP_VERSION_* constants thats
-// not available in versions prior to 5.2.7
-
-if ( PHP_VERSION_ID < 50207 ) {
-    define('PHP_MAJOR_VERSION', $version[0]);
-    define('PHP_MINOR_VERSION', $version[1]);
-    define('PHP_RELEASE_VERSION', $version[2]);
-}
 
 
 /**
@@ -52,8 +22,9 @@ if ( PHP_VERSION_ID < 50207 ) {
  * you will find at its best @pear's "Compat" package.
  *
  * Improved or missing functionality you will find here.
- * This comes from old times where functionality not exists but still implemented
- * somewhere.
+ * This comes from old times where functionality not exists but still
+ * implemented somewhere.
+
  * All methodes should be called staticly.
  *
  * Example:
@@ -64,7 +35,8 @@ if ( PHP_VERSION_ID < 50207 ) {
  * </code>
  *
  * @category    Mumsys
- * @package     Php
+ * @package     Library
+ * @subpackage  Php
  */
 class Mumsys_Php
     extends Mumsys_Abstract
@@ -72,7 +44,7 @@ class Mumsys_Php
     /**
      * Version ID information.
      */
-    const VERSION = '3.0.0';
+    const VERSION = '3.1.1';
 
     /**
      * @var string
@@ -80,11 +52,10 @@ class Mumsys_Php
     public static $os;
 
     /**
-     * get_magic_quotes_gpc() value PHP < 7
-     * @var boolean
+     * Flag for array_keys_search_recursive()
+     * @var mixed
      */
-    public static $getMagicQuotesGpc;
-
+    private static $_stopOnMatch;
 
     /**
      * Initialisation of PHP class
@@ -92,7 +63,6 @@ class Mumsys_Php
     public function __construct()
     {
         self::$os = strtoupper(substr(PHP_OS, 0, 3));
-        self::$getMagicQuotesGpc = false;
     }
 
 
@@ -110,9 +80,6 @@ class Mumsys_Php
             case 'os':
                 $return = self::$os;
                 break;
-            case 'get_magic_quotes_gpc':
-                $return = false;
-                break;
         }
 
         return $return;
@@ -127,19 +94,16 @@ class Mumsys_Php
      * @param string $k Key to be set.
      * @param mixed $v Value to be set
      *
-     * @throws PHP_Exception If key is not implemented to react on. This will
+     * @throws Mumsys_Php_Exception If key is not implemented to react on. This will
      * prevent public access to this class
      */
     public function __set( $k, $v )
     {
         switch ( $k )
         {
-            case 'get_magic_quotes_gpc':
-                self::$getMagicQuotesGpc = boolval($v);
-                break;
-
             default:
-                throw new PHP_Exception('__set: "' . $k . '"="' . $v . '" not allowed.');
+                throw new Mumsys_Php_Exception(
+                    '__set: "' . $k . '"="' . $v . '" not allowed.');
                 break;
         }
     }
@@ -150,7 +114,8 @@ class Mumsys_Php
      * public Mixed __call():
      * Re-route all function calls to the PHP-functions
      *
-     * Note: Don't use it! if you have a better/ different solution. Performance reasons!
+     * Note: Don't use it! if you have a better/ different solution. Performance
+     * reasons!
      */
     public static function __callStatic( $function, $arguments )
     {
@@ -160,7 +125,8 @@ class Mumsys_Php
 
     /**
      * Re-route php function calls to the PHP-functions.
-     * Note: Don't use it! if you have a better/ different solution. Performance reasons!
+     * Note: Don't use it! if you have a better/ different solution. Performance
+     * reasons!
      *
      * @param string $function Function to call
      * @param mixed $arguments Mixed arguments
@@ -172,16 +138,17 @@ class Mumsys_Php
     }
 
 
-    // +-- start features ----------------------------------------
+    // +-- start helper methodes  ---------------------------------------------
 
 
-    // --- Variable handling Functions -----------------------------------------
+    // --- Variable handling Functions ----------------------------------------
 
 
     /**
      * Check if a value is an integer
      *
      * @param interger $value Value to be checked
+     *
      * @return integer|false Returns the casted interger value or false if value
      * is not a nummeric type
      */
@@ -205,15 +172,19 @@ class Mumsys_Php
     public static function floatval( $value )
     {
         if ( strstr($value, ',') ) {
-            $value = str_replace('.', '', $value);  // replace dots (thousand seps) with blancs
-            $value = str_replace(',', '.', $value); // replace ',' with '.'
+            // replace dots (thousand seps) with blancs
+            $value = str_replace('.', '', $value);
+            // replace ',' with '.'
+            $value = str_replace(',', '.', $value);
         }
 
         return floatval($value);
     }
 
+
     //
     // --- Filesystem functions ------------------------------------------------
+
 
     /** {{{
      * Test if a file exists
@@ -275,66 +246,15 @@ class Mumsys_Php
 
 
     /**
-     * Get the contens of a specified file
-     *
-     * @deprecated since version 2016-07-01
-     *
-     * This function is similar to file(), except that file_get_contents() returns
-     * the file in a string, starting at the specified offset up to maxlen bytes.
-     * On failure, file_get_contents() will return FALSE.
-     *
-     * @desc file_get_contents( string $filename  [, int $flags = 0  [, resource $context
-     * [, int $offset = -1  [, int $maxlen = -1  ]]]] )
-     *
-     * @param string $path Location of the file to get to contents
-     * @param mixed $flags Optional Flag to be set. Available flags:
-     * # FILE_USE_INCLUDE_PATH   	 Search for filename  in the include directory.
-     * See include_path for more information.
-     * # FILE_TEXT 	As of PHP 6, the default encoding of the read data is UTF-8.
-     * You can specify a different encoding by creating a custom context or by
-     * changing the default using stream_default_encoding(). This flag cannot be
-     * used with FILE_BINARY.
-     * # FILE_BINARY 	With this flag, the file is read in binary mode. This is
-     * the default setting and cannot be used with FILE_TEXT.
-     *
-     * Note: Prior to PHP 6, this parameter is called use_include_path  and is a
-     * bool. As of PHP 5 the FILE_USE_INCLUDE_PATH can be used to trigger
-     * include path  search.
-     * The value of flags  can be any combination of the following flags (with
-     * some restrictions), joined with the binary OR (|) operator.
-     *
-     * @param resource $stream_context A valid context resource created with stream_context_create().
-     * If you don't need to use a custom context, you can skip this parameter by NULL.
-     * @param <type> $offset
-     * @param <type> $maxlen
-     *
-     * @return string|false Returns the contents of the given file or false on error (too old php version for this)
-     */
-    public static function file_get_contents( $path, $flags = 0, $streamContext = null, $offset = -1, $maxlen = -1 )
-    {
-        $data = false;
-
-        if ( PHP_VERSION_ID >= '40300' ) {
-            if ( $maxlen >= 0 ) {
-                $data = file_get_contents($path, $flags, $streamContext, $offset, $maxlen);
-            } else {
-                $data = file_get_contents($path, $flags, $streamContext, $offset);
-            }
-        }
-
-        return $data;
-    }
-
-
-    /**
      * Get a php.ini variable and return a more technical useable value
      *
      * E.g: If memory limit returns 32M -> 32*1048576 will be returned
      *
      * @param string $key Key to get from php.ini
      *
-     * @return integer|null Returns the ini value or translated nummeric value if a
-     * nummeric value was detected
+     * @return string|integer Returns the ini value or translated numeric value
+     * if a numeric value was detected or null if the key was not found
+     * @throws Mumsys_Php_Exception If detection/ calculation numeric values fails
      */
     public static function ini_get( $key )
     {
@@ -345,14 +265,7 @@ class Mumsys_Php
             return null;
         }
 
-        try{
-            $result = self::str2bytes($value, true);
-        } catch (Exception $ex) {
-            if ( is_nummeric($value) ) {
-                throw $ex;
-            }
-            $result = $value;
-        }
+        $result = self::str2bytes( $value, true );
 
         return $result;
     }
@@ -367,11 +280,10 @@ class Mumsys_Php
      *
      * @param string $value Size string. E.g: 1G 15K 10b
      * @param boolean $binType IEC prefix calculation or not. Not implemented
-     * yet for false.
+     * yet.
      *
      * @return integer Number of bytes.
-     *
-     * @throws Exception If detection/ calculation fails
+     * @throws Mumsys_Php_Exception If detection/ calculation fails
      */
     public static function str2bytes( $value , $binType=true)
     {
@@ -400,62 +312,29 @@ class Mumsys_Php
 
             case 'g':
             case 'G':
-                $value = $value * 1073741824;
+                $value = (int) $value * 1073741824;
                 break;
 
             case 't':
             case 'T':
-                $value = $value * 1099511627776;
+                $value = (int) $value * 1099511627776;
                 break;
 
             case 'p':
             case 'P':
-                $value = $value * 1125899906842624;
+                $value = (int) $value * 1125899906842624;
                 break;
 
             default:
-                if ( !is_nummeric( $value ) ) {
-                    throw new Exception( 'Detection size failt for "' . $last . '"' );
+                if ( !is_numeric( $value ) ) {
+                    throw new Mumsys_Php_Exception(
+                        'Detection of size failt for "' . $last . '"'
+                    );
                 }
                 break;
         }
 
         return $value;
-    }
-
-
-    /**
-     * Quote string with slashes.
-     * If magic_quotes_gpc() is true the string will return or the escaped string.
-     *
-     * @param string $string String to add slashes if needed
-     * @return string Returns the escaped string or the string
-     */
-    public static function addslashes( $string )
-    {
-        if ( self::$getMagicQuotesGpc ) {
-            return $string;
-        } else {
-            return addslashes($string);
-        }
-    }
-
-
-    /**
-     * Un-quotes a quoted string.
-     * If magic_quotes_gpc() is true the string will return or the stripped string.
-     *
-     * @param string $string String to strrip slashes from
-     * @return string Returns a string with backslashes stripped off.
-     * \' becomes ' and so on. Double backslashes (\\) are made into a single backslash (\).
-     */
-    public static function stripslashes( $string )
-    {
-        if ( self::$getMagicQuotesGpc ) {
-            return stripslashes($string);
-        } else {
-            return $string;
-        }
     }
 
 
@@ -472,9 +351,12 @@ class Mumsys_Php
      * @param boolean $beforeNeedle If TRUE, strstr() returns the part of the
      * haystack before the first occurrence of the needle.
      *
-     * @return string|false Returns the portion of string, or FALSE if needle is not found.
+
+     * @return string|false Returns the portion of string, or FALSE if needle
+     * is not found.
      */
-    public static function in_string( $needle, $haystack, $insensitive = false, $beforeNeedle = false )
+    public static function in_string( $needle, $haystack, $insensitive = false,
+        $beforeNeedle = false )
     {
         if ( $beforeNeedle ) {
             if ( $insensitive ) {
@@ -507,10 +389,11 @@ class Mumsys_Php
      *
      * @see http://php.net/manual/en/function.htmlspecialchars.php
      * @param string $str The string being converted.
-     * @param mixed $style by default: ENT_QUOTES ; ENT_COMPAT (convert "); ENT_QUOTES convert
-     * both; ENT_NOQUOTES no quote conversation
+     * @param mixed $style by default: ENT_QUOTES ; ENT_COMPAT (convert ");
+     * ENT_QUOTES convert both; ENT_NOQUOTES no quote conversation
+     *
      * @return string
-     * }}} */
+     */
     public static function htmlspecialchars( $str = '', $style = ENT_QUOTES )
     {
         // use forward look up to only convert & not &#abc; and not &amp;
@@ -539,8 +422,8 @@ class Mumsys_Php
      * Re Convert HTML entities (htmlspecialchars reverse)
      *
      * @param string $str The string being converted.
-     * @param mixed $style by default: ENT_QUOTES ; ENT_COMPAT (convert "); ENT_QUOTES convert
-     * both; ENT_NOQUOTES no quote conversation
+     * @param mixed $style by default: ENT_QUOTES ; ENT_COMPAT (convert ");
+     * ENT_QUOTES convert both; ENT_NOQUOTES no quote conversation
      *
      * @return stringreturns the re-converted html entity
      **/
@@ -608,7 +491,7 @@ class Mumsys_Php
     }
 
 
-    /** {{{
+    /**
      * parseUrl — Parse a URL and return its components.
      *
      * @param string $url The URL to parse. Invalid characters are replaced by _.
@@ -632,8 +515,8 @@ class Mumsys_Php
      * instead of an array. If the requested component doesn't exist within the
      * given URL, NULL will be returned.
      *
-     * @thows Php_Exception Throws exception if parseUrl would return false.
-     * }}} */
+     * @thows Mumsys_Php_Exception Throws exception if parseUrl would return false.
+     */
     public static function parseUrl( $url, $component = null )
     {
         if ( isset($component) ) {
@@ -800,8 +683,12 @@ class Mumsys_Php
     public static function array_keys_search_recursive_check( $needle, $haystack )
     {
         foreach ( $haystack as $key => $value ) {
-            if ( $key === $needle || ( is_array($value) && ( $x = self::array_keys_search_recursive($needle, $value,
-                    true) ) ) ) {
+            if ( $key === $needle ) {
+                return true;
+            }
+
+            $match = self::array_keys_search_recursive( $needle, $value, true );
+            if ( is_array( $value ) && $match ) {
                 return true;
             }
         }
@@ -809,26 +696,27 @@ class Mumsys_Php
     }
 
 
-    /** {{{
+    /**
      * Search for a given key in a multidimensional associative array.
      * If a match was found a list of matches will be returned by reference
      *
-     * @todo $stopOnFirstMatch do not work! break nested stuff; static $stopOnFirstMatch ?
+     * @todo To be check if php offers improved handling! This methode is
+     * really old!
+     * @todo $stopOnFirstMatch do not work! break nested stuff; static
+     * $stopOnFirstMatch ?
      *
      * Example:
      * <code>
      * <?php
      * $bigarray =  array(
-     *             'key1' =>
-     *                    array(
-     *                       'key2' =>
-     *                          array(
-     *                              'a' => array( 'text'=>'something'),
-     *                              'b' => array( 'id'=>737),
-     *                              'c' => array( 'name'=>'me'),
-     *                          ),
-     *                 )
-     *            );
+     *      'key1' => array(
+     *          'key2' => array(
+     *              'a' => array( 'text'=>'something'),
+     *              'b' => array( 'id'=>737),
+     *              'c' => array( 'name'=>'me'),
+     *          ),
+     *      )
+     * );
      * $matchedKeys = array_keys_search_recursive( 'name',$bigarray);
      * // returns by reference: array( 0=>array( 'name'=>'me');
      * ?>
@@ -838,15 +726,17 @@ class Mumsys_Php
      * @param array $haystack Array to be scanned
      * @param boolean $stopOnFirstMatch Flag
      *
-     * @return array Returns a list of key->value pairs by reference  array indexes to the specified key. Last value
+     * @return array Returns a list of key->value pairs by reference  array
+     * indexes to the specified key. Last value
      * contains the searched $needle; if the array is empty nothing were found
-     * }}} */
-    public static function array_keys_search_recursive( $needle, & $haystack, $stopOnFirstMatch = false )
+     */
+    public static function array_keys_search_recursive( $needle, & $haystack,
+        $stopOnFirstMatch = false )
     {
         $matches = array();
         foreach ( $haystack as $key => &$value ) {
 
-            if ( $stopOnFirstMatch && $stopOnFirstMatch === 'break' ) {
+            if ( ($stopOnFirstMatch && $stopOnFirstMatch === 'break') ) {
                 break;
             }
             // echo ":$needle:=:$key: m: $stopOnFirstMatch\n";
@@ -859,12 +749,14 @@ class Mumsys_Php
             } else {
                 // go deeper
                 if ( is_array($value) ) {
-                    $array = self::array_keys_search_recursive($needle, $value, $stopOnFirstMatch);
+                    $array = self::array_keys_search_recursive(
+                        $needle, $value, $stopOnFirstMatch
+                    );
                     $matches = array_merge($matches, $array);
                 }
             }
         }
-        // echo "re";
+
         return $matches;
     }
 
@@ -883,12 +775,12 @@ class Mumsys_Php
      *
      * @return array Returns the merged array
      *
-     * @throws Mumsys_Exception Throws exception on unexpercted behaviour
+     * @throws Mumsys_Php_Exception Throws exception on unexpercted behaviour
      */
     public static function array_merge_recursive()
     {
         if ( func_num_args() < 2 ) {
-            throw new Mumsys_Exception(__METHOD__ . ' needs at least two arrays as arguments');
+            throw new Mumsys_Php_Exception(__METHOD__ . ' needs at least two arrays as arguments');
         }
 
         $arrays = func_get_args();
@@ -898,7 +790,7 @@ class Mumsys_Php
             $array = array_shift($arrays);
 
             if ( !is_array($array) ) {
-                throw new Mumsys_Exception(__METHOD__ . ' given argument is not an array "' . $array . '"');
+                throw new Mumsys_Php_Exception(__METHOD__ . ' given argument is not an array "' . $array . '"');
             }
 
             if ( !$array ) {
@@ -921,127 +813,4 @@ class Mumsys_Php
         return $merged;
     }
 
-    //
-    // --- Helper methodes -----------------------------------------------------
-
-
-    /** {{{
-     * Check free disk space (df -a)
-     *
-     * @todo to out source this methde.
-     *
-     * Basicly this function is usefule when working with large files which will
-     * be created or copied. This function can help you to break operations befor
-     * disk-full errors will occour. The check will work on percentage (%) of
-     * free disk space (df -a)
-     *
-     * @staticvar array $paths Memory for check paths
-     * @staticvar array $sizes Memory for checked disksizes
-     * @staticvar array $times Memory for time of last check
-     *
-     * @param string $path Location to call a df -a command it should be the root
-     * path of a mountpoit at least or the path e.g: where to store data
-     * @param integer $secCmp Number of seconds a compare-time will be OK during
-     * a process befor df -a command will be called again (limit the number if you
-     * have huge file movements to beware crashes or "disk-full"- errors)
-     * @param integer $maxSizeCmp Number in percent. Max size when a disk-full
-     * event should be thrown (max allowed/free size compare Value)
-     * @param Mumsys_Logger $logger Logger object which need at least the log method
-     * @param string $cmd df command to be executed. Maybe different on windows
-     * e.g: 'c:/cygwin/bin/df.exe -a [path]; Parameter %1$s in the cmd line
-     * is the placeholder for the $path.
-     *
-     * @return boolean Returns true if disk size exceed the limit or false for OK
-     * }}} */
-    public static function check_disk_free_space( $path = '', $secCmp = 60, $maxSizeCmp = 92,
-        Mumsys_Logger_Interface $logger, $cmd = 'df -a %1$s' )
-    {
-        // key of exec result in $cmd
-        $resultKey = 4;
-
-        if ( !is_dir($path . DIRECTORY_SEPARATOR) ) {
-            $logger->log(__METHOD__ . ': path do not exists: "' . $path . '"', 3);
-            return true;
-        }
-
-        $cmd = sprintf($cmd, $path);
-
-        $now = time();
-        $_v = array();
-
-        static $paths = null;
-        static $sizes = null;
-        static $times = null;
-
-        if ( $paths === null ) {
-            $paths = array();
-            $sizes = array();
-            $times = array();
-        }
-
-        $logger->log(__METHOD__ . ': using path: ' . $path, 6);
-
-        // cached data check
-        $i = array_search($path, $paths);
-        if ( $i !== false && isset($times[$i]) && ($now - $times[$i]) <= $secCmp ) {
-            if ( $sizes[$i] >= $maxSizeCmp ) {
-                $logger->log(__METHOD__ . ': disc space overflow: ' . $sizes[$i] . ' (' . $maxSizeCmp . ' is max limit!)',
-                    3);
-                return true;
-            } else {
-                $logger->log(__METHOD__ . 'disc space OK: ' . $sizes[$i] . '% (' . $maxSizeCmp . ' is max limit!)', 6);
-                return false;
-            }
-        }
-
-        try {
-            $tmp = '';
-            $data = null;
-            $return = null;
-            $result = exec($cmd, $data, $return);
-            if ( !$result || $return !== 0 ) {
-                throw new Exception(__METHOD__ . ': cmd error: "' . $cmd . '"', 1);
-            }
-            $logger->log(__METHOD__ . ': cmd: "' . $cmd . '"', 7);
-
-            $r = explode(' ', $data[1]);
-            while ( list($a, $b) = each($r) ) {
-                $b = trim($b);
-                if ( $b != '' ) {
-                    $_v[] = $b;
-                }
-            }
-            $logger->log($_v, 7);
-
-            $size = (int) $_v[$resultKey];
-
-            $paths[] = $path;
-            $sizes[] = $size;
-            $times[] = time();
-
-            if ( $size >= $maxSizeCmp ) {
-                $logger->log(
-                    sprintf(
-                        __METHOD__ . ': disc space overflow: size: "%1$s" (max limit: "%2$s") for path: "%3$s"',
-                        $sizes[$i], $maxSizeCmp, $path
-                    ), 3
-                );
-                return true;
-            } else {
-                $logger->log(
-                    sprintf(
-                        __METHOD__ . 'disc space OK: size "%1$s" (max limit: "%2$s") for path: "%3$s"', $sizes[$i],
-                        $maxSizeCmp, $path
-                    ), 6
-                );
-
-                return false;
-            }
-        } catch ( Exception $e ) {
-            $logger->log(__METHOD__ . ': Catchable exception. Message: "' . $e->getMessage() . '"', 0);
-            return true;
-        }
-    }
-
 }
-

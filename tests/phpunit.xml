@@ -19,6 +19,7 @@
         <whitelist>
             <directory>../src/</directory>
             <exclude>
+                <file>../src/Mumsys_Unittest_Testcase.php</file>
                 <!-- <directory>../externals</directory>
                 <directory>./tests</directory>
                 <directory>../vendor</directory> -->

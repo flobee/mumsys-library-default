@@ -1,11 +1,94 @@
 # Changes
 
+2018-02-02
+    - Adds misc path as external for coding style, vc checks
+
+
+2018-01-06/07
+    - Merges open tasks to unstable branch
+    - Updates composer bindings. You can use: #> ./composer for maintaining 
+      external code from now on.
+
+
+2018-01-05
+    Mumsys_GetOpts 
+    - VERSION 3.6.0
+    - Adds action groups (or optional parameters handling as groups) like: 
+        eg: script.php --globalOption action1 --host ab action2 --host cd
+        eg: script.php doThis -p 123 doThat now
+        - Existing configurations will be used as is as global whitelist or 
+          needs to be extended to new action groups.
+        - Return values will return like befor when not using the addition.
+    - Improves phpdoc/ code
+    - Updates Tests
+
+
+2017-12
+    Mumsys_Logger_*
+    - Improves setup and tests
+
+
 2016-07-14
     Mumsys_Variable_*
     Mumsys_Variable_Item_*
     Mumsys_Variable_Manager_*
     - Migrate from old Mumsys_Field classes
     - Adds tests
+
+
+2016-05-27
+    Mumsys_Cache
+    - maked as depricated
+    - Adds removeCache() methode
+    - Updates tests
+    - Improves coding style
+    Mumsys_Cache_Default
+    - Init class which uses Mumsys_Cache_File
+    Mumsys_Cache_File
+    - Init class
+    - Implemention like Mumsys_Cache BUT now un/serialise will be used to also
+      cache objects
+    Mumsys_Cache_Interface
+    - Init the interface for futher drivers e.g.: db cache
+    
+    
+2016-05-17
+    Mumsys_Session_Default
+    Mumsys_Session_Nome
+    Mumsys_Session_Abstract
+    - Init new wersion of session handling where the old session class will be
+      maked as deprecated soon
+    
+    Mumsys_Session_Interface
+    - update methodes to be full featured now
+
+    Mumsys_Session
+    - Improves class to fit the extended interface
+
+
+2016-05-16
+    Mumsys_I18n_None
+    - Init default driver to implement without translation (just the wrapper)
+    - Adds test, code coverage 100%
+
+    Mumsys_Html
+    Mumsys_Html_Table
+    Mumsys_Xml_Abstract
+    - Init classes
+    - adds tests, code coverage 100%
+
+
+2016-05-15
+    Mumsys_Request_*
+    - Improves input handling, extend interface, updates classes to fit the 
+      interface
+    - Improves coding style
+    - updates tests: code coverage 100%
+
+    Mumsys_Logger_*
+    - adds method to replace loglevel during runtime
+    - Updates tests to be 100% of code coverage
+
 
 2016-04-24
     Mumsys_Multirename
@@ -37,6 +120,16 @@
     - Init class and tests
 
 
+2016-03-27
+    Mumsys_Multirename
+    - Improves history handling
+    - Sets logger property to be private
+    - version 1.3.3
+    - Update/ improves tests
+    - codecoverage 100%
+    - removes old code eg: _trackConfigDir()
+
+
 2016-03-10
     Mumsys_Multirename
     - Improves handling of stored config files
@@ -51,20 +144,28 @@
     - VERSION 1.4.0
 
 
-2016-03-27
-    Mumsys_Multirename
-    - Improves history handling
-    - Sets logger property to be private
-    - version 1.3.3
-    - Update/ improves tests
-    - codecoverage 100%
-    - removes old code eg: _trackConfigDir()
+2016-03-01
+    Mumsys_I18n (init from svn to git)
+    - Init Mumsys_I18n_Abstract
+    - Init Mumsys_I18n_Default
+    - Updates Mumsys_I18n_Interface
+    - Updates Mumsys_I18n_*Tests
+
+
+2016-02-19
+    Mumsys_Logger
+    - Init Mumsys_Logger_Writer_Interface
+    - Init Mumsys_Logger_Abstract
+    - Init Mumsys_Logger_Default
+    - Init Mumsys_Logger_File
+    - Mark "Mumsys_Logger" to be deprecated
 
 
 2016-02-14
     Mumsys_GetOpts
     - Bugfix to work with php7+
     - Improves tests with versions checks
+
 
 
 2016-01-31

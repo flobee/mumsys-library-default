@@ -1,16 +1,17 @@
 <?php
 
+
 /**
  * Test class for File.
  */
-class Mumsys_FileTest extends Mumsys_Unittest_Testcase
+class Mumsys_FileTest
+    extends Mumsys_Unittest_Testcase
 {
-
     /**
-     *
      * @var Mumsys_File
      */
     protected $_object;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -18,9 +19,13 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
      */
     protected function setUp()
     {
-        $this->_version = '3.1.0';
+        $this->_version = '3.2.0';
+        $this->_versions = array(
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
+            'Mumsys_File' => $this->_version,
+        );
 
-        $this->_testsDir = realpath(dirname(__FILE__) .'/../');
+        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
 
         $this->_fileOk = $this->_testsDir . '/tmp/' . basename(__FILE__) . '.tmp';
         $this->_fileNotOk = $this->_testsDir . '/tmp/notExists/file.tmp';
@@ -71,9 +76,12 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
     {
         $this->_object->setFile($this->_fileNotOk);
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
-            '/(Can not open file "'. str_replace('/', '\/', $this->_testsDir) . '\/tmp\/notExists\/file.tmp" '
-            . 'with mode "w\+". Directory is writeable: "No", readable: "No")/');
+        $regex = '/(Can not open file "'. str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/notExists\/file.tmp" with mode "w\+". Directory is '
+            . 'writeable: "No", readable: "No")/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_File_Exception');
+
         $this->_object->open();
     }
 
@@ -99,9 +107,11 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
     {
         $this->_object->close();
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
-            '/(File not open. Can not write to file: "'. str_replace('/', '\/', $this->_testsDir)
-            . '\/tmp\/Mumsys_FileTest.php.tmp".)/');
+        $regex = '/(File not open. Can not write to file: "'
+            . str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/Mumsys_FileTest.php.tmp".)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_File_Exception');
         $x = $this->_object->write('hello world');
     }
 
@@ -121,8 +131,11 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $this->assertTrue($o->isReadable());
         $this->assertFalse($o->isWriteable());
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception', '/(File not writeable: '
-            . '"'. str_replace('/', '\/', $this->_testsDir) . '\/tmp\/Mumsys_FileTest.php.tmp".)/');
+        $regex = '/(File not writeable: "'
+            . str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/Mumsys_FileTest.php.tmp".)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_File_Exception');
         $x = $o->write('hello world');
     }
 
@@ -135,9 +148,12 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $o = new Mumsys_File(array('file' => $this->_fileOk, 'way' => 'r'));
         $o->setFile($this->_fileOk);
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
-            '/(Can not write to file: "'. str_replace('/', '\/', $this->_testsDir) . '\/tmp\/Mumsys_FileTest.php.tmp". '
-            . 'IsOpen: "Yes", Is writeable: "Yes".)/');
+        $regex = '/(Can not write to file: "'
+            . str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/Mumsys_FileTest.php.tmp". '
+            . 'IsOpen: "Yes", Is writeable: "Yes".)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_File_Exception');
         $x = $o->write($this);
     }
 
@@ -165,8 +181,11 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $o = new Mumsys_File(array('way' => 'w'));
         $o->setFile($this->_fileNotOk);
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
-            '/(File not open. Can not read from file: "'.str_replace('/', '\/', $this->_testsDir) . '\/tmp\/notExists\/file.tmp".)/');
+        $regex = '/(File not open. Can not read from file: "'
+            . str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/notExists\/file.tmp".)/';
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException('Mumsys_File_Exception');
         $text1 = $o->read();
     }
 
@@ -187,9 +206,11 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $this->assertFalse($o->isReadable());
         $this->assertTrue($o->isWriteable());
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
-            '/(File "'.str_replace('/', '\/', $this->_testsDir) . '\/tmp\/Mumsys_FileTest.php.tmp" not readable with mode "w". '
-            . 'Is writeable "Yes", readable: "No".)/');
+        $regex = '/(File "' . str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/Mumsys_FileTest.php.tmp" not readable with mode "w". '
+            . 'Is writeable "Yes", readable: "No".)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_File_Exception');
         $x = $o->read();
     }
 
@@ -199,9 +220,30 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
     {
         $o = new Mumsys_File(array('file' => $this->_fileOk, 'way' => 'w'));
 
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception',
-            '/(Error when reading the file: "'.str_replace('/', '\/', $this->_testsDir) . '\/tmp\/Mumsys_FileTest.php.tmp". IsOpen: "Yes".)/');
+        $regex = '/(Error when reading the file: "'
+            . str_replace('/', '\/', $this->_testsDir)
+            . '\/tmp\/Mumsys_FileTest.php.tmp". IsOpen: "Yes".)/';
+        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException('Mumsys_File_Exception');
         $text1 = $o->read();
+    }
+
+    /**
+     * @covers Mumsys_File::truncate
+     */
+    public function testTruncate()
+    {
+        $o = new Mumsys_File(array('file' => $this->_fileOk, 'way' => 'w'));
+        $current1 = $o->truncate();
+
+        $this->assertTrue($current1);
+
+        $o->close();
+        $this->expectException( 'Mumsys_File_Exception' );
+        $mesg = '/(Can not truncate file ")(.*)(\/tests\/tmp\/Mumsys_FileTest\.'
+            . 'php\.tmp"\. File not open)/';
+        $this->expectExceptionMessageRegExp( $mesg );
+        $o->truncate();
     }
 
 
@@ -228,12 +270,14 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $this->assertEquals("hello world\nhello", $string);
     }
 
+
     public function testSetModeException()
     {
         $this->_object->write("hello world\nhello flobee");
 
         $o = new Mumsys_File(array('file' => $this->_fileOk, 'way' => 'r'));
-        $this->setExpectedExceptionRegExp('Mumsys_File_Exception', '/(Invalid mode)/');
+        $this->expectException('Mumsys_File_Exception');
+        $this->expectExceptionMessageRegExp('/(Invalid mode)/');
         $o->setMode('this is wrong');
     }
 
@@ -296,7 +340,6 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $this->assertTrue($actual); // the owner always can read!
     }
 
-
     // test abstracts
 
 
@@ -308,6 +351,7 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $this->assertEquals('Mumsys_File ' . $this->_version, $this->_object->getVersion());
     }
 
+
     /**
      * @covers Mumsys_File::getVersionID
      */
@@ -316,6 +360,7 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
         $this->assertEquals($this->_version, $this->_object->getVersionID());
     }
 
+
     /**
      * @covers Mumsys_File::getVersions
      */
@@ -323,12 +368,12 @@ class Mumsys_FileTest extends Mumsys_Unittest_Testcase
     {
         $expected = array(
             'Mumsys_Abstract' => '3.0.1',
-            'Mumsys_File' => '3.1.0',
+            'Mumsys_File' => $this->_version,
         );
 
         $possible = $this->_object->getVersions();
 
-        foreach ($expected as $must => $value) {
+        foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue(isset($possible[$must]));
             $this->assertTrue(($possible[$must] == $value));
         }

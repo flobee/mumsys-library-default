@@ -12,6 +12,7 @@
  * @package     Php
  */
 
+
 /**
  * @deprecated since version 2.0.1 use Mumsys_Php
  *
@@ -40,4 +41,6 @@ class Php
      * Version ID information.
      */
     const VERSION = '2.0.0';
+
 }
+

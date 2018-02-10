@@ -84,9 +84,11 @@ class Mumsys_File
      * automaticly.
      *
      * @param array $params Params to set on initialisation the object
-     *      [file] Location to the file to read or to write
-     * 		[way] Kind/ mode of to read/write the file
-     * 		[buffer] Number of bytes to be read from the file. @see setBuffer()
+     *  - [file] Location to the file to read or to write
+     * 	- [way] Kind/ mode of to read/write the file
+     * 	- [buffer] Number of bytes to be read from the file when reading from;
+     *    see setBuffer()
+     *
      * @return void
      */
     public function __construct(array $params=array( ))

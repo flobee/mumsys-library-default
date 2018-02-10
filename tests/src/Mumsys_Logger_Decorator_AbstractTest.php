@@ -28,11 +28,17 @@ class Mumsys_Logger_Decorator_AbstractTest
     private $_testsDir;
 
     /**
+     * @var string
+     */
+    private $_version;
+
+    /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
     protected function setUp()
     {
+        $this->_version = '3.0.0';
         $this->_testsDir = MumsysTestHelper::getTestsBaseDir();
         $this->_logfile = $this->_testsDir . '/tmp/' . basename(__FILE__) .'.test';
 
@@ -123,6 +129,16 @@ class Mumsys_Logger_Decorator_AbstractTest
     {
         $obj = $this->_object->testGetObject();
         $this->assertSame($obj, $this->_logger);
-
     }
+
+
+    /**
+     * Version check
+     */
+    public function testVersion()
+    {
+        $this->assertEquals($this->_version,
+            Mumsys_Logger_Decorator_Abstract::VERSION);
+    }
+
 }

@@ -17,13 +17,20 @@
 /**
  * PhpUnit test case class as wrapper for PHPUnit_Framework_TestCase.
  *
+ * Helper for deprecated or removed methodes to keep you informed.
+ *
  * @category    Mumsys
  * @package     Library
  * @subpackage  Unittest
  */
 class Mumsys_Unittest_Testcase
-    extends PHPUnit_Framework_TestCase
+    extends PHPUnit\Framework\TestCase
 {
+    /**
+     * Version ID information.
+     */
+    const VERSION = '3.3.2';
+
     /**
      * Methods memory container
      * @var array
@@ -44,10 +51,43 @@ class Mumsys_Unittest_Testcase
      */
     public function setExpectedException( $exceptionName, $exceptionMessage = '', $exceptionCode = null )
     {
-        $message = 'setExpectedException() will be removed with phpunit ~ 5.9*.'
-            . 'Please use setExpectedExceptionRegExp()';
+        $message = 'setExpectedException() will be removed with phpunit > 5.9*.'
+            . 'Please use expectException*()';
 
         self::_checkMethod('setExpectedException', $message);
+    }
+
+
+    /**
+     * Checks for exceptions with regular expression message.
+     *
+     * @param string $exception Exception to be tested. Default "Exception"
+     * @param string $regex Regular expression
+     * @param string|integer $exCode Exception code
+     *
+     * @throws Exception If methode/s not exists
+     */
+    public function setExpectedExceptionRegExp( $exception = 'Exception',
+        $regex = '/(.*)/i', $exCode = null )
+    {
+         $message = 'setExpectedExceptionRegExp() removed since phpunit '
+            . '>= 5.6.0. Use expectException*() methodes';
+        if( self::_checkMethod( 'setExpectedExceptionRegExp', $message ) )
+        {
+            if( self::_checkMethod( 'expectException', $message ) )
+            {
+                $this->expectException( $exception );
+                $this->expectExceptionMessageRegExp( $regex );
+                if ( isset( $exCode ) ) {
+                    $this->expectExceptionCode( $exCode );
+                }
+            } else {
+                $this->setExpectedExceptionRegExp( $exception, $regex, $exCode );
+            }
+		}
+		else {
+            throw new Exception( $message );
+        }
     }
 
 
@@ -112,6 +152,29 @@ class Mumsys_Unittest_Testcase
         }
 
         return self::$_methods[$method];
+    }
+
+
+    /**
+     * Checks for available class versions.
+     *
+     * Check for Mumsys_Abstract::getVersions()
+     *
+     * @param array $allList List of loaded class versions @see
+     * Mumsys_Abstract::getVersions()
+     * @param array $myList List of expected versions
+     *
+     * @return boolean Returns true on success
+     */
+    protected function _checkVersionList($allList, $myList )
+    {
+        foreach($myList as $className => $version ) {
+            $test = ($allList[$className] === $version);
+            $message = 'Failure: ' . $className . ':' . $version . ' !== ' . $allList[$className];
+            $this->assertTrue($test, $message);
+        }
+
+        return true;
     }
 
 }

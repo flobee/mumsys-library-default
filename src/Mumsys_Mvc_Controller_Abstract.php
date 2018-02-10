@@ -31,10 +31,11 @@ abstract class Mumsys_Mvc_Controller_Abstract
     const VERSION = '1.0.0';
 
     /**
-     * Mumsys_Context
-     * @var Mumsys_Context
+     * Mumsys context
+     * @var Mumsys_Context_Interface
      */
     protected $_context;
+
     /**
      * All config values from mumsys config
      * @var array
@@ -46,28 +47,32 @@ abstract class Mumsys_Mvc_Controller_Abstract
      * @var string
      */
     protected $_programName;
+
     /**
      * Name of the current controller
      * @var string
      */
     protected $_controllerName;
+
     /**
      * Name of the current action
      * @var string
      */
     protected $_actionName;
 
+
     /**
      * Initialise Mvc controller
      *
      * @param Mumsys_Context $context
      */
-    public function __construct( Mumsys_Context $context )
+    public function __construct( Mumsys_Context_Interface $context )
     {
         $this->_context = $context;
         /** @todo Timing problem? when are all configs loaded? */
         $this->_configs = $context->getConfig()->getAll();
     }
+
 
     /**
      * Returns the controller location by given program and controller
@@ -89,8 +94,10 @@ abstract class Mumsys_Mvc_Controller_Abstract
             $this->_controllerName = $this->_configs['defaultController'];
         }
 
-        return $this->_configs['pathPrograms'] . $this->_programName . '/' . $this->_controllerName . 'Controller.php';
+        return $this->_configs['pathPrograms'] . $this->_programName . '/'
+            . $this->_controllerName . 'Controller.php';
     }
+
 
     /**
      * Checks if a controller location exists.
@@ -104,7 +111,9 @@ abstract class Mumsys_Mvc_Controller_Abstract
     {
         if ( preg_match(MUMSYS_REGEX_AZ09X, $program)
             && preg_match(MUMSYS_REGEX_AZ09X, $controller) ) {
-            $file = $this->_configs['pathPrograms'] . $program . '/' . $controller . 'Controller.php';
+            $file = $this->_configs['pathPrograms'] . $program . '/'
+                . $controller . 'Controller.php';
+
              if ( file_exists($file) ) {
                  return true;
              }

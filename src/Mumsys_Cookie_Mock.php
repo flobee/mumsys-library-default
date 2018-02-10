@@ -151,11 +151,16 @@ class Mumsys_Cookie_Mock
      * By default implementation the cookie value will be cleared to '' and after
      * the expiration time set to the past.
      *
-     * @param string $key Name of the cookie (a-z0-9)
+     * @param string $key Name of the cookie (a-z 0-9)
+     * @param string $path @see setCookie()
+     * @param string $domain @see setCookie()
+     * @param boolean $secure @see setCookie()
+     * @param boolean $httponly @see setCookie()
      *
      * @return boolean Returns true on success
      */
-    public function unsetCookie( string $key ): bool
+    public function unsetCookie( string $key, string $path = '',
+        string $domain = '', bool $secure = false, bool $httponly = false ): bool
     {
         $cookie = $this->_loadCookieData();
 
@@ -171,8 +176,11 @@ class Mumsys_Cookie_Mock
 
     /**
      * Clears and unsets all cookie values
+     *
+     * @return boolean True on success of false if the cookie file could not be
+     * truncated
      */
-    public function clear()
+    public function clear(): bool
     {
         $cookie = $this->_loadCookieData();
 
@@ -180,7 +188,7 @@ class Mumsys_Cookie_Mock
 
         $this->_cookie = array();
 
-        file_put_contents($this->_cookieFile, json_encode($this->_cookie));
+        return file_put_contents($this->_cookieFile, json_encode($this->_cookie));
     }
 
 

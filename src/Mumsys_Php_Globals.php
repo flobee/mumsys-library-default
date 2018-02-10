@@ -10,7 +10,7 @@
  *
  * @category    Mumsys
  * @package     Library
- * @subpackage  Php_Globals
+ * @subpackage  Php
  */
 
 
@@ -31,7 +31,7 @@
  *
  * @category    Mumsys
  * @package     Library
- * @subpackage  Php_Globals
+ * @subpackage  Php
  */
 class Mumsys_Php_Globals
     extends Mumsys_Abstract
@@ -39,7 +39,7 @@ class Mumsys_Php_Globals
     /**
      * Version ID information.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '2.0.0';
 
     /**
      * Cache container for uploaded files
@@ -55,7 +55,8 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns an eviroment variable in this order: getenv() befor _ENV befor _SERVER.
+     * Returns an eviroment variable in this order: getenv() befor _ENV befor
+     * _SERVER.
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
@@ -69,7 +70,8 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns an eviroment variable in this order: getenv() befor _ENV befor _SERVER.
+     * Returns an eviroment variable in this order: getenv() befor _ENV befor
+     * _SERVER.
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
@@ -83,7 +85,8 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns an eviroment variable in this order: getenv() befor _ENV befor _SERVER.
+     * Returns an eviroment variable in this order: getenv() befor _ENV befor
+     * _SERVER.
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
@@ -129,7 +132,8 @@ class Mumsys_Php_Globals
 
     /**
      * Returns a get variable by given key.
-     * If $key is NULL it will return all get parameters
+     *
+     * If $key is NULL and get vars exists it will return all get parameters
      *
      * @param string $key ID to check for
      * @param mixed $default Default return value if key not exists
@@ -151,15 +155,16 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns a get variable by given key.
-     * If $key is NULL it will return all cookie parameters
+     * Returns a cookie variable by given key.
+     *
+     * If $key is NULL and a cookie exists it will return all cookie parameters.
      *
      * @param string $key ID to check for
      * @param mixed $default Default return value if key not exists
      *
      * @return mixed Value or $default if $key is not set/null
      */
-    public static function getCookieVar( $key = null, $default = null )
+    public static function getCookieVar( $key = null, $default = array() )
     {
         if ( isset($_COOKIE) && $key === null ) {
             return $_COOKIE;
@@ -176,6 +181,8 @@ class Mumsys_Php_Globals
     /**
      * Returns a list of uploaded file variables by given key.
      *
+     * @todo create list of upload item interfaces to return
+     *
      * If $key is NULL it will return all file parameter BUT in a new/
      * normalised way.: E.g:
      * upload file[] and file[]
@@ -187,7 +194,7 @@ class Mumsys_Php_Globals
      *
      * @return mixed Value or $default if $key is not set/null
      */
-    public static function getFileVar( $key = null, $default = null )
+    public static function getFilesVar( $key = null, $default = null )
     {
         if ( isset($_FILES) ) {
             if ( self::$_files === null ) {
@@ -200,6 +207,7 @@ class Mumsys_Php_Globals
                     }
 
                     foreach ( $file['name'] as $idx => $name ) {
+                        // Mumsys_Upload_Item_Default() ?
                         $newFiles[$index][$idx] = array(
                             'name' => $name,
                             'type' => $file['type'][$idx],
@@ -264,7 +272,7 @@ class Mumsys_Php_Globals
      *      befor _SERVER
      *      befor _SESSION
      *      before _COOKIE
-     *      befor _REQUEST:
+     *      befor _REQUEST: (binding through gpc order in php ini)
      *
      * Dont use it until you really need to look for a global variable!
      * Returns a global variable and looks in all super globals.

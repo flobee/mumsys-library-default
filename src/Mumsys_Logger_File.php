@@ -31,7 +31,7 @@ class Mumsys_Logger_File
     /**
      * Version ID information
      */
-    const VERSION = '3.0.2';
+    const VERSION = '3.0.4';
 
     /**
      * path and filename to the log file.
@@ -76,7 +76,8 @@ class Mumsys_Logger_File
      * mode, log all)
      * - [debug] boolean Default: false
      * - [lf] string Optional Linefeed Default: \n
-     * - [maxfilesize] integer Optional Number of Bytes for the logfile Default: 0 (no limit)
+     * - [maxfilesize] integer Optional Number of Bytes for the logfile Default:
+     *   0 (no limit)
      *
      * @uses Mumsys_File Uses Mumsys_File object for file logging
      */
@@ -105,11 +106,13 @@ class Mumsys_Logger_File
                 'way' => $this->_logway
             );
             $this->_writer = new Mumsys_File($fileOptions);
+        } else {
+            $this->_writer = $writer;
         }
 
         parent::__construct($options);
 
-        if ( ($message = $this->checkMaxFilesize() ) !== false ) {
+        if ( ($message = $this->checkMaxFilesize() ) !== '' ) {
             $this->log($message, Mumsys_Logger_Abstract::INFO);
         }
     }
@@ -180,14 +183,15 @@ class Mumsys_Logger_File
     /**
      * Checks if the max filesize reached and drops the logfile.
      *
-     * If debug mode is enabled this methode will return false.
+     * If debug mode is enabled this methode will return '' if
+     * maxfilesize <= 0.
      *
-     * @return string|false Returns string with information that the log was
-     * purged or false.
+     * @return string Returns string with information that the log was
+     * purged or empty string.
      */
     public function checkMaxFilesize()
     {
-        $message = false;
+        $message = '';
 
         if ( $this->_maxfilesize <= 0 ) {
             return $message;
@@ -195,7 +199,7 @@ class Mumsys_Logger_File
 
         if ( !$this->_debug
             && ($fsize = @filesize($this->_logfile)) > $this->_maxfilesize ) {
-            file_put_contents($this->_logfile, '');
+            $this->_writer->truncate();
             $message = 'Max filesize reached. Log purged now';
         }
 

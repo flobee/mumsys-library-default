@@ -9,20 +9,21 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * @package     Library
+ * @subpackage  Db
  * @version     3.1.0
  * 0.1 - Created: 2010-12-29
  */
 
 
 /**
- * Database driver interface
+ * Database driver interface.
+ *
  * Includes std connection and operation methodes base on prim. mysql behavior
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * @package     Library
+ * @subpackage  Db
  */
 interface Mumsys_Db_Driver_Interface
 {
@@ -35,7 +36,8 @@ interface Mumsys_Db_Driver_Interface
      * - 'password' optional Database password
      * - 'host' optional Database hostname/ip
      * - 'port' optional Database port
-     * - 'charset' client character set to be used. If given it will be set when connection will be made
+     * - 'charset' client character set to be used. If given it will be set when
+     *   connection will be made
      * - 'socket' boolean optional
      * - 'debug' boolean optional
      * - 'throwErrors' boolean optional default: true
@@ -47,7 +49,8 @@ interface Mumsys_Db_Driver_Interface
     /**
      * Destructor. Close current connection.
      *
-     * @return boolean Return the status for closing the connection. True on success.
+     * @return boolean Return the status for closing the connection. True on
+     * success.
      */
     public function __destruct();
 
@@ -101,7 +104,8 @@ interface Mumsys_Db_Driver_Interface
     /**
      * Returns the list of errors the program has detected and collected.
      *
-     * @return array List of errors with ["message" => "error message", "code"=> "error code"]
+     * @return array List of errors with ["message" => "error message", "code"
+     * => "error code"]
      */
     public function getErrors();
 
@@ -148,9 +152,10 @@ interface Mumsys_Db_Driver_Interface
     /**
      * Create a database connection.
      *
-     * @return resource|false Retruns the database connection resource on succsess or
-     * throws exception
-     * @throws Mumsys_Db_Exception On connection error or if initial database can not be selected
+     * @return resource|false Retruns the database connection resource on
+     * succsess or throws exception
+     * @throws Mumsys_Db_Exception On connection error or if initial database
+     * can not be selected
      */
     public function connect();
 
@@ -296,12 +301,16 @@ interface Mumsys_Db_Driver_Interface
      * Select data from the database.
      *
      * @param array $params Parameters to be set:<br/>
-     * - [fields] required Fields to update or insert by a given array with key=>value pairs
+     * - [fields] required Fields to update or insert by a given array with key
+     * =>value pairs
      * - [table] required Table to update<br/>
-     * - [where] required Array key=>value construct for the where clause; Note: only AND conditions will be made
-     * - [order] optional; Set the order for select or update statements. List of key/value pairs (columne/ASC,DESC)
-     * - [limit] optional array containing the offset (the start value), limit count for selects or just the limit
-     * count e.g. array(limit count) for select, delete, updates.
+     * - [where] required Array key=>value construct for the where clause; Note:
+     * only AND conditions will be made
+     * - [order] optional; Set the order for select or update statements. List
+     * of key/value pairs (columne/ASC,DESC)
+     *  - [limit] optional array containing the offset (the start value), limit
+     * count for selects or just the limit count e.g. array(limit count) for
+     * select, delete, updates.
      *
      * @return Mumsys_Db_Driver_Mysql_Result Object or false on error
      * @return Mumsys_Db_Driver_Result_Interface Returns

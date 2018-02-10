@@ -1,28 +1,26 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Mvc_Router_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Mvc
- * @filesource
+ * @package     Library
+ * @subpackage  Mvc
+ * @version     1.0.0
  */
-/* }}} */
 
 
 /**
  * Abstract request class to get input parameters.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
+ * @package     Library
+ * @subpackage  Mvc
  */
 interface Mumsys_Mvc_Router_Interface
 {
@@ -30,10 +28,11 @@ interface Mumsys_Mvc_Router_Interface
      * Initialise the router object.
      *
      * @param Mumsys_Request_Interface Request interface
-     * @param array $options Optional initial options e.g.: 'programKey', 
+     * @param array $options Optional initial options e.g.: 'programKey',
      * 'controllerKey', 'actionKey' mappings to initialize the object
      */
-    public function __construct( Mumsys_Request_Interface $request, array $options = array() );
+    public function __construct( Mumsys_Request_Interface $request,
+        array $options = array() );
 
 
     /**
@@ -136,5 +135,5 @@ interface Mumsys_Mvc_Router_Interface
      * @return self
      */
     public function setActionKey( $key = 'action' );
-
+    
 }

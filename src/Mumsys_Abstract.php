@@ -11,12 +11,11 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Abstract
- * @version     1.0.0
  */
 
 
 /**
- * Abstract class to extend mumsys with base methodes and features.
+ * Abstract class to extend mumsys classes with basic methodes and features.
  *
  * @category    Mumsys
  * @package     Library
@@ -25,9 +24,9 @@
 abstract class Mumsys_Abstract
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
-    const VERSION = '3.0.1';
+    const VERSION = '3.0.2';
 
 
     /**
@@ -50,12 +49,14 @@ abstract class Mumsys_Abstract
     {
         $class = get_called_class();
         $version = '%1$s %2$s';
-        return sprintf($version, $class, $class::VERSION);
+
+        return sprintf( $version, $class, $class::VERSION );
     }
 
 
     /**
-     * Returns a list of class/versionID pairs which are loaded at this moment.
+     * Returns a list of class/versionID pairs which are loaded except
+     * exceptions and interfaces.
      *
      * @return array Returns a list of class/versionID pairs
      */
@@ -64,12 +65,12 @@ abstract class Mumsys_Abstract
         $list = Mumsys_Loader::loadedClassesGet();
         $versions = array();
 
-        foreach ($list as $class) {
-            if (!preg_match('/(exception|interface)/i', $class)) {
-                if (defined($class.'::VERSION')) {
+        foreach ( $list as $class ) {
+            if ( !preg_match( '/(exception|interface)/i', $class ) ) {
+                if ( defined( $class . '::VERSION' ) ) {
                     $versions[$class] = $class::VERSION;
                 } else {
-                    $versions[$class] = '-unknown-';
+                    $versions[$class] = '- unknown version -';
                 }
             }
         }
@@ -78,22 +79,20 @@ abstract class Mumsys_Abstract
     }
 
 
-    // getter/setter checks
-
-
     /**
      * Check given key to be a valid string.
      *
-     * @param string $key Key to register
+     * @param string $key Key to register (ASCII code would be good, a-Z,0-9
+     * would be perfect but all will be accepted)
      *
-     * @throws Mumsys_Registry_Exception Throws exception if key is not a string
+     * @throws Mumsys_Exception Throws exception if key is not a string
      */
     protected static function _checkKey( $key )
     {
-        if (!is_string($key)) {
+        if ( !is_string( $key ) ) {
             $message = 'Invalid initialisation key for a setter. '
                 . 'A string is required!';
-            throw new Mumsys_Exception($message);
+            throw new Mumsys_Exception( $message );
         }
     }
 

@@ -16,6 +16,7 @@
  * $Id: class.mailsys.php 2369 2011-12-08 22:02:37Z flobee $
  */
 
+use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * Mumsys PHPMailer interface
@@ -40,7 +41,7 @@ class Mumsys_Mail_PHPMailer
 
     /**
      * Mail driver to be used.
-     * @var PHPMailer
+     * @var PHPMailer\PHPMailer\PHPMailer
      */
     private $_mailer;
 
@@ -57,8 +58,10 @@ class Mumsys_Mail_PHPMailer
      *  port - Port of the mail sever
      *  smtp_auth - boolean using smtp auth or not
      *  smtp_keepalive - boolean keep connection alive or not
-     *  smtp_debug - Debugging options, driver specific 0=Off,1=client,2=server and client
-     *  smtp_secure - Sets the encryption system to use - ssl (deprecated) or tls (new)
+     *  smtp_debug - Debugging options, driver specific 0=Off,1=client,2=server
+     * and client
+     *  smtp_secure - Sets the encryption system to use - ssl (deprecated) or
+     * tls (new)
      *  smtp_options - Futher smtp option driver specific
      *  wordwrap -  Mail text wordwrap. Leave it (default is 78) change it only
      *              if you know what you are doing,
@@ -68,22 +71,21 @@ class Mumsys_Mail_PHPMailer
      *  charset     mail character set defaut: utf-8
      * certificate (array)  certOptions
      *      'cert' The location of your certificate file e.g '/path/to/cert.crt',
-     *      'privateKey' - The location of your private key file e.g: '/path/to/cert.key',
-     *      'pass' - The password you protected your private key with (not the Import
-     *              Password! may be empty but parameter must not be omitted!)
+     *      'privateKey' - The location of your private key file e.g:
+     * '/path/to/cert.key',
+     *      'pass' - The password you protected your private key with (not the
+     * Import Password! may be empty but parameter must not be omitted!)
      *      'chain' - Optional path to chain certificateThe location to your
      *              chain file e.g.: '/path/to/certchain.pem'
      * @throws Exception If config not set
      */
     public function __construct( array $config )
     {
-        $dirs = array('PHPMailer', 'libphp-phpmailer');
-        foreach ( $dirs as $dir ) {
-            if ( is_dir($dir) ) {
-                break;
-            }
-        }
-        require_once $dir . '/PHPMailerAutoload.php';
+        $dir = '../vendor/phpmailer/phpmailer/src';
+        require_once $dir . '/PHPMailer.php';
+        require_once $dir . '/SMTP.php';
+        require_once $dir . '/POP3.php';
+        require_once $dir . '/Exception.php';
         $this->_mailer = new PHPMailer(true);
 
         $this->_config = $config;
@@ -181,18 +183,6 @@ class Mumsys_Mail_PHPMailer
     {
         return $this->_mailer;
     }
-
-
-    /**
-     * Sets the mail driver to be used.
-     *
-     * @param object $mailer Mailer driver e.g.: PHPMailer
-     */
-    public function setMailer( $mailer )
-    {
-        $this->_mailer = $mailer;
-    }
-
 
     /**
      * Adds a reciepient (To) address.
@@ -337,12 +327,12 @@ class Mumsys_Mail_PHPMailer
      *
      * @param string $htmlMsg HTML message string
      * @param string $pathInlineAtt base directory for inline attachments
-     * @param boolean|callable $advanced Whether to use the internal HTML to text
-     * converter or your own custom converter @see PHPMailer::html2text()
+     * @param boolean|callable $advanced Whether to use the internal HTML to
+     * text converter or your own custom converter @see PHPMailer::html2text()
      *
      * @return string Html message string
      */
-    public function setMessageHtml( string $htmlMsg, string $pathInlineAtt = '') : string
+    public function setMessageHtml( string $htmlMsg, string $pathInlineAtt = '' ): string
     {
         return $this->_mailer->msgHTML($htmlMsg, $pathInlineAtt, false);
     }
@@ -425,7 +415,8 @@ class Mumsys_Mail_PHPMailer
     /**
      * Sets the transport way.
      *
-     * @param string $way Transport way to be set, one of mail, smtp, sendmail, qmail
+     * @param string $way Transport way to be set, one of mail, smtp, sendmail,
+     * qmail
      */
     public function setTransportWay( $way = 'mail' )
     {
@@ -458,8 +449,8 @@ class Mumsys_Mail_PHPMailer
      *
      * @param string $langCode ISO 639-1 2-character language code (e.g. French
      * is "fr")
-     * @param string $pathLang Path to the language file directory, with trailing
-     * separator (slash)
+     * @param string $pathLang Path to the language file directory, with
+     * trailing separator (slash)
      *
      * @return boolean Returns false if it cannot load the language file.
      */
@@ -485,7 +476,8 @@ class Mumsys_Mail_PHPMailer
     /**
      * Set certificate for private/public key authentication e.g. for S/MIME.
      *
-     * @param string $certFile Location to certificate file e.g. "/etc/certs/cert.crt"
+     * @param string $certFile Location to certificate file e.g.
+     * "/etc/certs/cert.crt"
      * @param string $privateKeyFile Location to private key file
      * @param string $keyPwd Password for private key if set/needed
      * @param string $chain Optional path to chain certificate

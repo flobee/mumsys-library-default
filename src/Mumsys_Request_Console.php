@@ -1,29 +1,25 @@
 <?php
 
-
-/* {{{ */
 /**
- * Mumsys_Request_Abstract
+ * Mumsys_Request_Console
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
- * @filesource
+ * @package     Library
+ * @subpackage  Request
  */
-/* }}} */
 
 
 /**
- * Abstract request class to get input parameters.
+ * Console/ shell class to get input parameters.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
+ * @package     Library
+ * @subpackage  Request
  */
 class Mumsys_Request_Console
     extends Mumsys_Request_Abstract
@@ -32,37 +28,25 @@ class Mumsys_Request_Console
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
-
-    /**
-     * Incomming request parameters
-     * @var array
-     */
-    protected $_input = array();
+    const VERSION = '1.1.2';
 
 
     /**
-     * Initialize the request object using.
+     * Initialise the request object using servers argv array.
      *
      * @param array $options Optional initial options e.g.:
      * 'programKey','controllerKey', 'actionKey',
      */
     public function __construct( array $options = array() )
     {
-        if (isset($_SERVER['argv']) && is_array($_SERVER['argv']))
-        {
-            foreach ($_SERVER['argv'] as $keyValue)
-            {
-                $res = explode('=', $keyValue);
-                if (isset($res[1])) {
-                    $list[$res[0]] = $res[1];
-                } else {
-                    $list[] = $res[0];
-                }
-            }
+        parent::__construct($options);
 
-            $this->_input = $list;
+        $argv = $_get = Mumsys_Php_Globals::getServerVar('argv', array());
+        if ($argv && is_array($argv)) {
+            $this->_input += $argv;
         }
+
+        unset($argv, $options);
     }
 
 }

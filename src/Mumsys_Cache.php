@@ -1,40 +1,36 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Cache
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Cache
- * @version     1.0.0
  * Created: 2013-12-10
- * @filesource
  */
-/*}}}*/
 
 
 /**
  * Class for standard file caching
+ * @deprecated since version 1.1.1
+ * Use Mumsys_Cache_Default or Mumsys_Cache_File
  *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Cache
  */
-class Mumsys_Cache extends Mumsys_Abstract
+class Mumsys_Cache
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.1.1';
 
     /**
      * Flag if caching is enabled or not
@@ -65,8 +61,8 @@ class Mumsys_Cache extends Mumsys_Abstract
      */
     public function __construct( $group, $id )
     {
-        $this->_id = md5((string)$id);
-        $this->_group = (string)$group;
+        $this->_id = md5((string) $id);
+        $this->_group = (string) $group;
     }
 
 
@@ -80,14 +76,14 @@ class Mumsys_Cache extends Mumsys_Abstract
     {
         $filename = $this->_getFilename();
 
-        if ($fp = fopen($filename, 'xb')) {
-            if (flock($fp, LOCK_EX)) {
+        if ( $fp = fopen($filename, 'wb') ) {
+            if ( flock($fp, LOCK_EX) ) {
                 fwrite($fp, $data);
             }
             fclose($fp);
 
             // Set filemtime
-            touch($filename, time() + (int)$ttl);
+            touch($filename, time() + (int) $ttl);
         }
     }
 
@@ -108,13 +104,15 @@ class Mumsys_Cache extends Mumsys_Abstract
      *
      * @param string $group Groupname
      * @param string $id Unique ID
+     *
+     * @return boolean True if cache exists or false
      */
     public function isCached()
     {
-        if ($this->_enabled) {
+        if ( $this->_enabled ) {
             $filename = $this->_getFilename();
 
-            if (file_exists($filename) && filemtime($filename) > time()) {
+            if ( file_exists($filename) && filemtime($filename) > time() ) {
                 return true;
             }
             @unlink($filename);
@@ -125,13 +123,30 @@ class Mumsys_Cache extends Mumsys_Abstract
 
 
     /**
+     * Removes the specific cache file.
+     *
+     * @return boolean True on success
+     */
+    public function removeCache()
+    {
+        $filename = $this->_getFilename();
+
+        if ( file_exists($filename) ) {
+            @unlink($filename);
+        }
+
+        return true;
+    }
+
+
+    /**
      * Sets the filename prefix.
      *
      * @param string $prefix Filename Prefix to use
      */
     public function setPrefix( $prefix )
     {
-        $this->_prefix = (string)$prefix;
+        $this->_prefix = (string) $prefix;
     }
 
 
@@ -151,7 +166,7 @@ class Mumsys_Cache extends Mumsys_Abstract
      */
     public function setPath( $path )
     {
-        $this->_path = (string)$path;
+        $this->_path = rtrim((string) $path, '/') . '/';
     }
 
 
@@ -171,7 +186,7 @@ class Mumsys_Cache extends Mumsys_Abstract
      */
     public function setEnable( $flag )
     {
-        $this->_enabled = (bool)$flag;
+        $this->_enabled = (bool) $flag;
     }
 
 
