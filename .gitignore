@@ -35,6 +35,7 @@ logs/
 /docs/gitstats
 /docs/API/*
 /tests/testfiles/*
+/docs/gitstat*
 /tests/tmp/*
 /tests/tmp/*
 
