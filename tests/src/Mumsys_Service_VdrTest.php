@@ -29,7 +29,9 @@ class Mumsys_Service_VdrTest
     protected function setUp()
     {
         if ( self::$_isAvailable !== true ) {
-            $this->markTestSkipped( 'repeated error' );
+            $mesg = 'repeated failure: this it not a bug! you just dont have '
+                . 'the service up and you may dont need it';
+            $this->markTestSkipped( $mesg );
         }
 
         $this->_context = MumsysTestHelper::getContext();
