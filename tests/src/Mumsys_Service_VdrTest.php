@@ -19,6 +19,7 @@ class Mumsys_Service_VdrTest
     private $_context;
     private $_options;
     private $_logfile;
+    private static $_isAvailable = true;
 
 
     /**
@@ -27,6 +28,10 @@ class Mumsys_Service_VdrTest
      */
     protected function setUp()
     {
+        if ( self::$_isAvailable !== true ) {
+            $this->markTestSkipped( 'repeated error' );
+        }
+
         $this->_context = MumsysTestHelper::getContext();
         $this->_logfile = MumsysTestHelper::getTestsBaseDir() . '/tmp/service_vdr.log';
 
@@ -41,13 +46,12 @@ class Mumsys_Service_VdrTest
 
         $this->_options = array();
 
-        try
-        {
-            $this->_object = new Mumsys_Service_Vdr($this->_context, 'localhost');
-        }
-        catch ( Exception $ex ) {
+        try {
+            $this->_object = new Mumsys_Service_Vdr( $this->_context, 'localhost' );
+        } catch ( Exception $ex ) {
+            self::$_isAvailable = false;
             $message = 'Service error or not available, skip test. Message: ' . $ex->getMessage();
-            $this->markTestSkipped($message);
+            $this->markTestSkipped( $message );
         }
     }
 
