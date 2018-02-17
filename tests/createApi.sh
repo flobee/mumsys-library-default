@@ -23,5 +23,7 @@
 
 # Using ApiGen
 # cd ./
-apigen generate --source ../src/ --destination ../docs/API/
+# apigen generate --source ../src/ --destination ../docs/API/
 # php5 ../../phpDocumentor.phar run -d ../src -t ../docs/API
+php7.1 ~/workspace/externals/dev-tools/phpDocumentor.2.9.0.phar run -d ../src -t ../docs/API
+
