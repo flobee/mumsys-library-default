@@ -42,9 +42,8 @@ svn/*
 logs/
 /docs/CodeCoverage/*
 /docs/gitstats/*
-/docs/API/*
+/docs/GitStats/*
 /docs/gitstat*
-#/tests/testfiles/*
-/tests/tmp/*
+/docs/API/*
 /tests/tmp/*
 

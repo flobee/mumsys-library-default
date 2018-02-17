@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Mumsys library" default="options">
+    
+    <property name="bindir" value="${project.basedir}/vendor/bin/" override="false" />
+    
+    <target name="options" description="Options for phing">
+        <echo msg="Option for phing required: test|check|coverage|api|gitstats|all" />
+    </target>
+    
+    <target name="test" description="Executes the unit tests">
+        <echo msg="Executing unit tests" />
+        <delete file="tests/phing-unittest.log" quiet="true" failonerror="false" />
+        <exec command="${bindir}phpunit -d memory_limit=-1 --configuration=phpunit.xml"
+              dir="tests" checkreturn="true" logoutput="true"/>
+    </target>
+
+    <target name="coverage" description="Generates the code coverage">
+        <echo msg="Generating code coverage report" />
+        <delete file="tests/phing-unittest.log" quiet="true" failonerror="false" />
+        <delete dir="docs/CodeCoverage" quiet="true" failonerror="false" />
+        <exec command="${bindir}phpunit -d memory_limit=-1 --configuration=phpunit.xml"
+              dir="tests" checkreturn="true" logoutput="true" />
+    </target>
+
+    
+    <target name="api" description="Generates the API">
+        <echo msg="Generating the API" />
+        <exec command="./createApi.sh" dir="tests" checkreturn="true" logoutput="true" />
+    </target>
+
+    <target name="gitstats" description="Generates git statistics">
+        <echo msg="Generating git statistics" />
+        <exec command="gitstats . docs/GitStats" dir="./" checkreturn="true" logoutput="true" />
+    </target>
+
+    
+    <target name="check" description="Executes the coding style sniffer">
+        <echo msg="Executing the coding style sniffer" />
+        <exec command="${bindir}phpcs -n --standard=misc/coding/Mumsys src tests tests/bootstrap.php tests/MumsysTestHelper.php"
+              checkreturn="true" logoutput="true"/>
+    </target>
+
+    <target name="all" depends="test,check,coverage,api" description="Execute all parts of the package">
+    </target>
+
+</project>
