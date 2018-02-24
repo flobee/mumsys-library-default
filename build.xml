@@ -15,11 +15,11 @@
               dir="tests" checkreturn="true" logoutput="true"/>
     </target>
 
-    <target name="coverage" description="Generates the code coverage">
+    <target name="coverage" description="Executes the unit tests and generates the code coverage">
         <echo msg="Generating code coverage report" />
         <delete file="tests/phing-unittest.log" quiet="true" failonerror="false" />
         <delete dir="docs/CodeCoverage" quiet="true" failonerror="false" />
-        <exec command="${bindir}phpunit -d memory_limit=-1 --configuration=phpunit.xml"
+        <exec command="${bindir}phpunit -d memory_limit=-1 --configuration=phpunit-coverage.xml"
               dir="tests" checkreturn="true" logoutput="true" />
     </target>
 
@@ -41,7 +41,7 @@
               checkreturn="true" logoutput="true"/>
     </target>
 
-    <target name="all" depends="test,check,coverage,api" description="Execute all parts of the package">
+    <target name="all" depends="coverage,check,api" description="Execute all parts of the package">
     </target>
 
 </project>

@@ -5,6 +5,7 @@ cs
 
 # Composer files
 composer.phar
+/composer
 vendor/
 
 # Local configs
