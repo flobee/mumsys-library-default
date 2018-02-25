@@ -86,7 +86,7 @@ class Mumsys_Cache_File
      */
     public function __construct( $group, $id )
     {
-        $this->_id = md5((string) $id);
+        $this->_id = md5( (string) $id );
         $this->_group = (string) $group;
     }
 
@@ -101,15 +101,15 @@ class Mumsys_Cache_File
     {
         $filename = $this->_getFilename();
 
-        if ( $fp = fopen($filename, 'wb') ) {
-            if ( flock($fp, LOCK_EX) ) {
-                $data = serialize($content);
-                fwrite($fp, $data);
+        if ( $fp = fopen( $filename, 'wb' ) ) {
+            if ( flock( $fp, LOCK_EX ) ) {
+                $data = serialize( $content );
+                fwrite( $fp, $data );
             }
-            fclose($fp);
+            fclose( $fp );
 
             // Set filemtime
-            touch($filename, time() + (int) $ttl);
+            touch( $filename, time() + (int) $ttl );
         }
     }
 
@@ -122,9 +122,9 @@ class Mumsys_Cache_File
     public function read()
     {
         $filename = $this->_getFilename();
-        $data = file_get_contents($filename);
+        $data = file_get_contents( $filename );
 
-        return unserialize($data);
+        return unserialize( $data );
     }
 
 
@@ -141,10 +141,10 @@ class Mumsys_Cache_File
         if ( $this->_enabled ) {
             $filename = $this->_getFilename();
 
-            if ( file_exists($filename) && filemtime($filename) > time() ) {
+            if ( file_exists( $filename ) && filemtime( $filename ) > time() ) {
                 return true;
             }
-            @unlink($filename);
+            @unlink( $filename );
         }
 
         return false;
@@ -162,10 +162,11 @@ class Mumsys_Cache_File
     {
         $filename = $this->_getFilename();
         try {
-            file_exists($filename);
-            unlink($filename);
-        } catch ( Exception $ex ) {
-            throw new Mumsys_Cache_Exception($ex->getMessage(), $ex->getCode());
+            file_exists( $filename );
+            unlink( $filename );
+        }
+        catch ( Exception $ex ) {
+            throw new Mumsys_Cache_Exception( $ex->getMessage(), $ex->getCode() );
         }
 
         return true;
@@ -201,7 +202,7 @@ class Mumsys_Cache_File
      */
     public function setPath( $path )
     {
-        $this->_path = rtrim((string) $path, '/') . '/';
+        $this->_path = rtrim( (string) $path, '/' ) . '/';
     }
 
 

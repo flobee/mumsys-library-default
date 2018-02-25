@@ -44,22 +44,24 @@ class Mumsys_Variable_Manager_Factory
      *
      * @throws Mumsys_Variable_Manager_Exception If name not an alnum type
      */
-    public static function createManager( $name = 'Default', array $config = array(),
-        array $values = array() )
+    public static function createManager( $name = 'Default',
+        array $config = array(), array $values = array() )
     {
-        if ( ctype_alnum($name) ) {
-            $class = 'Mumsys_Variable_Manager_' . ucwords($name);
+        if ( ctype_alnum( $name ) ) {
+            $class = 'Mumsys_Variable_Manager_' . ucwords( $name );
         } else {
-            $message = sprintf('Invalid manager name: "%1$s"', $name);
-            throw new Mumsys_Variable_Manager_Exception($message);
+            $message = sprintf( 'Invalid manager name: "%1$s"', $name );
+            throw new Mumsys_Variable_Manager_Exception( $message );
         }
 
-        if ( !class_exists($class) ) {
-            $message = sprintf('Initialisation of "%1$s" failed. Not found/ exists', $class);
-            throw new Mumsys_Variable_Manager_Exception($message);
+        if ( !class_exists( $class ) ) {
+            $message = sprintf(
+                'Initialisation of "%1$s" failed. Not found/ exists', $class
+            );
+            throw new Mumsys_Variable_Manager_Exception( $message );
         }
 
-        return new $class($config, $values);
+        return new $class( $config, $values );
     }
 
 }

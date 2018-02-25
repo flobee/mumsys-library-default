@@ -57,12 +57,13 @@ class Mumsys_Php
      */
     private static $_stopOnMatch;
 
+
     /**
      * Initialisation of PHP class
      */
     public function __construct()
     {
-        self::$os = strtoupper(substr(PHP_OS, 0, 3));
+        self::$os = strtoupper( substr( PHP_OS, 0, 3 ) );
     }
 
 
@@ -102,8 +103,8 @@ class Mumsys_Php
         switch ( $k )
         {
             default:
-                throw new Mumsys_Php_Exception(
-                    '__set: "' . $k . '"="' . $v . '" not allowed.');
+                $mesg =  '__set: "' . $k . '"="' . $v . '" not allowed.';
+                throw new Mumsys_Php_Exception( $mesg );
                 break;
         }
     }
@@ -119,7 +120,7 @@ class Mumsys_Php
      */
     public static function __callStatic( $function, $arguments )
     {
-        return call_user_func_array($function, $arguments);
+        return call_user_func_array( $function, $arguments );
     }
 
 
@@ -134,13 +135,13 @@ class Mumsys_Php
      */
     public function __call( $function, $arguments )
     {
-        return call_user_func_array($function, $arguments);
+        return call_user_func_array( $function, $arguments );
     }
 
-
+    //
     // +-- start helper methodes  ---------------------------------------------
-
-
+    //
+    //
     // --- Variable handling Functions ----------------------------------------
 
 
@@ -154,7 +155,7 @@ class Mumsys_Php
      */
     public static function is_int( $value )
     {
-        return (is_numeric($value) ? intval($value) == $value : false);
+        return (is_numeric( $value ) ? intval( $value ) == $value : false);
     }
 
 
@@ -171,16 +172,15 @@ class Mumsys_Php
      */
     public static function floatval( $value )
     {
-        if ( strstr($value, ',') ) {
+        if ( strstr( $value, ',' ) ) {
             // replace dots (thousand seps) with blancs
-            $value = str_replace('.', '', $value);
+            $value = str_replace( '.', '', $value );
             // replace ',' with '.'
-            $value = str_replace(',', '.', $value);
+            $value = str_replace( ',', '.', $value );
         }
 
-        return floatval($value);
+        return floatval( $value );
     }
-
 
     //
     // --- Filesystem functions ------------------------------------------------
@@ -205,23 +205,23 @@ class Mumsys_Php
      * }}} */
     public static function file_exists( $url = '' )
     {
-        if ( empty($url) ) {
+        if ( empty( $url ) ) {
             return false;
         }
 
         // @see http://php.net/manual/en/function.parse-url.php
         // scheme: http:// https:// ftp:// file:// php:// c:\ d:\ etc..
-        $scheme = self::parseUrl($url, PHP_URL_SCHEME);
+        $scheme = self::parseUrl( $url, PHP_URL_SCHEME );
 
-        if ( (PHP_VERSION_ID >= '50000') && !empty($scheme) ) {
-            if ( @fclose(@fopen($url, 'r')) ) {
+        if ( (PHP_VERSION_ID >= '50000') && !empty( $scheme ) ) {
+            if ( @fclose( @fopen( $url, 'r' ) ) ) {
                 return true;
             } else {
                 return false;
             }
         } else {
             // file_exists overwrites the last access (atime) !
-            return @file_exists($url);
+            return @file_exists( $url );
         }
     }
 
@@ -235,7 +235,9 @@ class Mumsys_Php
       }
       curl_setopt($handle, CURLOPT_HEADER, false);
       curl_setopt($handle, CURLOPT_FAILONERROR, true);  // this works
-      curl_setopt($handle, CURLOPT_HTTPHEADER, Array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15") ); // request as if Firefox
+      curl_setopt($handle, CURLOPT_HTTPHEADER, Array("User-Agent: Mozilla/5.0
+      (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/
+      2.0.0.15") ); // request as if Firefox
       curl_setopt($handle, CURLOPT_NOBODY, true);
       curl_setopt($handle, CURLOPT_RETURNTRANSFER, false);
       $connectable = curl_exec($handle);
@@ -258,10 +260,10 @@ class Mumsys_Php
      */
     public static function ini_get( $key )
     {
-        $value = ini_get($key);
-        $value = trim($value);
+        $value = ini_get( $key );
+        $value = trim( $value );
 
-        if ( empty($value) ) {
+        if ( empty( $value ) ) {
             return null;
         }
 
@@ -269,7 +271,6 @@ class Mumsys_Php
 
         return $result;
     }
-
 
     //
     // --- String methodes -----------------------------------------------------
@@ -285,19 +286,19 @@ class Mumsys_Php
      * @return integer Number of bytes.
      * @throws Mumsys_Php_Exception If detection/ calculation fails
      */
-    public static function str2bytes( $value , $binType=true)
+    public static function str2bytes( $value, $binType = true )
     {
-        $value = trim($value);
+        $value = trim( $value );
 
         if ( $value < 0 ) {
             return $value;
         }
 
-        if ( empty($value) ) {
+        if ( empty( $value ) ) {
             return 0;
         }
 
-        $last = $value[ strlen($value) - 1 ];
+        $last = $value[strlen( $value ) - 1];
         switch ( $last )
         {
             case 'k':
@@ -360,15 +361,15 @@ class Mumsys_Php
     {
         if ( $beforeNeedle ) {
             if ( $insensitive ) {
-                return stristr($haystack, $needle, $beforeNeedle);
+                return stristr( $haystack, $needle, $beforeNeedle );
             } else {
-                return strstr($haystack, $needle, $beforeNeedle);
+                return strstr( $haystack, $needle, $beforeNeedle );
             }
         } else {
             if ( $insensitive ) {
-                return stristr($haystack, $needle);
+                return stristr( $haystack, $needle );
             } else {
-                return strstr($haystack, $needle);
+                return strstr( $haystack, $needle );
             }
         }
     }
@@ -397,22 +398,22 @@ class Mumsys_Php
     public static function htmlspecialchars( $str = '', $style = ENT_QUOTES )
     {
         // use forward look up to only convert & not &#abc; and not &amp;
-        $str = preg_replace('/&(?!(#[0-9]|amp)+;)/s', "&amp;", $str);
+        $str = preg_replace( '/&(?!(#[0-9]|amp)+;)/s', "&amp;", $str );
         //$str = preg_replace("/&(?![0-9a-z]+;)/s",'&amp;', $str );
-        $str = str_replace('<', '&lt;', $str);
-        $str = str_replace('>', '&gt;', $str);
+        $str = str_replace( '<', '&lt;', $str );
+        $str = str_replace( '>', '&gt;', $str );
         switch ( $style )
         {
             case ENT_COMPAT:
-                $str = str_replace('"', "&quot;", $str);
+                $str = str_replace( '"', "&quot;", $str );
                 break;
             case ENT_NOQUOTES:
                 // no quotes translation
                 break;
             case ENT_QUOTES:    // both quotes translations
             default:
-                $str = str_replace('"', "&quot;", $str);
-                $str = str_replace("'", '&#039;', $str);
+                $str = str_replace( '"', "&quot;", $str );
+                $str = str_replace( "'", '&#039;', $str );
         }
         return $str;
     }
@@ -426,17 +427,17 @@ class Mumsys_Php
      * ENT_QUOTES convert both; ENT_NOQUOTES no quote conversation
      *
      * @return stringreturns the re-converted html entity
-     **/
+     * */
     public static function xhtmlspecialchars( $str = '', $style = ENT_QUOTES )
     {
-        $str = str_replace('&amp;', '&', $str);
-        $str = str_replace('&lt;', '<', $str);
-        $str = str_replace('&gt;', '>', $str);
+        $str = str_replace( '&amp;', '&', $str );
+        $str = str_replace( '&lt;', '<', $str );
+        $str = str_replace( '&gt;', '>', $str );
 
         switch ( $style )
         {
             case ENT_COMPAT:
-                $str = str_replace('&quot;', '"', $str);
+                $str = str_replace( '&quot;', '"', $str );
                 break;
 
             case ENT_NOQUOTES:
@@ -445,8 +446,8 @@ class Mumsys_Php
 
             case ENT_QUOTES:    // both quotes translations
             default:
-                $str = str_replace('&quot;', '"', $str);
-                $str = str_replace('&#039;', '\'', $str);
+                $str = str_replace( '&quot;', '"', $str );
+                $str = str_replace( '&#039;', '\'', $str );
         }
 
         return $str;
@@ -470,7 +471,7 @@ class Mumsys_Php
             $r = '<br>';
         }
 
-        return strtr($string, array("\r\n" => $r, "\r" => $r, "\n" => $r));
+        return strtr( $string, array("\r\n" => $r, "\r" => $r, "\n" => $r) );
     }
 
 
@@ -485,7 +486,7 @@ class Mumsys_Php
     {
         $search = array('<br />', '<br/>', '<br>');
         $replace = array($breakChar, $breakChar, $breakChar);
-        $result = str_replace($search, $replace, $string);
+        $result = str_replace( $search, $replace, $string );
 
         return $result;
     }
@@ -503,14 +504,14 @@ class Mumsys_Php
      * may return FALSE. If the component parameter is omitted, an associative
      * array is returned. At least one element will be present within the array.
      * Potential keys within this array are:<br />
-     * 		scheme - e.g. http <br />
-     * 		host - e.b.: localhost<br />
-     * 		port<br />
-     * 		user<br />
-     * 		pass<br />
-     * 		path<br />
-     * 		query - after the question mark ?<br />
-     * 		fragment - after the hashmark #<br />
+     *  scheme - e.g. http <br />
+     *  host - e.b.: localhost<br />
+     *  port<br />
+     *  user<br />
+     *  pass<br />
+     *  path<br />
+     *  query - after the question mark ?<br />
+     *  fragment - after the hashmark #<br />
      * If the component parameter is not specified, parseUrl() returns a string
      * instead of an array. If the requested component doesn't exist within the
      * given URL, NULL will be returned.
@@ -519,13 +520,13 @@ class Mumsys_Php
      */
     public static function parseUrl( $url, $component = null )
     {
-        if ( isset($component) ) {
-            $x = parse_url($url, $component);
+        if ( isset( $component ) ) {
+            $x = parse_url( $url, $component );
         } else {
-            $x = parse_url($url);
+            $x = parse_url( $url );
         }
         if ( $x === false ) {
-            throw new Mumsys_Php_Exception('parseUrl() failt.', 1);
+            throw new Mumsys_Php_Exception( 'parseUrl() failt.', 1 );
         }
 
         return $x;
@@ -563,10 +564,10 @@ class Mumsys_Php
      */
     public static function parseStr( $string )
     {
-        $x = parse_str($string, $res);
+        $x = parse_str( $string, $res );
 
-        if ( empty($res) ) {
-            throw new Mumsys_Php_Exception('Mumsys_Php::parseStr() failt.', 1);
+        if ( empty( $res ) ) {
+            throw new Mumsys_Php_Exception( 'Mumsys_Php::parseStr() failt.', 1 );
         }
 
         return $res;
@@ -589,7 +590,7 @@ class Mumsys_Php
      */
     public static function numberPad( $integer, $digits, $padString = '0' )
     {
-        return str_pad((int) $integer, $digits, $padString, STR_PAD_LEFT);
+        return str_pad( (int) $integer, $digits, $padString, STR_PAD_LEFT );
     }
 
     //
@@ -610,7 +611,7 @@ class Mumsys_Php
      */
     public static function &current( &$s )
     {
-        return $s[key($s)];
+        return $s[key( $s )];
     }
 
 
@@ -628,18 +629,19 @@ class Mumsys_Php
      * @return array Returns the result portion on difference or an empty array
      * for no changes between the arrays
      */
-    public static function compareArray( array $have = array(), array $totest = array(), $way = 'vals' )
+    public static function compareArray( array $have = array(),
+        array $totest = array(), $way = 'vals' )
     {
         $res = array();
         if ( $have !== $totest ) {
-            foreach ( $have AS $keyA => $valA ) {
-                foreach ( $totest AS $keyB => $valB ) {
+            foreach ( $have as $keyA => $valA ) {
+                foreach ( $totest as $keyB => $valB ) {
                     switch ( $way )
                     {
                         case 'keys':
                             if ( $keyA === $keyB ) {
-                                if ( isset($res[$keyA]) ) {
-                                    unset($res[$keyA]);
+                                if ( isset( $res[$keyA] ) ) {
+                                    unset( $res[$keyA] );
                                 }
                                 break;
                             } else {
@@ -649,8 +651,8 @@ class Mumsys_Php
                         case 'vals':
                             // working
                             if ( $valA === $valB ) {
-                                if ( isset($res[$valA]) ) {
-                                    unset($res[$valA]);
+                                if ( isset( $res[$valA] ) ) {
+                                    unset( $res[$valA] );
                                 }
                                 break;
                             } else {
@@ -736,7 +738,7 @@ class Mumsys_Php
         $matches = array();
         foreach ( $haystack as $key => &$value ) {
 
-            if ( ($stopOnFirstMatch && $stopOnFirstMatch === 'break') ) {
+            if ( ($stopOnFirstMatch && $stopOnFirstMatch === 'break' ) ) {
                 break;
             }
             // echo ":$needle:=:$key: m: $stopOnFirstMatch\n";
@@ -748,11 +750,11 @@ class Mumsys_Php
                 }
             } else {
                 // go deeper
-                if ( is_array($value) ) {
+                if ( is_array( $value ) ) {
                     $array = self::array_keys_search_recursive(
                         $needle, $value, $stopOnFirstMatch
                     );
-                    $matches = array_merge($matches, $array);
+                    $matches = array_merge( $matches, $array );
                 }
             }
         }
@@ -780,17 +782,20 @@ class Mumsys_Php
     public static function array_merge_recursive()
     {
         if ( func_num_args() < 2 ) {
-            throw new Mumsys_Php_Exception(__METHOD__ . ' needs at least two arrays as arguments');
+            $mesg = __METHOD__ . ' needs at least two arrays as arguments';
+            throw new Mumsys_Php_Exception( $mesg );
         }
 
         $arrays = func_get_args();
         $merged = array();
 
         while ( $arrays ) {
-            $array = array_shift($arrays);
+            $array = array_shift( $arrays );
 
-            if ( !is_array($array) ) {
-                throw new Mumsys_Php_Exception(__METHOD__ . ' given argument is not an array "' . $array . '"');
+            if ( !is_array( $array ) ) {
+                $mesg = __METHOD__ . ' given argument is not an array "'
+                    . $array . '"';
+                throw new Mumsys_Php_Exception( $mesg );
             }
 
             if ( !$array ) {
@@ -798,9 +803,13 @@ class Mumsys_Php
             }
 
             foreach ( $array as $key => $value ) {
-                if ( is_string($key) ) {
-                    if ( is_array($value) && array_key_exists($key, $merged) && is_array($merged[$key]) ) {
-                        $merged[$key] = self::array_merge_recursive($merged[$key], $value);
+                if ( is_string( $key ) ) {
+                    if ( is_array( $value )
+                        && array_key_exists( $key, $merged )
+                        && is_array( $merged[$key] )
+                    ) {
+                        $merged[$key] =
+                            self::array_merge_recursive( $merged[$key], $value );
                     } else {
                         $merged[$key] = $value;
                     }

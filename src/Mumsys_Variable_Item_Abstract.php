@@ -106,7 +106,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function getName( $default = null )
     {
-        return (isset($this->_input['name']) ? (string) $this->_input['name'] : $default);
+        return (isset( $this->_input['name'] ) ? (string) $this->_input['name'] : $default);
     }
 
 
@@ -117,7 +117,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function setName( $value )
     {
-        if ( isset($this->_input['name']) && $value === $this->_input['name'] ) {
+        if ( isset( $this->_input['name'] ) && $value === $this->_input['name'] ) {
             return;
         }
 
@@ -135,7 +135,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function getValue( $default = null )
     {
-        return (isset($this->_input['value'])) ? $this->_input['value'] : $default;
+        return (isset( $this->_input['value'] )) ? $this->_input['value'] : $default;
     }
 
 
@@ -162,7 +162,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function getErrorMessages()
     {
-        return ( isset($this->_input['errors']) ? (array) $this->_input['errors'] : array() );
+        return ( isset( $this->_input['errors'] ) ? (array) $this->_input['errors'] : array() );
     }
 
 
@@ -245,11 +245,11 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function filterAdd( $state, $cmd, array $parameters = null )
     {
-        if ( $this->_initExternalType('filters') ) {
-            $this->_initExternalCalls('filters', $this->_input['filters']);
+        if ( $this->_initExternalType( 'filters' ) ) {
+            $this->_initExternalCalls( 'filters', $this->_input['filters'] );
         }
 
-        $this->_filterSet($state, $cmd, $parameters);
+        $this->_filterSet( $state, $cmd, $parameters );
     }
 
 
@@ -269,20 +269,20 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function filtersGet( $state = null )
     {
-        if ( $this->_initExternalType('filters') ) {
-            $this->_initExternalCalls('filters', $this->_input['filters']);
+        if ( $this->_initExternalType( 'filters' ) ) {
+            $this->_initExternalCalls( 'filters', $this->_input['filters'] );
         }
 
         if ( $state === true ) {
             return $this->_filters;
-        } else if ( is_string($state) ) {
-            $this->_stateCheck($state);
+        } else if ( is_string( $state ) ) {
+            $this->_stateCheck( $state );
             $_state = $state;
         } else {
             $_state = $this->_state;
         }
 
-        if ( !isset($this->_filters[$_state]) ) {
+        if ( !isset( $this->_filters[$_state] ) ) {
             $return = array();
         } else {
             $return = $this->_filters[$_state];
@@ -318,11 +318,11 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function callbackAdd( $state, $cmd, array $parameters = null )
     {
-        if ( $this->_initExternalType('callbacks') ) {
-            $this->_initExternalCalls('callbacks', $this->_input['callbacks']);
+        if ( $this->_initExternalType( 'callbacks' ) ) {
+            $this->_initExternalCalls( 'callbacks', $this->_input['callbacks'] );
         }
 
-        $this->_callbackSet($state, $cmd, $parameters);
+        $this->_callbackSet( $state, $cmd, $parameters );
     }
 
 
@@ -342,22 +342,20 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function callbacksGet( $state = null )
     {
-        if ( $this->_initExternalType('callbacks') ) {
-            $this->_initExternalCalls('callbacks', $this->_input['callbacks']);
+        if ( $this->_initExternalType( 'callbacks' ) ) {
+            $this->_initExternalCalls( 'callbacks', $this->_input['callbacks'] );
         }
 
         if ( $state === true ) {
             return $this->_callbacks;
-        }
-        else if ( is_string($state) ) {
-            $this->_stateCheck($state);
+        } else if ( is_string( $state ) ) {
+            $this->_stateCheck( $state );
             $_state = $state;
-        }
-        else {
+        } else {
             $_state = $this->_state;
         }
 
-        if (  !isset($this->_callbacks[$_state]) ) {
+        if ( !isset( $this->_callbacks[$_state] ) ) {
             $return = array();
         } else {
             $return = $this->_callbacks[$_state];
@@ -365,7 +363,6 @@ abstract class Mumsys_Variable_Item_Abstract
 
         return $return;
     }
-
 
     // --- private methodes ---------------------------------------------------
 
@@ -382,7 +379,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     private function _filterSet( $state, $cmd, $parameters = null )
     {
-        $this->_stateCheck($state);
+        $this->_stateCheck( $state );
         $this->_filters[$state][] = array(
             'cmd' => $cmd,
             'params' => $parameters,
@@ -402,7 +399,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     private function _callbackSet( $state, $cmd, $parameters = null )
     {
-        $this->_stateCheck($state);
+        $this->_stateCheck( $state );
         $this->_callbacks[$state][] = array(
             'cmd' => $cmd,
             'params' => $parameters,
@@ -427,7 +424,7 @@ abstract class Mumsys_Variable_Item_Abstract
             return false;
         }
 
-        if ( !isset($this->_input[$type]) ) {
+        if ( !isset( $this->_input[$type] ) ) {
             $this->$_type = array();
             return false;
         }
@@ -459,16 +456,16 @@ abstract class Mumsys_Variable_Item_Abstract
     private function _initExternalCalls( $type, $list )
     {
         foreach ( $this->_input[$type] as $state => $props ) {
-            if ( is_array($props) ) {
+            if ( is_array( $props ) ) {
                 foreach ( $props as $cmd => $params ) {
-                    if ( is_int($cmd) ) {
-                        $this->_setExternalCall($type, $state, $params);
+                    if ( is_int( $cmd ) ) {
+                        $this->_setExternalCall( $type, $state, $params );
                     } else {
-                        $this->_setExternalCall($type, $state, $cmd, $params);
+                        $this->_setExternalCall( $type, $state, $cmd, $params );
                     }
                 }
-            } else if ( is_string($props) ) {
-                $this->_setExternalCall($type, $state, $props);
+            } else if ( is_string( $props ) ) {
+                $this->_setExternalCall( $type, $state, $props );
             }
         }
     }
@@ -485,16 +482,17 @@ abstract class Mumsys_Variable_Item_Abstract
      *
      * @throws Mumsys_Variable_Item_Exception On errors
      */
-    private function _setExternalCall( $type, $state = null, $cmd = null, $params = null )
+    private function _setExternalCall( $type, $state = null, $cmd = null,
+        $params = null )
     {
         switch ( $type )
         {
             case 'filters':
-                $this->_filterSet($state, $cmd, $params);
+                $this->_filterSet( $state, $cmd, $params );
                 break;
 
             case 'callbacks':
-                $this->_callbackSet($state, $cmd, $params);
+                $this->_callbackSet( $state, $cmd, $params );
                 break;
         }
     }
@@ -529,7 +527,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function stateSet( $state = 'onView' )
     {
-        $this->_stateCheck($state);
+        $this->_stateCheck( $state );
         $this->_state = $state;
     }
 
@@ -565,9 +563,9 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     private function _stateCheck( $state )
     {
-        if ( !in_array($state, $this->_states) ) {
-            $message = sprintf('State "%1$s" unknown', $state);
-            throw new Mumsys_Variable_Item_Exception($message);
+        if ( !in_array( $state, $this->_states ) ) {
+            $message = sprintf( 'State "%1$s" unknown', $state );
+            throw new Mumsys_Variable_Item_Exception( $message );
         }
     }
 

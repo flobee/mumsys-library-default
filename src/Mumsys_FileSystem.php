@@ -76,49 +76,55 @@ class Mumsys_FileSystem
      *
      * @return array|false Returns list of file/link/directory details like path, name, size, type
      */
-    public function scanDirInfo($dir, $hideHidden=true, $recursive=false, array $filters=array(), $offset=0, $limit=0)
+    public function scanDirInfo( $dir, $hideHidden = true, $recursive = false,
+        array $filters = array(), $offset = 0, $limit = 0 )
     {
-        if ($offset < 0) {
+        if ( $offset < 0 ) {
             $offset = 0;
         }
 
-        if ($limit && $limit > 1000) {
+        if ( $limit && $limit > 1000 ) {
             $limit = 500;
         }
 
         $ds = DIRECTORY_SEPARATOR;
 
-        if (@is_dir($dir) && is_readable($dir) && !is_link($dir)) {
-            $cnt=0;
-            if ($dh = @opendir($dir)) {
-                while(($file = readdir($dh)) !== false)
-                {
+        if ( @is_dir( $dir ) && is_readable( $dir ) && !is_link( $dir ) ) {
+            $cnt = 0;
+            if ( $dh = @opendir( $dir ) ) {
+                while ( ($file = readdir( $dh )) !== false ) {
                     if ( $file == '.' || $file == '..' ) {
                         continue;
                     }
 
-                    if ( $hideHidden && $file[0] == '.' && preg_match('/^(\.\w+|\.$|\.\.$)/i', $file) ) {
+                    // ...an than came polly.avi detection
+                    $noPolly = preg_match( '/^(\.\w+|\.$|\.\.$)/i', $file );
+                    if ( $hideHidden && $file[0] == '.' && $noPolly ) {
                         continue;
                     }
 
                     $test = $dir . $ds . $file;
-                    if ($recursive && is_dir($test.$ds)) {
+                    if ( $recursive && is_dir( $test . $ds ) ) {
                         $newdir = $dir . $ds . $file;
-                        $this->_dirInfo[$newdir] = $this->getFileDetails($newdir);
-                        $this->scanDirInfo($newdir, $hideHidden, $recursive, $filters, $offset, $limit);
-                    }
-                    else {
-                        $this->_dirInfo[$test] = $this->getFileDetails($dir, $file);
+                        $this->_dirInfo[$newdir] = $this->getFileDetails( $newdir );
+                        $this->scanDirInfo(
+                            $newdir, $hideHidden, $recursive, $filters, $offset,
+                            $limit
+                        );
+                    } else {
+                        $this->_dirInfo[$test] = $this->getFileDetails(
+                            $dir, $file
+                        );
                     }
                 }
             }
-            @closedir($dh);
+            @closedir( $dh );
         } else {
             return false;
         }
 
         if ( $filters ) {
-            foreach($this->_dirInfo as $location => & $tmp ) {
+            foreach ( $this->_dirInfo as $location => & $tmp ) {
                 foreach ( $filters as $regex ) {
                     if ( !preg_match( $regex, $location ) ) {
                         unset( $this->_dirInfo[$location] );
@@ -127,8 +133,8 @@ class Mumsys_FileSystem
             }
         }
 
-        if ($limit) {
-            $this->_dirInfo = array_slice($this->_dirInfo, $offset, $limit, true);
+        if ( $limit ) {
+            $this->_dirInfo = array_slice( $this->_dirInfo, $offset, $limit, true );
         }
 
         return $this->_dirInfo;
@@ -138,20 +144,20 @@ class Mumsys_FileSystem
     /**
      * Prepare incomming file informations to get file details.
      *
-     * @param string $fileOrPath Location of the file including the filename or the
-     * path (if it is a directory) or the path of a file but then the filename
-     * will be required as second parameter.
+     * @param string $fileOrPath Location of the file including the filename or
+     * the path (if it is a directory) or the path of a file but then the
+     * filename will be required as second parameter.
      * @param string $filename Name of the file without the path
      *
-     * @return array Returns an array containing the "filename", "path" and "file"
-     * as the hole location of the file or directory.
+     * @return array Returns an array containing the "filename", "path" and
+     * "file" as the hole location of the file or directory.
      *
      * @throws Exception Throws exception if file, link or directory could not be found
      */
     private function _getFileDetailsPrepare( $fileOrPath, $filename = false )
     {
         $result = array();
-        if ( $filename && is_dir($fileOrPath) ) {
+        if ( $filename && is_dir( $fileOrPath ) ) {
             $filepath = $fileOrPath . '/' . $filename;
             $path = $fileOrPath;
         } else {
@@ -159,14 +165,15 @@ class Mumsys_FileSystem
             $path = false;
             $filename = false;
         }
-        if ( file_exists($filepath) || is_link($filepath) ) {
-            if ( !$filename )
-                $filename = basename($filepath);
-            if ( !$path )
-                $path = substr($filepath, 0, strrpos($filepath, '/'));
-        }
-        else {
-            throw new Mumsys_FileSystem_Exception('File "' . $filepath . '" not found');
+        if ( file_exists( $filepath ) || is_link( $filepath ) ) {
+            if ( !$filename ) {
+                $filename = basename( $filepath );
+            }
+            if ( !$path ) {
+                $path = substr( $filepath, 0, strrpos( $filepath, '/' ) );
+            }
+        } else {
+            throw new Mumsys_FileSystem_Exception( 'File "' . $filepath . '" not found' );
         }
         return array('filename' => $filename, 'file' => $filepath, 'path' => $path);
     }
@@ -191,13 +198,13 @@ class Mumsys_FileSystem
      */
     public function getFileDetails( $fileOrPath, $filename = false )
     {
-        $prepared = $this->_getFileDetailsPrepare($fileOrPath, $filename);
+        $prepared = $this->_getFileDetailsPrepare( $fileOrPath, $filename );
         return array(
             'file' => $prepared['file'],
             'name' => $prepared['filename'],
             'path' => $prepared['path'],
-            'size' => is_link($prepared['file']) ? 0 : @filesize($prepared['file']),
-            'type' => filetype($prepared['file'])
+            'size' => is_link( $prepared['file'] ) ? 0 : @filesize( $prepared['file'] ),
+            'type' => filetype( $prepared['file'] )
         );
     }
 
@@ -241,22 +248,22 @@ class Mumsys_FileSystem
      */
     public function getFileDetailsExtended( $file, $filename = false )
     {
-        $prepared = $this->_getFileDetailsPrepare($file, $filename);
+        $prepared = $this->_getFileDetailsPrepare( $file, $filename );
         $path = $prepared['path'];
         $filename = $prepared['filename'];
         $file = $prepared['file'];
         $info = array();
-        if ( $stat = @lstat($path . '/' . $filename) ) {
+        if ( $stat = @lstat( $path . '/' . $filename ) ) {
             $info = array(
                 'file' => $prepared['file'],
-                'type' => filetype($file),
+                'type' => filetype( $file ),
                 'name' => $filename,
                 'size' => $stat['size'],
-                'is_file' => @is_file($file),
-                'is_dir' => @is_dir($file),
-                'is_link' => @is_link($file),
-                'is_readable' => @is_readable($file),
-                'is_writable' => @is_writable($file),
+                'is_file' => @is_file( $file ),
+                'is_dir' => @is_dir( $file ),
+                'is_link' => @is_link( $file ),
+                'is_readable' => @is_readable( $file ),
+                'is_writable' => @is_writable( $file ),
                 'path' => $path,
                 'permission' => $stat['mode'],
                 'owner' => $stat['uid'],
@@ -264,27 +271,27 @@ class Mumsys_FileSystem
                 'mtime' => $stat['mtime'],
                 'atime' => $stat['atime'],
                 'ctime' => $stat['ctime'],
-                'filetype' => $this->getFileType($file), // unix 'file ./file.ext'/mimetype?
+                'filetype' => $this->getFileType( $file ), // unix 'file ./file.ext'/mimetype?
             );
             if ( $info['type'] == 'dir' ) {
                 $info['is_executable'] = true;
                 $info['ext'] = false;
             } else {
-                $info['is_executable'] = @is_executable($path);
-                $info['ext'] = $this->extGet($filename);
-                if ( function_exists('mime_content_type') && $info['is_readable'] ) {
-                    $info['mimetype'] = mime_content_type($path . '/' . $filename);
+                $info['is_executable'] = @is_executable( $path );
+                $info['ext'] = $this->extGet( $filename );
+                if ( function_exists( 'mime_content_type' ) && $info['is_readable'] ) {
+                    $info['mimetype'] = mime_content_type( $path . '/' . $filename );
                 }
             }
             if ( $info['is_link'] ) {
-                $info['target'] = @readlink($file);
+                $info['target'] = @readlink( $file );
             }
 
-            if ( function_exists('posix_getpwuid') ) {
-                $info['owner_name'] = @reset(posix_getpwuid($info['owner']));
+            if ( function_exists( 'posix_getpwuid' ) ) {
+                $info['owner_name'] = @reset( posix_getpwuid( $info['owner'] ) );
             }
-            if ( function_exists('posix_getgrgid') ) {
-                $info['group_name'] = @reset(posix_getgrgid($info['group']));
+            if ( function_exists( 'posix_getgrgid' ) ) {
+                $info['group_name'] = @reset( posix_getgrgid( $info['group'] ) );
             }
         }
         return $info;
@@ -308,7 +315,7 @@ class Mumsys_FileSystem
 
         if ( class_exists( 'finfo' ) ) {
             $finfo = new finfo( FILEINFO_PRESERVE_ATIME );
-            $info = $finfo->file( $file , FILEINFO_DEVICES);
+            $info = $finfo->file( $file, FILEINFO_DEVICES );
         } else if ( function_exists( 'mime_content_type' ) ) {
             $info = mime_content_type( $file );
         } else if ( PHP_SHLIB_SUFFIX != 'dll' ) {
@@ -333,28 +340,35 @@ class Mumsys_FileSystem
      *
      * @throws Mumsys_FileSystem_Exception Throws exception on error
      */
-    public function copy( $fileSource, $fileTarget, $keepCopy = false, $tries = 0 )
+    public function copy( $fileSource, $fileTarget, $keepCopy = false,
+        $tries = 0 )
     {
         try {
-            if ( @is_dir($fileSource) ) {
+            if ( @is_dir( $fileSource ) ) {
                 $msg = 'Source file: A directory was found. only file copying is implemented';
-                throw new Mumsys_FileSystem_Exception($msg);
+                throw new Mumsys_FileSystem_Exception( $msg );
             }
-            if ( @is_dir($fileTarget) ) {
-                $fileTarget = $fileTarget . DIRECTORY_SEPARATOR . basename($fileSource);
+            if ( @is_dir( $fileTarget ) ) {
+                $fileTarget = $fileTarget . DIRECTORY_SEPARATOR . basename( $fileSource );
             }
-            if ( $keepCopy && file_exists($fileTarget) ) {
+            if ( $keepCopy && file_exists( $fileTarget ) ) {
                 $tries++;
-                return $this->copy($fileSource, $fileTarget . '.' . $tries, $keepCopy, $tries);
+                return $this->copy(
+                    $fileSource, $fileTarget . '.' . $tries, $keepCopy,
+                    $tries
+                );
             } else {
-                if ( @copy($fileSource, $fileTarget) ) {
+                if ( @copy( $fileSource, $fileTarget ) ) {
                     return $fileTarget;
                 } else {
-                    throw new Mumsys_FileSystem_Exception('copy (to: ' . $fileTarget . ') fails');
+                    $mesg = 'copy (to: ' . $fileTarget . ') fails';
+                    throw new Mumsys_FileSystem_Exception( $mesg );
                 }
             }
-        } catch ( Exception $e ) {
-            throw new Mumsys_FileSystem_Exception('Copy error for: "' . $fileSource . '" ' . $e->getMessage());
+        }
+        catch ( Exception $e ) {
+            $mesg = 'Copy error for: "' . $fileSource . '" ' . $e->getMessage();
+            throw new Mumsys_FileSystem_Exception( $mesg );
         }
     }
 
@@ -372,48 +386,50 @@ class Mumsys_FileSystem
      * @return string Returns the new/target filename on success
      * @throws Mumsys_FileSystem_Exception Throws exception on error
      */
-    public function rename( $source, $destination, $keepCopy = true, $streamContext = null )
+    public function rename( $source, $destination, $keepCopy = true,
+        $streamContext = null )
     {
         $rename = false;
         try {
-// test type of source and destionation?
-            if ( !file_exists($source) || empty($source) ) {
+            // test type of source and destionation?
+            if ( !file_exists( $source ) || empty( $source ) ) {
                 $message = 'Source "' . $source . '" is no directory and no file';
-                throw new Mumsys_FileSystem_Exception($message, Mumsys_Exception::ERRCODE_DEFAULT);
+                throw new Mumsys_FileSystem_Exception(
+                    $message, Mumsys_Exception::ERRCODE_DEFAULT
+                );
             }
-//		if ( is_dir($source . '/') ) {
-//			if ($keepCopy && is_dir($destination)) {
-//				/*
-//				static $i = 0;
-//				if (substr($destination, -1) == '/' || substr($destination, -1) == DIRECTORY_SEPARATOR) {
-//					$destination = substr($destination, 0, -1);
-//				}
-//				$r = $this->rename($source, $destination . '_' . ++$i, $stream_context, $keepCopy);
-//				*/
-//			} else {
-//				if ($stream_context) {
-//					$rename = rename($source, $destination, $stream_context);
-//				} else {
-//					$rename = rename($source, $destination);
-//				}
-//				if ($rename) {
-//					$r = false;
-//				} else {
-//					$this->error[] = 'Rename failt: src: "' . $source . '"; target: "' . $destination . '"';
-//					$r = true;
-//				}
-//			}
-//		}
-            if ( is_file($source) )
-            {
-                if ( $keepCopy && file_exists($destination) ) {
-                    $destination = $this->copy($source, $destination, $keepCopy);
+//    if ( is_dir($source . '/') ) {
+//          if ($keepCopy && is_dir($destination)) {
+//              /*
+//              static $i = 0;
+//              if (substr($destination, -1) == '/' || substr($destination, -1) == DIRECTORY_SEPARATOR) {
+//                  $destination = substr($destination, 0, -1);
+//              }
+//              $r = $this->rename($source, $destination . '_' . ++$i, $stream_context, $keepCopy);
+//              */
+//          } else {
+//              if ($stream_context) {
+//                  $rename = rename($source, $destination, $stream_context);
+//              } else {
+//                  $rename = rename($source, $destination);
+//              }
+//              if ($rename) {
+//                  $r = false;
+//              } else {
+//                  $this->error[] = 'Rename failt: src: "' . $source . '"; target: "' . $destination . '"';
+//                  $r = true;
+//              }
+//          }
+//      }
+            if ( is_file( $source ) ) {
+                if ( $keepCopy && file_exists( $destination ) ) {
+                    $destination = $this->copy( $source, $destination, $keepCopy );
                 }
 
                 if ( $streamContext ) {
-                    $rename = rename($source, $destination, $streamContext);
+                    $rename = rename( $source, $destination, $streamContext );
                 } else {
-                    $rename = rename($source, $destination);
+                    $rename = rename( $source, $destination );
                 }
 
                 // if false exception must be thrown, but if false do the right here
@@ -421,8 +437,9 @@ class Mumsys_FileSystem
                     $rename = $destination;
                 }
             }
-        } catch ( Exception $e ) {
-            throw new Mumsys_FileSystem_Exception('Rename failt for reason: ' . $e->getMessage());
+        }
+        catch ( Exception $e ) {
+            throw new Mumsys_FileSystem_Exception( 'Rename failt for reason: ' . $e->getMessage() );
         }
 
         return $rename;
@@ -444,30 +461,30 @@ class Mumsys_FileSystem
      *
      * @throws Exception Throws exception on errors. Eg: if link type is invalid
      */
-    public function link( $file, $to, $type = 'soft', $way = 'rel', $keepCopy = false )
+    public function link( $file, $to, $type = 'soft', $way = 'rel',
+        $keepCopy = false )
     {
         try {
-            if ( $keepCopy && (file_exists($to) || is_link($to)) ) {
-                return $this->link($file, $to . '.lnk', $type, $keepCopy);
+            if ( $keepCopy && (file_exists( $to ) || is_link( $to )) ) {
+                return $this->link( $file, $to . '.lnk', $type, $keepCopy );
             }
 
-            if ( $way == 'rel' )
-            {
-                $dirFrom = realpath(dirname($file));
-                $linkName = basename($to);
+            if ( $way == 'rel' ) {
+                $dirFrom = realpath( dirname( $file ) );
+                $linkName = basename( $to );
 
-                $dirTo = realpath(dirname($to));
+                $dirTo = realpath( dirname( $to ) );
                 if ( $dirTo === false ) {
-                    $message = 'Real path not found for "' . dirname($to) . '"';
-                    throw new Mumsys_FileSystem_Exception($message);
+                    $message = 'Real path not found for "' . dirname( $to ) . '"';
+                    throw new Mumsys_FileSystem_Exception( $message );
                 }
-                chdir($dirTo);
+                chdir( $dirTo );
 
                 // from and to in reverse as parameter ? why?
-                if ( ($relDir = $this->getRelativeDir($dirTo, $dirFrom ) ) > ''  ) {
-                    $srcFile = $relDir .'/' . basename($file);
+                if ( ($relDir = $this->getRelativeDir( $dirTo, $dirFrom ) ) > '' ) {
+                    $srcFile = $relDir . '/' . basename( $file );
                 } else {
-                    $srcFile = basename($file);
+                    $srcFile = basename( $file );
                 }
             } else {
                 $way = 'abs';
@@ -475,25 +492,28 @@ class Mumsys_FileSystem
                 $srcFile = $file;
             }
 
-            if ( is_link($to) ) {
+            if ( is_link( $to ) ) {
                 return $to;
             }
 
             switch ( $type )
             {
                 case 'soft':
-                    $res = symlink($srcFile, $linkName);
+                    $res = symlink( $srcFile, $linkName );
                     break;
                 case 'hard':
-                    $res = link($srcFile, $linkName);
+                    $res = link( $srcFile, $linkName );
                     break;
                 default:
                     $msg = 'Invalid link type "' . $type . '" (Use soft|hard)';
-                    throw new Mumsys_FileSystem_Exception($msg);
+                    throw new Mumsys_FileSystem_Exception( $msg );
             }
-        } catch ( Exception $e ) {
+        }
+        catch ( Exception $e ) {
             $msg = 'Linking failt for source: "' . $file . '"; target: "' . $to . '". ' . $e->getMessage();
-            throw new Mumsys_FileSystem_Exception($msg, $e->getCode(), $e->getPrevious());
+            throw new Mumsys_FileSystem_Exception(
+                $msg, $e->getCode(), $e->getPrevious()
+            );
         }
         return $to;
     }
@@ -511,14 +531,14 @@ class Mumsys_FileSystem
      *
      * @throws Mumsys_FileSystem_Exception
      */
-    public function unlink( $file, $context=null )
+    public function unlink( $file, $context = null )
     {
-        if (!is_file($file)) {
+        if ( !is_file( $file ) ) {
             return true;
         }
 
         if ( @unlink( $file ) === false ) {
-            $message = sprintf('Can not delete file "%1$s"', $file);
+            $message = sprintf( 'Can not delete file "%1$s"', $file );
             throw new Mumsys_FileSystem_Exception( $message );
         }
 
@@ -536,9 +556,9 @@ class Mumsys_FileSystem
      *
      * @throws Mumsys_FileSystem_Exception
      */
-    public function rmFile($file, $context=null)
+    public function rmFile( $file, $context = null )
     {
-        return $this->unlink($file, $context);
+        return $this->unlink( $file, $context );
     }
 
 
@@ -554,17 +574,17 @@ class Mumsys_FileSystem
     public function mkdir( $dir, $perm = 0755 )
     {
         try {
-            $result = mkdir($dir, $perm);
+            $result = mkdir( $dir, $perm );
         }
-        catch (Exception $e)
+        catch ( Exception $e )
         {
-            if (is_dir($dir . DIRECTORY_SEPARATOR)) {
+            if ( is_dir( $dir . DIRECTORY_SEPARATOR ) ) {
                 return false;
             }
 
             $message = 'Can not create dir: "' . $dir . '" mode: "'
-                . decoct($perm) . '". Message: ' . $e->getMessage();
-            throw new Mumsys_FileSystem_Exception($message);
+                . decoct( $perm ) . '". Message: ' . $e->getMessage();
+            throw new Mumsys_FileSystem_Exception( $message );
         }
 
         return $result;
@@ -584,14 +604,14 @@ class Mumsys_FileSystem
      */
     public function mkdirs( $dir, $perm = 0755 )
     {
-        if ( is_dir($dir) ) {
+        if ( is_dir( $dir ) ) {
             return true;
         }
-        $stack = array(basename($dir));
+        $stack = array(basename( $dir ));
         $path = null;
-        while ( ($d = dirname($dir) ) ) {
-            if ( !is_dir($d) ) {
-                $stack[] = basename($d);
+        while ( ($d = dirname( $dir ) ) ) {
+            if ( !is_dir( $d ) ) {
+                $stack[] = basename( $d );
                 $dir = $d;
             } else {
                 $path = $d;
@@ -600,17 +620,17 @@ class Mumsys_FileSystem
         }
 
         /** @todo test this exception */
-        if ( $path && ($path = realpath($path)) === false ) {
+        if ( $path && ($path = realpath( $path )) === false ) {
             $message = 'Can not determine realpath("' . $path . '".)';
-            throw new Mumsys_FileSystem_Exception($message);
+            throw new Mumsys_FileSystem_Exception( $message );
         }
 
         $created = array();
-        for ( $n = count($stack) - 1; $n >= 0; $n-- ) {
+        for ( $n = count( $stack ) - 1; $n >= 0; $n-- ) {
             $s = $path . '/' . $stack[$n];
-            if ( !$this->mkdir($s, $perm) ) {
-                for ( $m = count($created) - 1; $m >= 0; $m-- ) {
-                    rmdir($created[$m]);
+            if ( !$this->mkdir( $s, $perm ) ) {
+                for ( $m = count( $created ) - 1; $m >= 0; $m-- ) {
+                    rmdir( $created[$m] );
                 }
 
                 return false;
@@ -634,14 +654,14 @@ class Mumsys_FileSystem
      *
      * @throws Mumsys_FileSystem_Exception
      */
-    public function rmdir( $path, $context=null )
+    public function rmdir( $path, $context = null )
     {
-        if (!is_dir($path)) {
+        if ( !is_dir( $path ) ) {
             return true;
         }
 
         if ( @rmdir( $path ) === false ) {
-            $message = sprintf('Can not delete directory "%1$s"', $path);
+            $message = sprintf( 'Can not delete directory "%1$s"', $path );
             throw new Mumsys_FileSystem_Exception( $message );
         }
 
@@ -656,24 +676,23 @@ class Mumsys_FileSystem
      *
      * @throws Mumsys_FileSystem_Exception
      */
-    public function rmdirs($basePath)
+    public function rmdirs( $basePath )
     {
-        $basePath = (string)$basePath;
-        if (!is_dir( $basePath ) ) {
+        $basePath = (string) $basePath;
+        if ( !is_dir( $basePath ) ) {
             return true;
         }
 
         try
         {
             $iterator = new DirectoryIterator( $basePath );
-            foreach ( $iterator as $fileinfo )
-            {
+            foreach ( $iterator as $fileinfo ) {
                 if ( $fileinfo->isDot() ) {
                     continue;
                 }
 
                 if ( $fileinfo->isDir() ) {
-                    if ($this->rmdirs( $fileinfo->getPathname() ) ) {
+                    if ( $this->rmdirs( $fileinfo->getPathname() ) ) {
                         $this->rmdir( $fileinfo->getPathname() );
                     }
                 }
@@ -710,23 +729,22 @@ class Mumsys_FileSystem
         $sep = DIRECTORY_SEPARATOR;
         $search = $sep . $sep;
 
-        $from = trim(str_replace($search, $sep, $from), '/') . '/';
-        $from = explode($sep, $from);
+        $from = trim( str_replace( $search, $sep, $from ), '/' ) . '/';
+        $from = explode( $sep, $from );
 
-        $to = trim(str_replace($search, $sep, $to), '/') . '/';
-        $to = $resultParts = explode($sep, $to);
+        $to = trim( str_replace( $search, $sep, $to ), '/' ) . '/';
+        $to = $resultParts = explode( $sep, $to );
 
-        $cntFrom = count($from);
+        $cntFrom = count( $from );
 
-        foreach ( $from as $key => $pathPart )
-        {
-            if ( isset($to[$key]) && $pathPart === $to[$key] ) {
-                array_shift($resultParts);
+        foreach ( $from as $key => $pathPart ) {
+            if ( isset( $to[$key] ) && $pathPart === $to[$key] ) {
+                array_shift( $resultParts );
             } else {
                 $rest = $cntFrom - $key;
                 if ( $rest > 1 ) {
-                    $padLength = (count($resultParts) + $rest - 1) * -1;
-                    $resultParts = array_pad($resultParts, $padLength, '..');
+                    $padLength = (count( $resultParts ) + $rest - 1) * -1;
+                    $resultParts = array_pad( $resultParts, $padLength, '..' );
                     break;
                 } else {
                     $resultParts[0] = '.' . $sep . $resultParts[0];
@@ -734,7 +752,7 @@ class Mumsys_FileSystem
             }
         }
 
-        return implode($sep, $resultParts);
+        return implode( $sep, $resultParts );
     }
 
 
@@ -775,7 +793,7 @@ class Mumsys_FileSystem
                 $txt = 'TB';
         }
 
-        return round($size, $digits) . ' ' . $txt;
+        return round( $size, $digits ) . ' ' . $txt;
     }
 
 }

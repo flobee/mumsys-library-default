@@ -41,20 +41,19 @@ abstract class Mumsys_Xml_Abstract
     public static function attributesCreate( array $array = array() )
     {
         $sum = array();
-        foreach ($array as $key => &$value)
-        {
-            if ( !is_scalar($value) ) {
+        foreach ( $array as $key => &$value ) {
+            if ( !is_scalar( $value ) ) {
                 $msg = sprintf(
                     'Invalid attribute value for key: "%1$s": "%2$s"', $key,
-                    gettype($value)
+                    gettype( $value )
                 );
-                throw new Mumsys_Xml_Exception($msg);
+                throw new Mumsys_Xml_Exception( $msg );
             }
 
             $sum[] = $key . '="' . $value . '"';
         }
 
-        return implode(' ', $sum);
+        return implode( ' ', $sum );
     }
 
 }
