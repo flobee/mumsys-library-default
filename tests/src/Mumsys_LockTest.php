@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Test class for Mumsys_Lock.
  */
@@ -35,7 +34,7 @@ class Mumsys_LockTest
      */
     protected function tearDown()
     {
-        if ( is_object($this->_object) ) {
+        if ( is_object( $this->_object ) ) {
             $this->_object->unlock();
         }
         $this->_object = null;
@@ -44,15 +43,17 @@ class Mumsys_LockTest
 
     public function testLock()
     {
-        $this->assertTrue($this->_object->lock());
+        $this->assertTrue( $this->_object->lock() );
     }
 
 
     public function testLockException1()
     {
         $this->_object->lock();
-        $this->expectExceptionMessageRegExp('/(Can not lock! Lock "\/tmp\/Mumsys_Lock.php_default.lock" exists)/');
-        $this->expectException('Mumsys_Exception');
+        $regex = '/(Can not lock! Lock "\/tmp\/Mumsys_Lock.php_default.lock" '
+            . 'exists)/';
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException( 'Mumsys_Exception' );
         $this->_object->lock();
     }
 
@@ -60,9 +61,10 @@ class Mumsys_LockTest
     // test file with different owner rights
     public function testLockException2()
     {
-        $this->_object = new Mumsys_Lock('/root/nix.tmp');
-        $this->expectExceptionMessageRegExp('/(Locking failt for file "\/root\/nix.tmp")/');
-        $this->expectException('Mumsys_Exception');
+        $this->_object = new Mumsys_Lock( '/root/nix.tmp' );
+        $regex = '/(Locking failt for file "\/root\/nix.tmp")/';
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException( 'Mumsys_Exception' );
 
         $this->_object->lock();
     }
@@ -71,16 +73,19 @@ class Mumsys_LockTest
     public function testUnlock()
     {
         $this->_object->lock();
-        $this->assertTrue($this->_object->unlock());
+        $this->assertTrue( $this->_object->unlock() );
     }
 
 
     public function testUnlockException()
     {
         $tmpFile = '/tmp/.ICE-unix';
-        $o = new Mumsys_Lock($tmpFile); //file with different owner
-        $this->expectExceptionMessageRegExp('/(Unlock failt for: "' . str_replace('/', '\/', $tmpFile) . '")/');
-        $this->expectException('Mumsys_Exception');
+        $o = new Mumsys_Lock( $tmpFile ); //file with different owner
+        $regex = '/(Unlock failt for: "'
+            . str_replace( '/', '\/', $tmpFile )
+            . '")/';
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException( 'Mumsys_Exception' );
         $o->unlock();
     }
 
@@ -88,18 +93,19 @@ class Mumsys_LockTest
     public function testIsLocked()
     {
         $this->_object->lock();
-        $this->assertTrue($this->_object->isLocked());
+        $this->assertTrue( $this->_object->isLocked() );
         $this->_object->unlock();
-        $this->assertFalse($this->_object->isLocked());
+        $this->assertFalse( $this->_object->isLocked() );
     }
 
 
     public function testIsLocked2()
     {
         $tmpFile = '/tmp/where/the/hell/are/you';
-        $o = new Mumsys_Lock($tmpFile);
-        $this->expectExceptionMessageRegExp('#(Lock directory "/tmp/where/the/hell/are/you" not exists)#i');
-        $this->expectException('Mumsys_Exception');
+        $o = new Mumsys_Lock( $tmpFile );
+        $regex = '#(Lock directory "/tmp/where/the/hell/are/you" not exists)#i';
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException( 'Mumsys_Exception' );
         $o->isLocked();
     }
 
@@ -111,7 +117,9 @@ class Mumsys_LockTest
      */
     public function testGetVersion()
     {
-        $this->assertEquals('Mumsys_Lock ' . $this->_version, $this->_object->getVersion());
+        $this->assertEquals(
+            'Mumsys_Lock ' . $this->_version, $this->_object->getVersion()
+        );
     }
 
 
@@ -120,7 +128,7 @@ class Mumsys_LockTest
      */
     public function testgetVersionID()
     {
-        $this->assertEquals($this->_version, $this->_object->getVersionID());
+        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
     }
 
 
@@ -132,8 +140,8 @@ class Mumsys_LockTest
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
+            $this->assertTrue( isset( $possible[$must] ) );
+            $this->assertTrue( ($possible[$must] == $value ) );
         }
     }
 

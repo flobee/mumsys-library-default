@@ -1,6 +1,5 @@
 <?php
 
-
 class Mumsys_Cookie_MissingIfaceTest
 {
 
@@ -44,16 +43,16 @@ class Mumsys_Cookie_FactoryTest
      */
     public function testGetAdapter()
     {
-        $actual1 = $this->_object->getAdapter('Default');
-        $actual2 = $this->_object->getAdapter('Memory');
+        $actual1 = $this->_object->getAdapter( 'Default' );
+        $actual2 = $this->_object->getAdapter( 'Memory' );
 
 
 
-        $this->assertInstanceOf('Mumsys_Cookie_Interface', $actual1);
-        $this->assertInstanceOf('Mumsys_Cookie_Interface', $actual2);
+        $this->assertInstanceOf( 'Mumsys_Cookie_Interface', $actual1 );
+        $this->assertInstanceOf( 'Mumsys_Cookie_Interface', $actual2 );
 
-        $this->expectException('Mumsys_Cookie_Exception');
-        $this->_object->getAdapter('NoAdapter');
+        $this->expectException( 'Mumsys_Cookie_Exception' );
+        $this->_object->getAdapter( 'NoAdapter' );
     }
 
 
@@ -62,10 +61,10 @@ class Mumsys_Cookie_FactoryTest
      */
     public function testGetAdapterException1NoALNUM()
     {
-        $this->expectException('Mumsys_Cookie_Exception');
+        $this->expectException( 'Mumsys_Cookie_Exception' );
         $regex = '/(Invalid characters in adapter name "Mumsys_Cookie_12\$\&3")/i';
-        $this->expectExceptionMessageRegExp($regex);
-        $this->_object->getAdapter('12$&3');
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->_object->getAdapter( '12$&3' );
     }
 
 
@@ -74,11 +73,11 @@ class Mumsys_Cookie_FactoryTest
      */
     public function testGetAdapterException1MissingIface()
     {
-        $this->expectException('Mumsys_Cookie_Exception');
+        $this->expectException( 'Mumsys_Cookie_Exception' );
         $regex = '/(Adapter "Mumsys_Cookie_MissingIfaceTest" does not '
             . 'implement interface "Mumsys_Cookie_Interface")/i';
-        $this->expectExceptionMessageRegExp($regex);
-        $this->_object->getAdapter('MissingIfaceTest');
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->_object->getAdapter( 'MissingIfaceTest' );
     }
 
 
@@ -87,10 +86,10 @@ class Mumsys_Cookie_FactoryTest
      */
     public function testGetAdapterException2NotAvailable()
     {
-        $this->expectException('Mumsys_Cookie_Exception');
+        $this->expectException( 'Mumsys_Cookie_Exception' );
         $regex = '/(Adapter "Mumsys_Cookie_12345" not available)/i';
-        $this->expectExceptionMessageRegExp($regex);
-        $this->_object->getAdapter(12345);
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->_object->getAdapter( 12345 );
     }
 
 }

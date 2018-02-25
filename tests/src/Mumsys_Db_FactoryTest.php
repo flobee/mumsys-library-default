@@ -1,19 +1,21 @@
 <?php
 
-
 /**
  * Mumsys_Db_Factory Test
  */
-class Mumsys_Db_FactoryTest extends Mumsys_Unittest_Testcase
+class Mumsys_Db_FactoryTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Db
      */
     protected $_object;
+
     /**
      * @var Mumsys_Context
      */
     protected $_context;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -25,7 +27,7 @@ class Mumsys_Db_FactoryTest extends Mumsys_Unittest_Testcase
         $this->_configs = MumsysTestHelper::getConfigs();
         $this->_configs['database']['type'] = 'mysql:mysqli';
 
-        $this->_object = new Mumsys_Db_Factory($this->_context, $this->_configs['database']);
+        $this->_object = new Mumsys_Db_Factory( $this->_context, $this->_configs['database'] );
     }
 
 
@@ -35,7 +37,7 @@ class Mumsys_Db_FactoryTest extends Mumsys_Unittest_Testcase
      */
     protected function tearDown()
     {
-        $this->_object = NULL;
+        $this->_object = null;
     }
 
 
@@ -44,9 +46,10 @@ class Mumsys_Db_FactoryTest extends Mumsys_Unittest_Testcase
      */
     public function testGetInstance()
     {
-        $actual = $this->_object->getInstance($this->_context, $this->_configs['database']);
-        $this->assertInstanceOf('Mumsys_Db_Driver_Interface', $actual);
+        $actual = $this->_object->getInstance( $this->_context, $this->_configs['database'] );
+        $this->assertInstanceOf( 'Mumsys_Db_Driver_Interface', $actual );
     }
+
 
     /**
      * @covers Mumsys_Db_Factory::getInstance
@@ -56,7 +59,7 @@ class Mumsys_Db_FactoryTest extends Mumsys_Unittest_Testcase
         $options = $this->_configs['database'];
         $options['type'] = 'xxx';
 
-        $this->expectExceptionMessageRegExp('/(Invalid Db driver. Can not create instance)/i' );
+        $this->expectExceptionMessageRegExp( '/(Invalid Db driver. Can not create instance)/i' );
         $this->expectException( 'Mumsys_Db_Exception' );
         $actual = $this->_object->getInstance( $this->_context, $options );
     }

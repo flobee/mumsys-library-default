@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Test class for Mumsys_Logger_File
  */
@@ -42,7 +41,7 @@ class Mumsys_Logger_FileTest
             'Mumsys_Abstract' => '3.0.2',
         );
 
-        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
+        $this->_testsDir = realpath( dirname( __FILE__ ) . '/../' );
 
         $this->_logfile = $this->_testsDir . '/tmp/Mumsys_LoggerTest_defaultfile.test';
         $this->_opts = $opts = array(
@@ -52,7 +51,7 @@ class Mumsys_Logger_FileTest
             'maxfilesize' => 80,
             'lineFormat' => '%5$s',
         );
-        $this->_object = new Mumsys_Logger_File($opts);
+        $this->_object = new Mumsys_Logger_File( $opts );
     }
 
 
@@ -64,6 +63,7 @@ class Mumsys_Logger_FileTest
     {
         $this->_object = null;
     }
+
 
     /**
      * @covers Mumsys_Logger_File::__construct
@@ -79,9 +79,9 @@ class Mumsys_Logger_FileTest
         $opts['verbose'] = false;
         $opts['lf'] = "\n";
 
-        $object = new Mumsys_Logger_File($opts);
+        $object = new Mumsys_Logger_File( $opts );
 
-        $this->assertInstanceOf('Mumsys_Logger_Interface', $object);
+        $this->assertInstanceOf( 'Mumsys_Logger_Interface', $object );
     }
 
 
@@ -92,44 +92,45 @@ class Mumsys_Logger_FileTest
     {
         $opts = $this->_opts;
         $opts['username'] = 'flobee';
-        unset($opts['logfile'], $opts['way']);
+        unset( $opts['logfile'], $opts['way'] );
 
-        $object = new Mumsys_Logger_File($opts);
+        $object = new Mumsys_Logger_File( $opts );
 
-        unset($opts['username']);
+        unset( $opts['username'] );
         $_SERVER['REMOTE_USER'] = 'flobee';
-        $object = new Mumsys_Logger_File($opts);
+        $object = new Mumsys_Logger_File( $opts );
 
-        unset($opts['username'], $_SERVER['REMOTE_USER'], $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'],
-            $_SERVER['LOGNAME']);
-        $object = new Mumsys_Logger_File($opts);
+        unset( $opts['username'], $_SERVER['REMOTE_USER'] );
+        unset( $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'], $_SERVER['LOGNAME'] );
+        $object = new Mumsys_Logger_File( $opts );
 
         $_SERVER['LOGNAME'] = 'God';
-        $object = new Mumsys_Logger_File($opts);
+        $object = new Mumsys_Logger_File( $opts );
 
-        $this->assertInstanceOf('Mumsys_Logger_File', $object);
-        $this->assertInstanceOf('Mumsys_Logger_Interface', $object);
+        $this->assertInstanceOf( 'Mumsys_Logger_File', $object );
+        $this->assertInstanceOf( 'Mumsys_Logger_Interface', $object );
     }
 
 
     public function testGetLogfile()
     {
-        $this->assertEquals($this->_opts['logfile'], $this->_object->getLogFile());
+        $this->assertEquals( $this->_opts['logfile'],
+            $this->_object->getLogFile() );
     }
 
 
     public function testLevelNameGet()
     {
-        $this->assertEquals('EMERG', $this->_object->getLevelName(0));
-        $this->assertEquals('ALERT', $this->_object->getLevelName(1));
-        $this->assertEquals('CRIT', $this->_object->getLevelName(2));
-        $this->assertEquals('ERR', $this->_object->getLevelName(3));
-        $this->assertEquals('WARN', $this->_object->getLevelName(4));
-        $this->assertEquals('NOTICE', $this->_object->getLevelName(5));
-        $this->assertEquals('INFO', $this->_object->getLevelName(6));
-        $this->assertEquals('DEBUG', $this->_object->getLevelName(7));
+        $this->assertEquals( 'EMERG', $this->_object->getLevelName( 0 ) );
+        $this->assertEquals( 'ALERT', $this->_object->getLevelName( 1 ) );
+        $this->assertEquals( 'CRIT', $this->_object->getLevelName( 2 ) );
+        $this->assertEquals( 'ERR', $this->_object->getLevelName( 3 ) );
+        $this->assertEquals( 'WARN', $this->_object->getLevelName( 4 ) );
+        $this->assertEquals( 'NOTICE', $this->_object->getLevelName( 5 ) );
+        $this->assertEquals( 'INFO', $this->_object->getLevelName( 6 ) );
+        $this->assertEquals( 'DEBUG', $this->_object->getLevelName( 7 ) );
 
-        $this->assertEquals('unknown', $this->_object->getLevelName(999));
+        $this->assertEquals( 'unknown', $this->_object->getLevelName( 999 ) );
     }
 
 
@@ -138,64 +139,88 @@ class Mumsys_Logger_FileTest
      */
     public function testEmerg()
     {
-        $this->assertEquals('log emergency', trim($this->_object->emerg('log emergency')) );
+        $this->assertEquals(
+            'log emergency', trim( $this->_object->emerg( 'log emergency' ) )
+        );
     }
+
 
     /**
      * @covers Mumsys_Logger_File::__call
      */
     public function testAlert()
     {
-        $this->assertEquals('log alert', trim($this->_object->alert('log alert')));
+        $this->assertEquals(
+            'log alert', trim( $this->_object->alert( 'log alert' ) )
+        );
     }
+
 
     /**
      * @covers Mumsys_Logger_File::__call
      */
     public function testCrit()
     {
-        $this->assertEquals('log critical', trim($this->_object->crit('log critical')));
+        $this->assertEquals(
+            'log critical', trim( $this->_object->crit( 'log critical' ) )
+        );
     }
+
 
     /**
      * @covers Mumsys_Logger_File::__call
      */
     public function testErr()
     {
-        $this->assertEquals('log error', trim($this->_object->err('log error')));
+        $this->assertEquals(
+            'log error', trim( $this->_object->err( 'log error' ) )
+        );
     }
+
 
     /**
      * @covers Mumsys_Logger_File::__call
      */
     public function testWarn()
     {
-        $this->assertEquals('log warning', trim($this->_object->warn('log warning')));
+        $this->assertEquals(
+            'log warning', trim( $this->_object->warn( 'log warning' ) )
+        );
     }
+
 
     /**
      * @covers Mumsys_Logger_File::__call
      */
     public function testNotice()
     {
-        $this->assertEquals('log notice', trim($this->_object->notice('log notice')));
+        $this->assertEquals(
+            'log notice', trim( $this->_object->notice( 'log notice' ) )
+        );
     }
+
 
     /**
      * @covers Mumsys_Logger_File::__call
      */
     public function testInfo()
     {
-        $this->assertEquals('log info', trim($this->_object->info('log info')));
+        $this->assertEquals(
+            'log info', trim( $this->_object->info( 'log info' ) )
+        );
     }
+
 
     /**
      * @covers Mumsys_Logger_File::__call
      */
     public function testDebug()
     {
-        $this->assertEquals('log debug', trim($this->_object->debug('log debug')));
+        $this->assertEquals(
+            'log debug', trim( $this->_object->debug( 'log debug' ) )
+        );
     }
+
 
     /**
      * @covers Mumsys_Logger_File::__call
@@ -203,11 +228,16 @@ class Mumsys_Logger_FileTest
      */
     public function testLog()
     {
-        $this->assertEquals('long log', trim($this->_object->log('long log', 7)));
+        $this->assertEquals(
+            'long log', trim( $this->_object->log( 'long log', 7 ) )
+        );
 
         $exp = '["long log"]';
-        $this->assertEquals($exp, trim($this->_object->log(array('long log'), 7)));
+        $this->assertEquals(
+            $exp, trim( $this->_object->log( array('long log'), 7 ) )
+        );
     }
+
 
     /**
      * @covers Mumsys_Logger_File::__construct
@@ -219,14 +249,15 @@ class Mumsys_Logger_FileTest
         $opts = $this->_opts;
 
         $writer = new Mumsys_Logger_Writer_Mock();
-        $object = new Mumsys_Logger_File($opts, $writer);
+        $object = new Mumsys_Logger_File( $opts, $writer );
         $writer->close();
 
-        $this->expectException('Mumsys_Logger_Exception');
-        $this->expectExceptionMessage('File not open. Can not write to file');
+        $this->expectException( 'Mumsys_Logger_Exception' );
+        $this->expectExceptionMessage( 'File not open. Can not write to file' );
 
-        $object->log('error', 3);
+        $object->log( 'error', 3 );
     }
+
 
     /**
      * @covers Mumsys_Logger_File::checkMaxFilesize
@@ -236,21 +267,22 @@ class Mumsys_Logger_FileTest
         $this->_opts['maxfilesize'] = 0;
 
         $writer = new Mumsys_Logger_Writer_Mock();
-        $object = new Mumsys_Logger_File($this->_opts, $writer);
+        $object = new Mumsys_Logger_File( $this->_opts, $writer );
         $writer->close();
 
 
         $actual = $object->checkMaxFilesize();
-        $this->assertEquals('', $actual);
+        $this->assertEquals( '', $actual );
     }
+
 
     /**
      * Version checks
      */
     public function testVersions()
     {
-         $this->assertEquals($this->_version, Mumsys_Logger_File::VERSION);
-         $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
+        $this->assertEquals( $this->_version, Mumsys_Logger_File::VERSION );
+        $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 
 }

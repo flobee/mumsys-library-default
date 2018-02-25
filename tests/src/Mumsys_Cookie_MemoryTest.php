@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Mumsys_Cookie_Memory test
  */
@@ -41,7 +40,7 @@ class Mumsys_Cookie_MemoryTest
     {
         $this->_object = new Mumsys_Cookie_Memory();
 
-        $this->assertInstanceOf('Mumsys_Cookie_Interface', $this->_object);
+        $this->assertInstanceOf( 'Mumsys_Cookie_Interface', $this->_object );
     }
 
 
@@ -54,12 +53,12 @@ class Mumsys_Cookie_MemoryTest
     {
         $actual = $this->_object->getCookie();
 
-        $this->_object->setCookie('a', 'b');
-        $this->_object->setRawCookie('rawkey', 'rawval');
+        $this->_object->setCookie( 'a', 'b' );
+        $this->_object->setRawCookie( 'rawkey', 'rawval' );
 
-        $this->assertEquals(array(), $actual);
-        $this->assertEquals('b', $this->_object->getCookie('a'));
-        $this->assertEquals('rawval', $this->_object->getCookie('rawkey'));
+        $this->assertEquals( array(), $actual );
+        $this->assertEquals( 'b', $this->_object->getCookie( 'a' ) );
+        $this->assertEquals( 'rawval', $this->_object->getCookie( 'rawkey' ) );
     }
 
 
@@ -69,13 +68,13 @@ class Mumsys_Cookie_MemoryTest
      */
     public function testClear()
     {
-        $this->_object->setCookie('a', 'b');
-        $actual = $this->_object->unsetCookie('a');
+        $this->_object->setCookie( 'a', 'b' );
+        $actual = $this->_object->unsetCookie( 'a' );
         $this->_object->clear();
 
-        $this->assertTrue($actual);
-        $this->assertInternalType('array', $this->_object->getCookie());
-        $this->assertTrue(empty($this->_object->getCookie()));
+        $this->assertTrue( $actual );
+        $this->assertInternalType( 'array', $this->_object->getCookie() );
+        $this->assertTrue( empty( $this->_object->getCookie() ) );
     }
 
 }

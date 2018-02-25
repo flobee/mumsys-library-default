@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Mumsys_Html Test
  */
@@ -42,21 +41,21 @@ class Mumsys_HtmlTest
     public function testAttributesCreate()
     {
         $array = array('id' => 123, 'name' => 'attributeName');
-        $string = $this->_object->attributesCreate($array);
-        $this->assertEquals('id="123" name="attributeName"', $string);
+        $string = $this->_object->attributesCreate( $array );
+        $this->assertEquals( 'id="123" name="attributeName"', $string );
 
-        $this->expectException('Mumsys_Html_Exception');
+        $this->expectException( 'Mumsys_Html_Exception' );
         $array2 = array('id' => 123, 'name' => array(1, 2));
-        $string2 = $this->_object->attributesCreate($array2);
+        $string2 = $this->_object->attributesCreate( $array2 );
     }
 
 
     public function testStripNoWhitelistToBePlainText()
     {
         $htmlcode = '<p>hello world</p><p>hello world</p>';
-        $code = $this->_object->strip($htmlcode, $against_whitelist = false);
+        $code = $this->_object->strip( $htmlcode, $against_whitelist = false );
 
-        $this->assertEquals('hello worldhello world', $code);
+        $this->assertEquals( 'hello worldhello world', $code );
     }
 
 
@@ -64,55 +63,67 @@ class Mumsys_HtmlTest
     {
         $htmlcode = '<p align="left">hello world</p><p>hello world</p><hr><table cellpadding="2" title="aGlobalAllowAttribute" xyzattr="toStrip"></table>';
         $expected = '<p align="left">hello world</p><p>hello world</p><hr /><table cellpadding="2" title="aGlobalAllowAttribute"></table>';
-        $code = $this->_object->strip($htmlcode, $against_whitelist = true);
+        $code = $this->_object->strip( $htmlcode, $against_whitelist = true );
 
-        $this->assertEquals($expected, $code);
+        $this->assertEquals( $expected, $code );
     }
 
 
     public function testAttributesFilter1()
     {
-        $code1 = $this->_object->attributesFilter('table',
-            ' cellpadding="2" title="aGlobalAllowAttribute" xyzattr="toStrip"');
+        $code1 = $this->_object->attributesFilter(
+            'table',
+            ' cellpadding="2" title="aGlobalAllowAttribute" xyzattr="toStrip"'
+        );
         $expected1 = 'cellpadding="2" title="aGlobalAllowAttribute"';
 
         // = in a attribute
-        $code2 = $this->_object->attributesFilter('table',
-            ' class="x=y" cellpadding="2" title="aGlobalAllowAttribute" xyzattr="toStrip"');
+        $code2 = $this->_object->attributesFilter(
+            'table',
+            ' class="x=y" cellpadding="2" title="aGlobalAllowAttribute" xyzattr="toStrip"'
+        );
         $expected2 = 'class="x=y" cellpadding="2" title="aGlobalAllowAttribute"';
 
         // TODO! will be cutted now but is wrong in this case!
         // ' ' (space) in a attribute
-        $code3 = $this->_object->attributesFilter('table',
-            ' class="classa classb" cellpadding="2" title="aGlobalAllowAttribute" xyzattr="toStrip"');
+        $code3 = $this->_object->attributesFilter(
+            'table',
+            ' class="classa classb" cellpadding="2" title="aGlobalAllowAttribute" xyzattr="toStrip"'
+        );
         $expected3 = 'class="classa classb" cellpadding="2" title="aGlobalAllowAttribute"';
 
         // drop crap at the end as long there is no = char over there
-        $code4 = $this->_object->attributesFilter('table',
-            ' class="classa classb" cellpadding="2" title="aGlobalAllowAttribute"" a"');
+        $code4 = $this->_object->attributesFilter(
+            'table',
+            ' class="classa classb" cellpadding="2" title="aGlobalAllowAttribute"" a"'
+        );
         $expected4 = 'class="classa classb" cellpadding="2" title="aGlobalAllowAttribute"';
 
         // add missing quotes. only ad the end!
-        $code5 = $this->_object->attributesFilter('td',
-            ' class="classa classb" cellpadding="2" title="atitle" nowrap=nowrap');
+        $code5 = $this->_object->attributesFilter(
+            'td',
+            ' class="classa classb" cellpadding="2" title="atitle" nowrap=nowrap'
+        );
         $expected5 = 'class="classa classb" title="atitle" nowrap="nowrap"';
 
         // wrong single quotes fix
-        $code6 = $this->_object->attributesFilter('td',
-            ' class="classa classb" style=\'xxx\' title=\'atitle\' nowrap=nowrap');
+        $code6 = $this->_object->attributesFilter(
+            'td',
+            ' class="classa classb" style=\'xxx\' title=\'atitle\' nowrap=nowrap'
+        );
         $expected6 = 'class="classa classb" style="xxx" title="atitle" nowrap="nowrap"';
 
         // no attributes
-        $code7 = $this->_object->attributesFilter('td', ' xyz="abc"');
+        $code7 = $this->_object->attributesFilter( 'td', ' xyz="abc"' );
         $expected7 = '';
 
-        $this->assertEquals($expected1, $code1);
-        $this->assertEquals($expected2, $code2);
-        $this->assertEquals($expected3, $code3);
-        $this->assertEquals($expected4, $code4);
-        $this->assertEquals($expected5, $code5);
-        $this->assertEquals($expected6, $code6);
-        $this->assertEquals($expected7, $code7);
+        $this->assertEquals( $expected1, $code1 );
+        $this->assertEquals( $expected2, $code2 );
+        $this->assertEquals( $expected3, $code3 );
+        $this->assertEquals( $expected4, $code4 );
+        $this->assertEquals( $expected5, $code5 );
+        $this->assertEquals( $expected6, $code6 );
+        $this->assertEquals( $expected7, $code7 );
     }
 
 
@@ -135,9 +146,9 @@ class Mumsys_HtmlTest
 </tr>
 </table>';
 
-        $code1 = $this->_object->filter($html1);
+        $code1 = $this->_object->filter( $html1 );
 
-        $this->assertEquals($expected1, $code1);
+        $this->assertEquals( $expected1, $code1 );
     }
 
 
@@ -147,14 +158,18 @@ class Mumsys_HtmlTest
 
         $properties = array('name' => 'value');
         $universalAttributesAllow = false;
-        $actual = $this->_object->attributesValidate($whitelist, $properties, $universalAttributesAllow);
-        $this->assertEquals(array('name' => 'value'), $actual);
+        $actual = $this->_object->attributesValidate(
+            $whitelist, $properties, $universalAttributesAllow
+        );
+        $this->assertEquals( array('name' => 'value'), $actual );
 
         // check universal attributes
         $universalAttributesAllow = true;
         $properties = array('name' => 'value', 'id' => 999);
-        $actual = $this->_object->attributesValidate($whitelist, $properties, $universalAttributesAllow);
-        $this->assertEquals(array('name' => 'value', 'id' => 999), $actual);
+        $actual = $this->_object->attributesValidate(
+            $whitelist, $properties, $universalAttributesAllow
+        );
+        $this->assertEquals( array('name' => 'value', 'id' => 999), $actual );
     }
 
 
@@ -168,15 +183,15 @@ class Mumsys_HtmlTest
         $message = 'A new version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
-        $this->assertEquals($this->_version, Mumsys_Html::VERSION, $message);
+        $this->assertEquals( $this->_version, Mumsys_Html::VERSION, $message );
 
 
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
             $message = 'Invalid: ' . $must . '::' . $value;
-            $this->assertTrue(isset($possible[$must]), $message);
-            $this->assertTrue(($possible[$must] == $value), $message);
+            $this->assertTrue( isset( $possible[$must] ), $message );
+            $this->assertTrue( ($possible[$must] == $value ), $message );
         }
     }
 

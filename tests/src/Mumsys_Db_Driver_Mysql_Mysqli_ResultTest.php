@@ -3,7 +3,8 @@
 /**
  * Mumsys_Db_Driver_Mysql_Mysqli_Result Test
  */
-class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends Mumsys_Unittest_Testcase
+class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Db_Driver_Mysql_Mysqli_Result
@@ -13,10 +14,12 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends Mumsys_Unittest_Testcase
 
     /** @var Mumsys_Db_Driver_Mysql_Mysqli */
     protected $_dbDriver;
+
     /**
      * @var Mumsys_Context
      */
     protected $_context;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -32,15 +35,17 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends Mumsys_Unittest_Testcase
         $this->_dbConfig = $this->_configs['database'];
 
         try {
-            $oDB = Mumsys_Db_Factory::getInstance($this->_context, $this->_configs['database']);
+            $oDB = Mumsys_Db_Factory::getInstance( $this->_context, $this->_configs['database'] );
             $oDB->connect();
-        } catch (Exception $ex) {
-            $this->markTestSkipped('Connection failure. Check DB config to connect to the db');
+        }
+        catch ( Exception $ex ) {
+            $mesg = 'Connection failure. Check DB config to connect to the db';
+            $this->markTestSkipped( $mesg );
         }
 
-        $this->_dbDriver = new Mumsys_Db_Driver_Mysql_Mysqli($this->_context, $this->_dbConfig);
+        $this->_dbDriver = new Mumsys_Db_Driver_Mysql_Mysqli( $this->_context, $this->_dbConfig );
 
-        $this->_object = $this->_dbDriver->query('SELECT 1+1 AS colname');
+        $this->_object = $this->_dbDriver->query( 'SELECT 1+1 AS colname' );
     }
 
 
@@ -57,11 +62,11 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends Mumsys_Unittest_Testcase
 
     public function testConstruct()
     {
-        $actual1 = new Mumsys_Db_Driver_Mysql_Mysqli($this->_context, $this->_dbConfig);
-        $actual2 = $this->_dbDriver->query('SELECT 1+1 AS colname');
+        $actual1 = new Mumsys_Db_Driver_Mysql_Mysqli( $this->_context, $this->_dbConfig );
+        $actual2 = $this->_dbDriver->query( 'SELECT 1+1 AS colname' );
 
-        $this->assertInstanceOf('Mumsys_Db_Driver_Mysql_Mysqli', $actual1);
-        $this->assertInstanceOf('Mumsys_Db_Driver_Mysql_Mysqli_Result', $actual2);
+        $this->assertInstanceOf( 'Mumsys_Db_Driver_Mysql_Mysqli', $actual1 );
+        $this->assertInstanceOf( 'Mumsys_Db_Driver_Mysql_Mysqli_Result', $actual2 );
     }
 
 
@@ -81,12 +86,13 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends Mumsys_Unittest_Testcase
         );
 
         foreach ( $tests as $way => $expected ) {
-            $actual = $this->_object->fetch($way);
-            $this->_object->seek(0);
+            $actual = $this->_object->fetch( $way );
+            $this->_object->seek( 0 );
 
-            $this->assertEquals($expected, $actual);
+            $this->assertEquals( $expected, $actual );
         }
     }
+
 
     /**
      * @covers Mumsys_Db_Driver_Mysql_Mysqli_Result::fetchAll
@@ -95,178 +101,177 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends Mumsys_Unittest_Testcase
     public function testFetchAll()
     {
         $table = 'mumsysunittesttable';
-        $this->_createTempTable($table);
-        $this->_createTempTableData($table);
+        $this->_createTempTable( $table );
+        $this->_createTempTableData( $table );
 
-        $oRes = $this->_dbDriver->query('SELECT * FROM ' . $table);
+        $oRes = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
 
         $expected = $this->_getTempTableValues();
         $actual1 = $oRes->fetchAll();
 
-        $actual2 = $oRes->fetchAll('assoc', true);
+        $actual2 = $oRes->fetchAll( 'assoc', true );
 
-        $this->assertEquals($expected, $actual1);
-        $this->assertFalse($actual2);
+        $this->assertEquals( $expected, $actual1 );
+        $this->assertFalse( $actual2 );
     }
 
 
     public function testNumRows()
     {
         $n = $this->_object->numRows();
-        $this->assertEquals(1, $n);
+        $this->assertEquals( 1, $n );
 
         $n = $this->_object->numRows();
-        $this->assertEquals(1, $n);
+        $this->assertEquals( 1, $n );
 
-        $o = $this->_dbDriver->query('SELECT 1 AS colname');
+        $o = $this->_dbDriver->query( 'SELECT 1 AS colname' );
 
         $n = $o->numRows();
 
-        $this->assertEquals(1, $n);
+        $this->assertEquals( 1, $n );
 
-        $this->expectExceptionMessageRegExp('/(Error getting number of found rows)/i');
-        $this->expectException('Mumsys_Db_Exception');
-        $n = $o->numRows(true); // fakin result as parameter
+        $this->expectExceptionMessageRegExp( '/(Error getting number of found rows)/i' );
+        $this->expectException( 'Mumsys_Db_Exception' );
+        $n = $o->numRows( true ); // fakin result as parameter
     }
 
 
     public function testAffectedRows()
     {
         $table = 'mumsysunittesttable';
-        $this->_createTempTable($table);
+        $this->_createTempTable( $table );
         //$this->_createTempTableData($table);
 
         $sql = 'INSERT INTO ' . $table . ' ( ida, idb, idc, texta, textb)
             VALUES (1, 1, 1, \'texta1\', \'textb1\' ) ,
             (2, 2, 2, \'texta2\', \'textb2\' ) ,
             (3, 3, 3, \'texta3\', \'textb3\' )';
-        $result = $this->_dbDriver->query($sql);
+        $result = $this->_dbDriver->query( $sql );
         $n = $result->affectedRows();
-        $this->assertEquals(3, $n);
+        $this->assertEquals( 3, $n );
 
         $link = $this->_dbDriver->connect();
-        $n = $result->affectedRows($link);
-        $this->assertEquals(3, $n);
+        $n = $result->affectedRows( $link );
+        $this->assertEquals( 3, $n );
     }
 
 
     public function testLastInsertId()
     {
         $table = 'mumsysunittesttable';
-        $this->_createTempTable($table);
+        $this->_createTempTable( $table );
         //$this->_createTempTableData($table);
 
         $sql = 'INSERT INTO ' . $table . ' ( ida, idb, idc, texta, textb)
             VALUES (98, 3, 3, \'texta3\', \'textb3\' )';
-        $result = $this->_dbDriver->query($sql);
+        $result = $this->_dbDriver->query( $sql );
         $n = $result->lastInsertId();
-        $this->assertEquals(98, $n);
+        $this->assertEquals( 98, $n );
 
         $link = $this->_dbDriver->connect();
-        $n = $result->lastInsertId($link);
-        $this->assertEquals(98, $n);
+        $n = $result->lastInsertId( $link );
+        $this->assertEquals( 98, $n );
     }
 
 
     public function testInsertID()
     {
         $table = 'mumsysunittesttable';
-        $this->_createTempTable($table);
+        $this->_createTempTable( $table );
         //$this->_createTempTableData($table);
 
         $sql = 'INSERT INTO ' . $table . ' ( ida, idb, idc, texta, textb)
             VALUES (99, 3, 3, \'texta3\', \'textb3\' )';
-        $result = $this->_dbDriver->query($sql);
+        $result = $this->_dbDriver->query( $sql );
 
         $n = $result->insertID();
-        $this->assertEquals(99, $n);
+        $this->assertEquals( 99, $n );
 
         $link = $this->_dbDriver->connect();
-        $n = $result->lastInsertId($link);
-        $this->assertEquals(99, $n);
+        $n = $result->lastInsertId( $link );
+        $this->assertEquals( 99, $n );
     }
 
 
     public function testGetFirst_SqlResult()
     {
         $table = 'mumsysunittesttable';
-        $this->_createTempTable($table);
-        $this->_createTempTableData($table);
+        $this->_createTempTable( $table );
+        $this->_createTempTableData( $table );
 
-        $result = $this->_dbDriver->query('SELECT * FROM ' . $table);
-        $xA = $result->getFirst(0);
+        $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
+        $xA = $result->getFirst( 0 );
 
-        $result = $this->_dbDriver->query('SELECT * FROM ' . $table);
-        $xB = $result->getFirst(1);
+        $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
+        $xB = $result->getFirst( 1 );
 
-        $result = $this->_dbDriver->query('SELECT * FROM ' . $table);
-        $xC = $result->getFirst(2);
+        $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
+        $xC = $result->getFirst( 2 );
 
-        $result = $this->_dbDriver->query('SELECT * FROM ' . $table);
-        $xD = $result->getFirst(0, 'noIdxExists');
+        $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
+        $xD = $result->getFirst( 0, 'noIdxExists' );
 
-        $result = $this->_dbDriver->query('SELECT * FROM ' . $table);
-        $xE = $result->getFirst(0, 'idc');
+        $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
+        $xE = $result->getFirst( 0, 'idc' );
 
 
 
-        $this->assertEquals(1, $xA);
-        $this->assertEquals(2, $xB);
-        $this->assertEquals(3, $xC);
-        $this->assertEquals(false, $xD);
-        $this->assertEquals(1, $xE);
+        $this->assertEquals( 1, $xA );
+        $this->assertEquals( 2, $xB );
+        $this->assertEquals( 3, $xC );
+        $this->assertEquals( false, $xD );
+        $this->assertEquals( 1, $xE );
 
-        $this->expectExceptionMessageRegExp('/(Seeking to row 10 failed)/i');
-        $this->expectException('Mumsys_Db_Exception');
-        $result = $this->_dbDriver->query('SELECT * FROM ' . $table);
-        $result->sqlResult(10);
-
+        $this->expectExceptionMessageRegExp( '/(Seeking to row 10 failed)/i' );
+        $this->expectException( 'Mumsys_Db_Exception' );
+        $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
+        $result->sqlResult( 10 );
     }
 
 
     public function testSeek()
     {
         $table = 'mumsysunittesttable';
-        $this->_createTempTable($table);
-        $this->_createTempTableData($table);
+        $this->_createTempTable( $table );
+        $this->_createTempTableData( $table );
 
-        $result = $this->_dbDriver->query('SELECT * FROM ' . $table);
-        $result->seek(0);
+        $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
+        $result->seek( 0 );
         $i = 1;
-        while ( $row = $result->fetch('assoc') ) {
-            $this->assertEquals($i++, $row['ida']);
+        while ( $row = $result->fetch( 'assoc' ) ) {
+            $this->assertEquals( $i++, $row['ida'] );
         }
 
         $mysqlresult = $result->getResult();
-        $result->seek(2, $mysqlresult);
-        $row = $result->fetch('assoc');
-        $this->assertEquals(3, $row['ida']);
+        $result->seek( 2, $mysqlresult );
+        $row = $result->fetch( 'assoc' );
+        $this->assertEquals( 3, $row['ida'] );
 
-        $x = $result->seek(99);
-        $this->assertEquals(false, $x);
+        $x = $result->seek( 99 );
+        $this->assertEquals( false, $x );
     }
 
 
     public function testFree()
     {
         $table = 'mumsysunittesttable';
-        $this->_createTempTable($table);
-        $this->_createTempTableData($table);
+        $this->_createTempTable( $table );
+        $this->_createTempTableData( $table );
 
-        $result = $this->_dbDriver->query('SELECT * FROM ' . $table);
+        $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
         $xA = $result->free();
 
-        $result = $this->_dbDriver->query('SELECT * FROM ' . $table);
+        $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
         $mysqlresult = $result->getResult();
-        $xB = $result->free($mysqlresult);
+        $xB = $result->free( $mysqlresult );
 
-        $this->assertEquals(true, $xA);
-        $this->assertEquals(true, $xB);
+        $this->assertEquals( true, $xA );
+        $this->assertEquals( true, $xB );
 
         $regex = '/(mysqli_free_result\(\) expects parameter 1 to be mysqli_result, string given)/i';
-        $this->expectExceptionMessageRegExp($regex);
-        $this->expectException('Mumsys_Db_Exception');
-        $xC = $result->free('crapRx');
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException( 'Mumsys_Db_Exception' );
+        $xC = $result->free( 'crapRx' );
     }
 
 
@@ -296,7 +301,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends Mumsys_Unittest_Testcase
             UNIQUE KEY `texta` (`texta`),
             UNIQUE KEY `textb` (`textb`)
             )';
-        $this->_dbDriver->query($sql);
+        $this->_dbDriver->query( $sql );
 
         return;
     }
@@ -312,9 +317,10 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest extends Mumsys_Unittest_Testcase
         );
 
         foreach ( $data as $sql ) {
-            $this->_dbDriver->query($sql);
+            $this->_dbDriver->query( $sql );
         }
     }
+
 
     private function _getTempTableValues()
     {

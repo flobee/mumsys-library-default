@@ -24,8 +24,8 @@ class Mumsys_CacheTest
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Cache' => $this->_version,
         );
-        $this->_object = new Mumsys_Cache('group', 'id');
-        $this->_object->setPath('/tmp/');
+        $this->_object = new Mumsys_Cache( 'group', 'id' );
+        $this->_object->setPath( '/tmp/' );
     }
 
 
@@ -35,8 +35,8 @@ class Mumsys_CacheTest
      */
     protected function tearDown()
     {
-        $this->object = NULL;
-        unset($this->object);
+        $this->object = null;
+        unset( $this->object );
     }
 
 
@@ -48,14 +48,14 @@ class Mumsys_CacheTest
      */
     public function testWrite()
     {
-        $this->_object = new Mumsys_Cache('group', 'id');
-        $this->_object->setPath('/tmp/');
+        $this->_object = new Mumsys_Cache( 'group', 'id' );
+        $this->_object->setPath( '/tmp/' );
 
         $this->_object->isCached();
 
-        $this->_object->write(2, 'data to cache');
+        $this->_object->write( 2, 'data to cache' );
         $actual = $this->_object->read();
-        $this->assertEquals('data to cache', $actual);
+        $this->assertEquals( 'data to cache', $actual );
     }
 
 
@@ -65,7 +65,7 @@ class Mumsys_CacheTest
     public function testRead()
     {
         $actual = $this->_object->read();
-        $this->assertEquals('data to cache', $actual);
+        $this->assertEquals( 'data to cache', $actual );
     }
 
 
@@ -75,7 +75,7 @@ class Mumsys_CacheTest
      */
     public function testIsCached()
     {
-        $this->assertTrue($this->_object->isCached());
+        $this->assertTrue( $this->_object->isCached() );
     }
 
 
@@ -88,8 +88,8 @@ class Mumsys_CacheTest
         $actual1 = $this->_object->isCached();
         $this->_object->removeCache();
         $actual2 = $this->_object->isCached();
-        $this->assertTrue($actual1);
-        $this->assertFalse($actual2);
+        $this->assertTrue( $actual1 );
+        $this->assertFalse( $actual2 );
     }
 
 
@@ -99,8 +99,8 @@ class Mumsys_CacheTest
      */
     public function testSetPrefix()
     {
-        $this->_object->setPrefix('fx');
-        $this->assertEquals('fx', $this->_object->getPrefix());
+        $this->_object->setPrefix( 'fx' );
+        $this->assertEquals( 'fx', $this->_object->getPrefix() );
     }
 
 
@@ -110,8 +110,8 @@ class Mumsys_CacheTest
      */
     public function testSetPath()
     {
-        $this->_object->setPath('/tmp//');
-        $this->assertEquals('/tmp/', $this->_object->getPath());
+        $this->_object->setPath( '/tmp//' );
+        $this->assertEquals( '/tmp/', $this->_object->getPath() );
     }
 
 
@@ -121,8 +121,8 @@ class Mumsys_CacheTest
      */
     public function testSetEnable()
     {
-        $this->_object->setEnable(false);
-        $this->assertFalse($this->_object->isCached());
+        $this->_object->setEnable( false );
+        $this->assertFalse( $this->_object->isCached() );
     }
 
     // test abstracts
@@ -133,7 +133,9 @@ class Mumsys_CacheTest
      */
     public function testGetVersion()
     {
-        $this->assertEquals('Mumsys_Cache ' . $this->_version, $this->_object->getVersion());
+        $this->assertEquals(
+            'Mumsys_Cache ' . $this->_version, $this->_object->getVersion()
+        );
     }
 
 
@@ -142,7 +144,7 @@ class Mumsys_CacheTest
      */
     public function testgetVersionID()
     {
-        $this->assertEquals($this->_version, $this->_object->getVersionID());
+        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
     }
 
 
@@ -154,8 +156,8 @@ class Mumsys_CacheTest
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
+            $this->assertTrue( isset( $possible[$must] ) );
+            $this->assertTrue( ($possible[$must] == $value ) );
         }
     }
 

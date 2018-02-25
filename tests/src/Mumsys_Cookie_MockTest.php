@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Mumsys_Cookie_Mock Test
  */
@@ -37,8 +36,8 @@ class Mumsys_Cookie_MockTest
     protected function tearDown()
     {
         $this->_object = null;
-        if ( file_exists($this->_testCookieFile) ) {
-            @unlink($this->_testCookieFile);
+        if ( file_exists( $this->_testCookieFile ) ) {
+            @unlink( $this->_testCookieFile );
         }
     }
 
@@ -51,10 +50,10 @@ class Mumsys_Cookie_MockTest
         $actual1 = new Mumsys_Cookie_Mock();
 
         $location = $this->_testCookieFile;
-        $actual2 = new Mumsys_Cookie_Mock($location);
+        $actual2 = new Mumsys_Cookie_Mock( $location );
 
-        $this->assertInstanceOf('Mumsys_Cookie_Interface', $actual1);
-        $this->assertInstanceOf('Mumsys_Cookie_Interface', $actual2);
+        $this->assertInstanceOf( 'Mumsys_Cookie_Interface', $actual1 );
+        $this->assertInstanceOf( 'Mumsys_Cookie_Interface', $actual2 );
     }
 
 
@@ -64,8 +63,8 @@ class Mumsys_Cookie_MockTest
     public function test__destruct()
     {
         $actual1 = new Mumsys_Cookie_Mock();
-        $this->assertInstanceOf('Mumsys_Cookie_Interface', $actual1);
-        $actual1->setCookie('key', 'val');
+        $this->assertInstanceOf( 'Mumsys_Cookie_Interface', $actual1 );
+        $actual1->setCookie( 'key', 'val' );
         // now destruction performs by phpunit for CC
     }
 
@@ -78,17 +77,17 @@ class Mumsys_Cookie_MockTest
      */
     public function testGetSetCookie()
     {
-        $actual1 = $this->_object->getCookie(null, false);
+        $actual1 = $this->_object->getCookie( null, false );
 
-        $actual2 = $this->_object->getCookie('none', false);
+        $actual2 = $this->_object->getCookie( 'none', false );
 
-        $this->_object->setCookie('key', 'val');
-        $this->_object->setRawCookie('key', 'val');
-        $actual3 = $this->_object->getCookie('key');
+        $this->_object->setCookie( 'key', 'val' );
+        $this->_object->setRawCookie( 'key', 'val' );
+        $actual3 = $this->_object->getCookie( 'key' );
 
-        $this->assertEquals(array(), $actual1);
-        $this->assertFalse($actual2);
-        $this->assertEquals('val', $actual3);
+        $this->assertEquals( array(), $actual1 );
+        $this->assertFalse( $actual2 );
+        $this->assertEquals( 'val', $actual3 );
     }
 
 
@@ -97,12 +96,12 @@ class Mumsys_Cookie_MockTest
      */
     public function testUnsetCookie()
     {
-        $this->_object->setCookie('key', 'val');
-        $actual1 = $this->_object->unsetCookie('key');
-        $actual2 = $this->_object->unsetCookie('key');
+        $this->_object->setCookie( 'key', 'val' );
+        $actual1 = $this->_object->unsetCookie( 'key' );
+        $actual2 = $this->_object->unsetCookie( 'key' );
 
-        $this->assertTrue($actual1);
-        $this->assertTrue($actual2);
+        $this->assertTrue( $actual1 );
+        $this->assertTrue( $actual2 );
     }
 
 
@@ -111,11 +110,11 @@ class Mumsys_Cookie_MockTest
      */
     public function testClear()
     {
-        $this->_object->setCookie('key', 'val');
+        $this->_object->setCookie( 'key', 'val' );
         $this->_object->clear();
         $actual1 = $this->_object->getCookie();
 
-        $this->assertEquals(array(), $actual1);
+        $this->assertEquals( array(), $actual1 );
     }
 
 }

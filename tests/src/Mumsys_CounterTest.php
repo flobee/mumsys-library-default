@@ -40,55 +40,55 @@ class Mumsys_CounterTest
     public function testConstructor()
     {
         $this->_object = new Mumsys_Counter();
-        $this->assertInstanceof('Mumsys_Counter', $this->_object);
-        $this->assertEquals(0, $this->_object->result());
+        $this->assertInstanceof( 'Mumsys_Counter', $this->_object );
+        $this->assertEquals( 0, $this->_object->result() );
 
 
-        $this->_object = new Mumsys_Counter(true);
-        $this->assertInstanceof('Mumsys_Counter', $this->_object);
-        $this->assertEquals(1, $this->_object->result());
+        $this->_object = new Mumsys_Counter( true );
+        $this->assertInstanceof( 'Mumsys_Counter', $this->_object );
+        $this->assertEquals( 1, $this->_object->result() );
     }
 
 
     public function testAdd()
     {
-        $this->_object->add(1);
-        $this->assertEquals(1, $this->_object->result());
+        $this->_object->add( 1 );
+        $this->assertEquals( 1, $this->_object->result() );
 
-        $this->_object->add(-1);
-        $this->assertEquals(2, $this->_object->result());
+        $this->_object->add( -1 );
+        $this->assertEquals( 2, $this->_object->result() );
     }
 
 
     public function testSub()
     {
-        $this->_object->sub(1);
-        $this->assertEquals(-1, $this->_object->result());
+        $this->_object->sub( 1 );
+        $this->assertEquals( -1, $this->_object->result() );
 
-        $this->_object->sub(-1);
-        $this->assertEquals(-2, $this->_object->result());
+        $this->_object->sub( -1 );
+        $this->assertEquals( -2, $this->_object->result() );
 
-        $this->_object->sub(1.5); // positiv number: -2 -> sub 1.5 = -3.5
-        $this->assertEquals(-3.5, $this->_object->result());
+        $this->_object->sub( 1.5 ); // positiv number: -2 -> sub 1.5 = -3.5
+        $this->assertEquals( -3.5, $this->_object->result() );
     }
 
 
     public function testCount()
     {
         $this->_object->count();
-        $this->assertEquals(1, $this->_object->result());
+        $this->assertEquals( 1, $this->_object->result() );
     }
 
 
     public function testResult()
     {
-        $this->assertEquals(0, $this->_object->result());
+        $this->assertEquals( 0, $this->_object->result() );
     }
 
 
     public function testtoString()
     {
-        $this->assertEquals(0, $this->_object->__toString());
+        $this->assertEquals( 0, $this->_object->__toString() );
     }
 
     // test abstracts
@@ -99,7 +99,7 @@ class Mumsys_CounterTest
      */
     public function testGetVersion()
     {
-        $this->assertEquals('Mumsys_Counter ' . $this->_version, $this->_object->getVersion());
+        $this->assertEquals( 'Mumsys_Counter ' . $this->_version, $this->_object->getVersion() );
     }
 
 
@@ -108,7 +108,7 @@ class Mumsys_CounterTest
      */
     public function testgetVersionID()
     {
-        $this->assertEquals($this->_version, $this->_object->getVersionID());
+        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
     }
 
 
@@ -120,8 +120,8 @@ class Mumsys_CounterTest
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
+            $this->assertTrue( isset( $possible[$must] ) );
+            $this->assertTrue( ($possible[$must] == $value ) );
         }
     }
 

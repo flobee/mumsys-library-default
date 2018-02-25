@@ -177,4 +177,24 @@ class Mumsys_Unittest_Testcase
         return true;
     }
 
+    
+    /**
+     * Checks for available classes.
+     *
+     * @param array $list List of classes, interfaces, abstract classes to be
+     * checked
+     * @param array $myList List of expected classes, interfaces...
+     * @return boolean True on success
+     */
+    protected function _checkClassList( $list, $myList )
+    {
+        foreach ( $myList as $className ) {
+            $this->assertTrue(
+                isset( $list[$className] ), $className . ' not found/ exists'
+            );
+        }
+
+        return true;
+    }
+
 }

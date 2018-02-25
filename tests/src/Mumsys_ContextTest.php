@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Mumsys_Context Test
  */
@@ -24,7 +23,7 @@ class Mumsys_ContextTest
             'Mumsys_Abstract' => '3.0.2',
             'Mumsys_Context' => $this->_version,
         );
-        $this->_logfile = '/tmp/' . basename(__FILE__) . '.log';
+        $this->_logfile = '/tmp/' . basename( __FILE__ ) . '.log';
         $this->_object = new Mumsys_Context();
     }
 
@@ -35,7 +34,7 @@ class Mumsys_ContextTest
      */
     protected function tearDown()
     {
-        @unlink($this->_logfile);
+        @unlink( $this->_logfile );
     }
 
 
@@ -48,14 +47,14 @@ class Mumsys_ContextTest
      */
     public function testGetVersion()
     {
-        $this->assertEquals('Mumsys_Context ' . $this->_version, $this->_object->getVersion());
-        $this->assertEquals($this->_version, $this->_object->getVersionID());
+        $this->assertEquals( 'Mumsys_Context ' . $this->_version, $this->_object->getVersion() );
+        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
 
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
+            $this->assertTrue( isset( $possible[$must] ) );
+            $this->assertTrue( ($possible[$must] == $value ) );
         }
     }
 

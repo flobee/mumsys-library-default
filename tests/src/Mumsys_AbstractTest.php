@@ -1,14 +1,20 @@
 <?php
 
+
 /** Test class for the tests */
-class Mumsys_AbstractTestClass extends Mumsys_Abstract
+class Mumsys_AbstractTestClass
+    extends Mumsys_Abstract
 {
     const VERSION = '0.0.1';
-    public function checkKey($s)
+
+
+    public function checkKey( $s )
     {
-        parent::_checkKey($s);
+        parent::_checkKey( $s );
     }
+
 }
+
 
 /**
  * Mumsys_Abstract Tests
@@ -65,7 +71,7 @@ class Mumsys_AbstractTest
         $actual = $this->_object->getVersionID();
         $expected = '0.0.1';
 
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals( $expected, $actual );
     }
 
 
@@ -80,7 +86,7 @@ class Mumsys_AbstractTest
         $actual2 = Mumsys_Abstract::getVersion();
         $expected2 = 'Mumsys_Abstract ' . $this->_version;
 
-        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals( $expected1, $actual1 );
     }
 
 
@@ -89,10 +95,9 @@ class Mumsys_AbstractTest
      */
     public function test_checkKey()
     {
-        $this->_object->checkKey('validkey');
+        $this->_object->checkKey( 'validkey' );
 
-
-        $this->expectException('Mumsys_Exception');
+        $this->expectException( 'Mumsys_Exception' );
         $regex = '/(Invalid initialisation key for a setter. '
             . 'A string is required)/';
         $this->expectExceptionMessageRegExp( $regex );
@@ -106,8 +111,8 @@ class Mumsys_AbstractTest
      */
     public function testVersions()
     {
-         $this->assertEquals($this->_version, Mumsys_Abstract::VERSION);
-         $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
+        $this->assertEquals( $this->_version, Mumsys_Abstract::VERSION );
+        $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 
 }

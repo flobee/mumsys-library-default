@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Mumsys_Context Test
  */
@@ -24,7 +23,7 @@ class Mumsys_Context_ItemTest
             'Mumsys_Abstract' => '3.0.2',
             'Mumsys_Context_Item' => $this->_version,
         );
-        $this->_logfile = '/tmp/' . basename(__FILE__) . '.log';
+        $this->_logfile = '/tmp/' . basename( __FILE__ ) . '.log';
         $this->_object = new Mumsys_Context_Item();
     }
 
@@ -35,7 +34,7 @@ class Mumsys_Context_ItemTest
      */
     protected function tearDown()
     {
-        @unlink($this->_logfile);
+        @unlink( $this->_logfile );
     }
 
 
@@ -44,8 +43,8 @@ class Mumsys_Context_ItemTest
      */
     public function test_get()
     {
-        $this->expectExceptionMessageRegExp('/("Mumsys_Config_Interface" not set)/i');
-        $this->expectException('Mumsys_Context_Exception');
+        $this->expectExceptionMessageRegExp( '/("Mumsys_Config_Interface" not set)/i' );
+        $this->expectException( 'Mumsys_Context_Exception' );
         $this->_object->getConfig();
     }
 
@@ -56,12 +55,11 @@ class Mumsys_Context_ItemTest
      */
     public function testGetSetConfig()
     {
-        $config = new Mumsys_Config(array('x' => 'y'));
-        $this->_object->registerConfig($config);
+        $config = new Mumsys_Config( array('x' => 'y') );
+        $this->_object->registerConfig( $config );
 
-        $this->assertInstanceOf('Mumsys_Config_Interface', $this->_object->getConfig());
+        $this->assertInstanceOf( 'Mumsys_Config_Interface', $this->_object->getConfig() );
     }
-
 
     /**
      * @covers Mumsys_Context_Item::getPermissions
@@ -87,13 +85,13 @@ class Mumsys_Context_ItemTest
     public function testGetSetSession()
     {
         $session = new Mumsys_Session_Default();
-        $this->_object->registerSession($session);
+        $this->_object->registerSession( $session );
 
-        $this->assertInstanceOf('Mumsys_Session_Interface', $this->_object->getSession());
-
-        $this->expectExceptionMessageRegExp('/("Mumsys_Session_Interface" already set)/i');
-        $this->expectException('Mumsys_Context_Exception');
-        $this->_object->registerSession($session);
+        $this->assertInstanceOf( 'Mumsys_Session_Interface', $this->_object->getSession() );
+        $regex = '/("Mumsys_Session_Interface" already set)/i';
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException( 'Mumsys_Context_Exception' );
+        $this->_object->registerSession( $session );
     }
 
 
@@ -108,11 +106,11 @@ class Mumsys_Context_ItemTest
         $options = array(
             'type' => 'None:None',
         );
-        $odb = Mumsys_Db_Factory::getInstance($this->_object, $options);
-        $this->_object->registerDatabase($odb);
-        $this->_object->replaceDatabase($odb);
+        $odb = Mumsys_Db_Factory::getInstance( $this->_object, $options );
+        $this->_object->registerDatabase( $odb );
+        $this->_object->replaceDatabase( $odb );
 
-        $this->assertInstanceOf('Mumsys_Db_Driver_Interface', $this->_object->getDatabase());
+        $this->assertInstanceOf( 'Mumsys_Db_Driver_Interface', $this->_object->getDatabase() );
     }
 
 
@@ -165,11 +163,11 @@ class Mumsys_Context_ItemTest
      */
     public function testGetSetTranslation()
     {
-        $expected1 = new Mumsys_I18n_Default('de');
-        $this->_object->registerTranslation($expected1);
+        $expected1 = new Mumsys_I18n_Default( 'de' );
+        $this->_object->registerTranslation( $expected1 );
         $actual1 = $this->_object->getTranslation();
 
-        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals( $expected1, $actual1 );
     }
 
 
@@ -181,14 +179,14 @@ class Mumsys_Context_ItemTest
      */
     public function testGetSetLogger()
     {
-        $logger = new Mumsys_Logger_File(array('logfile' => $this->_logfile));
-        $this->_object->registerLogger($logger);
+        $logger = new Mumsys_Logger_File( array('logfile' => $this->_logfile) );
+        $this->_object->registerLogger( $logger );
 
-        $this->assertInstanceOf('Mumsys_Logger_Interface', $this->_object->getLogger());
+        $this->assertInstanceOf( 'Mumsys_Logger_Interface', $this->_object->getLogger() );
 
-        $this->expectExceptionMessageRegExp('/("Mumsys_Logger_Interface" already set)/');
-        $this->expectException('Mumsys_Context_Exception');
-        $this->_object->registerLogger($logger);
+        $this->expectExceptionMessageRegExp( '/("Mumsys_Logger_Interface" already set)/' );
+        $this->expectException( 'Mumsys_Context_Exception' );
+        $this->_object->registerLogger( $logger );
     }
 
 
@@ -201,13 +199,13 @@ class Mumsys_Context_ItemTest
     public function testGetSetRequest()
     {
         $object = new Mumsys_Request_Console();
-        $this->_object->replaceRequest($object);
+        $this->_object->replaceRequest( $object );
 
-        $this->assertInstanceOf('Mumsys_Request_Interface', $this->_object->getRequest());
+        $this->assertInstanceOf( 'Mumsys_Request_Interface', $this->_object->getRequest() );
 
-        $this->expectException('Mumsys_Context_Exception');
-        $this->expectExceptionMessageRegExp('/("Mumsys_Request_Interface" already set)/');
-        $this->_object->registerRequest($object);
+        $this->expectException( 'Mumsys_Context_Exception' );
+        $this->expectExceptionMessageRegExp( '/("Mumsys_Request_Interface" already set)/' );
+        $this->_object->registerRequest( $object );
     }
 
 
@@ -219,18 +217,18 @@ class Mumsys_Context_ItemTest
     {
         $interface = 'stdClass';
         $value = new stdClass();
-        $this->_object->registerGeneric($interface, $value);
+        $this->_object->registerGeneric( $interface, $value );
 
-        $actual1 = $this->_object->getGeneric($interface, false);
-        $actual2 = $this->_object->getGeneric('notExists', false);
+        $actual1 = $this->_object->getGeneric( $interface, false );
+        $actual2 = $this->_object->getGeneric( 'notExists', false );
 
-        $this->assertEquals($value, $actual1);
-        $this->assertFalse($actual2);
+        $this->assertEquals( $value, $actual1 );
+        $this->assertFalse( $actual2 );
 
         $regex = '/(Generic interface "imNotSetInterface" not found)/i';
-        $this->expectExceptionMessageRegExp($regex);
-        $this->expectException('Mumsys_Context_Exception');
-        $this->_object->getGeneric('imNotSetInterface', null);
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException( 'Mumsys_Context_Exception' );
+        $this->_object->getGeneric( 'imNotSetInterface', null );
     }
 
 
@@ -243,9 +241,9 @@ class Mumsys_Context_ItemTest
         $interface = 'badInterface';
         $value = new stdClass();
 
-        $this->expectExceptionMessageRegExp('/(Value does not implement the interface "badInterface")/i');
-        $this->expectException('Mumsys_Context_Exception');
-        $this->_object->registerGeneric($interface, $value);
+        $this->expectExceptionMessageRegExp( '/(Value does not implement the interface "badInterface")/i' );
+        $this->expectException( 'Mumsys_Context_Exception' );
+        $this->_object->registerGeneric( $interface, $value );
     }
 
 
@@ -261,20 +259,19 @@ class Mumsys_Context_ItemTest
         $message = 'A new version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
-        $this->assertEquals($this->_version, Mumsys_Config_File::VERSION, $message);
+        $this->assertEquals( $this->_version, Mumsys_Config_File::VERSION, $message );
 
 
-        $this->assertEquals('Mumsys_Context_Item ' . $this->_version, $this->_object->getVersion());
-        $this->assertEquals($this->_version, $this->_object->getVersionID());
+        $this->assertEquals( 'Mumsys_Context_Item ' . $this->_version, $this->_object->getVersion() );
+        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
 
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
             $message = 'Invalid: ' . $must . '::' . $value;
-            $this->assertTrue(isset($possible[$must]), $message);
-            $this->assertTrue(($possible[$must] == $value), $message);
+            $this->assertTrue( isset( $possible[$must] ), $message );
+            $this->assertTrue( ($possible[$must] == $value ), $message );
         }
-
     }
 
 }
