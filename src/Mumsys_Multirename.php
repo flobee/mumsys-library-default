@@ -126,8 +126,8 @@ class Mumsys_Multirename
      * @param Mumsys_Logger_Interface $logger Log object to track the work and/
      * or show the output when using as shell script or cronjob
      */
-    public function __construct( array $config = array(),
-        Mumsys_FileSystem $oFiles, Mumsys_Logger_Decorator_Interface $logger )
+    public function __construct( array $config, Mumsys_FileSystem $oFiles,
+        Mumsys_Logger_Interface $logger )
     {
         $logger->log( '### multirename (' . self::VERSION . ') starts', 7 );
 

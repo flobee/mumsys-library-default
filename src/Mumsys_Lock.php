@@ -46,12 +46,13 @@ class Mumsys_Lock
      *
      * @param string $file Location to lock file
      */
-    public function __construct( $file='' )
+    public function __construct( $file = '' )
     {
-        if ($file) {
-            $this->_file = (string)$file;
+        if ( $file ) {
+            $this->_file = (string) $file;
         }
     }
+
 
     /**
      * Lock a situation.
@@ -61,14 +62,14 @@ class Mumsys_Lock
      */
     public function lock()
     {
-        if ( file_exists($this->_file) ) {
-            $msg = sprintf('Can not lock! Lock "%1$s" exists', $this->_file);
-            throw new Mumsys_Exception($msg);
+        if ( file_exists( $this->_file ) ) {
+            $msg = sprintf( 'Can not lock! Lock "%1$s" exists', $this->_file );
+            throw new Mumsys_Exception( $msg );
         }
 
-        if ( !@touch($this->_file) ) {
-            $message = sprintf('Locking failt for file "%1$s"', $this->_file);
-            throw new Mumsys_Exception($message);
+        if ( !@touch( $this->_file ) ) {
+            $message = sprintf( 'Locking failt for file "%1$s"', $this->_file );
+            throw new Mumsys_Exception( $message );
         }
 
         return true;
@@ -83,10 +84,10 @@ class Mumsys_Lock
      */
     public function unlock()
     {
-        if ( file_exists($this->_file) ) {
-            if ( !@unlink($this->_file) ) {
-                $message = sprintf('Unlock failt for: "%1$s"', $this->_file);
-                throw new Mumsys_Exception($message);
+        if ( file_exists( $this->_file ) ) {
+            if ( !@unlink( $this->_file ) ) {
+                $message = sprintf( 'Unlock failt for: "%1$s"', $this->_file );
+                throw new Mumsys_Exception( $message );
             }
         }
 
@@ -104,12 +105,12 @@ class Mumsys_Lock
      */
     public function isLocked()
     {
-        if (!is_dir(dirname($this->_file))) {
-            $message = sprintf('Lock directory "%1$s" not exists', $this->_file);
-            throw new Mumsys_Exception($message);
+        if ( !is_dir( dirname( $this->_file ) ) ) {
+            $message = sprintf( 'Lock directory "%1$s" not exists', $this->_file );
+            throw new Mumsys_Exception( $message );
         }
 
-        if ( file_exists($this->_file) ) {
+        if ( file_exists( $this->_file ) ) {
             return true;
         }
         return false;

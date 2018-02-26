@@ -35,6 +35,7 @@ abstract class Mumsys_Logger_Decorator_Abstract
      */
     protected $_object;
 
+
     /**
      * Initialize the decorated logger object
      *
@@ -64,7 +65,7 @@ abstract class Mumsys_Logger_Decorator_Abstract
      */
     public function getLevelName( $level )
     {
-        return $this->_object->getLevelName($level);
+        return $this->_object->getLevelName( $level );
     }
 
 
@@ -88,7 +89,7 @@ abstract class Mumsys_Logger_Decorator_Abstract
      */
     public function log( $input, $level = 0 )
     {
-        return $this->_object->log($input, $level);
+        return $this->_object->log( $input, $level );
     }
 
 
@@ -101,7 +102,7 @@ abstract class Mumsys_Logger_Decorator_Abstract
      */
     public function checkLevel( $level = 0 )
     {
-        return $this->_object->checkLevel($level);
+        return $this->_object->checkLevel( $level );
     }
 
 

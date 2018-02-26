@@ -29,6 +29,11 @@
 abstract class Mumsys_Geolocation_Abstract
 {
     /**
+     * Version ID information.
+     */
+    const VERSION = '1.0.0';
+
+    /**
      * Url, host or path for the remote service if needed
      * @var string
      */
@@ -45,6 +50,7 @@ abstract class Mumsys_Geolocation_Abstract
      * @var string
      */
     protected $_currency;
+
 
     /**
      * Initialize Geolocation plugin object.
@@ -86,25 +92,25 @@ abstract class Mumsys_Geolocation_Abstract
     }
 
 
-    public function nearby($radius=10, $direction=0)
+    public function nearby( $radius = 10, $direction = 0 )
     {
         /*
-'code'=>'product.location.incircle()',
-			'internalcode'=>'
-				mprolo."latitude" > $2 - $1 / 111.19493 AND
-				mprolo."latitude" < $2 + $1 / 111.19493 AND
-				mprolo."longitude" > $3 - $1 / 111.19493 / COS( RADIANS( $3 ) ) AND
-				mprolo."longitude" < $3 + $1 / 111.19493 / COS( RADIANS( $3 ) ) AND
-				ACOS(
-					SIN( RADIANS( $2 ) ) * SIN( RADIANS( mprolo."latitude" ) ) +
-					COS( RADIANS( $2 ) ) * COS( RADIANS( mprolo."latitude" ) ) *
-					COS( RADIANS( mprolo."longitude" ) - RADIANS( $3 ) )
-				) * 6371.0',
-			'label'=>'Product locations within a radius, parameter(radius in km, latitude in degrees, longitude in degrees)',
-			'type'=> 'float',
+          'code'=>'product.location.incircle()',
+          'internalcode'=>'
+          mprolo."latitude" > $2 - $1 / 111.19493 AND
+          mprolo."latitude" < $2 + $1 / 111.19493 AND
+          mprolo."longitude" > $3 - $1 / 111.19493 / COS( RADIANS( $3 ) ) AND
+          mprolo."longitude" < $3 + $1 / 111.19493 / COS( RADIANS( $3 ) ) AND
+          ACOS(
+          SIN( RADIANS( $2 ) ) * SIN( RADIANS( mprolo."latitude" ) ) +
+          COS( RADIANS( $2 ) ) * COS( RADIANS( mprolo."latitude" ) ) *
+          COS( RADIANS( mprolo."longitude" ) - RADIANS( $3 ) )
+          ) * 6371.0',
+          'label'=>'Product locations within a radius, parameter(radius in km,
+         * latitude in degrees, longitude in degrees)',
+          'type'=> 'float',
          */
 // http://www.zwanziger.de/gc_tools_coorddist.html
-
     }
 
 
@@ -120,22 +126,27 @@ abstract class Mumsys_Geolocation_Abstract
     protected function fetch( $url )
     {
         $data = false;
-        if ( function_exists('curl_init') ) {
+        if ( function_exists( 'curl_init' ) ) {
             $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_USERAGENT, 'Mumsys_Geolocation PHP Class v0.1');
-            $data = curl_exec($curl);
-            curl_close($curl);
-        } else if ( ini_get('allow_url_fopen') ) {
-            $data = file_get_contents($url);
+            curl_setopt( $curl, CURLOPT_URL, $url );
+            curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+            $version = 'Mumsys_Geolocation PHP Class v:' . self::VERSION;
+            curl_setopt( $curl, CURLOPT_USERAGENT, $version );
+            $data = curl_exec( $curl );
+            curl_close( $curl );
+        } else if ( ini_get( 'allow_url_fopen' ) ) {
+            $data = file_get_contents( $url );
         } else {
-            $message = sprintf('Geolocation: Can not fetch data form "%1$s"', $url);
-            throw new Mumsys_Geolocation_Exception($message, 1);
+            $message = sprintf(
+                'Geolocation: Can not fetch data form "%1$s"',
+                $url
+            );
+            throw new Mumsys_Geolocation_Exception( $message, 1 );
         }
 
-        if ($data === false) {
-            throw new Mumsys_Geolocation_Exception('Service error. Fetching data failt', 500);
+        if ( $data === false ) {
+            $mesg = 'Service error. Fetching data failt';
+            throw new Mumsys_Geolocation_Exception( $mesg, 500 );
         }
 
         return $data;

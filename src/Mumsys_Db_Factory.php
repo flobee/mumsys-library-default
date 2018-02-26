@@ -28,6 +28,7 @@ class Mumsys_Db_Factory
      */
     const VERSION = '3.5.0';
 
+
     /**
      * Returns the database object.
      *
@@ -56,24 +57,25 @@ class Mumsys_Db_Factory
      * @return Mumsys_Db_Driver_Interface Returns the database driver object
      * @throws Mumsys_Db_Exception On errors
      */
-    public static function getInstance(Mumsys_Context_Item $context, array $options )
+    public static function getInstance( Mumsys_Context_Item $context,
+        array $options )
     {
         try
         {
-            $types = explode(':', $options['type']);
-            $cnt = count($types);
+            $types = explode( ':', $options['type'] );
+            $cnt = count( $types );
 
-            if ($cnt != 2) {
+            if ( $cnt != 2 ) {
                 throw new Mumsys_Db_Exception(
                     'Invalid Db driver. Can not create instance', 1
                 );
             }
 
-            $class = 'Mumsys_Db_Driver_' . ucwords($types[0]) .'_'. ucwords($types[1]);
-            $object = new $class($context, $options);
+            $class = 'Mumsys_Db_Driver_' . ucwords( $types[0] ) . '_' . ucwords( $types[1] );
+            $object = new $class( $context, $options );
         }
         catch ( Exception $e ) {
-            throw new Mumsys_Db_Exception($e->getMessage(), $e->getCode(), $e);
+            throw new Mumsys_Db_Exception( $e->getMessage(), $e->getCode(), $e );
         }
 
         return $object;

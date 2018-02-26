@@ -41,12 +41,13 @@ abstract class Mumsys_FileSystem_Common_Abstract
      */
     public static function extGet( $file )
     {
-        $ext = strrchr(basename($file), '.');
+        $ext = strrchr( basename( $file ), '.' );
         if ( $ext ) {
-            $ext = substr($ext, 1);
+            $ext = substr( $ext, 1 );
         } else {
             $ext = '';
         }
+
         return $ext;
     }
 
@@ -60,23 +61,12 @@ abstract class Mumsys_FileSystem_Common_Abstract
      */
     public static function nameGet( $file = '' )
     {
-        $pos = strrpos($file, '.');
+        $pos = strrpos( $file, '.' );
         if ( $pos === false ) {
-            return basename($file);
+            return basename( $file );
         } else {
-            return substr(basename($file), 0, $pos);
+            return substr( basename( $file ), 0, $pos );
         }
     }
-
-
-    /**
-     * Get extension of current file
-     *
-     * @return string Returns a string of the extension or '' (empty string)
-     */
-//    public function extensionGet()
-//    {   // $this->extension =
-//        return $this->extGet($this->file);
-//    }
 
 }

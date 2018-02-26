@@ -51,7 +51,7 @@ abstract class Mumsys_Registry
      */
     public static function replace( $key, $value )
     {
-        parent::_checkKey($key);
+        parent::_checkKey( $key );
         self::$_registry[$key] = $value;
     }
 
@@ -66,11 +66,11 @@ abstract class Mumsys_Registry
      */
     public static function register( $key, $value )
     {
-        parent::_checkKey($key);
+        parent::_checkKey( $key );
 
-        if ( array_key_exists($key, self::$_registry) ) {
-            $message = sprintf('Registry key "%1$s" exists', $key);
-            throw new Mumsys_Registry_Exception($message);
+        if ( array_key_exists( $key, self::$_registry ) ) {
+            $message = sprintf( 'Registry key "%1$s" exists', $key );
+            throw new Mumsys_Registry_Exception( $message );
         }
 
         self::$_registry[$key] = $value;
@@ -89,7 +89,7 @@ abstract class Mumsys_Registry
     {
         $message = 'Unknown meaning for set(). Use register() or replace() '
             . 'methodes';
-        throw new Mumsys_Registry_Exception($message);
+        throw new Mumsys_Registry_Exception( $message );
     }
 
 
@@ -102,7 +102,7 @@ abstract class Mumsys_Registry
      */
     public static function get( $key, $default = null )
     {
-        if ( isset(self::$_registry[$key]) ) {
+        if ( isset( self::$_registry[$key] ) ) {
             return self::$_registry[$key];
         }
 
@@ -117,8 +117,8 @@ abstract class Mumsys_Registry
      */
     public static function remove( $key )
     {
-        if ( isset(self::$_registry[$key]) ) {
-            unset(self::$_registry[$key]);
+        if ( isset( self::$_registry[$key] ) ) {
+            unset( self::$_registry[$key] );
         }
     }
 

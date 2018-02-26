@@ -30,6 +30,7 @@ class Mumsys_File
      * Version ID information
      */
     const VERSION = '3.2.0';
+
     /**
      * File handle
      * @var ressource
@@ -85,27 +86,27 @@ class Mumsys_File
      *
      * @param array $params Params to set on initialisation the object
      *  - [file] Location to the file to read or to write
-     * 	- [way] Kind/ mode of to read/write the file
-     * 	- [buffer] Number of bytes to be read from the file when reading from;
+     *  - [way] Kind/ mode of to read/write the file
+     *  - [buffer] Number of bytes to be read from the file when reading from;
      *    see setBuffer()
      *
      * @return void
      */
-    public function __construct(array $params=array( ))
+    public function __construct( array $params = array() )
     {
-        if ( isset($params['file']) ) {
+        if ( isset( $params['file'] ) ) {
             $this->_file = $params['file'];
         }
 
-        if ( isset($params['way']) ) {
-            $this->setMode($params['way']);
+        if ( isset( $params['way'] ) ) {
+            $this->setMode( $params['way'] );
         }
-        if ( isset($params['buffer']) ) {
-            $this->_buffer = intval($params['buffer']);
+        if ( isset( $params['buffer'] ) ) {
+            $this->_buffer = intval( $params['buffer'] );
         }
 
         if ( $this->_file && $this->_way ) {
-            $this->open($this->_file, $this->_way);
+            $this->open( $this->_file, $this->_way );
         }
     }
 
@@ -129,17 +130,17 @@ class Mumsys_File
      */
     public function open()
     {
-        if ( ($this->_fh = @fopen($this->_file, $this->_way)) === false ) {
+        if ( ($this->_fh = @fopen( $this->_file, $this->_way )) === false ) {
             $msg = sprintf(
                 'Can not open file "%1$s" with mode "%2$s". Directory is '
                 . 'writeable: "%3$s", readable: "%4$s".',
                 $this->_file,
                 $this->_way,
-                (self::bool2str($this->isWriteable())),
-                (self::bool2str($this->isReadable()))
+                (self::bool2str( $this->isWriteable() ) ),
+                (self::bool2str( $this->isReadable() ) )
             );
 
-            throw new Mumsys_File_Exception($msg);
+            throw new Mumsys_File_Exception( $msg );
         }
 
         $this->_isOpen = true;
@@ -165,8 +166,8 @@ class Mumsys_File
         $this->_isReadable = null;
         $return = true;
 
-        if ( is_resource($this->_fh) ) {
-            $return = @fclose($this->_fh);
+        if ( is_resource( $this->_fh ) ) {
+            $return = @fclose( $this->_fh );
         }
 
         return $return;
@@ -188,22 +189,20 @@ class Mumsys_File
             $message = sprintf(
                 'File not open. Can not write to file: "%1$s".', $this->_file
             );
-            throw new Mumsys_File_Exception($message);
-        }
-
-        if ( !$this->_isWriteable )
-        {
-            $message = sprintf('File not writeable: "%1$s".', $this->_file);
             throw new Mumsys_File_Exception( $message );
         }
 
-        if ( ($numBytes=@fwrite($this->_fh, $content)) === false )
-        {
+        if ( !$this->_isWriteable ) {
+            $message = sprintf( 'File not writeable: "%1$s".', $this->_file );
+            throw new Mumsys_File_Exception( $message );
+        }
+
+        if ( ($numBytes = @fwrite( $this->_fh, $content )) === false ) {
             $message = sprintf(
                 'Can not write to file: "%1$s". IsOpen: "%2$s", Is writeable: "%3$s".',
                 $this->_file,
-                (self::bool2str($this->_isOpen)),
-                (self::bool2str($this->isWriteable()))
+                ( self::bool2str( $this->_isOpen ) ),
+                ( self::bool2str( $this->isWriteable() ) )
             );
             throw new Mumsys_File_Exception( $message );
         }
@@ -233,29 +232,27 @@ class Mumsys_File
         if ( !$this->isReadable() ) {
             $msg = sprintf(
                 'File "%1$s" not readable with mode "%2$s". Is writeable '
-                . '"%3$s", readable: "%4$s".'
-                , $this->_file,
-                $this->_way,
-                self::bool2str($this->isWriteable()),
-                self::bool2str($this->isReadable())
+                . '"%3$s", readable: "%4$s".',
+                $this->_file, $this->_way,
+                self::bool2str( $this->isWriteable() ),
+                self::bool2str( $this->isReadable() )
             );
-            throw new Mumsys_File_Exception($msg);
+            throw new Mumsys_File_Exception( $msg );
         }
 
-        if ( empty($this->_buffer) ) {
+        if ( empty( $this->_buffer ) ) {
             // entire file
-            $buf = filesize($this->_file);
+            $buf = filesize( $this->_file );
         } else {
             $buf = $this->_buffer;
         }
 
-        if ( ($r = @fread($this->_fh, $buf)) === false ) {
+        if ( ($r = @fread( $this->_fh, $buf )) === false ) {
             $msg = sprintf(
                 'Error when reading the file: "%1$s". IsOpen: "%2$s".',
-                $this->_file,
-                (self::bool2str($this->_isOpen))
+                $this->_file, (self::bool2str( $this->_isOpen ) )
             );
-            throw new Mumsys_File_Exception($msg);
+            throw new Mumsys_File_Exception( $msg );
         }
         return $r;
     }
@@ -276,38 +273,37 @@ class Mumsys_File
             $message = sprintf(
                 'Can not truncate file "%1$s". File not open', $this->_file
             );
-            throw new Mumsys_File_Exception($message);
+            throw new Mumsys_File_Exception( $message );
         }
 
-        return ftruncate($this->_fh, 0);
+        return ftruncate( $this->_fh, 0 );
     }
 
 
     /**
      * Set write or read mode.
      *
-     * - 'r'  	Open for reading only; place the file pointer at the beginning
+     *  - 'r'   Open for reading only; place the file pointer at the beginning
      *          of the file.
-     * - 'r+' 	Open for reading and writing; place the file pointer at the
+     *  - 'r+'  Open for reading and writing; place the file pointer at the
      *          beginning of the file.
      * - 'w'    Open for writing only; place the file pointer at the beginning
      *          of the file and truncate the file to zero length. If the file
      *          does not exist, attempt to create it.
-     * - 'w+' 	Open for reading and writing; place the file pointer at the
+     *  - 'w+'  Open for reading and writing; place the file pointer at the
      *          beginning of the file and truncate the file to zero length. If
      *          the file does not exist, attempt to create it.
-     * - 'a'    Open for writing only; place the file pointer at the end of the
+     *  - 'a'   Open for writing only; place the file pointer at the end of the
      *          file. If the file does not exist, attempt to create it.
-     * - 'a+' 	Open for reading and writing; place the file pointer at the end
+     *  - 'a+'  Open for reading and writing; place the file pointer at the end
      *          of the file. If the file does not exist, attempt to create it.
-     *
-     * - 'x'    Create and open for writing only; place the file pointer at the
+     *  - 'x'   Create and open for writing only; place the file pointer at the
      *          beginning of the file. If the file already exists, the fopen()
      *          call will fail by returning FALSE and generating an error of
      *          level E_WARNING. If the file does not exist, attempt to create
      *          it. This is equivalent to specifying O_EXCL|O_CREAT flags for
      *          the underlying open(2) system call.
-     * - 'x+' 	Create and open for reading and writing; place the file pointer
+     *  - 'x+'  Create and open for reading and writing; place the file pointer
      *          at the beginning of the file. If the file already exists, the
      *          fopen() call will fail by returning FALSE and generating an
      *          error of level E_WARNING. If the file does not exist, attempt
@@ -316,14 +312,14 @@ class Mumsys_File
      *
      * @param string $string Return the mode for the file operation
      */
-    public function setMode($string)
+    public function setMode( $string )
     {
         $modes = array('r', 'r+', 'w', 'w+', 'a', 'a+', 'x', 'x+');
 
         if ( in_array( $string, $modes ) ) {
-            $this->_way = (string)$string;
+            $this->_way = (string) $string;
         } else {
-            throw new Mumsys_File_Exception('Invalid mode');
+            throw new Mumsys_File_Exception( 'Invalid mode' );
         }
     }
 
@@ -336,13 +332,13 @@ class Mumsys_File
      *
      * @param string $file File to read or write from
      */
-    public function setFile($file)
+    public function setFile( $file )
     {
-        if ($this->_isOpen && $this->_file != $file) {
+        if ( $this->_isOpen && $this->_file != $file ) {
             $this->close();
         }
 
-        $this->_file = (string)$file;
+        $this->_file = (string) $file;
     }
 
 
@@ -363,9 +359,9 @@ class Mumsys_File
      * @param integer $n Set number of bytes to fetch when reading a file.
      * Set to 0 will read the entire file
      */
-    public function setBuffer($n)
+    public function setBuffer( $n )
     {
-        $this->_buffer = (int)$n;
+        $this->_buffer = (int) $n;
     }
 
 
@@ -377,18 +373,19 @@ class Mumsys_File
      */
     public function isWriteable()
     {
-        if ($this->_isWriteable === null) {
-            if ($this->isOpen()) {
+        if ( $this->_isWriteable === null ) {
+            if ( $this->isOpen() ) {
                 // test if file is writeable
-                if ( is_writeable($this->_file) ) {
+                if ( is_writeable( $this->_file ) ) {
                     $this->_isWriteable = true;
                 } else {
                     $this->_isWriteable = false;
                 }
             } else {
                 // test if writing/creating to write would be possible
-                if ( is_writeable(dirname($this->_file))
-                    && is_dir(dirname($this->_file)) ) {
+                if ( is_writeable( dirname( $this->_file ) )
+                    && is_dir( dirname( $this->_file ) )
+                ) {
                     $this->_isWriteable = true;
                 } else {
                     $this->_isWriteable = false;
@@ -408,9 +405,9 @@ class Mumsys_File
      */
     public function isReadable()
     {
-        if ($this->_isReadable === null) {
-            if ($this->_isOpen) {
-                if ( is_readable($this->_file) ) {
+        if ( $this->_isReadable === null ) {
+            if ( $this->_isOpen ) {
+                if ( is_readable( $this->_file ) ) {
                     $this->_isReadable = true;
                 } else {
                     $this->_isReadable = false;
@@ -418,7 +415,7 @@ class Mumsys_File
             } else {
                 // test if reading file would be possible eg when opening/
                 // creating a file in read/write mode
-                if ( is_readable(dirname($this->_file)) ) {
+                if ( is_readable( dirname( $this->_file ) ) ) {
                     $this->_isReadable = true;
                 } else {
                     $this->_isReadable = false;
@@ -450,7 +447,7 @@ class Mumsys_File
      * @return string Returns the string for the current bool value: Yes for
      * true, No for false
      */
-    private static function bool2str($str)
+    private static function bool2str( $str )
     {
         return ($str ? 'Yes' : 'No');
     }

@@ -31,17 +31,19 @@ class Mumsys_Mvc_Templates_Text_Default
      */
     const VERSION = '1.0.0';
 
+
     /**
      * Returns a "table" by given records of data.
      *
      * @param array $rowsAndCols List of records in list of key/value pairs to
      * create the 2D structure
      */
-    public function getCreateTable($rowsAndCols)
+    public function getCreateTable( $rowsAndCols )
     {
         $result = ' table for text by given array not implemented yet';
         return $result;
     }
+
 
     /**
      * Sets/Adds a "table" (in time) to the buffer of the output
@@ -49,9 +51,9 @@ class Mumsys_Mvc_Templates_Text_Default
      * @param array $rowsAndCols List of records in list of key/value pairs to
      * create the 2D structure
      */
-    public function addCreateTable(array $rowsAndCols)
+    public function addCreateTable( array $rowsAndCols )
     {
-        $this->add($this->getCreateTable($rowsAndCols));
+        $this->add( $this->getCreateTable( $rowsAndCols ) );
     }
 
 
@@ -63,7 +65,7 @@ class Mumsys_Mvc_Templates_Text_Default
      */
     public function addTitleBlock( $title = '', $content = '' )
     {
-        $this->add($this->getTitleBlock($title, $content));
+        $this->add( $this->getTitleBlock( $title, $content ) );
     }
 
 
@@ -89,9 +91,10 @@ class Mumsys_Mvc_Templates_Text_Default
      *
      * @param $extras arrray
      */
-    public function getSiteHeader($extras='')
+    public function getSiteHeader( $extras = '' )
     {
-        $outp = 'Site Head not implemented yet. But a page title, if set is here "'.$this->_pagetitle.'"';
+        $outp = 'Site Head not implemented yet. But a page title, if set is '
+            . 'here "' . $this->_pagetitle . '"';
         // if ( >get('charset') ) {}
 
         return $outp;
@@ -120,11 +123,14 @@ class Mumsys_Mvc_Templates_Text_Default
     public function noAccess()
     {
         $l = $this->_context->getTranslation();
-        $noAccess = $l->t('_CMS_NOACCESS');
-        $this->title( $noAccess, $l->_t(_CMS_NOPERMISSION_INFO));
+        $noAccess = $l->t( '_CMS_NOACCESS' );
+        $this->title( $noAccess, $l->_t( _CMS_NOPERMISSION_INFO ) );
         $this->show();
-        throw new Mumsys_Mvc_Display_Exception($noAccess, Mumsys_Mvc_Display_Exception::ERROR_HTTP401);
+
+        $code = Mumsys_Mvc_Display_Exception::ERROR_HTTP401;
+        throw new Mumsys_Mvc_Display_Exception( $noAccess, $code );
     }
+
 
     /**
      * Error reporting helper to add error messages.
@@ -135,38 +141,45 @@ class Mumsys_Mvc_Templates_Text_Default
      * @param string $func Name of the function of the error
      * @param string $class Name of the class of the error
      */
-    public function mkError($msg, $line=null, $file=null, $func=false, $class=false)
+    public function mkError( $msg, $line = null, $file = null, $func = false,
+        $class = false )
     {
         $l = $this->_context->getTranslation();
 
-        if ( is_array($msg) ) {
+        if ( is_array( $msg ) ) {
             $retour = '';
-            foreach ( $msg AS $key => &$val ) {
+            foreach ( $msg as $key => &$val ) {
                 $key++;
-                $retour .= '  *' . $l->_t('_CMS_ERROR') . ': ' . $key . ' - ' . $val . '' . _NL;
+                $retour .= '  *' . $l->_t( '_CMS_ERROR' ) . ': ' . $key . ' - ' . $val . '' . _NL;
             }
             $retour .= _NL . _NL;
         } else {
             $retour = '* ' . $msg . '' . _NL;
         }
+
         if ( $line || $file || $func || $class ) {
             $retour .= '' . _NL;
         }
+
         if ( $line ) {
             $retour .= ' || Line: ' . $line;
         }
+
         if ( $file ) {
-            $retour .= ' || File: ' . basename($file);
+            $retour .= ' || File: ' . basename( $file );
         }
+
         if ( $func ) {
             $retour .= ' || Function/Methode: ' . ($func);
         }
+
         if ( $class ) {
             $retour .= ' || Class: ' . ($class);
         }
+
         $retour .= _NL;
 
-        $this->setTitleBlock($l->_t('_CMS_ERROR'), $retour);
+        $this->setTitleBlock( $l->_t( '_CMS_ERROR' ), $retour );
     }
 
 }

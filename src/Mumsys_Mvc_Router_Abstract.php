@@ -80,8 +80,8 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function getProgramName()
     {
-        if ($this->_programName === null) {
-            $this->_programName = $this->_request->getParam($this->getProgramKey());
+        if ( $this->_programName === null ) {
+            $this->_programName = $this->_request->getParam( $this->getProgramKey() );
         }
 
         return $this->_programName;
@@ -96,7 +96,7 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function setProgramName( $value = null )
     {
-        $this->_programName = ucwords((string)$value);
+        $this->_programName = ucwords( (string) $value );
         return $this;
     }
 
@@ -108,8 +108,8 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function getControllerName()
     {
-        if ($this->_controllerName === null) {
-            $this->_controllerName = $this->_request->getParam($this->getControllerKey());
+        if ( $this->_controllerName === null ) {
+            $this->_controllerName = $this->_request->getParam( $this->getControllerKey() );
         }
 
         return $this->_controllerName;
@@ -124,7 +124,7 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function setControllerName( $value = null )
     {
-        $this->_controllerName = ucwords((string)$value);
+        $this->_controllerName = ucwords( (string) $value );
 
         return $this;
     }
@@ -137,8 +137,8 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function getActionName()
     {
-        if ($this->_actionName === null) {
-            $this->_actionName = $this->_request->getParam($this->getActionKey());
+        if ( $this->_actionName === null ) {
+            $this->_actionName = $this->_request->getParam( $this->getActionKey() );
         }
 
         return $this->_actionName;
@@ -153,9 +153,9 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function setActionName( $value = null )
     {
-        $this->_actionName = strtolower((string)$value);
-        if ($value === null) {
-            $this->_request->setParam($this->getActionKey(), $value);
+        $this->_actionName = strtolower( (string) $value );
+        if ( $value === null ) {
+            $this->_request->setParam( $this->getActionKey(), $value );
         }
 
         return $this;
@@ -181,7 +181,7 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function setProgramKey( $key = 'program' )
     {
-        $this->_programNameKey = (string)$key;
+        $this->_programNameKey = (string) $key;
 
         return $this;
     }
@@ -206,7 +206,7 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function setControllerKey( $key = 'controller' )
     {
-        $this->_controllerNameKey = (string)$key;
+        $this->_controllerNameKey = (string) $key;
 
         return $this;
     }
@@ -231,7 +231,7 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function setActionKey( $key = 'action' )
     {
-        $this->_actionNameKey = (string)$key;
+        $this->_actionNameKey = (string) $key;
 
         return $this;
     }

@@ -1,23 +1,19 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Mvc_Display_Control_Http_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
  * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
- * @version     1.0.0
  * Created: 2006-12-01
- * @filesource
  */
-/*}}}*/
+
 
 /**
  * Mumsys_Mvc_Display_Control_Http_Default is the base for the view in http
@@ -38,6 +34,7 @@ class Mumsys_Mvc_Display_Control_Http_Default
      * Version ID information
      */
     const VERSION = '1.0.0';
+
     /**
      * Mumsys_Context
      * @var Mumsys_Context
@@ -57,26 +54,17 @@ class Mumsys_Mvc_Display_Control_Http_Default
      * @var string
      */
     protected $_template;
-
     protected $_pagetitle = '';
-
     protected $mod;
     protected $submod;
-
-
     protected $_output = '';
-
-    protected $_htmlhead = array( ); // extra html head informations
-
+    protected $_htmlhead = array(); // extra html head informations
 
     /**
      * All config variables from Mumsys_Config object
      * @var array
      */
     protected $_config;
-
-
-
     protected $cnt = 0; // counter for blockparts
 
 
@@ -90,50 +78,50 @@ class Mumsys_Mvc_Display_Control_Http_Default
      * [jsfw] optional javascript frameworks to include
      * [theme] Theme to be used.
      */
-    public function __construct(Mumsys_Context $context, array $opts=array( ) )
+    public function __construct( Mumsys_Context $context, array $opts = array() )
     {
         $this->_context = $context;
 
         $this->_oCfg = $context->getConfig();
         $this->_config = $this->_oCfg->getAll();
 
-        if ( !isset($opts['theme']) ) {
+        if ( !isset( $opts['theme'] ) ) {
             $this->_template = 'default';
         } else {
             $this->_template = (string) $opts['theme'];
         }
 
-        if ( !isset($opts['mod']) ) {
-            $this->mod = $this->_oCfg->get('mod');
+        if ( !isset( $opts['mod'] ) ) {
+            $this->mod = $this->_oCfg->get( 'mod' );
         }
 
-        if ( !isset($opts['submod']) ) {
-            $this->submod = $this->_oCfg->get('submod');
+        if ( !isset( $opts['submod'] ) ) {
+            $this->submod = $this->_oCfg->get( 'submod' );
         }
 
-        if ( empty($opts['display']) ) {
+        if ( empty( $opts['display'] ) ) {
             $opts['display'] = $this->_display;
         } else {
             $this->_display = $opts['display'];
         }
 
-        if ( !empty($opts['jsfw']) ) {
-            $this->_oCfg->set('jsfw', $opts['jsfw']);
+        if ( !empty( $opts['jsfw'] ) ) {
+            $this->_oCfg->set( 'jsfw', $opts['jsfw'] );
         }
 
-        if ( empty($opts['pagetitle']) ) {
-            $modinfo = $this->_oPerms->get('moduleinfo');
-            if ( isset($modinfo[$this->mod]['myname']) ) {
+        if ( empty( $opts['pagetitle'] ) ) {
+            $modinfo = $this->_oPerms->get( 'moduleinfo' );
+            if ( isset( $modinfo[$this->mod]['myname'] ) ) {
                 $this->_pagetitle = $modinfo[$this->mod]['myname'];
-                if ( isset($modinfo[$this->mod]['submodulename'][$this->submod]['myname']) ) {
+                if ( isset( $modinfo[$this->mod]['submodulename'][$this->submod]['myname'] ) ) {
                     $this->_pagetitle .= ' : ' . $modinfo[$this->mod]['submodulename'][$this->submod]['myname'];
                 }
             } else {
-                if ( empty($this->_pagetitle) ) {
-                    $this->_pagetitle = ucwords($GLOBALS['mod']);
+                if ( empty( $this->_pagetitle ) ) {
+                    $this->_pagetitle = ucwords( $GLOBALS['mod'] );
                 }
             }
-            unset($modinfo);
+            unset( $modinfo );
         } else {
             $this->_pagetitle = ' ' . $opts['pagetitle'];
         }
@@ -145,8 +133,8 @@ class Mumsys_Mvc_Display_Control_Http_Default
      */
     public function show()
     {
-        if ( empty($this->_headers) ) {
-            $this->setheader('Content-Type: text/html; charset=' . $this->_oCfg->get('charset'));
+        if ( empty( $this->_headers ) ) {
+            $this->setheader( 'Content-Type: text/html; charset=' . $this->_oCfg->get( 'charset' ) );
         }
         $this->applyHeaders();
         parent::show();
@@ -163,7 +151,7 @@ class Mumsys_Mvc_Display_Control_Http_Default
      */
     public function fetch()
     {
-        $this->_output .= $this->getSiteHeader($this->_pagetitle);
+        $this->_output .= $this->getSiteHeader( $this->_pagetitle );
         $this->_output = parent::fetch();
         $this->_output .= $this->getSiteFooter();
 

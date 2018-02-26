@@ -153,9 +153,9 @@ class Mumsys_Parser_Logline
         }
 
         if ( $format ) {
-            $this->setFormat($format);
+            $this->setFormat( $format );
         } else {
-            $this->setFormat($this->_defaultLogFormat);
+            $this->setFormat( $this->_defaultLogFormat );
         }
     }
 
@@ -183,7 +183,7 @@ class Mumsys_Parser_Logline
         $expr = $this->_logFormat;
 
         foreach ( $this->_patterns as $key => $replace ) {
-            $expr = preg_replace("/{$key}/", $replace, $expr);
+            $expr = preg_replace( "/{$key}/", $replace, $expr );
         }
 
         return $expr;
@@ -239,7 +239,7 @@ class Mumsys_Parser_Logline
      */
     public function setFilterCondition( $orOrAnd )
     {
-        $chk = strtoupper($orOrAnd);
+        $chk = strtoupper( $orOrAnd );
 
         if ( $chk == 'AND' || $chk == 'OR' ) {
             if ( $chk == 'AND' ) {
@@ -248,7 +248,7 @@ class Mumsys_Parser_Logline
                 $this->_filtersInAndConditions = false;
             }
         } else {
-            throw new Mumsys_Parser_Exception('Invalid filter condition');
+            throw new Mumsys_Parser_Exception( 'Invalid filter condition' );
         }
     }
 
@@ -266,12 +266,12 @@ class Mumsys_Parser_Logline
      */
     public function addFilter( $key, $value = array(), $sensitive = false )
     {
-        if ( is_string($value) ) {
+        if ( is_string( $value ) ) {
             $value = array($value);
         }
 
         foreach ( $value as $i => &$raw ) {
-            $value[$i] = preg_quote($raw, '#');
+            $value[$i] = preg_quote( $raw, '#' );
         }
 
         $this->_filters[$key][] = array('values' => $value, 'case' => $sensitive);
@@ -290,14 +290,13 @@ class Mumsys_Parser_Logline
      */
     public function parse( $line )
     {
-        if ( empty($line) ) {
+        if ( empty( $line ) ) {
             return false;
         }
 
         $regex = $this->_getExpression();
 
-        if ( !preg_match($regex, $line, $matches) )
-        {
+        if ( !preg_match( $regex, $line, $matches ) ) {
             $message = sprintf(
                 'Format of log line invalid (expected:"%1$s"); Line was "%2$s";'
                 . ' regex: "%3$s"',
@@ -306,13 +305,13 @@ class Mumsys_Parser_Logline
                 $regex
             );
 
-            throw new Mumsys_Parser_Exception($message);
+            throw new Mumsys_Parser_Exception( $message );
         }
 
         $result = array();
 
-        foreach ( array_filter(array_keys($matches), 'is_string') as $key ) {
-            if ( 'time' === $key && true !== $stamp = strtotime($matches[$key]) ) {
+        foreach ( array_filter( array_keys( $matches ), 'is_string' ) as $key ) {
+            if ( 'time' === $key && true !== $stamp = strtotime( $matches[$key] ) ) {
                 $result['stamp'] = $stamp;
             }
 
@@ -320,7 +319,7 @@ class Mumsys_Parser_Logline
         }
 
         $return = array();
-        if ( ($ok = $this->_applyFilters($result) ) ) {
+        if ( ($ok = $this->_applyFilters( $result ) ) ) {
             $return = $ok;
         }
 
@@ -344,20 +343,17 @@ class Mumsys_Parser_Logline
         $numMatches = 0;
         $itMatchesInOrCondition = false;
 
-        foreach ( $this->_filters as $key => $paramsList )
-        {
-            if ( isset($result[$key]) && $result[$key] ) {
-                foreach ( $paramsList as $i => $params )
-                {
-                    foreach ( $params['values'] as $value )
-                    {
+        foreach ( $this->_filters as $key => $paramsList ) {
+            if ( isset( $result[$key] ) && $result[$key] ) {
+                foreach ( $paramsList as $i => $params ) {
+                    foreach ( $params['values'] as $value ) {
                         $modifier = 'i';
                         if ( $params['case'] ) {
                             $modifier = '';
                         }
 
-                        $regex = sprintf('/(%1$s)/%2$s', $value, $modifier);
-                        if ( preg_match($regex, $result[$key]) ) {
+                        $regex = sprintf( '/(%1$s)/%2$s', $value, $modifier );
+                        if ( preg_match( $regex, $result[$key] ) ) {
                             $numMatches += 1;
                             $itMatchesInOrCondition = true;
                         }
@@ -368,7 +364,7 @@ class Mumsys_Parser_Logline
 
         if ( $this->_filtersInAndConditions ) {
             $itMatches = false;
-            if ( count($this->_filters) == $numMatches ) {
+            if ( count( $this->_filters ) == $numMatches ) {
                 $itMatches = true;
             }
         } else {

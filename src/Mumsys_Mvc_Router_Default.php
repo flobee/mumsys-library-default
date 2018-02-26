@@ -32,7 +32,7 @@ class Mumsys_Mvc_Router_Default
     implements Mumsys_Mvc_Router_Interface
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '1.0.0';
 
@@ -45,24 +45,26 @@ class Mumsys_Mvc_Router_Default
     /**
      * Initialise the router object.
      *
+     * @todo use the request opject not the options, also in abtract class
+     *
      * @param Mumsys_Request_Interface Request interface
-     * @param array $options Optional initial options e.g.: 'programKey',
-     * 'controllerKey', 'actionKey' mappings to initialize the object
+     * @param array $options Optional initial options
      */
-    public function __construct( Mumsys_Request_Interface $request, array $options = array() )
+    public function __construct( Mumsys_Request_Interface $request,
+        array $options = array() )
     {
         $this->_request = $request;
 
-        if ( isset($options['programKey']) ) {
-            $this->setProgramKey($options['programKey']);
+        if ( isset( $options['programKey'] ) ) {
+            $this->setProgramKey( $options['programKey'] );
         }
 
-        if ( isset($options['controllerKey']) ) {
-            $this->setControllerKey($options['controllerKey']);
+        if ( isset( $options['controllerKey'] ) ) {
+            $this->setControllerKey( $options['controllerKey'] );
         }
 
-        if ( isset($options['actionKey']) ) {
-            $this->setActionKey($options['actionKey']);
+        if ( isset( $options['actionKey'] ) ) {
+            $this->setActionKey( $options['actionKey'] );
         }
     }
 
