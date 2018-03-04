@@ -83,7 +83,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 );
             }
 
-            $this->_isConnected = true;
+            $this->_isConnected = (bool) $chk;
 
             if ($this->_clientCharacterSet) {
                 $this->setCharset($this->_clientCharacterSet);
