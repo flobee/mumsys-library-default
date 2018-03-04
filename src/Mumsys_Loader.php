@@ -60,11 +60,11 @@ class Mumsys_Loader
     {
         try
         {
-            if ( !class_exists($instance) ) {
-                $message = sprintf('Could not load: "%1$s".', $instance);
-                throw new Mumsys_Loader_Exception($message);
+            if ( !class_exists( $instance ) ) {
+                $message = sprintf( 'Could not load: "%1$s".', $instance );
+                throw new Mumsys_Loader_Exception( $message );
             } else {
-                $x = new $instance($args);
+                $x = new $instance( $args );
             }
         }
         catch ( Exception $e ) {
@@ -86,12 +86,11 @@ class Mumsys_Loader
     public static function autoload( $instance )
     {
         $test = false;
-        if ( !class_exists($instance, true) )
-        {
+        if ( !class_exists( $instance, true ) ) {
             $path = __DIR__ . '/';
             $classfile = $path . $instance . '.php';
 
-            if ( ($test = file_exists($classfile) ) ) {
+            if ( ($test = file_exists( $classfile ) ) ) {
                 $test = require_once $classfile;
             }
         }
@@ -105,11 +104,11 @@ class Mumsys_Loader
      *
      * @return array Returns a list of loaded classes
      */
-    public static function loadedClassesGet($prefix='Mumsys_')
+    public static function loadedClassesGet( $prefix = 'Mumsys_' )
     {
         $classList = get_declared_classes();
-        foreach ($classList as $class) {
-            if (substr($class,0,strlen($prefix)) === $prefix) {
+        foreach ( $classList as $class ) {
+            if ( substr( $class, 0, strlen( $prefix ) ) === $prefix ) {
                 self::$_loadedClasses[$class] = $class;
             }
         }

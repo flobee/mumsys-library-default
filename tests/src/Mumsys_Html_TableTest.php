@@ -13,6 +13,7 @@
  * @subpackage  Html
  */
 
+
 /**
  * Mumsys_Html_Table Test
  */
@@ -329,7 +330,9 @@ class Mumsys_Html_TableTest
     public function testGetSetRowAttributes()
     {
         $this->_object->setRowAttributes( 1, array('style' => 'row1attrib') );
-        $this->_object->setRowAttributes( '_', array('class' => 'globalRowAttrib') );
+        $this->_object->setRowAttributes(
+            '_', array('class' => 'globalRowAttrib')
+        );
 
         $actual1 = $this->_object->getRowAttributes( 1 );
         $expected1 = ' style="row1attrib" class="globalRowAttrib"';

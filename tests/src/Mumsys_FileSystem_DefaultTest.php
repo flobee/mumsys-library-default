@@ -92,7 +92,7 @@ class Mumsys_FileSystem_DefaultTest
                 'file' => $this->_testsDir . '/tmp/unittest-mkdir/mkdirs',
                 'name' => 'mkdirs',
                 'path' => $this->_testsDir . '/tmp/unittest-mkdir',
-                'size' => 4096,
+                'size' => 22,
                 'type' => 'dir',
             ),
             $this->_testsDir . '/tmp/unittest-mkdir/testfile' => array(
@@ -113,7 +113,7 @@ class Mumsys_FileSystem_DefaultTest
                 'file' => $this->_testsDir . '/tmp/unittest-mkdir/mkdirs',
                 'name' => 'mkdirs',
                 'path' => $this->_testsDir . '/tmp/unittest-mkdir',
-                'size' => 4096,
+                'size' => 22,
                 'type' => 'dir',
             ),
             $this->_testsDir . '/tmp/unittest-mkdir/testfile' => array(
@@ -134,7 +134,7 @@ class Mumsys_FileSystem_DefaultTest
         unlink( $this->_testdirs['dir'] . '/testfile' );
         unlink( $this->_testdirs['dirs'] . '/testfile' );
 
-        // unreadable path
+        // test unreadable path
         $actual3 = $this->_object->scanDirInfo( '/root', true, true );
 
         $this->assertEquals( $expected1, $actual1 );
@@ -381,6 +381,7 @@ class Mumsys_FileSystem_DefaultTest
         $this->_object->rename( '', $this->_testsDir . '/tmp/something' );
     }
 
+
     /**
      * @covers Mumsys_FileSystem_Default::rename
      */
@@ -484,6 +485,7 @@ class Mumsys_FileSystem_DefaultTest
         );
     }
 
+
     /**
      * @covers Mumsys_FileSystem_Default::unlink
      * @covers Mumsys_FileSystem_Default::rmFile
@@ -505,7 +507,8 @@ class Mumsys_FileSystem_DefaultTest
                 . 'E.g.: ~/unittests/somefile.test (owner whether you, your '
                 . 'team and not root) und try to test with this file location';
             // security check, backup
-            if ( @copy( $fileDifferentOwnership, $fileDifferentOwnership . '.bak' ) ) {
+            if ( @copy( $fileDifferentOwnership,
+                    $fileDifferentOwnership . '.bak' ) ) {
                 $this->markTestIncomplete( 'Security abort!!! ' . $msg );
             }
 

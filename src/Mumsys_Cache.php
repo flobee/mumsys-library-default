@@ -61,7 +61,7 @@ class Mumsys_Cache
      */
     public function __construct( $group, $id )
     {
-        $this->_id = md5((string) $id);
+        $this->_id = md5( (string) $id );
         $this->_group = (string) $group;
     }
 
@@ -76,14 +76,14 @@ class Mumsys_Cache
     {
         $filename = $this->_getFilename();
 
-        if ( $fp = fopen($filename, 'wb') ) {
-            if ( flock($fp, LOCK_EX) ) {
-                fwrite($fp, $data);
+        if ( $fp = fopen( $filename, 'wb' ) ) {
+            if ( flock( $fp, LOCK_EX ) ) {
+                fwrite( $fp, $data );
             }
-            fclose($fp);
+            fclose( $fp );
 
             // Set filemtime
-            touch($filename, time() + (int) $ttl);
+            touch( $filename, time() + (int) $ttl );
         }
     }
 
@@ -95,7 +95,7 @@ class Mumsys_Cache
     {
         $filename = $this->_getFilename();
 
-        return file_get_contents($filename);
+        return file_get_contents( $filename );
     }
 
 
@@ -112,10 +112,10 @@ class Mumsys_Cache
         if ( $this->_enabled ) {
             $filename = $this->_getFilename();
 
-            if ( file_exists($filename) && filemtime($filename) > time() ) {
+            if ( file_exists( $filename ) && filemtime( $filename ) > time() ) {
                 return true;
             }
-            @unlink($filename);
+            @unlink( $filename );
         }
 
         return false;
@@ -131,8 +131,8 @@ class Mumsys_Cache
     {
         $filename = $this->_getFilename();
 
-        if ( file_exists($filename) ) {
-            @unlink($filename);
+        if ( file_exists( $filename ) ) {
+            @unlink( $filename );
         }
 
         return true;
@@ -166,7 +166,7 @@ class Mumsys_Cache
      */
     public function setPath( $path )
     {
-        $this->_path = rtrim((string) $path, '/') . '/';
+        $this->_path = rtrim( (string) $path, '/' ) . '/';
     }
 
 

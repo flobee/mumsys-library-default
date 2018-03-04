@@ -98,9 +98,10 @@ class Mumsys_Html
     public static function attributesCreate( array $array = array() )
     {
         try {
-            $attributes = parent::attributesCreate($array);
-        } catch (Exception $e) {
-            throw new Mumsys_Html_Exception($e->getMessage());
+            $attributes = parent::attributesCreate( $array );
+        }
+        catch ( Exception $e ) {
+            throw new Mumsys_Html_Exception( $e->getMessage() );
         }
 
         return $attributes;
@@ -117,17 +118,19 @@ class Mumsys_Html
      *
      * @return array Returns a list of key/value pairs allowed
      */
-    public static function attributesValidate( array $whitelist = array(), array $properties = array(),
-        $universalAttributesAllow = true )
+    public static function attributesValidate( array $whitelist = array(),
+        array $properties = array(), $universalAttributesAllow = true )
     {
         $attributes = array();
 
-        if ($universalAttributesAllow) {
-            $whitelist = array_merge($whitelist, self::$attributesDefaultAllowed);
+        if ( $universalAttributesAllow ) {
+            $whitelist = array_merge(
+                $whitelist, self::$attributesDefaultAllowed
+            );
         }
 
-        foreach ($properties as $k => &$v) {
-            if (in_array($k, $whitelist)) {
+        foreach ( $properties as $k => &$v ) {
+            if ( in_array( $k, $whitelist ) ) {
                 $attributes[$k] = $v;
             }
         }
@@ -139,7 +142,8 @@ class Mumsys_Html
      * Filter a attribute line for a given tag.
      *
      * Eg: <table cellpadding="2" title="a Global Allowed Attribute">
-     * First the hole string will be parsed and needed whitespaces will be fixed.
+     * First the hole string will be parsed and needed whitespaces will be
+     * fixed.
      * Invalid quote style will be droped.
      * After it the string will be compared with a whitelist: All code which
      * is not in the whitelist or in a global whitelist will be droped.
@@ -148,27 +152,28 @@ class Mumsys_Html
      * @param string $tag The tag for current attributes
      * @param string $stringAttributes Attributes from an incoming html string
      *
-     * @return string Returns a new formatted filtered an validated attribute string
+     * @return string Returns a new formatted filtered an validated attribute
+     * string
      */
     public static function attributesFilter( $tag, $stringAttributes )
     {
         $tmp = '';    // string buffer
         $result = ''; // result string
         $i = 0;
-        $attrib = -1; // Are we in an HTML attribute? -1: no attrib, 0: name of the attrib, 1: value of the atrib
-        $quote = 0; // a string quote delimited opened ? 0=no, 1=yes
+        $attrib = -1; // Are we in an HTML attribute? -1: no attrib, 0: name of
+                      // the attrib, 1: value of the atrib
+        $quote = 0;   // a string quote delimited opened ? 0=no, 1=yes
 
-        while ($i < strlen($stringAttributes))
-        {
-            switch ($stringAttributes[$i])
+        while ( $i < strlen( $stringAttributes ) ) {
+            switch ( $stringAttributes[$i] )
             {
                 // a quote
                 case '"':
-                    if ($quote == 0) {
+                    if ( $quote == 0 ) {
                         $quote = 1;
                     } else {
                         $quote = 0;
-                        if (($attrib > 0) && ($tmp != '')) {
+                        if ( ($attrib > 0) && ($tmp != '') ) {
                             $result .= '="' . $tmp . '"';
                         }
                         $tmp = '';
@@ -178,9 +183,9 @@ class Mumsys_Html
 
                 // equal delimiter
                 case '=':
-                    if ($quote == 0) {    // found in a string ?
+                    if ( $quote == 0 ) {    // found in a string ?
                         $attrib = 1;
-                        if ($tmp != '') {
+                        if ( $tmp != '' ) {
                             $result .= ' ' . $tmp;
                         }
                         $tmp = '';
@@ -191,11 +196,11 @@ class Mumsys_Html
 
                 // wrong single quotes?
                 case '\'':
-                    if ($quote == 0) {
+                    if ( $quote == 0 ) {
                         $quote = 1;
                     } else {
                         $quote = 0;
-                        if (($attrib > 0) && ($tmp != '')) {
+                        if ( ($attrib > 0) && ($tmp != '') ) {
                             $result .= '="' . $tmp . '"';
                         }
                         $tmp = '';
@@ -206,13 +211,13 @@ class Mumsys_Html
 
                 // replace spaces for now
                 case ' ':
-                    if ($attrib > 0) {
+                    if ( $attrib > 0 ) {
                         $tmp .= '|||';
                     }
                     break;
 
                 default:
-                    if ($attrib < 0) {
+                    if ( $attrib < 0 ) {
                         $attrib = 0;
                     }
                     $tmp .= $stringAttributes[$i];
@@ -223,8 +228,8 @@ class Mumsys_Html
         }
 
         // check, old html attributes are in standalone mode like "nowrap"?
-        if (($quote == 0) && ($tmp != '')) {
-            if ($attrib == 1) {
+        if ( ($quote == 0) && ($tmp != '') ) {
+            if ( $attrib == 1 ) {
                 // the name of an attrib, add the '='
                 $result .= '=';
             }
@@ -237,30 +242,34 @@ class Mumsys_Html
         // - compare with whitelist
         $attributes = array();
 
-        $listAttribs = explode(' ', $result);
-        foreach ($listAttribs AS $partAttr) {
+        $listAttribs = explode( ' ', $result );
+        foreach ( $listAttribs as $partAttr ) {
             // replace back the spaces
-            $partAttr = str_replace('|||', ' ', $partAttr);
+            $partAttr = str_replace( '|||', ' ', $partAttr );
 
-            $attrToCheck = explode('="', $partAttr);
-            if ($attrToCheck && count($attrToCheck) == 2) {
-                if (in_array($attrToCheck[0], self::$htmlTagsDefaultAllowed[$tag]) || in_array($attrToCheck[0],
-                        self::$attributesDefaultAllowed)) {
-                    if (substr($attrToCheck[1], -1) == '"') {
-                        $attrToCheck[1] = substr($attrToCheck[1], 0, -1);
+            $attrToCheck = explode( '="', $partAttr );
+            if ( $attrToCheck && count( $attrToCheck ) == 2 ) {
+                if ( in_array( $attrToCheck[0], self::$htmlTagsDefaultAllowed[$tag] )
+                    || in_array( $attrToCheck[0], self::$attributesDefaultAllowed )
+                ) {
+                    if ( substr( $attrToCheck[1], -1 ) == '"' ) {
+                        $attrToCheck[1] = substr( $attrToCheck[1], 0, -1 );
                     }
                     $attributes[$attrToCheck[0]] = $attrToCheck[1];
                 }
             }
         }
 
-        if ($attributes) {
-            $result = Mumsys_Html::attributesCreate($attributes);
+        if ( $attributes ) {
+            $result = Mumsys_Html::attributesCreate( $attributes );
         } else {
             $result = '';
         }
 
-        unset($tmp, $attrToCheck, $listAttribs, $partAttr, $attributes, $attrib, $stringAttributes, $tag);
+        unset(
+            $tmp, $attrToCheck, $listAttribs, $partAttr, $attributes, $attrib,
+            $stringAttributes, $tag
+        );
 
         return $result;
     }
@@ -280,18 +289,17 @@ class Mumsys_Html
      */
     public static function strip( $htmlcode = '', $againstWhitelist = false )
     {
-        $htmlcode = Mumsys_Php::stripslashes($htmlcode);
+        $htmlcode = Mumsys_Php::stripslashes( $htmlcode );
 
-        if ($againstWhitelist)
-        {
-            $keys = array_keys(self::$htmlTagsDefaultAllowed);
-            $tagWhitelist = '<' . implode('><', $keys) . '>';
-            $cleanedHtmlcode = strip_tags($htmlcode, $tagWhitelist);
-            unset($keys, $tagWhitelist);
+        if ( $againstWhitelist ) {
+            $keys = array_keys( self::$htmlTagsDefaultAllowed );
+            $tagWhitelist = '<' . implode( '><', $keys ) . '>';
+            $cleanedHtmlcode = strip_tags( $htmlcode, $tagWhitelist );
+            unset( $keys, $tagWhitelist );
 
-            $newHtmlcode = self::filter($cleanedHtmlcode);
+            $newHtmlcode = self::filter( $cleanedHtmlcode );
         } else {
-            $newHtmlcode = strip_tags($htmlcode);
+            $newHtmlcode = strip_tags( $htmlcode );
         }
 
         return $newHtmlcode;
@@ -312,54 +320,53 @@ class Mumsys_Html
     {
         $htmlTags = self::$htmlTagsDefaultAllowed;
 
-        $str = Mumsys_Php::stripslashes($htmlcode);
+        $str = Mumsys_Php::stripslashes( $htmlcode );
 
         // Delete all spaces from html tags eg: < h1 >, <h1 > to be <h1>
         // Attibutes which can have also more whitespaces eg: <h1   class=...>
         // Delete spaces or invalid tags
-        $htmlcode = preg_replace("/<\s*(\w+)\s*>/im", '<\1>', $htmlcode);
+        $htmlcode = preg_replace( "/<\s*(\w+)\s*>/im", '<\1>', $htmlcode );
 
         $tmp = '';
-        while (preg_match("|<(/?[[:alnum:]]*)[[:space:]]*([^>]*)>|im", $htmlcode, $reg)) {
-            $i = strpos($htmlcode, $reg[0]);
-            $l = strlen($reg[0]);
+        while ( preg_match( "|<(/?[[:alnum:]]*)[[:space:]]*([^>]*)>|im", $htmlcode, $reg ) ) {
+            $i = strpos( $htmlcode, $reg[0] );
+            $l = strlen( $reg[0] );
 
             $_tag = '';
-            if (isset($reg[1][0]) && $reg[1][0] == '/') {
-                $tag = $_tag = strtolower(substr($reg[1], 1));
+            if ( isset( $reg[1][0] ) && $reg[1][0] == '/' ) {
+                $tag = $_tag = strtolower( substr( $reg[1], 1 ) );
             } else {
-                $tag = $_tag = strtolower($reg[1]);
+                $tag = $_tag = strtolower( $reg[1] );
             }
 
-            if (isset($htmlTags[$tag]))
-            {
+            if ( isset( $htmlTags[$tag] ) ) {
                 $a = $htmlTags[$tag];
 
-                if ($reg[1][0] == '/') {
+                if ( $reg[1][0] == '/' ) {
                     $tag = '</' . $tag . '>';
-                } elseif (empty($reg[2])) {
-                    $tag = self::_formatTag($tag, false);
+                } elseif ( empty( $reg[2] ) ) {
+                    $tag = self::_formatTag( $tag, false );
                 } else {
                     // double quotes and syntax check/ fix
-                    $attrbList = self::attributesFilter($_tag, $reg[2]);
+                    $attrbList = self::attributesFilter( $_tag, $reg[2] );
                     // fix & to &amp;
                     //old, wrong!:
                     //$attrbList = preg_replace('/&(?!(#[0-9]|amp)+;)/s', '&amp;', $attrbList);
                     // ok, but attribute values should not be converted!?
                     //$attrbList = preg_replace('/&(?!(amp)+;)/s', '&amp;', $attrbList);
 
-                    $tag = self::_formatTag($tag, $attrbList);
+                    $tag = self::_formatTag( $tag, $attrbList );
                 }
             } else {
                 // tag not allowed or no tag: eg. comments
                 $tag = '';
             }
-            $tmp .= substr($htmlcode, 0, $i) . $tag;
-            $htmlcode = substr($htmlcode, $i + $l);
+            $tmp .= substr( $htmlcode, 0, $i ) . $tag;
+            $htmlcode = substr( $htmlcode, $i + $l );
         }
 
         $htmlcode = $tmp . $htmlcode;
-        unset($tag, $attrbList, $htmlTags, $tmp, $tag, $_tag);
+        unset( $tag, $attrbList, $htmlTags, $tmp, $tag, $_tag );
 
         return $htmlcode;
     }
@@ -374,7 +381,7 @@ class Mumsys_Html
      */
     protected static function _formatTag( $tag, $stringAttributes = false )
     {
-        switch ($tag)
+        switch ( $tag )
         {
             case 'br':
             case 'hr':
@@ -382,14 +389,14 @@ class Mumsys_Html
             case 'img':
             case 'link':
             case 'meta':
-                if ($stringAttributes) {
+                if ( $stringAttributes ) {
                     $tag = '<' . $tag . ' ' . $stringAttributes . ' />';
                 } else {
                     $tag = '<' . $tag . ' />';
                 }
                 break;
             default:
-                if ($stringAttributes) {
+                if ( $stringAttributes ) {
                     $tag = '<' . $tag . ' ' . $stringAttributes . '>';
                 } else {
                     $tag = '<' . $tag . '>';

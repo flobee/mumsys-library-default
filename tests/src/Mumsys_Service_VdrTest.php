@@ -19,6 +19,7 @@ class Mumsys_Service_VdrTest
     private $_context;
     private $_options;
     private $_logfile;
+    private static $_isAvailable = true;
 
 
     /**
@@ -27,8 +28,15 @@ class Mumsys_Service_VdrTest
      */
     protected function setUp()
     {
+        if ( self::$_isAvailable !== true ) {
+            $mesg = 'repeated failure: this it not a bug! you just dont have '
+                . 'the service up and you may dont need it';
+            $this->markTestSkipped( $mesg );
+        }
+
         $this->_context = MumsysTestHelper::getContext();
-        $this->_logfile = MumsysTestHelper::getTestsBaseDir() . '/tmp/service_vdr.log';
+        $this->_logfile = MumsysTestHelper::getTestsBaseDir()
+            . '/tmp/service_vdr.log';
 
         try {
             $this->_context->getLogger();
@@ -41,13 +49,13 @@ class Mumsys_Service_VdrTest
 
         $this->_options = array();
 
-        try
-        {
-            $this->_object = new Mumsys_Service_Vdr($this->_context, 'localhost');
-        }
-        catch ( Exception $ex ) {
-            $message = 'Service error or not available, skip test. Message: ' . $ex->getMessage();
-            $this->markTestSkipped($message);
+        try {
+            $this->_object = new Mumsys_Service_Vdr( $this->_context, 'localhost' );
+        } catch ( Exception $ex ) {
+            self::$_isAvailable = false;
+            $message = 'Service error or not available, skip test. Message: '
+                . $ex->getMessage();
+            $this->markTestSkipped( $message );
         }
     }
 
@@ -161,11 +169,12 @@ class Mumsys_Service_VdrTest
     public function testExecuteException2()
     {
         $regex = '/(Command unknown or not implemented yet. Exiting)/i';
-        $this->expectException('Mumsys_Service_Exception');
-        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException( 'Mumsys_Service_Exception' );
+        $this->expectExceptionMessageRegExp( $regex );
 
-        $this->_object->execute('ImACommandThatNotExists');
+        $this->_object->execute( 'ImACommandThatNotExists' );
     }
+
 
     /**
      * @covers Mumsys_Service_Vdr::channelAdd
@@ -202,8 +211,7 @@ class Mumsys_Service_VdrTest
         $this->assertEquals($expected, $actual1);
 
         $delete = false;
-        try
-        {
+        try {
             $this->_object->channelAdd(
                 'TestChannel', 'NDR', '000000001', 'TESTCHANNEL', 'T', 0, '1=2',
                 '3=deu@3,4=mis@4', '5', '6', '7', '8', '9', '10'
@@ -211,10 +219,12 @@ class Mumsys_Service_VdrTest
         }
         catch ( Exception $exc )
         {
-            $delete = $this->_object->channelDelete($actual1['channel_id']);
+            $delete = $this->_object->channelDelete( $actual1['channel_id'] );
 
-            $this->assertEquals('501', $exc->getCode());
-            $this->assertEquals('Channel settings are not unique', trim( $exc->getMessage() ) );
+            $this->assertEquals( '501', $exc->getCode() );
+            $this->assertEquals(
+                'Channel settings are not unique', trim( $exc->getMessage() )
+            );
 
         }
 
@@ -227,10 +237,10 @@ class Mumsys_Service_VdrTest
      */
     public function testChannelDeleteException()
     {
-        $this->expectException('Mumsys_Service_Exception');
-        $regex ='/(Invalid channel ID)/i';
-        $this->expectExceptionMessageRegExp($regex);
-        $this->_object->channelDelete(0);
+        $this->expectException( 'Mumsys_Service_Exception' );
+        $regex = '/(Invalid channel ID)/i';
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->_object->channelDelete( 0 );
     }
 
 
@@ -245,33 +255,30 @@ class Mumsys_Service_VdrTest
     {
         $channelsList = $this->_object->channelsGet();
 
-        if ( count($channelsList) <= 0 ) {
-            $this->markTestSkipped('No channels found. Pls check your vdr config. Skip test');
+        if ( count( $channelsList ) <= 0 ) {
+            $this->markTestSkipped( 'No channels found. Pls check your vdr config. Skip test' );
         }
 
         foreach ( $channelsList as $id => $parts ) {
-            $current = $this->_object->channelGet($id);
+            $current = $this->_object->channelGet( $id );
 
-            $this->assertEquals($current, $parts);
+            $this->assertEquals( $current, $parts );
         }
 
-        $chanSearch = $this->_object->channelSearch('sat');
-        if ( count($chanSearch) <= 0 ) {
-            $this->markTestSkipped('No channels found. Pls check the search option in ' . __METHOD__ . '');
+        $chanSearch = $this->_object->channelSearch( 'sat' );
+        if ( count( $chanSearch ) <= 0 ) {
+            $this->markTestSkipped( 'No channels found. Pls check the search option in ' . __METHOD__ . '' );
         }
 
         foreach ( $chanSearch as $id => $parts ) {
-            $this->assertEquals($channelsList[$id], $parts);
+            $this->assertEquals( $channelsList[$id], $parts );
         }
 
         $regex = '/(Invalid channel parameter)/i';
-        $this->expectException('Mumsys_Service_Exception');
-        $this->expectExceptionMessageRegExp($regex);
-        $this->_object->channelSearch(0);
+        $this->expectException( 'Mumsys_Service_Exception' );
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->_object->channelSearch( 0 );
     }
-
-
-
 
 //
 //    /**

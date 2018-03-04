@@ -99,31 +99,36 @@ class Mumsys_Mvc_Display_Factory
      * implementations.
      *
      * When calling the methode without the 2nd and 3rd parameter the type and
-     * driver will be take from the config: frontend/controller/[type|driver] will be used.
+     * driver will be take from the config: frontend/controller/[type|driver]
+     * will be used.
      * Otherwise Text Default is the standard driver for the output.
      *
-     * @param array $options Parameters to initialise the display/view controller.
-     * @param string $outputType Frontend/ View controller to initialize: default | text | html
-     * @param string $outputComplexity Complexity to load on initialisation default | extended | custom
+     * @param array $options Parameters to initialise the display/view
+     * controller.
+     * @param string $outputType Frontend/ View controller to initialize:
+     * default | text | html
+     * @param string $outputComplexity Complexity to load on initialisation
+     * default | extended | custom
      *
      * @return Mumsys_Display_Control_Interface Returns a display object which
      * can be Mumsys_Mvc_Templates_*_* or own implementations.
      *
      * @throws Mumsys_Display_Exception Throws exception on errors
      */
-    public function load( array $options = array(), $outputType = 'default', $outputComplexity = 'default' )
+    public function load( array $options = array(), $outputType = 'default',
+        $outputComplexity = 'default' )
     {
         $this->_options = $options;
 
-        $outputType = ucwords($outputType);
-        $outputComplexity = ucwords($outputComplexity);
+        $outputType = ucwords( $outputType );
+        $outputComplexity = ucwords( $outputComplexity );
 
-        if (empty($outputType)) {
-            $outputType = $this->_context->getConfig()->get('frontend/controller/type', 'Text');
+        if ( empty( $outputType ) ) {
+            $outputType = $this->_context->getConfig()->get( 'frontend/controller/type', 'Text' );
         }
 
-        if (empty($outputComplexity)) {
-            $outputType = $this->_context->getConfig()->get('frontend/controller/driver', 'Default');
+        if ( empty( $outputComplexity ) ) {
+            $outputType = $this->_context->getConfig()->get( 'frontend/controller/driver', 'Default' );
         }
 
         $this->_outputType = $outputType;
@@ -132,24 +137,32 @@ class Mumsys_Mvc_Display_Factory
         /**
          * If X-Moz set to prefetch, exit
          */
-        if (!empty($_SERVER['HTTP_X_MOZ']) && strcasecmp($_SERVER['HTTP_X_MOZ'], 'prefetch') == 0) {
-            header('HTTP/1.0 403 Forbidden');
+        if ( !empty( $_SERVER['HTTP_X_MOZ'] ) && strcasecmp( $_SERVER['HTTP_X_MOZ'], 'prefetch' ) == 0 ) {
+            header( 'HTTP/1.0 403 Forbidden' );
             $message = 'HTTP_X_MOZ prefetch is disabled';
             $code = Mumsys_Mvc_Display_Exception::ERRCODE_DEFAULT;
-            throw new Mumsys_Mvc_Display_Exception($message, $code);
+            throw new Mumsys_Mvc_Display_Exception( $message, $code );
         }
 
-        $templateDriver = sprintf('Mumsys_Mvc_Templates_%1$s_%2$s', $this->_outputType, $this->_outputComplexity);
+        $templateDriver = sprintf(
+            'Mumsys_Mvc_Templates_%1$s_%2$s',
+            $this->_outputType,
+            $this->_outputComplexity
+        );
 
-        if (class_exists($templateDriver, false)) {
-            $display = new $templateDriver($this->_context, $options);
+        if ( class_exists( $templateDriver, false ) ) {
+            $display = new $templateDriver( $this->_context, $options );
         } else {
-            $message = sprintf('Driver for the display "%1$s" $2$s" not found', $outputType, $outputComplexity);
+            $message = sprintf(
+                'Driver for the display "%1$s" $2$s" not found',
+                $outputType,
+                $outputComplexity
+            );
             $code = Mumsys_Mvc_Display_Exception::ERRCODE_DEFAULT;
-            throw new Mumsys_Mvc_Display_Exception($message, $code);
+            throw new Mumsys_Mvc_Display_Exception( $message, $code );
         }
 
-        $this->_context->replaceDisplay($display);
+        $this->_context->replaceDisplay( $display );
 
         return $display;
     }

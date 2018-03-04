@@ -89,8 +89,8 @@ class Mumsys_Timer
             $this->start();
         }
 
-        if ( is_float($start) ) {
-            $this->startTimeSet($start);
+        if ( is_float( $start ) ) {
+            $this->startTimeSet( $start );
         }
     }
 
@@ -169,7 +169,7 @@ class Mumsys_Timer
      */
     protected function _microtimeGet()
     {
-        return microtime(1);
+        return microtime( 1 );
     }
 
 

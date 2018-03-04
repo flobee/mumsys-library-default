@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Test class for Mumsys_FileSystem.
  */
@@ -83,7 +82,7 @@ class Mumsys_FileSystemTest
                 'file' => $this->_testsDir . '/tmp/unittest-mkdir/mkdirs',
                 'name' => 'mkdirs',
                 'path' => $this->_testsDir . '/tmp/unittest-mkdir',
-                'size' => 4096,
+                'size' => 22,
                 'type' => 'dir',
             ),
             $this->_testsDir . '/tmp/unittest-mkdir/testfile' => array(
@@ -104,7 +103,7 @@ class Mumsys_FileSystemTest
                 'file' => $this->_testsDir . '/tmp/unittest-mkdir/mkdirs',
                 'name' => 'mkdirs',
                 'path' => $this->_testsDir . '/tmp/unittest-mkdir',
-                'size' => 4096,
+                'size' => 22,
                 'type' => 'dir',
             ),
             $this->_testsDir . '/tmp/unittest-mkdir/testfile' => array(

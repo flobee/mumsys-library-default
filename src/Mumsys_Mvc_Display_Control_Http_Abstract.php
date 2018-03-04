@@ -1,21 +1,18 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Mvc_Display_Control_Http_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
  * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Mvc
  * Created: 2006-12-01
- * @filesource
  */
-/*}}}*/
 
 
 /**
@@ -71,8 +68,8 @@ abstract class Mumsys_Mvc_Display_Control_Http_Abstract
      */
     public function applyHeaders()
     {
-        while (list(, $header) = each($this->_headers)) {
-            header($header);
+        while ( list(, $header) = each( $this->_headers ) ) {
+            header( $header );
         }
     }
 
@@ -88,12 +85,12 @@ abstract class Mumsys_Mvc_Display_Control_Http_Abstract
      */
     public function sendHeader( $header = '' )
     {
-        if (empty($header) || !is_string($header)) {
+        if ( empty( $header ) || !is_string( $header ) ) {
             $message = 'Can not send header.';
             $code = Mumsys_Mvc_Display_Exception::ERROR_HTTP500;
-            throw new Mumsys_Mvc_Display_Exception($message, $code);
+            throw new Mumsys_Mvc_Display_Exception( $message, $code );
         } else {
-            header($header);
+            header( $header );
         }
     }
 

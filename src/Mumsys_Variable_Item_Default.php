@@ -78,13 +78,13 @@ class Mumsys_Variable_Item_Default
     public function __construct( array $properties = array() )
     {
         foreach ( $this->_properties as $key => $value ) {
-            if ( isset($properties[$key]) ) {
+            if ( isset( $properties[$key] ) ) {
                 $this->_input[$key] = $properties[$key];
             }
         }
 
-        if ( isset($properties['state']) ) {
-            $this->stateSet($properties['state']);
+        if ( isset( $properties['state'] ) ) {
+            $this->stateSet( $properties['state'] );
         }
     }
 
@@ -99,7 +99,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getType()
     {
-        return (isset($this->_input['type'])) ? $this->_input['type'] : null;
+        return (isset( $this->_input['type'] )) ? $this->_input['type'] : null;
     }
 
 
@@ -121,9 +121,9 @@ class Mumsys_Variable_Item_Default
             return;
         }
 
-        if ( !in_array($value, Mumsys_Variable_Abstract::$_types) ) {
-            $message = sprintf('Type "%1$s" not implemented', $value);
-            throw new Mumsys_Variable_Item_Exception($message);
+        if ( !in_array( $value, Mumsys_Variable_Abstract::$_types ) ) {
+            $message = sprintf( 'Type "%1$s" not implemented', $value );
+            throw new Mumsys_Variable_Item_Exception( $message );
         }
 
         $this->_input['type'] = (string) $value;
@@ -138,7 +138,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getMinLength()
     {
-        return (isset($this->_input['minlen'])) ? $this->_input['minlen'] : null;
+        return (isset( $this->_input['minlen'] )) ? $this->_input['minlen'] : null;
     }
 
 
@@ -170,7 +170,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getMaxLength()
     {
-        return (isset($this->_input['maxlen'])) ? $this->_input['maxlen'] : null;
+        return (isset( $this->_input['maxlen'] )) ? $this->_input['maxlen'] : null;
     }
 
 
@@ -205,10 +205,10 @@ class Mumsys_Variable_Item_Default
         $value = & $this->_input['regex'];
         $return = array();
 
-        if ( isset($value) ) {
-            if ( is_array($value) ) {
+        if ( isset( $value ) ) {
+            if ( is_array( $value ) ) {
                 $return = (array) $value;
-            } else if ( is_string($value) && $value > '' ) {
+            } else if ( is_string( $value ) && $value > '' ) {
                 $return = $this->_input['regex'] = array($this->_input['regex']);
             }
         }
@@ -224,7 +224,7 @@ class Mumsys_Variable_Item_Default
      */
     public function setRegex( $value )
     {
-        if ( $value === $this->getRegex() || !is_string($value) ) {
+        if ( $value === $this->getRegex() || !is_string( $value ) ) {
             return;
         }
 
@@ -252,7 +252,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getAllowEmpty()
     {
-        return ( isset($this->_input['allowEmpty']) ? (boolean) $this->_input['allowEmpty'] : null );
+        return ( isset( $this->_input['allowEmpty'] ) ? (boolean) $this->_input['allowEmpty'] : null );
     }
 
 
@@ -279,7 +279,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getRequired()
     {
-        return ( isset($this->_input['required']) ? (boolean) $this->_input['required'] : null );
+        return ( isset( $this->_input['required'] ) ? (boolean) $this->_input['required'] : null );
     }
 
 
@@ -310,9 +310,9 @@ class Mumsys_Variable_Item_Default
      */
     public function getLabel( $altnKey = 'name', $default = '' )
     {
-        if ( isset($this->_input['label']) ) {
+        if ( isset( $this->_input['label'] ) ) {
             $return = (string) $this->_input['label'];
-        } else if ( isset($this->_input[$altnKey]) ) {
+        } else if ( isset( $this->_input[$altnKey] ) ) {
             $return = (string) $this->_input[$altnKey];
         } else {
             $return = $default;
@@ -347,7 +347,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getDescription( $default = null )
     {
-        return (isset($this->_input['desc'])) ? $this->_input['desc'] : $default;
+        return (isset( $this->_input['desc'] )) ? $this->_input['desc'] : $default;
     }
 
 
@@ -378,7 +378,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getInformation( $default = null )
     {
-        return (isset($this->_input['info'])) ? $this->_input['info'] : $default;
+        return (isset( $this->_input['info'] )) ? $this->_input['info'] : $default;
     }
 
 
@@ -410,7 +410,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getDefault( $default = null )
     {
-        return ( isset($this->_input['default']) ? $this->_input['default'] : $default );
+        return ( isset( $this->_input['default'] ) ? $this->_input['default'] : $default );
     }
 
 

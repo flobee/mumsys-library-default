@@ -1,6 +1,6 @@
 <?php
 
-/*{{{*/
+/* {{{ */
 /**
  * Mumsys_Db_Driver_None_None_Result
  * for MUMSYS Library for Multi User Management System (MUMSYS)
@@ -14,7 +14,7 @@
  * @subpackage  Db
  * Created 2017-04-30
  */
-/*}}}*/
+/* }}} */
 
 
 /**
@@ -63,8 +63,8 @@ class Mumsys_Db_Driver_None_None_Result
      * @param resource $result Result set of the sql query
      * @param array $options Array of options; NOT IMPLEMENTED YET!
      */
-    public function __construct(Mumsys_Db_Driver_Interface &$oDB, &$result,
-        array $options=array())
+    public function __construct( Mumsys_Db_Driver_Interface &$oDB, &$result,
+        array $options = array() )
     {
         $this->_dbc = $oDB->connect();
         $this->_result = $result;
@@ -81,6 +81,7 @@ class Mumsys_Db_Driver_None_None_Result
         return $this->_result;
     }
 
+
     /**
      * Fetch data from a mysql query in a given way
      *
@@ -91,31 +92,31 @@ class Mumsys_Db_Driver_None_None_Result
      */
     public function fetch( $way = 'assoc', $result = false )
     {
-        if (!$result) {
+        if ( !$result ) {
             $result = $this->_result;
         }
 
-        switch (strtolower($way))
+        switch ( strtolower( $way ) )
         {
             case 'array':
-                $row = mysqli_fetch_array($result, MYSQLI_BOTH);
+                $row = mysqli_fetch_array( $result, MYSQLI_BOTH );
                 break;
 
             case 'num':
-                $row = mysqli_fetch_array($result, MYSQLI_NUM);
+                $row = mysqli_fetch_array( $result, MYSQLI_NUM );
                 break;
 
             case 'row':
-                $row = mysqli_fetch_row($result);
+                $row = mysqli_fetch_row( $result );
                 break;
 
             case 'object':
-                $row = mysqli_fetch_object($result);
+                $row = mysqli_fetch_object( $result );
                 break;
 
             case 'assoc':
             default:
-                $row = mysqli_fetch_assoc($result);
+                $row = mysqli_fetch_assoc( $result );
         }
 
         return $row;
@@ -133,21 +134,21 @@ class Mumsys_Db_Driver_None_None_Result
      * @param resource $result Result set of the sql query
      * @return array List of records
      */
-    public function fetchAll( $way='assoc', $result=null )
+    public function fetchAll( $way = 'assoc', $result = null )
     {
         $oRes = null;
-        if (!$result) {
+        if ( !$result ) {
             $oRes = $this->_result;
         }
 
-        if (!$oRes) {
+        if ( !$oRes ) {
             return false;
         }
 
         $data = array();
-        $way = strtolower($way);
+        $way = strtolower( $way );
 
-        while ($row = $this->fetch($way, $oRes)) {
+        while ( $row = $this->fetch( $way, $oRes ) ) {
             $data[] = $row;
         }
         $this->free();
@@ -170,16 +171,16 @@ class Mumsys_Db_Driver_None_None_Result
      * @return integer Returns the number of rows
      * @throws Mumsys_Db_Exception If calculation of num rows fails
      */
-    public function numRows( $result=null )
+    public function numRows( $result = null )
     {
         $numRows = null;
         if ( $result ) {
-            $numRows = @mysqli_num_rows($result);
+            $numRows = @mysqli_num_rows( $result );
         } else {
             if ( $this->_numRows !== null ) {
                 $numRows = $this->_numRows;
             } else {
-                $numRows = mysqli_num_rows($this->_result);
+                $numRows = mysqli_num_rows( $this->_result );
             }
         }
 
@@ -222,12 +223,12 @@ class Mumsys_Db_Driver_None_None_Result
      *
      * @todo Seems to be buggy!! $result with $this->_result
      */
-    public function affectedRows($dbc=false)
+    public function affectedRows( $dbc = false )
     {
         if ( $dbc ) {
-            return mysqli_affected_rows($dbc);
+            return mysqli_affected_rows( $dbc );
         }
-        return mysqli_affected_rows($this->_dbc);
+        return mysqli_affected_rows( $this->_dbc );
     }
 
 
@@ -251,13 +252,13 @@ class Mumsys_Db_Driver_None_None_Result
      * previous query on success, 0 if the previous query does not generate an
      * AUTO_INCREMENT value, or FALSE if no MySQL connection was established.
      */
-    public function lastInsertId($dbc=false)
+    public function lastInsertId( $dbc = false )
     {
         if ( $dbc ) {
-            return mysqli_insert_id($dbc);
+            return mysqli_insert_id( $dbc );
         }
 
-        return mysqli_insert_id($this->_dbc);
+        return mysqli_insert_id( $this->_dbc );
     }
 
 
@@ -266,9 +267,9 @@ class Mumsys_Db_Driver_None_None_Result
      *
      * @see lastInsertId()
      */
-    public function insertID($dbc=false)
+    public function insertID( $dbc = false )
     {
-        return $this->lastInsertId($dbc);
+        return $this->lastInsertId( $dbc );
     }
 
 
@@ -298,23 +299,24 @@ class Mumsys_Db_Driver_None_None_Result
      */
     public function getFirst( $row = 0, $field = 0, $res = false )
     {
-        if (!$res) {
+        if ( !$res ) {
             $res = $this->_result;
         }
 
         try
         {
-            if (!$this->seek($row, $res)) {
-                throw new Mumsys_Db_Exception('Seeking to row '. $row . ' failed');
+            if ( !$this->seek( $row, $res ) ) {
+                throw new Mumsys_Db_Exception( 'Seeking to row ' . $row . ' failed' );
             }
-            $data = $this->fetch('array', $res);
-            $this->free($res);
+            $data = $this->fetch( 'array', $res );
+            $this->free( $res );
 
-            if (isset($data[$field])) {
+            if ( isset( $data[$field] ) ) {
                 return $data[$field];
             }
 
-        } catch (Exception $e) {
+        }
+        catch ( Exception $e ) {
             throw $e;
         }
 
@@ -332,9 +334,9 @@ class Mumsys_Db_Driver_None_None_Result
      * @param type $res
      * @return type
      */
-    public function sqlResult($row=0, $field=0, $res=false)
+    public function sqlResult( $row = 0, $field = 0, $res = false )
     {
-        return $this->getFirst($row, $field, $res);
+        return $this->getFirst( $row, $field, $res );
     }
 
 
@@ -354,16 +356,16 @@ class Mumsys_Db_Driver_None_None_Result
      */
     public function seek( $n = 0, $res = null )
     {
-        if ( $this->numRows($res) <= $n ) {
+        if ( $this->numRows( $res ) <= $n ) {
             return false;
         }
 
         $_res = $this->_result;
-        if ($res) {
+        if ( $res ) {
             $_res = $res;
         }
 
-        return mysqli_data_seek($_res, $n);
+        return mysqli_data_seek( $_res, $n );
     }
 
 
@@ -379,16 +381,17 @@ class Mumsys_Db_Driver_None_None_Result
      * result comes from a call to mysql_query().
      * @return boolean Returns TRUE on success or FALSE on failure.
      */
-    public function free($res=false)
+    public function free( $res = false )
     {
-        if (!$res) {
+        if ( !$res ) {
             $res = $this->_result;
         }
 
         try {
-            mysqli_free_result($res);
-        } catch (Exception $e) {
-            throw new Mumsys_Db_Exception($e->getMessage(), $e->getCode(), $e->getPrevious());
+            mysqli_free_result( $res );
+        }
+        catch ( Exception $e ) {
+            throw new Mumsys_Db_Exception( $e->getMessage(), $e->getCode(), $e->getPrevious() );
         }
 
         return true;

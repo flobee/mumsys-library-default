@@ -86,10 +86,10 @@ abstract class Mumsys_Mvc_Controller_Abstract
      */
     public function getControllerLocation( $program = null, $controller = null )
     {
-        $this->_programName = preg_replace('/ +/i', '_', ucwords($program));
+        $this->_programName = preg_replace( '/ +/i', '_', ucwords( $program ) );
         $this->_controllerName = $controller;
 
-        if ( !$this->checkControllerLocation($newProgram, $newCntrl) ) {
+        if ( !$this->checkControllerLocation( $newProgram, $newCntrl ) ) {
             $this->_programName = $this->_configs['defaultProgram'];
             $this->_controllerName = $this->_configs['defaultController'];
         }
@@ -109,14 +109,15 @@ abstract class Mumsys_Mvc_Controller_Abstract
      */
     public function checkControllerLocation( $program = null, $controller = null )
     {
-        if ( preg_match(MUMSYS_REGEX_AZ09X, $program)
-            && preg_match(MUMSYS_REGEX_AZ09X, $controller) ) {
+        if ( preg_match( MUMSYS_REGEX_AZ09X, $program )
+            && preg_match( MUMSYS_REGEX_AZ09X, $controller )
+        ) {
             $file = $this->_configs['pathPrograms'] . $program . '/'
                 . $controller . 'Controller.php';
 
-             if ( file_exists($file) ) {
-                 return true;
-             }
+            if ( file_exists( $file ) ) {
+                return true;
+            }
         }
 
         return false;

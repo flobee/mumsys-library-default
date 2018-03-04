@@ -12,6 +12,7 @@
 
     <logging>
         <log type="junit" target="logs/phpunit.log.xml" logIncompleteSkipped="false"/>
+        <log type="coverage-html" target="../docs/CodeCoverage/" lowUpperBound="35" highLowerBound="70"/>
     </logging>
     
     <filter>

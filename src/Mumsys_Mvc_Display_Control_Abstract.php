@@ -58,7 +58,8 @@ abstract class Mumsys_Mvc_Display_Control_Abstract
      * Constructor is to be implemented at the display controller which will be
      * used. e.g. in : Mumsys_Mvc_Display_Control_Http_Abstract
      */
-    abstract public function __construct( Mumsys_Context $context, array $options = array() );
+    abstract public function __construct( Mumsys_Context $context,
+        array $options = array() );
 
 
     /**
@@ -71,19 +72,19 @@ abstract class Mumsys_Mvc_Display_Control_Abstract
      */
     public function getDisplayHelper( $extension )
     {
-        if ( isset($this->_helpers[$extension]) ) {
+        if ( isset( $this->_helpers[$extension] ) ) {
             return $this->_helpers[$extension];
         }
 
         try {
-            $class = 'Mumsys_Display_Helper_' . ucfirst($extension);
-            if ( !class_exists($class, false) ) {
-                $return = $this->_helpers[$extension] = new $class($this->_context);
+            $class = 'Mumsys_Display_Helper_' . ucfirst( $extension );
+            if ( !class_exists( $class, false ) ) {
+                $return = $this->_helpers[$extension] = new $class( $this->_context );
             }
         }
         catch ( Exception $e ) {
             throw new Mumsys_Display_Exception(
-                sprintf('Helper class not found/ exists "%1$s"', $extension)
+                sprintf( 'Helper class not found/ exists "%1$s"', $extension )
             );
         }
 

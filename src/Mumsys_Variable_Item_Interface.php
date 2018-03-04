@@ -196,7 +196,7 @@ interface Mumsys_Variable_Item_Interface
      *
      * @param string $altnKey Alternativ property key to get if label not exists
      * (default: "name" for getName().
-     * 
+     *
      * @return string Item/ variable label
      */
     public function getLabel( $altnKey = 'name' );

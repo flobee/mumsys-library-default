@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Mumsys_Logger_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
@@ -55,7 +54,7 @@ class Mumsys_Logger_Default
      *
      * @see Mumsys_Logger_File::__construct() for more prameters.
      *
-     * @param array $args Key/value pairs with additional params. 
+     * @param array $args Key/value pairs with additional params.
      *  - [username] optional otherwise PHP_AUTH_USER will be taken
      *  - [lineFormat] optional format of log line;see $_logformat.
      *  - [timeFormat] optional format of a timestamp format
@@ -70,7 +69,7 @@ class Mumsys_Logger_Default
     public function __construct( array $options = array(),
         Mumsys_Logger_Writer_Interface $writer = null )
     {
-        parent::__construct($options, $writer);
+        parent::__construct( $options, $writer );
     }
 
 }

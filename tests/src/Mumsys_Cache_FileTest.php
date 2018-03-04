@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Mumsys_Cache_File Tests
  */
@@ -26,8 +25,8 @@ class Mumsys_Cache_FileTest
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Cache_File' => $this->_version,
         );
-        $this->_object = new Mumsys_Cache_File('group', 'id');
-        $this->_object->setPath('/tmp/');
+        $this->_object = new Mumsys_Cache_File( 'group', 'id' );
+        $this->_object->setPath( '/tmp/' );
     }
 
 
@@ -37,8 +36,8 @@ class Mumsys_Cache_FileTest
      */
     protected function tearDown()
     {
-        $this->object = NULL;
-        unset($this->object);
+        $this->object = null;
+        unset( $this->object );
     }
 
 
@@ -50,14 +49,14 @@ class Mumsys_Cache_FileTest
      */
     public function testWrite()
     {
-        $this->_object = new Mumsys_Cache_File('group', 'id');
-        $this->_object->setPath('/tmp/');
+        $this->_object = new Mumsys_Cache_File( 'group', 'id' );
+        $this->_object->setPath( '/tmp/' );
 
         $this->_object->isCached();
 
-        $this->_object->write(2, 'data to cache');
+        $this->_object->write( 2, 'data to cache' );
         $actual = $this->_object->read();
-        $this->assertEquals('data to cache', $actual);
+        $this->assertEquals( 'data to cache', $actual );
     }
 
 
@@ -67,7 +66,7 @@ class Mumsys_Cache_FileTest
     public function testRead()
     {
         $actual = $this->_object->read();
-        $this->assertEquals('data to cache', $actual);
+        $this->assertEquals( 'data to cache', $actual );
     }
 
 
@@ -77,7 +76,7 @@ class Mumsys_Cache_FileTest
      */
     public function testIsCached()
     {
-        $this->assertTrue($this->_object->isCached());
+        $this->assertTrue( $this->_object->isCached() );
     }
 
 
@@ -90,11 +89,11 @@ class Mumsys_Cache_FileTest
         $actual1 = $this->_object->isCached();
         $this->_object->removeCache();
         $actual2 = $this->_object->isCached();
-        $this->assertTrue($actual1);
-        $this->assertFalse($actual2);
+        $this->assertTrue( $actual1 );
+        $this->assertFalse( $actual2 );
 
-        $this->expectExceptionMessageRegExp('/(unlink)(.*)(No such file or directory)/i');
-        $this->expectException('Mumsys_Cache_Exception');
+        $this->expectExceptionMessageRegExp( '/(unlink)(.*)(No such file or directory)/i' );
+        $this->expectException( 'Mumsys_Cache_Exception' );
         $this->_object->removeCache();
     }
 
@@ -105,8 +104,8 @@ class Mumsys_Cache_FileTest
      */
     public function testSetPrefix()
     {
-        $this->_object->setPrefix('fx');
-        $this->assertEquals('fx', $this->_object->getPrefix());
+        $this->_object->setPrefix( 'fx' );
+        $this->assertEquals( 'fx', $this->_object->getPrefix() );
     }
 
 
@@ -116,8 +115,8 @@ class Mumsys_Cache_FileTest
      */
     public function testSetPath()
     {
-        $this->_object->setPath('/tmp//');
-        $this->assertEquals('/tmp/', $this->_object->getPath());
+        $this->_object->setPath( '/tmp//' );
+        $this->assertEquals( '/tmp/', $this->_object->getPath() );
     }
 
 
@@ -127,8 +126,8 @@ class Mumsys_Cache_FileTest
      */
     public function testSetEnable()
     {
-        $this->_object->setEnable(false);
-        $this->assertFalse($this->_object->isCached());
+        $this->_object->setEnable( false );
+        $this->assertFalse( $this->_object->isCached() );
     }
 
     //
@@ -140,7 +139,9 @@ class Mumsys_Cache_FileTest
      */
     public function testGetVersion()
     {
-        $this->assertEquals('Mumsys_Cache_File ' . $this->_version, $this->_object->getVersion());
+        $this->assertEquals(
+            'Mumsys_Cache_File ' . $this->_version, $this->_object->getVersion()
+        );
     }
 
 
@@ -149,7 +150,7 @@ class Mumsys_Cache_FileTest
      */
     public function testgetVersionID()
     {
-        $this->assertEquals($this->_version, $this->_object->getVersionID());
+        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
     }
 
 
@@ -158,7 +159,7 @@ class Mumsys_Cache_FileTest
      */
     public function testgetVersions()
     {
-        $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
+        $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 
 }

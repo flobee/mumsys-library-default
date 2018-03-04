@@ -5,6 +5,7 @@ cs
 
 # Composer files
 composer.phar
+/composer
 vendor/
 
 # Local configs
@@ -42,9 +43,8 @@ svn/*
 logs/
 /docs/CodeCoverage/*
 /docs/gitstats/*
-/docs/API/*
+/docs/GitStats/*
 /docs/gitstat*
-#/tests/testfiles/*
-/tests/tmp/*
+/docs/API/*
 /tests/tmp/*
 

@@ -1,6 +1,6 @@
 <?php
 
-/*{{{*/
+/* {{{ */
 /**
  * Mumsys_Db_Driver_None_None
  * for MUMSYS Library for Multi User Management System (MUMSYS)
@@ -44,7 +44,7 @@ class Mumsys_Db_Driver_None_None
     {
         try
         {
-            if ($this->_isConnected && $this->_dbc) {
+            if ( $this->_isConnected && $this->_dbc ) {
                 return $this->_dbc;
             }
 
@@ -59,14 +59,15 @@ class Mumsys_Db_Driver_None_None
                     $this->_socket
                 ),
             );
-            $this->_dbc = new stdClass($options);
+            $this->_dbc = new stdClass( $options );
 
             $this->_isConnected = true;
 
-        } catch (Exception $e) {
+        }
+        catch ( Exception $e ) {
             $msg = 'Connection to database failed. Messages: "' . $e->getMessage()
-                .'", "'. $this->sqlError() .'"';
-            return $this->_setError($msg, null, $e);
+                . '", "' . $this->sqlError() . '"';
+            return $this->_setError( $msg, null, $e );
         }
 
         return $this->_dbc;
@@ -121,9 +122,9 @@ class Mumsys_Db_Driver_None_None
      * @return boolean Returns true on success or false or throws exception if set
      * @throws Mumsys_Db_Exception Throws exception if database can not be selected
      */
-    public function selectDB($dbName)
+    public function selectDB( $dbName )
     {
-        $this->_dbName = (string)$dbName;
+        $this->_dbName = (string) $dbName;
 
         return true;
     }
@@ -168,12 +169,12 @@ class Mumsys_Db_Driver_None_None
      *  - on empty sql statement (if throw errors was set)
      *  - on query error (if throw errors was set)
      */
-    public function query($sql=false, $unbuffered=false)
+    public function query( $sql = false, $unbuffered = false )
     {
         if ( $sql ) {
-            $this->_sql = (string)$sql;
+            $this->_sql = (string) $sql;
         } else {
-            return $this->_setError('Query empty. Can not query empty sql statment');
+            return $this->_setError( 'Query empty. Can not query empty sql statment' );
         }
 
         if ( $this->_dbc === null ) {
@@ -189,12 +190,12 @@ class Mumsys_Db_Driver_None_None
             $this->_querys[] = $sql;
         }
 
-        if ( ($error = $this->sqlError()) ) {
-            return $this->_setError($error);
+        if ( ($error = $this->sqlError() ) ) {
+            return $this->_setError( $error );
         }
 
-        $result = new stdClass(array('sql'=>$this->_sql));
-        $oRes = new Mumsys_Db_Driver_None_None_Result($this, $result);
+        $result = new stdClass( array('sql' => $this->_sql) );
+        $oRes = new Mumsys_Db_Driver_None_None_Result( $this, $result );
 
         return $oRes;
     }
@@ -204,9 +205,9 @@ class Mumsys_Db_Driver_None_None
      * Execute an unbuffered query
      * @todo Not implemented yet
      */
-    public function queryUnbuffered($sql=false)
+    public function queryUnbuffered( $sql = false )
     {
-        return $this->_setError('Unbuffered querys not implemented yet');
+        return $this->_setError( 'Unbuffered querys not implemented yet' );
     }
 
 
@@ -216,7 +217,7 @@ class Mumsys_Db_Driver_None_None
      * @param resource $res The result set of a mysql_query
      * @return boolean return true on error, false on no error
      */
-    public function isError($res)
+    public function isError( $res )
     {
         if ( $res === false ) {
             return true;
@@ -274,60 +275,60 @@ class Mumsys_Db_Driver_None_None
      * 'GETIDS', 'LINE', 'ROW', 'KEYGOVAL', 'KEYGOKEY'.
      * @return array Returns the result as array or false on failure or if no more record exists
      */
-    public function fetchData($sql, $way='ASSOC')
+    public function fetchData( $sql, $way = 'ASSOC' )
     {
-        $oRes = $this->query($sql);
+        $oRes = $this->query( $sql );
 
         if ( $oRes === false ) {
             return false;
         }
 
         $data = array();
-        switch ( strtoupper($way) )
+        switch ( strtoupper( $way ) )
         {
             case 'ASSOC':
             case 'ARRAY':
             case 'OBJECT':
             case 'NUM':
-                while ( $row = $oRes->fetch($way) ) {
+                while ( $row = $oRes->fetch( $way ) ) {
                     $data[] = $row;
                 }
                 break;
 
             case 'GETIDS':
-                while ( $row = $oRes->fetch('ROW') ) {
-                    array_push($data, $row[0]);
+                while ( $row = $oRes->fetch( 'ROW' ) ) {
+                    array_push( $data, $row[0] );
                 }
                 break;
 
             case 'LINE':
-                $data = $oRes->fetch('ASSOC');
+                $data = $oRes->fetch( 'ASSOC' );
                 break;
 
             case 'ROW':
-                $data = $oRes->fetch('ROW');
+                $data = $oRes->fetch( 'ROW' );
                 break;
 
             case 'KEYGOVAL':
-                while ( $row = $oRes->fetch('NUM') ) {
+                while ( $row = $oRes->fetch( 'NUM' ) ) {
                     $data[$row[0]] = $row[1];
                 }
                 break;
 
             case 'KEYGOKEY':
-                while ( $row = $oRes->fetch('NUM') ) {
+                while ( $row = $oRes->fetch( 'NUM' ) ) {
                     $data[$row[0]] = $row[0];
                 }
                 break;
 
             case 'KEYGOASSOC':
-                while ( $row = $oRes->fetch('ASSOC') ) {
-                    $data[reset($row)] = $row;
+                while ( $row = $oRes->fetch( 'ASSOC' ) ) {
+                    $data[reset( $row )] = $row;
                 }
                 break;
 
             default:
-                while ( $row = $oRes->fetch('ASSOC') ) {
+                while ( $row = $oRes->fetch( 'ASSOC' ) ) {
                     $data[] = $row;
                 }
                 break;
@@ -350,7 +351,7 @@ class Mumsys_Db_Driver_None_None
      * @return array|false The columns propertys with lower case array keys
      * @throws Mumsys_Db_Exception Throws exception on error
      */
-    public function showColumns($table='', $field=null)
+    public function showColumns( $table = '', $field = null )
     {
         return array();
     }
@@ -366,6 +367,7 @@ class Mumsys_Db_Driver_None_None
     {
         return '';
     }
+
 
     /**
      * Retruns the server info and version string.
@@ -396,7 +398,7 @@ class Mumsys_Db_Driver_None_None
      *
      * @throws Mumsys_Db_Exception If connection can't be made or ThrowErrors was set
      */
-    protected function _setError($message, $code=null, $previous=null)
+    protected function _setError( $message, $code = null, $previous = null )
     {
         if ( $code === null ) {
             $code = $this->sqlErrno();
@@ -409,21 +411,21 @@ class Mumsys_Db_Driver_None_None
             //this blows up the memory! use carefully
             $this->_errorList[] = array('message' => $message, 'code' => $code);
         } else {
-            $this->_errorList[0] = array('message' => $message, 'code'=>$code);
+            $this->_errorList[0] = array('message' => $message, 'code' => $code);
         }
 
-        if ( $this->_throwErrors || $this->_isConnected === false) {
-            throw new Mumsys_Db_Exception($message, $code, $previous);
+        if ( $this->_throwErrors || $this->_isConnected === false ) {
+            throw new Mumsys_Db_Exception( $message, $code, $previous );
         }
 
         return false;
     }
 
-
     // -------------------------------------------------------------------------
 
 
     // -- compile querys ---
+
 
     /**
      * Update/ insert or delete data from database.
@@ -432,9 +434,9 @@ class Mumsys_Db_Driver_None_None
      *
      * @return Mumsys_Db_Driver_None_None_Result|false Result object or false
      */
-    protected function _save($params, $action='update')
+    protected function _save( $params, $action = 'update' )
     {
-        return $this->query($sql);
+        return $this->query( $sql );
     }
 
 
@@ -446,7 +448,7 @@ class Mumsys_Db_Driver_None_None
      */
     public function update( array $params = array() )
     {
-        return $this->_save($params, 'update');
+        return $this->_save( $params, 'update' );
     }
 
 
@@ -457,7 +459,7 @@ class Mumsys_Db_Driver_None_None
      */
     public function select( array $params = array() )
     {
-        return $this->_save($params, 'select');
+        return $this->_save( $params, 'select' );
     }
 
 
@@ -470,9 +472,9 @@ class Mumsys_Db_Driver_None_None
      *
      * @return integer|false Return the last insert ID or false on error
      */
-    public function insert(array $params = array())
+    public function insert( array $params = array() )
     {
-        if ( ($r = $this->_save($params, 'insert') ) ) {
+        if ( ($r = $this->_save( $params, 'insert' ) ) ) {
             return $r->lastInsertId();
         }
 
@@ -489,9 +491,9 @@ class Mumsys_Db_Driver_None_None
      *
      * @return integer|false Returns number of affected rows or false on error
      */
-    public function replace(array $params = array())
+    public function replace( array $params = array() )
     {
-        if ( ($r = $this->_save($params, 'replace') ) ) {
+        if ( ($r = $this->_save( $params, 'replace' ) ) ) {
             return $r->affectedRows();
         }
 
@@ -506,9 +508,9 @@ class Mumsys_Db_Driver_None_None
      *
      * @return Mumsys_Db_Driver_None_Result|false Returns false on error
      */
-    public function delete(array $params = array())
+    public function delete( array $params = array() )
     {
-        return $this->_save($params, 'delete');
+        return $this->_save( $params, 'delete' );
     }
 
 
@@ -525,7 +527,6 @@ class Mumsys_Db_Driver_None_None
     }
 
 
-
     /**
      *
      * @param array $opts Options to set
@@ -536,6 +537,7 @@ class Mumsys_Db_Driver_None_None
     {
         return '';
     }
+
 
     /**
      * Returns select statment by given configuration list.
@@ -565,8 +567,6 @@ class Mumsys_Db_Driver_None_None
     }
 
 
-
-
     /**
      * Retruns complex sql expression basicly made for a sql where clause.
      *
@@ -579,6 +579,7 @@ class Mumsys_Db_Driver_None_None
     {
         return '';
     }
+
 
     /**
      * Returns where clause conditions by given list of key/value pair in AND
@@ -644,7 +645,6 @@ class Mumsys_Db_Driver_None_None
         return '';
     }
 
-
     // --- end compileQuery* --------------------------------------------------
 
 
@@ -653,10 +653,11 @@ class Mumsys_Db_Driver_None_None
      *
      * @return string|false seperated string by given separator
      */
-    public function sqlImplode($separator=',', array $array=array(),
-        $withKeys=false, $defaults=array(), $valwrap='', $keyValWrap='',
-        $keyWrap='')
+    public function sqlImplode( $separator = ',', array $array = array(),
+        $withKeys = false, $defaults = array(), $valwrap = '', $keyValWrap = '',
+        $keyWrap = '' )
     {
         return '';
     }
+
 }

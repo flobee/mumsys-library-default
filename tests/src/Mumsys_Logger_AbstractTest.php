@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Test class for Mumsys_Logger_Abstract using Mumsys_Logger_File
  */
@@ -17,11 +16,12 @@ class Mumsys_Logger_AbstractTest
      */
     protected $_testsDir;
 
-        /**
+    /**
      * Version string.
      * @var string
      */
     protected $_version;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -30,7 +30,7 @@ class Mumsys_Logger_AbstractTest
     protected function setUp()
     {
         $this->_version = '3.3.1';
-        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
+        $this->_testsDir = realpath( dirname( __FILE__ ) . '/../' );
 
         $this->_logfile = $this->_testsDir
             . '/tmp/Mumsys_LoggerTest_defaultfile.test';
@@ -42,7 +42,7 @@ class Mumsys_Logger_AbstractTest
             'maxfilesize' => 80,
             'lineFormat' => '%5$s',
         );
-        $this->_object = new Mumsys_Logger_File($opts);
+        $this->_object = new Mumsys_Logger_File( $opts );
     }
 
 
@@ -54,6 +54,7 @@ class Mumsys_Logger_AbstractTest
     {
         $this->_object = null;
     }
+
 
     /**
      * @covers Mumsys_Logger_Abstract::__construct
@@ -68,9 +69,9 @@ class Mumsys_Logger_AbstractTest
         $opts['verbose'] = false;
         $opts['lf'] = "\n";
 
-        $object = new Mumsys_Logger_File($opts);
+        $object = new Mumsys_Logger_File( $opts );
 
-        $this->assertInstanceOf('Mumsys_Logger_Interface', $object);
+        $this->assertInstanceOf( 'Mumsys_Logger_Interface', $object );
     }
 
 
@@ -98,9 +99,9 @@ class Mumsys_Logger_AbstractTest
         $_SERVER['LOGNAME'] = 'God';
         $object = new Mumsys_Logger_File( $opts );
 
-        $this->assertInstanceOf('Mumsys_Logger_File', $object);
-        $this->assertInstanceOf('Mumsys_Logger_Abstract', $object);
-        $this->assertInstanceOf('Mumsys_Logger_Interface', $object);
+        $this->assertInstanceOf( 'Mumsys_Logger_File', $object );
+        $this->assertInstanceOf( 'Mumsys_Logger_Abstract', $object );
+        $this->assertInstanceOf( 'Mumsys_Logger_Interface', $object );
     }
 
 
@@ -123,8 +124,9 @@ class Mumsys_Logger_AbstractTest
      */
     public function testEmerg()
     {
-        $this->assertEquals( 'log emergency',
-            trim( $this->_object->emerg( 'log emergency' ) ) );
+        $this->assertEquals(
+            'log emergency', trim( $this->_object->emerg( 'log emergency' ) )
+        );
     }
 
 
@@ -133,8 +135,9 @@ class Mumsys_Logger_AbstractTest
      */
     public function testAlert()
     {
-        $this->assertEquals( 'log alert',
-            trim( $this->_object->alert( 'log alert' ) ) );
+        $this->assertEquals(
+            'log alert', trim( $this->_object->alert( 'log alert' ) )
+        );
     }
 
 
@@ -143,8 +146,9 @@ class Mumsys_Logger_AbstractTest
      */
     public function testCrit()
     {
-        $this->assertEquals( 'log critical',
-            trim( $this->_object->crit( 'log critical' ) ) );
+        $this->assertEquals(
+            'log critical', trim( $this->_object->crit( 'log critical' ) )
+        );
     }
 
 
@@ -153,8 +157,9 @@ class Mumsys_Logger_AbstractTest
      */
     public function testErr()
     {
-        $this->assertEquals( 'log error',
-            trim( $this->_object->err( 'log error' ) ) );
+        $this->assertEquals(
+            'log error', trim( $this->_object->err( 'log error' ) )
+        );
     }
 
 
@@ -163,8 +168,9 @@ class Mumsys_Logger_AbstractTest
      */
     public function testWarn()
     {
-        $this->assertEquals( 'log warning',
-            trim( $this->_object->warn( 'log warning' ) ) );
+        $this->assertEquals(
+            'log warning', trim( $this->_object->warn( 'log warning' ) )
+        );
     }
 
 
@@ -173,8 +179,9 @@ class Mumsys_Logger_AbstractTest
      */
     public function testNotice()
     {
-        $this->assertEquals( 'log notice',
-            trim( $this->_object->notice( 'log notice' ) ) );
+        $this->assertEquals(
+            'log notice', trim( $this->_object->notice( 'log notice' ) )
+        );
     }
 
 
@@ -183,8 +190,9 @@ class Mumsys_Logger_AbstractTest
      */
     public function testInfo()
     {
-        $this->assertEquals( 'log info',
-            trim( $this->_object->info( 'log info' ) ) );
+        $this->assertEquals(
+            'log info', trim( $this->_object->info( 'log info' ) )
+        );
     }
 
 
@@ -193,8 +201,9 @@ class Mumsys_Logger_AbstractTest
      */
     public function testDebug()
     {
-        $this->assertEquals( 'log debug',
-            trim( $this->_object->debug( 'log debug' ) ) );
+        $this->assertEquals(
+            'log debug', trim( $this->_object->debug( 'log debug' ) )
+        );
     }
 
 
@@ -226,9 +235,9 @@ class Mumsys_Logger_AbstractTest
      */
     public function testSetLogFormat()
     {
-        $this->_object->setLogFormat('%4$s %5$s');
-        $actual1 = $this->_object->log('test', 0);
-        $actual2 = $this->_object->log('test', 3);
+        $this->_object->setLogFormat( '%4$s %5$s' );
+        $actual1 = $this->_object->log( 'test', 0 );
+        $actual2 = $this->_object->log( 'test', 3 );
 
         $this->assertEquals( '0 test' . "\n", $actual1 );
         $this->assertEquals( '3 test' . "\n", $actual2 );
@@ -240,16 +249,16 @@ class Mumsys_Logger_AbstractTest
      */
     public function testSetLogLevel()
     {
-        $this->_object->setLoglevel(1);
-        $actual1 = $this->_object->log('test', 0);
-        $actual2 = $this->_object->log('test', 1);
+        $this->_object->setLoglevel( 1 );
+        $actual1 = $this->_object->log( 'test', 0 );
+        $actual2 = $this->_object->log( 'test', 1 );
 
         $this->assertEquals( 'test' . "\n", $actual1 );
         $this->assertEquals( 'test' . "\n", $actual2 );
 
-        $this->expectException('Mumsys_Logger_Exception');
-        $this->expectExceptionMessage('Log level "99" unknown. Can not set');
-        $this->_object->setLoglevel(99);
+        $this->expectException( 'Mumsys_Logger_Exception' );
+        $this->expectExceptionMessage( 'Log level "99" unknown. Can not set' );
+        $this->_object->setLoglevel( 99 );
     }
 
 
@@ -259,8 +268,8 @@ class Mumsys_Logger_AbstractTest
     public function testCheckLevel()
     {
 
-        $actual1 = $this->_object->checkLevel(3);
-        $actual2 = $this->_object->checkLevel(99);
+        $actual1 = $this->_object->checkLevel( 3 );
+        $actual2 = $this->_object->checkLevel( 99 );
 
         $this->assertTrue( $actual1 );
         $this->assertFalse( $actual2 );
@@ -272,24 +281,25 @@ class Mumsys_Logger_AbstractTest
      */
     public function testGetLevelName()
     {
-        $this->assertEquals('EMERG', $this->_object->getLevelName(0));
-        $this->assertEquals('ALERT', $this->_object->getLevelName(1));
-        $this->assertEquals('CRIT', $this->_object->getLevelName(2));
-        $this->assertEquals('ERR', $this->_object->getLevelName(3));
-        $this->assertEquals('WARN', $this->_object->getLevelName(4));
-        $this->assertEquals('NOTICE', $this->_object->getLevelName(5));
-        $this->assertEquals('INFO', $this->_object->getLevelName(6));
-        $this->assertEquals('DEBUG', $this->_object->getLevelName(7));
+        $this->assertEquals( 'EMERG', $this->_object->getLevelName( 0 ) );
+        $this->assertEquals( 'ALERT', $this->_object->getLevelName( 1 ) );
+        $this->assertEquals( 'CRIT', $this->_object->getLevelName( 2 ) );
+        $this->assertEquals( 'ERR', $this->_object->getLevelName( 3 ) );
+        $this->assertEquals( 'WARN', $this->_object->getLevelName( 4 ) );
+        $this->assertEquals( 'NOTICE', $this->_object->getLevelName( 5 ) );
+        $this->assertEquals( 'INFO', $this->_object->getLevelName( 6 ) );
+        $this->assertEquals( 'DEBUG', $this->_object->getLevelName( 7 ) );
 
-        $this->assertEquals('unknown', $this->_object->getLevelName(999));
+        $this->assertEquals( 'unknown', $this->_object->getLevelName( 999 ) );
     }
+
 
     /**
      * Version check
      */
     public function testVersion()
     {
-        $this->assertEquals($this->_version, Mumsys_Logger_Abstract::VERSION);
+        $this->assertEquals( $this->_version, Mumsys_Logger_Abstract::VERSION );
     }
 
 }

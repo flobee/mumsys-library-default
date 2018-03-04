@@ -65,7 +65,7 @@ class Mumsys_Php_Globals
      */
     public static function getServerVar( $key, $default = null )
     {
-        return self::_getEnvVar($key, $default);
+        return self::_getEnvVar( $key, $default );
     }
 
 
@@ -80,7 +80,7 @@ class Mumsys_Php_Globals
      */
     public static function getEnvVar( $key, $default = null )
     {
-        return self::_getEnvVar($key, $default);
+        return self::_getEnvVar( $key, $default );
     }
 
 
@@ -95,11 +95,11 @@ class Mumsys_Php_Globals
      */
     private static function _getEnvVar( $key, $default = null )
     {
-        if ( isset($_SERVER[$key]) ) {
+        if ( isset( $_SERVER[$key] ) ) {
             $default = $_SERVER[$key];
-        } elseif ( isset($_ENV[$key]) ) {
+        } elseif ( isset( $_ENV[$key] ) ) {
             $default = $_ENV[$key];
-        } elseif ( ($x = getenv($key) ) ) {
+        } elseif ( ($x = getenv( $key ) ) ) {
             $default = $x;
         }
 
@@ -118,11 +118,11 @@ class Mumsys_Php_Globals
      */
     public static function getPostVar( $key = null, $default = null )
     {
-        if ( isset($_POST) && $key === null ) {
+        if ( isset( $_POST ) && $key === null ) {
             return $_POST;
         }
 
-        if ( isset($_POST[$key]) ) {
+        if ( isset( $_POST[$key] ) ) {
             $default = $_POST[$key];
         }
 
@@ -142,11 +142,11 @@ class Mumsys_Php_Globals
      */
     public static function getGetVar( $key = null, $default = null )
     {
-        if ( isset($_GET) && $key === null ) {
+        if ( isset( $_GET ) && $key === null ) {
             return $_GET;
         }
 
-        if ( isset($_GET[$key]) ) {
+        if ( isset( $_GET[$key] ) ) {
             $default = $_GET[$key];
         }
 
@@ -166,11 +166,11 @@ class Mumsys_Php_Globals
      */
     public static function getCookieVar( $key = null, $default = array() )
     {
-        if ( isset($_COOKIE) && $key === null ) {
+        if ( isset( $_COOKIE ) && $key === null ) {
             return $_COOKIE;
         }
 
-        if ( isset($_COOKIE[$key]) ) {
+        if ( isset( $_COOKIE[$key] ) ) {
             $default = $_COOKIE[$key];
         }
 
@@ -196,12 +196,12 @@ class Mumsys_Php_Globals
      */
     public static function getFilesVar( $key = null, $default = null )
     {
-        if ( isset($_FILES) ) {
+        if ( isset( $_FILES ) ) {
             if ( self::$_files === null ) {
                 $newFiles = array();
 
                 foreach ( $_FILES as $index => $file ) {
-                    if ( !is_array($file['name']) ) {
+                    if ( !is_array( $file['name'] ) ) {
                         $newFiles[$index][] = $file;
                         continue;
                     }
@@ -225,7 +225,7 @@ class Mumsys_Php_Globals
                 $default = self::$_files;
             }
 
-            if ( isset(self::$_files[$key]) ) {
+            if ( isset( self::$_files[$key] ) ) {
                 $default = self::$_files[$key];
             }
         }
@@ -248,10 +248,10 @@ class Mumsys_Php_Globals
      */
     public static function getGlobalVar( $key = null, $default = null )
     {
-        if ( isset($GLOBALS) && $key === null ) {
+        if ( isset( $GLOBALS ) && $key === null ) {
             return $GLOBALS;
         }
-        if ( isset($GLOBALS[$key]) ) {
+        if ( isset( $GLOBALS[$key] ) ) {
             $default = $GLOBALS[$key];
         }
 
@@ -284,18 +284,18 @@ class Mumsys_Php_Globals
      */
     public static function get( $key, $default = null )
     {
-        if ( isset($GLOBALS[$key]) ) {
+        if ( isset( $GLOBALS[$key] ) ) {
             return $GLOBALS[$key];
-        } elseif ( isset($GLOBALS['_REQUEST'][$key]) ) {
+        } elseif ( isset( $GLOBALS['_REQUEST'][$key] ) ) {
             $return = $GLOBALS['_REQUEST'][$key];
-        } elseif ( isset($GLOBALS['_COOKIE'][$key]) ) {
+        } elseif ( isset( $GLOBALS['_COOKIE'][$key] ) ) {
             $return = $GLOBALS['_COOKIE'][$key];
-        } elseif ( isset($GLOBALS['_SESSION'][$key]) ) {
+        } elseif ( isset( $GLOBALS['_SESSION'][$key] ) ) {
             $return = $GLOBALS['_SESSION'][$key];
-        } elseif ( PHP_SAPI == 'cli' && isset($_SERVER['argv'][$key]) ) {
+        } elseif ( PHP_SAPI == 'cli' && isset( $_SERVER['argv'][$key] ) ) {
             $return = $_SERVER['argv'][$key];
         } else {
-            $return = self::_getEnvVar($key, $default);
+            $return = self::_getEnvVar( $key, $default );
         }
 
         return $return;
@@ -316,13 +316,13 @@ class Mumsys_Php_Globals
             return self::$_remoteuser;
         }
 
-        if ( isset($_SERVER['PHP_AUTH_USER']) ) {
+        if ( isset( $_SERVER['PHP_AUTH_USER'] ) ) {
             self::$_remoteuser = (string) $_SERVER['PHP_AUTH_USER'];
-        } else if ( isset($_SERVER['REMOTE_USER']) ) {
+        } else if ( isset( $_SERVER['REMOTE_USER'] ) ) {
             self::$_remoteuser = (string) $_SERVER['REMOTE_USER'];
-        } else if ( isset($_SERVER['USER']) ) {
+        } else if ( isset( $_SERVER['USER'] ) ) {
             self::$_remoteuser = (string) $_SERVER['USER'];
-        } else if ( isset($_SERVER['LOGNAME']) ) {
+        } else if ( isset( $_SERVER['LOGNAME'] ) ) {
             self::$_remoteuser = (string) $_SERVER['LOGNAME'];
         } else {
             self::$_remoteuser = 'unknown';

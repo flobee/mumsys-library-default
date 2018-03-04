@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Mumsys_Logger_Default Test
  */
@@ -28,7 +27,7 @@ class Mumsys_Logger_DefaultTest
             'Mumsys_Logger_Abstract' => '3.3.1'
         );
 
-        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
+        $this->_testsDir = realpath( dirname( __FILE__ ) . '/../' );
 
         $this->_logfile = $this->_testsDir . '/tmp/Mumsys_LoggerTest_defaultfile.test';
         $this->_opts = $opts = array(
@@ -39,8 +38,8 @@ class Mumsys_Logger_DefaultTest
             'file' => $this->_logfile,
             'way' => 'a',
         );
-        $this->_writer = new Mumsys_File($fopts);
-        $this->_object = new Mumsys_Logger_Default($opts, $this->_writer);
+        $this->_writer = new Mumsys_File( $fopts );
+        $this->_object = new Mumsys_Logger_Default( $opts, $this->_writer );
     }
 
 
@@ -51,7 +50,7 @@ class Mumsys_Logger_DefaultTest
     protected function tearDown()
     {
         $this->_object = $this->_writer = null;
-        unset($this->_object, $this->_writer);
+        unset( $this->_object, $this->_writer );
     }
 
 
@@ -65,11 +64,11 @@ class Mumsys_Logger_DefaultTest
         $opts['verbose'] = false;
         $opts['lf'] = "\n";
 
-        $object = new Mumsys_Logger_Default($opts, $this->_writer);
+        $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
-        $this->assertInstanceOf('Mumsys_Logger_File', $object);
-        $this->assertInstanceOf('Mumsys_Logger_Default', $object);
-        $this->assertInstanceOf('Mumsys_Logger_Interface', $object);
+        $this->assertInstanceOf( 'Mumsys_Logger_File', $object );
+        $this->assertInstanceOf( 'Mumsys_Logger_Default', $object );
+        $this->assertInstanceOf( 'Mumsys_Logger_Interface', $object );
     }
 
 
@@ -80,24 +79,24 @@ class Mumsys_Logger_DefaultTest
     {
         $opts = $this->_opts;
         $opts['username'] = 'flobee';
-        unset($opts['logfile'], $opts['way']);
+        unset( $opts['logfile'], $opts['way'] );
 
-        $object = new Mumsys_Logger_Default($opts, $this->_writer);
+        $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
-        unset($opts['username']);
+        unset( $opts['username'] );
         $_SERVER['REMOTE_USER'] = 'flobee';
-        $object = new Mumsys_Logger_Default($opts, $this->_writer);
+        $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
-        unset($opts['username'], $_SERVER['REMOTE_USER'],
-            $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'], $_SERVER['LOGNAME']);
-        $object = new Mumsys_Logger_Default($opts, $this->_writer);
+        unset( $opts['username'], $_SERVER['REMOTE_USER'],
+            $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'], $_SERVER['LOGNAME'] );
+        $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
         $_SERVER['LOGNAME'] = 'God';
-        $object = new Mumsys_Logger_Default($opts, $this->_writer);
+        $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
-        $this->assertInstanceOf('Mumsys_Logger_File', $object);
-        $this->assertInstanceOf('Mumsys_Logger_Default', $object);
-        $this->assertInstanceOf('Mumsys_Logger_Interface', $object);
+        $this->assertInstanceOf( 'Mumsys_Logger_File', $object );
+        $this->assertInstanceOf( 'Mumsys_Logger_Default', $object );
+        $this->assertInstanceOf( 'Mumsys_Logger_Interface', $object );
     }
 
 
@@ -106,8 +105,9 @@ class Mumsys_Logger_DefaultTest
      */
     public function testVersions()
     {
-        $this->assertEquals($this->_version, Mumsys_Logger_Default::VERSION);
-        $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
+        $this->assertEquals( $this->_version, Mumsys_Logger_Default::VERSION );
+        $this->_checkVersionList( $this->_object->getVersions(),
+            $this->_versions );
     }
 
 }

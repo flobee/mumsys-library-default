@@ -80,7 +80,7 @@ class Mumsys_I18n_None
      */
     public function _dtn( $domain, $singular, $plural, $number )
     {
-        $index = $this->getPluralIndex($number);
+        $index = $this->getPluralIndex( $number );
 
         if ( $index >= 1 ) {
             return $plural;

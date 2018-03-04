@@ -18,21 +18,17 @@
         "flobee/spss": "^2"
     },
     "require-dev": {
-        "tedivm/jshrink": "^1",
-
         "phpunit/phpunit": "^6",
-        "phpunit/php-invoker": "*",
         "friendsofphp/php-cs-fixer": "^2",
-        "phing/phing": "^2",
-
         "squizlabs/php_codesniffer": "*",
-        "psr/log": "*",
-        "phpmd/phpmd": "*",
         "phploc/phploc": "*",
+        "phpmd/phpmd": "*",
         "sebastian/phpcpd": "*",
-        
-        "composer/composer": "*",
-        "phpbench/phpbench": "^0.14.0"
+        "phing/phing": "^3|^2",
+
+        "phpbench/phpbench": "^0.14.0",
+        "tedivm/jshrink": "^1",
+        "composer/composer": "^1.6"
     },
     "autoload": {
         "classmap": [

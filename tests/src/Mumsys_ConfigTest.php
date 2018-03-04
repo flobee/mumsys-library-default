@@ -25,7 +25,7 @@ class Mumsys_ConfigTest
 
         $this->_config = MumsysTestHelper::getConfigs();
 
-        $this->_object = new Mumsys_Config($this->_config);
+        $this->_object = new Mumsys_Config( $this->_config );
     }
 
 
@@ -43,7 +43,7 @@ class Mumsys_ConfigTest
     {
         $expected = MumsysTestHelper::getConfigs();
         $testvalues = $this->_object->getAll();
-        $this->assertEquals($expected, $testvalues);
+        $this->assertEquals( $expected, $testvalues );
     }
 
 
@@ -51,12 +51,12 @@ class Mumsys_ConfigTest
     {
         $key = 'debug';
         $expected1 = true;
-        $testvalue1 = $this->_object->get($key, 123);
+        $testvalue1 = $this->_object->get( $key, 123 );
         $expected2 = 123;
-        $testvalue2 = $this->_object->get('notExists', 123);
+        $testvalue2 = $this->_object->get( 'notExists', 123 );
 
-        $this->assertEquals($expected1, $testvalue1);
-        $this->assertEquals($expected2, 123);
+        $this->assertEquals( $expected1, $testvalue1 );
+        $this->assertEquals( $expected2, 123 );
     }
 
 
@@ -64,40 +64,40 @@ class Mumsys_ConfigTest
     {
         $expected = $this->_object->getAll();
         $testvalues = MumsysTestHelper::getConfigs();
-        $this->assertEquals($expected, $testvalues);
-        $this->assertTrue(is_array($expected));
+        $this->assertEquals( $expected, $testvalues );
+        $this->assertTrue( is_array( $expected ) );
     }
 
 
     public function testRegister()
     {
         // simple
-        $this->_object->register('testkey', 'testvalue');
+        $this->_object->register( 'testkey', 'testvalue' );
         $expected1 = 'testvalue';
-        $testvalue1 = $this->_object->get('testkey', false);
+        $testvalue1 = $this->_object->get( 'testkey', false );
 
-        $this->assertEquals($expected1, $testvalue1);
+        $this->assertEquals( $expected1, $testvalue1 );
 
-        $this->expectExceptionMessageRegExp('/(Config key "testkey" already exists)/i');
-        $this->expectException('Mumsys_Config_Exception');
-        $this->_object->register('testkey', new stdClass());
+        $this->expectExceptionMessageRegExp( '/(Config key "testkey" already exists)/i' );
+        $this->expectException( 'Mumsys_Config_Exception' );
+        $this->_object->register( 'testkey', new stdClass() );
     }
 
 
     public function testReplace()
     {
-        $this->_object->register('testkey2', 'testvalue2');
-        $this->_object->replace('testkey2', 'testvalue3');
+        $this->_object->register( 'testkey2', 'testvalue2' );
+        $this->_object->replace( 'testkey2', 'testvalue3' );
 
-        $this->assertEquals('testvalue3', $this->_object->get('testkey2'));
+        $this->assertEquals( 'testvalue3', $this->_object->get( 'testkey2' ) );
     }
 
 
     public function testLoad()
     {
-        $this->expectExceptionMessageRegExp('/(Not implemented yet)/i');
-        $this->expectException('Mumsys_Config_Exception');
-        $this->_object->load('mumsys2');
+        $this->expectExceptionMessageRegExp( '/(Not implemented yet)/i' );
+        $this->expectException( 'Mumsys_Config_Exception' );
+        $this->_object->load( 'mumsys2' );
     }
 
 }

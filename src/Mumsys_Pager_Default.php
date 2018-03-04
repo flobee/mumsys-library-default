@@ -19,7 +19,8 @@
 /**
  * Pagination in html context.
  *
- * @todo Improve slider, general output, spacecs and delimiter not always 100% correct, update tests
+ * @todo Improve slider, general output, spacecs and delimiter not always 100%
+ * correct, update tests
  *
  * Example:
  * <code>
@@ -233,8 +234,8 @@ class Mumsys_Pager_Default
         self::PAGER_RESULTPAGES => 'pages: ',
         self::PAGER_RESULTSPERPAGE => 'results per page: ',
         // current/ activ item to hightlight
-        self::PAGER_HIGHLIGHTLEFT => ' &gt;',   // or: <span class="nicefeature">
-        self::PAGER_HIGHLIGHTRIGHT => '&lt; ',  // or: </span>
+        self::PAGER_HIGHLIGHTLEFT => ' &gt;', // or: <span class="nicefeature">
+        self::PAGER_HIGHLIGHTRIGHT => '&lt; ', // or: </span>
         self::PAGER_SLIDERPREFIX => '[ ',
         self::PAGER_SLIDERSUFFIX => ' ]',
         self::PAGER_SLIDERDELIMITER => ' | ',
@@ -287,12 +288,12 @@ class Mumsys_Pager_Default
                     'slidersteps', 'cssClassName'
                 );
 
-                foreach( $params as $key => $val ) {
-                    if ( in_array($key, $defaults) ) {
+                foreach ( $params as $key => $val ) {
+                    if ( in_array( $key, $defaults ) ) {
                         $this->{'_' . $key } = $val;
                     } else {
                         $message = 'Invalid parameter "' . $key . '" found';
-                        throw new Mumsys_Pager_Exception($message);
+                        throw new Mumsys_Pager_Exception( $message );
                     }
                 }
 
@@ -391,7 +392,7 @@ class Mumsys_Pager_Default
         $slider = array();
 
         $cnt = 0;
-        $cnt = ceil($cntitems / $limit);
+        $cnt = ceil( $cntitems / $limit );
         if ( $showPageNumbers ) {
             //$cnt = ceil($cntitems / $limit);
             $selected = $pagestart / $limit;
@@ -447,7 +448,7 @@ class Mumsys_Pager_Default
                                     '<a href="%1$s&amp;%2$s=%3$s">%4$s</a>',
                                     $basiclink,
                                     $pagestartVarname,
-                                    ($limit * $i),
+                                    ($limit * $i ),
                                     $x
                                 );
                             }
@@ -479,11 +480,11 @@ class Mumsys_Pager_Default
                 }
             }
 
-            $this->_slider = implode($this->_templates[self::PAGER_SLIDERDELIMITER], $slider);
+            $this->_slider = implode(
+                $this->_templates[self::PAGER_SLIDERDELIMITER], $slider
+            );
             $html .= $this->_slider;
-
         }
-
 
         if ( ($pagestart + $limit) >= $cntitems ) {
             // next page
@@ -495,14 +496,18 @@ class Mumsys_Pager_Default
             // next page
             $this->_pageNext = sprintf(
                 '<a href="%1$s&amp;%2$s=%3$s">%4$s</a>',
-                $basiclink, $pagestartVarname, ($pagestart + $limit),
+                $basiclink,
+                $pagestartVarname,
+                ($pagestart + $limit ),
                 $this->_templates[self::PAGER_PAGENEXT]
             );
             $html .= $this->_pageNext;
             // last page
             $this->_pageLast = sprintf(
                 '<a href="%1$s&amp;%2$s=%3$s">%4$s</a>',
-                $basiclink, $pagestartVarname, ($cnt * $limit - $limit),
+                $basiclink,
+                $pagestartVarname,
+                ($cnt * $limit - $limit ),
                 $this->_templates[self::PAGER_PAGELAST]
             );
         }
@@ -510,9 +515,7 @@ class Mumsys_Pager_Default
         $html .= $this->_pageLast;
         $html .= $this->_templates[self::PAGER_SLIDERSUFFIX];
 
-
         $html .= '</div>' . _NL;
-
 
         if ( $showSummary ) {
             $html .= '' . _NL
@@ -520,13 +523,15 @@ class Mumsys_Pager_Default
             $this->_summary = sprintf(
                 '%1$s<b>%2$s</b>, %3$s<b>%4$s</b>, %5$s<b>%6$s</b>',
                 $this->_templates[self::PAGER_RESULTS],
-                $cntitems, $this->_templates[self::PAGER_RESULTSPERPAGE], $limit,
-                $this->_templates[self::PAGER_RESULTPAGES], $cnt
+                $cntitems,
+                $this->_templates[self::PAGER_RESULTSPERPAGE],
+                $limit,
+                $this->_templates[self::PAGER_RESULTPAGES],
+                $cnt
             );
             $html .= $this->_summary;
             $html .= '</div>' . _NL;
         }
-
 
         $this->_html = $html;
 

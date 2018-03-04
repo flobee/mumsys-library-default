@@ -72,15 +72,15 @@ class Mumsys_Service_Spss_Reader
      *
      * @return array List of key|ID/Variable item pairs
      */
-    public function getVariableItems( array $labels = array() ) : array
+    public function getVariableItems( array $labels = array() ): array
     {
         $list = array();
         $tmp = array();
-        $map = $this->getVariableMapByLabels($labels);
+        $map = $this->getVariableMapByLabels( $labels );
 
         foreach ( $this->_spss->variables as $dataID => $varObj ) {
             if ( $varObj instanceof SPSS\Sav\Record\Variable ) {
-                if ( $this->_checkVariableNameExists($map, $varObj) ) {
+                if ( $this->_checkVariableNameExists( $map, $varObj ) ) {
                     $tmp[$dataID] = $varObj;
                 }
             }
@@ -106,14 +106,14 @@ class Mumsys_Service_Spss_Reader
      *
      * @return array List of public name/internal key name variables
      */
-    public function getVariableMapByLabels( array $labels = array() ) : array
+    public function getVariableMapByLabels( array $labels = array() ): array
     {
         $map = $this->getVariableMap();
         $result = array();
 
         foreach ( $labels as $key ) {
             foreach ( $map as $internal => & $public ) {
-                if (isset($result[$internal])) {
+                if ( isset( $result[$internal] ) ) {
                     continue;
                 }
 
@@ -135,14 +135,14 @@ class Mumsys_Service_Spss_Reader
      *
      * @return array List of internal/public name pairs
      */
-    public function getVariableMapByKeys( array $keys = array() ) : array
+    public function getVariableMapByKeys( array $keys = array() ): array
     {
         $map = $this->getVariableMap();
         $result = array();
 
         foreach ( $map as $internal => & $public ) {
             foreach ( $keys as $key ) {
-                if ( isset($map[$key]) && !isset($result[$internal]) ) {
+                if ( isset( $map[$key] ) && !isset( $result[$internal] ) ) {
                     $result[$internal] = $public;
                 }
             }
@@ -160,7 +160,7 @@ class Mumsys_Service_Spss_Reader
      *
      * @return array List of internal key /public name variables
      */
-    public function getVariableMapByRegex( array $regexs = array() ) : array
+    public function getVariableMapByRegex( array $regexs = array() ): array
     {
         $result = array();
 
@@ -169,8 +169,8 @@ class Mumsys_Service_Spss_Reader
         if ( $regexs ) {
             foreach ( $map as $internal => $public ) {
                 foreach ( $regexs as $req ) {
-                    if ( ($match = preg_match($req, $public)) === false ) {
-                        throw new Mumsys_Service_Spss_Exception('Regex error');
+                    if ( ($match = preg_match( $req, $public )) === false ) {
+                        throw new Mumsys_Service_Spss_Exception( 'Regex error' );
                     }
 
                     if ( $match ) {
@@ -195,9 +195,9 @@ class Mumsys_Service_Spss_Reader
      * @return array List of key(internal)/value(external) pairs or empty array
      * for not found/exists.
      */
-    public function getVariableMap() : array
+    public function getVariableMap(): array
     {
-        if ($this->_varMapping !== null) {
+        if ( $this->_varMapping !== null ) {
             return $this->_varMapping;
         }
 
@@ -219,7 +219,7 @@ class Mumsys_Service_Spss_Reader
      *
      * @return array List of key/records pairs
      */
-    public function getData() : array
+    public function getData(): array
     {
         return $this->_spss->data;
     }
@@ -230,7 +230,7 @@ class Mumsys_Service_Spss_Reader
      *
      * @return array List of messages
      */
-    public function getDocumentInfo() : array
+    public function getDocumentInfo(): array
     {
         return $this->_spss->documents;
     }
@@ -314,7 +314,7 @@ class Mumsys_Service_Spss_Reader
      *
      * @return boolean true for found, otherwise false
      */
-    private function _checkVariableNameExists( $labelMap, $oVar ) : bool
+    private function _checkVariableNameExists( $labelMap, $oVar ): bool
     {
         $result = false;
 

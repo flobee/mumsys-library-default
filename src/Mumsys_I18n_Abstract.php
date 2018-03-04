@@ -43,15 +43,16 @@ abstract class Mumsys_I18n_Abstract
      *
      * @param string $locale The locale string the translation belongs to e.g.
      * de or de_DE,
-     * @param array $options Optional options to be set to setup your individual driver.
+     * @param array $options Optional options to be set to setup your individual
+     * driver.
      */
     public function __construct( $locale = null, array $options = array() )
     {
-        if ( !isset($locale) ) {
-            throw new Mumsys_I18n_Exception('Locale not set');
+        if ( !isset( $locale ) ) {
+            throw new Mumsys_I18n_Exception( 'Locale not set' );
         }
 
-        $this->setlocale($locale);
+        $this->setlocale( $locale );
     }
 
 
@@ -64,8 +65,9 @@ abstract class Mumsys_I18n_Abstract
      */
     public function setlocale( $locale = '' )
     {
-        if ( strlen($locale) > 5 ) {
-            throw new Mumsys_I18n_Exception(sprintf('Invalid locale "%1$s"', $locale));
+        if ( strlen( $locale ) > 5 ) {
+            $mesg = sprintf( 'Invalid locale "%1$s"', $locale );
+            throw new Mumsys_I18n_Exception( $mesg );
         }
 
         $this->_locale = (string) $locale;
@@ -97,14 +99,14 @@ abstract class Mumsys_I18n_Abstract
      */
     public function getPluralIndex( $number )
     {
-        $number = abs((int) $number);
+        $number = abs( (int) $number );
 
         if ( $this->_locale == 'pt_BR' ) {
             $this->_locale = 'xbr'; // temporary set a locale for brasilian
         }
 
-        if ( strlen($this->_locale) > 3 ) {
-            $this->_locale = substr($this->_locale, 0, -strlen(strrchr($this->_locale, '_')));
+        if ( strlen( $this->_locale ) > 3 ) {
+            $this->_locale = substr( $this->_locale, 0, -strlen( strrchr( $this->_locale, '_' ) ) );
         }
 
         switch ( $this->_locale )

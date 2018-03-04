@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Mumsys_I18n_Default Test
  */
@@ -26,7 +25,7 @@ class Mumsys_I18n_DefaultTest
             'Mumsys_I18n_Abstract' => '3.2.1',
         );
 
-        $this->_object = new Mumsys_I18n_Default('ru');
+        $this->_object = new Mumsys_I18n_Default( 'ru' );
     }
 
 
@@ -48,9 +47,9 @@ class Mumsys_I18n_DefaultTest
     {
         $this->setUp();
 
-        $this->expectExceptionMessageRegExp('/(Invalid locale "biglocale")/i');
-        $this->expectException('Mumsys_I18n_Exception');
-        $o = new Mumsys_I18n_Default('biglocale');
+        $this->expectExceptionMessageRegExp( '/(Invalid locale "biglocale")/i' );
+        $this->expectException( 'Mumsys_I18n_Exception' );
+        $o = new Mumsys_I18n_Default( 'biglocale' );
     }
 
 
@@ -60,9 +59,9 @@ class Mumsys_I18n_DefaultTest
     public function test_t()
     {
         $expected = 'to translate';
-        $actual = $this->_object->_t($expected);
+        $actual = $this->_object->_t( $expected );
 
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals( $expected, $actual );
     }
 
 
@@ -72,9 +71,9 @@ class Mumsys_I18n_DefaultTest
     public function test_dt()
     {
         $expected = 'to translate';
-        $actual = $this->_object->_dt('domain', $expected);
+        $actual = $this->_object->_dt( 'domain', $expected );
 
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals( $expected, $actual );
     }
 
 
@@ -83,14 +82,14 @@ class Mumsys_I18n_DefaultTest
      */
     public function test_dtn()
     {
-        $this->_object->setlocale('de');
+        $this->_object->setlocale( 'de' );
         $singular = 'Flower';
         $plural = 'Flowers';
-        $actual1 = $this->_object->_dtn('domain', $singular, $plural, 1); //one flower
-        $actual2 = $this->_object->_dtn('domain', $singular, $plural, 2); //two flowers
+        $actual1 = $this->_object->_dtn( 'domain', $singular, $plural, 1 ); //one flower
+        $actual2 = $this->_object->_dtn( 'domain', $singular, $plural, 2 ); //two flowers
 
-        $this->assertEquals($singular, $actual1);
-        $this->assertEquals($plural, $actual2);
+        $this->assertEquals( $singular, $actual1 );
+        $this->assertEquals( $plural, $actual2 );
     }
 
 
@@ -101,15 +100,18 @@ class Mumsys_I18n_DefaultTest
      */
     public function testAbstractClass()
     {
-        $this->assertEquals('Mumsys_I18n_Default ' . $this->_version, $this->_object->getVersion());
+        $this->assertEquals(
+            'Mumsys_I18n_Default ' . $this->_version,
+            $this->_object->getVersion()
+        );
 
-        $this->assertEquals($this->_version, $this->_object->getVersionID());
+        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
 
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
+            $this->assertTrue( isset( $possible[$must] ) );
+            $this->assertTrue( ($possible[$must] == $value ) );
         }
     }
 

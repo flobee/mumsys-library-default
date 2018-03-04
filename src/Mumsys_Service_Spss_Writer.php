@@ -38,6 +38,5 @@ class Mumsys_Service_Spss_Writer
     {
         throw new Mumsys_Service_Spss_Exception( 'Not implemented yet' );
     }
-    
-}
 
+}
