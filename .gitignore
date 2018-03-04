@@ -10,7 +10,6 @@ vendor/
 
 # Local configs
 config/autoload/*.local.php
-
 */config/*.php
 
 # credentials.php
@@ -30,6 +29,7 @@ temp/
 
 # Legacy
 extras/documentation
+old/
 
 .gitmodules
 copy-free-scripts-from-lib.php
