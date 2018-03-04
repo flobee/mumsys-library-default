@@ -83,6 +83,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 );
             }
 
+            if (!$chk) {
+                throw new Mumsys_Db_Exception('Connection failure');
+            }
             $this->_isConnected = (bool) $chk;
 
             if ($this->_clientCharacterSet) {
