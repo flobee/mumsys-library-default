@@ -1,17 +1,17 @@
 [editor]
 line_wrapping=false
-line_break_column=72
+line_break_column=80
 auto_continue_multiline=true
 
 [file_prefs]
 final_new_line=true
 ensure_convert_new_lines=false
-strip_trailing_spaces=false
-replace_tabs=false
+strip_trailing_spaces=true
+replace_tabs=true
 
 [indentation]
 indent_width=4
-indent_type=1
+indent_type=0
 indent_hard_tab_width=8
 detect_indent=false
 detect_indent_width=false
@@ -28,14 +28,21 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=0
-FILE_NAME_0=331;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fflobee%2Fworkspace%2Fgithub%2Fmumsys-library-default%2Fsrc%2FMumsys_Array2Xml_Default.php;0;4
+current_page=1
+FILE_NAME_0=3058;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fflobee%2Fworkspace%2Fgithub%2Fmumsys-library-default%2Fsrc%2FMumsys_Array2Xml_Default.php;0;4
+FILE_NAME_1=2323;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fflobee%2Fworkspace%2Fgithub%2Fmumsys-library-default%2Fsrc%2FMumsys_Setup_Manager_Abstract.php;0;4
 
 [build-menu]
 PHPFT_00_LB=PHP Lint
 PHPFT_00_CM=php -l "%f"
 PHPFT_00_WD=
 PHPFT_01_LB=PHP CS Check
-PHPFT_01_CM=phpcs %f
-PHPFT_01_WD=
+PHPFT_01_CM=%d/../tests/phpcs.sh %f
+PHPFT_01_WD=%d/../tests/
 filetypes=PHP;
+PHPFT_02_LB=PHP UnitTest
+PHPFT_02_CM=sh %d/../tests/runtests.sh src/
+PHPFT_02_WD=%d/../tests/
+
+[VTE]
+last_dir=/home/flobee
