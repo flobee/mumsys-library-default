@@ -11,7 +11,7 @@
  *
  * @category    Mumsys
  * @package     Library
- * @subpackage  Abstract
+ * @subpackage  Service
  * created: 2018-02-10
  */
 
@@ -20,6 +20,7 @@
  * SSH config generator.
  *
  * Uses config files, each per host, to improve rollouts to other machines.
+ * Check the tests to get into it.
  *
  * @category    Mumsys
  * @package     Library
@@ -34,7 +35,8 @@ class Mumsys_Service_Ssh_Config_Generator_Default
     const VERSION = '1.0.0';
 
     /**
-     * Location to the target ssh config file to save the content to
+     * Location to the target ssh config file to save the content to. E.g:
+     * "/home/user/.ssh/config"
      * @var string
      */
     private $_sshConfFile;
