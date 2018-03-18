@@ -84,19 +84,21 @@ class Mumsys_Logger_File
     public function __construct( array $options = array(),
         Mumsys_Logger_Writer_Interface $writer = null )
     {
-        if ( empty($options['logfile']) ) {
-            $this->_logfile = '/tmp/' . basename(__FILE__) . '_' . date('Y-m-d', time());
+        if ( empty( $options['logfile'] ) ) {
+            $this->_logfile = '/tmp/'
+                . basename( __FILE__ ) . '_'
+                . date( 'Y-m-d', time() );
         } else {
             $this->_logfile = $options['logfile'];
         }
 
-        if ( empty($options['way']) ) {
+        if ( empty( $options['way'] ) ) {
             $this->_logway = $options['way'] = 'a';
         } else {
             $this->_logway = (string) $options['way'];
         }
 
-        if ( isset($options['maxfilesize']) ) {
+        if ( isset( $options['maxfilesize'] ) ) {
             $this->_maxfilesize = $options['maxfilesize'];
         }
 
@@ -105,15 +107,15 @@ class Mumsys_Logger_File
                 'file' => $this->_logfile,
                 'way' => $this->_logway
             );
-            $this->_writer = new Mumsys_File($fileOptions);
+            $this->_writer = new Mumsys_File( $fileOptions );
         } else {
             $this->_writer = $writer;
         }
 
-        parent::__construct($options);
+        parent::__construct( $options );
 
         if ( ($message = $this->checkMaxFilesize() ) !== '' ) {
-            $this->log($message, Mumsys_Logger_Abstract::INFO);
+            $this->log( $message, Mumsys_Logger_Abstract::INFO );
         }
     }
 
@@ -139,11 +141,11 @@ class Mumsys_Logger_File
     {
         try
         {
-            $datesting = date($this->_timeFormat, time());
-            $levelName = $this->getLevelName($level);
+            $datesting = date( $this->_timeFormat, time() );
+            $levelName = $this->getLevelName( $level );
 
-            if ( !is_scalar($input) ) {
-                $input = json_encode($input);
+            if ( !is_scalar( $input ) ) {
+                $input = json_encode( $input );
             }
 
             $message = sprintf(
@@ -158,7 +160,7 @@ class Mumsys_Logger_File
             $message .= $this->_lf;
 
             if ( $level <= $this->_logLevel || $this->_debug ) {
-                $this->_writer->write($message);
+                $this->_writer->write( $message );
             }
         }
         catch ( Exception $e ) {
@@ -193,14 +195,16 @@ class Mumsys_Logger_File
     {
         $message = '';
 
-        if ( $this->_maxfilesize <= 0 ) {
+        if ( $this->_maxfilesize <= 0 || $this->_debug ) {
             return $message;
         }
 
-        if ( !$this->_debug
-            && ($fsize = @filesize($this->_logfile)) > $this->_maxfilesize ) {
+        if ( ($fsize = filesize( $this->_logfile )) > $this->_maxfilesize ) {
             $this->_writer->truncate();
-            $message = 'Max filesize reached. Log purged now';
+            $message = sprintf(
+                'Max filesize (%1$s Bytes) reached. Log purged now',
+                $this->_maxfilesize
+            );
         }
 
         return $message;
