@@ -56,7 +56,7 @@ abstract class Mumsys_Context_Abstract
     public function __clone()
     {
         foreach ( $this->_config as $key => & $value ) {
-            $this->_config[ $key ] = clone $this->_config[$key];
+            $this->_config[ $key ] = clone $this->_config[ $key ];
         }
     }
 
