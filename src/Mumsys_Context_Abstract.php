@@ -45,7 +45,7 @@ abstract class Mumsys_Context_Abstract
     public function __destruct()
     {
         foreach ( $this->_config as $key => & $value ) {
-            $this->_config[$key] = null;
+            $this->_config[ $key ] = null;
         }
     }
 
@@ -56,7 +56,7 @@ abstract class Mumsys_Context_Abstract
     public function __clone()
     {
         foreach ( $this->_config as $key => & $value ) {
-            $this->_config[$key] = clone $this->_config[$key];
+            $this->_config[ $key ] = clone $this->_config[$key];
         }
     }
 
@@ -72,11 +72,12 @@ abstract class Mumsys_Context_Abstract
      */
     protected function _get( $key )
     {
-        if ( !isset($this->_config[$key]) ) {
-            throw new Mumsys_Context_Exception('"' . $key . '" not set');
+        if ( !isset( $this->_config[ $key ] ) ) {
+            $mesg = sprintf( '"%1$s" not set', $key );
+            throw new Mumsys_Context_Exception( $mesg );
         }
 
-        return $this->_config[$key];
+        return $this->_config[ $key ];
     }
 
 
@@ -90,11 +91,12 @@ abstract class Mumsys_Context_Abstract
      */
     protected function _register( $key, $value )
     {
-        if ( isset($this->_config[$key]) ) {
-            throw new Mumsys_Context_Exception('"' . $key . '" already set');
+        if ( isset( $this->_config[ $key ] ) ) {
+            $mesg = sprintf( '"%1$s" already set', $key );
+            throw new Mumsys_Context_Exception( $mesg );
         }
 
-        $this->_config[$key] = $value;
+        $this->_config[ $key ] = $value;
     }
 
 
@@ -108,7 +110,7 @@ abstract class Mumsys_Context_Abstract
      */
     protected function _replace( $key, $value )
     {
-        $this->_config[$key] = $value;
+        $this->_config[ $key ] = $value;
     }
 
 }
