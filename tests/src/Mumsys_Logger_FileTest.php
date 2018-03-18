@@ -264,15 +264,14 @@ class Mumsys_Logger_FileTest
      */
     public function testCheckMaxFilesize()
     {
-        $this->_opts['maxfilesize'] = 0;
+        $this->_opts['maxfilesize'] = 10;
 
         $writer = new Mumsys_Logger_Writer_Mock();
         $object = new Mumsys_Logger_File( $this->_opts, $writer );
-        $writer->close();
-
 
         $actual = $object->checkMaxFilesize();
-        $this->assertEquals( '', $actual );
+        $this->assertEquals( 'Max filesize (10 Bytes) reached. Log purged now', $actual );
+        $writer->close();
     }
 
 
