@@ -137,6 +137,10 @@ class Mumsys_Array2Xml_DefaultTest
 
     public function __destruct()
     {
+        if ( !$this->_object || !$this->_object2) {
+            return;
+        }
+
         // cleanup cache files
         $list = array($this->_object->getCacheFile(), $this->_object2->getCacheFile());
         foreach ( $list as $file ) {
