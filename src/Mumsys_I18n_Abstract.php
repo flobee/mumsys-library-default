@@ -18,6 +18,8 @@
 /**
  * Abstract class for the internationalization Interface (I18n)
  *
+ * @todo Improve/ update tests
+ *
  * @category    Mumsys
  * @package     Library
  * @subpackage  I18n
@@ -182,30 +184,147 @@ abstract class Mumsys_I18n_Abstract
             case 'ru':
             case 'sr':
             case 'uk':
-                return (($number % 10 == 1) && ($number % 100 != 11)) ? 0 : ((($number % 10 >= 2) && ($number % 10 <= 4) && (($number % 100 < 10) || ($number % 100 >= 20))) ? 1 : 2);
+                // return (($number % 10 == 1) && ($number % 100 != 11)) ? 0
+                // : ((($number % 10 >= 2) && ($number % 10 <= 4) &&
+                //   (($number % 100 < 10) || ($number % 100 >= 20))) ? 1 : 2);
+                if ( ($number % 10 == 1) && ($number % 100 != 11) ) {
+                    return 0;
+                } else if (
+                    ( $number % 10 >= 2 ) && ( $number % 10 <= 4 )
+                    && ( ( $number % 100 < 10 ) || ( $number % 100 >= 20 ) )
+                ) {
+                    return 1;
+                } else {
+                    return 2;
+                }
+
             case 'cs':
             case 'sk':
-                return ($number == 1) ? 0 : ((($number >= 2) && ($number <= 4)) ? 1 : 2);
+                //return ($number == 1) ? 0 : ((($number >= 2) && ($number <= 4)) ? 1 : 2);
+                if ( $number == 1 ) {
+                    return 0;
+                } else if ( ($number >= 2) && ($number <= 4) ) {
+                    return 1;
+                } else {
+                    return 2;
+                }
+
             case 'ar':
-                return ($number == 0) ? 0 : (($number == 1) ? 1 : (($number == 2) ? 2 : ((($number >= 3) && ($number <= 10)) ? 3 : ((($number >= 11) && ($number <= 99)) ? 4 : 5))));
+                // return ($number == 0) ? 0 : (($number == 1) ? 1 :
+                // (($number == 2) ? 2 : ((($number >= 3) && ($number <= 10)) ?
+                // 3 : ((($number >= 11) && ($number <= 99)) ? 4 : 5))));
+                if ( $number == 0 ) {
+                    return 0;
+                } else if ( $number == 1 ) {
+                    return 1;
+                } else if ( $number == 2 ) {
+                    return 2;
+                } else if ( ( $number >= 3) && ($number <= 10) ) {
+                    return 3;
+                } else if ( ( $number >= 11) && ($number <= 99) ) {
+                    return 4;
+                } else {
+                    return 5;
+                }
+
             case 'cy':
-                return ($number == 1) ? 0 : (($number == 2) ? 1 : ((($number == 8) || ($number == 11)) ? 2 : 3));
+                // return ($number == 1) ? 0 : (($number == 2) ? 1 :
+                // ((($number == 8) || ($number == 11)) ? 2 : 3));
+                if ( $number == 1 ) {
+                    return 0;
+                } else if ( $number == 2 ) {
+                    return 1;
+                } else if ( ($number == 8) || ($number == 11) ) {
+                    return 2;
+                } else {
+                    return 3;
+                }
+
             case 'ga':
                 return ($number == 1) ? 0 : (($number == 2) ? 1 : 2);
+
             case 'lt':
-                return (($number % 10 == 1) && ($number % 100 != 11)) ? 0 : ((($number % 10 >= 2) && (($number % 100 < 10) || ($number % 100 >= 20))) ? 1 : 2);
+                // return (($number % 10 == 1) && ($number % 100 != 11)) ? 0 :
+                // ((($number % 10 >= 2) && (($number % 100 < 10) ||
+                // ($number % 100 >= 20))) ? 1 : 2);
+                if ( ($number % 10 == 1) && ($number % 100 != 11) ) {
+                    return 0;
+                } else if ( ( $number % 10 >= 2 ) &&
+                    ( ( $number % 100 < 10 ) || ( $number % 100 >= 20 ) )
+                ) {
+                    return 1;
+                } else {
+                    return 2;
+                }
+
             case 'lv':
-                return ($number == 0) ? 0 : ((($number % 10 == 1) && ($number % 100 != 11)) ? 1 : 2);
+                // return ($number == 0) ? 0 : ((($number % 10 == 1)
+                // && ($number % 100 != 11)) ? 1 : 2);
+                if ( $number == 0 ) {
+                    return 0;
+                } else if ( (($number % 10 == 1) && ($number % 100 != 11) ) ) {
+                    return 1;
+                } else {
+                    return 2;
+                }
+
             case 'mk':
                 return ($number % 10 == 1) ? 0 : 1;
+
             case 'mt':
-                return ($number == 1) ? 0 : ((($number == 0) || (($number % 100 > 1) && ($number % 100 < 11))) ? 1 : ((($number % 100 > 10) && ($number % 100 < 20)) ? 2 : 3));
+                // return ($number == 1) ? 0 : ((($number == 0) ||
+                // (($number % 100 > 1) && ($number % 100 < 11))) ? 1 :
+                // ((($number % 100 > 10) && ($number % 100 < 20)) ? 2 : 3));
+                if ( $number == 1 ) {
+                    return 0;
+                } else if ( $number == 0 || ( ( $number % 100 > 1) && ( $number % 100 < 11) ) ) {
+                    return 1;
+                } else if ( ($number % 100 > 10) && ($number % 100 < 20) ) {
+                    return 2;
+                } else {
+                    return 3;
+                }
+
             case 'pl':
-                return ($number == 1) ? 0 : ((($number % 10 >= 2) && ($number % 10 <= 4) && (($number % 100 < 12) || ($number % 100 > 14))) ? 1 : 2);
+                // return ($number == 1) ? 0 : ((($number % 10 >= 2) &&
+                // ($number % 10 <= 4) && (($number % 100 < 12) ||
+                // ($number % 100 > 14))) ? 1 : 2);
+                if ( $number == 1 ) {
+                    return 0;
+                } else if ( ( $number % 10 >= 2 ) && ( $number % 10 <= 4 ) &&
+                    ( ( $number % 100 < 12 ) || ( $number % 100 > 14 ) )
+                ) {
+                    return 1;
+                } else {
+                    return 2;
+                }
+
             case 'ro':
-                return ($number == 1) ? 0 : ((($number == 0) || (($number % 100 > 0) && ($number % 100 < 20))) ? 1 : 2);
+                // return ($number == 1) ? 0 : ((($number == 0) ||
+                // (($number % 100 > 0) && ($number % 100 < 20))) ? 1 : 2);
+                if ( $number == 1 ) {
+                    return 0;
+                } else if ( ( $number == 0 ) ||
+                    ( ( $number % 100 > 0 ) && ( $number % 100 < 20 ) )
+                ) {
+                    return 1;
+                } else {
+                    return 2;
+                }
+
             case 'sl':
-                return ($number % 100 == 1) ? 0 : (($number % 100 == 2) ? 1 : ((($number % 100 == 3) || ($number % 100 == 4)) ? 2 : 3));
+                // return ($number % 100 == 1) ? 0 : (($number % 100 == 2) ?
+                // 1 : ((($number % 100 == 3) || ($number % 100 == 4)) ? 2 : 3));
+                if ( $number % 100 == 1 ) {
+                    return 0;
+                } else if ( ($number % 100 == 2 ) ) {
+                    return 1;
+                } else if ( ( $number % 100 == 3 ) || ( $number % 100 == 4 ) ) {
+                    return 2;
+                } else {
+                    return 3;
+                }
+
             default:
                 return 0;
         }
