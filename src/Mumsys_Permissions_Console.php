@@ -28,6 +28,7 @@ class Mumsys_Permissions_Console
      * Version ID information
      */
     const VERSION = '3.0.4';
+
     /**
      * Context item which must be available for all mumsys objects
      * @var Mumsys_Context
@@ -40,17 +41,20 @@ class Mumsys_Permissions_Console
      */
     private $_options;
 
+
     /**
      * Initialisation of the permissions object
      *
      * @param Mumsys_Context $context Context item
      * @param array $options Optional options
      */
-    public function __construct( Mumsys_Context $context, array $options=array() )
+    public function __construct( Mumsys_Context $context,
+        array $options = array() )
     {
         $this->_context = $context;
         $this->_options = $options;
     }
+
 
     /**
      * Set user configuration infomation for a current program/sub-programm
@@ -59,9 +63,10 @@ class Mumsys_Permissions_Console
      * @param $program string modul/program name
      * @param $controller Controller/ Sub- programm name
      */
-    public function progCfgSet($values, $program, $controller)
+    public function progCfgSet( $values, $program, $controller )
     {
-        throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
+        $mesg = ' Not implemented yet';
+        throw new Mumsys_Permissions_Exception( __METHOD__ . $mesg );
     }
 
 
@@ -76,7 +81,8 @@ class Mumsys_Permissions_Console
      */
     public function progCfgGet( $program, $controller, $param='' )
     {
-        throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
+        $mesg = ' Not implemented yet';
+        throw new Mumsys_Permissions_Exception( __METHOD__ . $mesg );
     }
 
 
@@ -91,12 +97,14 @@ class Mumsys_Permissions_Console
      */
     public function progCfgRm( $key, $program, $controller )
     {
-        throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
+        $mesg = ' Not implemented yet';
+        throw new Mumsys_Permissions_Exception( __METHOD__ . $mesg );
     }
 
 
     /**
-     * Get name of given module and or Submodule name if $m is false the current module name will be returned
+     * Get name of given module and or Submodule name if $m is false the current
+     * module name will be returned
      *
      * @param $program string modul/program name
      * @param $controller Controller/ Sub- programm name
@@ -105,7 +113,8 @@ class Mumsys_Permissions_Console
      */
     public function progNameGet( $program=false, $controller=false )
     {
-        throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
+        $mesg = ' Not implemented yet';
+        throw new Mumsys_Permissions_Exception( __METHOD__ . $mesg );
     }
 
 
@@ -116,30 +125,35 @@ class Mumsys_Permissions_Console
      */
     public function loadDefault()
     {
-        throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
+        $mesg = ' Not implemented yet';
+        throw new Mumsys_Permissions_Exception( __METHOD__ . $mesg );
     }
 
 
     /**
      * Get name of the remote user
+     *
      * @return string|boolean Returns the remote username or false by default
      */
     public function getRemoteUser()
     {
-        throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
+        $mesg = ' Not implemented yet';
+        throw new Mumsys_Permissions_Exception( __METHOD__ . $mesg );
     }
 
 
     /**
      * Get the password of the current user (remote user).
-     * Note: this depens on PHP_SAPI value. apache handle will return the password, cli/cgi will return true.
+     * Note: this depens on PHP_SAPI value. apache handle will return the
+     * password, cli/cgi will return true.
      *
-     * @return string|boolean Returns the password of the current user or true for:
-     * authentication was set or false if authentification was not set.
+     * @return string|boolean Returns the password of the current user or true
+     * for: authentication was set or false if authentification was not set.
      */
     public function getRemotePass()
     {
-        throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
+        $mesg = ' Not implemented yet';
+        throw new Mumsys_Permissions_Exception( __METHOD__ . $mesg );
     }
 
     /**
@@ -200,20 +214,25 @@ class Mumsys_Permissions_Console
      *
      * @return boolean Returns true on access or false for no access
      */
-    public function hasAccess( $program=false, $controller=false, $action=false )
+    public function hasAccess( $program = false, $controller = false,
+        $action = false )
     {
         return true;
     }
 
+
     /**
      * get accesslevels based on a setted level or by its own usergrouplevel
      * old: get_auth_levels()
+     *
      * @param integer $level optional the highes level to find lower levels (0-5)
+     *
      * @return array returns a list of levels: integer level => string level-name
      */
     public function getAuthLevels( $level=null )
     {
-        throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
+        $mesg = ' Not implemented yet';
+        throw new Mumsys_Permissions_Exception( __METHOD__ . $mesg );
     }
 
     /**
@@ -223,27 +242,33 @@ class Mumsys_Permissions_Console
      */
     public function getAuthName( $level )
     {
-        throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
+        $mesg = ' Not implemented yet';
+        throw new Mumsys_Permissions_Exception( __METHOD__ . $mesg );
     }
 
 
     /**
      * Logout the logged in user.
+     *
      * This will turncate the session and loads the default session.
+     *
+     * @return boolean true on success or false if something fails
      */
     public function logout()
     {
         return true;
     }
 
+
     /**
      * Login a user.
      *
      * @param string $username Name of the login user
      * @param string $password Password of the login user
+     *
      * @return boolean Returns true on success or fals if authentication fails
      */
-    public function login( $username='', $password='' )
+    public function login( $username = '', $password = '' )
     {
         return true;
     }

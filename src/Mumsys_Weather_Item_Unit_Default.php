@@ -46,5 +46,5 @@ class Mumsys_Weather_Item_Unit_Default
      * @var string
      */
     protected $_domainPrefix = 'weather.item.unit.default.';
-    
+
 }

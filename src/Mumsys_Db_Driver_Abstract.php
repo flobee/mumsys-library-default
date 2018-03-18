@@ -42,7 +42,7 @@
                         'extra' => 'auto_increment',
                         'type' => 'int',
                         'null' => '',
-                        // 'key'=>'PRI',		???
+                        // 'key'=>'PRI',           ???
                         'typevalue' => '11',
                         'typeattr' => 'unsigned',
                         'character set' => 'latin1',
@@ -257,85 +257,85 @@ abstract class Mumsys_Db_Driver_Abstract
      * - 'throwErrors' boolean optional default: true
      * - 'compress' boolean optional Deside to compress the connection or not.
      */
-    public function __construct(Mumsys_Context_Item $context, array $args = array() )
+    public function __construct( Mumsys_Context_Item $context,
+        array $args = array() )
     {
-        if ( isset($args['host']) ) {
-            $this->_host = (string)$args['host'];
+        if ( isset( $args['host'] ) ) {
+            $this->_host = (string) $args['host'];
         }
 
-        if ( isset($args['username']) ) {
-            $this->_username = (string)$args['username'];
+        if ( isset( $args['username'] ) ) {
+            $this->_username = (string) $args['username'];
         }
 
-        if ( isset($args['password']) ) {
-            $this->_password = (string)$args['password'];
+        if ( isset( $args['password'] ) ) {
+            $this->_password = (string) $args['password'];
         }
 
-        if ( isset($args['db']) ) {
-            $this->_dbName = (string)$args['db'];
+        if ( isset( $args['db'] ) ) {
+            $this->_dbName = (string) $args['db'];
         }
 
-        if ( isset($args['port']) ) {
-            $this->_port = (int)$args['port'];
+        if ( isset( $args['port'] ) ) {
+            $this->_port = (int) $args['port'];
         }
 
-        if ( isset($args['charset']) ) {
-            $this->_clientCharacterSet = (string)$args['charset'];
+        if ( isset( $args['charset'] ) ) {
+            $this->_clientCharacterSet = (string) $args['charset'];
         }
 
-        if ( isset($args['socket']) ) {
+        if ( isset( $args['socket'] ) ) {
             $this->_socket = $args['socket'];
         }
 
-        if ( isset($args['debug']) ) {
+        if ( isset( $args['debug'] ) ) {
             $this->_debug = (boolean) $args['debug'];
         }
 
-        if ( isset($args['throwErrors']) ) {
+        if ( isset( $args['throwErrors'] ) ) {
             $this->_throwErrors = (boolean) $args['throwErrors'];
         }
 
-        if ( isset($args['compress']) ) {
+        if ( isset( $args['compress'] ) ) {
             $this->_conCompession = (boolean) $args['compress'];
         }
 
-        if ( !defined('_CMS_ISEQUAL') ) {
+        if ( !defined( '_CMS_ISEQUAL' ) ) {
             /** @todo translations? */
-
-            define('_CMS_AND', 'And');
-            define('_CMS_OR', 'Or');
-            define('_CMS_ISEQUAL', 'is equal');
-            define('_CMS_ISGREATERTHAN', 'is greater than');
-            define('_CMS_ISLESSTHAN', 'is less than');
-            define('_CMS_ISGREATERTHANOREQUAL', 'is greater or equal');
-            define('_CMS_ISLESSTHANOREQUAL', 'is less or equal');
-            define('_CMS_ISNOTEQUAL', 'is not equal');
-            define('_CMS_CONTAINS', 'contains');
-            define('_CMS_CONTAINS_NOT', 'contains not');
-            define('_CMS_ENDSWITH', 'ends with');
-            define('_CMS_ENDSNOTWITH', 'ends not with');
-            define('_CMS_BEGINSWITH', 'beginns with');
-            define('_CMS_BEGINSNOTWITH', 'begins not with');
+            define( '_CMS_AND', 'And' );
+            define( '_CMS_OR', 'Or' );
+            define( '_CMS_ISEQUAL', 'is equal' );
+            define( '_CMS_ISGREATERTHAN', 'is greater than' );
+            define( '_CMS_ISLESSTHAN', 'is less than' );
+            define( '_CMS_ISGREATERTHANOREQUAL', 'is greater or equal' );
+            define( '_CMS_ISLESSTHANOREQUAL', 'is less or equal' );
+            define( '_CMS_ISNOTEQUAL', 'is not equal' );
+            define( '_CMS_CONTAINS', 'contains' );
+            define( '_CMS_CONTAINS_NOT', 'contains not' );
+            define( '_CMS_ENDSWITH', 'ends with' );
+            define( '_CMS_ENDSNOTWITH', 'ends not with' );
+            define( '_CMS_BEGINSWITH', 'beginns with' );
+            define( '_CMS_BEGINSNOTWITH', 'begins not with' );
         }
 
         $this->_queryCompareValues = array(
-            'AND' => array( _CMS_AND, _CMS_AND ),
-            'OR' => array( _CMS_OR, _CMS_OR ),
+            'AND' => array(_CMS_AND, _CMS_AND),
+            'OR' => array(_CMS_OR, _CMS_OR),
         );
 
         $this->_queryOperators = array(
-            '=' => array( '==', _CMS_ISEQUAL ),
-            '>' => array( '&gt;', _CMS_ISGREATERTHAN ),
-            '<' => array( '&lt;', _CMS_ISLESSTHAN ),
-            '>=' => array( '&gt;=', _CMS_ISGREATERTHANOREQUAL ),
-            '<=' => array( '&lt;=', _CMS_ISLESSTHANOREQUAL ),
-            '!=' => array( '!=', _CMS_ISNOTEQUAL ),
-            'LIKE' => array( _CMS_CONTAINS, _CMS_CONTAINS ),
-            'NOTLIKE' => array( _CMS_CONTAINS_NOT, _CMS_CONTAINS_NOT ),
-            'xLIKE' => array( _CMS_ENDSWITH, _CMS_ENDSWITH ),
-            'xNOTLIKE' => array( _CMS_ENDSNOTWITH, _CMS_ENDSNOTWITH ),
-            'LIKEx' => array( _CMS_BEGINSWITH, _CMS_BEGINSWITH ),
-            'NOTLIKEx' => array( _CMS_BEGINSNOTWITH, _CMS_BEGINSNOTWITH ),
+            '=' => array('==', _CMS_ISEQUAL),
+            '>' => array('&gt;', _CMS_ISGREATERTHAN),
+            '<' => array('&lt;', _CMS_ISLESSTHAN),
+            '>=' => array('&gt;=', _CMS_ISGREATERTHANOREQUAL),
+            '<=' => array('&lt;=', _CMS_ISLESSTHANOREQUAL),
+            '!=' => array('!=', _CMS_ISNOTEQUAL),
+            'LIKE' => array(_CMS_CONTAINS, _CMS_CONTAINS),
+            'NOTLIKE' => array(_CMS_CONTAINS_NOT, _CMS_CONTAINS_NOT),
+            'xLIKE' => array(_CMS_ENDSWITH, _CMS_ENDSWITH),
+            'xNOTLIKE' => array(_CMS_ENDSNOTWITH, _CMS_ENDSNOTWITH),
+            'LIKEx' => array(_CMS_BEGINSWITH, _CMS_BEGINSWITH),
+            'NOTLIKEx' => array(_CMS_BEGINSNOTWITH, _CMS_BEGINSNOTWITH),
         );
 
         $this->_querySortations = array(
@@ -365,7 +365,7 @@ abstract class Mumsys_Db_Driver_Abstract
      */
     public function escape( $string = '' )
     {
-        return addslashes($string);
+        return addslashes( $string );
     }
 
 
@@ -441,10 +441,10 @@ abstract class Mumsys_Db_Driver_Abstract
      * Replaces query comparison values
      *
      * @param array $comparison Multi-dimensional array
-     * array('internal key'=> array(
+     *  array('internal key'=> array(
      *      'public key to map to'=>'public value of key to show')
-     * )
-     * eg (default): array(
+     *  )
+     *  eg (default): array(
      *     'AND' => array('And', 'And'),
      *     'OR' => array('Or', 'Or'),
      *
@@ -453,8 +453,8 @@ abstract class Mumsys_Db_Driver_Abstract
      */
     public function replaceQueryCompareValues( array $comparison )
     {
-        foreach ($comparison as $key => $list) {
-            if (is_numeric($key) || count($list) != 2) {
+        foreach ( $comparison as $key => $list ) {
+            if ( is_numeric( $key ) || count( $list ) != 2 ) {
                 return $this->_setError(
                     'Invalid query compare value configuration'
                 );
@@ -467,9 +467,9 @@ abstract class Mumsys_Db_Driver_Abstract
 
     /**
      * Returns the query operators. Multi-dimensional array
-     * array('internal key'=> array(
+     *  array('internal key'=> array(
      *      'public key to map to'=>'public value of key to show')
-     * )
+     *  )
      * @return array
      */
     public function getQueryOperators()
@@ -482,22 +482,24 @@ abstract class Mumsys_Db_Driver_Abstract
      * Replaces query operators.
      *
      * @param array $operators Multi-dimensional array
-     * array('internal key'=> array(
+     *  array('internal key'=> array(
      *      'public key to map to'=>'public value of key to show')
-     * )
+     *  )
+     *
      * @return false on errors
      * @throws Mumsys_Db_Exception On errors if setThrowErrors was set
      */
     public function replaceQueryOperators( array $operators )
     {
-        foreach ($operators as $key => $list) {
-            if (is_numeric($key)) {
-                return $this->_setError('Invalid query operators configuration');
+        foreach ( $operators as $key => $list ) {
+            if ( is_numeric( $key ) ) {
+                return $this->_setError( 'Invalid query operators configuration' );
             }
         }
 
         $this->_queryOperators = $operators;
     }
+
 
     /**
      * Returns the query sortations
@@ -523,8 +525,8 @@ abstract class Mumsys_Db_Driver_Abstract
     public function replaceQuerySortations( array $sortations )
     {
         foreach ( $sortations as $key => $value ) {
-            if ( is_numeric($key) || !is_string($value) ) {
-                return $this->_setError('Invalid query sortations configuration');
+            if ( is_numeric( $key ) || !is_string( $value ) ) {
+                return $this->_setError( 'Invalid query sortations configuration' );
             }
         }
 
@@ -629,5 +631,4 @@ abstract class Mumsys_Db_Driver_Abstract
      * @return boolean True on success or false
      */
     abstract public function close();
-
 }

@@ -215,8 +215,9 @@ class Mumsys_Config_File
                     $config[$key] = array();
                 }
 
-                $config[$key] = $this->_merge( $config[$key],
-                    $this->_include( $newPath . '.php' ) );
+                $config[$key] = $this->_merge(
+                    $config[$key], $this->_include( $newPath . '.php' )
+                );
             }
         }
 
@@ -232,8 +233,7 @@ class Mumsys_Config_File
      */
     protected function _merge( array $left, array $right )
     {
-        foreach ( $right as $key => $value )
-        {
+        foreach ( $right as $key => $value ) {
             if ( isset( $left[$key] ) && is_array( $left[$key] ) && is_array( $value ) ) {
                 $left[$key] = $this->_merge( $left[$key], $value );
             } else {

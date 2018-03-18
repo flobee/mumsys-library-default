@@ -73,7 +73,7 @@ abstract class Mumsys_Session_Abstract
      */
     public function get( $key, $default = null )
     {
-        if (isset($this->_records[$this->_id][$key])) {
+        if ( isset( $this->_records[$this->_id][$key] ) ) {
             return $this->_records[$this->_id][$key];
         }
 
@@ -91,7 +91,7 @@ abstract class Mumsys_Session_Abstract
      */
     public function getCurrent()
     {
-        if (isset($this->_records[$this->_id])) {
+        if ( isset( $this->_records[$this->_id] ) ) {
             return $this->_records[$this->_id];
         }
 
@@ -126,11 +126,11 @@ abstract class Mumsys_Session_Abstract
      */
     public function register( $key, $value = null )
     {
-        $this->_checkKey($key);
+        $this->_checkKey( $key );
 
-        if (array_key_exists($key, $this->_records[$this->_id])) {
-            $message = sprintf('Session key "%1$s" exists', $key);
-            throw new Mumsys_Session_Exception($message);
+        if ( array_key_exists( $key, $this->_records[$this->_id] ) ) {
+            $mesg = sprintf( 'Session key "%1$s" exists', $key );
+            throw new Mumsys_Session_Exception( $mesg );
         }
 
         $this->_records[$this->_id][$key] = $value;
@@ -158,8 +158,9 @@ abstract class Mumsys_Session_Abstract
      */
     public function remove( $key )
     {
-        if (isset($this->_records[$this->_id][$key])) {
-            unset($this->_records[$this->_id][$key]);
+        if ( isset( $this->_records[$this->_id][$key] ) ) {
+            unset( $this->_records[$this->_id][$key] );
+
             return true;
         }
 

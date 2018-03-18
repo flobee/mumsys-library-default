@@ -47,7 +47,8 @@ class Mumsys_Cookie_Mock
      */
     public function __construct( string $cookieFile = '' )
     {
-        if ( $cookieFile && ( is_dir(dirname($cookieFile) . DIRECTORY_SEPARATOR) ) ) {
+        $isDir = is_dir( dirname( $cookieFile ) . DIRECTORY_SEPARATOR );
+        if ( $cookieFile && $isDir ) {
             $this->_cookieFile = $cookieFile;
         } else {
             $this->_cookieFile = '/tmp/MumsysCookieMock.'
@@ -63,8 +64,8 @@ class Mumsys_Cookie_Mock
      */
     public function __destruct()
     {
-        if ( file_exists($this->_cookieFile) ) {
-            unlink($this->_cookieFile);
+        if ( file_exists( $this->_cookieFile ) ) {
+            unlink( $this->_cookieFile );
         }
     }
 
@@ -83,11 +84,11 @@ class Mumsys_Cookie_Mock
     {
         $cookie = $this->_loadCookieData();
 
-        if ( isset($cookie) && $key === null ) {
+        if ( isset( $cookie ) && $key === null ) {
             return $cookie;
         }
 
-        if ( isset($cookie[$key]) ) {
+        if ( isset( $cookie[$key] ) ) {
             $default = $cookie[$key];
         }
 
@@ -116,7 +117,7 @@ class Mumsys_Cookie_Mock
 
         $cookie[$key] = $value;
 
-        return file_put_contents($this->_cookieFile, json_encode($cookie));
+        return file_put_contents( $this->_cookieFile, json_encode( $cookie ) );
     }
 
 
@@ -133,15 +134,15 @@ class Mumsys_Cookie_Mock
      *
      * @return boolean True on success of false on failure.
      */
-    public function setRawCookie( string $key, string $value = '', int $expire = 0,
-        string $path = '', string $domain = '', bool $secure = false,
-        bool $httponly = false ): bool
+    public function setRawCookie( string $key, string $value = '',
+        int $expire = 0, string $path = '', string $domain = '',
+        bool $secure = false, bool $httponly = false ): bool
     {
         $cookie = $this->_loadCookieData();
 
         $cookie[$key] = $value;
 
-        return file_put_contents($this->_cookieFile, json_encode($cookie));
+        return file_put_contents( $this->_cookieFile, json_encode( $cookie ) );
     }
 
 
@@ -164,10 +165,10 @@ class Mumsys_Cookie_Mock
     {
         $cookie = $this->_loadCookieData();
 
-        if ( isset($cookie[$key]) ) {
-            unset($cookie[$key]);
+        if ( isset( $cookie[$key] ) ) {
+            unset( $cookie[$key] );
 
-            return file_put_contents($this->_cookieFile, json_encode($cookie));
+            return file_put_contents( $this->_cookieFile, json_encode( $cookie ) );
         }
 
         return true;
@@ -184,11 +185,11 @@ class Mumsys_Cookie_Mock
     {
         $cookie = $this->_loadCookieData();
 
-        unset($cookie);
+        unset( $cookie );
 
         $this->_cookie = array();
 
-        return file_put_contents($this->_cookieFile, json_encode($this->_cookie));
+        return file_put_contents( $this->_cookieFile, json_encode( $this->_cookie ) );
     }
 
 
@@ -199,9 +200,9 @@ class Mumsys_Cookie_Mock
      */
     private function _loadCookieData()
     {
-        if ( file_exists($this->_cookieFile) ) {
-            $content = file_get_contents($this->_cookieFile);
-            $this->_cookie = json_decode($content, true);
+        if ( file_exists( $this->_cookieFile ) ) {
+            $content = file_get_contents( $this->_cookieFile );
+            $this->_cookie = json_decode( $content, true );
         } else {
             $this->_cookie = array();
         }

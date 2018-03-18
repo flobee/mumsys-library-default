@@ -39,14 +39,14 @@ class Mumsys_Request_Console
      */
     public function __construct( array $options = array() )
     {
-        parent::__construct($options);
+        parent::__construct( $options );
 
-        $argv = $_get = Mumsys_Php_Globals::getServerVar('argv', array());
-        if ($argv && is_array($argv)) {
+        $argv = $_get = Mumsys_Php_Globals::getServerVar( 'argv', array() );
+        if ( $argv && is_array( $argv ) ) {
             $this->_input += $argv;
         }
 
-        unset($argv, $options);
+        unset( $argv, $options );
     }
 
 }

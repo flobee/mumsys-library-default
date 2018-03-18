@@ -86,71 +86,77 @@ class Mumsys_Mail_PHPMailer
         require_once $dir . '/SMTP.php';
         require_once $dir . '/POP3.php';
         require_once $dir . '/Exception.php';
-        $this->_mailer = new PHPMailer(true);
+        $this->_mailer = new PHPMailer( true );
 
         $this->_config = $config;
 
-        if ( isset($config['adapter']) ) {
-            $this->setTransportWay((string) $config['adapter']);
+        if ( isset( $config['adapter'] ) ) {
+            $this->setTransportWay( (string) $config['adapter'] );
         }
 
-        if ( isset($config['username']) ) {
+        if ( isset( $config['username'] ) ) {
             $this->_mailer->Username = (string) $config['username'];
         }
 
-        if ( isset($config['password']) ) {
+        if ( isset( $config['password'] ) ) {
             $this->_mailer->Password = (string) $config['password'];
         }
 
-        if ( isset($config['hostname']) ) {
+        if ( isset( $config['hostname'] ) ) {
             $this->_mailer->Host = (string) $config['hostname'];
         }
 
-        if ( isset($config['port']) ) {
+        if ( isset( $config['port'] ) ) {
             $this->_mailer->Port = (int) $config['port'];
         }
 
-        if ( isset($config['smtp_auth']) ) {
+        if ( isset( $config['smtp_auth'] ) ) {
             $this->_mailer->SMTPAuth = (boolean) $config['smtp_auth'];
         }
 
-        if ( isset($config['smtp_keepalive']) ) {
+        if ( isset( $config['smtp_keepalive'] ) ) {
             $this->_mailer->SMTPKeepAlive = (boolean) $config['smtp_keepalive'];
         }
 
-        if ( isset($config['smtp_debug']) ) {
+        if ( isset( $config['smtp_debug'] ) ) {
             $this->_mailer->SMTPDebug = (int) $config['smtp_debug'];
         }
 
-        if ( isset($config['smtp_secure']) ) {
+        if ( isset( $config['smtp_secure'] ) ) {
             $this->_mailer->SMTPSecure = (string) $config['smtp_secure'];
         }
 
-        if ( isset($config['smtp_options']) ) {
+        if ( isset( $config['smtp_options'] ) ) {
             $this->_mailer->SMTPOptions = (array) $config['smtp_options'];
         }
 
-        if ( isset($config['certificate']) && $config['certificate'] ) {
+        if ( isset( $config['certificate'] ) && $config['certificate'] ) {
             $opts = $config['certificate'];
-            $this->_mailer->sign($opts['cert'], $opts['privateKey'], $opts['pass'],
-                $opts['chain']);
+            $this->_mailer->sign(
+                $opts['cert'], $opts['privateKey'], $opts['pass'], $opts['chain']
+            );
         }
 
-        if ( isset($config['wordwrap']) ) {
+        if ( isset( $config['wordwrap'] ) ) {
             $this->_mailer->WordWrap = (int) $config['wordwrap'];
         }
 
-        if ( isset($config['mail_from_email']) && $config['mail_from_email'] ) {
-            $fromName = isset($config['mail_from_name']) ? $config['mail_from_name'] : $config['mail_from_email'];
-            $this->setFrom($config['mail_from_email'], $fromName);
+        if ( isset( $config['mail_from_email'] ) && $config['mail_from_email'] ) {
+            if ( isset( $config['mail_from_name'] ) ) {
+                $fromName = $config['mail_from_name'];
+            } else {
+                $fromName = $config['mail_from_email'];
+            }
+
+            $this->setFrom( $config['mail_from_email'], $fromName );
         }
 
-        if ( isset($config['xmailer']) ) {
+        if ( isset( $config['xmailer'] ) ) {
             $this->_mailer->XMailer = (string) $config['xmailer'];
         }
 
-        if ( isset($config['charset']) ) {
-            $this->setCharset((string) $config['charset']);
+        if ( isset( $config['charset'] ) ) {
+            $this->setCharset( (string) $config['charset'] );
         }
 
         $this->_mailer->Debugoutput = 'error_log';
@@ -170,7 +176,7 @@ class Mumsys_Mail_PHPMailer
      */
     public function __call( $name, array $params = array() )
     {
-        return call_user_func_array(array($this->_mailer, $name), $params);
+        return call_user_func_array( array($this->_mailer, $name), $params );
     }
 
 
@@ -184,6 +190,7 @@ class Mumsys_Mail_PHPMailer
         return $this->_mailer;
     }
 
+
     /**
      * Adds a reciepient (To) address.
      *
@@ -194,7 +201,7 @@ class Mumsys_Mail_PHPMailer
      */
     public function addTo( $email, $name = '' )
     {
-        return $this->_mailer->addAddress($email, $name);
+        return $this->_mailer->addAddress( $email, $name );
     }
 
 
@@ -212,7 +219,7 @@ class Mumsys_Mail_PHPMailer
      */
     public function addCc( $email, $name = '' )
     {
-        return $this->_mailer->addCC($email, $name);
+        return $this->_mailer->addCC( $email, $name );
     }
 
 
@@ -230,7 +237,7 @@ class Mumsys_Mail_PHPMailer
      */
     public function addBcc( $email, $name = '' )
     {
-        return $this->_mailer->addBCC($email, $name);
+        return $this->_mailer->addBCC( $email, $name );
     }
 
 
@@ -248,7 +255,7 @@ class Mumsys_Mail_PHPMailer
      */
     public function setFrom( $email, $name = '', $auto = false ): bool
     {
-        return $this->_mailer->setFrom($email, $name, $auto);
+        return $this->_mailer->setFrom( $email, $name, $auto );
     }
 
 
@@ -281,7 +288,7 @@ class Mumsys_Mail_PHPMailer
      */
     public function addReplyTo( $email, $name = '' )
     {
-        return $this->_mailer->addReplyTo($email, $name);
+        return $this->_mailer->addReplyTo( $email, $name );
     }
 
 
@@ -311,9 +318,9 @@ class Mumsys_Mail_PHPMailer
      * @return string Html message string
      */
     public function setMessage( string $htmlMsg, string $pathInlineAtt = '',
-        $advanced = false ) : string
+        $advanced = false ): string
     {
-        return $this->_mailer->msgHTML($htmlMsg, $pathInlineAtt, $advanced);
+        return $this->_mailer->msgHTML( $htmlMsg, $pathInlineAtt, $advanced );
     }
 
 
@@ -334,7 +341,7 @@ class Mumsys_Mail_PHPMailer
      */
     public function setMessageHtml( string $htmlMsg, string $pathInlineAtt = '' ): string
     {
-        return $this->_mailer->msgHTML($htmlMsg, $pathInlineAtt, false);
+        return $this->_mailer->msgHTML( $htmlMsg, $pathInlineAtt, false );
     }
 
 
@@ -366,10 +373,11 @@ class Mumsys_Mail_PHPMailer
      * @throws phpmailerException
      */
     public function addAttachment( $location, $name = '', $encoding = 'base64',
-        $type = '', $disposition = 'attachment' ) : bool
+        $type = '', $disposition = 'attachment' ): bool
     {
-        return $this->_mailer->addAttachment($location, $name, $encoding, $type,
-                $disposition);
+        return $this->_mailer->addAttachment(
+            $location, $name, $encoding, $type, $disposition
+        );
     }
 
 
@@ -396,7 +404,7 @@ class Mumsys_Mail_PHPMailer
             $test = true;
         }
 
-        $this->_mailer->isHTML($test);
+        $this->_mailer->isHTML( $test );
     }
 
 
@@ -456,7 +464,7 @@ class Mumsys_Mail_PHPMailer
      */
     public function setLanguage( $langCode = 'en', $pathLang = '' ): bool
     {
-        return $this->_mailer->setLanguage($langCode, $pathLang);
+        return $this->_mailer->setLanguage( $langCode, $pathLang );
     }
 
 
@@ -487,7 +495,7 @@ class Mumsys_Mail_PHPMailer
     public function setCertificate( string $certFile, string $privateKeyFile,
         string $keyPwd = null, string $chain = '' ): bool
     {
-        $this->_mailer->sign($certFile, $privateKeyFile, $keyPwd, $chain);
+        $this->_mailer->sign( $certFile, $privateKeyFile, $keyPwd, $chain );
 
         return true;
     }
@@ -501,10 +509,11 @@ class Mumsys_Mail_PHPMailer
      */
     public function addCustomHeader( string $name, string $value = null ): bool
     {
-        $this->_mailer->addCustomHeader($name, $value);
+        $this->_mailer->addCustomHeader( $name, $value );
 
         return true;
     }
+
 
     /**
      * Returns all custom headers.

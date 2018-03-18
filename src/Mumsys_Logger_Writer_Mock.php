@@ -84,7 +84,7 @@ class Mumsys_Logger_Writer_Mock
     {
         if ( !$this->_isOpen ) {
             $message = 'File not open. Can not write to file';
-            throw new Mumsys_Logger_Exception($message);
+            throw new Mumsys_Logger_Exception( $message );
         }
 
         if ( !$this->_isWriteable ) {
@@ -107,7 +107,7 @@ class Mumsys_Logger_Writer_Mock
     {
         if ( !$this->_isOpen ) {
             $message = 'Can not truncate file. File not open';
-            throw new Mumsys_File_Exception($message);
+            throw new Mumsys_File_Exception( $message );
         }
 
         return true;

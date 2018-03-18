@@ -65,7 +65,7 @@ interface Mumsys_Session_Interface extends Mumsys_GetterSetter_Interface
      *
      * @param string $key Name of the key to register.
      * @param mixed $value optional; Value to be stored
-     * 
+     *
      * @throws Mumsys_Session_Exception Throws exception if key already exists
      */
     public function register( $key, $value = null );

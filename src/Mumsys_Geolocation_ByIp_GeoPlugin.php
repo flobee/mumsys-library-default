@@ -67,15 +67,15 @@ class Mumsys_Geolocation_ByIp_GeoPlugin
         $search = array('{IP}', '{CURRENCY}');
         $replace = array($this->_ip, '&base_currency=' . $this->_currency);
 
-        $this->_serviceUrl = str_replace($search, $replace, $this->_serviceUrl );
+        $this->_serviceUrl = str_replace( $search, $replace, $this->_serviceUrl );
 
-		$data = array();
+        $data = array();
 
-		$response = $this->fetch($this->_serviceUrl);
+        $response = $this->fetch( $this->_serviceUrl );
 
-        $stdObj = json_decode($response);
+        $stdObj = json_decode( $response );
 
-        if ((int)$stdObj->geoplugin_status == 200) {
+        if ( (int) $stdObj->geoplugin_status == 200 ) {
             $init = array(
                 'publisher' => array(
                     'name' => 'geoplugin',
@@ -96,18 +96,18 @@ class Mumsys_Geolocation_ByIp_GeoPlugin
                 )
             );
 
-            if (!empty($stdObj->geoplugin_areaCode)) {
+            if ( !empty( $stdObj->geoplugin_areaCode ) ) {
                 $init['location']['areaCode'] = (string) $stdObj->geoplugin_areaCode;
             }
-            if (!empty($stdObj->geoplugin_dmaCode)) {
+            if ( !empty( $stdObj->geoplugin_dmaCode ) ) {
                 $init['location']['dmaCode'] = (string) $stdObj->geoplugin_dmaCode;
             }
 
-            return $this->_createItem($init);
+            return $this->_createItem( $init );
         }
 
         return false;
-	}
+    }
 
 
     /**
@@ -121,7 +121,7 @@ class Mumsys_Geolocation_ByIp_GeoPlugin
         $init = array(
             'publisher' => array('name' => 'geoplugin', 'language' => 'en'),
         );
-        return $this->_createItem($init);
+        return $this->_createItem( $init );
     }
 
 
@@ -134,19 +134,21 @@ class Mumsys_Geolocation_ByIp_GeoPlugin
      */
     public function nearby( $radius = 10, $limit = 0 )
     {
-        if ( !is_numeric($this->_latitude) || !is_numeric($this->_longitude) ) {
-            throw new Mumsys_Geolocation_Exception( __METHOD__ . ': Invalid latitude or longitude');
+        if ( !is_numeric( $this->_latitude ) || !is_numeric( $this->_longitude ) ) {
+            throw new Mumsys_Geolocation_Exception( __METHOD__ . ': Invalid latitude or longitude' );
         }
 
-        $url = 'http://www.geoplugin.net/extras/nearby.gp?lat=' . $this->_latitude . '&long=' . $this->_longitude . '&radius=' . $radius;
+        $url = 'http://www.geoplugin.net/extras/nearby.gp?lat=' . $this->_latitude
+            . '&long=' . $this->_longitude
+            . '&radius=' . $radius;
 
-        if ($limit && is_numeric($limit) ) {
+        if ( $limit && is_numeric( $limit ) ) {
             $url .= '&limit=' . $limit;
         }
 
         $url .= '&format=xml';
 
-        return json_decode($this->fetch($url));
+        return json_decode( $this->fetch( $url ) );
     }
 
 }

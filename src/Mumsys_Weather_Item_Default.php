@@ -279,6 +279,7 @@ class Mumsys_Weather_Item_Default
         if ( isset( $publ['id'] ) ) {
             $this->_record['publisher']['id'] = (string) $publ['id'];
         }
+
         if ( isset( $publ['name'] ) ) {
             $this->_record['publisher']['name'] = (string) $publ['name'];
         }

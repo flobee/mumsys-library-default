@@ -38,7 +38,7 @@ class Mumsys_Session_None
      */
     public function __construct( $appKey = 'mumsys' )
     {
-        parent::__construct(array(), 'none', $appKey);
+        parent::__construct( array(), 'none', $appKey );
     }
 
 

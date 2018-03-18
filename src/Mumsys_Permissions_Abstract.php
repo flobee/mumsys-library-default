@@ -30,16 +30,18 @@ abstract class Mumsys_Permissions_Abstract
      */
     const VERSION = '3.1.0';
 
+
     /**
      * Tracks the current request.
      * old alias function track_onlineuser
      *
      * @throws Mumsys_Permissions_Exception Throws exception on errors
      */
-     public function trackRequest()
-     {
-         throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
-     }
+    public function trackRequest()
+    {
+        throw new Mumsys_Permissions_Exception( __METHOD__ . ' Not implemented yet' );
+    }
+
 
     /**
      * get/set language (get_language)
@@ -53,7 +55,7 @@ abstract class Mumsys_Permissions_Abstract
      */
     public function languageLoad( $language = false )
     {
-        throw new Mumsys_Permissions_Exception(__METHOD__ . ' Not implemented yet');
+        throw new Mumsys_Permissions_Exception( __METHOD__ . ' Not implemented yet' );
     }
 
 }

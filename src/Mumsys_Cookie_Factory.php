@@ -43,20 +43,20 @@ class Mumsys_Cookie_Factory
      */
     public static function getAdapter( string $adapter ): Mumsys_Cookie_Interface
     {
-        if ( ctype_alnum($adapter) === false ) {
+        if ( ctype_alnum( $adapter ) === false ) {
             $adaptername = 'Mumsys_Cookie_' . $adapter;
             $message = sprintf(
                 'Invalid characters in adapter name "%1$s"', $adaptername
             );
-            throw new Mumsys_Cookie_Exception($message);
+            throw new Mumsys_Cookie_Exception( $message );
         }
 
         $iface = 'Mumsys_Cookie_Interface';
         $adaptername = 'Mumsys_Cookie_' . $adapter;
 
-        if ( class_exists($adaptername) === false ) {
-            $message = sprintf('Adapter "%1$s" not available', $adaptername);
-            throw new Mumsys_Cookie_Exception($message);
+        if ( class_exists( $adaptername ) === false ) {
+            $message = sprintf( 'Adapter "%1$s" not available', $adaptername );
+            throw new Mumsys_Cookie_Exception( $message );
         }
 
         $object = new $adaptername();
@@ -66,7 +66,7 @@ class Mumsys_Cookie_Factory
                 'Adapter "%1$s" does not implement interface "%2$s"',
                 $adaptername, $iface
             );
-            throw new Mumsys_Cookie_Exception($message);
+            throw new Mumsys_Cookie_Exception( $message );
         }
 
         return $object;

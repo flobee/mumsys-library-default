@@ -52,7 +52,7 @@ class Mumsys_Cookie_Default
      */
     public function getCookie( $key = null, $default = null )
     {
-        return Mumsys_Php_Globals::getCookieVar($key, $default);
+        return Mumsys_Php_Globals::getCookieVar( $key, $default );
     }
 
 
@@ -105,7 +105,7 @@ class Mumsys_Cookie_Default
         string $path = '', string $domain = '', bool $secure = false,
         bool $httponly = false ): bool
     {
-        return setcookie($key, $value, $expire, $path, $key, $secure, $httponly);
+        return setcookie( $key, $value, $expire, $path, $key, $secure, $httponly );
     }
 
 
@@ -178,11 +178,11 @@ class Mumsys_Cookie_Default
     public function unsetCookie( string $key, string $path = '',
         string $domain = '', bool $secure = false, bool $httponly = false ): bool
     {
-        $test = Mumsys_Php_Globals::getCookieVar($key);
+        $test = Mumsys_Php_Globals::getCookieVar( $key );
         if ( $test ) {
-            unset($_COOKIE[$key]);
+            unset( $_COOKIE[$key] );
             $return = $this->setCookie(
-                $key, '', (time() - 3600), $path, $domain, $secure, $httponly
+                $key, '', (time() - 3600 ), $path, $domain, $secure, $httponly
             );
         } else {
             $return = true;
@@ -198,7 +198,7 @@ class Mumsys_Cookie_Default
     public function clear(): bool
     {
         foreach ( Mumsys_Php_Globals::getCookieVar() as $key => & $value ) {
-            $this->unsetCookie($key);
+            $this->unsetCookie( $key );
         }
 
         return true;

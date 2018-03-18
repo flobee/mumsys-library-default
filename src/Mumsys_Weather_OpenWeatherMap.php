@@ -32,6 +32,7 @@ class Mumsys_Weather_OpenWeatherMap
      * @var string
      */
     protected $_format = 'json';
+
     /**
      * List of possible formats which can be used
      * @var array
@@ -43,6 +44,7 @@ class Mumsys_Weather_OpenWeatherMap
      * @var string
      */
     protected $_unit = 'metric';
+
     /**
      * List of possible units to be used
      * @var array
@@ -61,8 +63,10 @@ class Mumsys_Weather_OpenWeatherMap
      * German - de, Portuguese - pt, Romanian - ro, Polish - pl, Finnish - fi, Dutch - nl, French - fr, Bulgarian - bg,
      * Swedish - se, Chinese Traditional - zh_tw, Chinese Simplified - zh_cn, Turkish - tr
      */
-    protected $_languages = array('en', 'ru', 'it', 'sp', 'ua', 'de', 'pt', 'ro', 'pl', 'fi', 'nl', 'fr', 'bg', 'se',
-        'zh_tw', 'zh_cn', 'tr');
+    protected $_languages = array(
+        'en', 'ru', 'it', 'sp', 'ua', 'de', 'pt', 'ro', 'pl', 'fi', 'nl', 'fr',
+        'bg', 'se', 'zh_tw', 'zh_cn', 'tr'
+    );
 
     /**
      * Base api url for the requests.
@@ -78,7 +82,7 @@ class Mumsys_Weather_OpenWeatherMap
 
     /**
      * Compiled and completed url with parameters to do a request to the service.
-     * @var type
+     * @var string
      */
     private $_requestUrl;
 
@@ -93,10 +97,12 @@ class Mumsys_Weather_OpenWeatherMap
      * Initialize the openweathermap.org service interface.
      *
      * @param array $params Basic parameters to be set for this driver:
-     * - [format] string required Format of service response: json (default), xml, html
-     * - [unit] string required Unit can be 'metric', 'imperial', 'internal' (default: metric).
-     * - [language] string required A language code like en, de, es, fr up to five characters if a locale is needed.
-     * - [apikey] string required Your application key/ token/ access key your need to access the data. Max 40 character
+     *  - [format] string required Format of service response: json (default), xml, html
+     *  - [unit] string required Unit can be 'metric', 'imperial', 'internal' (default: metric).
+     *  - [language] string required A language code like en, de, es, fr up to
+     * five characters if a locale is needed.
+     *  - [apikey] string required Your application key/ token/ access key your
+     * need to access the data. Max 40 character
      *
      * @throws Mumsys_Weather_Exception
      */
@@ -105,27 +111,27 @@ class Mumsys_Weather_OpenWeatherMap
         /** @todo to be check with other services */
         $message = false;
 
-        if ( !isset($params['unit']) ) {
+        if ( !isset( $params['unit'] ) ) {
             $message = 'Missing reqired "unit" parameter';
         }
 
-        if ( !isset($params['language']) ) {
+        if ( !isset( $params['language'] ) ) {
             $message = 'Missing reqired "language" parameter';
         }
 
-        if ( !isset($params['format']) ) {
+        if ( !isset( $params['format'] ) ) {
             $message = 'Missing reqired "format" parameter';
         }
 
-        if ( !isset($params['apikey']) ) {
+        if ( !isset( $params['apikey'] ) ) {
             $message = 'Missing reqired "apikey" parameter';
         }
 
         if ( $message ) {
-            throw new Mumsys_Weather_Exception($message);
+            throw new Mumsys_Weather_Exception( $message );
         }
 
-        parent::__construct($params);
+        parent::__construct( $params );
     }
 
 
@@ -161,9 +167,9 @@ class Mumsys_Weather_OpenWeatherMap
      */
     private function _getWeather( $action, $query = '' )
     {
-        $this->_requestUrl = $this->_buildUrl($action, $query);
+        $this->_requestUrl = $this->_buildUrl( $action, $query );
 
-        return $this->_getContent($this->_requestUrl);
+        return $this->_getContent( $this->_requestUrl );
     }
 
 
@@ -178,7 +184,7 @@ class Mumsys_Weather_OpenWeatherMap
      */
     public function getWeather( $query = '' )
     {
-        return $this->_getWeather('weather', $query);
+        return $this->_getWeather( 'weather', $query );
     }
 
 
@@ -197,7 +203,7 @@ class Mumsys_Weather_OpenWeatherMap
      */
     public function getWeatherForecast( $query = '' )
     {
-        return $this->_getWeather('forecast', $query);
+        return $this->_getWeather( 'forecast', $query );
     }
 
 
@@ -224,7 +230,7 @@ class Mumsys_Weather_OpenWeatherMap
 
         $action = 'forecast/daily/' . $days;
 
-        return $this->_getWeather($action, $query);
+        return $this->_getWeather( $action, $query );
     }
 
 
@@ -241,7 +247,7 @@ class Mumsys_Weather_OpenWeatherMap
         $num = (int) $numResults;
         $action = 'find/accurate/' . $num;
 
-        return $this->_getWeather($action, $city);
+        return $this->_getWeather( $action, $city );
     }
 
 
@@ -258,7 +264,7 @@ class Mumsys_Weather_OpenWeatherMap
         $num = (int) $numResults;
         $action = 'find/like/' . $num;
 
-        return $this->_getWeather($action, $city);
+        return $this->_getWeather( $action, $city );
     }
 
 
@@ -270,9 +276,9 @@ class Mumsys_Weather_OpenWeatherMap
      */
     public function getRawWeather( $query = '' )
     {
-        $this->_requestUrl = $this->_buildUrl('weather', $query);
+        $this->_requestUrl = $this->_buildUrl( 'weather', $query );
 
-        return $this->fetch($this->_requestUrl);
+        return $this->fetch( $this->_requestUrl );
     }
 
 
@@ -310,29 +316,29 @@ class Mumsys_Weather_OpenWeatherMap
                 'name' => 'openweathermaps.com',
             ),
         );
-        return $this->_createItem($init);
+        return $this->_createItem( $init );
     }
 
 
     public function fetch( $url )
     {
-        $data = parent::fetch($url);
+        $data = parent::fetch( $url );
 
-        $oCache = new Mumsys_Cache('owm', $url);
-        $oCache->setPath('./tmp/');
+        $oCache = new Mumsys_Cache( 'owm', $url );
+        $oCache->setPath( './tmp/' );
         if ( $oCache->isCached() ) {
             return $oCache->read();
         }
 
-        if ( $data !== false) {
+        if ( $data !== false ) {
             // every 20min - 3h new data will be available!
             // not more than every 10min a request should be made! at all!
             // at this end we cache re-requested data for 15min.
-            $oCache->write($ttl = (15*60), $data);
+            $oCache->write( $ttl = (15 * 60), $data );
 
             // --- just tracking new records ---
-            $tmp = $url . PHP_EOL . print_r(json_decode($data), true);
-            file_put_contents('./tmp/weather.' . date('Ymd-Hi', time()) . '.tmp', $tmp);
+            $tmp = $url . PHP_EOL . print_r( json_decode( $data ), true );
+            file_put_contents( './tmp/weather.' . date( 'Ymd-Hi', time() ) . '.tmp', $tmp );
         }
 
         return $data;
@@ -349,8 +355,8 @@ class Mumsys_Weather_OpenWeatherMap
      */
     private function _buildUrl( $action, $query )
     {
-        $actions = explode('/', $action);
-        $cntActions = count($actions);
+        $actions = explode( '/', $action );
+        $cntActions = count( $actions );
         $parameters = array();
 
         switch ( $actions[0] )
@@ -362,9 +368,9 @@ class Mumsys_Weather_OpenWeatherMap
 
             case 'forecast': // 'forecast/daily', 'forecast/daily/14'
                 if ( $cntActions >= 2 ) {
-                    if ( !in_array($actions[1], array('daily', 'hourly')) ) {
-                        $message = 'Invalid action parameter for the request: "' . $actions[1] . '"';
-                        throw new Mumsys_Weather_Exception($message);
+                    if ( !in_array( $actions[1], array('daily', 'hourly') ) ) {
+                        $mesg = 'Invalid action parameter for the request: "' . $actions[1] . '"';
+                        throw new Mumsys_Weather_Exception( $mesg );
                     }
 
                     $this->_actionUrl = 'forecast/' . $actions[1];
@@ -380,9 +386,9 @@ class Mumsys_Weather_OpenWeatherMap
                 $this->_actionUrl = 'find';
 
                 if ( $cntActions >= 2 ) {
-                    if ( !in_array($actions[1], array('accurate', 'like')) ) {
-                        $message = 'Invalid action parameter for the request: "' . $actions[1] . '"';
-                        throw new Mumsys_Weather_Exception($message);
+                    if ( !in_array( $actions[1], array('accurate', 'like') ) ) {
+                        $mesg = 'Invalid action parameter for the request: "' . $actions[1] . '"';
+                        throw new Mumsys_Weather_Exception( $mesg );
                     } else {
                         $parameters[] = 'type=' . $actions[1];
                     }
@@ -394,30 +400,34 @@ class Mumsys_Weather_OpenWeatherMap
                 break;
 
             default:
-                throw new Exception('Invalid action parameter for the request');
+                throw new Exception( 'Invalid action parameter for the request' );
                 break;
         }
 
         /** note: needs to be set/checked before _format will be set to parameters! $_format can change here! */
-        if ( ($result = $this->_buildSearch($query) ) ) {
+        if ( ($result = $this->_buildSearch( $query ) ) ) {
             foreach ( $result as $value ) {
                 $parameters[] = $value;
             }
         }
 
-        if ( $this->_language )
+        if ( $this->_language ) {
             $parameters[] = 'lang=' . (string) $this->_language;
+        }
 
-        if ( $this->_unit )
+        if ( $this->_unit ) {
             $parameters[] = 'units=' . (string) $this->_unit;
+        }
 
-        if ( $this->_format )
+        if ( $this->_format ) {
             $parameters[] = 'mode=' . (string) $this->_format;
+        }
 
-        if ( $this->_apiKey )
+        if ( $this->_apiKey ) {
             $parameters[] = 'APPID=' . (string) $this->_apiKey;
+        }
 
-        $queryStr = implode('&', $parameters);
+        $queryStr = implode( '&', $parameters );
 
         return $this->_apiBaseUrl . $this->_actionUrl . '?' . $queryStr;
     }
@@ -436,31 +446,30 @@ class Mumsys_Weather_OpenWeatherMap
         $parameters = false;
 
         if ( $query ) {
-            if ( is_array($query) ) {
-
-                if ( !is_numeric($query['lat']) || !is_numeric($query['lon']) ) {
-                    throw new Exception('Invalid query parts detected: "' . $query . '"');
+            if ( is_array( $query ) ) {
+                if ( !is_numeric( $query['lat'] ) || !is_numeric( $query['lon'] ) ) {
+                    throw new Exception( 'Invalid query parts detected: "' . $query . '"' );
                 }
 
                 $parameters[] = 'lat=' . (string) $query['lat'];
                 $parameters[] = 'lon=' . (string) $query['lon'];
             } else {
-                $queryParts = explode(',', $query);
+                $queryParts = explode( ',', $query );
                 $numeric = $string = false;
 
-                if ( count($queryParts) ) {
+                if ( count( $queryParts ) ) {
 
                     foreach ( $queryParts as $part ) {
-                        if ( is_numeric($part) ) {
+                        if ( is_numeric( $part ) ) {
                             $numeric[] = $part;
-                        } else if ( !empty($part) && is_string($part) ) {
+                        } else if ( !empty( $part ) && is_string( $part ) ) {
                             $string = true;
                         }
                     }
 
                     if ( $numeric && !$string ) {
-                        $parameters[] = 'id=' . implode(',', $numeric);
-                        if ( $this->_actionUrl == 'weather' && count($numeric) > 1 ) {
+                        $parameters[] = 'id=' . implode( ',', $numeric );
+                        if ( $this->_actionUrl == 'weather' && count( $numeric ) > 1 ) {
                             $this->_actionUrl = 'group';
                             $this->_format = 'json';
                         }
@@ -468,11 +477,12 @@ class Mumsys_Weather_OpenWeatherMap
                         $parameters[] = 'q=' . (string) $query;
                     }
                 } else {
-                    throw new Mumsys_Weather_Exception('Invalid query parts detected: "' . $queryParts . '"');
+                    $mesg = 'Invalid query parts detected: "' . $queryParts . '"';
+                    throw new Mumsys_Weather_Exception( $mesg );
                 }
             }
         } else {
-            throw new Mumsys_Weather_Exception('Missing query parameter for the request');
+            throw new Mumsys_Weather_Exception( 'Missing query parameter for the request' );
         }
 
         return $parameters;
@@ -487,7 +497,7 @@ class Mumsys_Weather_OpenWeatherMap
      */
     private function _getContent( $url )
     {
-        $this->_rawData = $this->fetch($url);
+        $this->_rawData = $this->fetch( $url );
         if ( $this->_rawData === false ) {
             return false;
         }
@@ -495,11 +505,11 @@ class Mumsys_Weather_OpenWeatherMap
         switch ( $this->_format )
         {
             case 'json':
-                $result = $this->_parseJson($this->_rawData);
+                $result = $this->_parseJson( $this->_rawData );
                 break;
 
             case 'xml':
-                $result = $this->_parseXml($this->_rawData);
+                $result = $this->_parseXml( $this->_rawData );
                 break;
         }
 
@@ -519,18 +529,18 @@ class Mumsys_Weather_OpenWeatherMap
     private function _parseJson( $response )
     {
         $objects = array();
-        $data = json_decode($response);
+        $data = json_decode( $response );
 
-        if ( (isset($data->cod) && $data->cod == 404 ) ) {
+        if ( (isset( $data->cod ) && $data->cod == 404 ) ) {
             return false;
         }
 
         // single return
-        if ( !empty($data->cod) && $data->cod == 200 ) {
+        if ( !empty( $data->cod ) && $data->cod == 200 ) {
             $objects = array($data);
         }
         // multi result return
-        if ( !empty($data->cnt) && !empty($data->list) ) {
+        if ( !empty( $data->cnt ) && !empty( $data->list ) ) {
             $objects = $data->list;
         }
 
@@ -538,9 +548,9 @@ class Mumsys_Weather_OpenWeatherMap
         foreach ( $objects as $i => $item ) {
             $weatherItem = $this->createItem();
 
-            $weatherItem->setLastupdate($item->dt);
+            $weatherItem->setLastupdate( $item->dt );
             // isset($item->base)?$item->base:'openweathermap';
-            $weatherItem->setLanguage($this->_language);
+            $weatherItem->setLanguage( $this->_language );
 
             $location = array(
                 'name' => $item->name,
@@ -553,16 +563,16 @@ class Mumsys_Weather_OpenWeatherMap
                 'longitude' => $item->coord->lon,
                 'altitude' => @$item->coord->alt,
             );
-            $weatherItem->setLocation($location);
+            $weatherItem->setLocation( $location );
 
-            if ( isset($item->weather[0]) ) { // foreach ( $item->weather as $j => $weather ) {
+            if ( isset( $item->weather[0] ) ) { // foreach ( $item->weather as $j => $weather ) {
                 $desc = array(
                     'id' => $item->weather[0]->id,
                     'key' => $item->weather[0]->main,
                     'name' => $item->weather[0]->description,
                     'icon' => $item->weather[0]->icon,
                 );
-                $weatherItem->setWeatherDescription($desc);
+                $weatherItem->setWeatherDescription( $desc );
             }
 
             $temp = array(
@@ -572,9 +582,9 @@ class Mumsys_Weather_OpenWeatherMap
                 'night' => @$item->main->night, // @todo not always present
                 'eve' => @$item->main->eve, // @todo not always present
                 'morn' => @$item->main->morn, // @todo not always present
-                'unit' => Mumsys_Weather_Item_Unit_Factory::createItem('Temperature', $this->_unit),
+                'unit' => Mumsys_Weather_Item_Unit_Factory::createItem( 'Temperature', $this->_unit ),
             );
-            $weatherItem->setTemperature($temp);
+            $weatherItem->setTemperature( $temp );
 
             $press = array(
                 'value' => $item->main->pressure,
@@ -583,13 +593,13 @@ class Mumsys_Weather_OpenWeatherMap
                 'ground' => @$item->main->grnd_level, // @todo not always present
                 //'rising' => -1, 0, 1 // not exits in api
             );
-            $weatherItem->setPressure($press);
+            $weatherItem->setPressure( $press );
 
             $humidity = array(
                 'value' => $item->main->humidity,
-                'unit' => $this->getUnitUniversal('percent')
+                'unit' => $this->getUnitUniversal( 'percent' )
             );
-            $weatherItem->setHumidity($humidity);
+            $weatherItem->setHumidity( $humidity );
 
             // not exits in api
             //smok, fog, visibility is value = 50m
@@ -597,15 +607,15 @@ class Mumsys_Weather_OpenWeatherMap
 
             $targetWindCode = 'm/s';
             $windSpeed = array(
-                'value' => $this->convertWindSpeed('m/s', $item->wind->speed, $targetWindCode),
+                'value' => $this->convertWindSpeed( 'm/s', $item->wind->speed, $targetWindCode ),
                 'min' => null,
                 'max' => null,
-                'unit' => $this->getUnitWindSpeed($targetWindCode),
+                'unit' => $this->getUnitWindSpeed( $targetWindCode ),
                 'key' => '', // name="Gentle Breeze"
                 'name' => '', // translated name="Gentle Breeze"
                 'gust' => @$item->wind->gust // @todo windboen not always present
             );
-            $weatherItem->setWindSpeed($windSpeed);
+            $weatherItem->setWindSpeed( $windSpeed );
 
             $windDirect = array(
                 'value' => $item->wind->deg,
@@ -614,25 +624,25 @@ class Mumsys_Weather_OpenWeatherMap
                 'end' => @$item->wind->var_end, // @todo not always present
                 'key' => '', // name="West-southwest"
                 'name' => '', // translation of name="West-southwest"
-                'code' => $this->getCodeWindDirection($item->wind->deg, 1) // code="WSW"
+                'code' => $this->getCodeWindDirection( $item->wind->deg, 1 ) // code="WSW"
             );
-            $weatherItem->setWindDirection($windDirect);
+            $weatherItem->setWindDirection( $windDirect );
 
             // Temperature by wind speed or how do you feed the Temperature
             // $weatherItem->setWindChill( array('value'=>$xx, 'unit'=>$this->getUnitTemperature($this->_unit));
 
             $clouds = array(
                 'value' => $item->clouds->all,
-                'unit' => $this->getUnitUniversal('percent'),
+                'unit' => $this->getUnitUniversal( 'percent' ),
             );
-            $weatherItem->setClouds($clouds);
+            $weatherItem->setClouds( $clouds );
 
             $rain = array();
-            if ( isset($item->rain) ) {
-                if ( isset($item->rain->{'3h'}) ) {
+            if ( isset( $item->rain ) ) {
+                if ( isset( $item->rain->{'3h'} ) ) {
                     $rainValue = $item->rain->{'3h'};
                     $rainInterval = '3h';
-                } else if ( isset($item->rain->{'1h'}) ) {
+                } else if ( isset( $item->rain->{'1h'} ) ) {
                     $rainValue = $item->rain->{'1h'};
                     $rainInterval = '1h';
                 } else {
@@ -641,17 +651,17 @@ class Mumsys_Weather_OpenWeatherMap
                 }
 
                 $rain['value'] = $rainValue;
-                $rain['unit'] = $this->getUnitUniversal('millimetre');
+                $rain['unit'] = $this->getUnitUniversal( 'millimetre' );
                 $rain['interval'] = $rainInterval;
             }
-            $weatherItem->setPrecipitationRain($rain);
+            $weatherItem->setPrecipitationRain( $rain );
 
             $snow = array();
-            if ( isset($item->snow) ) {
-                if ( isset($item->snow->{'3h'}) ) {
+            if ( isset( $item->snow ) ) {
+                if ( isset( $item->snow->{'3h'} ) ) {
                     $snowValue = $item->snow->{'3h'};
                     $snowInterval = '3h';
-                } else if ( isset($item->snow->{'1h'}) ) {
+                } else if ( isset( $item->snow->{'1h'} ) ) {
                     $snowValue = $item->snow->{'1h'};
                     $snowInterval = '1h';
                 } else {
@@ -659,10 +669,10 @@ class Mumsys_Weather_OpenWeatherMap
                     $snowInterval = 'err';
                 }
                 $snow['value'] = $snowValue;
-                $snow['unit'] = $this->getUnitUniversal('millimetre');
+                $snow['unit'] = $this->getUnitUniversal( 'millimetre' );
                 $snow['interval'] = $snowInterval;
             }
-            $weatherItem->setPrecipitationSnow($snow);
+            $weatherItem->setPrecipitationSnow( $snow );
 
             /* useful for tests
           $result[$i]['lastupdate'] = $item->dt;
@@ -738,7 +748,6 @@ class Mumsys_Weather_OpenWeatherMap
           $result[$i]['precipitation']['snow']['unit'] = $this->getUnitUniversal('millimetre');
          */
 
-
             $result[$i] = $weatherItem;
         }
 
@@ -754,131 +763,139 @@ class Mumsys_Weather_OpenWeatherMap
      * @param xml $response Xml response from api request
      * @return array homogeneous structure for futher actions
      */
-    private function _parseXml($response)
+    private function _parseXml( $response )
     {
-        if ($response === false || (isset($data->cod) && $data->cod == 404) ) {
+        if ( $response === false || (isset( $data->cod ) && $data->cod == 404) ) {
             return false;
         }
 
-        libxml_use_internal_errors(true);
+        libxml_use_internal_errors( true );
         libxml_clear_errors();
 
-        $data = new SimpleXMLElement($response);
+        $data = new SimpleXMLElement( $response );
 
         $objects = array();
 
         // single return
-        if (isset($data->city) || isset($data->city->coord)) {
-
+        if ( isset( $data->city ) || isset( $data->city->coord ) ) {
             $objects = array($data);
         }
 
         // multi return
-        if ( isset($data->forecast) || isset($data->location) ) {
+        if ( isset( $data->forecast ) || isset( $data->location ) ) {
             // $objects = $data -> list;
-            throw new Exception('Multi return not implemented yet');
+            throw new Exception( 'Multi return not implemented yet' );
         }
-
 
         $result = false;
         foreach ( $objects as $i => $item ) {
             $weatherItem = $this->createItem();
 
-            if ( isset($item->lastupdate['value']) ) {
+            if ( isset( $item->lastupdate['value'] ) ) {
                 $strTime = (string) $item->lastupdate['value'];
                 $lastupdate = mktime(
-                    substr($strTime, 11, 2), substr($strTime, 14, 2), substr($strTime, 17, 2), substr($strTime, 5, 2),
-                    substr($strTime, 8, 2), substr($strTime, 0, 4)
+                    substr( $strTime, 11, 2 ), substr( $strTime, 14, 2 ),
+                    substr( $strTime, 17, 2 ), substr( $strTime, 5, 2 ),
+                    substr( $strTime, 8, 2 ), substr( $strTime, 0, 4 )
                 );
 
-                $weatherItem->setLastupdate($lastupdate);
+                $weatherItem->setLastupdate( $lastupdate );
             }
 
-            $weatherItem->setLanguage($this->_language);
+            $weatherItem->setLanguage( $this->_language );
 
             $location = array();
-            if ( isset($item->city['id']) ) {
+            if ( isset( $item->city['id'] ) ) {
                 $location['id'] = (string) $item->city['id'];
             }
-            if ( isset($item->city['name']) ) {
+            if ( isset( $item->city['name'] ) ) {
                 $location['name'] = (string) $item->city['name'];
             }
-            if ( isset($item->city->country) ) {
+            if ( isset( $item->city->country ) ) {
                 $location['country'] = '';
                 $location['countryCode'] = (string) $item->city->country;
             }
-            if ( isset($item->city->sun['rise']) || isset($item->city->sun['set']) ) {
+            if ( isset( $item->city->sun['rise'] ) || isset( $item->city->sun['set'] ) ) {
                 $strTime = (string) $item->city->sun['rise'];
                 $sunrise = mktime(
-                    substr($strTime, 11, 2), substr($strTime, 14, 2), substr($strTime, 17, 2), substr($strTime, 5, 2),
-                    substr($strTime, 8, 2), substr($strTime, 0, 4)
+                    substr( $strTime, 11, 2 ), substr( $strTime, 14, 2 ),
+                    substr( $strTime, 17, 2 ), substr( $strTime, 5, 2 ),
+                    substr( $strTime, 8, 2 ), substr( $strTime, 0, 4 )
                 );
                 $strTime = (string) $item->city->sun['set'];
                 $sunset = mktime(
-                    substr($strTime, 11, 2), substr($strTime, 14, 2), substr($strTime, 17, 2), substr($strTime, 5, 2),
-                    substr($strTime, 8, 2), substr($strTime, 0, 4)
+                    substr( $strTime, 11, 2 ), substr( $strTime, 14, 2 ),
+                    substr( $strTime, 17, 2 ), substr( $strTime, 5, 2 ),
+                    substr( $strTime, 8, 2 ), substr( $strTime, 0, 4 )
                 );
                 $location['sunrise'] = $sunrise;
                 $location['sunset'] = $sunset;
             }
-            if ( isset($item->city->coord['lon']) && isset($item->city->coord['lat']) ) {
+
+            if ( isset( $item->city->coord['lon'] ) && isset( $item->city->coord['lat'] ) ) {
                 $location['latitude'] = (float) $item->city->coord['lat'];
                 $location['longitude'] = (float) $item->city->coord['lon'];
-                $location['altitude'] = ( isset($item->city->coord['alt']) ? (float) $item->city->coord['alt'] : null );
+
+                if ( isset( $item->city->coord['alt'] ) ) {
+                    $location['altitude'] = (float) $item->city->coord['alt'];
+                } else {
+                    $location['altitude'] = null;
+                }
             }
 
-            $weatherItem->setLocation($location);
+            $weatherItem->setLocation( $location );
 
-            if ( isset($item->weather['number']) ) {
+            if ( isset( $item->weather['number'] ) ) {
                 $desc = array(
                     'id' => (string) $item->weather['number'],
                     'key' => (string) @$item->weather['main'], // not in in xml ?
                     'name' => (string) $item->weather['value'],
                     'icon' => (string) $item->weather['icon'],
                 );
-                $weatherItem->setWeatherDescription($desc);
+                $weatherItem->setWeatherDescription( $desc );
             }
 
-
             $temp = array();
-            if ( isset($item->temperature['unit']) ) {
+            if ( isset( $item->temperature['unit'] ) ) {
                 $unitCur = (string) $item->temperature['unit'];
-                $temp['unit'] = $this->getUnitTemperature($this->_unit);
+                $temp['unit'] = $this->getUnitTemperature( $this->_unit );
                 $unitTarget = $temp['unit']['key'];
                 $list = array('value', 'min', 'max', 'night', 'eve', 'morn');
                 foreach ( $list as $key ) {
-                    if ( isset($item->temperature[$key]) ) {
+                    if ( isset( $item->temperature[$key] ) ) {
                         $tempValue = (float) $item->temperature[$key];
-                        $value = $this->convertTemperature($unitCur, $tempValue, $unitTarget);
+                        $value = $this->convertTemperature(
+                            $unitCur, $tempValue, $unitTarget
+                        );
                         $temp[$key] = $value;
                     }
                 }
-                $weatherItem->setTemperature($temp);
-                unset($list, $temp, $value);
+                $weatherItem->setTemperature( $temp );
+                unset( $list, $temp, $value );
             }
 
             $press = array();
-            if ( isset($item->pressure['unit']) ) {
+            if ( isset( $item->pressure['unit'] ) ) {
                 $press = array(
                     'value' => (float) $item->pressure['value'],
-                    'unit' => $this->getUnitPressure((string) $item->pressure['unit']),
+                    'unit' => $this->getUnitPressure( (string) $item->pressure['unit'] ),
                     //'rising' => -1, 0, 1 // not exits in api
                 );
-                if ( isset($item->pressure['sea']) ) {
+                if ( isset( $item->pressure['sea'] ) ) {
                     $press['sea'] = (float) $item->pressure['sea']; // @todo not always present
                 }
-                if ( isset($item->pressure['ground']) ) {
+                if ( isset( $item->pressure['ground'] ) ) {
                     $press['ground'] = (float) $item->pressure['ground']; // @todo not always present
                 }
-                $weatherItem->setPressure($press);
+                $weatherItem->setPressure( $press );
             }
 
-            if ( isset($item->humidity['unit']) ) {
+            if ( isset( $item->humidity['unit'] ) ) {
                 $humidity = array(
                     'value' => (float) $item->humidity['value'],
-                    'unit' => $this->getUnitUniversal('percent'),
+                    'unit' => $this->getUnitUniversal( 'percent' ),
                 );
-                $weatherItem->setHumidity($humidity);
+                $weatherItem->setHumidity( $humidity );
             }
 
             // not exits in api
@@ -887,79 +904,91 @@ class Mumsys_Weather_OpenWeatherMap
 
             $targetWindCode = 'm/s';
             $windSpeed = array(
-                'value' => $this->convertWindSpeed('m/s', (string)$item->wind->speed['value'], $targetWindCode),
-                'unit' => $this->getUnitWindSpeed($targetWindCode),
-                'key' => (string)$item->wind->speed['name'], // name="Gentle Breeze"
-                'name' => _( (string)$item->wind->speed['name'] ), // translated name="Gentle Breeze"
+                'value' => $this->convertWindSpeed(
+                    'm/s', (string) $item->wind->speed['value'], $targetWindCode
+                ),
+                'unit' => $this->getUnitWindSpeed( $targetWindCode ),
+                'key' => (string) $item->wind->speed['name'], // name="Gentle Breeze"
+                'name' => _( (string) $item->wind->speed['name'] ), // translated name="Gentle Breeze"
             );
-            if (isset($item->wind->speed['min'])) {
+
+            if ( isset( $item->wind->speed['min'] ) ) {
                 $windSpeed['min'] = $item->wind->speed['min']; // @todo not always present
             }
-            if (isset($item->wind->speed['max'])) {
+            if ( isset( $item->wind->speed['max'] ) ) {
                 $windSpeed['max'] = $item->wind->speed['max']; // @todo not always present
             }
-            if (isset($item->wind->speed['gust'])) {
+            if ( isset( $item->wind->speed['gust'] ) ) {
                 $windSpeed['gust'] = $item->wind->speed['gust']; // @todo not always present
             }
-            $weatherItem->setWindSpeed($windSpeed);
+            $weatherItem->setWindSpeed( $windSpeed );
 
             $windDirect = array();
-            if (isset($item->wind->direction['value'])) {
+            if ( isset( $item->wind->direction['value'] ) ) {
                 $windDirect['unit'] = $this->getUnitWindDirection();
-                if ( isset($item->wind->direction['value']) ) {
+                if ( isset( $item->wind->direction['value'] ) ) {
                     $windDirect['value'] = $item->wind->direction['value']; // @todo not always present
                     // code="WSW"
-                    $windDirect['code'] = $this->getCodeWindDirection((int) $item->wind->direction['value'], 1);
+                    $windDirect['code'] = $this->getCodeWindDirection(
+                        (int) $item->wind->direction['value'], 1
+                    );
                 }
-                if (isset($item->wind->direction['name'])) {
-                    $windDirect['key'] = (string)$item->wind->direction['name'];
-                    $windDirect['name'] = _( (string)$item->wind->direction['name'] );
+
+                if ( isset( $item->wind->direction['name'] ) ) {
+                    $windDirect['key'] = (string) $item->wind->direction['name'];
+                    $windDirect['name'] = _( (string) $item->wind->direction['name'] );
                 }
-                if (isset($item->wind->direction['begin'])) {
+
+                if ( isset( $item->wind->direction['begin'] ) ) {
                     $windDirect['begin'] = $item->wind->direction['begin']; // @todo not always present
                 }
-                if (isset($item->wind->direction['end'])) {
+
+                if ( isset( $item->wind->direction['end'] ) ) {
                     $windDirect['end'] = $item->wind->direction['end']; // @todo not always present
                 }
-                if (isset($item->wind->direction['code'])) {
+
+                if ( isset( $item->wind->direction['code'] ) ) {
                     $windDirect['key'] = $item->wind->direction['name'];
                 }
-                $weatherItem->setWindDirection($windDirect);
+
+                $weatherItem->setWindDirection( $windDirect );
             }
 
             // Temperature by wind speed or how do you feed the Temperature
             // $weatherItem->setWindChill( array('value'=>$xx, 'unit'=>$this->getUnitTemperature($this->_unit));
 
-            if (isset($item->clouds['value'])) {
+            if ( isset( $item->clouds['value'] ) ) {
                 $clouds = array(
-                    'value' => (float)$item->clouds['value'],
-                    'unit' => $this->getUnitUniversal('percent'),
+                    'value' => (float) $item->clouds['value'],
+                    'unit' => $this->getUnitUniversal( 'percent' ),
                 );
-                if (isset($item->clouds['name'])) {
+                if ( isset( $item->clouds['name'] ) ) {
                     $clouds['key'] = $item->clouds['name'];
-                    $clouds['name'] = _($item->clouds['name']);
+                    $clouds['name'] = _( $item->clouds['name'] );
                 }
-                $weatherItem->setClouds($clouds);
+                $weatherItem->setClouds( $clouds );
             }
-
 
             $rainOrSnow = array();
 
-            $mode = (string)@$item->precipitation['mode'];
-            if (isset($item->precipitation['mode']) && $mode != 'no') {
-                if (in_array($mode, array('rain','snow')) ) {
-                    $rainOrSnow[ $mode ]['value'] = $item->precipitation['value'];
-                    $rainOrSnow[ $mode ]['unit'] = $this->getUnitUniversal('millimetre');
-                    $rainOrSnow[ $mode ]['interval'] = $item->precipitation['unit'];
+            $mode = (string) @$item->precipitation['mode'];
+            if ( isset( $item->precipitation['mode'] ) && $mode != 'no' ) {
+                if ( in_array( $mode, array('rain', 'snow') ) ) {
+                    $rainOrSnow[$mode]['value'] = $item->precipitation['value'];
+                    $rainOrSnow[$mode]['unit'] = $this->getUnitUniversal( 'millimetre' );
+                    $rainOrSnow[$mode]['interval'] = $item->precipitation['unit'];
                 } else {
-                    $msg = sprintf('Invalivor unknown mode "%1$s" to create precipitation records', $mode);
-                    throw new Exception($msg);
+                    $msg = sprintf(
+                        'Invalivor unknown mode "%1$s" to create precipitation records',
+                        $mode
+                    );
+                    throw new Exception( $msg );
                 }
 
                 if ( $mode == 'rain' ) {
-                    $weatherItem->setPrecipitationRain($rainOrSnow);
-                } else if ($mode == 'snow') {
-                    $weatherItem->setPrecipitationSnow($rainOrSnow);
+                    $weatherItem->setPrecipitationRain( $rainOrSnow );
+                } else if ( $mode == 'snow' ) {
+                    $weatherItem->setPrecipitationSnow( $rainOrSnow );
                 }
             }
 
@@ -978,8 +1007,7 @@ class Mumsys_Weather_OpenWeatherMap
      */
     private function _createItem( $params )
     {
-        return new Mumsys_Weather_Item_Default($params, false);
+        return new Mumsys_Weather_Item_Default( $params, false );
     }
-
 
 }
