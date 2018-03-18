@@ -4,4 +4,6 @@ echo "----------------------------------------";
 echo "usage: $0 [phpcs options] <path or file>";
 echo "----------------------------------------";
 
-php ../vendor/bin/phpcs --standard=../misc/coding/Mumsys $* 
+_DIR=$(dirname "$0");
+
+php $_DIR/../vendor/bin/phpcs --standard=$_DIR/../misc/coding/Mumsys $* 
