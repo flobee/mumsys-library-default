@@ -26,8 +26,6 @@
  * for the view/controller and models. This would be e.g. in the
  * Cms_Context_* object and extends this class.
  *
- * @todo implement more tests
- *
  * @category    Mumsys
  * @package     Library
  * @subpackage  Context

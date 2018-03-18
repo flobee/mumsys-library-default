@@ -193,13 +193,15 @@ class Mumsys_Context_ItemTest
     /**
      * @covers Mumsys_Context_Item::getRequest
      * @covers Mumsys_Context_Item::registerRequest
+     * @covers Mumsys_Context_Item::replaceRequest
      * @covers Mumsys_Context_Item::_get
      * @covers Mumsys_Context_Item::_register
      */
     public function testGetSetRequest()
     {
         $object = new Mumsys_Request_Console();
-        $this->_object->replaceRequest( $object );
+        $this->_object->registerRequest( $object ); //4CC
+        $this->_object->replaceRequest( $object ); //4CC
 
         $this->assertInstanceOf( 'Mumsys_Request_Interface', $this->_object->getRequest() );
 
