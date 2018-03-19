@@ -18,7 +18,7 @@
         "flobee/spss": "^2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6",
+        "phpunit/phpunit": "^7",
         "friendsofphp/php-cs-fixer": "^2",
         "squizlabs/php_codesniffer": "*",
         "phploc/phploc": "*",
