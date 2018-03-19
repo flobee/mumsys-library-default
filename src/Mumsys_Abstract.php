@@ -48,9 +48,9 @@ abstract class Mumsys_Abstract
     public static function getVersion()
     {
         $class = get_called_class();
-        $version = '%1$s %2$s';
+        $versionString= '%1$s %2$s';
 
-        return sprintf( $version, $class, $class::VERSION );
+        return sprintf( $versionString, $class, $class::VERSION );
     }
 
 
