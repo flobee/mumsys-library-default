@@ -116,12 +116,6 @@ class Mumsys_Multirename
      */
     private $_jsonOptions = JSON_PRETTY_PRINT;
 
-    /**
-     * Global version ID of involved classes.
-     * @var string
-     */
-    private static $versionGlobal;
-
 
     /**
      * Initialise Multirename object.
@@ -1340,7 +1334,7 @@ class Mumsys_Multirename
             $verGlobal[1] += $verParts[1];
             $verGlobal[2] += $verParts[2];
         }
-        
+
         $version .= str_pad( 'Global version ID', 35, ' ', STR_PAD_RIGHT )
             . ' ' . implode( '.', $verGlobal ) . PHP_EOL . PHP_EOL;
 
