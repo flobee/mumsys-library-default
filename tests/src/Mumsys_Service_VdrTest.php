@@ -258,7 +258,7 @@ class Mumsys_Service_VdrTest
         if ( count( $channelsList ) <= 0 ) {
             $this->markTestSkipped( 'No channels found. Pls check your vdr config. Skip test' );
         }
-
+        // reverse checks: list to items    
         foreach ( $channelsList as $id => $parts ) {
             $current = $this->_object->channelGet( $id );
 
