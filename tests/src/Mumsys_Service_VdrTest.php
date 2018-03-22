@@ -29,8 +29,8 @@ class Mumsys_Service_VdrTest
     protected function setUp()
     {
         if ( self::$_isAvailable !== true ) {
-            $mesg = 'repeated failure: this it not a bug! you just dont have '
-                . 'the service up and you may dont need it';
+            $mesg = 'Repeated failure: This it not a bug!'
+                . 'See previous message!';
             $this->markTestSkipped( $mesg );
         }
 
@@ -53,8 +53,8 @@ class Mumsys_Service_VdrTest
             $this->_object = new Mumsys_Service_Vdr( $this->_context, 'localhost' );
         } catch ( Exception $ex ) {
             self::$_isAvailable = false;
-            $message = 'Service error or not available, skip test. Message: '
-                . $ex->getMessage();
+            $message = 'Service error or service not available, skip test. '
+                . 'Message: ' . $ex->getMessage();
             $this->markTestSkipped( $message );
         }
     }
@@ -68,11 +68,17 @@ class Mumsys_Service_VdrTest
     {
         $this->_object->disconnect();
 
-        if ( file_exists($this->_logfile) ) {
-            //unlink($this->_logfile);
+        if ( file_exists( $this->_logfile ) ) {
+            unlink( $this->_logfile );
         }
 
         $this->_object = null;
+    }
+
+
+    public function testSetup()
+    {
+        $this->assertTrue( self::$_isAvailable );
     }
 
 
@@ -113,10 +119,39 @@ class Mumsys_Service_VdrTest
      */
     public function testConnectException1()
     {
-        $this->expectException('Mumsys_Service_Exception');
+        $origA = ini_get( 'display_errors' );
+        $origB = ini_get( 'error_reporting' );
+        ini_set( 'display_errors', false );
+        ini_set( 'error_reporting', 0 );
+
+        $this->expectException( 'Mumsys_Service_Exception' );
         $regex = '/(Connection to server "nohostexist" failt)/i';
-        $this->expectExceptionMessageRegExp($regex);
-        $this->_object = new Mumsys_Service_Vdr($this->_context, 'nohostexist', 666, 5);
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->_object = new Mumsys_Service_Vdr( $this->_context, 'nohostexist', 666, 5 );
+
+        ini_set( 'display_errors', $origA );
+        ini_set( 'error_reporting', $origB );
+    }
+
+
+    /**
+     * Get raw exception messages.
+     * @covers Mumsys_Service_Vdr::connect
+     */
+    public function testConnectException2()
+    {
+        $origA = ini_get( 'display_errors' );
+        $origB = ini_get( 'error_reporting' );
+        ini_set( 'display_errors', true );
+        ini_set( 'error_reporting', -1 );
+
+        $this->expectException( 'Mumsys_Service_Exception' );
+        $regex = '/(fsockopen)(.*)(php_network_getaddresses)(.*)(getaddrinfo failed)(.*)(Name or service not known)/i';
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->_object = new Mumsys_Service_Vdr( $this->_context, 'nohostexist', 666, 5 );
+
+        ini_set( 'display_errors', $origA );
+        ini_set( 'error_reporting', $origB );
     }
 
 
@@ -258,7 +293,7 @@ class Mumsys_Service_VdrTest
         if ( count( $channelsList ) <= 0 ) {
             $this->markTestSkipped( 'No channels found. Pls check your vdr config. Skip test' );
         }
-        // reverse checks: list to items    
+        // reverse checks: list to items
         foreach ( $channelsList as $id => $parts ) {
             $current = $this->_object->channelGet( $id );
 
