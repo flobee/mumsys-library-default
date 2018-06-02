@@ -108,10 +108,10 @@ class Mumsys_Service_SshTool_DefaultTest
         $this->assertInstanceOf( 'Mumsys_Service_SshTool_Default', $objectB );
         $this->assertInstanceOf( 'Mumsys_Abstract', $objectA );
 
-        $this->expectException('Mumsys_Service_Exception');
-        $this->expectExceptionMessageRegExp('/(Given config file path not found)/i');
+        $this->expectException( 'Mumsys_Service_Exception' );
+        $this->expectExceptionMessageRegExp( '/(Given config file path not found)/i' );
         $objectA = new Mumsys_Service_SshTool_Default(
-            $this->_pathConfigs, $this->_sshFile .'/not/exists'
+            $this->_pathConfigs, $this->_sshFile . '/not/exists'
         );
     }
 
@@ -254,7 +254,7 @@ class Mumsys_Service_SshTool_DefaultTest
         $actualA = file_get_contents( $this->_sshFile );
 
         ob_start();
-        $this->_object->create(true);
+        $this->_object->create( true );
         $actualB = ob_get_clean();
         $expectedB = '# output for: ' . $this->_sshFile . PHP_EOL . $expectedA . PHP_EOL;
 
