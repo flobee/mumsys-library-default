@@ -55,6 +55,7 @@ abstract class Mumsys_Mvc_Program_Abstract
      */
     protected $_config;
 
+
     /**
      * Initializes the program object.
      *
@@ -89,8 +90,8 @@ abstract class Mumsys_Mvc_Program_Abstract
     protected function _getDisplay( array $params = array(),
         $outputType = 'default', $outputComplexity = 'default' )
     {
-        $display = new Mumsys_Mvc_Display_Factory($this->_context);
-        return $display->load($params, $outputType, $outputComplexity);
+        $display = new Mumsys_Mvc_Display_Factory( $this->_context );
+        return $display->load( $params, $outputType, $outputComplexity );
     }
 
 }

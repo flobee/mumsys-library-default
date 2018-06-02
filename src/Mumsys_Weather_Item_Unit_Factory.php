@@ -39,22 +39,24 @@ class Mumsys_Weather_Item_Unit_Factory
      * @return \Mumsys_Weather_Item_Unit_Interface Unit item interface
      * @throws Mumsys_Weather_Exception
      */
-    public static function createItem(string $name = null, array $input = array() ):Mumsys_Weather_Item_Unit_Interface
+    public static function createItem( string $name = null,
+        array $input = array() ): Mumsys_Weather_Item_Unit_Interface
     {
         if ( $name === null ) {
             $name = 'Default';
         }
 
-        $classname = 'Mumsys_Weather_Item_Unit_' . ucfirst($name);
+        $classname = 'Mumsys_Weather_Item_Unit_' . ucfirst( $name );
 
         if ( ctype_alnum( $name ) === false ) {
             $mesg = sprintf(
-                'Invalid characters in class name "%1$s"', $classname
+                'Invalid characters in class name "%1$s"',
+                $classname
             );
             throw new Mumsys_Weather_Exception( $mesg );
         }
 
-        if ( !class_exists($classname) ) {
+        if ( !class_exists( $classname ) ) {
             $mesg = sprintf( 'Class "%1$s" not found', $classname );
             throw new Mumsys_Weather_Item_Unit_Exception( $mesg );
         }

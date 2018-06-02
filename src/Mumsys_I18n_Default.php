@@ -16,7 +16,8 @@
 
 
 /**
- * Dummy implementation for the internationalization / translation Interface (I18n).
+ * Dummy implementation for the internationalization / translation Interface
+ * (I18n).
  *
  * There is no real translation! This is just the wrapper class as default for
  * further implementations e.g. using "gettext" or other drivers.
@@ -44,7 +45,8 @@ class Mumsys_I18n_Default
      *
      * @param string $string String to translate
      *
-     * @return string The translated string (or the source string if no translation was found)
+     * @return string The translated string (or the source string if no
+     * translation was found)
      */
     public function _t( $string )
     {
@@ -81,7 +83,7 @@ class Mumsys_I18n_Default
      */
     public function _dtn( $domain, $singular, $plural, $number )
     {
-        $index = $this->getPluralIndex($number);
+        $index = $this->getPluralIndex( $number );
 
         if ( $index >= 1 ) {
             return $plural;

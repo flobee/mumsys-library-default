@@ -26,8 +26,6 @@
  * for the view/controller and models. This would be e.g. in the
  * Cms_Context_* object and extends this class.
  *
- * @todo implement more tests
- *
  * @category    Mumsys
  * @package     Library
  * @subpackage  Context
@@ -57,7 +55,7 @@ class Mumsys_Context_Item
      */
     public function getConfig()
     {
-        return $this->_get('Mumsys_Config_Interface');
+        return $this->_get( 'Mumsys_Config_Interface' );
     }
 
 
@@ -70,7 +68,7 @@ class Mumsys_Context_Item
      */
     public function registerConfig( Mumsys_Config_Interface $config )
     {
-        $this->_register('Mumsys_Config_Interface', $config);
+        $this->_register( 'Mumsys_Config_Interface', $config );
     }
 
 
@@ -83,7 +81,7 @@ class Mumsys_Context_Item
      */
     public function getSession()
     {
-        return $this->_get('Mumsys_Session_Interface');
+        return $this->_get( 'Mumsys_Session_Interface' );
     }
 
 
@@ -96,7 +94,7 @@ class Mumsys_Context_Item
      */
     public function registerSession( Mumsys_Session_Interface $session )
     {
-        $this->_register('Mumsys_Session_Interface', $session);
+        $this->_register( 'Mumsys_Session_Interface', $session );
     }
 
 
@@ -108,7 +106,7 @@ class Mumsys_Context_Item
      */
     public function getDatabase()
     {
-        return $this->_get('Mumsys_Db_Driver_Interface');
+        return $this->_get( 'Mumsys_Db_Driver_Interface' );
     }
 
 
@@ -120,7 +118,7 @@ class Mumsys_Context_Item
      */
     public function registerDatabase( Mumsys_Db_Driver_Interface $db )
     {
-        $this->_register('Mumsys_Db_Driver_Interface', $db);
+        $this->_register( 'Mumsys_Db_Driver_Interface', $db );
     }
 
 
@@ -131,7 +129,7 @@ class Mumsys_Context_Item
      */
     public function replaceDatabase( Mumsys_Db_Driver_Interface $db )
     {
-        $this->_replace('Mumsys_Db_Driver_Interface', $db);
+        $this->_replace( 'Mumsys_Db_Driver_Interface', $db );
     }
 
 
@@ -144,7 +142,7 @@ class Mumsys_Context_Item
      */
     public function getTranslation()
     {
-        return $this->_get('Mumsys_I18n_Interface');
+        return $this->_get( 'Mumsys_I18n_Interface' );
     }
 
 
@@ -157,7 +155,7 @@ class Mumsys_Context_Item
      */
     public function registerTranslation( Mumsys_I18n_Interface $translate )
     {
-        $this->_register('Mumsys_I18n_Interface', $translate);
+        $this->_register( 'Mumsys_I18n_Interface', $translate );
     }
 
 
@@ -170,7 +168,7 @@ class Mumsys_Context_Item
      */
     public function getLogger()
     {
-        return $this->_get('Mumsys_Logger_Interface');
+        return $this->_get( 'Mumsys_Logger_Interface' );
     }
 
 
@@ -182,7 +180,7 @@ class Mumsys_Context_Item
      */
     public function registerLogger( Mumsys_Logger_Interface $logger )
     {
-        $this->_register('Mumsys_Logger_Interface', $logger);
+        $this->_register( 'Mumsys_Logger_Interface', $logger );
     }
 
 
@@ -193,7 +191,7 @@ class Mumsys_Context_Item
      */
     public function getRequest(): Mumsys_Request_Interface
     {
-        return $this->_get('Mumsys_Request_Interface');
+        return $this->_get( 'Mumsys_Request_Interface' );
     }
 
 
@@ -206,7 +204,7 @@ class Mumsys_Context_Item
      */
     public function registerRequest( Mumsys_Request_Interface $request )
     {
-        $this->_register('Mumsys_Request_Interface', $request);
+        $this->_register( 'Mumsys_Request_Interface', $request );
     }
 
 
@@ -217,7 +215,7 @@ class Mumsys_Context_Item
      */
     public function replaceRequest( Mumsys_Request_Interface $request )
     {
-        $this->_replace('Mumsys_Request_Interface', $request);
+        $this->_replace( 'Mumsys_Request_Interface', $request );
     }
 
 
@@ -234,7 +232,7 @@ class Mumsys_Context_Item
     public function getGeneric( $interface, $default = null )
     {
         try {
-            $return = $this->_get($interface);
+            $return = $this->_get( $interface );
         }
         catch ( Exception $e ) {
             if ( $default === null ) {
@@ -243,7 +241,7 @@ class Mumsys_Context_Item
                     $interface,
                     $e->getMessage()
                 );
-                throw new Mumsys_Context_Exception($message);
+                throw new Mumsys_Context_Exception( $message );
             } else {
                 $return = $default;
             }
@@ -264,12 +262,14 @@ class Mumsys_Context_Item
      */
     public function registerGeneric( $interface, $value )
     {
-        if ( !is_object($value) || !is_a($value, $interface) ) {
-            $message = sprintf('Value does not implement the interface "%1$s"', $interface);
-            throw new Mumsys_Context_Exception($message);
+        if ( !is_object( $value ) || !is_a( $value, $interface ) ) {
+            $message = sprintf(
+                'Value does not implement the interface "%1$s"', $interface
+            );
+            throw new Mumsys_Context_Exception( $message );
         }
 
-        $this->_register($interface, $value);
+        $this->_register( $interface, $value );
     }
 
 }

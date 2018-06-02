@@ -71,6 +71,7 @@ class Mumsys_Php
      * Magic getter
      *
      * @param string $key Key to test class property
+     *
      * @return mixed Returns the value by given key
      */
     public function __get( $key )
@@ -162,12 +163,13 @@ class Mumsys_Php
     /**
      * Cast to float and check if a given value is a float value.
      * If the value contains colons or dot's the given value will be cleand to
-     * be a tehnical value.
+     * be a technical value.
      * Note: Behavior belongs to setlocale().
      *
      * @see setlocale()
      *
      * @param scalar $value
+     *
      * @return boolean True on success or false
      */
     public static function floatval( $value )
@@ -248,7 +250,7 @@ class Mumsys_Php
 
 
     /**
-     * Get a php.ini variable and return a more technical useable value
+     * Get a php.ini variable and return a more technical useable value.
      *
      * E.g: If memory limit returns 32M -> 32*1048576 will be returned
      *
@@ -256,7 +258,8 @@ class Mumsys_Php
      *
      * @return string|integer Returns the ini value or translated numeric value
      * if a numeric value was detected or null if the key was not found
-     * @throws Mumsys_Php_Exception If detection/ calculation numeric values fails
+     * @throws Mumsys_Php_Exception If detection/ calculation of a numeric
+     * values fails
      */
     public static function ini_get( $key )
     {
@@ -328,9 +331,8 @@ class Mumsys_Php
 
             default:
                 if ( !is_numeric( $value ) ) {
-                    throw new Mumsys_Php_Exception(
-                        'Detection of size failt for "' . $last . '"'
-                    );
+                    $mesg = 'Detection of size failt for "' . $last . '"';
+                    throw new Mumsys_Php_Exception( $mesg );
                 }
                 break;
         }
@@ -346,15 +348,14 @@ class Mumsys_Php
      * If needle is not a string, it is converted to an integer and applied as
      * the ordinal value of a character.
      *
-     * @param string $needle String to be checked
-     * @param string $haystack
+     * @param string $needle Part of a string to be checked
+     * @param string $haystack Complete string
      * @param boolean $insensitive If true needle will be checked insensitive
-     * @param boolean $beforeNeedle If TRUE, strstr() returns the part of the
+     * @param boolean $beforeNeedle If true, strstr() returns the part of the
      * haystack before the first occurrence of the needle.
      *
-
-     * @return string|false Returns the portion of string, or FALSE if needle
-     * is not found.
+     * @return string|false Returns the portion of string, or false if needle
+     * was not found.
      */
     public static function in_string( $needle, $haystack, $insensitive = false,
         $beforeNeedle = false )
@@ -380,12 +381,12 @@ class Mumsys_Php
      *
      * The translations performed are:
      *  # '&' (ampersand) becomes '&amp;'
-     *  # '"' (double quote) becomes '&quot;' when ENT_NOQUOTES  is not set.
+     *  # '"' (double quote) becomes '&quot;' when ENT_NOQUOTES is not set.
      *  # ''' (single quote) becomes '&#039;' only when ENT_QUOTES is set.
      *  # '<' (less than) becomes '&lt;'
      *  # '>' (greater than) becomes '&gt;'
      *
-     * Improvment to this funktion belongs to the forward look up to only
+     * Improvment to this function belongs to the forward look up to only
      * convert "&" not &#123; and not &amp; seems to be fixed since php > 5
      *
      * @see http://php.net/manual/en/function.htmlspecialchars.php
@@ -535,24 +536,27 @@ class Mumsys_Php
 
     /**
      * Parses a string into array.
-     * Similar to phps parse_url except an exception will be thrown if an empty
-     * result will return.
      *
-     * Note: <br/>
-     * - To get the current QUERY_STRING, you may use the variable $_SERVER['QUERY_STRING'].
-     * Also, you may want to read the section on variables from external sources.<br/>
-     * - The magic_quotes_gpc setting affects the output of this function, as parse_str()
-     * uses the same mechanism that PHP uses to populate the $_GET, $_POST, etc. variables.
+     * Similar to php's parse_url except an exception will be thrown if an
+     * empty result will return.
+     *
+     * Note:
+     * To get the current QUERY_STRING, you may use the variable
+     * $_SERVER['QUERY_STRING'].
+     * Also, you may want to read the section on variables from external
+     * sources.
+     * The magic_quotes_gpc setting affects the output of this function, as
+     * parse_str() uses the same mechanism that PHP uses to populate the
+     * $_GET, $_POST, etc. variables.
      *
      * Example:
      * <code>
-     * <?php
      *  $string = "first=value&arr[]=foo+bar&arr[]=baz";
      *  $output = Mumsys_Php::parse_str($string);
      *  echo $output['first'];  // value
      *  echo $output['arr'][0]; // foo bar
      *  echo $output['arr'][1]; // baz
-     * ?>
+     * </code>
      *
      * @link http://php.net/manual/en/function.parse-str.php
      *
@@ -593,9 +597,11 @@ class Mumsys_Php
         return str_pad( (int) $integer, $digits, $padString, STR_PAD_LEFT );
     }
 
+
     //
     // --- Array methodes ------------------------------------------------------
     //
+
 
     /**
      * Return the current element in an array by reference.
@@ -619,13 +625,15 @@ class Mumsys_Php
      * Compare an array (list of values or list of key=>val pairs) with another
      * array and test if a smaler array with their key or values exists in a
      * bigger array.
-     * E.g.: Testing an array as whitelist against an array with current sumbitted data
+     * E.g.: Testing an array as whitelist against an array with current
+     * submitted data.
      *
      * @todo test if the 'keys' variant works
      *
      * @param array $have Array original for the comparison (bigger array)
      * @param array $totest Array to test against $have (smaler array)
      * @param string $way Type of array to check values or array keys
+     *
      * @return array Returns the result portion on difference or an empty array
      * for no changes between the arrays
      */
@@ -709,8 +717,7 @@ class Mumsys_Php
      *
      * Example:
      * <code>
-     * <?php
-     * $bigarray =  array(
+     *  $bigarray =  array(
      *      'key1' => array(
      *          'key2' => array(
      *              'a' => array( 'text'=>'something'),
@@ -718,10 +725,9 @@ class Mumsys_Php
      *              'c' => array( 'name'=>'me'),
      *          ),
      *      )
-     * );
-     * $matchedKeys = array_keys_search_recursive( 'name',$bigarray);
-     * // returns by reference: array( 0=>array( 'name'=>'me');
-     * ?>
+     *  );
+     *  $matchedKeys = array_keys_search_recursive( 'name',$bigarray);
+     *  // returns by reference: array( 0=>array( 'name'=>'me');
      * </code>
      *
      * @param string $needle Needle to look for

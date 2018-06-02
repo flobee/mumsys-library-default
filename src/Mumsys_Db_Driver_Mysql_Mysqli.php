@@ -54,10 +54,11 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             /* mysqli_options($this->_dbc, MYSQLI_INIT_COMMAND, 'SET NAMES \'utf8\'');
              *
              * MYSQLI_CLIENT_COMPRESS       Use compression protocol
-             * MYSQLI_CLIENT_FOUND_ROWS 	return number of matched rows, not the number of affected rows
-             * MYSQLI_CLIENT_IGNORE_SPACE 	Allow spaces after function names. Makes all function names reserved words.
-             * MYSQLI_CLIENT_INTERACTIVE 	Allow interactive_timeout seconds (instead of wait_timeout seconds) of inactivity before closing the connection
-             * MYSQLI_CLIENT_SSL 	Use SSL (encryption)
+             * MYSQLI_CLIENT_FOUND_ROWS     return number of matched rows, not the number of affected rows
+             * MYSQLI_CLIENT_IGNORE_SPACE   Allow spaces after function names. Makes all function names reserved words.
+             * MYSQLI_CLIENT_INTERACTIVE    Allow interactive_timeout seconds (instead of wait_timeout seconds) of
+             *                              inactivity before closing the connection
+             * MYSQLI_CLIENT_SSL            Use SSL (encryption)
              */
 
             if ($this->_conCompession) {
@@ -83,19 +84,19 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 );
             }
 
-            if (!$chk) {
-                throw new Mumsys_Db_Exception('Connection failure');
+            if ( !$chk ) {
+                throw new Mumsys_Db_Exception( 'Connection failure' );
             }
             $this->_isConnected = (bool) $chk;
 
-            if ($this->_clientCharacterSet) {
-                $this->setCharset($this->_clientCharacterSet);
+            if ( $this->_clientCharacterSet ) {
+                $this->setCharset( $this->_clientCharacterSet );
             }
-
-        } catch (Exception $e) {
+        }
+        catch ( Exception $e ) {
             $msg = 'Connection to database failed. Messages: "'
-                . $e->getMessage() .'", "'. $this->sqlError() .'"';
-            return $this->_setError($msg, null, $e);
+                . $e->getMessage() . '", "' . $this->sqlError() . '"';
+            return $this->_setError( $msg, null, $e );
         }
 
         return $this->_dbc;
@@ -113,8 +114,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     public function close()
     {
         $return = true;
-        if ($this->_dbc) {
-            $return = @mysqli_close($this->_dbc);
+        if ( $this->_dbc ) {
+            $return = @mysqli_close( $this->_dbc );
         }
         $this->_isConnected = false;
         $this->_dbc = null;
@@ -134,8 +135,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function setCharset( $charset )
     {
-        if ( ($result = mysqli_set_charset($this->_dbc, $charset) ) == false ) {
-            return $this->_setError('Setting client character set failt');
+        if ( ($result = mysqli_set_charset( $this->_dbc, $charset ) ) == false ) {
+            return $this->_setError( 'Setting client character set failt' );
         }
 
         return $result;
@@ -150,8 +151,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function getCharset()
     {
-        if ( ($result = @mysqli_get_charset($this->_dbc) ) == false ) {
-            return $this->_setError('Getting character set failt');
+        if ( ($result = @mysqli_get_charset( $this->_dbc ) ) == false ) {
+            return $this->_setError( 'Getting character set failt' );
         }
 
         return $result;
@@ -167,17 +168,17 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @throws Mumsys_Db_Exception Throws exception if database can not be
      * selected
      */
-    public function selectDB($dbName)
+    public function selectDB( $dbName )
     {
-        $dbName = (string)$dbName;
+        $dbName = (string) $dbName;
 
         if ( $dbName == $this->_dbName ) {
             return true;
         }
 
-        if ( mysqli_select_db($this->_dbc, $dbName) === false ) {
+        if ( mysqli_select_db( $this->_dbc, $dbName ) === false ) {
             $error = 'Can\'t select db. ' . $this->sqlError();
-            return $this->_setError($error);
+            return $this->_setError( $error );
         }
 
         $this->_dbName = $dbName;
@@ -196,7 +197,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     {
         // $res = @mysql_list_dbs($this->_dbc);
         $sql = 'SHOW DATABASES';
-        return $this->fetchData($sql, 'KEYGOKEY');
+        return $this->fetchData( $sql, 'KEYGOKEY' );
     }
 
 
@@ -209,8 +210,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function showTables()
     {
-        $sql = 'SHOW TABLES FROM ' . $this->escape($this->_dbName);
-        return $this->fetchData($sql, 'KEYGOKEY');
+        $sql = 'SHOW TABLES FROM ' . $this->escape( $this->_dbName );
+        return $this->fetchData( $sql, 'KEYGOKEY' );
     }
 
 
@@ -235,14 +236,12 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * - on empty sql statement (if throw errors was set)
      * - on query error (if throw errors was set)
      */
-    public function query($sql=false, $unbuffered=false)
+    public function query( $sql = false, $unbuffered = false )
     {
         if ( $sql ) {
-            $this->_sql = (string)$sql;
+            $this->_sql = (string) $sql;
         } else {
-            return $this->_setError(
-                'Query empty. Cant not query empty sql statment'
-            );
+            return $this->_setError( 'Query empty. Cant not query empty sql statment' );
         }
 
         if ( $this->_dbc === null ) {
@@ -253,9 +252,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         $this->_errorMessage = '';
 
         if ( $unbuffered ) {
-            return $this->_setError('Unbuffered querys not implemented yet');
+            return $this->_setError( 'Unbuffered querys not implemented yet' );
         } else {
-            $result = mysqli_query($this->_dbc, $this->_sql);
+            $result = mysqli_query( $this->_dbc, $this->_sql );
         }
 
         $this->_numQuerys++;
@@ -264,11 +263,11 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             $this->_querys[] = $sql;
         }
 
-        if ( ($error = $this->sqlError()) ) {
-            return $this->_setError($error);
+        if ( ($error = $this->sqlError() ) ) {
+            return $this->_setError( $error );
         }
 
-        $oRes = new Mumsys_Db_Driver_Mysql_Mysqli_Result($this, $result);
+        $oRes = new Mumsys_Db_Driver_Mysql_Mysqli_Result( $this, $result );
 
         return $oRes;
     }
@@ -279,9 +278,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * Alias methode of query()
      * @see query()
      */
-    public function queryUnbuffered($sql=false)
+    public function queryUnbuffered( $sql = false )
     {
-        return $this->_setError('Unbuffered querys not implemented yet');
+        return $this->_setError( 'Unbuffered querys not implemented yet' );
     }
 
 
@@ -291,7 +290,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @param resource $res The result set of a mysql_query
      * @return boolean return true on error, false on no error
      */
-    public function isError($res)
+    public function isError( $res )
     {
         if ( $res === false ) {
             return true;
@@ -309,7 +308,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function sqlError()
     {
-        return @mysqli_error($this->_dbc);
+        return @mysqli_error( $this->_dbc );
     }
 
 
@@ -321,7 +320,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function sqlErrno()
     {
-        return (int)@mysqli_errno($this->_dbc);
+        return (int) @mysqli_errno( $this->_dbc );
     }
 
 
@@ -350,60 +349,60 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @return array Returns the result as array or false on failure or if no
      * more record exists
      */
-    public function fetchData($sql, $way='ASSOC')
+    public function fetchData( $sql, $way = 'ASSOC' )
     {
-        $oRes = $this->query($sql);
+        $oRes = $this->query( $sql );
 
         if ( $oRes === false ) {
             return false;
         }
 
         $data = array();
-        switch ( strtoupper($way) )
+        switch ( strtoupper( $way ) )
         {
             case 'ASSOC':
             case 'ARRAY':
             case 'OBJECT':
             case 'NUM':
-                while ( $row = $oRes->fetch($way) ) {
+                while ( $row = $oRes->fetch( $way ) ) {
                     $data[] = $row;
                 }
                 break;
 
             case 'GETIDS':
-                while ( $row = $oRes->fetch('ROW') ) {
-                    array_push($data, $row[0]);
+                while ( $row = $oRes->fetch( 'ROW' ) ) {
+                    array_push( $data, $row[0] );
                 }
                 break;
 
             case 'LINE':
-                $data = $oRes->fetch('ASSOC');
+                $data = $oRes->fetch( 'ASSOC' );
                 break;
 
             case 'ROW':
-                $data = $oRes->fetch('ROW');
+                $data = $oRes->fetch( 'ROW' );
                 break;
 
             case 'KEYGOVAL':
-                while ( $row = $oRes->fetch('NUM') ) {
+                while ( $row = $oRes->fetch( 'NUM' ) ) {
                     $data[$row[0]] = $row[1];
                 }
                 break;
 
             case 'KEYGOKEY':
-                while ( $row = $oRes->fetch('NUM') ) {
+                while ( $row = $oRes->fetch( 'NUM' ) ) {
                     $data[$row[0]] = $row[0];
                 }
                 break;
 
             case 'KEYGOASSOC':
-                while ( $row = $oRes->fetch('ASSOC') ) {
-                    $data[reset($row)] = $row;
+                while ( $row = $oRes->fetch( 'ASSOC' ) ) {
+                    $data[reset( $row )] = $row;
                 }
                 break;
 
             default:
-                while ( $row = $oRes->fetch('ASSOC') ) {
+                while ( $row = $oRes->fetch( 'ASSOC' ) ) {
                     $data[] = $row;
                 }
                 break;
@@ -426,35 +425,35 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @return array|false The columns propertys with lower case array keys
      * @throws Mumsys_Db_Exception Throws exception on error
      */
-    public function showColumns($table='', $field=null)
+    public function showColumns( $table = '', $field = null )
     {
-        $data = array( );
-        if ( isset($field) ) {
-            $this->selectDB($this->_dbName);
-            $oRes = $this->query('DESCRIBE ' . $table . ' ' . $field);
+        $data = array();
+        if ( isset( $field ) ) {
+            $this->selectDB( $this->_dbName );
+            $oRes = $this->query( 'DESCRIBE ' . $table . ' ' . $field );
         } else {
             $oRes = $this->query(
                 'SHOW COLUMNS FROM ' . $this->_dbName . '.' . $table
             );
         }
 
-        if ( $oRes===false ) {
-            return $this->_setError('Error getting columns');
+        if ( $oRes === false ) {
+            return $this->_setError( 'Error getting columns' );
         }
 
-        $i=0;
-        while ( $xrow = $oRes->fetch('ASSOC') ) {
+        $i = 0;
+        while ( $xrow = $oRes->fetch( 'ASSOC' ) ) {
             $row = array();
-            foreach ( $xrow AS $key => &$val ) {
-                $row[strtolower($key)] = $val;
+            foreach ( $xrow as $key => &$val ) {
+                $row[strtolower( $key )] = $val;
             }
-            unset($xrow);
+            unset( $xrow );
 
             $rule = '@^(set|enum|int|tinyint|smallint|mediumint|bigint|char'
                 . '|varchar|decimal|float|double|tinytext)\((.+)\)(\D*)$@i';
 
-            if ( preg_match($rule, $row['type'], $tmp) ) {
-                $row['type'] = preg_replace('@\(.*@s', '', $row['type']);
+            if ( preg_match( $rule, $row['type'], $tmp ) ) {
+                $row['type'] = preg_replace( '@\(.*@s', '', $row['type'] );
             }
 
             switch ( $row['type'] )
@@ -569,17 +568,16 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                  * UNSIGNED, if specified, disallows negative values.
                  */
                 case 'double':
-
-                    if ( isset($tmp[2]) ) {
+                    if ( isset( $tmp[2] ) ) {
                         $row['typeval'] = $tmp[2];
                     } else {
                         // float without a limit
                         $row['typeval'] = false;
                     }
                     // enum attr.
-                    if ( isset($tmp[3]) && $tmp[3] != '' ) {
+                    if ( isset( $tmp[3] ) && $tmp[3] != '' ) {
                         //$row['TypeAttr'] = explode(' ', trim($tmp[3]));
-                        $row['typeattr'] = trim($tmp[3]);
+                        $row['typeattr'] = trim( $tmp[3] );
                     }
 
                     break;
@@ -598,10 +596,10 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                  * values are represented internally as integers.
                  */
                 case 'set':
-                    $r = explode(',', str_replace("'", '', $tmp[2]));
-                    $a = array( 0 => '' ); // always default in mysql
-                    $row['typeval'] = array_merge($a, $r);
-                    unset($a, $r);
+                    $r = explode( ',', str_replace( "'", '', $tmp[2] ) );
+                    $a = array(0 => ''); // always default in mysql
+                    $row['typeval'] = array_merge( $a, $r );
+                    unset( $a, $r );
 
                     break;
 
@@ -634,17 +632,18 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             $data[] = $row;
             $i++;
         }
+
         $oRes->free();
 
         // hangling mysql_query() bug when using
         // "DESCRIBE table NotExistingField" which returns empty array*/
-        if ($field && $i==0 && empty($data)) {
+        if ( $field && $i == 0 && empty( $data ) ) {
             $msg = sprintf(
                 'Error getting columns. Does the columne "%1$s" exists?',
                 $field
             );
 
-            return $this->_setError($msg, 1);
+            return $this->_setError( $msg, 1 );
         }
 
         return $data;
@@ -666,12 +665,13 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     {
         $return = false;
         if ( $this->_dbc ) {
-            if ( ($r=mysqli_stat($this->_dbc)) ) {
+            if ( ($r = mysqli_stat( $this->_dbc ) ) ) {
                 $return = $r;
             }
         }
         return $return;
     }
+
 
     /**
      * Retruns the server info and version string.
@@ -685,7 +685,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function getServerInfo()
     {
-        return mysqli_get_server_info($this->_dbc);
+        return mysqli_get_server_info( $this->_dbc );
     }
 
 
@@ -698,16 +698,16 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @param string $string Value to be escaped
      * @return string Returns a valid escaped string
      */
-    public function escape($string='')
+    public function escape( $string = '' )
     {
-        if ( !is_scalar($string)) {
+        if ( !is_scalar( $string ) ) {
             $msg = sprintf(
-                'Escape failt. Not a scalar type: "%1$s"',
-                gettype($string));
-            throw new Mumsys_Db_Exception($msg);
+                'Escape failt. Not a scalar type: "%1$s"', gettype( $string )
+            );
+            throw new Mumsys_Db_Exception( $msg );
         }
 
-        switch (strtolower($string))
+        switch ( strtolower( $string ) )
         {
             case 'now()':
             case 'asc':
@@ -716,11 +716,11 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 return $string;
         }
 
-        if ( empty($this->_dbc) ) {
+        if ( empty( $this->_dbc ) ) {
             $this->connect();
         }
 
-        return mysqli_real_escape_string($this->_dbc, $string);
+        return mysqli_real_escape_string( $this->_dbc, $string );
     }
 
 
@@ -731,9 +731,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @param string $q quote type to be added; default quote value: '$s'
      * @return string the quoted string
      */
-    public function quote($s, $q='\'')
+    public function quote( $s, $q = '\'' )
     {
-        if ( is_numeric($s) ) {
+        if ( is_numeric( $s ) ) {
             return $s;
         }
         $r = $q . $s . $q;
@@ -757,7 +757,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @throws Mumsys_Db_Exception If connection can't be made or ThrowErrors
      * was set
      */
-    protected function _setError($message, $code=null, $previous=null)
+    protected function _setError( $message, $code = null, $previous = null )
     {
         if ( $code === null ) {
             $code = $this->sqlErrno();
@@ -770,16 +770,15 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             //this blows up the memory! use carefully
             $this->_errorList[] = array('message' => $message, 'code' => $code);
         } else {
-            $this->_errorList[0] = array('message' => $message, 'code'=>$code);
+            $this->_errorList[0] = array('message' => $message, 'code' => $code);
         }
 
-        if ( $this->_throwErrors || $this->_isConnected === false) {
-            throw new Mumsys_Db_Exception($message, $code, $previous);
+        if ( $this->_throwErrors || $this->_isConnected === false ) {
+            throw new Mumsys_Db_Exception( $message, $code, $previous );
         }
 
         return false;
     }
-
 
     // -------------------------------------------------------------------------
 
@@ -820,47 +819,47 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     protected function _save($params, $action='update')
     {
         $r = false;
-        if ( (empty($params['updateall']) && (empty($params['where'])
-            && ($action == 'update' || $action == 'delete')) )
-            || ( empty($params['fields']) && $action != 'delete' )
-            || empty($params['table'])
+        if ( ( empty( $params['updateall'] ) && (empty( $params['where'] )
+            && ( $action == 'update' || $action == 'delete') ) )
+            || ( empty( $params['fields'] ) && $action != 'delete' )
+            || empty( $params['table'] )
         ) {
             $message = 'Unknown key or empty values. No "' . $action . '" action';
-            return $this->_setError($message);
+            return $this->_setError( $message );
         } else {
             $where = '';
-            if ( isset($params['where']) ) {
-                $where = $this->compileQueryWhere($params['where']);
+            if ( isset( $params['where'] ) ) {
+                $where = $this->compileQueryWhere( $params['where'] );
             }
 
             $order = '';
-            if ( isset($params['order']) ) {
-                $order = $this->compileQueryOrderBy($params['order']);
+            if ( isset( $params['order'] ) ) {
+                $order = $this->compileQueryOrderBy( $params['order'] );
             }
 
             $limit = '';
-            if ( isset($params['limit']) ) {
-                $limit = $this->compileQueryLimit($params['limit']);
+            if ( isset( $params['limit'] ) ) {
+                $limit = $this->compileQueryLimit( $params['limit'] );
             }
 
             $sql = '';
-            $table = $this->escape($params['table']);
+            $table = $this->escape( $params['table'] );
 
             switch ( $action )
             {
                 case 'insert':
                     $sql = 'INSERT INTO ' . $table
-                        . $this->compileQuerySet($params['fields']);
+                        . $this->compileQuerySet( $params['fields'] );
                     break;
 
                 case 'replace':
                     $sql = 'REPLACE INTO ' . $table
-                        . $this->compileQuerySet($params['fields']);
+                        . $this->compileQuerySet( $params['fields'] );
                     break;
 
                 case 'update':
                     $sql = 'UPDATE ' . $table
-                        . $this->compileQuerySet($params['fields'])
+                        . $this->compileQuerySet( $params['fields'] )
                         . $where
                         . $order
                         . $limit;
@@ -875,7 +874,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 case 'select':
                     $sql = sprintf(
                         'SELECT %1$s FROM %2$s%3$s%4$s%5$s',
-                        $this->compileQuerySelect($params['fields']),
+                        $this->compileQuerySelect( $params['fields'] ),
                         $table,
                         $where,
                         $order,
@@ -884,7 +883,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                     break;
             }
 
-            $r = $this->query($sql);
+            $r = $this->query( $sql );
         }
         return $r;
     }
@@ -913,7 +912,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function update( array $params = array() )
     {
-        return $this->_save($params, 'update');
+        return $this->_save( $params, 'update' );
     }
 
 
@@ -936,7 +935,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function select( array $params = array() )
     {
-        return $this->_save($params, 'select');
+        return $this->_save( $params, 'select' );
     }
 
 
@@ -951,9 +950,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      *
      * @return integer|false Return the last insert ID or false on error
      */
-    public function insert(array $params = array())
+    public function insert( array $params = array() )
     {
-        if ( ($r = $this->_save($params, 'insert') ) ) {
+        if ( ($r = $this->_save( $params, 'insert' ) ) ) {
             return $r->lastInsertId();
         }
 
@@ -975,9 +974,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      *
      * @return integer|false Returns number of affected rows or false on error
      */
-    public function replace(array $params = array())
+    public function replace( array $params = array() )
     {
-        if ( ($r = $this->_save($params, 'replace') ) ) {
+        if ( ($r = $this->_save( $params, 'replace' ) ) ) {
             return $r->affectedRows();
             //return true;
         }
@@ -1003,9 +1002,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      *
      * @return Mumsys_Db_Driver_Mysql_Result|false Returns false on error
      */
-    public function delete(array $params = array())
+    public function delete( array $params = array() )
     {
-        return $this->_save($params, 'delete');
+        return $this->_save( $params, 'delete' );
     }
 
 
@@ -1053,19 +1052,22 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     public function compileQueryExpression( array $expression )
     {
         //list($operator, $keyval) = each($expression);
-        $operator = key($expression);
-        $keyval = current($expression);
+        $operator = key( $expression );
+        $keyval = current( $expression );
 
-        if ( is_array($keyval) && $operator !== '_' ) {
+        if ( is_array( $keyval ) && $operator !== '_' ) {
             //list($key, $value) = each($keyval);
-            $key = key($keyval);
-            $value = current($keyval);
-            if ( !is_string($key) ) {
+            $key = key( $keyval );
+            $value = current( $keyval );
+            if ( !is_string( $key ) ) {
                 $msg = sprintf(
                     'Invalid expression key "%1$s" for where expression: '
-                    . 'values (json): %2$s', $key, json_encode($value)
+                    . 'values (json): %2$s',
+                    $key,
+                    json_encode( $value )
                 );
-                return $this->_setError($msg);
+
+                return $this->_setError( $msg );
             }
         } else if ( $operator === '_' ) {
             $key = null;
@@ -1074,29 +1076,32 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             $msg = sprintf(
                 'Invalid input for where expression. Array expected. '
                 . 'Operator: "%1$s" values (json): %2$s',
-                $operator, json_encode($keyval)
+                $operator,
+                json_encode( $keyval )
             );
-            return $this->_setError($msg);
+
+            return $this->_setError( $msg );
         }
 
         // escape / testing all
-        if ( $operator == '=' && is_array($value) ) {
+        if ( $operator == '=' && is_array( $value ) ) {
             $operator = 'IN';
             $new = array();
             foreach ( $value as $type ) {
-                if ( is_string($type) ) {
-                    $new[] = '\'' . $this->escape($type) . '\'';
-                } else if ( is_numeric($type) ) {
+                if ( is_string( $type ) ) {
+                    $new[] = '\'' . $this->escape( $type ) . '\'';
+                } else if ( is_numeric( $type ) ) {
                     $new[] = $type;
                 } else {
                     $msg = sprintf(
                         'Invalid value list for where expression. Strings|'
                         . 'numbers expected. operator: "%1$s" values (json): '
-                        . '%2$s', $operator, json_encode($keyval)
+                        . '%2$s', $operator, json_encode( $keyval )
                     );
-                    return $this->_setError($msg);
+                    return $this->_setError( $msg );
                 }
             }
+
             $value = $new;
 
             /** @todo not escaping quotes are a security problem. find quotes,
@@ -1105,34 +1110,36 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             // no quotes but escaping
             // '_' => 'date >= now()',
             // '_' => array('date >= \'2010-12-31\'', 'date <= now()')
-            if ( is_array($value) ) {
+            if ( is_array( $value ) ) {
                 $new = array();
                 foreach ( $value as $string ) {
                     /** @todo cast to string or test for it? */
-                    if ( !is_string($string) ) {
+                    if ( !is_string( $string ) ) {
                         $msg = sprintf(
                             'Invalid value list for where expression'
                             . '. String expected. Operator: "_"'
-                            . ' values (json): "%1$s"', json_encode($value)
+                            . ' values (json): "%1$s"',
+                            json_encode( $value )
                         );
-                        return $this->_setError($msg);
+
+                        return $this->_setError( $msg );
                     }
                     $new[] = $string;
                 }
-                $value = '(' . implode(' AND ', $new) . ')';
-            } else if ( !is_string($value) ) {
+                $value = '(' . implode( ' AND ', $new ) . ')';
+            } else if ( !is_string( $value ) ) {
                 $msg = sprintf(
                     'Invalid value for where expression. Array|string '
                     . 'expected. Operator: "_" values (json): "%1$s"',
-                    json_encode($keyval)
+                    json_encode( $keyval )
                 );
-                return $this->_setError($msg);
+                return $this->_setError( $msg );
             }
         } else {
             $valIsInt = true;
-            if ( !is_int($value) ) {
+            if ( !is_int( $value ) ) {
                 $valIsInt = false;
-                $value = $this->escape($value);
+                $value = $this->escape( $value );
             }
         }
 
@@ -1144,7 +1151,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 break;
 
             case 'IN':
-                $stmt = '`' . (string) $key . '` IN (' . implode(',', $value) . ')';
+                $stmt = '`' . (string) $key . '` IN (' . implode( ',', $value ) . ')';
                 break;
 
             case 'LIKE':  // "like" for "%contains%"
@@ -1190,7 +1197,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 $msg = sprintf(
                     'Unknown operator "%1$s" to create expression', $operator
                 );
-                return $this->_setError($msg);
+                return $this->_setError( $msg );
                 break;
         }
 
@@ -1201,13 +1208,13 @@ class Mumsys_Db_Driver_Mysql_Mysqli
 
     /**
      * ToDO:
-     * 	SELECT a
-     * 		FROM b
-     * 		WHERE c
-     * 		HAVING h
-     * 		GROUP g
-     * 		ORDER o
-     * 		LIMIT l
+     *  SELECT a
+     *      FROM b
+     *      WHERE c
+     *      HAVING h
+     *      GROUP g
+     *      ORDER o
+     *      LIMIT l
      * compile query by options
      * private ?
      *
@@ -1235,10 +1242,10 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         $limit = '';
 
         // select cols
-        if ( empty($opts['cols']) ) {
+        if ( empty( $opts['cols'] ) ) {
             $cols = '*';
         } else {
-            $cols = $this->compileQuerySelect($opts['cols']);
+            $cols = $this->compileQuerySelect( $opts['cols'] );
 //            if ( is_array($opts['cols']) ) {
 //                foreach ( $opts['cols'] as $c => $ffunc ) {
 //                    if ( $cols ) {
@@ -1253,10 +1260,10 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         }
 
         // table
-        if ( empty($opts['table']) ) {
-            return $this->_setError('No tables given to compile.');
+        if ( empty( $opts['table'] ) ) {
+            return $this->_setError( 'No tables given to compile.' );
         } else {
-            if ( is_array($opts['table']) ) {
+            if ( is_array( $opts['table'] ) ) {
                 foreach ( $opts['table'] as $t => $theJoin ) {
                     if ( $table ) {
                         $table .= ',';
@@ -1264,7 +1271,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                     $table .= $t;
                     // inner join, we need to c
                     // create WHERE clause
-                    if ( !empty($theJoin) ) {
+                    if ( !empty( $theJoin ) ) {
                         if ( $where ) {
                             $where .= ' AND ';
                         } else {
@@ -1280,29 +1287,29 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         }
 
         // where
-        if ( !empty($opts['where']) ) {
-            if ($where) {
-                $where .= ' AND ' . $this->_compileQueryWhere($opts['where']);
+        if ( !empty( $opts['where'] ) ) {
+            if ( $where ) {
+                $where .= ' AND ' . $this->_compileQueryWhere( $opts['where'] );
             } else {
-                $where = $this->compileQueryWhere($opts['where']);
+                $where = $this->compileQueryWhere( $opts['where'] );
             }
         }
 
         // group; as methode?
-        if ( !empty($opts['group']) ) {
-            $group = $this->compileQueryGroupBy($opts['group']);
+        if ( !empty( $opts['group'] ) ) {
+            $group = $this->compileQueryGroupBy( $opts['group'] );
         }
 
         // having
         // where sql filter
         // bring to having clause if set
-        if ( !empty($opts['having']) ) {
-            if ( is_array($opts['having']) ) {
-                foreach ( $opts['having'] AS $n => &$key ) {
+        if ( !empty( $opts['having'] ) ) {
+            if ( is_array( $opts['having'] ) ) {
+                foreach ( $opts['having'] as $n => &$key ) {
                     if ( $having ) {
                         $having .= ' AND ';
                     } else {
-                         $having = ' HAVING ';
+                        $having = ' HAVING ';
                     }
                     $having .= '(' . $key . ')';
                 }
@@ -1315,13 +1322,13 @@ class Mumsys_Db_Driver_Mysql_Mysqli
         }
 
         // order
-        if ( !empty($opts['order']) ) {
-            $order = $this->compileQueryOrderBy($opts['order']);
+        if ( !empty( $opts['order'] ) ) {
+            $order = $this->compileQueryOrderBy( $opts['order'] );
         }
 
         // limit
-        if ( !empty($opts['limit']) ) {
-            $limit = $this->compileQueryLimit($opts['limit']);
+        if ( !empty( $opts['limit'] ) ) {
+            $limit = $this->compileQueryLimit( $opts['limit'] );
         }
 
         $reture = sprintf(
@@ -1334,8 +1341,10 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             $order,
             $limit
         );
+
         return $reture;
     }
+
 
     /**
      * Returns select statment by given configuration list.
@@ -1374,34 +1383,34 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     public function compileQuerySelect( array $fields )
     {
         $result = array();
-        foreach ( $fields AS $alias => $column ) {
-            if ($column =='*') {
+        foreach ( $fields as $alias => $column ) {
+            if ( $column == '*' ) {
                 $result[] = '*';
                 continue;
             }
-            if ( is_numeric($alias) ) {
-                $result[] =  '`' . $this->escape($column) . '`';
-
-            } else if ( $alias === '_'  ) {
+            if ( is_numeric( $alias ) ) {
+                $result[] = '`' . $this->escape( $column ) . '`';
+            } else if ( $alias === '_' ) {
                 // '_' un-escaped, un-quoted values!
                 try {
-                    $result[] = (string)$column;
-                } catch ( Exception $e ) {
+                    $result[] = (string) $column;
+                }
+                catch ( Exception $e ) {
                     $msg = sprintf(
                         'Error casting column "%1$s" to string. Values '
                         . '(json) %2$s. Message: "%3$s"',
-                        gettype($column),
-                        json_encode($column),
+                        gettype( $column ),
+                        json_encode( $column ),
                         $e->getMessage()
                     );
-                    return $this->_setError($msg);
+                    return $this->_setError( $msg );
                 }
             } else {
-                $result[] = '`' . $this->escape($column) . '` AS ' . $alias;
+                $result[] = '`' . $this->escape( $column ) . '` AS ' . $alias;
             }
         }
 
-        return implode(',', $result);
+        return implode( ',', $result );
     }
 
 
@@ -1422,14 +1431,14 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     public function compileQuerySet( array $set )
     {
         $data = array();
-        foreach($set as $col => $value) {
+        foreach ( $set as $col => $value ) {
             switch ( $col )
             {
                 case '_':
                     $data[] = (string) $value;
                     break;
 
-                case (is_null($value)===true):
+                case (is_null( $value ) === true):
                 case $value === 'null':
                 case $value === 'NULL':
                     $data[] = '`' . $col . '`=NULL';
@@ -1441,14 +1450,12 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                     break;
 
                 default:
-                    $data[] = '`' . $col . '`=\'' . $this->escape($value) . '\'';
-
+                    $data[] = '`' . $col . '`=\'' . $this->escape( $value ) . '\'';
             }
         }
-        return ' SET ' . implode(',', $data);
+
+        return ' SET ' . implode( ',', $data );
     }
-
-
 
 
     /**
@@ -1498,15 +1505,15 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function compileQueryWhere( array $where = array() )
     {
-        if ( empty($where) ) {
+        if ( empty( $where ) ) {
             return ' WHERE 1=1';
         }
 
-        if ( !isset($this->_queryCompareValues[key($where)]) ) {
+        if ( !isset( $this->_queryCompareValues[key( $where )] ) ) {
             // compat. mode
-            $result = $this->_compileQueryWhereSimple($where);
+            $result = $this->_compileQueryWhereSimple( $where );
         } else {
-            $result = $this->_compileQueryWhere($where);
+            $result = $this->_compileQueryWhere( $where );
         }
 
         if ( $result ) {
@@ -1515,6 +1522,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
 
         return false;
     }
+
 
     /**
      * Returns where clause conditions by given list of key/value pair in AND
@@ -1526,21 +1534,21 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     private function _compileQueryWhereSimple( array $where = array() )
     {
         $result = array();
-        foreach($where as $col => $value) {
-            if ( is_numeric($col) ) {
-                $result[] = $this->escape($value);
+        foreach ( $where as $col => $value ) {
+            if ( is_numeric( $col ) ) {
+                $result[] = $this->escape( $value );
             } else {
                 // '_' un-escaped values!
                 if ( $col === '_' ) {
                     $result[] = (string) $value;
                 } else {
                     $result[] = '`' . (string) $col . '`=\''
-                        . $this->escape($value) . '\'';
+                        . $this->escape( $value ) . '\'';
                 }
             }
         }
 
-        return implode(' AND ', $result);
+        return implode( ' AND ', $result );
     }
 
 
@@ -1560,33 +1568,34 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     {
         $expressions = '';
 
-        foreach($where as $oCmp => $exprlists) {
+        foreach ( $where as $oCmp => $exprlists ) {
             $outerCmp = $oCmp; // hold outside while stmt
-            foreach($exprlists as $i => $exprPart) {
-                if ( !is_array($exprPart) || empty($exprPart) ) {
+            foreach ( $exprlists as $i => $exprPart ) {
+                if ( !is_array( $exprPart ) || empty( $exprPart ) ) {
                     $msg = sprintf(
-                        'Invalid sub-expression. Must be \'[operator] => [key/value]\'. Found '
-                        . '(json): %1$s ',
-                        json_encode($exprPart)
+                        'Invalid sub-expression. Must be \'[operator] => '
+                        . '[key/value]\'. Found (json): %1$s ',
+                        json_encode( $exprPart )
                     );
-                    return $this->_setError($msg);
+
+                    return $this->_setError( $msg );
                 }
 
-                $needle = key($exprPart); // check for the upcomming operator
-                if ( isset($this->_queryOperators[$needle]) || $needle === '_' ) {
-                    $compExpr[] = $this->compileQueryExpression($exprPart);
+                $needle = key( $exprPart ); // check for the upcomming operator
+                if ( isset( $this->_queryOperators[$needle] ) || $needle === '_' ) {
+                    $compExpr[] = $this->compileQueryExpression( $exprPart );
                 } else {
-                    $inner[] = $this->_compileQueryWhere($exprPart);
+                    $inner[] = $this->_compileQueryWhere( $exprPart );
                 }
             }
 
-            if ( isset($compExpr) && $compExpr ) {
-                $inner[] = '(' . implode(' ' . $outerCmp . ' ', $compExpr) . ')';
+            if ( isset( $compExpr ) && $compExpr ) {
+                $inner[] = '(' . implode( ' ' . $outerCmp . ' ', $compExpr ) . ')';
             }
         }
 
-        if ( isset($inner) ) {
-            $expressions = '' . implode(' ' . $outerCmp . ' ', $inner) . '';
+        if ( isset( $inner ) ) {
+            $expressions = '' . implode( ' ' . $outerCmp . ' ', $inner ) . '';
         }
 
         return $expressions;
@@ -1604,15 +1613,16 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     {
         $result = '';
         if ( $groupby ) {
-            foreach($groupby as $key ) {
+            foreach ( $groupby as $key ) {
                 if ( $result ) {
                     $result .= ',';
                 } else {
                     $result = ' GROUP BY ';
                 }
-                $result .= '`' . (string)$key . '`';
+                $result .= '`' . (string) $key . '`';
             }
         }
+
         return $result;
     }
 
@@ -1629,19 +1639,19 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     public function compileQueryOrderBy( array $orderby )
     {
         $res = '';
-        foreach ( $orderby AS $column => $way ) {
+        foreach ( $orderby as $column => $way ) {
             if ( $res ) {
                 $res .= ',';
             } else {
                 $res = ' ORDER BY ';
             }
 
-            if ( is_numeric($column) ) {
+            if ( is_numeric( $column ) ) {
                 $column = $way;
-                $way = key($this->_querySortations);
+                $way = key( $this->_querySortations );
             } else {
-                if ( !isset($this->_querySortations[$way]) ) {
-                    $way = key($this->_querySortations);
+                if ( !isset( $this->_querySortations[$way] ) ) {
+                    $way = key( $this->_querySortations );
                 }
             }
             $res .= '`' . $column . '` ' . $way . '';
@@ -1668,19 +1678,18 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function compileQueryLimit( array $limit )
     {
-        $cnt = count($limit);
-        if ($cnt===1) {
+        $cnt = count( $limit );
+        if ( $cnt === 1 ) {
             $res = ' LIMIT ' . (int) $limit[0];
-        } else if ($cnt === 2) {
+        } else if ( $cnt === 2 ) {
             $res = ' LIMIT ' . (int) $limit[1]
-                .' OFFSET '. (int) $limit[0];
+                . ' OFFSET ' . (int) $limit[0];
         } else {
             $res = '';
         }
 
         return $res;
     }
-
 
     // --- end compileQuery* --------------------------------------------------
 
@@ -1709,14 +1718,14 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @return string|false seperated string by given separator
      * @throws Mumsys_Db_Exception Throws excetion on errors
      */
-    public function sqlImplode($separator=',', array $array=array(),
-        $withKeys=false, $defaults=array(), $valwrap='', $keyValWrap='',
-        $keyWrap='')
+    public function sqlImplode( $separator = ',', array $array = array(),
+        $withKeys = false, $defaults = array(), $valwrap = '', $keyValWrap = '',
+        $keyWrap = '' )
     {
         if ( $withKeys ) {
             $r = array();
             //while ( list($key, $value) = each($array) ) {
-            foreach($array as $key => $value) {
+            foreach ( $array as $key => $value ) {
                 // e.g.: value = "db.col IS NOT NULL"
                 if ( $value === false ) {
                     $_keyValWrap = '';
@@ -1725,19 +1734,19 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                 }
 
                 if ( $defaults ) {
-                    if ( !isset($defaults[$key]['type']) ) {
+                    if ( !isset( $defaults[$key]['type'] ) ) {
                         // ignore
                         //? continue; // set after unit test
                     } else {
                         switch ( $defaults[$key]['type'] ) {
                             case 'int':
                             case 'integer':
-                                $value = (int)$value;
+                                $value = (int) $value;
                                 break;
 
                             case 'float':
                             case 'double':
-                                $value = (float)$value;
+                                $value = (float) $value;
                                 break;
 
                             case 'char':
@@ -1751,11 +1760,11 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                             case 'set':
                             case 'time':
                             case 'datetime':
-                                $value = $this->escape((string)$value);
+                                $value = $this->escape( (string) $value );
                                 break;
 
                             case 'timestamp':
-                                $value = $this->escape((string)$value);
+                                $value = $this->escape( (string) $value );
                                 /* //eg.: 2005-12-12 10:08:29
                                   if(strlen($value) != 19) {
 
@@ -1770,7 +1779,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                                  * what happen if default not exists?
                                  * escaping the default value?
                                  */
-                                if ( is_array($defaults[$key]['default']) ) {
+                                if ( is_array( $defaults[$key]['default'] ) ) {
                                     $value = $defaults[$key]['default'][0];
                                 } else {
                                     $value = $defaults[$key]['default'];
@@ -1788,17 +1797,17 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                             . $_valwrap . $value . $_valwrap;
                     }
                 } else {
-                    if ( !is_string($valwrap) ) {
+                    if ( !is_string( $valwrap ) ) {
                         $msg = sprintf(
-                            _('Value could not be used. Value warp: "%1$s"'),
-                            gettype($valwrap)
+                            _( 'Value could not be used. Value warp: "%1$s"' ),
+                            gettype( $valwrap )
                         );
 
-                        return $this->_setError($msg);
+                        return $this->_setError( $msg );
                     } else {
                         // produce a eg: `key` = 'value'
                         $r[] = $keyWrap . $key . $keyWrap . $_keyValWrap
-                            . $valwrap . $this->escape($value) . $valwrap;
+                            . $valwrap . $this->escape( $value ) . $valwrap;
                     }
                 }
             }
@@ -1806,6 +1815,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             $r = $array;
         }
 
-        return implode($separator, $r);
+        return implode( $separator, $r );
     }
+
 }

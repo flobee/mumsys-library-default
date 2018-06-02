@@ -135,5 +135,5 @@ interface Mumsys_Mvc_Router_Interface
      * @return self
      */
     public function setActionKey( $key = 'action' );
-    
+
 }

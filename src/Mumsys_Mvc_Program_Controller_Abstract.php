@@ -57,7 +57,8 @@ abstract class Mumsys_Mvc_Program_Controller_Abstract
      * @param Mumsys_Mvc_Program_Config $programConfig Program config object
      * containing all configuration values which may comes from setting.php
      */
-    public function __construct( Mumsys_Context_Interface $context, Mumsys_Mvc_Program_Config $programConfig )
+    public function __construct( Mumsys_Context_Interface $context,
+        Mumsys_Mvc_Program_Config $programConfig )
     {
         $this->_programConfig = $programConfig;
         $this->_context = $context;
@@ -76,11 +77,11 @@ abstract class Mumsys_Mvc_Program_Controller_Abstract
      *
      * @return Mumsys_Mvc_Display_Control_Interface at last instance
      */
-    public function getDisplay( array $params = array(), $outputType = 'default',
-        $outputComplexity = 'default' )
+    public function getDisplay( array $params = array(),
+        $outputType = 'default', $outputComplexity = 'default' )
     {
-        $display = new Mumsys_Mvc_Display_Factory($this->_context);
-        return $display->load($outputType, $outputComplexity, $params);
+        $display = new Mumsys_Mvc_Display_Factory( $this->_context );
+        return $display->load( $outputType, $outputComplexity, $params );
     }
 
 
@@ -94,13 +95,14 @@ abstract class Mumsys_Mvc_Program_Controller_Abstract
      */
     protected function loadModel( $program, $model )
     {
-        $className = sprintf('Mumsys_Program_%1$s_%2$s_Model', $program, $model);
-        if ( class_exists($className) ) {
-            return new $className($this->_context);
+        $className = sprintf( 'Mumsys_Program_%1$s_%2$s_Model', $program, $model );
+        if ( class_exists( $className ) ) {
+            return new $className( $this->_context );
         }
 
-        $message = sprintf('Unable to load the model: "%1$s"', $className);
-        throw new Mumsys_Mvc_Program_Exception($message, Mumsys_Exception::ERRCODE_404);
+        $message = sprintf( 'Unable to load the model: "%1$s"', $className );
+        $code = Mumsys_Exception::ERRCODE_404;
+        throw new Mumsys_Mvc_Program_Exception( $message, $code );
     }
 
 }

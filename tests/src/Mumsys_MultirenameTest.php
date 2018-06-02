@@ -52,11 +52,6 @@ class Mumsys_MultirenameTest
     protected $_config;
     protected $_oldHome;
 
-//    public function __construct($name=null, $data=array(), $dataName='')
-//    {
-//        parent::__construct($name, $data, $dataName);
-//    }
-
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -433,7 +428,9 @@ class Mumsys_MultirenameTest
         @chmod($this->_testsDir . '/tmp/', 0500);
         $this->_testFiles[] = $this->_testsDir . '/tmp/invalidsource';
         $this->_testFiles[] = $this->_testsDir . '/tmp/invalidtarget';
-        $data = '[{"name":"history 2000-01-01","date":"2000-01-01 23:59:59","history":{"symlink":{"' . $this->_testsDir . '/tmp/invalidsource":"' . $this->_testsDir . '/tmp/invalidtarget"}}}]';
+        $data = '[{"name":"history 2000-01-01","date":"2000-01-01 23:59:59","history":'
+            . '{"symlink":{"' . $this->_testsDir . '/tmp/invalidsource":"'
+            . $this->_testsDir . '/tmp/invalidtarget"}}}]';
         $file = $this->_testsDir . '/tmp/.multirename/lastactions';
         file_put_contents($file, $data);
         $this->_object->run($config);
@@ -609,7 +606,7 @@ class Mumsys_MultirenameTest
         $this->assertEquals($expected, $actual);
 
         // Version < 1.3.3
-        $path = $this->_testsDir . '/testfiles/Mumsys_Multirename/version-lt-1.3.3/';
+        $path = $this->_testsDir . '/testfiles/Domain/Multirename/version-lt-1.3.3/';
         $actual = $this->_object->getConfig($path);
 
         $this->assertTrue(is_array($actual));

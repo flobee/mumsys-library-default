@@ -160,34 +160,34 @@ abstract class Mumsys_Logger_Abstract
      */
     public function __construct( array $options = array() )
     {
-        if ( !isset($options['username']) ) {
+        if ( !isset( $options['username'] ) ) {
             $this->_username = Mumsys_Php_Globals::getRemoteUser();
         } else {
             $this->_username = $options['username'];
         }
 
-        if ( isset($options['lineFormat']) ) {
+        if ( isset( $options['lineFormat'] ) ) {
             $this->_logFormat = (string) $options['lineFormat'];
-            if ( empty($this->_logFormat) ) {
-                throw new Mumsys_Logger_Exception('Log format empty');
+            if ( empty( $this->_logFormat ) ) {
+                throw new Mumsys_Logger_Exception( 'Log format empty' );
             }
         }
 
-        if ( isset($options['timeFormat']) ) {
+        if ( isset( $options['timeFormat'] ) ) {
             $this->_timeFormat = (string) $options['timeFormat'];
         } else {
             $this->_timeFormat = 'Y-m-d H:i:s';
         }
 
-        if ( isset($options['logLevel']) ) {
+        if ( isset( $options['logLevel'] ) ) {
             $this->_logLevel = $options['logLevel'];
         }
 
-        if ( isset($options['debug']) ) {
+        if ( isset( $options['debug'] ) ) {
             $this->_debug = $options['debug'];
         }
 
-        if ( isset($options['lf']) ) {
+        if ( isset( $options['lf'] ) ) {
             $this->_lf = $options['lf'];
         }
 
@@ -222,7 +222,7 @@ abstract class Mumsys_Logger_Abstract
     {
         $level = null;
 
-        switch ( strtolower($key) )
+        switch ( strtolower( $key ) )
         {
             case 'emerg':
             case 'emergency':
@@ -261,17 +261,17 @@ abstract class Mumsys_Logger_Abstract
                 break;
 
             default:
-                $message = sprintf('Invalid method call: "%1$s"', $key);
-                throw new Mumsys_Logger_Exception($message);
+                $message = sprintf( 'Invalid method call: "%1$s"', $key );
+                throw new Mumsys_Logger_Exception( $message );
         }
 
-        if ( count($values) == 1 ) {
+        if ( count( $values ) == 1 ) {
             $_value = $values[0];
         } else {
             $_value = $values;
         }
 
-        return $this->log($_value, $level);
+        return $this->log( $_value, $level );
     }
 
 
@@ -303,9 +303,9 @@ abstract class Mumsys_Logger_Abstract
      */
     public function setLoglevel( $level )
     {
-        if ( $this->checkLevel($level) === false ) {
+        if ( $this->checkLevel( $level ) === false ) {
             $message = 'Log level "' . $level . '" unknown. Can not set';
-            throw new Mumsys_Logger_Exception($message);
+            throw new Mumsys_Logger_Exception( $message );
         }
 
         $this->_logLevel = (int) $level;
@@ -321,7 +321,7 @@ abstract class Mumsys_Logger_Abstract
      */
     public function checkLevel( $level = 0 )
     {
-        if ( isset($this->_loglevels[$level]) ) {
+        if ( isset( $this->_loglevels[$level] ) ) {
             return true;
         }
 
@@ -337,7 +337,7 @@ abstract class Mumsys_Logger_Abstract
      */
     public function getLevelName( $level )
     {
-        if ( !isset($this->_loglevels[$level]) ) {
+        if ( !isset( $this->_loglevels[$level] ) ) {
             return 'unknown';
         }
 

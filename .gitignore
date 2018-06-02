@@ -2,6 +2,7 @@
 *.swp
 *.ctags
 cs
+*.geany
 
 # Composer files
 composer.phar

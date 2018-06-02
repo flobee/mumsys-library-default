@@ -41,7 +41,7 @@ class Mumsys_Logger_Decorator_None
     public function __construct( Mumsys_Logger_Interface $object,
         array $options = array() )
     {
-        parent::__construct($object);
+        parent::__construct( $object );
     }
 
 

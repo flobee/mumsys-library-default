@@ -51,21 +51,21 @@ class Mumsys_Request_Default
      */
     public function __construct( array $options = array() )
     {
-        parent::__construct($options);
+        parent::__construct( $options );
 
         $_get = Mumsys_Php_Globals::getGetVar();
-        if ( isset($_get) && is_array($_get) ) {
+        if ( isset( $_get ) && is_array( $_get ) ) {
             $this->_inputGet = $_get;
             $this->_input += $_get;
         }
 
         $_post = Mumsys_Php_Globals::getPostVar();
-        if ( isset($_post) && is_array($_post) ) {
+        if ( isset( $_post ) && is_array( $_post ) ) {
             $this->_inputPost = $_post;
             $this->_input += $_post;
         }
 
-        unset($_get, $_post, $options);
+        unset( $_get, $_post, $options );
     }
 
 
@@ -80,11 +80,11 @@ class Mumsys_Request_Default
      */
     public function getInputPost( $key = null, $default = null )
     {
-        if (empty($key)) {
+        if ( empty( $key ) ) {
             return $this->_inputPost;
         }
 
-        if (isset($this->_inputPost[$key])) {
+        if ( isset( $this->_inputPost[$key] ) ) {
             return $this->_inputPost[$key];
         } else {
             return $default;
@@ -105,9 +105,9 @@ class Mumsys_Request_Default
     {
         $key = (string) $key;
 
-        if ( (null === $value) && isset($this->_inputPost[$key]) ) {
-            unset($this->_inputPost[$key]);
-            unset($this->_input[$key]);
+        if ( (null === $value) && isset( $this->_inputPost[$key] ) ) {
+            unset( $this->_inputPost[$key] );
+            unset( $this->_input[$key] );
         } elseif ( null !== $value ) {
             $this->_inputPost[$key] = $value;
             $this->_input[$key] = $value;
@@ -129,10 +129,10 @@ class Mumsys_Request_Default
      */
     public function getInputGet( $key = null, $default = null )
     {
-        if (empty($key)) {
+        if ( empty( $key ) ) {
             return $this->_inputGet;
         }
-        if (isset($this->_inputGet[$key])) {
+        if ( isset( $this->_inputGet[$key] ) ) {
             return $this->_inputGet[$key];
         } else {
             return $default;
@@ -153,9 +153,9 @@ class Mumsys_Request_Default
     {
         $key = (string) $key;
 
-        if ( (null === $value) && isset($this->_inputGet[$key]) ) {
-            unset($this->_inputGet[$key]);
-            unset($this->_input[$key]);
+        if ( (null === $value) && isset( $this->_inputGet[$key] ) ) {
+            unset( $this->_inputGet[$key] );
+            unset( $this->_input[$key] );
         } elseif ( null !== $value ) {
             $this->_inputGet[$key] = $value;
             $this->_input[$key] = $value;

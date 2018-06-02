@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Mumsys_Service_Ssh_Config_Generator_DefaultTest
+ * Mumsys_Service_SshTool_DefaultTest
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -16,14 +16,14 @@
 
 
 /**
- * Mumsys_Service_Ssh_Config_Generator_Default Test
+ * Mumsys_Service_SshTool_Default Test
  * Generated on 2018-02-10 at 19:07:54.
  */
-class Mumsys_Service_Ssh_Config_Generator_DefaultTest
+class Mumsys_Service_SshTool_DefaultTest
     extends Mumsys_Unittest_Testcase
 {
     /**
-     * @var Mumsys_Service_Ssh_Config_Generator_Default
+     * @var Mumsys_Service_SshTool_Default
      */
     protected $_object;
 
@@ -44,7 +44,7 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
     {
         $this->_version = '1.0.0';
         $this->_versions = array(
-            'Mumsys_Service_Ssh_Config_Generator_Default' => $this->_version,
+            'Mumsys_Service_SshTool_Default' => $this->_version,
             'Mumsys_Abstract' => '3.0.2',
         );
 
@@ -55,7 +55,7 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
         $this->_pathEmptyDir = $basePath . '/testfiles/Service/Ssh/Config/empty';
         $this->_dynTestFile = '';
 
-        $this->_object = new Mumsys_Service_Ssh_Config_Generator_Default(
+        $this->_object = new Mumsys_Service_SshTool_Default(
             $this->_pathConfigs, $this->_sshFile
         );
     }
@@ -83,7 +83,7 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
     {
         $this->assertEquals(
             $this->_version,
-            Mumsys_Service_Ssh_Config_Generator_Default::VERSION
+            Mumsys_Service_SshTool_Default::VERSION
         );
 
         $this->_checkVersionList(
@@ -93,32 +93,32 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
 
 
     /**
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::__construct
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::_checkPath
+     * @covers Mumsys_Service_SshTool_Default::__construct
+     * @covers Mumsys_Service_SshTool_Default::_checkPath
      */
     public function test_construct()
     {
 
-        $objectA = new Mumsys_Service_Ssh_Config_Generator_Default(
+        $objectA = new Mumsys_Service_SshTool_Default(
             $this->_pathConfigs, $this->_sshFile
         );
-        $objectB = new Mumsys_Service_Ssh_Config_Generator_Default( $this->_pathConfigs );
+        $objectB = new Mumsys_Service_SshTool_Default( $this->_pathConfigs );
 
-        $this->assertInstanceOf( 'Mumsys_Service_Ssh_Config_Generator_Default', $objectA );
-        $this->assertInstanceOf( 'Mumsys_Service_Ssh_Config_Generator_Default', $objectB );
+        $this->assertInstanceOf( 'Mumsys_Service_SshTool_Default', $objectA );
+        $this->assertInstanceOf( 'Mumsys_Service_SshTool_Default', $objectB );
         $this->assertInstanceOf( 'Mumsys_Abstract', $objectA );
 
         $this->expectException('Mumsys_Service_Exception');
         $this->expectExceptionMessageRegExp('/(Given config file path not found)/i');
-        $objectA = new Mumsys_Service_Ssh_Config_Generator_Default(
+        $objectA = new Mumsys_Service_SshTool_Default(
             $this->_pathConfigs, $this->_sshFile .'/not/exists'
         );
     }
 
 
     /**
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::init
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::_loadConfigs
+     * @covers Mumsys_Service_SshTool_Default::init
+     * @covers Mumsys_Service_SshTool_Default::_loadConfigs
      */
     public function testInit()
     {
@@ -128,8 +128,8 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
 
 
     /**
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::init
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::_loadConfigs
+     * @covers Mumsys_Service_SshTool_Default::init
+     * @covers Mumsys_Service_SshTool_Default::_loadConfigs
      */
     public function testInitException1()
     {
@@ -144,7 +144,7 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
 
 
     /**
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::setConfigsPath
+     * @covers Mumsys_Service_SshTool_Default::setConfigsPath
      */
     public function testSetConfigsPath()
     {
@@ -161,7 +161,7 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
 
     /**
      * Exception and 4CC
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::setConfigsPath
+     * @covers Mumsys_Service_SshTool_Default::setConfigsPath
      */
     public function testSetConfigsPathException()
     {
@@ -172,8 +172,8 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
 
 
     /**
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::setConfigFile
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::_checkPath
+     * @covers Mumsys_Service_SshTool_Default::setConfigFile
+     * @covers Mumsys_Service_SshTool_Default::_checkPath
      */
     public function testSetConfigFile()
     {
@@ -192,8 +192,8 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
 
 
     /**
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::setConfigFile
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::_checkPath
+     * @covers Mumsys_Service_SshTool_Default::setConfigFile
+     * @covers Mumsys_Service_SshTool_Default::_checkPath
      */
     public function testSetFileCheckPathException()
     {
@@ -205,7 +205,7 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
 
 
     /**
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::setMode
+     * @covers Mumsys_Service_SshTool_Default::setMode
      */
     public function testSetMode()
     {
@@ -221,9 +221,9 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
 
 
     /**
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::create
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::_configToString
-     * @covers Mumsys_Service_Ssh_Config_Generator_Default::_getIdentityLocation
+     * @covers Mumsys_Service_SshTool_Default::create
+     * @covers Mumsys_Service_SshTool_Default::_configToString
+     * @covers Mumsys_Service_SshTool_Default::_getIdentityLocation
      */
     public function testCreateAction()
     {

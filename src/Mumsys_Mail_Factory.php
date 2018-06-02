@@ -46,30 +46,30 @@ class Mumsys_Mail_Factory
     public static function getAdapter( string $adapter = 'Default',
         array $options = array() ): Mumsys_Mail_Interface
     {
-        if ( ctype_alnum($adapter) === false ) {
+        if ( ctype_alnum( $adapter ) === false ) {
             $adaptername = 'Mumsys_Mail_' . $adapter;
             $message = sprintf(
                 'Invalid characters in adapter name "%1$s"', $adaptername
             );
-            throw new Mumsys_Mail_Exception($message);
+            throw new Mumsys_Mail_Exception( $message );
         }
 
         $iface = 'Mumsys_Mail_Interface';
         $adaptername = 'Mumsys_Mail_' . $adapter;
 
-        if ( class_exists($adaptername) === false ) {
-            $message = sprintf('Adapter "%1$s" not available', $adaptername);
-            throw new Mumsys_Mail_Exception($message);
+        if ( class_exists( $adaptername ) === false ) {
+            $message = sprintf( 'Adapter "%1$s" not available', $adaptername );
+            throw new Mumsys_Mail_Exception( $message );
         }
 
-        $object = new $adaptername($options);
+        $object = new $adaptername( $options );
 
         if ( !( $object instanceof $iface ) ) {
             $message = sprintf(
                 'Adapter "%1$s" does not implement interface "%2$s"',
                 $adaptername, $iface
             );
-            throw new Mumsys_Mail_Exception($message);
+            throw new Mumsys_Mail_Exception( $message );
         }
 
         return $object;

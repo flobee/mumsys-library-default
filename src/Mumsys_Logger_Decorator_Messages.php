@@ -85,7 +85,7 @@ class Mumsys_Logger_Decorator_Messages
      * @var array
      */
     private $_colors = array(
-        0 => '[41m',  //Red background
+        0 => '[41m', //Red background
         1 => '[41m',
         2 => '[41m',
         3 => '[41m',
@@ -131,35 +131,35 @@ class Mumsys_Logger_Decorator_Messages
     public function __construct( Mumsys_Logger_Interface $object,
         array $options = array() )
     {
-        parent::__construct($object);
+        parent::__construct( $object );
 
-        if ( empty($options['username']) ) {
+        if ( empty( $options['username'] ) ) {
             $this->_username = Mumsys_Php_Globals::getRemoteUser();
         } else {
             $this->_username = $options['username'];
         }
 
-        if ( isset($options['msglogLevel']) ) {
+        if ( isset( $options['msglogLevel'] ) ) {
             $this->_msgLogLevel = $options['msglogLevel'];
         }
 
-        if ( isset($options['msgLineFormat']) ) {
+        if ( isset( $options['msgLineFormat'] ) ) {
             $this->_logFormatMsg = (string) $options['msgLineFormat'];
         }
 
-        if ( isset($options['msgDatetimeFormat']) ) {
+        if ( isset( $options['msgDatetimeFormat'] ) ) {
             $this->_timeFormat = (string) $options['msgDatetimeFormat'];
         }
 
-        if ( isset($options['msgColors']) ) {
-            $this->_msgColors = (bool)$options['msgColors'];
+        if ( isset( $options['msgColors'] ) ) {
+            $this->_msgColors = (bool) $options['msgColors'];
         }
 
-        if ( isset($options['debug']) ) {
-            $this->_debug = (bool)$options['debug'];
+        if ( isset( $options['debug'] ) ) {
+            $this->_debug = (bool) $options['debug'];
         }
 
-        if ( isset($options['lf']) ) {
+        if ( isset( $options['lf'] ) ) {
             $this->_lf = $options['lf'];
         }
     }
@@ -195,26 +195,26 @@ class Mumsys_Logger_Decorator_Messages
     public function log( $input, $level = 0 )
     {
         if ( $level <= $this->_msgLogLevel || $this->_debug ) {
-            if ( !is_scalar($input) ) {
-                $input = json_encode($input);
+            if ( !is_scalar( $input ) ) {
+                $input = json_encode( $input );
             }
 
             $datesting = '';
-            if ( !empty($this->_timeFormat) ) {
-                $datesting = date($this->_timeFormat, time());
+            if ( !empty( $this->_timeFormat ) ) {
+                $datesting = date( $this->_timeFormat, time() );
             }
 
             $msgOut = sprintf(
                 $this->_logFormatMsg,
                 $datesting,
                 $this->_username,
-                $this->getLevelName($level),
+                $this->getLevelName( $level ),
                 $level,
                 $input
             );
 
             if ( $this->_msgColors ) {
-                $msgOut = $this->getMessageColored($msgOut, $level);
+                $msgOut = $this->getMessageColored( $msgOut, $level );
             }
 
             $msgOut .= $this->_lf;
@@ -222,7 +222,7 @@ class Mumsys_Logger_Decorator_Messages
             echo $msgOut;
         }
 
-        return parent::log($input, $level);
+        return parent::log( $input, $level );
     }
 
 
@@ -237,7 +237,7 @@ class Mumsys_Logger_Decorator_Messages
      */
     public function getMessageColored( $message, $level = 0 )
     {
-        $chr27 = chr(27); // escape sequence
+        $chr27 = chr( 27 ); // escape sequence
 
         switch ( $level )
         {
@@ -274,7 +274,7 @@ class Mumsys_Logger_Decorator_Messages
                 break;
 
             default:
-                if ( isset($this->_colors[$level]) ) {
+                if ( isset( $this->_colors[$level] ) ) {
                     $color = $this->_colors[$level];
                 } else {
                     $color = $this->_colors[-1];
@@ -282,7 +282,7 @@ class Mumsys_Logger_Decorator_Messages
                 break;
         }
 
-        return sprintf('%1$s%2$s%3$s%1$s[0m', $chr27, $color, $message);
+        return sprintf( '%1$s%2$s%3$s%1$s[0m', $chr27, $color, $message );
     }
 
 
@@ -314,9 +314,9 @@ class Mumsys_Logger_Decorator_Messages
      */
     public function setMessageLoglevel( $level )
     {
-        if ( $this->_getObject()->checkLevel($level) === false ) {
+        if ( $this->_getObject()->checkLevel( $level ) === false ) {
             $message = 'Level "' . $level . '" unknown to set the message log level';
-            throw new Mumsys_Logger_Exception($message);
+            throw new Mumsys_Logger_Exception( $message );
         }
 
         $this->_msgLogLevel = (int) $level;

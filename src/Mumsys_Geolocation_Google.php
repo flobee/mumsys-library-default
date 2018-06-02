@@ -49,18 +49,16 @@ class Mumsys_Geolocation_Google
         $search = array('{IP}', '{CURRENCY}');
         $replace = array($this->_ip, '&base_currency=' . $this->_currency);
 
-        $this->_serviceUrl = str_replace($search, $replace, $this->_serviceUrl );
+        $this->_serviceUrl = str_replace( $search, $replace, $this->_serviceUrl );
 
-		$data = array();
+        $data = array();
 
-		$response = $this->fetch($this->_serviceUrl);
+        $response = $this->fetch( $this->_serviceUrl );
 
-		$stdObj = json_decode($response);
-
-
+        $stdObj = json_decode( $response );
 
         return $this->toArray();
-	}
+    }
 
 
 }

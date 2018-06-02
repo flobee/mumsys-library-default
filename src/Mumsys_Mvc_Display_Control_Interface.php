@@ -73,5 +73,4 @@ interface Mumsys_Mvc_Display_Control_Interface
      * output was set.
      */
     public function fetch();
-    
 }

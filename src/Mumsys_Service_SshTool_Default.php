@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /**
- * Mumsys_Service_Ssh_Config_Generator_Default
+ * Mumsys_Service_SshTool_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
@@ -11,21 +11,22 @@ declare(strict_types=1);
  *
  * @category    Mumsys
  * @package     Library
- * @subpackage  Abstract
+ * @subpackage  Service
  * created: 2018-05-10
  */
 
 
 /**
- * SSH config generator.
+ * SSH config generator, pub key registration, key deployment and keys revocation.
  *
  * Uses config files, each per host, to improve rollouts to other machines.
+ * Check the tests to get into it or read the demo/test configs for details.
  *
  * @category    Mumsys
  * @package     Library
  * @subpackage  Service
  */
-class Mumsys_Service_Ssh_Config_Generator_Default
+class Mumsys_Service_SshTool_Default
     extends Mumsys_Abstract
 {
     /**
@@ -34,7 +35,8 @@ class Mumsys_Service_Ssh_Config_Generator_Default
     const VERSION = '1.0.0';
 
     /**
-     * Location to the target ssh config file to save the content to
+     * Location to the target ssh config file to save the content to. E.g:
+     * "/home/user/.ssh/config"
      * @var string
      */
     private $_sshConfFile;

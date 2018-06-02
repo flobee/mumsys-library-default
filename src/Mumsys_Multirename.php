@@ -31,7 +31,7 @@ class Mumsys_Multirename
     /**
      * Version ID information
      */
-    const VERSION = '1.4.3';
+    const VERSION = '1.4.4';
 
     /**
      * Logger to log and output messages.
@@ -1324,10 +1324,20 @@ class Mumsys_Multirename
     {
         $version = self::getVersionShort();
         $versions = parent::getVersions();
+
+        $verGlobal = array(0, 0, 0);
         foreach ( $versions as $class => $ver ) {
             $version .= str_pad( $class, 35, ' ', STR_PAD_RIGHT ) . " " . $ver . PHP_EOL;
+
+            $verParts = explode( '.', $ver );
+            $verGlobal[0] += $verParts[0];
+            $verGlobal[1] += $verParts[1];
+            $verGlobal[2] += $verParts[2];
         }
-        $version .= PHP_EOL;
+
+        $version .= str_pad( 'Global version ID', 35, ' ', STR_PAD_RIGHT )
+            . ' ' . implode( '.', $verGlobal ) . PHP_EOL . PHP_EOL;
+
         return $version;
     }
 

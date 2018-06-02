@@ -17,7 +17,8 @@
 
 
 /**
- * {{{ Abstract class to deal with svdrpsend command from vdr project (Simple VDR Protocol).
+ * {{{ Abstract class to deal with svdrpsend command from vdr project (Simple
+ * VDR Protocol).
  *
  * SVDRP give you the possibility to run the svdrpsend commands in php context.
  * So it is easy now to work with vdr in php. E.g: Dump the EPG to
@@ -37,7 +38,7 @@ abstract class Mumsys_Service_Vdr_Abstract
     /**
      * Version ID information.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * Context item for dependency injection.
@@ -75,7 +76,6 @@ abstract class Mumsys_Service_Vdr_Abstract
      */
     private $_connection;
 
-
     /**
      * List of channel items. Item keys are:
      * 'vdr_id', 'name', 'bouquet', 'frequency', 'parameter', 'source', 'symbolrate',
@@ -107,22 +107,22 @@ abstract class Mumsys_Service_Vdr_Abstract
      * @param integer $timeout
      * @param boolean $debug Flag to enable debugging.
      */
-    public function __construct( Mumsys_Context_Item $context, $host = 'localhost', $port = 6419,
-        $timeout = 5 )
+    public function __construct( Mumsys_Context_Item $context,
+        $host = 'localhost', $port = 6419, $timeout = 5 )
     {
         $this->_context = $context;
 
         $this->_logger = $context->getLogger();
 
-
-        $this->_host = (string)$host;
-        $this->_port = (int)$port;
-        $this->_timeout = (int)$timeout;
+        $this->_host = (string) $host;
+        $this->_port = (int) $port;
+        $this->_timeout = (int) $timeout;
         $this->_connection = false;
         /*
           $config = array(
           'commands' => array(
-          //'getchannels' => 'svdrpsend -d ' . $globalConfig['hostname'] . ' lstc | /usr/bin/cut -f1 -d';' | tr -d \'\r\n\'',
+          //'getchannels' => 'svdrpsend -d ' . $globalConfig['hostname']
+              . ' lstc | /usr/bin/cut -f1 -d';' | tr -d \'\r\n\'',
           'getchannels' => 'svdrpsend -d ' . $hostname . ' lstc',
           'gettimers' => 'svdrpsend -d ' . $hostname . ' lstt',
           )
@@ -162,32 +162,32 @@ abstract class Mumsys_Service_Vdr_Abstract
 
             $errno = 0;
             $errstr = '';
-            $this->_connection = @fsockopen(
+            $this->_connection = fsockopen(
                 $this->_host, $this->_port, $errno, $errstr, $this->_timeout
             );
 
             if ( $this->_connection === false ) {
-                $message = 'Connection to server "' . $this->_host . '" failt: ' . $errstr . ' ('.$errno .')';
-                $this->_logger->log($message, 3);
+                $message = 'Connection to server "' . $this->_host
+                    . '" failt: ' . $errstr . ' (' . $errno . ')';
+                $this->_logger->log( $message, 3 );
 
-                throw new Mumsys_Service_Exception($message, Mumsys_Exception::ERRCODE_500);
+                throw new Mumsys_Service_Exception( $message, Mumsys_Exception::ERRCODE_500 );
             }
 
-            $this->_logger->log('Connection to vdr server: ' . $this->_host, 7);
+            $this->_logger->log( 'Connection to vdr server: ' . $this->_host, 7 );
 
-            $result = fgets($this->_connection, 128);
+            $result = fgets( $this->_connection, 128 );
 
-            if ( empty($result) || $result == "timeout\n" || !preg_match("/^220 /", $result) )
-            {
+            if ( empty( $result ) || $result == "timeout\n" || !preg_match( "/^220 /", $result ) ) {
                 $message = 'Connection failure. Expected code 220; Result was "' . $result . '"';
-                $this->_logger->log($message, 3);
+                $this->_logger->log( $message, 3 );
                 $this->disconnect();
 
-                throw new Mumsys_Service_Exception($message, 1);
+                throw new Mumsys_Service_Exception( $message, 1 );
             }
         }
         catch ( Exception $e ) {
-            throw $e;
+            throw new Mumsys_Service_Exception( $e->getMessage(), 1 );
         }
 
         return true;
@@ -201,16 +201,16 @@ abstract class Mumsys_Service_Vdr_Abstract
      */
     public function disconnect()
     {
-        if (!$this->isOpen()) {
+        if ( !$this->isOpen() ) {
             return true;
         }
 
-        $this->execute('QUIT');
-        $return = fclose($this->_connection);
+        $this->execute( 'QUIT' );
+        $return = fclose( $this->_connection );
 
         $this->_isOpen = false;
 
-        $this->_logger->log('Connection close: ' . $this->_host, 7);
+        $this->_logger->log( 'Connection close: ' . $this->_host, 7 );
 
         return $return;
     }
@@ -222,17 +222,18 @@ abstract class Mumsys_Service_Vdr_Abstract
      * @param string $command Command to be executed
      * @param string $parameters Optional parameters to pipe to the command
      *
-     * @return array|false Returns a list of records in raw format or false if the connection is missing
-     *
+     * @return array|false Returns a list of records in raw format or false if
+     * the connection is missing
      * @thows Mumsys_Service_Exception If a result code do not match any spec
      */
     public function execute( $command, $parameters = '' )
     {
-        $message = __METHOD__ . ' command: "' . $command . '", params: "' . $parameters . '"';
-        $this->_logger->log($message, 7);
+        $message = __METHOD__ . ' command: "' . $command . '", params: "'
+            . $parameters . '"';
+        $this->_logger->log( $message, 7 );
 
         if ( !$this->isOpen() ) {
-            throw new Mumsys_Service_Exception('Not connected');
+            throw new Mumsys_Service_Exception( 'Not connected' );
         }
 
         /** @todo check cmd in the future. speedup things */
@@ -257,27 +258,27 @@ abstract class Mumsys_Service_Vdr_Abstract
                 ),
         );
 
-        $command = strtoupper($command);
+        $command = strtoupper( $command );
 
-        if (!in_array($command, $cmdlist['default'])) {
-            throw new Mumsys_Service_Exception('Command unknown or not implemented yet. Exiting');
+        if ( !in_array( $command, $cmdlist['default'] ) ) {
+            throw new Mumsys_Service_Exception( 'Command unknown or not implemented yet. Exiting' );
         }
 
         $cmd = $command;
-        if ($parameters!==null && $parameters!==0) {
-            $cmd = $cmd . ' ' . stripslashes($parameters);
+        if ( $parameters !== null && $parameters !== 0 ) {
+            $cmd = $cmd . ' ' . stripslashes( $parameters );
         }
 
-        fputs($this->_connection, $cmd . "\n");
+        fputs( $this->_connection, $cmd . "\n" );
 
         $records = $record = $channel = array();
 
-        while ($raw = fgets($this->_connection, 2048)) {
-            if (!preg_match('/^(\d{3})( |-)(.*)$/i', $raw, $data)) {
+        while ( $raw = fgets( $this->_connection, 2048 ) ) {
+            if ( !preg_match( '/^(\d{3})( |-)(.*)$/i', $raw, $data ) ) {
                 continue;
             }
 
-            $this->_logger->log('data: "' . print_r($raw, true) . '"', 7);
+            $this->_logger->log( 'data: "' . print_r( $raw, true ) . '"', 7 );
 
             /*
               214 Hilfetext
@@ -295,23 +296,23 @@ abstract class Mumsys_Service_Vdr_Abstract
               550 Angeforderte Aktion nicht ausgeführt
               554 Transaktion fehlgeschlagen
              */
-            switch ( trim($data[1]) ) {
+            switch ( trim( $data[1] ) ) {
                 case '250':
-                    $records[] = trim($data[3]);
+                    $records[] = trim( $data[3] );
                     break;
 
                 // EPG record, LSTE
                 case '215':
                     // $records[] = trim($data[3]);
-                    $line = trim($data[3]);
-                    $tmp = $this->_parseEPGLine($line);
+                    $line = trim( $data[3] );
+                    $tmp = $this->_parseEPGLine( $line );
 
                     if ( $tmp === true ) {
                         $records[] = $record;
                         $record = array();
                     } else {
                         if ( $tmp ) {
-                            if ( key($tmp) == 'extras' ) {
+                            if ( key( $tmp ) == 'extras' ) {
                                 $record['extras'][] = $tmp['extras'];
                             } else {
                                 $record += $tmp;
@@ -329,24 +330,26 @@ abstract class Mumsys_Service_Vdr_Abstract
                     // also for "Not found"
                     // also for "channel not unique"
                     // trim($data[3]);
-                    throw new Mumsys_Service_Exception($data[3], $data[1]);
+                    throw new Mumsys_Service_Exception( $data[3], $data[1] );
                     break;
 
                 default:
-                    $message = 'None catchable exception. Invalid result or not implemented '
-                        . '(yet): ' . $data[3];
-                    throw new Mumsys_Service_Exception($message);
+                    $message = 'None catchable exception. '
+                        . 'Invalid result or not implemented (yet): '
+                        . $data[3];
+                    throw new Mumsys_Service_Exception( $message );
+
                     break;
             }
 
             // the last record, break the loop
-            if (trim($data[2]) != '-') {
+            if ( trim( $data[2] ) != '-' ) {
                 break;
             }
 
             //$this->_logger->log('$records: "' . print_r($records, true) . '"', 7);
         }
-        unset($raw, $data);
+        unset( $raw, $data );
 
         return $records;
     }
@@ -360,7 +363,7 @@ abstract class Mumsys_Service_Vdr_Abstract
      */
     public function isOpen()
     {
-        if (is_resource($this->_connection)) {
+        if ( is_resource( $this->_connection ) ) {
             return true;
         }
 
@@ -369,27 +372,27 @@ abstract class Mumsys_Service_Vdr_Abstract
 
 
     // Returns parts of an epg entry or parts of a recorded show (nearly like a epg entry).
-    private function _parseEPGLine( $line='' )
+    private function _parseEPGLine( $line = '' )
     {
         static $extras = null;
         $record = array();
 
-        switch ( ($line[0]) )
+        switch ( ($line[0] ) )
         {
             case 'c':   // end of a channel
                 break;
 
             case 'C':   // begin of a channel
                 // eg: C T-8468-514-514 ZDF (T) (T)
-                $record = array('channel_key'=>'','channel_name'=>'');
-                if ( preg_match('/^C ([^ ]+) *(.*)/', $line, $channels) ) {
+                $record = array('channel_key' => '', 'channel_name' => '');
+                if ( preg_match( '/^C ([^ ]+) *(.*)/', $line, $channels ) ) {
                     $record['channel_key'] = $channels[1];
                     $record['channel_name'] = $channels[2];
                 }
                 break;
 
             case 'D':
-                $record['description'] = substr($line, 2);
+                $record['description'] = substr( $line, 2 );
                 break;
 
             case 'e':   // end of a record
@@ -397,11 +400,11 @@ abstract class Mumsys_Service_Vdr_Abstract
                 break;
 
             case 'E':   // begin of a record/event
-                if ( $line[0] . $line[1] . $line[2] == 'End') {
+                if ( $line[0] . $line[1] . $line[2] == 'End' ) {
                     return true;
                 }
 
-                if ( preg_match('/^E (.*?) (.*?) (.*?) (.*?) (.*)/', $line, $event) ) {
+                if ( preg_match( '/^E (.*?) (.*?) (.*?) (.*?) (.*)/', $line, $event ) ) {
                     $record['event_id'] = $event[1];
                     $record['timestamp'] = $event[2];
                     $record['duration'] = $event[3];
@@ -412,27 +415,27 @@ abstract class Mumsys_Service_Vdr_Abstract
                 break;
 
             case 'G':
-                $record['genre'] = substr($line, 2); // raw format
+                $record['genre'] = substr( $line, 2 ); // raw format
                 break;
 
             case 'R': // age check, advisory
-                $record['advisory'] = substr($line, 2);
+                $record['advisory'] = substr( $line, 2 );
                 break;
 
             case 'S':
-                $record['subtitle'] = substr($line, 2);
+                $record['subtitle'] = substr( $line, 2 );
                 break;
 
             case 'T':
-                $record['title'] = substr($line, 2);
+                $record['title'] = substr( $line, 2 );
                 break;
 
             case 'V':
-                $record['vps'] = substr($line, 2);
+                $record['vps'] = substr( $line, 2 );
                 break;
 
             case 'X':
-                if ( preg_match('/^X (.*?) (.*?) (.*?) (.*)/', $line, $extras) ) {
+                if ( preg_match( '/^X (.*?) (.*?) (.*?) (.*)/', $line, $extras ) ) {
                     $item['stream_kind'] = $extras[1];
                     $item['stream_type'] = $extras[2];
                     $item['stream_lang'] = $extras[3];
@@ -443,19 +446,19 @@ abstract class Mumsys_Service_Vdr_Abstract
 
             // in recordings:
             case 'F':
-                $record['framerate'] = substr($line, 2);
+                $record['framerate'] = substr( $line, 2 );
                 break;
 
             case 'P':
-                $record['priority'] = substr($line, 2);
+                $record['priority'] = substr( $line, 2 );
                 break;
 
             case 'L':
-                $record['lifetime'] = substr($line, 2);
+                $record['lifetime'] = substr( $line, 2 );
                 break;
 
             case '@':
-                $record['notes'] = substr($line, 2);
+                $record['notes'] = substr( $line, 2 );
                 break;
 
             default:

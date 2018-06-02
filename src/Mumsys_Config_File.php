@@ -79,21 +79,21 @@ class Mumsys_Config_File
      */
     public function get( $key, $default = null )
     {
-        if ( is_array($key) ) {
+        if ( is_array( $key ) ) {
             $parts = $key; // old getsubValues() feature
         } else {
-            $parts = explode('/', trim($key, '/'));
+            $parts = explode( '/', trim( $key, '/' ) );
         }
 
-        if ( ( $value = $this->_get($this->_configs, $parts) ) !== null ) {
+        if ( ( $value = $this->_get( $this->_configs, $parts ) ) !== null ) {
             return $value;
         }
 
         foreach ( $this->_paths as $path ) {
-            $this->_configs = $this->_load($this->_configs, $path, $parts);
+            $this->_configs = $this->_load( $this->_configs, $path, $parts );
         }
 
-        if ( ( $value = $this->_get($this->_configs, $parts) ) !== null ) {
+        if ( ( $value = $this->_get( $this->_configs, $parts ) ) !== null ) {
             return $value;
         }
 
@@ -122,12 +122,12 @@ class Mumsys_Config_File
      */
     public function register( $key, $value = null )
     {
-        if ( ($test = $this->get($key)) !== null ) {
-            $message = sprintf('Config key "%1$s" already exists', $key);
-            throw new Mumsys_Config_Exception($message);
+        if ( ($test = $this->get( $key )) !== null ) {
+            $message = sprintf( 'Config key "%1$s" already exists', $key );
+            throw new Mumsys_Config_Exception( $message );
         }
 
-        $this->replace($key, $value);
+        $this->replace( $key, $value );
     }
 
 
@@ -139,8 +139,8 @@ class Mumsys_Config_File
      */
     public function replace( $key, $value = null )
     {
-        $parts = explode('/', trim($key, '/'));
-        $this->_configs = $this->_replace($this->_configs, $parts, $value);
+        $parts = explode( '/', trim( $key, '/' ) );
+        $this->_configs = $this->_replace( $this->_configs, $parts, $value );
     }
 
 
@@ -156,9 +156,9 @@ class Mumsys_Config_File
      */
     public function addPath( $path )
     {
-        if ( !is_dir($path . '/') ) {
-            $message = sprintf('Path not found: "%1$s"', $path);
-            throw new Mumsys_Config_Exception($message);
+        if ( !is_dir( $path . '/' ) ) {
+            $message = sprintf( 'Path not found: "%1$s"', $path );
+            throw new Mumsys_Config_Exception( $message );
         }
 
         $this->_paths[] = (string) $path;
@@ -175,9 +175,9 @@ class Mumsys_Config_File
      */
     protected function _get( $config, $parts )
     {
-        if ( ( $cur = array_shift($parts) ) !== null && isset($config[$cur]) ) {
-            if ( count($parts) > 0 ) {
-                return $this->_get($config[$cur], $parts);
+        if ( ( $cur = array_shift( $parts ) ) !== null && isset( $config[$cur] ) ) {
+            if ( count( $parts ) > 0 ) {
+                return $this->_get( $config[$cur], $parts );
             }
 
             return $config[$cur];
@@ -199,23 +199,25 @@ class Mumsys_Config_File
     protected function _load( array $config, $curPath, array $parts )
     {
 
-        if ( ( $key = array_shift($parts) ) !== null ) {
+        if ( ( $key = array_shift( $parts ) ) !== null ) {
             $newPath = $curPath . DIRECTORY_SEPARATOR . $key;
 
-            if ( is_dir($newPath) ) {
-                if ( !isset($config[$key]) ) {
+            if ( is_dir( $newPath ) ) {
+                if ( !isset( $config[$key] ) ) {
                     $config[$key] = array();
                 }
 
-                $config[$key] = $this->_load($config[$key], $newPath, $parts);
+                $config[$key] = $this->_load( $config[$key], $newPath, $parts );
             }
 
-            if ( file_exists($newPath . '.php') ) {
-                if ( !isset($config[$key]) ) {
+            if ( file_exists( $newPath . '.php' ) ) {
+                if ( !isset( $config[$key] ) ) {
                     $config[$key] = array();
                 }
 
-                $config[$key] = $this->_merge($config[$key], $this->_include($newPath . '.php'));
+                $config[$key] = $this->_merge(
+                    $config[$key], $this->_include( $newPath . '.php' )
+                );
             }
         }
 
@@ -231,10 +233,9 @@ class Mumsys_Config_File
      */
     protected function _merge( array $left, array $right )
     {
-        foreach ( $right as $key => $value )
-        {
-            if ( isset($left[$key]) && is_array($left[$key]) && is_array($value) ) {
-                $left[$key] = $this->_merge($left[$key], $value);
+        foreach ( $right as $key => $value ) {
+            if ( isset( $left[$key] ) && is_array( $left[$key] ) && is_array( $value ) ) {
+                $left[$key] = $this->_merge( $left[$key], $value );
             } else {
                 $left[$key] = $value;
             }
@@ -253,7 +254,7 @@ class Mumsys_Config_File
      * */
     protected function _include( $file )
     {
-        if ( !isset($this->_incCache[$file]) ) {
+        if ( !isset( $this->_incCache[$file] ) ) {
             $this->_incCache[$file] = include $file;
         }
 
@@ -272,12 +273,12 @@ class Mumsys_Config_File
      */
     protected function _replace( $config, $path, $value )
     {
-        if ( ( $current = array_shift($path) ) !== null ) {
-            if ( isset($config[$current]) ) {
-                $config[$current] = $this->_replace($config[$current], $path, $value);
-            } else {
-                $config[$current] = $this->_replace(array(), $path, $value);
+        if ( ( $current = array_shift( $path ) ) !== null ) {
+            $_ccur = array();
+            if ( isset( $config[$current] ) ) {
+                $_ccur = $config[$current];
             }
+            $config[$current] = $this->_replace( $_ccur, $path, $value );
 
             return $config;
         }
@@ -299,7 +300,7 @@ class Mumsys_Config_File
      */
     public function load( $appKey = 'mumsys' )
     {
-        throw new Mumsys_Config_Exception('Not implemented yet.');
+        throw new Mumsys_Config_Exception( 'Not implemented yet.' );
     }
 
 }

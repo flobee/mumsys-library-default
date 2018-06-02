@@ -61,11 +61,11 @@ class Mumsys_Cookie_Memory
      */
     public function getCookie( $key = null, $default = null )
     {
-        if ( isset($this->_cookie) && $key === null ) {
+        if ( isset( $this->_cookie ) && $key === null ) {
             return $this->_cookie;
         }
 
-        if ( isset($this->_cookie[$key]) ) {
+        if ( isset( $this->_cookie[$key] ) ) {
             $default = $this->_cookie[$key];
         }
 
@@ -109,9 +109,9 @@ class Mumsys_Cookie_Memory
      *
      * @return boolean True on success of false on failure.
      */
-    public function setRawCookie( string $key, string $value = '', int $expire = 0,
-        string $path = '', string $domain = '', bool $secure = false,
-        bool $httponly = false ): bool
+    public function setRawCookie( string $key, string $value = '',
+        int $expire = 0, string $path = '', string $domain = '',
+        bool $secure = false, bool $httponly = false ): bool
     {
         $this->_cookie[$key] = $value;
 
@@ -136,8 +136,8 @@ class Mumsys_Cookie_Memory
     public function unsetCookie( string $key, string $path = '',
         string $domain = '', bool $secure = false, bool $httponly = false ): bool
     {
-        if ( isset($this->_cookie[$key]) ) {
-            unset($this->_cookie[$key]);
+        if ( isset( $this->_cookie[$key] ) ) {
+            unset( $this->_cookie[$key] );
         }
 
         return true;
@@ -151,7 +151,7 @@ class Mumsys_Cookie_Memory
      */
     public function clear(): bool
     {
-        unset($this->_cookie);
+        unset( $this->_cookie );
         $this->_cookie = array();
 
         return true;
