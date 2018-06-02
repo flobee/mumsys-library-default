@@ -5,11 +5,11 @@
  */
 return array(
     'config' => array(
-        '# localhost',
-        'Host' => 'localhost',
-        'HostName' => 'localhost',
+        '# otherhost',
+        'Host' => 'otherhost',
+        '# HostName' => 'localhost',
         'Port' => '22',
-        'IdentityFile' => '~/.ssh/id_rsa',
+        'IdentityFile' => true,
         'PreferredAuthentications' => 'publickey',
         'Protocol' => '2',
     ),
