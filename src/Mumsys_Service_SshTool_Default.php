@@ -263,11 +263,11 @@ class Mumsys_Service_SshTool_Default
      */
     public function deploy(): void
     {
-        foreach ( $this->_configs as $host => $cfg ) {
+        foreach ( $this->_configs as $cfg ) {
             if ( isset( $cfg['deploy'] ) && $cfg['deploy'] ) {
-                $locationIDFile = $this->_getIdentityLocation( $cfg['config'] );
-                $locationIDFilePub = $locationIDFile . '.pub';
-                $pathIDFile = dirname( $locationIDFile );
+                $locIDFile = $this->_getIdentityLocation( $cfg['config'] );
+                $locIDFilePub = $locIDFile . '.pub';
+                $pathIDFile = dirname( $locIDFile );
 
                 foreach ( $cfg['deploy'] as $targetHost => $listIdFiles ) {
                     $configList = array();
@@ -282,8 +282,8 @@ class Mumsys_Service_SshTool_Default
                                     break;
 
                                 case 'IdentityFile':
-                                    $configList[$locationIDFile] = $locationIDFile;
-                                    $configList[$locationIDFilePub] = $locationIDFilePub;
+                                    $configList[$locIDFile] = $locIDFile;
+                                    $configList[$locIDFilePub] = $locIDFilePub;
                                     break;
 
                                 default:
@@ -297,12 +297,12 @@ class Mumsys_Service_SshTool_Default
 
                             $addPub = false;
                             if ( $idSrc == 'IdentityFile' ) {
-                                $idSrc = $locationIDFile;
+                                $idSrc = $locIDFile;
                                 $addPub = true;
                             }
 
                             if ( $idTarget == 'IdentityFile' ) {
-                                $idTarget = $locationIDFile;
+                                $idTarget = $locIDFile;
                                 $addPub = true;
                             }
 
@@ -323,74 +323,6 @@ class Mumsys_Service_SshTool_Default
 
 
     /**
-     * Generates shell commands to deploy configured keys.
-     *
-     * @param array $configList List of src/target to deploy
-     * @param string $user Username to connect to target
-     * @param string $targetHost Host to connect to
-     */
-    private function _deployExecute( array $configList, string $user,
-        string $targetHost ): void
-    {
-        foreach ( $configList as $src => $target ) {
-            echo "scp $src $user@$targetHost:$target" . PHP_EOL;
-        }
-    }
-
-//
-//    /**
-//     * Revoke a list of public/private keys at the remote server.
-//     * I should also remokes the pub keys from the known hosts.
-//     */
-//    public function revoke()
-//    {
-//        foreach ( $this->_configs as $targetHost => $cfg ) {
-//            if ( isset( $cfg['revoke'] ) && $cfg['revoke'] ) {
-//                foreach ( $cfg['revoke'] as $file ) {
-//                    $target = array();
-//
-//                    if ( $file == 'IdentityFile' ) {
-//                        $target[0] = $this->_globalIdenittyFile;
-//                        $target[1] = $this->_globalIdenittyFile . '.pub';
-//                    } else {
-//                        $target[] = $file;
-//                    }
-//
-//                    $targetUser = $this->_getUserForHost($targetHost);
-//
-//                    $this->_revokeExecute( $target, $targetUser, $targetHost );
-//                }
-//            }
-//        }
-//    }
-//
-//
-//    /**
-//     * Removes target key and trys to remove pub key from authorised keys and
-//     * trys to remove from known hosts.
-//     *
-//     * //sed -i.bak '/REGEX_MATCHING_KEY/d' ~/.ssh/authorized_keys
-//      // sed -i "s#`cat ~/.ssh/my/id_rsa_fb_2018.pub`##" ~/.ssh/authorized_keys
-//      // or: ssh u@h "sed -i 's#`cat ~/.ssh/my/id_rsa_fb_2018.pub`##' ~/.ssh/authorized_keys"
-//     * @param array $source
-//     * @param array $target
-//     * @param type $user
-//     * @param type $targetHost
-//     */
-//    private function _revokeExecute( array $target, $user, $targetHost )
-//    {
-//        foreach ( $target as $i => $location ) {
-//            if ( substr( $location, -4 ) == '.pub' ) {
-//                echo "ssh $user@$targetHost \"sed -i 's#`cat $location`##' \$HOME/.ssh/known_hosts\"" . PHP_EOL;
-//                echo "ssh $user@$targetHost \"sed -i 's#`cat $location`##' \$HOME/.ssh/authorized_keys\"" . PHP_EOL;
-//            }
-//
-//            echo "ssh $user@$targetHost \"rm  $location\"" . PHP_EOL;
-//        }
-//    }
-//
-
-    /**
      * Register/ authorise public keys at the target hosts.
      */
     public function register(): void
@@ -399,9 +331,8 @@ class Mumsys_Service_SshTool_Default
 
             if ( isset( $cfg['register'] ) && $cfg['register'] ) {
 
-                $locationIDFile = $this->_getIdentityLocation( $cfg['config'] );
-                $locationIDFilePub = $locationIDFile . '.pub';
-                $pathIDFile = dirname( $locationIDFile );
+                $locIDFile = $this->_getIdentityLocation( $cfg['config'] );
+                $locIDFilePub = $locIDFile . '.pub';
 
                 foreach ( $cfg['register'] as $targetHost => $listPubFiles ) {
 
@@ -426,7 +357,7 @@ class Mumsys_Service_SshTool_Default
                             {
                                 case '*':
                                 case 'IdentityFile':
-                                    $configList[$locationIDFilePub] = $locationIDFilePub;
+                                    $configList[$locIDFilePub] = $locIDFilePub;
                                     break;
 
                                 default:
@@ -439,6 +370,56 @@ class Mumsys_Service_SshTool_Default
                     $this->_registerExecute( $configList, $targetUser, $targetHost );
                 }
             }
+        }
+    }
+
+
+//    /**
+//     * Revoke a list of public/private keys at the remote server.
+//     * It should also removes the pub keys from the known hosts.
+//     */
+//    public function revoke()
+//    {
+//        foreach ( $this->_configs as $targetHost => $cfg ) {
+//            if ( isset( $cfg['revoke'] ) && $cfg['revoke'] ) {
+//                foreach ( $cfg['revoke'] as $file ) {
+//                    $target = array();
+//
+//                    if ( $file == 'IdentityFile' ) {
+//                        $target[0] = $this->_globalIdenittyFile;
+//                        $target[1] = $this->_globalIdenittyFile . '.pub';
+//                    } else {
+//                        $target[] = $file;
+//                    }
+//
+//                    $targetUser = $this->_getUserForHost($targetHost);
+//
+//                    $this->_revokeExecute( $target, $targetUser, $targetHost );
+//                }
+//            }
+//        }
+//    }
+//
+//
+
+
+    //
+    // --- protected or private methodes ---------------------------------------
+    //
+
+
+    /**
+     * Generates shell commands to deploy configured keys.
+     *
+     * @param array $configList List of src/target to deploy
+     * @param string $user Username to connect to target
+     * @param string $targetHost Host to connect to
+     */
+    private function _deployExecute( array $configList, string $user,
+        string $targetHost ): void
+    {
+        foreach ( $configList as $src => $target ) {
+            echo "scp $src $user@$targetHost:$target" . PHP_EOL;
         }
     }
 
@@ -468,8 +449,7 @@ class Mumsys_Service_SshTool_Default
      */
     private function _registerExecute( array $pubList, $user, $targetHost ): void
     {
-        foreach ( $pubList as $i => $location ) {
-
+        foreach ( $pubList as $location ) {
             if ( substr( $location, -4 ) == '.pub' ) {
                 // local  : awk '!seen[$0]++' auth_file > auth_file
                 // via ssh: awk '\!seen[\$0]++' auth_file | cat > auth_file
@@ -495,7 +475,34 @@ class Mumsys_Service_SshTool_Default
     }
 
 
-    // --- protected or private methodes ---------------------------------------
+//    /**
+//     * Removes target key and trys to remove pub key from authorised keys and
+//     * trys to remove from known hosts.
+//     *
+//     * //sed -i.bak '/REGEX_MATCHING_KEY/d' ~/.ssh/authorized_keys
+//      // sed -i "s#`cat ~/.ssh/my/id_rsa_fb_2018.pub`##" ~/.ssh/authorized_keys
+//      // or: ssh u@h "sed -i 's#`cat ~/.ssh/my/id_rsa_fb_2018.pub`##' ~/.ssh/authorized_keys"
+//     * @param array $source
+//     * @param array $target
+//     * @param type $user
+//     * @param type $targetHost
+//     */
+//    private function _revokeExecute( array $target, $user, $targetHost )
+//    {
+//        foreach ( $target as $i => $location ) {
+//            if ( substr( $location, -4 ) == '.pub' ) {
+//                echo "ssh $user@$targetHost \"sed -i 's#`cat $location`##' \$HOME/.ssh/known_hosts\"" . PHP_EOL;
+//                echo "ssh $user@$targetHost \"sed -i 's#`cat $location`##' \$HOME/.ssh/authorized_keys\"" . PHP_EOL;
+//            }
+//
+//            echo "ssh $user@$targetHost \"rm  $location\"" . PHP_EOL;
+//        }
+//    }
+
+
+    //
+    // --- helper --------------------------------------------------------------
+    //
 
     /**
      * Returns the location of the identity file if it was set.
@@ -588,7 +595,8 @@ class Mumsys_Service_SshTool_Default
 
 
     /**
-     * Check the path for the ssh config file if it exists and will be writeable.
+     * Check the path for the ssh config file if it exists and will be
+     * writeable.
      *
      * @param string $path The path to  be checked
      *
@@ -627,7 +635,6 @@ class Mumsys_Service_SshTool_Default
 
         $list = scandir( $this->_confsPath . DIRECTORY_SEPARATOR );
         natcasesort( $list );
-        $string = '';
         foreach ( $list as $file ) {
             if ( $file[0] === '.' ) {
                 continue;
