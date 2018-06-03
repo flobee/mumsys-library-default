@@ -1,3 +1,3 @@
 <?php
 
-return './path/to/my/id/file';
+return './path/to/my/global/id/file';

@@ -221,6 +221,8 @@ class Mumsys_Service_SshTool_DefaultTest
 
 
     /**
+     * Test to create a ssh config file.
+     *
      * @covers Mumsys_Service_SshTool_Default::create
      * @covers Mumsys_Service_SshTool_Default::_configToString
      * @covers Mumsys_Service_SshTool_Default::_getIdentityLocation
@@ -228,9 +230,8 @@ class Mumsys_Service_SshTool_DefaultTest
     public function testCreateAction()
     {
         $this->_object->init();
-
         $this->_object->create();
-        // in create() we will test deeply
+
         $this->assertTrue( file_exists( $this->_sshFile ) );
 
         $expectedA = '# localhost' . "\n"
@@ -243,23 +244,61 @@ class Mumsys_Service_SshTool_DefaultTest
             . "\n"
             . "# otherhost\n"
             . "Host otherhost\n"
-            . "# HostName localhost\n"
+            . "# HostName otherhost.com\n"
             . "Port 22\n"
-            . "IdentityFile ./path/to/my/id/file\n"
+            . "User otheruser\n"
+            . "IdentityFile ./path/to/my/global/id/file\n"
             . "PreferredAuthentications publickey\n"
             . "Protocol 2\n"
             . "\n"
-
+            . "# secondhost\n"
+            . "Host secondhost\n"
+            . "Port 22\n"
+            . "IdentityFile /goes/there/id_key\n"
+            . "PreferredAuthentications publickey\n"
+            . "Protocol 2\n"
+            . "\n"
         ;
         $actualA = file_get_contents( $this->_sshFile );
 
         ob_start();
         $this->_object->create( true );
         $actualB = ob_get_clean();
-        $expectedB = '# output for: ' . $this->_sshFile . PHP_EOL . $expectedA . PHP_EOL;
+        $expectedB = '# output for: ' . $this->_sshFile . PHP_EOL
+            . $expectedA . PHP_EOL;
 
         $this->assertEquals( $expectedA, $actualA );
         $this->assertEquals( $expectedB, $actualB );
+    }
+
+     /**
+     * Test to create a ssh config file.
+     *
+     * @covers Mumsys_Service_SshTool_Default::deploy
+     * @covers Mumsys_Service_SshTool_Default::_deployExecute
+     */
+    public function testDeployAction()
+    {
+        $this->_object->init();
+
+        ob_start();
+        $this->_object->deploy();
+        $actualA = ob_get_clean();
+        $expectedA = ''
+            . "scp ~/.ssh/id_rsa otheruser@otherhost:~/.ssh/id_rsa\n"
+            . "scp ~/.ssh/id_rsa.pub otheruser@otherhost:~/.ssh/id_rsa.pub\n"
+            . "scp /simple/test/copy/this/file otheruser@otherhost:/simple/test/copy/this/file\n"
+            . "scp ~/.ssh/* otheruser@otherhost:~/.ssh\n"
+            . "scp /this/keyfile otheruser@otherhost:~/.ssh/id_rsa\n"
+            . "scp /this/keyfile.pub otheruser@otherhost:~/.ssh/id_rsa.pub\n"
+            . "scp ~/.ssh/id_rsa flobee@secondhost:/goes/here\n"
+            . "scp ~/.ssh/id_rsa.pub flobee@secondhost:/goes/here.pub\n"
+            . "scp /this/id_rsa flobee@secondhost:/goes/there/id_key\n"
+            . "scp /this/id_rsa.pub flobee@secondhost:/goes/there/id_key.pub\n"
+            . "scp ~/.ssh/* flobee@secondhost:~/.ssh/keys/from/localhost\n"
+        ;
+
+        $this->assertEquals( $expectedA, $actualA );
     }
 
 }

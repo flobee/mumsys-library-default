@@ -71,6 +71,12 @@ class Mumsys_Service_SshTool_Default
      */
     private $_home;
 
+    /**
+     * Cuurent running user.
+     * @var string
+     */
+    private $_user;
+
 
     /**
      * Initialize the object
@@ -88,6 +94,10 @@ class Mumsys_Service_SshTool_Default
         $this->_home = './';
         if ( isset( $_SERVER['HOME'] ) && ($_home = (string) $_SERVER['HOME'] ) ) {
             $this->_home = $this->_checkPath( $_home );
+        }
+
+        if ( isset( $_SERVER['USER'] ) && ($_user = (string) $_SERVER['USER'] ) ) {
+            $this->_user = $_user;
         }
 
         if ( $outFile ) {
@@ -145,7 +155,8 @@ class Mumsys_Service_SshTool_Default
             throw new Mumsys_Service_Exception( $mesg );
         }
 
-        $this->_globalIdenittyFile = include $this->_confsPath . '/../global/identityFile.php';
+        $this->_globalIdenittyFile = include $this->_confsPath
+            . '/../global/identityFile.php';
     }
 
 
@@ -207,88 +218,92 @@ class Mumsys_Service_SshTool_Default
     }
 
 
-//    /**
-//     * Deploy/publish key files based on given config.
-//     *
-//     * It outputs scp commands you may run or pipe them to shell for execution.
-//     */
-//    public function deploy()
-//    {
-//        foreach ( $this->_configs as $host => $cfg ) {
-//            if ( isset( $cfg['deploy'] ) && $cfg['deploy'] ) {
-//
-//                foreach ( $cfg['deploy'] as $targetHost => $listIdFiles ) {
-//
-//                    $configList = array();
-//
-//                    foreach ( $listIdFiles as $idSrc => $idTarget ) {
-//                        if ( is_numeric( $idSrc ) ) {
-//                            switch ( $idTarget )
-//                            {
-//                                case '*':
-//                                    $idSrc = dirname($this->_globalIdenittyFile) .'/*';
-//                                    $configList[$idSrc] = dirname($this->_globalIdenittyFile);//$idTarget
-//                                    break;
-//
-//                                case 'IdentityFile':
-//                                    /** @TODO */
-////                                    if ($cfg['config']['IdentityFile'] === true) {
-////
-////                                    }
-//                                    $configList[$this->_globalIdenittyFile] = $this->_globalIdenittyFile;
-//                                    $configList[$this->_globalIdenittyFile . '.pub'] = $this->_globalIdenittyFile . '.pub';
-//                                    break;
-//
-//                                default:
-//                                    $configList[$idTarget] = $idTarget;
-//                                    break;
-//                            }
-//                        } else {
-//
-//                            if ($idSrc == '*') {
-//                                $idSrc = dirname($this->_globalIdenittyFile) .'/*';
-//                            }
-//
-//                            $addPub = false;
-//                            if ( $idSrc == 'IdentityFile' ) {
-//                                $idSrc = $this->_globalIdenittyFile;
-//                                $addPub = true;
-//                            }
-//
-//                            if ( $idTarget == 'IdentityFile' ) {
-//                                $idTarget = $this->_globalIdenittyFile;
-//                                $addPub = true;
-//                            }
-//
-//                            $configList[$idSrc] = $idTarget;
-//
-//                            if ( $addPub ) {
-//                                $configList[$idSrc . '.pub'] = $idTarget . '.pub';
-//                            }
-//                        }
-//                    }
-//
-//                    if ( isset( $cfg['config']['User'] ) ) {
-//                        $targetUser = $cfg['config']['User'];
-//                    } else {
-//                        $targetUser = $_SERVER['USER'];
-//                    }
-//
-//                    $this->_deployExecute( $configList, $targetUser, $targetHost );
-//                }
-//            }
-//        }
-//    }
-//
-//
-//    private function _deployExecute( array $configList, $user,
-//        $targetHost )
-//    {
-//        foreach ( $configList as $src => $target ) {
-//            echo "scp $src $user@$targetHost:$target" . PHP_EOL;
-//        }
-//    }
-//
+    /**
+     * Deploy/ publish key files based on given config.
+     *
+     * It outputs scp commands you may run or pipe them to shell for execution.
+     */
+    public function deploy(): void
+    {
+        foreach ( $this->_configs as $host => $cfg ) {
+            if ( isset( $cfg['deploy'] ) && $cfg['deploy'] ) {
+                $locationIDFile = $this->_getIdentityLocation( $cfg['config'] );
+                $locationIDFilePub = $locationIDFile . '.pub';
+                $pathIDFile = dirname( $locationIDFile );
+
+                foreach ( $cfg['deploy'] as $targetHost => $listIdFiles ) {
+                    $configList = array();
+
+                    foreach ( $listIdFiles as $idSrc => $idTarget ) {
+                        if ( is_numeric( $idSrc ) ) {
+                            switch ( $idTarget )
+                            {
+                                case '*':
+                                    $idSrc = $pathIDFile .'/*';
+                                    $configList[$idSrc] = $pathIDFile;
+                                    break;
+
+                                case 'IdentityFile':
+                                    $configList[$locationIDFile] = $locationIDFile;
+                                    $configList[$locationIDFilePub] = $locationIDFilePub;
+                                    break;
+
+                                default:
+                                    $configList[$idTarget] = $idTarget;
+                                    break;
+                            }
+                        } else {
+                            if ($idSrc == '*') {
+                                $idSrc = $pathIDFile .'/*';
+                            }
+
+                            $addPub = false;
+                            if ( $idSrc == 'IdentityFile' ) {
+                                $idSrc = $locationIDFile;
+                                $addPub = true;
+                            }
+
+                            if ( $idTarget == 'IdentityFile' ) {
+                                $idTarget = $locationIDFile;
+                                $addPub = true;
+                            }
+
+                            $configList[$idSrc] = $idTarget;
+
+                            if ( $addPub ) {
+                                $configList[$idSrc . '.pub'] = $idTarget . '.pub';
+                            }
+                        }
+                    }
+
+                    if ( isset( $this->_configs[$targetHost]['config']['User'] ) ) {
+                        $targetUser = $this->_configs[$targetHost]['config']['User'];
+                    } else {
+                        $targetUser = $this->_user;
+                    }
+
+                    $this->_deployExecute( $configList, $targetUser, $targetHost );
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Generates shell commands to deploy configured keys.
+     *
+     * @param array $configList List of src/target to deploy
+     * @param string $user Username to connect to target
+     * @param string $targetHost Host to connect to
+     */
+    private function _deployExecute( array $configList, string $user,
+        string $targetHost ): void
+    {
+        foreach ( $configList as $src => $target ) {
+            echo "scp $src $user@$targetHost:$target" . PHP_EOL;
+        }
+    }
+
 //
 //    /**
 //     * Revoke a list of public/private keys at the remote server.
@@ -446,7 +461,8 @@ class Mumsys_Service_SshTool_Default
      *
      * @param array $config A host configuration ( $host['config'] )
      *
-     * @return string Configured IdentityFile  or global IdentityFile locatio
+     * @return string Location to the private key configured in IdentityFile or
+     * global IdentityFile location
      */
     public function _getIdentityLocation( array $config ): string
     {
@@ -579,7 +595,8 @@ class Mumsys_Service_SshTool_Default
 //                $prefix = str_replace( $this->_home, '~', $path );
 //            }
 //
-//            $result[ $prefix . DIRECTORY_SEPARATOR . $fileSrc ] = $prefix . DIRECTORY_SEPARATOR . $file;
+//            $result[ $prefix . DIRECTORY_SEPARATOR . $fileSrc ] = $prefix
+//              . DIRECTORY_SEPARATOR . $file;
 //        }
 //
 //        return $result;
