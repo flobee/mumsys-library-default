@@ -187,6 +187,44 @@ class Mumsys_Service_SshTool_Default
 
 
     /**
+     * Add an additional host configuration during runtime.
+     *
+     * Note: Use this methode after init() has performed.
+     *
+     * @param string $hostname Host to add.
+     * @param array $hostConfig Configuration of this host.
+     *
+     * @throws Mumsys_Service_Exception If config already set
+     */
+    public function addHostConfig( string $hostname, array $hostConfig ): void
+    {
+        if ( !$this->_configs ) {
+            $this->init();
+        }
+
+        if ( isset( $this->_configs[$hostname] ) ) {
+            $mesg = sprintf( 'Host "%1$s" already set', $hostname );
+            throw new Mumsys_Service_Exception( $mesg );
+        } else {
+            $this->_configs[$hostname] = $hostConfig;
+        }
+    }
+
+
+    /**
+     * Returns the list of initialised configs.
+     *
+     * Note: init() must be called first.
+     *
+     * @return array List of host configs
+     */
+    public function getHostConfigs(): array
+    {
+        return $this->_configs;
+    }
+
+
+    /**
      * Generates the ssh config file.
      *
      * If you want to revoke and/or register new keys you should do that first
@@ -276,12 +314,7 @@ class Mumsys_Service_SshTool_Default
                         }
                     }
 
-                    if ( isset( $this->_configs[$targetHost]['config']['User'] ) ) {
-                        $targetUser = $this->_configs[$targetHost]['config']['User'];
-                    } else {
-                        $targetUser = $this->_user;
-                    }
-
+                    $targetUser = $this->_getUserForHost( $targetHost );
                     $this->_deployExecute( $configList, $targetUser, $targetHost );
                 }
             }
@@ -323,11 +356,7 @@ class Mumsys_Service_SshTool_Default
 //                        $target[] = $file;
 //                    }
 //
-//                    if ( isset( $cfg['config']['User'] ) ) {
-//                        $targetUser = $cfg['config']['User'];
-//                    } else {
-//                        $targetUser = $_SERVER['USER'];
-//                    }
+//                    $targetUser = $this->_getUserForHost($targetHost);
 //
 //                    $this->_revokeExecute( $target, $targetUser, $targetHost );
 //                }
@@ -360,99 +389,111 @@ class Mumsys_Service_SshTool_Default
 //        }
 //    }
 //
-//
-//    /**
-//     * Revoke a list of public/private keys at the remote server.
-//     * I should also remokes the pub keys from the known hosts.
-//     */
-//    public function register()
-//    {
-//        foreach ( $this->_configs as $host => $cfg ) {
-//            if ( isset( $cfg['register'] ) && $cfg['register'] ) {
-//
-//                foreach ( $cfg['register'] as $targetHost => $listPubFiles ) {
-//
-//                    $configList = array();
-//
-//                    if ($listPubFiles ==='*') {
-//                        echo "$host: register the pub key of each config" . print_r($cfg['config'], true) . PHP_EOL;
-//                        continue;
-//                    }
-//
-//
-//
-//                    foreach ( $listPubFiles as $idSrc => $idTarget ) {
-//                        if ( is_numeric( $idSrc ) ) {
-//                            switch ( $idTarget )
-//                            {
-//                                case '*':
-//                                    $idSrc = dirname($this->_globalIdenittyFile) .'/*';
-//                                    $configList[$idSrc] = dirname($this->_globalIdenittyFile);//$idTarget
-//                                    break;
-//
-//                                case 'IdentityFile':
-//                                    /** @TODO */
-////                                    if ($cfg['config']['IdentityFile'] === true) {
-////
-////                                    }
-//                                    $configList[$this->_globalIdenittyFile] = $this->_globalIdenittyFile;
-//                                    $configList[$this->_globalIdenittyFile . '.pub'] = $this->_globalIdenittyFile . '.pub';
-//                                    break;
-//
-//                                default:
-//                                    $configList[$idTarget] = $idTarget;
-//                                    break;
-//                            }
-//                        } else {
-//
-//                            if ($idSrc == '*') {
-//                                $idSrc = dirname($this->_globalIdenittyFile) .'/*';
-//                            }
-//
-//                            $addPub = false;
-//                            if ( $idSrc == 'IdentityFile' ) {
-//                                $idSrc = $this->_globalIdenittyFile;
-//                                $addPub = true;
-//                            }
-//
-//                            if ( $idTarget == 'IdentityFile' ) {
-//                                $idTarget = $this->_globalIdenittyFile;
-//                                $addPub = true;
-//                            }
-//
-//                            $configList[$idSrc] = $idTarget;
-//
-//                            if ( $addPub ) {
-//                                $configList[$idSrc . '.pub'] = $idTarget . '.pub';
-//                            }
-//                        }
-//                    }
-//
-//                    if ( isset( $cfg['config']['User'] ) ) {
-//                        $targetUser = $cfg['config']['User'];
-//                    } else {
-//                        $targetUser = $_SERVER['USER'];
-//                    }
-//
-//                    $this->_registerExecute( $configList, $targetUser, $targetHost );
-//                }
-//            }
-//        }
-//    }
-//    // register before you revoke keys
-//    private function _registerExecute( array $target, $user, $targetHost )
-//    {
-//        foreach ( $target as $i => $location ) {
-//            if ( substr( $location, -4 ) == '.pub' ) {
-//
-//                // awk '!seen[$0]++' file.txt
-//                // local  : awk '!seen[$0]++' ~/.ssh/authorized_keys > ~/.ssh/authorized_keys
-//                // via ssh: awk '\!seen[\$0]++' ~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys
-//
-//                echo "cat $location | awk '{print \"#\\n# \"$3\"\\n\"$0}' | ssh $user@$targetHost \"cat >> ~/.ssh/authorized_keys && awk '\!seen[\\$0]++' ~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys\"" . PHP_EOL;
-//            }
-//        }
-//    }
+
+    /**
+     * Register/ authorise public keys at the target hosts.
+     */
+    public function register(): void
+    {
+        foreach ( $this->_configs as $host => $cfg ) {
+
+            if ( isset( $cfg['register'] ) && $cfg['register'] ) {
+
+                $locationIDFile = $this->_getIdentityLocation( $cfg['config'] );
+                $locationIDFilePub = $locationIDFile . '.pub';
+                $pathIDFile = dirname( $locationIDFile );
+
+                foreach ( $cfg['register'] as $targetHost => $listPubFiles ) {
+
+                    if ( $listPubFiles === '*' ) {
+                        $this->_registerAllConfigs();
+                        continue;
+                    }
+
+                    $configList = array();
+                    foreach ( $listPubFiles as $idSrc => $idTarget ) {
+                        if ( !is_numeric( $idSrc ) ) {
+                            $mesg = sprintf(
+                                'Invalid "%1$s" configuration found in host file '
+                                . '"%2$s" for target "%3$s"',
+                                'register',
+                                $host,
+                                $targetHost
+                            );
+                            throw new Mumsys_Service_Exception( $mesg );
+                        } else {
+                            switch ( $idTarget )
+                            {
+                                case '*':
+                                case 'IdentityFile':
+                                    $configList[$locationIDFilePub] = $locationIDFilePub;
+                                    break;
+
+                                default:
+                                    $configList[$idTarget] = $idTarget;
+                            }
+                        }
+                    }
+
+                    $targetUser = $this->_getUserForHost( $targetHost );
+                    $this->_registerExecute( $configList, $targetUser, $targetHost );
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Register/ authorise all public key which are configured in host files.
+     */
+    private function _registerAllConfigs(): void
+    {
+        $pubList = $this->_getAllPublicKeysByHosts();
+        foreach ( $pubList as $targetHost => $pubKey ) {
+            $targetUser = $this->_getUserForHost( $targetHost );
+            $this->_registerExecute( array($pubKey), $targetUser, $targetHost );
+        }
+    }
+
+
+    /**
+     * Register/ authorise public keys to allow access.
+     *
+     * Note: Use register() before you revoke keys!
+     *
+     * @param array $pubList List of public keys to register/ authorise at the
+     * target host
+     * @param string $user Username to connect to the target host
+     * @param type $targetHost Host to connect to the target host
+     */
+    private function _registerExecute( array $pubList, $user, $targetHost ): void
+    {
+        foreach ( $pubList as $i => $location ) {
+
+            if ( substr( $location, -4 ) == '.pub' ) {
+                // local  : awk '!seen[$0]++' auth_file > auth_file
+                // via ssh: awk '\!seen[\$0]++' auth_file | cat > auth_file
+
+                $authFile = '~/.ssh/authorized_keys';
+
+                $cmdLocal = array(
+                    "cat $location",
+                    // format the entry
+                    "awk '{print \"#\\n# \"$3\"\\n\"$0}'"
+                );
+                $cmdRemote = array(
+                    // puch to auth file
+                    'cat >> ' . $authFile,
+                    // scan, remove dups, re-set file
+                    'awk \'\!seen[\\$0]++\' ' . $authFile . ' | cat > ' . $authFile
+                );
+
+                echo implode( ' | ', $cmdLocal ) . " | ssh $user@$targetHost \""
+                . implode( ' && ', $cmdRemote ) . '"' . PHP_EOL;
+            }
+        }
+    }
+
 
     // --- protected or private methodes ---------------------------------------
 
@@ -476,6 +517,49 @@ class Mumsys_Service_SshTool_Default
         }
 
         return $idFile;
+    }
+
+
+    /**
+     * Returns the username for the target host.
+     *
+     * @param string $targetHost Hostname of the taget host
+     *
+     * @return string
+     */
+    private function _getUserForHost( string $targetHost ): string
+    {
+        if ( isset( $this->_configs[$targetHost]['config']['User'] ) ) {
+            $targetUser = $this->_configs[$targetHost]['config']['User'];
+        } else {
+            $targetUser = $this->_user;
+        }
+
+        return $targetUser;
+    }
+
+
+    /**
+     * Returns a list of host/public key from all configs.
+     *
+     * It will use the suffix '.pub' from the configured IdentityFile.
+     * If the files does not exists no error will be thrown
+     *
+     * @return array List of public keys from all host files
+     */
+    private function _getAllPublicKeysByHosts(): array
+    {
+        $pubList = array();
+        foreach ( $this->_configs as $host => $cfg ) {
+            $key = $this->_getIdentityLocation( $cfg['config'] );
+            if ( !$key ) {
+                continue;
+            }
+
+            $pubList[$host] = $key . '.pub';
+        }
+
+        return $pubList;
     }
 
 
@@ -550,56 +634,37 @@ class Mumsys_Service_SshTool_Default
             }
 
             $location = $this->_confsPath . '/' . $file;
-            if ( !is_readable( $location ) ) {
-                $mesg = sprintf(
-                    'Config file not found or wrong permission "%1$s"',
-                    $location
-                );
-                throw new Mumsys_Service_Exception( $mesg );
-            }
-
-            if ( ( $config = include $location ) === false ) {
-                $mesg = sprintf(
-                    'Config file could not be loaded "%1$s"', $location
-                );
-                throw new Mumsys_Service_Exception( $mesg );
-            }
-
+            $config = $this->_loadConfigFile( $location );
             $this->_configs[substr( $file, 0, -4 )] = $config;
         }
     }
 
-//    private function _scanKeyFiles(string $location='~/.ssh/my/id_rsa'): array
-//    {
-//        $result = array();
-//        $isHome = false;
-//        $path = dirname($location);
-//        if ( $path[0] === '~' ) {
-//            $path = str_replace( '~', $this->_home, $path );
-//            $isHome = true;
-//        }
-//
-//        $list = scandir( $path );
-//        foreach ( $list as $file ) {
-//            if ( $file[0] === '.' ) {
-//                continue;
-//            }
-//
-//            $fileSrc = $file;
-//            if ( is_dir( $path .DIRECTORY_SEPARATOR.$file ) ) {
-//                $fileSrc .= '/*';
-//            }
-//
-//            $prefix = $path;
-//            if ( $isHome ) {
-//                $prefix = str_replace( $this->_home, '~', $path );
-//            }
-//
-//            $result[ $prefix . DIRECTORY_SEPARATOR . $fileSrc ] = $prefix
-//              . DIRECTORY_SEPARATOR . $file;
-//        }
-//
-//        return $result;
-//    }
+
+    /**
+     * Load a host configuration file.
+     *
+     * @param string $location Location to the host config file
+     *
+     * @return array Configuration options of a host.php file
+     * @throws Mumsys_Service_Exception
+     */
+    private function _loadConfigFile( string $location ): array
+    {
+        if ( !is_readable( $location ) ) {
+            $mesg = sprintf(
+                'Config file not found or wrong permission "%1$s"', $location
+            );
+            throw new Mumsys_Service_Exception( $mesg );
+        }
+
+        if ( ( $config = include $location ) === false ) {
+            $mesg = sprintf(
+                'Config file could not be loaded "%1$s"', $location
+            );
+            throw new Mumsys_Service_Exception( $mesg );
+        }
+
+        return $config;
+    }
 
 }

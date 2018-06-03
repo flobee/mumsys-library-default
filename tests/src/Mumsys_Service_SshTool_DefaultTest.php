@@ -119,6 +119,7 @@ class Mumsys_Service_SshTool_DefaultTest
     /**
      * @covers Mumsys_Service_SshTool_Default::init
      * @covers Mumsys_Service_SshTool_Default::_loadConfigs
+     * @covers Mumsys_Service_SshTool_Default::_loadConfigFile
      */
     public function testInit()
     {
@@ -130,6 +131,7 @@ class Mumsys_Service_SshTool_DefaultTest
     /**
      * @covers Mumsys_Service_SshTool_Default::init
      * @covers Mumsys_Service_SshTool_Default::_loadConfigs
+     * @covers Mumsys_Service_SshTool_Default::_loadConfigFile
      */
     public function testInitException1()
     {
@@ -221,6 +223,30 @@ class Mumsys_Service_SshTool_DefaultTest
 
 
     /**
+     * @covers Mumsys_Service_SshTool_Default::addHostConfig
+     * @covers Mumsys_Service_SshTool_Default::getHostConfigs
+     */
+    public function testAddHostConfig()
+    {
+        $config = array(
+            'config' => array(
+                '# localhost2 for tests',
+                'Host' => 'localhost2',
+                '# HostName localhost2',
+            )
+        );
+
+        $this->_object->addHostConfig( 'localhost2', $config );
+        $actual = $this->_object->getHostConfigs();
+        $this->assertTrue( array_key_exists( 'localhost2', $actual ) );
+
+        $this->expectException( 'Mumsys_Service_Exception' );
+        $this->expectExceptionMessage( 'Host "localhost" already set' );
+        $this->_object->addHostConfig( 'localhost', $config );
+    }
+
+
+    /**
      * Test to create a ssh config file.
      *
      * @covers Mumsys_Service_SshTool_Default::create
@@ -254,7 +280,6 @@ class Mumsys_Service_SshTool_DefaultTest
             . "# secondhost\n"
             . "Host secondhost\n"
             . "Port 22\n"
-            . "IdentityFile /goes/there/id_key\n"
             . "PreferredAuthentications publickey\n"
             . "Protocol 2\n"
             . "\n"
@@ -271,11 +296,13 @@ class Mumsys_Service_SshTool_DefaultTest
         $this->assertEquals( $expectedB, $actualB );
     }
 
-     /**
+
+    /**
      * Test to create a ssh config file.
      *
      * @covers Mumsys_Service_SshTool_Default::deploy
      * @covers Mumsys_Service_SshTool_Default::_deployExecute
+     * @covers Mumsys_Service_SshTool_Default::_getUserForHost
      */
     public function testDeployAction()
     {
@@ -299,6 +326,70 @@ class Mumsys_Service_SshTool_DefaultTest
         ;
 
         $this->assertEquals( $expectedA, $actualA );
+    }
+
+
+    /**
+     * Test to register public key at target hosts.
+     *
+     * @covers Mumsys_Service_SshTool_Default::register
+     * @covers Mumsys_Service_SshTool_Default::_registerAllConfigs
+     * @covers Mumsys_Service_SshTool_Default::_registerExecute
+     * @covers Mumsys_Service_SshTool_Default::_getAllPublicKeysByHosts
+     * @covers Mumsys_Service_SshTool_Default::_getUserForHost
+     *
+     * @covers Mumsys_Service_SshTool_Default::addHostConfig
+     */
+    public function testRegisterAction()
+    {
+        $this->_object->init();
+
+        ob_start();
+        $this->_object->register();
+        $actualA = ob_get_clean();
+        $expectedA = ''
+            . 'cat ~/.ssh/id_rsa.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh flobee@localhost '
+            . '"cat >> ~/.ssh/authorized_keys && awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys '
+            . '| cat > ~/.ssh/authorized_keys"' . "\n"
+
+            . 'cat ./path/to/my/global/id/file.pub | awk \'{print "#\n# "$3"\n"$0}\' | '
+            . 'ssh otheruser@otherhost "cat >> ~/.ssh/authorized_keys && awk \'\!seen[\$0]++\' '
+            . '~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys"' . "\n"
+
+            . 'cat ~/.ssh/id_rsa.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh otheruser@otherhost "'
+            . 'cat >> ~/.ssh/authorized_keys && awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | '
+            . 'cat > ~/.ssh/authorized_keys"' . "\n"
+
+            . 'cat ~/.ssh/my/some_other.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh '
+            . 'otheruser@otherhost "cat >> ~/.ssh/authorized_keys && awk \'\!seen[\$0]++\' '
+            . '~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys"' . "\n"
+        ;
+
+        $this->assertEquals( $expectedA, $actualA );
+
+        $this->expectException( 'Mumsys_Service_Exception' );
+        $mesg = 'Invalid "register" configuration found in host file '
+            . '"localhost2" for target "host"';
+        $this->expectExceptionMessage( $mesg );
+
+        $hostConfig = array(
+            'config' => array(
+                '# localhost2 for tests',
+            ),
+            'register' => array(
+                'host' => array(
+                    'key' => 'value'
+                ),
+            ),
+        );
+        $this->_object->addHostConfig( 'localhost2', $hostConfig );
+        try {
+            ob_start();
+            $this->_object->register();
+        } catch ( Exception $e ) {
+            $actualB = ob_get_clean();
+            throw $e;
+        }
     }
 
 }

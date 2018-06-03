@@ -13,9 +13,31 @@ return array(
         'PreferredAuthentications' => 'publickey',
         'Protocol' => '2',
     ),
-    //
-    // publish key files based on given host (this host file) to the following
-    // target/s
+
+    /**
+     * Register/ authorise the following list of public keys at the target host
+     */
+    'register' => array(
+        // register to all configured host files which exists and use the
+        // "IdentityFile" config value to authorise the IdentityFile.pub key to
+        // each target. Deside using this case or the custom case (see below).
+        '*', // just enabled for unittests!
+
+        // custome way
+        'otherhost' => array(
+            // '*' and 'IdentityFile' are handled the same way. Use the
+            // IdentityFile.pub file to authorise the key.
+            '*',
+            'IdentityFile',
+            // some other pub key you may want to add
+            '~/.ssh/my/some_other.pub',
+        ),
+    ),
+
+    /**
+     * Deploy/ publish key files based on given host (this host file config) to
+     * the following target/s
+     */
     'deploy' => array(
 //        // Examle:
 //        'targethost' => array(
