@@ -77,6 +77,12 @@ class Mumsys_Service_SshTool_Default
      */
     private $_user;
 
+    /**
+     * List of commands generated
+     * @var array
+     */
+    private $_cmdList;
+
 
     /**
      * Initialize the object
@@ -374,33 +380,35 @@ class Mumsys_Service_SshTool_Default
     }
 
 
-//    /**
-//     * Revoke a list of public/private keys at the remote server.
-//     * It should also removes the pub keys from the known hosts.
-//     */
-//    public function revoke()
-//    {
-//        foreach ( $this->_configs as $targetHost => $cfg ) {
-//            if ( isset( $cfg['revoke'] ) && $cfg['revoke'] ) {
-//                foreach ( $cfg['revoke'] as $file ) {
-//                    $target = array();
-//
-//                    if ( $file == 'IdentityFile' ) {
-//                        $target[0] = $this->_globalIdenittyFile;
-//                        $target[1] = $this->_globalIdenittyFile . '.pub';
-//                    } else {
-//                        $target[] = $file;
-//                    }
-//
-//                    $targetUser = $this->_getUserForHost($targetHost);
-//
-//                    $this->_revokeExecute( $target, $targetUser, $targetHost );
-//                }
-//            }
-//        }
-//    }
-//
-//
+    /**
+     * Revoke a list of public/private keys at the target server.
+     *
+     * It should also removes the pub keys from the known hosts (incomplete).
+     */
+    public function revoke()
+    {
+        foreach ( $this->_configs as $targetHost => $cfg ) {
+            if ( isset( $cfg['revoke'] ) && $cfg['revoke'] ) {
+                foreach ( $cfg['revoke'] as $file ) {
+                    $fileList = array();
+
+                    switch ( $file )
+                    {
+                        case 'IdentityFile':
+                            $location = $this->_getIdentityLocation( $cfg['config'] );
+                            $fileList[0] = $location;
+                            $fileList[1] = $location . '.pub';
+                            break;
+                        default:
+                            $fileList[] = $file;
+                    }
+
+                    $targetUser = $this->_getUserForHost($targetHost);
+                    $this->_revokeExecute( $fileList, $targetUser, $targetHost );
+                }
+            }
+        }
+    }
 
 
     //
@@ -462,7 +470,7 @@ class Mumsys_Service_SshTool_Default
                     "awk '{print \"#\\n# \"$3\"\\n\"$0}'"
                 );
                 $cmdRemote = array(
-                    // puch to auth file
+                    // push to auth file
                     'cat >> ' . $authFile,
                     // scan, remove dups, re-set file
                     'awk \'\!seen[\\$0]++\' ' . $authFile . ' | cat > ' . $authFile
@@ -475,29 +483,33 @@ class Mumsys_Service_SshTool_Default
     }
 
 
-//    /**
-//     * Removes target key and trys to remove pub key from authorised keys and
-//     * trys to remove from known hosts.
-//     *
-//     * //sed -i.bak '/REGEX_MATCHING_KEY/d' ~/.ssh/authorized_keys
-//      // sed -i "s#`cat ~/.ssh/my/id_rsa_fb_2018.pub`##" ~/.ssh/authorized_keys
-//      // or: ssh u@h "sed -i 's#`cat ~/.ssh/my/id_rsa_fb_2018.pub`##' ~/.ssh/authorized_keys"
-//     * @param array $source
-//     * @param array $target
-//     * @param type $user
-//     * @param type $targetHost
-//     */
-//    private function _revokeExecute( array $target, $user, $targetHost )
-//    {
-//        foreach ( $target as $i => $location ) {
-//            if ( substr( $location, -4 ) == '.pub' ) {
-//                echo "ssh $user@$targetHost \"sed -i 's#`cat $location`##' \$HOME/.ssh/known_hosts\"" . PHP_EOL;
-//                echo "ssh $user@$targetHost \"sed -i 's#`cat $location`##' \$HOME/.ssh/authorized_keys\"" . PHP_EOL;
-//            }
-//
-//            echo "ssh $user@$targetHost \"rm  $location\"" . PHP_EOL;
-//        }
-//    }
+    /**
+     * Removes target key and trys to remove pub key from authorised keys and
+     * trys to remove from known hosts.
+     *
+     * //sed -i.bak '/REGEX_MATCHING_KEY/d' ~/.ssh/authorized_keys
+      // sed -i "s#`cat ~/.ssh/my/id_rsa_fb_2018.pub`##" ~/.ssh/authorized_keys
+      // or: ssh u@h "sed -i 's#`cat ~/.ssh/my/id_rsa_fb_2018.pub`##' ~/.ssh/authorized_keys"
+     * @param array $source
+     * @param array $target
+     * @param type $user
+     * @param type $targetHost
+     */
+    private function _revokeExecute( array $target, $user, $targetHost )
+    {
+        $authFile = '~/.ssh/authorized_keys';
+
+        foreach ( $target as $i => $location ) {
+            $cmdRemote = array();
+            if ( substr( $location, -4 ) == '.pub' ) {
+                $cmdRemote[] = "sed -i 's#`cat $location`##' ~/.ssh/authorized_keys";
+            }
+            $cmdRemote[] = 'rm -f ' . $location;
+
+            echo "ssh $user@$targetHost \"" . implode( ' ; ', $cmdRemote ) . '"' . PHP_EOL;
+        }
+
+    }
 
 
     //

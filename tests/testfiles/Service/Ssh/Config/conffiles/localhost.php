@@ -81,4 +81,15 @@ return array(
             '*' => '~/.ssh/keys/from/localhost',
         ),
     ),
+
+    /**
+     * Revoke and remove registered keys on the target host if exists.
+     * This should be a simple list of files to be revoked/ unregister
+     */
+    'revoke' => array(
+        'IdentityFile',
+        '~/.ssh/other_key_to_remove',
+        '~/.ssh/other_key_to_remove.pub',
+        '~/.ssh/my/id_rsa.pub',
+    )
 );

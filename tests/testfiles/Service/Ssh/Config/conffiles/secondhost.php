@@ -13,4 +13,7 @@ return array(
         'PreferredAuthentications' => 'publickey',
         'Protocol' => '2',
     ),
+    'revoke' => array(
+        '~/.ssh/my/id_rsa.pub',
+    ),
 );

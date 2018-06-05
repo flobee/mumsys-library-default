@@ -392,4 +392,29 @@ class Mumsys_Service_SshTool_DefaultTest
         }
     }
 
+
+    /**
+     * Test to register public key at target hosts.
+     *
+     * @covers Mumsys_Service_SshTool_Default::revoke
+     * @covers Mumsys_Service_SshTool_Default::_revokeExecute
+     * @covers Mumsys_Service_SshTool_Default::_getIdentityLocation
+     */
+    public function testRevokeAction()
+    {
+        $this->_object->init();
+        ob_start();
+        $this->_object->revoke();
+        $actual = ob_get_clean();
+        $expected = 'ssh flobee@localhost "rm -f ~/.ssh/id_rsa"' . PHP_EOL
+            .'ssh flobee@localhost "sed -i \'s#`cat ~/.ssh/id_rsa.pub`##\' ~/.ssh/authorized_keys ; rm -f ~/.ssh/id_rsa.pub"' . PHP_EOL
+            .'ssh flobee@localhost "rm -f ~/.ssh/other_key_to_remove"' . PHP_EOL
+            .'ssh flobee@localhost "sed -i \'s#`cat ~/.ssh/other_key_to_remove.pub`##\' ~/.ssh/authorized_keys ; rm -f ~/.ssh/other_key_to_remove.pub"' . PHP_EOL
+            .'ssh flobee@localhost "sed -i \'s#`cat ~/.ssh/my/id_rsa.pub`##\' ~/.ssh/authorized_keys ; rm -f ~/.ssh/my/id_rsa.pub"' . PHP_EOL
+            .'ssh flobee@secondhost "sed -i \'s#`cat ~/.ssh/my/id_rsa.pub`##\' ~/.ssh/authorized_keys ; rm -f ~/.ssh/my/id_rsa.pub"' . PHP_EOL
+        ;
+
+        $this->assertEquals( $expected, $actual );
+    }
+
 }
