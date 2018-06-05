@@ -70,7 +70,7 @@ class Mumsys_Html_Table
      * 	Array containing the table attributes used in the constructor
      * 	@var array
      */
-    private $_tblProps = array();
+    protected $_tblProps = array();
 
     /**
      * 	Array containing the content of headlines
