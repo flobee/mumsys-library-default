@@ -5,7 +5,7 @@
  * Mumsys_Html_Table Test
  */
 class Mumsys_Html_TableTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Html_Table

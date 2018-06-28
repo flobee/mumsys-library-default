@@ -3,9 +3,9 @@
 /**
  * Test class for Mumsys_GetOpts.
  */
-class Mumsys_GetOptsTest extends PHPUnit_Framework_TestCase
+class Mumsys_GetOptsTest
+    extends Mumsys_Unittest_Testcase
 {
-
     /**
      * @var Mumsys_GetOpts
      */

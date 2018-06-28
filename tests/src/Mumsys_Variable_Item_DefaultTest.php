@@ -5,7 +5,7 @@
  * Mumsys_Variable_Item_Default Test
  */
 class Mumsys_Variable_Item_DefaultTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Variable_Item_Default

@@ -30,7 +30,7 @@ function cbtest_function(Mumsys_Variable_Item_Interface $item, $data=null, $para
 /**
  * Mumsys_Variable_Manager_Default Test
  */
-class Mumsys_Variable_Manager_DefaultTest extends PHPUnit_Framework_TestCase
+class Mumsys_Variable_Manager_DefaultTest extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Variable_Manager_Default

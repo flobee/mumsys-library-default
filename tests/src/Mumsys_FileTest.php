@@ -3,11 +3,10 @@
 /**
  * Test class for File.
  */
-class Mumsys_FileTest extends PHPUnit_Framework_TestCase
+class Mumsys_FileTest
+    extends Mumsys_Unittest_Testcase
 {
-
     /**
-     *
      * @var Mumsys_File
      */
     protected $_object;

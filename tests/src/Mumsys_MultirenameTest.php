@@ -4,9 +4,9 @@
 /**
  * Test class for Mumsys_Multirename.
  */
-class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
+class Mumsys_MultirenameTest
+    extends Mumsys_Unittest_Testcase
 {
-
     /**
      * @var Mumsys_Multirename
      */
@@ -244,7 +244,7 @@ class Mumsys_MultirenameTest extends PHPUnit_Framework_TestCase
 
     /**
      * Tests for max. code coverage.
-     * 
+     *
      * @covers Mumsys_Multirename::run
      * @covers Mumsys_Multirename::__destruct
      * @covers Mumsys_Multirename::_getRelevantFiles

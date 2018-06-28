@@ -6,6 +6,7 @@
  */
 class Mumsys_Unittest_Testcase
     extends PHPUnit_Framework_TestCase
+    // extends PHPUnit\Framework\TestCase
 {
     private static $_methodExists = array();
 

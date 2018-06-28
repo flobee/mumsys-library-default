@@ -5,7 +5,7 @@
  * Mumsys_Variable_Item_Abstract Test
  */
 class Mumsys_Variable_Item_AbstractTest
-    extends PHPUnit_Framework_TestCase
+    extends Mumsys_Unittest_Testcase
 {
     /**
      * @var Mumsys_Variable_Item_Default
@@ -304,7 +304,7 @@ class Mumsys_Variable_Item_AbstractTest
         $expected = array('onEdit','onView', 'onSave');
         $this->assertEquals( $expected, $this->_object->statesGet() );
     }
-    
+
     /**
      * Version check
      */
