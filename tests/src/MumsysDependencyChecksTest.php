@@ -1,8 +1,9 @@
 <?php
 
-
-
-class DependencyChecksTest
+/**
+ * MumsysDependencyChecks Test
+ */
+class MumsysDependencyChecksTest
     extends Mumsys_Unittest_Testcase
 {
     /**
