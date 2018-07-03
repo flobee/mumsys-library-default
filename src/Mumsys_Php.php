@@ -713,6 +713,32 @@ class Mumsys_Php
     // --- Array methodes ------------------------------------------------------
     //
 
+
+    /**
+     * Combines two array.
+     * Like merge but replaces the values of right to the left and returns the new array.
+     *
+     * @param array $left Array with default values
+     * @param array $right Array to insert/replace to the left
+     *
+     * @return array The combined array
+     */
+    public static function array_combine( $left, $right )
+    {
+        foreach ( $right as $key => $value ) {
+            if ( is_array( $value ) ) {
+                if ( !isset( $left[$key] ) ) {
+                    $left[$key] = null;
+                }
+                $left[$key] = self::array_combine( $left[$key], $value );
+            } else {
+                $left[$key] = $value;
+            }
+        }
+        return $left;
+    }
+
+
     /**
      * Return the current element in an array by reference.
      *
