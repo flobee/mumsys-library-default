@@ -170,6 +170,7 @@ class Mumsys_GetOptsTest
             '--configuration' => '--configuration',
             '--bootstrap' => '--bootstrap',
             '--debug' => '--debug',
+            '--no-coverage' => '--no-coverage',
         );
 
         $this->assertEquals($expected, $actual);
@@ -217,7 +218,8 @@ class Mumsys_GetOptsTest
             . '--colors' . PHP_EOL
             . '--configuration' . PHP_EOL
             . '--bootstrap' . PHP_EOL
-            . '--debug'
+            . '--debug' . PHP_EOL
+            . '--no-coverage'
         ;
 
         $this->assertEquals($expected, $actual);
