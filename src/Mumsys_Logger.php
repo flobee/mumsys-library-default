@@ -421,8 +421,7 @@ class Mumsys_Logger
                             $msgOut = '';
                             $_cnt = 0;
                             reset($input);
-                            while ( list($key, $val) = each($input) )
-                            {
+                            foreach($input as $key => $val) {
                                 $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val.'");';
                                 $msgOut .= sprintf(
                                     $this->_logFormatMsg,
