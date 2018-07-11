@@ -30,9 +30,11 @@ class Mumsys_GetOptsTest
             '-f:', // f with input
             '--help|-h' => 'help option and this is the help info place',
             '--colors',
+            // may comes from phpunit setup
             '--configuration',
             '--bootstrap',
             '--debug',
+            '--no-coverage',
         );
         $input = $this->_input= array(
             'programToCall', // program to call
