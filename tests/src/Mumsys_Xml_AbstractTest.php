@@ -52,7 +52,8 @@ class Mumsys_Xml_AbstractTest
 
         $this->assertEquals($expected, $actual);
 
-        $this->setExpectedExceptionRegExp('Mumsys_Xml_Exception', '/(Invalid attribute value for key: "0": "array")/i');
+        $this->expectExceptionMessageRegExp('/(Invalid attribute value for key: "0": "array")/i');
+        $this->expectException('Mumsys_Xml_Exception');
         $input = array(array(1 => 2), array(2));
         $this->_object->attributesCreate($input);
     }

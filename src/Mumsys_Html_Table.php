@@ -64,7 +64,7 @@ class Mumsys_Html_Table
     /**
      * Version ID information
      */
-    const VERSION = '3.2.1';
+    const VERSION = '3.2.2';
 
     /**
      * 	Array containing the table attributes used in the constructor

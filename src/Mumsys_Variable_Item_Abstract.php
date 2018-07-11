@@ -1,20 +1,18 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Variable_Item_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2006 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
+ * @package     Library
+ * @subpackage  Variable
  * Created: 2006 based on Mumsys_Field, renew 2016
  */
-/* }}} */
 
 
 /**
@@ -25,8 +23,8 @@
  * This class only keeps minimum getter/setter like get/set name, value and error messages.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
+ * @package     Library
+ * @subpackage  Variable
  */
 abstract class Mumsys_Variable_Item_Abstract
     extends Mumsys_Variable_Abstract
@@ -35,7 +33,7 @@ abstract class Mumsys_Variable_Item_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.1.1';
+    const VERSION = '1.2.1';
 
     /**
      * List of initial incoming variable properties to be set on construction.
@@ -65,7 +63,7 @@ abstract class Mumsys_Variable_Item_Abstract
      * List of possible states to render the value.
      * @var array
      */
-    private $_states = array('onEdit', 'onView', 'onSave');
+    private $_states = array('onEdit', 'onView', 'onSave', 'before', 'after');
 
     /**
      * Current status to use filters or callbacks for.
@@ -94,12 +92,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function __toString()
     {
-        $return = $this->getValue();
-        if ($return === null) {
-            $return = '';
-        }
-
-        return $return;
+        return $this->getValue();
     }
 
 
@@ -108,11 +101,12 @@ abstract class Mumsys_Variable_Item_Abstract
      * Note: From a list of key/value pairs: this is the key used as name.
      *
      * @param mixed $default Default (null) return value if name was not set
+     *
      * @return string Item name key/identifier
      */
     public function getName( $default = null )
     {
-        return (isset($this->_input['name']) ? (string) $this->_input['name'] : $default);
+        return (isset( $this->_input['name'] ) ? (string) $this->_input['name'] : $default);
     }
 
 
@@ -123,7 +117,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function setName( $value )
     {
-        if ( isset($this->_input['name']) && $value === $this->_input['name'] ) {
+        if ( isset( $this->_input['name'] ) && $value === $this->_input['name'] ) {
             return;
         }
 
@@ -136,11 +130,12 @@ abstract class Mumsys_Variable_Item_Abstract
      * Returns the item value or null if not set
      *
      * @param mixed $default Default return value if value not exists
+     *
      * @return mixed|null Returns the item value or $default
      */
     public function getValue( $default = null )
     {
-        return (isset($this->_input['value'])) ? $this->_input['value'] : $default;
+        return (isset( $this->_input['value'] )) ? $this->_input['value'] : $default;
     }
 
 
@@ -167,12 +162,12 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function getErrorMessages()
     {
-        return ( isset($this->_input['errors']) ? (array) $this->_input['errors'] : array() );
+        return ( isset( $this->_input['errors'] ) ? (array) $this->_input['errors'] : array() );
     }
 
 
     /**
-     * Sets/ replaces an error message by given key.
+     * Sets an error message by given key. Existing key will be replaced.
      *
      * @param string $key Internal ID of the error (e.g: TOO_LONG, TOO_SHORT message)
      * @param string $value Error message value
@@ -250,42 +245,47 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function filterAdd( $state, $cmd, array $parameters = null )
     {
-        if ( $this->_initExternalType('filters') ) {
-            $this->_initExternalCalls('filters', $this->_input['filters']);
+        if ( $this->_initExternalType( 'filters' ) ) {
+            $this->_initExternalCalls( 'filters', $this->_input['filters'] );
         }
 
-        $this->_filterSet($state, $cmd, $parameters);
+        $this->_filterSet( $state, $cmd, $parameters );
     }
 
 
     /**
      * Returns a list of filter configurations.
      *
-     * If flag $all is set to true all filters will return otherwise just the
-     * filters of the current {@link $_state}.
+     * If flag $state is set to true all filters will return otherwise if string
+     * given: the selected filters will return or the filters of the current
+     * {@link $_state} (default).
      *
-     * @param boolean $all Flag to return all filters.
+     * @param true|string $state Value to return one, all (true) or the current
+     * filter like (onView, onEdit, before, after...).
      *
      * @return array List of filter rules or empty array if none exists.
      *
      * @throws Mumsys_Variable_Item_Exception If state not part of {@link $_states}
      */
-    public function filtersGet( $all = null )
+    public function filtersGet( $state = null )
     {
-        if ( $this->_initExternalType('filters') ) {
-            $this->_initExternalCalls('filters', $this->_input['filters']);
+        if ( $this->_initExternalType( 'filters' ) ) {
+            $this->_initExternalCalls( 'filters', $this->_input['filters'] );
         }
 
-        if ( $all === true ) {
-            $return = $this->_filters;
+        if ( $state === true ) {
+            return $this->_filters;
+        } else if ( is_string( $state ) ) {
+            $this->_stateCheck( $state );
+            $_state = $state;
         } else {
-            $this->_stateCheck($this->_state);
+            $_state = $this->_state;
+        }
 
-            if ( !isset($this->_filters[$this->_state]) ) {
-                $return = array();
-            } else {
-                $return = $this->_filters[$this->_state];
-            }
+        if ( !isset( $this->_filters[$_state] ) ) {
+            $return = array();
+        } else {
+            $return = $this->_filters[$_state];
         }
 
         return $return;
@@ -318,42 +318,47 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function callbackAdd( $state, $cmd, array $parameters = null )
     {
-        if ( $this->_initExternalType('callbacks') ) {
-            $this->_initExternalCalls('callbacks', $this->_input['callbacks']);
+        if ( $this->_initExternalType( 'callbacks' ) ) {
+            $this->_initExternalCalls( 'callbacks', $this->_input['callbacks'] );
         }
 
-        $this->_callbackSet($state, $cmd, $parameters);
+        $this->_callbackSet( $state, $cmd, $parameters );
     }
 
 
     /**
      * Returns a list of callback configurations.
      *
-     * If flag $all is set to true all callbacks will return otherwise just the
-     * filters of the current {@link $_state}.
+     * If flag $state is set to true all cllbacks will return otherwise if string
+     * given: the selected callbacks will return or the filters of the current
+     * {@link $_state} (default).
      *
-     * @param boolean $all Flag to return all callbacks.
+     * @param true|string $state Value to return one, all (true) or the current
+     * callback of current state like (onView, onEdit, before, after...).
      *
      * @return array List of callbacks rules or empty array if none exists.
      *
      * @throws Mumsys_Variable_Item_Exception If state not part of {@link $_states}
      */
-    public function callbacksGet( $all = null )
+    public function callbacksGet( $state = null )
     {
-        if ( $this->_initExternalType('callbacks') ) {
-            $this->_initExternalCalls('callbacks', $this->_input['callbacks']);
+        if ( $this->_initExternalType( 'callbacks' ) ) {
+            $this->_initExternalCalls( 'callbacks', $this->_input['callbacks'] );
         }
 
-        if ( $all === true ) {
-            $return = $this->_callbacks;
+        if ( $state === true ) {
+            return $this->_callbacks;
+        } else if ( is_string( $state ) ) {
+            $this->_stateCheck( $state );
+            $_state = $state;
         } else {
-            $this->_stateCheck($this->_state);
+            $_state = $this->_state;
+        }
 
-            if ( !isset($this->_callbacks[$this->_state]) ) {
-                $return = array();
-            } else {
-                $return = $this->_callbacks[$this->_state];
-            }
+        if ( !isset( $this->_callbacks[$_state] ) ) {
+            $return = array();
+        } else {
+            $return = $this->_callbacks[$_state];
         }
 
         return $return;
@@ -374,7 +379,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     private function _filterSet( $state, $cmd, $parameters = null )
     {
-        $this->_stateCheck($state);
+        $this->_stateCheck( $state );
         $this->_filters[$state][] = array(
             'cmd' => $cmd,
             'params' => $parameters,
@@ -394,7 +399,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     private function _callbackSet( $state, $cmd, $parameters = null )
     {
-        $this->_stateCheck($state);
+        $this->_stateCheck( $state );
         $this->_callbacks[$state][] = array(
             'cmd' => $cmd,
             'params' => $parameters,
@@ -408,6 +413,7 @@ abstract class Mumsys_Variable_Item_Abstract
      * in some cases.
      *
      * @param string $type Type of the variable to init: filters or callbacks
+     *
      * @return boolean Returns true to init existing callbacks from construction,
      * false if there are no callbacks or filters set
      */
@@ -418,7 +424,7 @@ abstract class Mumsys_Variable_Item_Abstract
             return false;
         }
 
-        if ( !isset($this->_input[$type]) ) {
+        if ( !isset( $this->_input[$type] ) ) {
             $this->$_type = array();
             return false;
         }
@@ -450,16 +456,16 @@ abstract class Mumsys_Variable_Item_Abstract
     private function _initExternalCalls( $type, $list )
     {
         foreach ( $this->_input[$type] as $state => $props ) {
-            if ( is_array($props) ) {
+            if ( is_array( $props ) ) {
                 foreach ( $props as $cmd => $params ) {
-                    if ( is_int($cmd) ) {
-                        $this->_setExternalCall($type, $state, $params);
+                    if ( is_int( $cmd ) ) {
+                        $this->_setExternalCall( $type, $state, $params );
                     } else {
-                        $this->_setExternalCall($type, $state, $cmd, $params);
+                        $this->_setExternalCall( $type, $state, $cmd, $params );
                     }
                 }
-            } else if ( is_string($props) ) {
-                $this->_setExternalCall($type, $state, $props);
+            } else if ( is_string( $props ) ) {
+                $this->_setExternalCall( $type, $state, $props );
             }
         }
     }
@@ -476,16 +482,17 @@ abstract class Mumsys_Variable_Item_Abstract
      *
      * @throws Mumsys_Variable_Item_Exception On errors
      */
-    private function _setExternalCall( $type, $state = null, $cmd = null, $params = null )
+    private function _setExternalCall( $type, $state = null, $cmd = null,
+        $params = null )
     {
         switch ( $type )
         {
             case 'filters':
-                $this->_filterSet($state, $cmd, $params);
+                $this->_filterSet( $state, $cmd, $params );
                 break;
 
             case 'callbacks':
-                $this->_callbackSet($state, $cmd, $params);
+                $this->_callbackSet( $state, $cmd, $params );
                 break;
         }
     }
@@ -514,13 +521,13 @@ abstract class Mumsys_Variable_Item_Abstract
     /**
      * Sets the current state for filters and callbacks.
      *
-     * @param string $state State to be set: 'onEdit','onView', 'onSave'
+     * @param string $state State to be set: 'onEdit','onView', 'onSave', 'before', 'after'
      *
      * @throws Mumsys_Variable_Item_Exception If state not part of {@link $_states}
      */
     public function stateSet( $state = 'onView' )
     {
-        $this->_stateCheck($state);
+        $this->_stateCheck( $state );
         $this->_state = $state;
     }
 
@@ -556,9 +563,9 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     private function _stateCheck( $state )
     {
-        if ( !in_array($state, $this->_states) ) {
-            $message = sprintf('State "%1$s" unknown', $state);
-            throw new Mumsys_Variable_Item_Exception($message);
+        if ( !in_array( $state, $this->_states ) ) {
+            $message = sprintf( 'State "%1$s" unknown', $state );
+            throw new Mumsys_Variable_Item_Exception( $message );
         }
     }
 

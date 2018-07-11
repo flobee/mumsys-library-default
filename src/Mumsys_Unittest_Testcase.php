@@ -1,123 +1,83 @@
 <?php
 
+/**
+ * Mumsys_Unittest_Testcase
+ * for MUMSYS / Multi User Management System (MUMSYS)
+ *
+ * @license GPL Version 3 http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright Copyright (c) 2015 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Unittest
+ */
+
 
 /**
- * Unittest test case class phpunit >= phpunit 3.4 and 3.6
+ * PhpUnit test case class as wrapper for PHPUnit_Framework_TestCase.
+ *
+ * Helper for deprecated or removed methodes to keep you informed.
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Unittest
  */
 class Mumsys_Unittest_Testcase
-    extends PHPUnit_Framework_TestCase
-    // extends PHPUnit\Framework\TestCase
+    extends PHPUnit\Framework\TestCase
 {
-    private static $_methodExists = array();
+    /**
+     * Version ID information.
+     */
+    const VERSION = '3.3.2';
+
+    /**
+     * Methods memory container
+     * @var array
+     */
+    private static $_methods = array();
 
 
     /**
-     * Checks if given method exists in current version of PHPUnit.
+     * Checks for available class versions.
      *
-     * @param string $method Method to check
-     * @return boolean
+     * Check for Mumsys_Abstract::getVersions()
+     *
+     * @param array $allList List of loaded class versions @see
+     * Mumsys_Abstract::getVersions()
+     * @param array $myList List of expected versions
+     *
+     * @return boolean Returns true on success
      */
-    private static function _checkMethod( $method )
+    protected function _checkVersionList( $allList, $myList )
     {
-        if ( !isset(self::$_methodExists[$method]) ) {
-            self::$_methodExists[$method] = method_exists('PHPUnit_Framework_TestCase', $method);
+        foreach ( $myList as $className => $version ) {
+            $test = ($allList[$className] === $version);
+            $message = 'Failure: ' . $className . ':' . $version . ' !== ' . $allList[$className];
+            $this->assertTrue( $test, $message );
         }
 
-        return self::$_methodExists[$method];
+        return true;
     }
 
+
     /**
-     * Calls setExpectedException() if available.
+     * Checks for available classes.
      *
-     * @deprecated since version 5.2.0
-     *
-     * @param string $exceptionName
-     * @param string $exceptionMessage
-     * @param integer|string $exceptionCode
-     * @throws Exception
+     * @param array $list List of classes, interfaces, abstract classes to be
+     * checked
+     * @param array $myList List of expected classes, interfaces...
+     * @return boolean True on success
      */
-    public function setExpectedException( $exceptionName, $exceptionMessage = '', $exceptionCode = null )
+    protected function _checkClassList( $list, $myList )
     {
-        if ( self::_checkMethod('setExpectedException') ) {
-            parent::setExpectedException($exceptionName, $exceptionMessage, $exceptionCode);
-        } else {
-            // no fallback at the moment!
-            throw new Exception(
-                'setExpectedException() is removed since phpunit >= 5.9*?. Use setExpectedExceptionRegExp()'
+        foreach ( $myList as $className ) {
+            $this->assertTrue(
+                isset( $list[$className] ), $className . ' not found/ exists'
             );
         }
-    }
 
-
-    /**
-     * Calls assertType() of parent class if available.
-     * Available from PHPUnit <= 3.5
-     *
-     * @param mixed $expected Expected value
-     * @param mixed $actual Actual value
-     * @param string $message Message to print if assertion is wrong
-     * @throws Exception If assertType() method is not available
-     */
-    public static function assertType( $expected, $actual, $message = '' )
-    {
-        if ( self::_checkMethod('assertType') ) {
-            parent::assertType($expected, $actual, $message);
-        } else {
-            throw new Exception('assertType() is removed since phpunit >= 3.5');
-        }
-    }
-
-
-    /**
-     * Calls assertType() or assertInternalType() depending on the PHPUnit version.
-     * Available from PHPUnit >= 3.5
-     *
-     * @param string $expected Expected value
-     * @param mixed $actual Actual value
-     * @param string $message Message to print if assertion is wrong
-     */
-    public static function assertInternalType( $expected, $actual, $message = '' )
-    {
-        if ( self::_checkMethod('assertInternalType') ) {
-            parent::assertInternalType($expected, $actual, $message);
-        } else {
-            parent::assertType($expected, $actual, $message);
-        }
-    }
-
-
-    /**
-     * Calls assertType() or assertInstanceOf() depending on the PHPUnit version.
-     * Available from PHPUnit >= 3.5
-     *
-     * @param string $expected Expected value
-     * @param mixed $actual Actual value
-     * @param string $message Message to print if assertion is wrong
-     */
-    public static function assertInstanceOf( $expected, $actual, $message = '' )
-    {
-        if ( self::_checkMethod('assertInstanceOf') ) {
-            parent::assertInstanceOf($expected, $actual, $message);
-        } else {
-            parent::assertType($expected, $actual, $message);
-        }
-    }
-
-
-    /**
-     * Calls assertEmpty() or assertThat() depending on the PHPUnit version.
-     * Available from PHPUnit >= 3.5
-     *
-     * @param mixed $actual Actual value
-     * @param string $message Message to print if assertion is wrong
-     */
-    public static function assertEmpty( $actual, $message = '' )
-    {
-        if ( self::_checkMethod('assertEmpty') ) {
-            parent::assertEmpty($actual, $message);
-        } else {
-            parent::assertThat($actual, parent::isEmpty(), $message);
-        }
+        return true;
     }
 
 }

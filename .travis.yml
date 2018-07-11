@@ -1,17 +1,17 @@
 language: php
 php:
 # Off because of phpunnit version and dependency issues
-#  - '5.4' 
+#  - '5.4'
 # Off because of phpunnit version and dependency issues
 #  - '5.5'
-  - '5.6'
+#  - '5.6'
   - '7.0'
   - '7.1'
-# bugos phpunit:  - '7.2'
+  - '7.2'
 # Off because its too upfront
 #  - nightly
-  
-before_script: 
+
+before_script:
 #  - pwd
 #  - cd /home/travis/build/flobee/mumsys-library-default
   - composer install

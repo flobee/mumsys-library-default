@@ -1,26 +1,19 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Lock
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright (c) 2006 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Lock
+ * @package     Library
+ * @subpackage  Lock
  * @version     3.0.0
  * 0.1 - Created: 2006-04-28
- * @filesource
- * -----------------------------------------------------------------------
  */
-/*}}}*/
 
 
 /**
@@ -29,10 +22,11 @@
  * processes should not go on to avoid conflicts.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Lock
+ * @package     Library
+ * @subpackage  Lock
  */
-class Mumsys_Lock extends Mumsys_Abstract
+class Mumsys_Lock
+    extends Mumsys_Abstract
 {
     /**
      * Version ID information
@@ -52,12 +46,13 @@ class Mumsys_Lock extends Mumsys_Abstract
      *
      * @param string $file Location to lock file
      */
-    public function __construct( $file='' )
+    public function __construct( $file = '' )
     {
-        if ($file) {
-            $this->_file = (string)$file;
+        if ( $file ) {
+            $this->_file = (string) $file;
         }
     }
+
 
     /**
      * Lock a situation.
@@ -67,14 +62,14 @@ class Mumsys_Lock extends Mumsys_Abstract
      */
     public function lock()
     {
-        if ( file_exists($this->_file) ) {
-            $msg = sprintf('Can not lock! Lock "%1$s" exists', $this->_file);
-            throw new Mumsys_Exception($msg);
+        if ( file_exists( $this->_file ) ) {
+            $msg = sprintf( 'Can not lock! Lock "%1$s" exists', $this->_file );
+            throw new Mumsys_Exception( $msg );
         }
 
-        if ( !@touch($this->_file) ) {
-            $message = sprintf('Locking failt for file "%1$s"', $this->_file);
-            throw new Mumsys_Exception($message);
+        if ( !@touch( $this->_file ) ) {
+            $message = sprintf( 'Locking failt for file "%1$s"', $this->_file );
+            throw new Mumsys_Exception( $message );
         }
 
         return true;
@@ -89,10 +84,10 @@ class Mumsys_Lock extends Mumsys_Abstract
      */
     public function unlock()
     {
-        if ( file_exists($this->_file) ) {
-            if ( !@unlink($this->_file) ) {
-                $message = sprintf('Unlock failt for: "%1$s"', $this->_file);
-                throw new Mumsys_Exception($message);
+        if ( file_exists( $this->_file ) ) {
+            if ( !@unlink( $this->_file ) ) {
+                $message = sprintf( 'Unlock failt for: "%1$s"', $this->_file );
+                throw new Mumsys_Exception( $message );
             }
         }
 
@@ -104,10 +99,18 @@ class Mumsys_Lock extends Mumsys_Abstract
      * Returns the status if a lock exists or not.
      *
      * @return boolean Returns true if lock exists or false for no lock.
+     *
+     * @throws Mumsys_Exception If target directory not exists. maybe mounted
+     * directory which must be reported
      */
     public function isLocked()
     {
-        if ( file_exists($this->_file) ) {
+        if ( !is_dir( dirname( $this->_file ) ) ) {
+            $message = sprintf( 'Lock directory "%1$s" not exists', $this->_file );
+            throw new Mumsys_Exception( $message );
+        }
+
+        if ( file_exists( $this->_file ) ) {
             return true;
         }
         return false;

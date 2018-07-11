@@ -99,8 +99,9 @@ class Mumsys_SessionTest extends Mumsys_Unittest_Testcase
         $this->assertEquals('Mumsys_Session 1.0.0', $this->_object->getVersion());
 
         // test register existing
-        $this->setExpectedException('Mumsys_Session_Exception', 'Session key "testkey" exists');
-        $this->_object->register('testkey', array('val5','val6'));
+        $this->expectException( 'Mumsys_Session_Exception' );
+        $this->expectExceptionMessage( 'Session key "testkey" exists' );
+        $this->_object->register( 'testkey', array('val5', 'val6') );
 
         echo 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
     }

@@ -159,7 +159,7 @@ class Mumsys_LoggerTest
 
     public function testLogException()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error_Notice');
+        $this->expectException('Mumsys_Exception');
         $this->_object->log('invalid log level', 99);
     }
 
@@ -197,18 +197,22 @@ class Mumsys_LoggerTest
     {
         $opts = $this->_opts;
         $opts['lineFormat'] = '';
-        $this->setExpectedException('Mumsys_Logger_Exception', 'Log format empty');
+        $this->expectException( 'Mumsys_Logger_Exception' );
+        $this->expectExceptionMessage( 'Log format empty' );
 
-        $object = new Mumsys_Logger($opts);
+        $object = new Mumsys_Logger( $opts );
     }
 
 
     public function testWrite()
     {
-        $this->setExpectedException('Mumsys_File_Exception',
-            'Can not write to file: "'.$this->_testsDir . '/tmp/Mumsys_LoggerTest_defaultfile.test". IsOpen: "Yes", Is writeable: "Yes".');
-        $this->_object->write($this);
+        $this->expectException( 'Mumsys_File_Exception' );
+        $this->expectExceptionMessage(
+            'Can not write to file: "' . $this->_testsDir
+            . '/tmp/Mumsys_LoggerTest_defaultfile.test". '
+            . 'IsOpen: "Yes", Is writeable: "Yes".'
+        );
+        $this->_object->write( $this );
     }
-
 
 }

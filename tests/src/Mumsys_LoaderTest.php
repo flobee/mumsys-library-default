@@ -44,15 +44,17 @@ class Mumsys_LoaderTest
 
     public function testLoadException1()
     {
-        $this->setExpectedException('Mumsys_Exception', 'Error! could not load: "Mumsys_NoExists".');
-        $o4 = $this->object->load('Mumsys_NoExists', array());
+        $this->expectException( 'Mumsys_Exception' );
+        $this->expectExceptionMessage( 'Error! could not load: "Mumsys_NoExists".' );
+        $o4 = $this->object->load( 'Mumsys_NoExists', array() );
     }
 
 
     public function testLoadException2()
     {
-        $this->setExpectedException('Mumsys_Exception', 'Error! could not load: "Mumsys_Templates_Base".');
-        $o4 = $this->object->load('Mumsys_Templates_Base', array());
+        $this->expectException( 'Mumsys_Exception' );
+        $this->expectExceptionMessage( 'Error! could not load: "Mumsys_Templates_Base".' );
+        $o4 = $this->object->load( 'Mumsys_Templates_Base', array() );
     }
 
 

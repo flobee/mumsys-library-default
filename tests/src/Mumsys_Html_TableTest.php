@@ -25,11 +25,11 @@ class Mumsys_Html_TableTest
      */
     protected function setUp()
     {
-        $this->_version = '3.2.1';
+        $this->_version = '3.2.2';
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Html_Table' => $this->_version,
-            'Mumsys_Xml_Abstract' => '3.2.1',
+            'Mumsys_Xml_Abstract' => '3.0.0',
         );
         $this->_colors = array('#ffffff', '#333333', '#666666', '#999999');
         $this->_object = new Mumsys_Html_Table(array('width' => '600'));
@@ -53,7 +53,8 @@ class Mumsys_Html_TableTest
     public function test_construct()
     {
         $this->_object = new Mumsys_Html_Table(array('width' => '600'));
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception', '/(No content found to create a table)/');
+        $this->expectException('Mumsys_Html_Exception');
+        $this->expectExceptionMessageRegExp('/(No content found to create a table)/');
         $actual = $this->_object->getSource();
     }
 
@@ -338,7 +339,8 @@ class Mumsys_Html_TableTest
         $this->assertEquals($expected2, $actual2);
         $this->assertEquals($expected3, $actual3);
 
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception', '/(Invalid row value to set col contents)/');
+        $this->expectException('Mumsys_Html_Exception');
+        $this->expectExceptionMessageRegExp('/(Invalid row value to set col contents)/');
         $this->_object->setColContents('str1', 'invalidRowID', 1);
     }
 
@@ -349,7 +351,8 @@ class Mumsys_Html_TableTest
      */
     public function testGetSetColContentsException2()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception', '/(Invalid column value to set col contents)/');
+        $this->expectException('Mumsys_Html_Exception');
+        $this->expectExceptionMessageRegExp('/(Invalid column value to set col contents)/');
         $this->_object->setColContents('str1', 1, 'invalidColID');
     }
 
@@ -404,7 +407,8 @@ class Mumsys_Html_TableTest
         $this->assertEquals(htmlentities($expected1), $this->_object->getSource());
 
         $regex = '/(Column key not exists to change a color for rows: "3")/';
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception', $regex);
+        $this->expectException('Mumsys_Html_Exception');
+        $this->expectExceptionMessageRegExp($regex);
         $this->_object->setAltRowColor($this->_colors, 3);
         $this->_object->setContent($data1);
         $this->_object->toHtml();
@@ -422,9 +426,9 @@ class Mumsys_Html_TableTest
             array('id' => 2),
         );
 
-        $this->_object->setHeadlines(true);
-        $this->_object->setContent($data1);
-        $this->_object->setAltRowColor($this->_colors);
+        $this->_object->setHeadlines( true );
+        $this->_object->setContent( $data1 );
+        $this->_object->setAltRowColor( $this->_colors );
         $actual1 = $this->_object->getHtml();
         $expected1 = '<table width="600">
 <thead>
@@ -440,11 +444,12 @@ class Mumsys_Html_TableTest
 </tr>
 <tr bgcolor="#666666">
    <td>2</td>
-   <td>row2</td>
+   <td>&nbsp;</td>
 </tr>
 </tbody>
 </table>
 ';
+        $this->assertEquals($expected1, $actual1);
     }
 
 
@@ -453,7 +458,8 @@ class Mumsys_Html_TableTest
      */
     public function testGetHtmlException()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception', '/(No content found to create a table)/');
+        $this->expectException('Mumsys_Html_Exception');
+        $this->expectExceptionMessageRegExp('/(No content found to create a table)/');
         $this->_object->getHtml();
     }
 
@@ -465,7 +471,8 @@ class Mumsys_Html_TableTest
      */
     public function testToHtmlException()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Html_Exception', '/(No content found to create a table)/');
+        $this->expectException('Mumsys_Html_Exception');
+        $this->expectExceptionMessageRegExp('/(No content found to create a table)/');
         $this->_object->toHtml();
     }
 
@@ -485,7 +492,7 @@ class Mumsys_Html_TableTest
 
         foreach ($this->_versions as $must => $value) {
             $this->assertTrue(isset($possible[$must]));
-            $this->assertTrue(($possible[$must] == $value));
+            $this->assertTrue(($possible[$must] == $value), $possible[$must] .' != ' . $value);
         }
     }
 

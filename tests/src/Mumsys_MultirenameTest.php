@@ -82,7 +82,7 @@ class Mumsys_MultirenameTest
 
         $this->_config['allowRoot'] = true;
         $message = 'Something which belongs to "root" is forbidden. Sorry! Use a different user!' . PHP_EOL;
-        $this->setExpectedException('Mumsys_Multirename_Exception', $message);
+        $this->expectException('Mumsys_Multirename_Exception', $message);
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
     }
 
@@ -171,7 +171,8 @@ class Mumsys_MultirenameTest
 
         // config dir error
         $msg = 'Invalid --from-config <your value> parameter. Path not found';
-        $this->setExpectedException('Mumsys_Multirename_Exception', $msg);
+        $this->expectException('Mumsys_Multirename_Exception');
+        $this->expectExceptionMessage($msg);
         $config['from-config'] = $this->_testsDir . '/tmp/dirNotExists';
         $this->_object->setSetup($config);
     }
@@ -188,7 +189,8 @@ class Mumsys_MultirenameTest
         $this->_object->delConfig($this->_config['path']);
 
         $msg = 'Could not read from-config in path: "'.$this->_testsDir . '/tmp"';
-        $this->setExpectedException('Mumsys_Multirename_Exception', $msg);
+        $this->expectException('Mumsys_Multirename_Exception');
+        $this->expectExceptionMessage($msg);
         $this->_object->setSetup($config);
     }
 
@@ -200,7 +202,8 @@ class Mumsys_MultirenameTest
         $config = $this->_config;
         unset($config['path']);
         $msg = 'Invalid --path <your value>';
-        $this->setExpectedException('Mumsys_Multirename_Exception', $msg);
+        $this->expectException('Mumsys_Multirename_Exception');
+        $this->expectExceptionMessage($msg);
         $this->_object->setSetup($config);
     }
 
@@ -212,7 +215,8 @@ class Mumsys_MultirenameTest
         $config = $this->_config;
         $config['test'] = 'yes';
         $msg = 'Invalid --test value';
-        $this->setExpectedException('Mumsys_Multirename_Exception', $msg);
+        $this->expectException('Mumsys_Multirename_Exception');
+        $this->expectExceptionMessage($msg);
         $this->_object->setSetup($config);
     }
 
@@ -224,7 +228,8 @@ class Mumsys_MultirenameTest
         $config = $this->_config;
         unset($config['fileextensions'],$config['undo']);
         $msg = 'Missing --fileextensions "<your value/s>"';
-        $this->setExpectedException('Mumsys_Multirename_Exception', $msg);
+        $this->expectException('Mumsys_Multirename_Exception');
+        $this->expectExceptionMessage($msg);
         $this->_object->setSetup($config);
     }
 
@@ -236,7 +241,8 @@ class Mumsys_MultirenameTest
         $config = $this->_config;
         unset($config['substitutions']);
         $msg = 'Missing --substitutions "<your value/s>"';
-        $this->setExpectedException('Mumsys_Multirename_Exception', $msg);
+        $this->expectException('Mumsys_Multirename_Exception');
+        $this->expectExceptionMessage($msg);
         $this->_object->setSetup($config);
     }
 
@@ -562,7 +568,8 @@ class Mumsys_MultirenameTest
         $_SERVER['HOME'] = '/root/';
         $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
         $message = 'Can not create dir: "/root/.multirename" mode: "755". Message: mkdir(): Permission denied';
-        $this->setExpectedException('Mumsys_FileSystem_Exception', $message);
+        $this->expectException('Mumsys_FileSystem_Exception');
+        $this->expectExceptionMessage($message);
         $this->_object->install();
     }
 
@@ -572,10 +579,10 @@ class Mumsys_MultirenameTest
      */
     public function testGetSetup()
     {
-        $actual = $this->_object->getSetup(true);
-        $expected = $this->_object->getSetup(false);
+        $actual = $this->_object->getSetup( true );
+        $expected = $this->_object->getSetup( false );
 
-        $this->assertEquals(count($expected), count($actual));
+        $this->assertEquals( count( $expected ), count( $actual ) );
     }
 
 }
