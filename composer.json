@@ -1,7 +1,7 @@
 {
     "name": "mumsys/library",
     "description": "PHP library for the MUMSYS project",
-    "license": "LGPL3",
+    "license": "LGPL-3.0-or-later",
     "type": "library",
     "keywords": ["php", "library", "web", "shell", "DTO", "DAO"],
     "homepage": "https://github.com/mumsys/library",
