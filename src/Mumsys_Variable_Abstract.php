@@ -9,8 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
+ * @package     Library
+ * @subpackage  Variable
  * Created: 2006 based on Mumsys_Field, renew 2016 PHP >= 7
  */
 
@@ -19,8 +19,8 @@
  * Abstact class for common features for the item and/or manager
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
+ * @package     Library
+ * @subpackage  Variable
  */
 abstract class Mumsys_Variable_Abstract
     extends Mumsys_Abstract
@@ -36,7 +36,6 @@ abstract class Mumsys_Variable_Abstract
      * PHP types and optional additional types for the item to set, for the
      * manger to be implemented.
      * @var array List of types
-     * @
      */
     protected static $_types = array(
         'string',

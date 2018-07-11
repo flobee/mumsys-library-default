@@ -29,6 +29,10 @@ class Mumsys_GetOptsTest
             '-b|--bits:', // l or list parameter with required value
             '-f:', // f with input
             '--help|-h' => 'help option and this is the help info place',
+            '--colors',
+            '--configuration',
+            '--bootstrap',
+            '--debug',
         );
         $input = $this->_input= array(
             'programToCall', // program to call
@@ -160,6 +164,10 @@ class Mumsys_GetOptsTest
             '-f' => '-f',
             '-h' => '--help',
             '--help' => '--help',
+            '--colors' => '--colors',
+            '--configuration' => '--configuration',
+            '--bootstrap' => '--bootstrap',
+            '--debug' => '--debug',
         );
 
         $this->assertEquals($expected, $actual);
@@ -202,7 +210,13 @@ class Mumsys_GetOptsTest
             . '-b|--bits <yourValue/s>' . PHP_EOL
             . '-f <yourValue/s>' . PHP_EOL
             . '--help|-h' . PHP_EOL
-            . "    help option and this is the help info place";
+            . "    help option and this is the help info place" . PHP_EOL
+            . PHP_EOL
+            . '--colors' . PHP_EOL
+            . '--configuration' . PHP_EOL
+            . '--bootstrap' . PHP_EOL
+            . '--debug'
+        ;
 
         $this->assertEquals($expected, $actual);
     }

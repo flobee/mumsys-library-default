@@ -695,7 +695,7 @@ class Mumsys_Multirename
 
         $history = $this->_getActionHistory($this->_config['path'], -1);
 
-        if (count($history) > $this->_historySize) {
+        if ($history && count($history) > $this->_historySize) {
             array_shift($history);
             $this->logger->log('History size exceed. Oldest entry droped', 6);
         }

@@ -372,6 +372,10 @@ class Mumsys_Logger
                 $datesting = date($this->_timeFormat, time());
             }
 
+            if (!isset($this->_loglevels[$level])) {
+                throw new Mumsys_Logger_Exception( 'Level "' . $level . '" not set' );
+            }
+
             $levelName = $this->_loglevels[$level];
 
             if ( ($isArray=is_array($input) ) )
