@@ -382,8 +382,7 @@ class Mumsys_Logger
             {
                 $_cnt = 0;
                 $message = '';
-                while ( list($key, $val) = each($input) )
-                {
+                foreach($input as $key => $val) {
                     //$tmp = 'ff_' . $_cnt . ' key: "' . $key . '", value: "' . $val.'"';
                     $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val.'");';
                     $message .= sprintf(
