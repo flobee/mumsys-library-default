@@ -316,7 +316,7 @@ class Mumsys_Variable_Manager_Default
 
             if ( $properties['name'] !== $itemKey ) {
                 $message = sprintf(
-                    'Item name "%1$s" an    d item address "%2$s" are not '
+                    'Item name "%1$s" and item address "%2$s" are not '
                     . 'identical. Drop item "name" or "address" in config',
                     $properties['name'], $itemKey
                 );
@@ -970,19 +970,24 @@ class Mumsys_Variable_Manager_Default
     /**
      * Returns the list of key/value pairs for all items.
      *
-     * @param boolean $byAddress If true the item address will be used as key
-     * otherwise the item name property (default)
+     * @todo 2018-07-11 construction has change. Now supports manipulation of the array
+     * key of each list
+     *
+     * @param string $strip Strip part of the address to get other array indexes as the
+     * default. E.g: "user.id" is the address but you want the "id"
+     * @param string $add Optional replacement string for the strip. Default: ""
      *
      * @return array List of key/value pairs
      */
-    public function toArray( $byAddress = false )
+    public function toArray( $strip = '', $add = '' )
     {
         $list = array();
         foreach ( $this->_items as $address => $item ) {
-            if ( $byAddress ) {
-                $list[$address] = $item->getValue();
+
+            if ( $strip && is_string( $strip ) ) {
+                $list[str_replace( $strip, $add, $address )] = $item->getValue();
             } else {
-                $list[$item->getName()] = $item->getValue();
+                $list[$address] = $item->getValue();
             }
         }
 
