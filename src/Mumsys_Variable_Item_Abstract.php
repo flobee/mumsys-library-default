@@ -88,11 +88,11 @@ abstract class Mumsys_Variable_Item_Abstract
     /**
      * Returns the item value for output.
      *
-     * @return string
+     * @return string Converts the value to string if differerent.
      */
     public function __toString()
     {
-        return $this->getValue();
+        return (string) $this->getValue();
     }
 
 
