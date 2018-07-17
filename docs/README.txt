@@ -36,6 +36,6 @@ Benefits:
 - For Web and shell
 
 
-    [![Build Status: stable](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=stable "Build Status: stable")](https://travis-ci.org/flobee/mumsys-library-default)
-    [![Build Status: testing](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=testing "Build Status: testing")](https://travis-ci.org/flobee/mumsys-library-default)
-    [![Build Status: unstable](https://travis-ci.org/flobee/mumsys-library-default.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/flobee/mumsys-library-default)
+    [![Build Status: stable](https://travis-ci.org/Mumsys/Library.svg?branch=stable "Build Status: stable")](https://travis-ci.org/mumsys/library)
+    [![Build Status: testing](https://travis-ci.org/Mumsys/Library.svg?branch=testing "Build Status: testing")](https://travis-ci.org/mumsys/library)
+    [![Build Status: unstable](https://travis-ci.org/mumsys/library.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/mumsys/library)
