@@ -36,6 +36,6 @@ Benefits:
 - For Web and shell
 
 
-    [![Build Status: stable](https://travis-ci.org/Mumsys/Library.svg?branch=stable "Build Status: stable")](https://travis-ci.org/mumsys/library)
-    [![Build Status: testing](https://travis-ci.org/Mumsys/Library.svg?branch=testing "Build Status: testing")](https://travis-ci.org/mumsys/library)
-    [![Build Status: unstable](https://travis-ci.org/Mumsys/Library.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/mumsys/library)
+    [![Build Status: stable](https://travis-ci.org/Mumsys/Library.svg?branch=stable "Build Status: stable")](https://travis-ci.org/Mumsys/Library)
+    [![Build Status: testing](https://travis-ci.org/Mumsys/Library.svg?branch=testing "Build Status: testing")](https://travis-ci.org/Mumsys/Library)
+    [![Build Status: unstable](https://travis-ci.org/Mumsys/Library.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/Mumsys/Library)
