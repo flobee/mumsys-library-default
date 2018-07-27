@@ -716,7 +716,10 @@ class Mumsys_Php
 
     /**
      * Combines two array.
-     * Like merge but replaces the values of right to the left and returns the new array.
+     *
+     * Like merge but replaces the values of right to the left and returns the
+     * new array. Go it? Left is the default, right is the new data we want and
+     * if exists on left replace with right.
      *
      * @param array $left Array with default values
      * @param array $right Array to insert/replace to the left
@@ -735,6 +738,7 @@ class Mumsys_Php
                 $left[$key] = $value;
             }
         }
+
         return $left;
     }
 
