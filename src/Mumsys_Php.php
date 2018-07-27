@@ -715,11 +715,11 @@ class Mumsys_Php
 
 
     /**
-     * Combines two array.
+     * Combines two arrays.
      *
-     * Like merge but replaces the values of right to the left and returns the
-     * new array. Go it? Left is the default, right is the new data we want and
-     * if exists on left replace with right.
+     * Like array_merge_* but replaces the values from the right to the left and
+     * returns the new array. Go it? Left is the default, right is the new data
+     * we want and if exists on left replace with right.
      *
      * @param array $left Array with default values
      * @param array $right Array to insert/replace to the left
@@ -729,10 +729,8 @@ class Mumsys_Php
     public static function array_combine( $left, $right )
     {
         foreach ( $right as $key => $value ) {
-            if ( is_array( $value ) ) {
-                if ( !isset( $left[$key] ) ) {
-                    $left[$key] = null;
-                }
+
+            if ( isset( $left[$key] ) && is_array( $left[$key] ) && is_array( $value ) ) {
                 $left[$key] = self::array_combine( $left[$key], $value );
             } else {
                 $left[$key] = $value;
