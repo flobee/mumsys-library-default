@@ -726,10 +726,9 @@ class Mumsys_Php
      *
      * @return array The combined array
      */
-    public static function array_combine( $left, $right )
+    public static function array_combine( array $left, array $right )
     {
         foreach ( $right as $key => $value ) {
-
             if ( isset( $left[$key] ) && is_array( $left[$key] ) && is_array( $value ) ) {
                 $left[$key] = self::array_combine( $left[$key], $value );
             } else {
