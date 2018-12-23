@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3e1d7a8c2957925a09624ad671bc4ad",
+    "content-hash": "2b250b3ff62b4be2ab800530859dbbec",
     "packages": [
         {
             "name": "flobee/spss",
@@ -4177,7 +4177,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "7.*"
+        "php": "7.2.* || 7.3.*"
     },
     "platform-dev": []
 }
