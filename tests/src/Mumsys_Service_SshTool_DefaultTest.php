@@ -58,6 +58,24 @@ class Mumsys_Service_SshTool_DefaultTest
         $this->_object = new Mumsys_Service_SshTool_Default(
             $this->_pathConfigs, $this->_sshFile
         );
+
+//        $testkeys = $basePath . '/testfiles/Service/Ssh/sshkeys';
+//        $configAdds = array(
+//            'localhostA' => array(
+//                'config' => array(
+//                    'Host' => 'localhostA',
+//                    'HostName 127.0.0.1',
+//                ),
+//                'deploy' => array(
+//                    $testkeys .'/sshkeyfileA',
+//                    $testkeys .'/sshkeyfileA.pub',
+//                ),
+//            ),
+//        );
+//
+//        foreach($configAdds as $host => $config) {
+//            $this->_object->addHostConfig( $host, $config );
+//        }
     }
 
 
@@ -110,7 +128,7 @@ class Mumsys_Service_SshTool_DefaultTest
 
         $this->expectException( 'Mumsys_Service_Exception' );
         $this->expectExceptionMessageRegExp( '/(Given config file path not found)/i' );
-        $objectA = new Mumsys_Service_SshTool_Default(
+        new Mumsys_Service_SshTool_Default(
             $this->_pathConfigs, $this->_sshFile . '/not/exists'
         );
     }
@@ -137,6 +155,7 @@ class Mumsys_Service_SshTool_DefaultTest
     {
         $this->expectException( 'Mumsys_Service_Exception' );
         $this->expectExceptionMessageRegExp( '/(Config file not found)/' );
+
         $this->_dynTestFile = $this->_pathEmptyDir . '/test.php';
         touch( $this->_dynTestFile );
         chmod( $this->_dynTestFile, 0222 );
@@ -290,7 +309,8 @@ class Mumsys_Service_SshTool_DefaultTest
         $this->_object->create( true );
         $actualB = ob_get_clean();
         $expectedB = '# output for: ' . $this->_sshFile . PHP_EOL
-            . $expectedA . PHP_EOL;
+            . $expectedA . PHP_EOL
+        ;
 
         $this->assertEquals( $expectedA, $actualA );
         $this->assertEquals( $expectedB, $actualB );
@@ -348,21 +368,21 @@ class Mumsys_Service_SshTool_DefaultTest
         $this->_object->register();
         $actualA = ob_get_clean();
         $expectedA = ''
-            . 'cat ~/.ssh/id_rsa.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh flobee@localhost '
-            . '"cat >> ~/.ssh/authorized_keys && awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys '
-            . '| cat > ~/.ssh/authorized_keys"' . "\n"
+            . 'cat ~/.ssh/id_rsa.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh flobee@localhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'ssh flobee@localhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys"' . PHP_EOL
+            . PHP_EOL
 
-            . 'cat ./path/to/my/global/id/file.pub | awk \'{print "#\n# "$3"\n"$0}\' | '
-            . 'ssh otheruser@otherhost "cat >> ~/.ssh/authorized_keys && awk \'\!seen[\$0]++\' '
-            . '~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys"' . "\n"
+            . 'cat ./path/to/my/global/id/file.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh otheruser@otherhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'ssh otheruser@otherhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys"' . PHP_EOL
+            . PHP_EOL
 
-            . 'cat ~/.ssh/id_rsa.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh otheruser@otherhost "'
-            . 'cat >> ~/.ssh/authorized_keys && awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | '
-            . 'cat > ~/.ssh/authorized_keys"' . "\n"
+            . 'cat ~/.ssh/id_rsa.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh otheruser@otherhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'ssh otheruser@otherhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys"' . PHP_EOL
+            . PHP_EOL
 
-            . 'cat ~/.ssh/my/some_other.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh '
-            . 'otheruser@otherhost "cat >> ~/.ssh/authorized_keys && awk \'\!seen[\$0]++\' '
-            . '~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys"' . "\n"
+            . 'cat ~/.ssh/my/some_other.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh otheruser@otherhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'ssh otheruser@otherhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys"' . PHP_EOL
+            . PHP_EOL
         ;
 
         $this->assertEquals( $expectedA, $actualA );
@@ -386,10 +406,12 @@ class Mumsys_Service_SshTool_DefaultTest
         try {
             ob_start();
             $this->_object->register();
+            $actualB = ob_get_clean();
         } catch ( Exception $e ) {
             $actualB = ob_get_clean();
             throw $e;
         }
+        echo $actualB; // if on failure
     }
 
 

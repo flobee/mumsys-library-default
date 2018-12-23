@@ -95,10 +95,13 @@ class Mumsys_Php_Globals
      */
     private static function _getEnvVar( $key, $default = null )
     {
-        if ( isset( $_SERVER[$key] ) ) {
-            $default = $_SERVER[$key];
-        } elseif ( isset( $_ENV[$key] ) ) {
-            $default = $_ENV[$key];
+        $server = & $_SERVER;
+        $env = & $_ENV;
+
+        if ( isset( $server[$key] ) ) {
+            $default = $server[$key];
+        } elseif ( isset( $env[$key] ) ) {
+            $default = $env[$key];
         } elseif ( ($x = getenv( $key ) ) ) {
             $default = $x;
         }
@@ -118,12 +121,14 @@ class Mumsys_Php_Globals
      */
     public static function getPostVar( $key = null, $default = null )
     {
-        if ( isset( $_POST ) && $key === null ) {
-            return $_POST;
+        $posts = & $_POST;
+
+        if ( isset( $posts ) && $key === null ) {
+            return $posts;
         }
 
-        if ( isset( $_POST[$key] ) ) {
-            $default = $_POST[$key];
+        if ( isset( $posts[$key] ) ) {
+            $default = $posts[$key];
         }
 
         return $default;
@@ -142,12 +147,14 @@ class Mumsys_Php_Globals
      */
     public static function getGetVar( $key = null, $default = null )
     {
-        if ( isset( $_GET ) && $key === null ) {
-            return $_GET;
+        $gets = & $_GET;
+
+        if ( isset( $gets ) && $key === null ) {
+            return $gets;
         }
 
-        if ( isset( $_GET[$key] ) ) {
-            $default = $_GET[$key];
+        if ( isset( $gets[$key] ) ) {
+            $default = $gets[$key];
         }
 
         return $default;
@@ -166,12 +173,14 @@ class Mumsys_Php_Globals
      */
     public static function getCookieVar( $key = null, $default = array() )
     {
-        if ( isset( $_COOKIE ) && $key === null ) {
-            return $_COOKIE;
+        $cookies = & $_COOKIE;
+
+        if ( isset( $cookies ) && $key === null ) {
+            return $cookies;
         }
 
-        if ( isset( $_COOKIE[$key] ) ) {
-            $default = $_COOKIE[$key];
+        if ( isset( $cookies[$key] ) ) {
+            $default = $cookies[$key];
         }
 
         return $default;
@@ -196,39 +205,43 @@ class Mumsys_Php_Globals
      */
     public static function getFilesVar( $key = null, $default = null )
     {
-        if ( isset( $_FILES ) ) {
-            if ( self::$_files === null ) {
-                $newFiles = array();
+        if ( ! isset( $_FILES ) ) {
+            return $default;
+        }
 
-                foreach ( $_FILES as $index => $file ) {
-                    if ( !is_array( $file['name'] ) ) {
-                        $newFiles[$index][] = $file;
-                        continue;
-                    }
+        if ( self::$_files === null ) {
+            $newFiles = array();
 
-                    foreach ( $file['name'] as $idx => $name ) {
-                        // Mumsys_Upload_Item_Default() ?
-                        $newFiles[$index][$idx] = array(
-                            'name' => $name,
-                            'type' => $file['type'][$idx],
-                            'tmp_name' => $file['tmp_name'][$idx],
-                            'error' => $file['error'][$idx],
-                            'size' => $file['size'][$idx]
-                        );
-                    }
+            foreach ( $_FILES as $index => $file ) {
+
+                if ( !is_array( $file['name'] ) ) {
+                    $newFiles[$index][] = $file;
+                    continue;
                 }
 
-                self::$_files = $newFiles;
+                foreach ( $file['name'] as $idx => $name ) {
+                    // Mumsys_Upload_Item_Default() ?
+                    $newFiles[$index][$idx] = array(
+                        'name' => $name,
+                        'type' => $file['type'][$idx],
+                        'tmp_name' => $file['tmp_name'][$idx],
+                        'error' => $file['error'][$idx],
+                        'size' => $file['size'][$idx]
+                    );
+                }
             }
 
-            if ( $key === null ) {
-                $default = self::$_files;
-            }
-
-            if ( isset( self::$_files[$key] ) ) {
-                $default = self::$_files[$key];
-            }
+            self::$_files = $newFiles;
         }
+
+        if ( $key === null ) {
+            $default = self::$_files;
+        }
+
+        if ( isset( self::$_files[$key] ) ) {
+            $default = self::$_files[$key];
+        }
+
 
         return $default;
     }

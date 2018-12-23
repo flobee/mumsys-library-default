@@ -97,19 +97,22 @@ class Mumsys_Service_SshTool_Default
      */
     public function __construct( string $configsPath = null, string $outFile = null )
     {
+        $serverHome = Mumsys_Php_Globals::getServerVar( 'HOME', null );
+        $serverUser = Mumsys_Php_Globals::getServerVar( 'USER', null );
+
         $this->_home = './';
-        if ( isset( $_SERVER['HOME'] ) && ($_home = (string) $_SERVER['HOME'] ) ) {
+        if ( isset( $serverHome ) && ($_home = (string) $serverHome ) ) {
             $this->_home = $this->_checkPath( $_home );
         }
 
-        if ( isset( $_SERVER['USER'] ) && ($_user = (string) $_SERVER['USER'] ) ) {
+        if ( isset( $serverUser ) && ($_user = (string) $serverUser ) ) {
             $this->_user = $_user;
         }
 
         if ( $outFile ) {
             if ( is_string( $outFile )
-                && is_dir( dirname( $outFile ) . DIRECTORY_SEPARATOR ) ) {
-
+                && is_dir( dirname( $outFile ) . DIRECTORY_SEPARATOR )
+            ) {
                 $genCfgFile = $outFile;
             } else {
                 $mesg = sprintf(
@@ -123,6 +126,8 @@ class Mumsys_Service_SshTool_Default
 
         $this->setConfigFile( $genCfgFile );
         $this->setConfigsPath( $configsPath );
+
+        $this->init();
     }
 
 
@@ -130,7 +135,7 @@ class Mumsys_Service_SshTool_Default
      * Initialize the object to be prepeard to run actions.
      *
      * You may use setConfigFile(), setConfigsPath() at a later time then init()
-     * must be called befor run create|register|revoke|deploy action.
+     * must be called befor running create|register|revoke|deploy action.
      */
     public function init(): void
     {
@@ -146,11 +151,11 @@ class Mumsys_Service_SshTool_Default
      */
     public function setConfigsPath( string $path = null )
     {
-        if ( !$path ) {
+        if ( $path === null || $path === '' ) {
             $path = $this->_home . '/.ssh/conffiles';
         }
 
-        if ($path[0] == '~') {
+        if ($path[0] === '~') {
             $path = str_replace( '~', $this->_home, $path );
         }
 
@@ -195,7 +200,7 @@ class Mumsys_Service_SshTool_Default
     /**
      * Add an additional host configuration during runtime.
      *
-     * Note: Use this methode after init() has performed.
+     * Note: Use this methode after init() was called.
      *
      * @param string $hostname Host to add.
      * @param array $hostConfig Configuration of this host.
@@ -204,10 +209,6 @@ class Mumsys_Service_SshTool_Default
      */
     public function addHostConfig( string $hostname, array $hostConfig ): void
     {
-        if ( !$this->_configs ) {
-            $this->init();
-        }
-
         if ( isset( $this->_configs[$hostname] ) ) {
             $mesg = sprintf( 'Host "%1$s" already set', $hostname );
             throw new Mumsys_Service_Exception( $mesg );
@@ -270,15 +271,19 @@ class Mumsys_Service_SshTool_Default
     public function deploy(): void
     {
         foreach ( $this->_configs as $cfg ) {
+
             if ( isset( $cfg['deploy'] ) && $cfg['deploy'] ) {
+
                 $locIDFile = $this->_getIdentityLocation( $cfg['config'] );
                 $locIDFilePub = $locIDFile . '.pub';
                 $pathIDFile = dirname( $locIDFile );
 
                 foreach ( $cfg['deploy'] as $targetHost => $listIdFiles ) {
+
                     $configList = array();
 
                     foreach ( $listIdFiles as $idSrc => $idTarget ) {
+
                         if ( is_numeric( $idSrc ) ) {
                             switch ( $idTarget )
                             {
@@ -294,8 +299,8 @@ class Mumsys_Service_SshTool_Default
 
                                 default:
                                     $configList[$idTarget] = $idTarget;
-                                    break;
                             }
+
                         } else {
                             if ($idSrc == '*') {
                                 $idSrc = $pathIDFile .'/*';
@@ -347,8 +352,14 @@ class Mumsys_Service_SshTool_Default
                         continue;
                     }
 
+//                    if ( !isset( $this->_configs[$targetHost] ) ) {
+//                        echo "# skip host '$targetHost'. Config for this host not available." . PHP_EOL;
+//                        continue;
+//                    }
+
                     $configList = array();
                     foreach ( $listPubFiles as $idSrc => $idTarget ) {
+
                         if ( !is_numeric( $idSrc ) ) {
                             $mesg = sprintf(
                                 'Invalid "%1$s" configuration found in host file '
@@ -358,6 +369,7 @@ class Mumsys_Service_SshTool_Default
                                 $targetHost
                             );
                             throw new Mumsys_Service_Exception( $mesg );
+
                         } else {
                             switch ( $idTarget )
                             {
@@ -388,12 +400,14 @@ class Mumsys_Service_SshTool_Default
     public function revoke()
     {
         foreach ( $this->_configs as $targetHost => $cfg ) {
+
             if ( isset( $cfg['revoke'] ) && $cfg['revoke'] ) {
+
                 foreach ( $cfg['revoke'] as $file ) {
+
                     $fileList = array();
 
-                    switch ( $file )
-                    {
+                    switch ( $file ) {
                         case 'IdentityFile':
                             $location = $this->_getIdentityLocation( $cfg['config'] );
                             $fileList[0] = $location;
@@ -427,7 +441,9 @@ class Mumsys_Service_SshTool_Default
         string $targetHost ): void
     {
         foreach ( $configList as $src => $target ) {
-            echo "scp $src $user@$targetHost:$target" . PHP_EOL;
+            echo "scp $src $user@$targetHost:$target" . PHP_EOL
+//            . PHP_EOL
+            ;
         }
     }
 
@@ -469,6 +485,7 @@ class Mumsys_Service_SshTool_Default
                     // format the entry
                     "awk '{print \"#\\n# \"$3\"\\n\"$0}'"
                 );
+
                 $cmdRemote = array(
                     // push to auth file
                     'cat >> ' . $authFile,
@@ -476,8 +493,14 @@ class Mumsys_Service_SshTool_Default
                     'awk \'\!seen[\\$0]++\' ' . $authFile . ' | cat > ' . $authFile
                 );
 
-                echo implode( ' | ', $cmdLocal ) . " | ssh $user@$targetHost \""
-                . implode( ' && ', $cmdRemote ) . '"' . PHP_EOL;
+                // single calls
+                echo implode( ' | ', $cmdLocal ) . " | ssh $user@$targetHost \"" . $cmdRemote[0] . '"' . PHP_EOL;
+                echo "ssh $user@$targetHost \"" . $cmdRemote[1] . '"' . PHP_EOL;
+                echo PHP_EOL;
+
+                // does not work. who can help?
+                //echo implode( ' | ', $cmdLocal ) . " | ssh $user@$targetHost \""
+                //    . implode( ' && ', $cmdRemote ) . '"' . PHP_EOL;
             }
         }
     }
@@ -497,9 +520,9 @@ class Mumsys_Service_SshTool_Default
      */
     private function _revokeExecute( array $target, $user, $targetHost )
     {
-        $authFile = '~/.ssh/authorized_keys';
+        //$authFile = '~/.ssh/authorized_keys';
 
-        foreach ( $target as $i => $location ) {
+        foreach ( $target as $location ) {
             $cmdRemote = array();
             if ( substr( $location, -4 ) == '.pub' ) {
                 $cmdRemote[] = "sed -i 's#`cat $location`##' ~/.ssh/authorized_keys";
@@ -641,10 +664,6 @@ class Mumsys_Service_SshTool_Default
      */
     private function _loadConfigs()
     {
-        if ( $this->_configs ) {
-            return;
-        }
-
         $list = scandir( $this->_confsPath . DIRECTORY_SEPARATOR );
         natcasesort( $list );
         foreach ( $list as $file ) {
