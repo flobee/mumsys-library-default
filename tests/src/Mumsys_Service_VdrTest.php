@@ -43,8 +43,8 @@ class Mumsys_Service_VdrTest
         }
         catch ( Exception $e ) {
             $logOptions = array('logfile' => $this->_logfile);
-            $logger = new Mumsys_Logger_File($logOptions);
-            $this->_context->registerLogger($logger);
+            $logger = new Mumsys_Logger_File( $logOptions );
+            $this->_context->registerLogger( $logger );
         }
 
         $this->_options = array();
@@ -90,8 +90,8 @@ class Mumsys_Service_VdrTest
         $actual2 = $this->_object->__destruct();
         $actual3 = $this->_object->isOpen();
 
-        $this->assertTrue($actual2);
-        $this->assertFalse($actual3);
+        $this->assertTrue( $actual2 );
+        $this->assertFalse( $actual3 );
     }
 
     /**
@@ -102,15 +102,15 @@ class Mumsys_Service_VdrTest
     {
         $this->_object->disconnect();
 
-         $this->_object = new Mumsys_Service_Vdr($this->_context);
+         $this->_object = new Mumsys_Service_Vdr( $this->_context );
 
         $actual1 = $this->_object->connect();
         $actual2 = $this->_object->disconnect();
         $actual3 = $this->_object->connect();
 
-        $this->assertTrue($actual1);
-        $this->assertTrue($actual2);
-        $this->assertTrue($actual3);
+        $this->assertTrue( $actual1 );
+        $this->assertTrue( $actual2 );
+        $this->assertTrue( $actual3 );
     }
 
 
@@ -161,7 +161,7 @@ class Mumsys_Service_VdrTest
     public function testDisconnect()
     {
         $actual2 = $this->_object->disconnect();
-        $this->assertTrue($actual2);
+        $this->assertTrue( $actual2 );
     }
 
 
@@ -173,14 +173,14 @@ class Mumsys_Service_VdrTest
     public function testExecute()
     {
         // epg data channel 2 (e.g. ZDF)
-        $actual2 = $this->_object->execute('LSTE', 2);
+        $actual2 = $this->_object->execute( 'LSTE', 2 );
 
         // list some recordings. this can end up in a tomeout first because vdr
         // caches the results which can be a huge list
-        $actual3 = $this->_object->execute('LSTR', 1);
+        $actual3 = $this->_object->execute( 'LSTR', 1 );
 
-        $this->assertTrue((count($actual2) >= 1));
-        $this->assertTrue( (count($actual3) == 1 ), 'cnt: '.count($actual3));
+        $this->assertTrue( (count( $actual2 ) >= 1) );
+        $this->assertTrue( (count( $actual3 ) == 1 ), 'cnt: '.count( $actual3 ) );
     }
 
 
@@ -191,10 +191,10 @@ class Mumsys_Service_VdrTest
     {
         $this->_object->disconnect();
         $regex = '/(Not connected)/i';
-        $this->expectException('Mumsys_Service_Exception');
-        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException( 'Mumsys_Service_Exception' );
+        $this->expectExceptionMessageRegExp( $regex );
 
-        $this->_object->execute('SCAN');
+        $this->_object->execute( 'SCAN' );
     }
 
 
@@ -243,7 +243,7 @@ class Mumsys_Service_VdrTest
             'RID' => '10',
         );
 
-        $this->assertEquals($expected, $actual1);
+        $this->assertEquals( $expected, $actual1 );
 
         $delete = false;
         try {
@@ -263,7 +263,7 @@ class Mumsys_Service_VdrTest
 
         }
 
-        $this->assertTrue($delete);
+        $this->assertTrue( $delete );
     }
 
 
@@ -431,8 +431,8 @@ class Mumsys_Service_VdrTest
         $this->_object->disconnect();
         $actual2 = $this->_object->isOpen();
 
-        $this->assertTrue($actual1);
-        $this->assertFalse($actual2);
+        $this->assertTrue( $actual1 );
+        $this->assertFalse( $actual2 );
     }
 
 }

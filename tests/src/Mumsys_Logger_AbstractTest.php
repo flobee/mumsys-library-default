@@ -91,7 +91,8 @@ class Mumsys_Logger_AbstractTest
         $_SERVER['REMOTE_USER'] = 'flobee';
         $object = new Mumsys_Logger_File( $opts );
 
-        unset( $opts['username'], $_SERVER['REMOTE_USER'],
+        unset(
+            $opts['username'], $_SERVER['REMOTE_USER'],
             $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'], $_SERVER['LOGNAME']
         );
         $object = new Mumsys_Logger_File( $opts );

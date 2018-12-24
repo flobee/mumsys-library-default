@@ -202,7 +202,6 @@ class Mumsys_Weather_Item_Unit_AbstractTest
             'weather.item.unit.default.code' => 'test key &"',
         );
 
-
         $this->assertEquals( $expected1, $actual1 );
         $this->assertEquals( $expected2, $actual2 );
     }

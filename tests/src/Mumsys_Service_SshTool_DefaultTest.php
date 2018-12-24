@@ -368,20 +368,28 @@ class Mumsys_Service_SshTool_DefaultTest
         $this->_object->register();
         $actualA = ob_get_clean();
         $expectedA = ''
-            . 'cat ~/.ssh/id_rsa.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh flobee@localhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
-            . 'ssh flobee@localhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'cat ~/.ssh/id_rsa.pub | awk \'{print "#\n# "$3"\n"$0}\' | '
+            . 'ssh flobee@localhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'ssh flobee@localhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | '
+            . 'cat > ~/.ssh/authorized_keys"' . PHP_EOL
             . PHP_EOL
 
-            . 'cat ./path/to/my/global/id/file.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh otheruser@otherhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
-            . 'ssh otheruser@otherhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'cat ./path/to/my/global/id/file.pub | awk \'{print "#\n# "$3"\n"$0}\' | '
+            . 'ssh otheruser@otherhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'ssh otheruser@otherhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | '
+            . 'cat > ~/.ssh/authorized_keys"' . PHP_EOL
             . PHP_EOL
 
-            . 'cat ~/.ssh/id_rsa.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh otheruser@otherhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
-            . 'ssh otheruser@otherhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'cat ~/.ssh/id_rsa.pub | awk \'{print "#\n# "$3"\n"$0}\' | '
+            . 'ssh otheruser@otherhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'ssh otheruser@otherhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | '
+            . 'cat > ~/.ssh/authorized_keys"' . PHP_EOL
             . PHP_EOL
 
-            . 'cat ~/.ssh/my/some_other.pub | awk \'{print "#\n# "$3"\n"$0}\' | ssh otheruser@otherhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
-            . 'ssh otheruser@otherhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | cat > ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'cat ~/.ssh/my/some_other.pub | awk \'{print "#\n# "$3"\n"$0}\' | '
+            . 'ssh otheruser@otherhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'ssh otheruser@otherhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | '
+            . 'cat > ~/.ssh/authorized_keys"' . PHP_EOL
             . PHP_EOL
         ;
 
@@ -429,11 +437,20 @@ class Mumsys_Service_SshTool_DefaultTest
         $this->_object->revoke();
         $actual = ob_get_clean();
         $expected = 'ssh flobee@localhost "rm -f ~/.ssh/id_rsa"' . PHP_EOL
-            .'ssh flobee@localhost "sed -i \'s#`cat ~/.ssh/id_rsa.pub`##\' ~/.ssh/authorized_keys ; rm -f ~/.ssh/id_rsa.pub"' . PHP_EOL
+
+            .'ssh flobee@localhost "sed -i \'s#`cat ~/.ssh/id_rsa.pub`##\' '
+            . '~/.ssh/authorized_keys ; rm -f ~/.ssh/id_rsa.pub"' . PHP_EOL
+
             .'ssh flobee@localhost "rm -f ~/.ssh/other_key_to_remove"' . PHP_EOL
-            .'ssh flobee@localhost "sed -i \'s#`cat ~/.ssh/other_key_to_remove.pub`##\' ~/.ssh/authorized_keys ; rm -f ~/.ssh/other_key_to_remove.pub"' . PHP_EOL
-            .'ssh flobee@localhost "sed -i \'s#`cat ~/.ssh/my/id_rsa.pub`##\' ~/.ssh/authorized_keys ; rm -f ~/.ssh/my/id_rsa.pub"' . PHP_EOL
-            .'ssh flobee@secondhost "sed -i \'s#`cat ~/.ssh/my/id_rsa.pub`##\' ~/.ssh/authorized_keys ; rm -f ~/.ssh/my/id_rsa.pub"' . PHP_EOL
+
+            .'ssh flobee@localhost "sed -i \'s#`cat ~/.ssh/other_key_to_remove.pub`##\' '
+            . '~/.ssh/authorized_keys ; rm -f ~/.ssh/other_key_to_remove.pub"' . PHP_EOL
+
+            .'ssh flobee@localhost "sed -i \'s#`cat ~/.ssh/my/id_rsa.pub`##\' '
+            . '~/.ssh/authorized_keys ; rm -f ~/.ssh/my/id_rsa.pub"' . PHP_EOL
+
+            .'ssh flobee@secondhost "sed -i \'s#`cat ~/.ssh/my/id_rsa.pub`##\' '
+            . '~/.ssh/authorized_keys ; rm -f ~/.ssh/my/id_rsa.pub"' . PHP_EOL
         ;
 
         $this->assertEquals( $expected, $actual );

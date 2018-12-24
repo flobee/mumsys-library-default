@@ -214,8 +214,6 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
         $xE = $result->getFirst( 0, 'idc' );
 
-
-
         $this->assertEquals( 1, $xA );
         $this->assertEquals( 2, $xB );
         $this->assertEquals( 3, $xC );

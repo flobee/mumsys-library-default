@@ -129,7 +129,7 @@ class Mumsys_Weather_Item_Unit_SpeedTest
 
             foreach ( $testList as $codeTo => $expected ) {
                 $mesg = 'codeFrom: "' . $codeFrom . '", codeTo: "' . $codeTo . '" failed';
-                if ($codeTo ==='bf') {
+                if ( $codeTo ==='bf' ) {
                     $actual = $this->_object->convert( 1, $codeTo );
                     $this->assertEquals( (int)$expected, $actual, $mesg );
                 } else {

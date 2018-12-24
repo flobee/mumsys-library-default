@@ -29,7 +29,7 @@ class Mumsys_Session_NoneTest
      */
     protected function tearDown()
     {
-        $this->_object = NULL;
+        $this->_object = null;
     }
 
 
@@ -45,19 +45,19 @@ class Mumsys_Session_NoneTest
      */
     public function testGetReplaceRegister()
     {
-        $this->_object->replace('key1', 'value1');
-        $this->_object->replace('key2', 'value2');
-        $this->_object->register('key3', 'value3');
+        $this->_object->replace( 'key1', 'value1' );
+        $this->_object->replace( 'key2', 'value2' );
+        $this->_object->register( 'key3', 'value3' );
 
-        $actual1 = $this->_object->get('key1');
-        $actual2 = $this->_object->get('key2');
-        $actual3 = $this->_object->get('key3');
-        $actual4 = $this->_object->get('key4');
+        $actual1 = $this->_object->get( 'key1' );
+        $actual2 = $this->_object->get( 'key2' );
+        $actual3 = $this->_object->get( 'key3' );
+        $actual4 = $this->_object->get( 'key4' );
 
-        $this->assertEquals('value1', $actual1);
-        $this->assertEquals('value2', $actual2);
-        $this->assertEquals('value3', $actual3);
-        $this->assertNull($actual4);
+        $this->assertEquals( 'value1', $actual1 );
+        $this->assertEquals( 'value2', $actual2 );
+        $this->assertEquals( 'value3', $actual3 );
+        $this->assertNull( $actual4 );
 
         $expected1 = array(
             'key1' => 'value1',
@@ -66,15 +66,15 @@ class Mumsys_Session_NoneTest
         );
         $expected2 = array('mumsys_none' => $expected1);
 
-        $this->assertEquals($expected1, $this->_object->getCurrent());
-        $this->assertEquals($expected2, $this->_object->getAll());
+        $this->assertEquals( $expected1, $this->_object->getCurrent() );
+        $this->assertEquals( $expected2, $this->_object->getAll() );
 
-        $this->assertTrue($this->_object->remove('key3'));
-        $this->assertFalse($this->_object->remove('key4'));
+        $this->assertTrue( $this->_object->remove( 'key3' ) );
+        $this->assertFalse( $this->_object->remove( 'key4' ) );
 
         $this->_object->clear();
-        $this->assertEquals(array(), $this->_object->getAll());
-        $this->assertEquals(array(), $this->_object->getCurrent());
+        $this->assertEquals( array(), $this->_object->getAll() );
+        $this->assertEquals( array(), $this->_object->getCurrent() );
     }
 
 
@@ -83,11 +83,11 @@ class Mumsys_Session_NoneTest
      */
     public function testRegisterException()
     {
-        $this->_object->replace('key1', 'value1');
+        $this->_object->replace( 'key1', 'value1' );
 
-        $this->expectExceptionMessageRegExp('/(Session key "key1" exists)/');
-        $this->expectException('Mumsys_Session_Exception');
-        $this->_object->register('key1', 'value1');
+        $this->expectExceptionMessageRegExp( '/(Session key "key1" exists)/' );
+        $this->expectException( 'Mumsys_Session_Exception' );
+        $this->_object->register( 'key1', 'value1' );
     }
 
 
@@ -96,8 +96,8 @@ class Mumsys_Session_NoneTest
      */
     public function test_destruct()
     {
-        $this->assertEquals(array(), $this->_object->getAll());
-        $this->assertEquals(array(), $this->_object->getCurrent());
+        $this->assertEquals( array(), $this->_object->getAll() );
+        $this->assertEquals( array(), $this->_object->getCurrent() );
     }
 
 
@@ -106,7 +106,7 @@ class Mumsys_Session_NoneTest
      */
     public function testRemove()
     {
-        $this->assertFalse($this->_object->remove('key4'));
+        $this->assertFalse( $this->_object->remove( 'key4' ) );
     }
 
 
@@ -115,7 +115,7 @@ class Mumsys_Session_NoneTest
      */
     public function testGetID()
     {
-        $this->assertEquals('mumsys_none', $this->_object->getID());
+        $this->assertEquals( 'mumsys_none', $this->_object->getID() );
     }
 
 }

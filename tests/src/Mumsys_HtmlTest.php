@@ -61,8 +61,10 @@ class Mumsys_HtmlTest
 
     public function testStripWithWhitelist()
     {
-        $htmlcode = '<p align="left">hello world</p><p>hello world</p><hr><table cellpadding="2" title="aGlobalAllowAttribute" xyzattr="toStrip"></table>';
-        $expected = '<p align="left">hello world</p><p>hello world</p><hr /><table cellpadding="2" title="aGlobalAllowAttribute"></table>';
+        $htmlcode = '<p align="left">hello world</p><p>hello world</p><hr>'
+            . '<table cellpadding="2" title="aGlobalAllowAttribute" xyzattr="toStrip"></table>';
+        $expected = '<p align="left">hello world</p><p>hello world</p><hr />'
+            . '<table cellpadding="2" title="aGlobalAllowAttribute"></table>';
         $code = $this->_object->strip( $htmlcode, $against_whitelist = true );
 
         $this->assertEquals( $expected, $code );
@@ -184,7 +186,6 @@ class Mumsys_HtmlTest
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
         $this->assertEquals( $this->_version, Mumsys_Html::VERSION, $message );
-
 
         $possible = $this->_object->getVersions();
 

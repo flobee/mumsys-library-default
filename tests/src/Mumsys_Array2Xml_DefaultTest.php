@@ -137,7 +137,7 @@ class Mumsys_Array2Xml_DefaultTest
 
     public function __destruct()
     {
-        if ( !$this->_object || !$this->_object2) {
+        if ( !$this->_object || !$this->_object2 ) {
             return;
         }
 
@@ -163,8 +163,10 @@ class Mumsys_Array2Xml_DefaultTest
         $this->assertEquals( -1, Mumsys_Array2Xml_Abstract::TAG_CASE_AS_IS );
 
         $this->assertEquals( $this->_version, Mumsys_Array2Xml_Default::VERSION );
-        $this->_checkVersionList( $this->_object->getVersions(),
-            $this->_versions );
+        $this->_checkVersionList(
+            $this->_object->getVersions(),
+            $this->_versions
+        );
     }
 
     // --- check abstract
@@ -313,7 +315,7 @@ class Mumsys_Array2Xml_DefaultTest
         $this->_object->setIdentifier( $newcfg );
 
         // test for error
-        $this->_object->setIdentifier(array('bla' => 'bla bla bla'));
+        $this->_object->setIdentifier( array('bla' => 'bla bla bla') );
         $error = array(
             'Error setIdentifier! Empty value or ID not found/wrong: $key: '
             . '"bla", v: "bla bla bla"'

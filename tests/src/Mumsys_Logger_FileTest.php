@@ -114,8 +114,10 @@ class Mumsys_Logger_FileTest
 
     public function testGetLogfile()
     {
-        $this->assertEquals( $this->_opts['logfile'],
-            $this->_object->getLogFile() );
+        $this->assertEquals(
+            $this->_opts['logfile'],
+            $this->_object->getLogFile()
+        );
     }
 
 
