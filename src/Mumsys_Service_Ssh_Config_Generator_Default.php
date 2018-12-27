@@ -17,6 +17,11 @@
 
 
 /**
+ * @deprecated is the first but old version! use Mumsys_Service_SshTool_Default/Tests !!!
+ */
+
+
+/**
  * SSH config generator.
  *
  * Uses config files, each per host, to improve rollouts to other machines.

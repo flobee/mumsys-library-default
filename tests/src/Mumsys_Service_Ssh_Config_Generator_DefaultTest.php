@@ -16,6 +16,11 @@
 
 
 /**
+ * @deprecated is the first but old version! use Mumsys_Service_SshTool_Default/Tests !!!
+ */
+
+
+/**
  * Mumsys_Service_Ssh_Config_Generator_Default Test
  * Generated on 2018-02-10 at 19:07:54.
  */
