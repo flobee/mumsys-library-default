@@ -19,7 +19,7 @@ class Mumsys_PriorityQueue_SimpleTest
     protected function setUp()
     {
         $this->_defaults = array('default' => array(1, 2, 3));
-        $this->_object = new Mumsys_PriorityQueue_Simple($this->_defaults);
+        $this->_object = new Mumsys_PriorityQueue_Simple( $this->_defaults );
     }
 
     /**
@@ -38,9 +38,9 @@ class Mumsys_PriorityQueue_SimpleTest
      */
     public function testAddSimple()
     {
-        $this->_object->add('AAA', 'AAA');
-        $this->_object->add('BBB', 'BBB');
-        $this->_object->add('just adding items to an array', 'just adding items to an array');
+        $this->_object->add( 'AAA', 'AAA' );
+        $this->_object->add( 'BBB', 'BBB' );
+        $this->_object->add( 'just adding items to an array', 'just adding items to an array' );
 
         $expected = array(
             'default' => array(1, 2, 3),
@@ -49,7 +49,7 @@ class Mumsys_PriorityQueue_SimpleTest
             'just adding items to an array' => 'just adding items to an array',
         );
 
-        $this->assertEquals($expected, $this->_object->getQueue());
+        $this->assertEquals( $expected, $this->_object->getQueue() );
     }
 
     /**
@@ -59,11 +59,11 @@ class Mumsys_PriorityQueue_SimpleTest
      */
     public function testAddSimpleExeption()
     {
-        $this->_object->add('AAA', 'AAA');
+        $this->_object->add( 'AAA', 'AAA' );
 
-        $this->expectExceptionMessageRegExp('/(Identifier "AAA" already set)/i');
-        $this->expectException('Mumsys_PriorityQueue_Exception');
-        $this->_object->add('AAA', 'AAA');
+        $this->expectExceptionMessageRegExp( '/(Identifier "AAA" already set)/i' );
+        $this->expectException( 'Mumsys_PriorityQueue_Exception' );
+        $this->_object->add( 'AAA', 'AAA' );
     }
 
     /**
@@ -73,12 +73,12 @@ class Mumsys_PriorityQueue_SimpleTest
      */
     public function testAddExtended()
     {
-        $this->_object->add('AAA', '111');
-        $this->_object->add('BBB', '222');
-        $this->_object->add('CCC', '333', 'before', 'AAA');
-        $this->_object->add('DDD', '444', 'before', 'BBB');
-        $this->_object->add('EEE', '555', 'after', 'BBB');
-        $this->_object->add('cool man', 'cool man');
+        $this->_object->add( 'AAA', '111' );
+        $this->_object->add( 'BBB', '222' );
+        $this->_object->add( 'CCC', '333', 'before', 'AAA' );
+        $this->_object->add( 'DDD', '444', 'before', 'BBB' );
+        $this->_object->add( 'EEE', '555', 'after', 'BBB' );
+        $this->_object->add( 'cool man', 'cool man' );
 
         $expected = array(
             'default' => array(1, 2, 3),
@@ -90,7 +90,7 @@ class Mumsys_PriorityQueue_SimpleTest
             'cool man' => 'cool man',
         );
 
-        $this->assertEquals($expected, $this->_object->getQueue());
+        $this->assertEquals( $expected, $this->_object->getQueue() );
     }
 
     /**
@@ -100,9 +100,9 @@ class Mumsys_PriorityQueue_SimpleTest
      */
     public function testAddExtendedExeption()
     {
-        $this->expectExceptionMessageRegExp('/(Position way "WayNotExists" not implemented)/i');
-        $this->expectException('Mumsys_PriorityQueue_Exception');
-        $this->_object->add('AAA', 'AAA', 'WayNotExists', 'default');
+        $this->expectExceptionMessageRegExp( '/(Position way "WayNotExists" not implemented)/i' );
+        $this->expectException( 'Mumsys_PriorityQueue_Exception' );
+        $this->_object->add( 'AAA', 'AAA', 'WayNotExists', 'default' );
     }
 
     /**
@@ -110,7 +110,7 @@ class Mumsys_PriorityQueue_SimpleTest
      */
     public function testGetQueue()
     {
-        $this->assertEquals($this->_defaults, $this->_object->getQueue());
+        $this->assertEquals( $this->_defaults, $this->_object->getQueue() );
     }
 
 }

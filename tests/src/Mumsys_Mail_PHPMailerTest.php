@@ -61,7 +61,7 @@ class Mumsys_Mail_PHPMailerTest
             ),
         );
 
-        $this->_object = new Mumsys_Mail_PHPMailer($this->_config);
+        $this->_object = new Mumsys_Mail_PHPMailer( $this->_config );
     }
 
 
@@ -71,7 +71,7 @@ class Mumsys_Mail_PHPMailerTest
      */
     protected function tearDown()
     {
-        $this->_object = NULL;
+        $this->_object = null;
     }
 
 
@@ -80,8 +80,8 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function test_construct()
     {
-        $this->assertInstanceOf('Mumsys_Mail_PHPMailer', $this->_object);
-        $this->assertInstanceOf('Mumsys_Mail_Interface', $this->_object);
+        $this->assertInstanceOf( 'Mumsys_Mail_PHPMailer', $this->_object );
+        $this->assertInstanceOf( 'Mumsys_Mail_Interface', $this->_object );
     }
 
 
@@ -92,7 +92,7 @@ class Mumsys_Mail_PHPMailerTest
     {
         $actual = $this->_object->getMailer();
 
-        $this->assertInstanceOf('PHPMailer\PHPMailer\PHPMailer', $actual);
+        $this->assertInstanceOf( 'PHPMailer\PHPMailer\PHPMailer', $actual );
     }
 
 
@@ -101,7 +101,7 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function test__call()
     {
-        $this->assertNull($this->_object->isQmail());
+        $this->assertNull( $this->_object->isQmail() );
     }
 
 
@@ -111,9 +111,9 @@ class Mumsys_Mail_PHPMailerTest
     public function testAddTo()
     {
         $name = 'unittest to root @ localhost';
-        $result2 = $this->_object->addTo('root@localhost.localdomian', $name);
+        $result2 = $this->_object->addTo( 'root@localhost.localdomian', $name );
 
-        $this->assertTrue($result2);
+        $this->assertTrue( $result2 );
     }
 
 
@@ -123,9 +123,9 @@ class Mumsys_Mail_PHPMailerTest
     public function testAddCc()
     {
         $name = 'unittest to root @ localhost';
-        $result2 = $this->_object->addCc('root@localhost.localdomian', $name);
+        $result2 = $this->_object->addCc( 'root@localhost.localdomian', $name );
 
-        $this->assertTrue($result2);
+        $this->assertTrue( $result2 );
     }
 
 
@@ -135,9 +135,9 @@ class Mumsys_Mail_PHPMailerTest
     public function testAddBcc()
     {
         $name = 'unittest to root @ localhost';
-        $result2 = $this->_object->addBcc('root@localhost.localdomian', $name);
+        $result2 = $this->_object->addBcc( 'root@localhost.localdomian', $name );
 
-        $this->assertTrue($result2);
+        $this->assertTrue( $result2 );
     }
 
 
@@ -149,11 +149,11 @@ class Mumsys_Mail_PHPMailerTest
     {
         $email = 'root@localhost.localdomian';
         $name = 'unittest to root @ localhost';
-        $result = $this->_object->setFrom($email, $name, true);
-        $this->_object->setReturnTo($email);
+        $result = $this->_object->setFrom( $email, $name, true );
+        $this->_object->setReturnTo( $email );
 
-        $this->assertEquals($email, $this->_object->getMailer()->Sender);
-        $this->assertTrue($result);
+        $this->assertEquals( $email, $this->_object->getMailer()->Sender );
+        $this->assertTrue( $result );
     }
 
 
@@ -164,9 +164,9 @@ class Mumsys_Mail_PHPMailerTest
     {
         $email = 'unittest@localhost.localdomian';
         $name = 'unittest to unittest @ localhost';
-        $result = $this->_object->addReplyTo($email, $name, true);
+        $result = $this->_object->addReplyTo( $email, $name, true );
 
-        $this->assertTrue($result);
+        $this->assertTrue( $result );
     }
 
 
@@ -176,8 +176,8 @@ class Mumsys_Mail_PHPMailerTest
     public function testSetSubject()
     {
         $text = 'some subject';
-        $this->_object->setSubject($text);
-        $this->assertEquals($text, $this->_object->getMailer()->Subject);
+        $this->_object->setSubject( $text );
+        $this->assertEquals( $text, $this->_object->getMailer()->Subject );
     }
 
 
@@ -188,11 +188,11 @@ class Mumsys_Mail_PHPMailerTest
     public function testSetMessage()
     {
         $text = "<html><body>some<br>message</body></html>";
-        $actual = $this->_object->setMessage($text);
-        $actual = $this->_object->setMessageHtml($text);
+        $actual = $this->_object->setMessage( $text );
+        $actual = $this->_object->setMessageHtml( $text );
         $expected = $this->_object->getMailer()->Body;
 
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals( $expected, $actual );
     }
 
 
@@ -202,10 +202,10 @@ class Mumsys_Mail_PHPMailerTest
     public function testSetMessageText()
     {
         $text = "some<br>message";
-        $actual = $this->_object->setMessageText($text);
+        $actual = $this->_object->setMessageText( $text );
         $expected = $this->_object->getMailer()->AltBody;
 
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals( $expected, $actual );
     }
 
 
@@ -215,10 +215,10 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testAddAttachment()
     {
-        $this->assertEquals(array(), $this->_object->getAttachments());
-        $this->expectException('PHPMailer\PHPMailer\Exception');
-        $this->expectExceptionMessageRegExp('/(Could not access file: no\/location)/i');
-        $this->_object->addAttachment('no/location', 'somename', 'base64', 'txt', 'attachment');
+        $this->assertEquals( array(), $this->_object->getAttachments() );
+        $this->expectException( 'PHPMailer\PHPMailer\Exception' );
+        $this->expectExceptionMessageRegExp( '/(Could not access file: no\/location)/i' );
+        $this->_object->addAttachment( 'no/location', 'somename', 'base64', 'txt', 'attachment' );
     }
 
 
@@ -227,16 +227,16 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testSetContentType()
     {
-        $this->_object->setContentType('html');
+        $this->_object->setContentType( 'html' );
         $actual1 = $this->_object->getMailer()->ContentType;
         $expected1 = 'text/html';
 
-        $this->_object->setContentType('text');
+        $this->_object->setContentType( 'text' );
         $actual2 = $this->_object->getMailer()->ContentType;
         $expected2 = 'text/plain';
 
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected2, $actual2);
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expected2, $actual2 );
     }
 
 
@@ -246,11 +246,11 @@ class Mumsys_Mail_PHPMailerTest
     public function testSetCharset()
     {
         $actual1 = $this->_object->getMailer()->CharSet; // utf-8 on construction
-        $this->_object->setCharset('iso-8859-1');
+        $this->_object->setCharset( 'iso-8859-1' );
         $actual2 = $this->_object->getMailer()->CharSet;
 
-        $this->assertEquals('utf-8', $actual1);
-        $this->assertEquals('iso-8859-1', $actual2);
+        $this->assertEquals( 'utf-8', $actual1 );
+        $this->assertEquals( 'iso-8859-1', $actual2 );
     }
 
 
@@ -260,23 +260,23 @@ class Mumsys_Mail_PHPMailerTest
     public function testSetTransportWay()
     {
         $expected1 = 'mail';
-        $this->_object->setTransportWay($expected1);
+        $this->_object->setTransportWay( $expected1 );
         $actual1 = $this->_object->getMailer()->Mailer;
 
         $expected2 = 'smtp';
-        $this->_object->setTransportWay($expected2);
+        $this->_object->setTransportWay( $expected2 );
         $actual2 = $this->_object->getMailer()->Mailer;
 
         $expected3 = 'sendmail';
-        $this->_object->setTransportWay($expected3);
+        $this->_object->setTransportWay( $expected3 );
         $actual3 = $this->_object->getMailer()->Mailer;
 
         // for code coverage
-        $this->_object->setTransportWay('use default');
+        $this->_object->setTransportWay( 'use default' );
 
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected2, $actual2);
-        $this->assertEquals($expected3, $actual3);
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expected2, $actual2 );
+        $this->assertEquals( $expected3, $actual3 );
     }
 
 
@@ -285,7 +285,7 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testSetLanguage()
     {
-        $this->assertTrue($this->_object->setLanguage('en'));
+        $this->assertTrue( $this->_object->setLanguage( 'en' ) );
     }
 
 
@@ -294,8 +294,8 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testSend()
     {
-        $this->expectException('PHPMailer\PHPMailer\Exception');
-        $this->expectExceptionMessageRegExp('/(You must provide at least one recipient email address.)/i');
+        $this->expectException( 'PHPMailer\PHPMailer\Exception' );
+        $this->expectExceptionMessageRegExp( '/(You must provide at least one recipient email address.)/i' );
         $this->_object->send();
     }
 
@@ -311,16 +311,18 @@ class Mumsys_Mail_PHPMailerTest
             . '<br><br>.</html>';
 
         $mail = $this->_object;
-        $mail->addTo($to, 'php unit test mail');
-        $mail->setSubject('some subject');
-        $mail->setMessage($message, '', true);
-        $mail->setMessageText('plain version .check html version for details:' . PHP_EOL . $message,
-            '', true);
-        $mail->setContentType('html');
+        $mail->addTo( $to, 'php unit test mail' );
+        $mail->setSubject( 'some subject' );
+        $mail->setMessage( $message, '', true );
+        $mail->setMessageText(
+            'plain version .check html version for details:' . PHP_EOL . $message,
+            '', true
+        );
+        $mail->setContentType( 'html' );
 
         $actual = $mail->send();
 
-        $this->assertTrue($actual);
+        $this->assertTrue( $actual );
 
         echo PHP_EOL . 'A test email to "' . $to . '" was set to the mail server '
             . 'sucessfully. Please check the mail!' . PHP_EOL;
@@ -332,7 +334,7 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testSetCert()
     {
-        $this->assertTrue($this->_object->setCertificate('', '', '', ''));
+        $this->assertTrue( $this->_object->setCertificate( '', '', '', '' ) );
     }
 
 
@@ -342,11 +344,11 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testGetAddCustomHeader()
     {
-        $actual1 = $this->_object->addCustomHeader('X-MailerTest', 'Unittest');
+        $actual1 = $this->_object->addCustomHeader( 'X-MailerTest', 'Unittest' );
         $actual2 = $this->_object->getCustomHeaders();
 
-        $this->assertTrue($actual1);
-        $this->assertEquals(array(0 => array('X-MailerTest', 'Unittest')), $actual2);
+        $this->assertTrue( $actual1 );
+        $this->assertEquals( array(0 => array('X-MailerTest', 'Unittest')), $actual2 );
     }
 
 
@@ -355,7 +357,7 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testVersion()
     {
-        $this->assertEquals($this->_version, Mumsys_Mail_PHPMailer::VERSION);
+        $this->assertEquals( $this->_version, Mumsys_Mail_PHPMailer::VERSION );
     }
 
 }

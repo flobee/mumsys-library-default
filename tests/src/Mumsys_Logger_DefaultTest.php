@@ -87,8 +87,10 @@ class Mumsys_Logger_DefaultTest
         $_SERVER['REMOTE_USER'] = 'flobee';
         $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
-        unset( $opts['username'], $_SERVER['REMOTE_USER'],
-            $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'], $_SERVER['LOGNAME'] );
+        unset(
+            $opts['username'], $_SERVER['REMOTE_USER'],
+            $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'], $_SERVER['LOGNAME']
+        );
         $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
         $_SERVER['LOGNAME'] = 'God';
@@ -106,8 +108,10 @@ class Mumsys_Logger_DefaultTest
     public function testVersions()
     {
         $this->assertEquals( $this->_version, Mumsys_Logger_Default::VERSION );
-        $this->_checkVersionList( $this->_object->getVersions(),
-            $this->_versions );
+        $this->_checkVersionList(
+            $this->_object->getVersions(),
+            $this->_versions
+        );
     }
 
 }

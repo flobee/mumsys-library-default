@@ -30,7 +30,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
 
         try {
             $this->_object = Mumsys_Db_Factory::getInstance(
-                    $this->_context, $this->_configs['database']
+                $this->_context, $this->_configs['database']
             );
             $this->_object->connect();
         }

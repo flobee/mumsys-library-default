@@ -60,7 +60,7 @@ class Mumsys_Php_GlobalsTest
      */
     protected function tearDown()
     {
-        $this->_object = NULL;
+        $this->_object = null;
     }
 
 
@@ -71,13 +71,13 @@ class Mumsys_Php_GlobalsTest
     public function testGetServerVar()
     {
         $expected1 = 'no address';
-        $actual1 = $this->_object->getServerVar('REMOTE_ADDR', 'no address');
+        $actual1 = $this->_object->getServerVar( 'REMOTE_ADDR', 'no address' );
 
         $expected2 = 'phpunit';
-        $actual2 = $this->_object->getServerVar('PHP_SELF', 'PHP_SELF');
+        $actual2 = $this->_object->getServerVar( 'PHP_SELF', 'PHP_SELF' );
 
-        $this->assertEquals($expected1, $actual1);
-        $this->assertRegExp('/(' . $expected2 . ')/i', $actual2);
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertRegExp( '/(' . $expected2 . ')/i', $actual2 );
     }
 
 
@@ -88,22 +88,22 @@ class Mumsys_Php_GlobalsTest
     public function testGetEnvVar()
     {
         $expected1 = 'no addr';
-        $actual1 = $this->_object->getEnvVar('REMOTE_ADDR', 'no addr');
+        $actual1 = $this->_object->getEnvVar( 'REMOTE_ADDR', 'no addr' );
 
         $expected2 = $_SERVER['HOME'];
-        $actual2 = $this->_object->getEnvVar('HOME', 'no home');
+        $actual2 = $this->_object->getEnvVar( 'HOME', 'no home' );
 
-        $expected3 = $_ENV['LANGX'] = getenv('LANG');
-        $actual3 = $this->_object->getEnvVar('LANGX', 'no lang');
+        $expected3 = $_ENV['LANGX'] = getenv( 'LANG' );
+        $actual3 = $this->_object->getEnvVar( 'LANGX', 'no lang' );
 
         $expected4 = 'hello';
-        putenv("HELLO=hello");
-        $actual4 = $this->_object->getEnvVar('HELLO', getenv('HELLO'));
+        putenv( "HELLO=hello" );
+        $actual4 = $this->_object->getEnvVar( 'HELLO', getenv( 'HELLO' ) );
 
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected2, $actual2);
-        $this->assertEquals($expected3, $actual3);
-        $this->assertEquals($expected4, $actual4);
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expected2, $actual2 );
+        $this->assertEquals( $expected3, $actual3 );
+        $this->assertEquals( $expected4, $actual4 );
     }
 
 
@@ -118,10 +118,10 @@ class Mumsys_Php_GlobalsTest
         $actual1 = $this->_object->getPostVar();
 
         $expected2 = $_POST['HOME'] = 'unittest';
-        $actual2 = $this->_object->getPostVar('HOME', 'no home');
+        $actual2 = $this->_object->getPostVar( 'HOME', 'no home' );
 
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected2, $actual2);
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expected2, $actual2 );
     }
 
 
@@ -136,10 +136,10 @@ class Mumsys_Php_GlobalsTest
         $actual1 = $this->_object->getGetVar();
 
         $expected2 = $_GET['HOME'] = 'unittest';
-        $actual2 = $this->_object->getGetVar('HOME', 'no home');
+        $actual2 = $this->_object->getGetVar( 'HOME', 'no home' );
 
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected2, $actual2);
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expected2, $actual2 );
     }
 
 
@@ -154,10 +154,10 @@ class Mumsys_Php_GlobalsTest
         $actual1 = $this->_object->getCookieVar();
 
         $expected2 = $_COOKIE['HOME'] = 'unittest';
-        $actual2 = $this->_object->getCookieVar('HOME', 'no home');
+        $actual2 = $this->_object->getCookieVar( 'HOME', 'no home' );
 
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected2, $actual2);
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expected2, $actual2 );
     }
 
 
@@ -168,17 +168,17 @@ class Mumsys_Php_GlobalsTest
     public function testGetFilesVar()
     {
         $expected1 = array($this->_file['test']);
-        $actual1 = $this->_object->getFilesVar('test', false);
+        $actual1 = $this->_object->getFilesVar( 'test', false );
 
         $expected2 = 'noFile';
-        $actual2 = $this->_object->getFilesVar('noFile', $expected2);
+        $actual2 = $this->_object->getFilesVar( 'noFile', $expected2 );
 
         $expected3 = array('test'=> array($this->_file['test']));
-        $actual3 = $this->_object->getFilesVar(null, false);
+        $actual3 = $this->_object->getFilesVar( null, false );
 
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected2, $actual2);
-        $this->assertEquals($expected3, $actual3);
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expected2, $actual2 );
+        $this->assertEquals( $expected3, $actual3 );
     }
 
     /**
@@ -228,9 +228,9 @@ class Mumsys_Php_GlobalsTest
                 ),
             )
         );
-        $actual4 = $this->_object->getFilesVar(null, false);
+        $actual4 = $this->_object->getFilesVar( null, false );
 
-        $this->assertEquals($expected4, $actual4);
+        $this->assertEquals( $expected4, $actual4 );
     }
 
 
@@ -243,18 +243,18 @@ class Mumsys_Php_GlobalsTest
         $actual0 = $this->_object->getGlobalVar();
 
         $expected1 = 'no addr';
-        $actual1 = $this->_object->getGlobalVar('REMOTE_ADDR', 'no addr');
+        $actual1 = $this->_object->getGlobalVar( 'REMOTE_ADDR', 'no addr' );
 
         $expected2 = 'no home';
-        $actual2 = $this->_object->getGlobalVar('HOME', 'no home');
+        $actual2 = $this->_object->getGlobalVar( 'HOME', 'no home' );
 
         $expected3 = $GLOBALS['LANGUAGE'] = 'no lang';
-        $actual3 = $this->_object->getGlobalVar('LANGUAGE', 'no lang');
+        $actual3 = $this->_object->getGlobalVar( 'LANGUAGE', 'no lang' );
 
-        $this->assertEquals($expected0, $actual0);
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected2, $actual2);
-        $this->assertEquals($expected3, $actual3);
+        $this->assertEquals( $expected0, $actual0 );
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expected2, $actual2 );
+        $this->assertEquals( $expected3, $actual3 );
     }
 
 
@@ -265,41 +265,41 @@ class Mumsys_Php_GlobalsTest
     public function testGet()
     {
         $expected1 = 'no addr';
-        $actual1 = $this->_object->get('REMOTE_ADDR', 'no addr');
+        $actual1 = $this->_object->get( 'REMOTE_ADDR', 'no addr' );
 
         $expected2 = $_SESSION['unittest-session'] = 'test';
-        $actual2 = $this->_object->get('unittest-session', 'no test');
+        $actual2 = $this->_object->get( 'unittest-session', 'no test' );
 
         $expected3 = 'files tests not implemented';
-        $actual3 = $this->_object->get('unittest-file', $expected3);
+        $actual3 = $this->_object->get( 'unittest-file', $expected3 );
 
         $expected4 = $_COOKIE['unittest-cookie'] = 'test';
-        $actual4 = $this->_object->get('unittest-cookie', 'no cookie');
+        $actual4 = $this->_object->get( 'unittest-cookie', 'no cookie' );
 
         $expected5 = $_REQUEST['unittest-request'] = 'test';
-        $actual5 = $this->_object->get('unittest-request', 'no request');
+        $actual5 = $this->_object->get( 'unittest-request', 'no request' );
 
         $expected6 = 'no get';
         $_GET['unittest-get'] = 'test';
-        $actual6 = $this->_object->get('unittest-get', 'no get');
+        $actual6 = $this->_object->get( 'unittest-get', 'no get' );
 
         $expected7 = $GLOBALS['unittest-global'] = 'test';
-        $actual7 = $this->_object->get('unittest-global', 'no global');
+        $actual7 = $this->_object->get( 'unittest-global', 'no global' );
 
-        if (!isset($_SERVER['argv'][0]) ) {
+        if ( !isset( $_SERVER['argv'][0] ) ) {
             $_SERVER['argv'][0] = 'test get';
         }
-        $expected8 = (is_array($_SERVER['argv']) && isset($_SERVER['argv'][0]) )  ? $_SERVER['argv'][0] : null;
-        $actual8 = $this->_object->get(0, 'no argv');
+        $expected8 = (is_array( $_SERVER['argv'] ) && isset( $_SERVER['argv'][0] ) )  ? $_SERVER['argv'][0] : null;
+        $actual8 = $this->_object->get( 0, 'no argv' );
 
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected2, $actual2);
-        $this->assertEquals($expected3, $actual3);
-        $this->assertEquals($expected4, $actual4);
-        $this->assertEquals($expected5, $actual5);
-        $this->assertEquals($expected6, $actual6);
-        $this->assertEquals($expected7, $actual7);
-        $this->assertEquals($expected8, $actual8);
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expected2, $actual2 );
+        $this->assertEquals( $expected3, $actual3 );
+        $this->assertEquals( $expected4, $actual4 );
+        $this->assertEquals( $expected5, $actual5 );
+        $this->assertEquals( $expected6, $actual6 );
+        $this->assertEquals( $expected7, $actual7 );
+        $this->assertEquals( $expected8, $actual8 );
     }
 
     /**
@@ -314,8 +314,8 @@ class Mumsys_Php_GlobalsTest
             $_SERVER[$param] = null;
         }
 
-        $this->assertEquals('unknown', $this->_object->getRemoteUser());
-        $this->assertEquals('unknown', $this->_object->getRemoteUser()); // for 100% cc
+        $this->assertEquals( 'unknown', $this->_object->getRemoteUser() );
+        $this->assertEquals( 'unknown', $this->_object->getRemoteUser() ); // for 100% cc
     }
 
 
@@ -326,7 +326,7 @@ class Mumsys_Php_GlobalsTest
     public function testGetRemoteUserPHP_AUTH_USER()
     {
         $_SERVER['PHP_AUTH_USER'] = 'unittest';
-        $this->assertEquals('unittest', $this->_object->getRemoteUser());
+        $this->assertEquals( 'unittest', $this->_object->getRemoteUser() );
     }
 
 
@@ -337,7 +337,7 @@ class Mumsys_Php_GlobalsTest
     public function testGetRemoteUserREMOTE_USER()
     {
         $_SERVER['REMOTE_USER'] = 'unittest';
-        $this->assertEquals('unittest', $this->_object->getRemoteUser());
+        $this->assertEquals( 'unittest', $this->_object->getRemoteUser() );
     }
 
 
@@ -348,7 +348,7 @@ class Mumsys_Php_GlobalsTest
     public function testGetRemoteUserUSER()
     {
         $_SERVER['USER'] = 'unittest';
-        $this->assertEquals('unittest', $this->_object->getRemoteUser());
+        $this->assertEquals( 'unittest', $this->_object->getRemoteUser() );
     }
 
 
@@ -360,7 +360,7 @@ class Mumsys_Php_GlobalsTest
     {
         $_SERVER['USER'] = null;
         $_SERVER['LOGNAME'] = 'unittest';
-        $this->assertEquals('unittest', $this->_object->getRemoteUser());
+        $this->assertEquals( 'unittest', $this->_object->getRemoteUser() );
     }
 
     /**
@@ -368,6 +368,6 @@ class Mumsys_Php_GlobalsTest
      */
     public function testCheckVersion()
     {
-        $this->assertEquals($this->_version, Mumsys_Php_Globals::VERSION);
+        $this->assertEquals( $this->_version, Mumsys_Php_Globals::VERSION );
     }
 }

@@ -43,7 +43,6 @@ class Mumsys_CounterTest
         $this->assertInstanceof( 'Mumsys_Counter', $this->_object );
         $this->assertEquals( 0, $this->_object->result() );
 
-
         $this->_object = new Mumsys_Counter( true );
         $this->assertInstanceof( 'Mumsys_Counter', $this->_object );
         $this->assertEquals( 1, $this->_object->result() );

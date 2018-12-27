@@ -57,7 +57,7 @@ class Mumsys_Request_AbstractTest
         $this->_input = $_GET;
         $_COOKIE = array('HIDDEN' => 'COOK');
 
-        $this->_object = new Mumsys_Request_Default($this->_options);
+        $this->_object = new Mumsys_Request_Default( $this->_options );
     }
 
 
@@ -76,10 +76,10 @@ class Mumsys_Request_AbstractTest
      */
     public function test_Construct()
     {
-        $this->_object = new Mumsys_Request_Default($this->_options);
-        $this->assertEquals('programTest', $this->_object->getProgramKey());
-        $this->assertEquals('controllerTest', $this->_object->getControllerKey());
-        $this->assertEquals('actionTest', $this->_object->getActionKey());
+        $this->_object = new Mumsys_Request_Default( $this->_options );
+        $this->assertEquals( 'programTest', $this->_object->getProgramKey() );
+        $this->assertEquals( 'controllerTest', $this->_object->getControllerKey() );
+        $this->assertEquals( 'actionTest', $this->_object->getActionKey() );
     }
 
     /**
@@ -89,8 +89,8 @@ class Mumsys_Request_AbstractTest
     {
         $actual1 = $this->_object->getRequestId();
 
-        $this->assertTrue( (strlen($actual1)===23) );
-        $this->assertEquals($actual1, $this->_object->getRequestId());
+        $this->assertTrue( (strlen( $actual1 )===23) );
+        $this->assertEquals( $actual1, $this->_object->getRequestId() );
     }
 
     /**
@@ -103,7 +103,7 @@ class Mumsys_Request_AbstractTest
         $_SERVER['HTTP_X_REQUEST_ID'] = $uuid5;
         $actual1 = $this->_object->getRequestId();
 
-        $this->assertNotEquals($uuid5, $actual1);
+        $this->assertNotEquals( $uuid5, $actual1 );
     }
 
     /**
@@ -113,12 +113,12 @@ class Mumsys_Request_AbstractTest
     public function testGetSetProgramName()
     {
         $actual1 = $this->_object->getProgramName();
-        $actual2 = $this->_object->setProgramName('test');
+        $actual2 = $this->_object->setProgramName( 'test' );
         $actual3 = $this->_object->getProgramName();
 
-        $this->assertEquals('prg', $actual1);
-        $this->assertInstanceOf('Mumsys_Request_Default', $actual2);
-        $this->assertEquals('Test', $actual3);
+        $this->assertEquals( 'prg', $actual1 );
+        $this->assertInstanceOf( 'Mumsys_Request_Default', $actual2 );
+        $this->assertEquals( 'Test', $actual3 );
     }
 
 
@@ -129,12 +129,12 @@ class Mumsys_Request_AbstractTest
     public function testGetSetControllerName()
     {
         $actual1 = $this->_object->getControllerName();
-        $actual2 = $this->_object->setControllerName('lower');
+        $actual2 = $this->_object->setControllerName( 'lower' );
         $actual3 = $this->_object->getControllerName();
 
-        $this->assertEquals('ctrl', $actual1);
-        $this->assertInstanceOf('Mumsys_Request_Default', $actual2);
-        $this->assertEquals('Lower', $actual3);
+        $this->assertEquals( 'ctrl', $actual1 );
+        $this->assertInstanceOf( 'Mumsys_Request_Default', $actual2 );
+        $this->assertEquals( 'Lower', $actual3 );
     }
 
 
@@ -145,14 +145,14 @@ class Mumsys_Request_AbstractTest
     public function testGetSetActionName()
     {
         $actual1 = $this->_object->getActionName();
-        $actual2 = $this->_object->setActionName('AcTiOnNaMe');
+        $actual2 = $this->_object->setActionName( 'AcTiOnNaMe' );
         $actual3 = $this->_object->getActionName();
-        $actual4 = $this->_object->setActionName(null);
+        $actual4 = $this->_object->setActionName( null );
 
-        $this->assertEquals('act', $actual1);
-        $this->assertInstanceOf('Mumsys_Request_Default', $actual2);
-        $this->assertEquals('actionname', $actual3);
-        $this->assertInstanceOf('Mumsys_Request_Default', $actual4);
+        $this->assertEquals( 'act', $actual1 );
+        $this->assertInstanceOf( 'Mumsys_Request_Default', $actual2 );
+        $this->assertEquals( 'actionname', $actual3 );
+        $this->assertInstanceOf( 'Mumsys_Request_Default', $actual4 );
     }
 
 
@@ -163,7 +163,7 @@ class Mumsys_Request_AbstractTest
     public function testGetSetProgramKey()
     {
         $actual1 = $this->_object->getProgramKey();
-        $this->assertEquals('programTest', $actual1);
+        $this->assertEquals( 'programTest', $actual1 );
     }
 
 
@@ -173,11 +173,11 @@ class Mumsys_Request_AbstractTest
      */
     public function testGetSetControllerKey()
     {
-        $actual1 = $this->_object->setControllerKey('cntl');
+        $actual1 = $this->_object->setControllerKey( 'cntl' );
         $actual2 = $this->_object->getControllerKey();
 
-        $this->assertInstanceOf('Mumsys_Request_Default', $actual1);
-        $this->assertEquals('cntl', $actual2);
+        $this->assertInstanceOf( 'Mumsys_Request_Default', $actual1 );
+        $this->assertEquals( 'cntl', $actual2 );
     }
 
 
@@ -188,10 +188,10 @@ class Mumsys_Request_AbstractTest
     public function testGetSetActionKey()
     {
         $actual = $this->_object->getActionKey();
-        $this->_object->setActionKey('index');
+        $this->_object->setActionKey( 'index' );
 
-        $this->assertEquals('actionTest', $actual);
-        $this->assertEquals('index', $this->_object->getActionKey());
+        $this->assertEquals( 'actionTest', $actual );
+        $this->assertEquals( 'index', $this->_object->getActionKey() );
     }
 
 
@@ -201,17 +201,17 @@ class Mumsys_Request_AbstractTest
      */
     public function testGetSetParam()
     {
-        $actual1 = $this->_object->setParam('a', '111');
-        $actual2 = $this->_object->setParam('a', null);
+        $actual1 = $this->_object->setParam( 'a', '111' );
+        $actual2 = $this->_object->setParam( 'a', null );
         $actual3 = $this->_object->getParams();
-        $actual4 = $this->_object->getParam('programTest', false);
-        $actual5 = $this->_object->getParam('notSet', false);
+        $actual4 = $this->_object->getParam( 'programTest', false );
+        $actual5 = $this->_object->getParam( 'notSet', false );
         $expected3 = $this->_input;
 
-        $this->assertInstanceOf('Mumsys_Request_Default', $actual1);
-        $this->assertEquals($expected3, $actual3);
-        $this->assertEquals('prg', $actual4);
-        $this->assertFalse($actual5);
+        $this->assertInstanceOf( 'Mumsys_Request_Default', $actual1 );
+        $this->assertEquals( $expected3, $actual3 );
+        $this->assertEquals( 'prg', $actual4 );
+        $this->assertFalse( $actual5 );
     }
 
 
@@ -223,15 +223,15 @@ class Mumsys_Request_AbstractTest
     public function testGetSetParams()
     {
         $params = array('abc' => 1, 'def' => 2, 'ghi' => 3, 'null' => null);
-        $actual1 = $this->_object->setParams($params);
+        $actual1 = $this->_object->setParams( $params );
         $actual2 = $this->_object->getParams();
         $expected = $params + array(
             'programTest' => 'prg', 'controllerTest' => 'ctrl', 'actionTest' => 'act'
         );
-        unset($expected['null']);
+        unset( $expected['null'] );
 
-        $this->assertInstanceOf('Mumsys_Request_Default', $actual1);
-        $this->assertEquals($expected, $actual2);
+        $this->assertInstanceOf( 'Mumsys_Request_Default', $actual1 );
+        $this->assertEquals( $expected, $actual2 );
     }
 
 
@@ -241,7 +241,7 @@ class Mumsys_Request_AbstractTest
     public function testClearParams()
     {
         $this->_object->clearParams();
-        $this->assertEquals(array(), $this->_object->getParams());
+        $this->assertEquals( array(), $this->_object->getParams() );
     }
 
 
@@ -250,21 +250,21 @@ class Mumsys_Request_AbstractTest
      */
     public function testGetCookie()
     {
-        $actual1 = $this->_object->getInputCookie('HIDDEN', false);
-        $actual2 = $this->_object->getInputCookie(null);
-        $actual3 = $this->_object->getInputCookie('notSet', false);
+        $actual1 = $this->_object->getInputCookie( 'HIDDEN', false );
+        $actual2 = $this->_object->getInputCookie( null );
+        $actual3 = $this->_object->getInputCookie( 'notSet', false );
 
-        $this->assertEquals('COOK', $actual1);
-        $this->assertEquals($_COOKIE, $actual2);
-        $this->assertFalse($actual3);
+        $this->assertEquals( 'COOK', $actual1 );
+        $this->assertEquals( $_COOKIE, $actual2 );
+        $this->assertFalse( $actual3 );
     }
 
 
     public function testVersions()
     {
-         $this->assertEquals($this->_version, Mumsys_Request_Abstract::VERSION);
+         $this->assertEquals( $this->_version, Mumsys_Request_Abstract::VERSION );
 
-         $this->_checkVersionList($this->_object->getVersions(), $this->_versions);
+         $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 
 }

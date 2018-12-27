@@ -57,7 +57,7 @@ class Mumsys_Db_Driver_AbstractTest
      */
     protected function tearDown()
     {
-        $this->_object = NULL;
+        $this->_object = null;
     }
 
 

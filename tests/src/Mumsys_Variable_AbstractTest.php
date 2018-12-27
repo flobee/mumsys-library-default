@@ -36,7 +36,7 @@ class Mumsys_Variable_AbstractTest
      */
     protected function tearDown()
     {
-        $this->_object = NULL;
+        $this->_object = null;
     }
 
 
@@ -60,9 +60,9 @@ class Mumsys_Variable_AbstractTest
         );
 
         $actual = Mumsys_Variable_Abstract::getTypes();
-        $this->assertEquals($expected, $actual);
-        $this->assertEquals( count($expected), count($actual) );
-        $this->assertEquals($this->_version, Mumsys_Variable_Abstract::VERSION);
+        $this->assertEquals( $expected, $actual );
+        $this->assertEquals( count( $expected ), count( $actual ) );
+        $this->assertEquals( $this->_version, Mumsys_Variable_Abstract::VERSION );
     }
 
 }

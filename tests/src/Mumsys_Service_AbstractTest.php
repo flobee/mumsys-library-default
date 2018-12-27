@@ -62,6 +62,6 @@ class Mumsys_Service_AbstractTest extends Mumsys_Unittest_Testcase
     {
         $actual = Mumsys_Service_Abstract::VERSION;
 
-        $this->assertEquals($this->_version, $actual);
+        $this->assertEquals( $this->_version, $actual );
     }
 }

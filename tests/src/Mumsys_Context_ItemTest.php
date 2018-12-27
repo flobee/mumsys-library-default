@@ -263,7 +263,6 @@ class Mumsys_Context_ItemTest
             . 'all existing tests where checked!';
         $this->assertEquals( $this->_version, Mumsys_Config_File::VERSION, $message );
 
-
         $this->assertEquals( 'Mumsys_Context_Item ' . $this->_version, $this->_object->getVersion() );
         $this->assertEquals( $this->_version, $this->_object->getVersionID() );
 
