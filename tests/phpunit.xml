@@ -11,7 +11,7 @@
     </testsuites>
 
     <logging>
-        <log type="junit" target="logs/phpunit.log.xml" logIncompleteSkipped="false"/>
+        <log type="junit" target="logs/phpunit.log.xml" />
     </logging>
     
     <filter>

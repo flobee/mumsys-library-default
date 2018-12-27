@@ -37,7 +37,7 @@ class Mumsys_Xml_AbstractTest
      */
     protected function tearDown()
     {
-        $this->_object = NULL;
+        $this->_object = null;
     }
 
 
@@ -48,14 +48,14 @@ class Mumsys_Xml_AbstractTest
     {
         $input = array('name' => 'value', 'id' => 12345, 'customAttribute' => 'custom value');
         $expected = 'name="value" id="12345" customAttribute="custom value"';
-        $actual = $this->_object->attributesCreate($input);
+        $actual = $this->_object->attributesCreate( $input );
 
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals( $expected, $actual );
 
-        $this->expectExceptionMessageRegExp('/(Invalid attribute value for key: "0": "array")/i');
-        $this->expectException('Mumsys_Xml_Exception');
+        $this->expectExceptionMessageRegExp( '/(Invalid attribute value for key: "0": "array")/i' );
+        $this->expectException( 'Mumsys_Xml_Exception' );
         $input = array(array(1 => 2), array(2));
-        $this->_object->attributesCreate($input);
+        $this->_object->attributesCreate( $input );
     }
 
 }

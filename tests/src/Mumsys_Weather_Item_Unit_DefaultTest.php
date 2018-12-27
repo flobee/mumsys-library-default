@@ -202,7 +202,6 @@ class Mumsys_Weather_Item_Unit_DefaultTest
             'weather.item.unit.default.code' => 'test key &"',
         );
 
-
         $this->assertEquals( $expected1, $actual1 );
         $this->assertEquals( $expected2, $actual2 );
     }
@@ -210,8 +209,10 @@ class Mumsys_Weather_Item_Unit_DefaultTest
 
     public function testVersions()
     {
-        $this->assertEquals( $this->_version,
-            Mumsys_Weather_Item_Unit_Default::VERSION );
+        $this->assertEquals(
+            $this->_version,
+            Mumsys_Weather_Item_Unit_Default::VERSION
+        );
 
         $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
     }

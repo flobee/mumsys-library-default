@@ -3,7 +3,8 @@
 /**
  * Test class for the mailer factory
  */
-class Mumsys_Mail_MyTestMailer {
+class Mumsys_Mail_MyTestMailer
+{
 
 }
 
@@ -37,13 +38,13 @@ class Mumsys_Mail_FactoryTest
      */
     public function testGetAdapter()
     {
-        $actual1 = $this->_object->getAdapter('Default');
-        $actual2 = $this->_object->getAdapter('PHPMailer');
+        $actual1 = $this->_object->getAdapter( 'Default' );
+        $actual2 = $this->_object->getAdapter( 'PHPMailer' );
 
-        $this->assertInstanceOf('Mumsys_Mail_Interface', $actual1);
-        $this->assertInstanceOf('Mumsys_Mail_Interface', $actual2);
-        $this->assertInstanceOf('Mumsys_Mail_Default', $actual1);
-        $this->assertInstanceOf('Mumsys_Mail_PHPMailer', $actual2);
+        $this->assertInstanceOf( 'Mumsys_Mail_Interface', $actual1 );
+        $this->assertInstanceOf( 'Mumsys_Mail_Interface', $actual2 );
+        $this->assertInstanceOf( 'Mumsys_Mail_Default', $actual1 );
+        $this->assertInstanceOf( 'Mumsys_Mail_PHPMailer', $actual2 );
     }
 
     /**
@@ -52,9 +53,9 @@ class Mumsys_Mail_FactoryTest
     public function testGetAdapterException1()
     {
         $regex = '/(Invalid characters in adapter name "Mumsys_Mail_PHP\$Mailer")/i';
-        $this->expectExceptionMessageRegExp($regex);
-        $this->expectException('Mumsys_Mail_Exception');
-        $actual1 = $this->_object->getAdapter('PHP$Mailer');
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException( 'Mumsys_Mail_Exception' );
+        $actual1 = $this->_object->getAdapter( 'PHP$Mailer' );
     }
 
     /**
@@ -63,9 +64,9 @@ class Mumsys_Mail_FactoryTest
     public function testGetAdapterException2()
     {
         $regex = '/(Adapter "Mumsys_Mail_MyXMailer" not available)/i';
-        $this->expectExceptionMessageRegExp($regex);
-        $this->expectException('Mumsys_Mail_Exception');
-        $actual1 = $this->_object->getAdapter('MyXMailer');
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException( 'Mumsys_Mail_Exception' );
+        $actual1 = $this->_object->getAdapter( 'MyXMailer' );
     }
 
     /**
@@ -75,9 +76,9 @@ class Mumsys_Mail_FactoryTest
     {
         $regex = '/(Adapter "Mumsys_Mail_MyTestMailer" does not implement '
             . 'interface "Mumsys_Mail_Interface")/i';
-        $this->expectExceptionMessageRegExp($regex);
-        $this->expectException('Mumsys_Mail_Exception');
-        $actual1 = $this->_object->getAdapter('MyTestMailer');
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException( 'Mumsys_Mail_Exception' );
+        $actual1 = $this->_object->getAdapter( 'MyTestMailer' );
     }
 
 }

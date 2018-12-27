@@ -38,7 +38,7 @@ abstract class Mumsys_Service_Vdr_Abstract
     /**
      * Version ID information.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * Context item for dependency injection.
@@ -162,7 +162,7 @@ abstract class Mumsys_Service_Vdr_Abstract
 
             $errno = 0;
             $errstr = '';
-            $this->_connection = @fsockopen(
+            $this->_connection = fsockopen(
                 $this->_host, $this->_port, $errno, $errstr, $this->_timeout
             );
 
@@ -187,7 +187,7 @@ abstract class Mumsys_Service_Vdr_Abstract
             }
         }
         catch ( Exception $e ) {
-            throw $e;
+            throw new Mumsys_Service_Exception( $e->getMessage(), 1 );
         }
 
         return true;

@@ -1,7 +1,6 @@
 # General files
 *.swp
 *.ctags
-cs
 *.geany
 
 # Composer files

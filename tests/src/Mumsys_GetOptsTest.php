@@ -57,7 +57,6 @@ class Mumsys_GetOptsTest
             '--help',
         );
 
-
         $this->_object = new Mumsys_GetOpts( $this->_opts, $this->_input );
     }
 
@@ -299,7 +298,6 @@ class Mumsys_GetOptsTest
 
         $this->assertEquals( $expected1, $actual1 );
 
-
         // current implementation does NOT support this:
         // a fixed configuration with two actions
         $advConfig = array(
@@ -319,8 +317,6 @@ class Mumsys_GetOptsTest
             'action1', '--verbose', '--input', "file1.txt", '--flag',
             'action2', '--xbc', 'file2.txt'
         );
-
-
 
 //        $this->_object = new Mumsys_GetOpts($advConfig, $input);
 //print_r($this->_object);

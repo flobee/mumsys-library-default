@@ -29,8 +29,8 @@ class Mumsys_Service_VdrTest
     protected function setUp()
     {
         if ( self::$_isAvailable !== true ) {
-            $mesg = 'repeated failure: this it not a bug! you just dont have '
-                . 'the service up and you may dont need it';
+            $mesg = 'Repeated failure: This it not a bug!'
+                . 'See previous message!';
             $this->markTestSkipped( $mesg );
         }
 
@@ -43,8 +43,8 @@ class Mumsys_Service_VdrTest
         }
         catch ( Exception $e ) {
             $logOptions = array('logfile' => $this->_logfile);
-            $logger = new Mumsys_Logger_File($logOptions);
-            $this->_context->registerLogger($logger);
+            $logger = new Mumsys_Logger_File( $logOptions );
+            $this->_context->registerLogger( $logger );
         }
 
         $this->_options = array();
@@ -53,8 +53,8 @@ class Mumsys_Service_VdrTest
             $this->_object = new Mumsys_Service_Vdr( $this->_context, 'localhost' );
         } catch ( Exception $ex ) {
             self::$_isAvailable = false;
-            $message = 'Service error or not available, skip test. Message: '
-                . $ex->getMessage();
+            $message = 'Service error or service not available, skip test. '
+                . 'Message: ' . $ex->getMessage();
             $this->markTestSkipped( $message );
         }
     }
@@ -68,11 +68,17 @@ class Mumsys_Service_VdrTest
     {
         $this->_object->disconnect();
 
-        if ( file_exists($this->_logfile) ) {
-            //unlink($this->_logfile);
+        if ( file_exists( $this->_logfile ) ) {
+            unlink( $this->_logfile );
         }
 
         $this->_object = null;
+    }
+
+
+    public function testSetup()
+    {
+        $this->assertTrue( self::$_isAvailable );
     }
 
 
@@ -84,8 +90,8 @@ class Mumsys_Service_VdrTest
         $actual2 = $this->_object->__destruct();
         $actual3 = $this->_object->isOpen();
 
-        $this->assertTrue($actual2);
-        $this->assertFalse($actual3);
+        $this->assertTrue( $actual2 );
+        $this->assertFalse( $actual3 );
     }
 
     /**
@@ -96,15 +102,15 @@ class Mumsys_Service_VdrTest
     {
         $this->_object->disconnect();
 
-         $this->_object = new Mumsys_Service_Vdr($this->_context);
+         $this->_object = new Mumsys_Service_Vdr( $this->_context );
 
         $actual1 = $this->_object->connect();
         $actual2 = $this->_object->disconnect();
         $actual3 = $this->_object->connect();
 
-        $this->assertTrue($actual1);
-        $this->assertTrue($actual2);
-        $this->assertTrue($actual3);
+        $this->assertTrue( $actual1 );
+        $this->assertTrue( $actual2 );
+        $this->assertTrue( $actual3 );
     }
 
 
@@ -113,10 +119,39 @@ class Mumsys_Service_VdrTest
      */
     public function testConnectException1()
     {
-        $this->expectException('Mumsys_Service_Exception');
+        $origA = ini_get( 'display_errors' );
+        $origB = ini_get( 'error_reporting' );
+        ini_set( 'display_errors', false );
+        ini_set( 'error_reporting', 0 );
+
+        $this->expectException( 'Mumsys_Service_Exception' );
         $regex = '/(Connection to server "nohostexist" failt)/i';
-        $this->expectExceptionMessageRegExp($regex);
-        $this->_object = new Mumsys_Service_Vdr($this->_context, 'nohostexist', 666, 5);
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->_object = new Mumsys_Service_Vdr( $this->_context, 'nohostexist', 666, 5 );
+
+        ini_set( 'display_errors', $origA );
+        ini_set( 'error_reporting', $origB );
+    }
+
+
+    /**
+     * Get raw exception messages.
+     * @covers Mumsys_Service_Vdr::connect
+     */
+    public function testConnectException2()
+    {
+        $origA = ini_get( 'display_errors' );
+        $origB = ini_get( 'error_reporting' );
+        ini_set( 'display_errors', true );
+        ini_set( 'error_reporting', -1 );
+
+        $this->expectException( 'Mumsys_Service_Exception' );
+        $regex = '/(fsockopen)(.*)(php_network_getaddresses)(.*)(getaddrinfo failed)(.*)(Name or service not known)/i';
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->_object = new Mumsys_Service_Vdr( $this->_context, 'nohostexist', 666, 5 );
+
+        ini_set( 'display_errors', $origA );
+        ini_set( 'error_reporting', $origB );
     }
 
 
@@ -126,7 +161,7 @@ class Mumsys_Service_VdrTest
     public function testDisconnect()
     {
         $actual2 = $this->_object->disconnect();
-        $this->assertTrue($actual2);
+        $this->assertTrue( $actual2 );
     }
 
 
@@ -138,14 +173,14 @@ class Mumsys_Service_VdrTest
     public function testExecute()
     {
         // epg data channel 2 (e.g. ZDF)
-        $actual2 = $this->_object->execute('LSTE', 2);
+        $actual2 = $this->_object->execute( 'LSTE', 2 );
 
         // list some recordings. this can end up in a tomeout first because vdr
         // caches the results which can be a huge list
-        $actual3 = $this->_object->execute('LSTR', 1);
+        $actual3 = $this->_object->execute( 'LSTR', 1 );
 
-        $this->assertTrue((count($actual2) >= 1));
-        $this->assertTrue( (count($actual3) == 1 ), 'cnt: '.count($actual3));
+        $this->assertTrue( (count( $actual2 ) >= 1) );
+        $this->assertTrue( (count( $actual3 ) == 1 ), 'cnt: '.count( $actual3 ) );
     }
 
 
@@ -156,10 +191,10 @@ class Mumsys_Service_VdrTest
     {
         $this->_object->disconnect();
         $regex = '/(Not connected)/i';
-        $this->expectException('Mumsys_Service_Exception');
-        $this->expectExceptionMessageRegExp($regex);
+        $this->expectException( 'Mumsys_Service_Exception' );
+        $this->expectExceptionMessageRegExp( $regex );
 
-        $this->_object->execute('SCAN');
+        $this->_object->execute( 'SCAN' );
     }
 
 
@@ -208,7 +243,7 @@ class Mumsys_Service_VdrTest
             'RID' => '10',
         );
 
-        $this->assertEquals($expected, $actual1);
+        $this->assertEquals( $expected, $actual1 );
 
         $delete = false;
         try {
@@ -228,7 +263,7 @@ class Mumsys_Service_VdrTest
 
         }
 
-        $this->assertTrue($delete);
+        $this->assertTrue( $delete );
     }
 
 
@@ -258,7 +293,7 @@ class Mumsys_Service_VdrTest
         if ( count( $channelsList ) <= 0 ) {
             $this->markTestSkipped( 'No channels found. Pls check your vdr config. Skip test' );
         }
-
+        // reverse checks: list to items
         foreach ( $channelsList as $id => $parts ) {
             $current = $this->_object->channelGet( $id );
 
@@ -396,8 +431,8 @@ class Mumsys_Service_VdrTest
         $this->_object->disconnect();
         $actual2 = $this->_object->isOpen();
 
-        $this->assertTrue($actual1);
-        $this->assertFalse($actual2);
+        $this->assertTrue( $actual1 );
+        $this->assertFalse( $actual2 );
     }
 
 }

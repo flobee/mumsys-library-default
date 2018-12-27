@@ -17,9 +17,9 @@
 
 
 /**
- * Pagination in html context.
+ * Pagination in html context. Multilingual
  *
- * @todo Improve slider, general output, spacecs and delimiter not always 100%
+ * @todo Improve slider, general output, spaces and delimiter not always 100%
  * correct, update tests
  *
  * Example:

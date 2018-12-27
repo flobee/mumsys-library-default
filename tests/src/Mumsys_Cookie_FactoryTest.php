@@ -46,8 +46,6 @@ class Mumsys_Cookie_FactoryTest
         $actual1 = $this->_object->getAdapter( 'Default' );
         $actual2 = $this->_object->getAdapter( 'Memory' );
 
-
-
         $this->assertInstanceOf( 'Mumsys_Cookie_Interface', $actual1 );
         $this->assertInstanceOf( 'Mumsys_Cookie_Interface', $actual2 );
 

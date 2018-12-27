@@ -507,8 +507,10 @@ class Mumsys_FileSystem_DefaultTest
                 . 'E.g.: ~/unittests/somefile.test (owner whether you, your '
                 . 'team and not root) und try to test with this file location';
             // security check, backup
-            if ( @copy( $fileDifferentOwnership,
-                    $fileDifferentOwnership . '.bak' ) ) {
+            if ( @copy(
+                $fileDifferentOwnership,
+                $fileDifferentOwnership . '.bak'
+            ) ) {
                 $this->markTestIncomplete( 'Security abort!!! ' . $msg );
             }
 

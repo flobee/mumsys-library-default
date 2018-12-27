@@ -20,24 +20,24 @@
  *
  * Example 1:
  * <code>
- * $timer = new Mumsys_Timer(true);
- * // do some stuff
- * echo $timer; // print out the duration time
+ *  $timer = new Mumsys_Timer(true);
+ *  // do some stuff
+ *  echo $timer; // print out the duration time
  * </code>
- * Example 2:
+ *  Example 2:
  * <code>
- * $timer = new Mumsys_Timer($_SERVER['REQUEST_TIME_FLOAT']);
- * // do some stuff
- * echo $timer; // print out the duration time
+ *  $timer = new Mumsys_Timer($_SERVER['REQUEST_TIME_FLOAT']);
+ *  // do some stuff
+ *  echo $timer; // print out the duration time
  * </code>
- * Example 3 (manual):
+ *  Example 3 (manual):
  * <code>
- * $timer = new Mumsys_Timer();
- * // do some stuff
- * $timer->start();             // start recording the time
- * // do some more stuff
- * $duration = $timer->stop();  // return the duration OR:
- * echo $timer                  // print out the duration time
+ *  $timer = new Mumsys_Timer();
+ *  // do some stuff
+ *  $timer->start();             // start recording the time
+ *  // do some more stuff
+ *  $duration = $timer->stop();  // return the duration OR:
+ *  echo $timer                  // print out the duration time
  * </code>
  *
  * @category    Mumsys

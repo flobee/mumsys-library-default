@@ -37,7 +37,7 @@ class Mumsys_Pager_DefaultTest
             'showPageNumbers' => true,
             'showSummary' => true
             );
-        $this->_object = new Mumsys_Pager_Default($this->_options);
+        $this->_object = new Mumsys_Pager_Default( $this->_options );
     }
 
 
@@ -58,16 +58,16 @@ class Mumsys_Pager_DefaultTest
      */
     public function test_construct()
     {
-        $x = new Mumsys_Pager_Default($this->_options);
+        $x = new Mumsys_Pager_Default( $this->_options );
         $expected = 'results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b>';
         $actual = $this->_object->getSummary();
 
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals( $expected, $actual );
 
         $regex = '/(Invalid parameter "test" found)/i';
-        $this->expectExceptionMessageRegExp($regex);
-        $this->expectException('Mumsys_Pager_Exception');
-        new Mumsys_Pager_Default(array('test'=> 'value'));
+        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectException( 'Mumsys_Pager_Exception' );
+        new Mumsys_Pager_Default( array('test'=> 'value') );
     }
 
 
@@ -94,14 +94,15 @@ class Mumsys_Pager_DefaultTest
         $expected2['pageFirst'] = '<a href="index.php?&amp;offset=0">&laquo;&laquo;&laquo;</a>';
         $expected2['pagePrev'] = '<a href="index.php?&amp;offset=5">&laquo;</a>';
         $expected2['pageNext'] = '&raquo;';
-        $expected2['slider'] = '<a href="index.php?&amp;offset=0">1</a> | <a href="index.php?&amp;offset=5">2</a> |  &gt;<strong>3</strong>&lt; ';
+        $expected2['slider'] = '<a href="index.php?&amp;offset=0">1</a> | '
+            . '<a href="index.php?&amp;offset=5">2</a> |  &gt;<strong>3</strong>&lt; '
+        ;
 
-        $this->_object = new Mumsys_Pager_Default($this->_options);
+        $this->_object = new Mumsys_Pager_Default( $this->_options );
         $actual2 = $this->_object->getParts();
 
-
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected2, $actual2);
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expected2, $actual2 );
     }
 
 
@@ -112,13 +113,16 @@ class Mumsys_Pager_DefaultTest
     {
         $actual1 = $this->_object->getHtml();
         $expected1 = '<div class="pnnavi">
-[ &laquo;&laquo;&laquo; | &laquo; |  &gt;<strong>1</strong>&lt;  | <a href="index.php?&amp;offset=5">2</a> | <a href="index.php?&amp;offset=10">3</a><a href="index.php?&amp;offset=5">&raquo;</a> | <a href="index.php?&amp;offset=10">&raquo;&raquo;&raquo;</a> ]</div>
+[ &laquo;&laquo;&laquo; | &laquo; |  &gt;<strong>1</strong>&lt;  | '
+            . '<a href="index.php?&amp;offset=5">2</a> | '
+            . '<a href="index.php?&amp;offset=10">3</a><a href="index.php?&amp;offset=5">&raquo;</a> | '
+            . '<a href="index.php?&amp;offset=10">&raquo;&raquo;&raquo;</a> ]</div>
 
 <div class="pnnavi summary">
 results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b></div>
 ';
 
-        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals( $expected1, $actual1 );
     }
 
 
@@ -128,9 +132,10 @@ results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b></div>
     public function testGetSlider()
     {
         $actual1 = $this->_object->getSlider();
-        $expected1 = ' &gt;<strong>1</strong>&lt;  | <a href="index.php?&amp;offset=5">2</a> | <a href="index.php?&amp;offset=10">3</a>';
+        $expected1 = ' &gt;<strong>1</strong>&lt;  | <a href="index.php?&amp;offset=5">2</a> | '
+            . '<a href="index.php?&amp;offset=10">3</a>';
 
-        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals( $expected1, $actual1 );
     }
 
 
@@ -142,7 +147,7 @@ results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b></div>
         $actual1 = $this->_object->getSummary();
         $expected1 = 'results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b>';
 
-        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals( $expected1, $actual1 );
     }
 
 
@@ -153,19 +158,25 @@ results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b></div>
     {
         $actual1 = $this->_object->render();
         $expected1 = $expected1 = '<div class="pnnavi">
-[ &laquo;&laquo;&laquo; | &laquo; |  &gt;<strong>1</strong>&lt;  | <a href="index.php?&amp;offset=5">2</a> | <a href="index.php?&amp;offset=10">3</a><a href="index.php?&amp;offset=5">&raquo;</a> | <a href="index.php?&amp;offset=10">&raquo;&raquo;&raquo;</a> ]</div>
+[ &laquo;&laquo;&laquo; | &laquo; |  &gt;<strong>1</strong>&lt;  | <a href="index.php?&amp;offset=5">2</a> | '
+            . '<a href="index.php?&amp;offset=10">3</a><a href="index.php?&amp;offset=5">&raquo;</a> | '
+            . '<a href="index.php?&amp;offset=10">&raquo;&raquo;&raquo;</a> ]</div>
 
 <div class="pnnavi summary">
 results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b></div>
 ';
 
-
         $this->_options['cntitems'] = 150;
-        $this->_object = new Mumsys_Pager_Default($this->_options);
+        $this->_object = new Mumsys_Pager_Default( $this->_options );
 
         $actual2 = $this->_object->render();
         $expected2 = '<div class="pnnavi">
-[ &laquo;&laquo;&laquo; | &laquo; |  &gt;<strong>1</strong>&lt;  | <a href="index.php?&amp;offset=5">2</a> | <a href="index.php?&amp;offset=10">3</a> | <a href="index.php?&amp;offset=15">4</a> | <a href="index.php?&amp;offset=20">5</a> | <a href="index.php?&amp;offset=25">6</a> | <a href="index.php?&amp;offset=30">7</a> | <a href="index.php?&amp;offset=35">8</a> | <a href="index.php?&amp;offset=40">9</a><a href="index.php?&amp;offset=5">&raquo;</a> | <a href="index.php?&amp;offset=145">&raquo;&raquo;&raquo;</a> ]</div>
+[ &laquo;&laquo;&laquo; | &laquo; |  &gt;<strong>1</strong>&lt;  | <a href="index.php?&amp;offset=5">2</a> | '
+            . '<a href="index.php?&amp;offset=10">3</a> | <a href="index.php?&amp;offset=15">4</a> | '
+            . '<a href="index.php?&amp;offset=20">5</a> | <a href="index.php?&amp;offset=25">6</a> | '
+            . '<a href="index.php?&amp;offset=30">7</a> | <a href="index.php?&amp;offset=35">8</a> | '
+            . '<a href="index.php?&amp;offset=40">9</a><a href="index.php?&amp;offset=5">&raquo;</a> | '
+            . '<a href="index.php?&amp;offset=145">&raquo;&raquo;&raquo;</a> ]</div>
 
 <div class="pnnavi summary">
 results: <b>150</b>, results per page: <b>5</b>, pages: <b>30</b></div>
@@ -175,17 +186,20 @@ results: <b>150</b>, results per page: <b>5</b>, pages: <b>30</b></div>
         $this->_options['limit'] = 24;
         $this->_options['cntitems'] = 50;
         $this->_options['dynamic'] = false;
-        $this->_object = new Mumsys_Pager_Default($this->_options);
+        $this->_object = new Mumsys_Pager_Default( $this->_options );
         $actual3 = $this->_object->render();
         $expected3 = '<div class="pnnavi">
-[ <a href="index.php?&amp;offset=0">&laquo;&laquo;&laquo;</a> | <a href="index.php?&amp;offset=0">&laquo;</a> | <a href="index.php?&amp;offset=0">1</a> | <a href="index.php?&amp;offset=24">2</a> | <a href="index.php?&amp;offset=48">3</a><a href="index.php?&amp;offset=34">&raquo;</a> | <a href="index.php?&amp;offset=48">&raquo;&raquo;&raquo;</a> ]</div>
+[ <a href="index.php?&amp;offset=0">&laquo;&laquo;&laquo;</a> | <a href="index.php?&amp;offset=0">&laquo;</a> | '
+            . '<a href="index.php?&amp;offset=0">1</a> | <a href="index.php?&amp;offset=24">2</a> | '
+            . '<a href="index.php?&amp;offset=48">3</a><a href="index.php?&amp;offset=34">&raquo;</a> | '
+            . '<a href="index.php?&amp;offset=48">&raquo;&raquo;&raquo;</a> ]</div>
 
 <div class="pnnavi summary">
 results: <b>50</b>, results per page: <b>24</b>, pages: <b>3</b></div>
 ';
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected2, $actual2);
-        $this->assertEquals($expected3, $actual3);
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expected2, $actual2 );
+        $this->assertEquals( $expected3, $actual3 );
     }
 
 
@@ -211,11 +225,11 @@ results: <b>50</b>, results per page: <b>24</b>, pages: <b>3</b></div>
             'PAGER_SLIDERDELIMITER' => ' | ',
         );
 
-        $this->_object->setMessageTemplates($expected1);
+        $this->_object->setMessageTemplates( $expected1 );
         $actual2 = $this->_object->getMessageTemplates();
 
-        $this->assertEquals($expected1, $actual1);
-        $this->assertEquals($expected1, $actual2);
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expected1, $actual2 );
     }
 
 
@@ -224,7 +238,7 @@ results: <b>50</b>, results per page: <b>24</b>, pages: <b>3</b></div>
      */
     public function testCheckVersion()
     {
-        $this->assertEquals($this->_version, Mumsys_Pager_Default::VERSION);
+        $this->assertEquals( $this->_version, Mumsys_Pager_Default::VERSION );
     }
 
 }
