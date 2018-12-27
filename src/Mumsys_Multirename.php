@@ -1232,6 +1232,8 @@ class Mumsys_Multirename
      * @param string $name Filename to substitute
      * @param string $curPath Current path of the file
      * @param array $breadcrumbs Replacement breadcrumbs of the current path
+     * @param boolean $substitutePaths Flag to enable to sustitude %path%
+     * informations or not; Default: false
      *
      * @return Returns the new substituted filename
      */
@@ -1258,7 +1260,7 @@ class Mumsys_Multirename
             ) {
                 $name = str_replace( $search, $replace, $name );
             } else {
-                /* @todo escape operators? do tests */
+                /** @todo escape operators? do tests */
                 foreach ( $replace as $regex => $repl ) {
                     $name = preg_replace( $regex, $repl, $name, -1 );
                 }
@@ -1426,7 +1428,7 @@ class Mumsys_Multirename
             . 'Using the --test mode with loglevel 6 or higher will give you informations about the memory usage.',
 //
             '--batch' => 'Flag; Not implemented yet. Run the job recusiv from given --path as start directory and '
-            . 'start renaming. If a new configuration in the sub directories exists is trys to load the '
+            . 'start renaming. If a new configuration in the sub directories exists it trys to load the '
             . 'configuration for batch-mode and execute it. This enables --recursiv and --history',
 //
             '--plugins' => 'Not implemented yet. Semicolon separated list of plugins to include. Plugins to assist you'
