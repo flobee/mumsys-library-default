@@ -60,7 +60,7 @@ class Mumsys_MultirenameTest
     protected function setUp()
     {
         $this->_oldHome = $_SERVER['HOME'];
-        $this->_version = '1.4.3';
+        $this->_version = '1.4.5';
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Multirename' => $this->_version,
@@ -148,26 +148,67 @@ class Mumsys_MultirenameTest
         $_SERVER['USER'] = $tmp;
     }
 
+//
+//    /**
+//     * Test show version
+//     * @covers Mumsys_Multirename::run
+//     * @covers Mumsys_Multirename::showVersion
+//     */
+//    public function testConstructorGetShowVersionA()
+//    {
+//        $this->_config['version'] = true;
+//        ob_start();
+//        $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
+//        $current = ob_get_clean();
+//
+//        // this needs in the single test
+//        $expected = array(
+//            'multirename ' . Mumsys_Multirename::VERSION . ' by Florian Blasel' . PHP_EOL . PHP_EOL,
+//            'Mumsys_Abstract                     ' . Mumsys_Abstract::VERSION . PHP_EOL,
+//            'Mumsys_FileSystem_Common_Abstract   ' . Mumsys_FileSystem_Common_Abstract::VERSION . PHP_EOL,
+//            'Mumsys_FileSystem                   ' . Mumsys_FileSystem::VERSION . PHP_EOL,
+//            'Mumsys_Logger_File                  ' . Mumsys_Logger_File::VERSION . PHP_EOL,
+//            'Mumsys_Logger_Abstract              ' . Mumsys_Logger_Abstract::VERSION . PHP_EOL,
+//            'Mumsys_File                         ' . Mumsys_File::VERSION . PHP_EOL,
+//            'Mumsys_Multirename                  ' . Mumsys_Multirename::VERSION . PHP_EOL,
+//        );
+//        foreach ($expected as $toCheck) {
+//            $res = (preg_match('/' . $toCheck . '/im', $current) ? true : false);
+//            $this->assertTrue($res, $toCheck . ' ' . $current);
+//        }
+//    }
+
 
     /**
      * Test show version
+     * @covers Mumsys_Multirename::run
+     * @covers Mumsys_Multirename::getVersionID
+     * @covers Mumsys_Multirename::getVersion
+     * @covers Mumsys_Multirename::getVersionLong
+     * @covers Mumsys_Multirename::getVersionShort
+     * @covers Mumsys_Multirename::showVersion
      */
-    public function testConstructorGetShowVersion()
+    public function testConstructorGetShowVersionB()
     {
-        ob_start();
-        $this->_config['version'] = true;
-        $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
-        $current = ob_get_clean();
-        // this needs in the single test
-        $expected = array(
-            'multirename ' . Mumsys_Multirename::VERSION . ' by Florian Blasel' . PHP_EOL . PHP_EOL,
-            'Mumsys_Abstract                     ' . Mumsys_Abstract::VERSION . PHP_EOL,
-            'Mumsys_FileSystem_Common_Abstract   ' . Mumsys_FileSystem_Common_Abstract::VERSION . PHP_EOL,
-            'Mumsys_FileSystem                   ' . Mumsys_FileSystem::VERSION . PHP_EOL,
-            'Mumsys_Logger_File                  ' . Mumsys_Logger_File::VERSION . PHP_EOL,
-            'Mumsys_File                         ' . Mumsys_File::VERSION . PHP_EOL,
-            'Mumsys_Multirename                  ' . Mumsys_Multirename::VERSION . PHP_EOL,
-        );
+        $current = $this->_object->getVersionLong();
+        $expected = 'multirename ' . $this->_version . ' by Florian Blasel' . PHP_EOL
+            . PHP_EOL
+            . 'Mumsys_Loader                       3.2.2' . PHP_EOL
+            . 'Mumsys_Unittest_Testcase            3.3.2' . PHP_EOL
+            . 'Mumsys_MultirenameTest              3.3.2' . PHP_EOL
+            . 'Mumsys_Abstract                     3.0.2' . PHP_EOL
+            . 'Mumsys_Logger_Abstract              3.3.1' . PHP_EOL
+            . 'Mumsys_Logger_File                  3.0.4' . PHP_EOL
+            . 'Mumsys_File                         3.2.0' . PHP_EOL
+            . 'Mumsys_Php_Globals                  2.0.0' . PHP_EOL
+            . 'Mumsys_Logger_Decorator_Abstract    3.0.0' . PHP_EOL
+            . 'Mumsys_Logger_Decorator_None        1.0.0' . PHP_EOL
+            . 'Mumsys_FileSystem_Common_Abstract   3.1.0' . PHP_EOL
+            . 'Mumsys_FileSystem                   3.0.7' . PHP_EOL
+            . 'Mumsys_Multirename                  ' . $this->_version . PHP_EOL
+            . 'Global version ID                   34.18.25' . PHP_EOL
+            . PHP_EOL
+        ;
 
         $current2 = $this->_object->getVersionID();
         $expected2 = Mumsys_Multirename::VERSION;
@@ -175,12 +216,14 @@ class Mumsys_MultirenameTest
         $current3 = $this->_object->getVersion();
         $expected3 = 'Mumsys_Multirename ' . Mumsys_Multirename::VERSION;
 
-        foreach ($expected as $toCheck) {
-            $res = (preg_match('/' . $toCheck . '/im', $current) ? true : false);
-            $this->assertTrue($res);
-        }
+        ob_start();
+        $this->_object->showVersion();
+        $current4 = ob_get_clean();
+
+        $this->assertEquals($expected, $current);
         $this->assertEquals($expected2, $current2);
         $this->assertEquals($expected3, $current3);
+        $this->assertEquals($expected, $current4);
         $this->assertInstanceOf('Mumsys_Multirename', $this->_object);
     }
 
