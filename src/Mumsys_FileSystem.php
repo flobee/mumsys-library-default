@@ -465,7 +465,10 @@ class Mumsys_FileSystem
         $keepCopy = false )
     {
         try {
-            if ( $keepCopy && (file_exists( $to ) || is_link( $to )) ) {
+            $toExists = file_exists( $to );
+            $toIsLink = is_link( $to );
+
+            if ( $keepCopy && ($toExists || $toIsLink) ) {
                 return $this->link( $file, $to . '.lnk', $type, $keepCopy );
             }
 
@@ -492,7 +495,7 @@ class Mumsys_FileSystem
                 $srcFile = $file;
             }
 
-            if ( is_link( $to ) ) {
+            if ( $toIsLink ) {
                 return $to;
             }
 
