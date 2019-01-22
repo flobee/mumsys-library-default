@@ -81,4 +81,30 @@ class Mumsys_Db_Factory
         return $object;
     }
 
+
+    /**
+     * Creates and returns a database manager.
+     *
+     * @param Mumsys_Config_Interface $config Config item instance
+     * @param string $driver Name of the manager inplementation
+     *
+     * @return Mumsys_Db_Manager_Interface Database manager
+     * @throws Mumsys_Db_Exception If database manager not found
+     */
+    public static function createManager( Mumsys_Config_Interface $config,
+        $driver = 'Default' ): Mumsys_Db_Manager_Interface
+    {
+        $class = 'Mumsys_Db_Manager_' . $driver;
+        $file = __DIR__ . DIRECTORY_SEPARATOR . $class . '.php';
+
+        if ( file_exists( $file ) === true &&
+            ( include_once $file ) !== false && class_exists( $class )
+        ) {
+            return new $classname( $config );
+        }
+
+        $mesg = sprintf( 'Database manager "%1$s" not found', $driver );
+        throw new Mumsys_Db_Exception( $mesg );
+    }
+
 }
