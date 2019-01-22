@@ -77,6 +77,32 @@ class Mumsys_Variable_Item_DefaultTest
 
 
     /**
+     * @covers Mumsys_Variable_Item_Default::getProperties
+     */
+    public function testGetProperties()
+    {
+        $propsExpected = array(
+            'name' => true,
+            'value' => true,
+            'label' => true,
+            'desc' => true,
+            'info' => true,
+            'default' => true,
+            'type' => true,
+            'minlen' => true,
+            'maxlen' => true,
+            'regex' => true,
+            'allowEmpty' => true,
+            'required' => true,
+            'errors' => true,
+            'filters' => true,
+            'callbacks' => true,
+        );
+        $this->assertEquals( $propsExpected, $this->_object->getProperties() );
+    }
+
+
+    /**
      * @covers Mumsys_Variable_Item_Default::getType
      * @covers Mumsys_Variable_Item_Default::setType
      */

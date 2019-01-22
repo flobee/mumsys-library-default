@@ -11,7 +11,7 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Variable
- * @verion      1.1.1
+ * @verion      1.2.1
  * Created: 2006 based on Mumsys_Field, renew 2016
  */
 
@@ -39,6 +39,22 @@ interface Mumsys_Variable_Item_Interface
      * Config values MUST NOT be null!
      */
     public function __construct( array $properties = array() );
+
+
+    /**
+     * Returns the registered item input properties available.
+     *
+     * @return array List of key/value pairs of the item
+     */
+    public function getItemValues();
+
+
+    /**
+     * Returns the list of possible properties and activation flag.
+     *
+     * @return array List of property-name/flag-available pairs
+     */
+    public function getProperties();
 
 
     /**

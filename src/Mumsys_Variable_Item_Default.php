@@ -42,9 +42,8 @@ class Mumsys_Variable_Item_Default
     const VERSION = '1.1.2';
 
     /**
-     * List of key/value pairs (property/[boolean: en|dis-abled] handled by this item as whitelist.
-     *
-     * @todo Do we need a getProperties() methode?
+     * List of key/value pairs (property/[boolean: en|dis-abled] handled by
+     * this item as whitelist.
      *
      * @var array
      */
@@ -90,26 +89,15 @@ class Mumsys_Variable_Item_Default
 
 
     /**
-     * Returns the registered item input properties (which comes from the
-     * config + current value)
-     *
-     * @return array List of key/value pairs of the item
-     */
-    public function getItemValues(): array
-    {
-        return $this->_input;
-    }
-
-
-    /**
      * Returns the list of possible properties and activation flag.
      *
-     * @return array List of property-name/flag pairs
+     * @return array List of property-name/flag-available pairs
      */
-    public function getProperties(): array
+    public function getProperties()
     {
         return $this->_properties;
     }
+
 
     /**
      * Returns the variable item type.
