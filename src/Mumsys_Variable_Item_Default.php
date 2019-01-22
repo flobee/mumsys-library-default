@@ -90,6 +90,28 @@ class Mumsys_Variable_Item_Default
 
 
     /**
+     * Returns the registered item input properties (which comes from the
+     * config + current value)
+     *
+     * @return array List of key/value pairs of the item
+     */
+    public function getItemValues(): array
+    {
+        return $this->_input;
+    }
+
+
+    /**
+     * Returns the list of possible properties and activation flag.
+     *
+     * @return array List of property-name/flag pairs
+     */
+    public function getProperties(): array
+    {
+        return $this->_properties;
+    }
+
+    /**
      * Returns the variable item type.
      *
      * Hint: {@link Mumsys_Variable_Abstract::TYPES} To see internal handling
