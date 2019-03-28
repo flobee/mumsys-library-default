@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a416691c21b3a5a404f36d0ed4495529",
+    "content-hash": "47c606de937a55df0962703192d13284",
     "packages": [
         {
             "name": "flobee/spss",
