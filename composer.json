@@ -13,7 +13,7 @@
         }
     ],
     "require-dev": {
-        "php": "7.* || 7.2",
+        "php": "7.2.* || 7.3.*",
         "tedivm/jshrink": "*",
         "phing/phing": "^2",
         "friendsofphp/php-cs-fixer": "^2",
@@ -21,6 +21,6 @@
         "composer/composer": "^1.6"
     },
     "require": {
-        "flobee/spss": "*"
+        "flobee/spss": "^3.1"
     }
 }
