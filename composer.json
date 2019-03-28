@@ -21,6 +21,6 @@
         "composer/composer": "^1.6"
     },
     "require": {
-        "flobee/spss": "^2"
+        "flobee/spss": "*"
     }
 }
