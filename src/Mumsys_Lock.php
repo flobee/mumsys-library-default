@@ -67,12 +67,7 @@ class Mumsys_Lock
             throw new Mumsys_Exception( $msg );
         }
 
-        if ( !@touch( $this->_file ) ) {
-            $message = sprintf( 'Locking failt for file "%1$s"', $this->_file );
-            throw new Mumsys_Exception( $message );
-        }
-
-        return true;
+        return $this->relock();
     }
 
 
@@ -89,6 +84,23 @@ class Mumsys_Lock
                 $message = sprintf( 'Unlock failt for: "%1$s"', $this->_file );
                 throw new Mumsys_Exception( $message );
             }
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Re-lock/ refresh an existing lock.
+     *
+     * @return boolean Returns true if the lock was set
+     * @throws Mumsys_Exception If creation of lock file failt.
+     */
+    public function relock()
+    {
+        if ( !@touch( $this->_file ) ) {
+            $message = sprintf( 'Locking failt for file "%1$s"', $this->_file );
+            throw new Mumsys_Exception( $message );
         }
 
         return true;
@@ -113,6 +125,7 @@ class Mumsys_Lock
         if ( file_exists( $this->_file ) ) {
             return true;
         }
+
         return false;
     }
 
