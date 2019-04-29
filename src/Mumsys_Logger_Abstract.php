@@ -102,7 +102,7 @@ abstract class Mumsys_Logger_Abstract
     /**
      * Format of a log message.
      * Default:
-     *  1 = dateformat string
+     *  1 = dateformat string (see "timeFormat" in construction)
      *  2 = username
      *  3 = name of the log level
      *  4 = id of the log level

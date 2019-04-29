@@ -65,7 +65,7 @@ class Mumsys_Logger_File
     /**
      * Initialize the logger file object
      *
-     * @param array $args Associativ array with additional params
+     * @param array $options Associativ array with additional params
      * - [logfile] string Location of the logfile; optional, if not set
      *      logs will be stored to /tmp/ ! Make sure you have access to it.
      * - [way] string Default: fopen "a"
@@ -78,8 +78,9 @@ class Mumsys_Logger_File
      * - [lf] string Optional Linefeed Default: \n
      * - [maxfilesize] integer Optional Number of Bytes for the logfile Default:
      *   0 (no limit)
+     * @param Mumsys_Logger_Writer_Interface $writer Writer interface
      *
-     * @uses Mumsys_File Uses Mumsys_File object for file logging
+     * @uses Mumsys_File Uses Mumsys_File object for file logging if $writer not set
      */
     public function __construct( array $options = array(),
         Mumsys_Logger_Writer_Interface $writer = null )
