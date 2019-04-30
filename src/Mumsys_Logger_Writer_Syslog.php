@@ -37,7 +37,7 @@ class Mumsys_Logger_Writer_Syslog
      */
     public function write( $content )
     {
-        $cmd = 'logger ' . $content;
+        $cmd = escapeshellcmd( 'logger ' . $content );
 
         $data = $code = null;
         $lastLine = exec( $cmd, $data, $code );
@@ -48,7 +48,7 @@ class Mumsys_Logger_Writer_Syslog
                 . 'Cmd was: "' . $cmd . '"' . PHP_EOL
                 . 'Exit code: "' . (string) $code . '"' . PHP_EOL
                 . 'Cmd last line: "' . $lastLine . '"' . PHP_EOL
-                . 'Contents (json): ' . json_encode( $data ) . PHP_EOL;
+                . 'Contents (json): "' . json_encode( $data ) . '"' . PHP_EOL;
             throw new Mumsys_Logger_Exception( $mesg );
         }
 
