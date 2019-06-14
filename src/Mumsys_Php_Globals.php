@@ -214,7 +214,7 @@ class Mumsys_Php_Globals
      */
     public static function getFileVar( $key = null, $default = null )
     {
-        if ( isset($_FILES) ) {
+        if ( isset($_FILES) && $_FILES ) {
             if ( self::$_files === null ) {
                 $newFiles = array();
 
