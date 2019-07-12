@@ -18,7 +18,7 @@ class Mumsys_Logger_DefaultTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_version = '3.0.0';
         $this->_versions = array(
@@ -47,7 +47,7 @@ class Mumsys_Logger_DefaultTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_object = $this->_writer = null;
         unset( $this->_object, $this->_writer );

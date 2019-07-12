@@ -16,7 +16,7 @@ class Mumsys_PriorityQueue_SimpleTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_defaults = array('default' => array(1, 2, 3));
         $this->_object = new Mumsys_PriorityQueue_Simple( $this->_defaults );
@@ -26,7 +26,7 @@ class Mumsys_PriorityQueue_SimpleTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_object = null;
     }

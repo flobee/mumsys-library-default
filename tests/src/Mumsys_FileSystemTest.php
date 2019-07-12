@@ -14,7 +14,7 @@ class Mumsys_FileSystemTest
     protected $_testsDir;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_version = '3.0.7';
         $this->_versions = array(
@@ -40,7 +40,7 @@ class Mumsys_FileSystemTest
     }
 
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach ( $this->_testdirs as $dir ) {
             if ( !@rmdir( $dir ) ) {

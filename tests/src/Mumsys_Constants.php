@@ -9,13 +9,13 @@ class Mumsys_ConstantsTest
 {
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
 
     }
 
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
 
     }

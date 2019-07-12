@@ -16,7 +16,7 @@ class Mumsys_Cookie_MemoryTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_object = new Mumsys_Cookie_Memory();
     }
@@ -26,7 +26,7 @@ class Mumsys_Cookie_MemoryTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_object = null;
     }
@@ -73,7 +73,7 @@ class Mumsys_Cookie_MemoryTest
         $this->_object->clear();
 
         $this->assertTrue( $actual );
-        $this->assertInternalType( 'array', $this->_object->getCookie() );
+        $this->assertTrue( is_array( $this->_object->getCookie() ) );
         $this->assertTrue( empty( $this->_object->getCookie() ) );
     }
 

@@ -21,7 +21,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_context = new Mumsys_Context();
 
@@ -50,7 +50,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_dropTempTable( $this->_tempTable );
         $this->_object->close();

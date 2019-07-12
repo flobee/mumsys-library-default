@@ -21,13 +21,13 @@ class Mumsys_Mail_FactoryTest
     protected $_object;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_object = new Mumsys_Mail_Factory();
     }
 
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_object = null;
     }

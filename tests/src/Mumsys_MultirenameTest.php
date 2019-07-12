@@ -57,7 +57,7 @@ class Mumsys_MultirenameTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_oldHome = $_SERVER['HOME'];
         $this->_version = '1.4.5';
@@ -109,7 +109,7 @@ class Mumsys_MultirenameTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         @unlink( $this->_config['path'] . '/.multirename/config' );
         @unlink( $this->_config['path'] . '/.multirename/collection' );

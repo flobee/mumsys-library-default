@@ -27,7 +27,7 @@ class Mumsys_Logger_AbstractTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_version = '3.3.1';
         $this->_testsDir = realpath( dirname( __FILE__ ) . '/../' );
@@ -50,7 +50,7 @@ class Mumsys_Logger_AbstractTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_object = null;
     }

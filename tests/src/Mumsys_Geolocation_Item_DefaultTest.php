@@ -36,7 +36,7 @@ class Mumsys_Geolocation_Item_DefaultTest
      * @covers Mumsys_Geolocation_Item::__construct
      * @covers Mumsys_Geolocation_Item::_getItemDefaults
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_defaults = array(
             'publisher' => array(
@@ -75,7 +75,7 @@ class Mumsys_Geolocation_Item_DefaultTest
     }
 
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_object = null;
         unset( $this->_object );

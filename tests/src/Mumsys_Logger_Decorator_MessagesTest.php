@@ -27,7 +27,7 @@ class Mumsys_Logger_Decorator_MessagesTest
     protected $_versions;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_version = '3.0.0';
         $this->_versions = array(
@@ -51,7 +51,7 @@ class Mumsys_Logger_Decorator_MessagesTest
     }
 
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         //@unlink($this->_logfile);
         $this->_logger = $this->_object = null;

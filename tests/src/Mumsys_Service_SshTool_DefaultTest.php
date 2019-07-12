@@ -40,7 +40,7 @@ class Mumsys_Service_SshTool_DefaultTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_version = '1.0.0';
         $this->_versions = array(
@@ -83,7 +83,7 @@ class Mumsys_Service_SshTool_DefaultTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ( file_exists( $this->_sshFile ) ) {
             unlink( $this->_sshFile );

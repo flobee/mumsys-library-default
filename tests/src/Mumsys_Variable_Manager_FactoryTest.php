@@ -19,13 +19,13 @@ class Mumsys_Variable_Manager_FactoryTest
     private $_version;
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_version = '1.2.1';
     }
 
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
 
     }

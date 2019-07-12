@@ -48,3 +48,4 @@ logs/
 /docs/API/*
 /tests/tmp/*
 
+tests/.phpunit.result.cache

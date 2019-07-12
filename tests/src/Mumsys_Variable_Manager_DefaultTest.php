@@ -57,7 +57,7 @@ class Mumsys_Variable_Manager_DefaultTest
     protected $_config = array();
 
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_config = array(
             'username' => array(
@@ -79,7 +79,7 @@ class Mumsys_Variable_Manager_DefaultTest
     }
 
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_object = null;
     }
