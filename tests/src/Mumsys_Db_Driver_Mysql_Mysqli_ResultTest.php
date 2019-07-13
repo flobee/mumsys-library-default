@@ -101,6 +101,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
     public function testFetchAll()
     {
         $table = 'mumsysunittesttable';
+        $this->_dropTempTable( $table );
         $this->_createTempTable( $table );
         $this->_createTempTableData( $table );
 
@@ -110,6 +111,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         $actual1 = $oRes->fetchAll();
 
         $actual2 = $oRes->fetchAll( 'assoc', true );
+
+        // cleanup
+        $this->_dropTempTable( $table );
 
         $this->assertEquals( $expected, $actual1 );
         $this->assertFalse( $actual2 );
@@ -159,6 +163,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
     public function testLastInsertId()
     {
         $table = 'mumsysunittesttable';
+        $this->_dropTempTable( $table );
         $this->_createTempTable( $table );
         //$this->_createTempTableData($table);
 
@@ -171,6 +176,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         $link = $this->_dbDriver->connect();
         $n = $result->lastInsertId( $link );
         $this->assertEquals( 98, $n );
+
+        $this->_dropTempTable( $table );
     }
 
 
@@ -196,6 +203,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
     public function testGetFirst_SqlResult()
     {
         $table = 'mumsysunittesttable';
+        $this->_dropTempTable( $table );
         $this->_createTempTable( $table );
         $this->_createTempTableData( $table );
 
@@ -224,12 +232,16 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         $this->expectException( 'Mumsys_Db_Exception' );
         $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
         $result->sqlResult( 10 );
+
+        // cleanup
+        $this->_dropTempTable( $table );
     }
 
 
     public function testSeek()
     {
         $table = 'mumsysunittesttable';
+        $this->_dropTempTable( $table );
         $this->_createTempTable( $table );
         $this->_createTempTableData( $table );
 
@@ -247,12 +259,16 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
 
         $x = $result->seek( 99 );
         $this->assertEquals( false, $x );
+
+        // cleanup
+        $this->_dropTempTable( $table );
     }
 
 
     public function testFree()
     {
         $table = 'mumsysunittesttable';
+        $this->_dropTempTable( $table );
         $this->_createTempTable( $table );
         $this->_createTempTableData( $table );
 
@@ -262,6 +278,9 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
         $mysqlresult = $result->getResult();
         $xB = $result->free( $mysqlresult );
+
+        // cleanup
+        $this->_dropTempTable( $table );
 
         $this->assertEquals( true, $xA );
         $this->assertEquals( true, $xB );
@@ -275,25 +294,25 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
 
     private function _createTempTable( $table = 'unittesttable' )
     {
-        $sql = 'CREATE TEMPORARY TABLE ' . $table . ' (
-            ida INT NOT NULL AUTO_INCREMENT,
-            idb TINYINT (1) NOT NULL,
-            idc smallint (2) NOT NULL,
-            idd BIGINT (1) NOT NULL,
+        $sql = 'CREATE TABLE if not exists `' . $table . '` (
+            ida INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            idb TINYINT (1) NOT NULL DEFAULT 0,
+            idc smallint (2) NOT NULL DEFAULT 0,
+            idd BIGINT (1) NOT NULL DEFAULT 0,
 
-            numa float (8,4) UNSIGNED NOT NULL,
-            numb decimal (8,4) UNSIGNED NOT NULL,
-            numc double (8,4) UNSIGNED NOT NULL,
+            numa float (8,4) UNSIGNED NOT NULL DEFAULT 0,
+            numb decimal (8,4) UNSIGNED NOT NULL DEFAULT 0,
+            numc double (8,4) UNSIGNED NOT NULL DEFAULT 0,
             -- # max limit by hardware, float without a limit!
-            numd float UNSIGNED NOT NULL,
+            numd float UNSIGNED NOT NULL DEFAULT 0,
 
-            `vartexta` enum(\'a\',\'b\',\'c\') COLLATE utf8_unicode_ci NOT NULL,
-            `vartextb` set(\'a\',\'b\',\'c\') COLLATE utf8_unicode_ci NOT NULL,
+            `vartexta` enum(\'a\',\'b\',\'c\') COLLATE utf8_unicode_ci NOT NULL DEFAULT \'a\',
+            `vartextb` set(\'a\',\'b\',\'c\') COLLATE utf8_unicode_ci NOT NULL DEFAULT \'a\',
 
-            texta CHAR( 255 ) COLLATE utf8_unicode_ci NOT NULL,
-            textb VARCHAR( 255 ) COLLATE utf8_unicode_ci NOT NULL,
-            textc TEXT COLLATE utf8_unicode_ci NOT NULL,
-            textd tinytext COLLATE utf8_unicode_ci NOT NULL,
+            texta CHAR( 255 ) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\',
+            textb VARCHAR( 255 ) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\',
+            textc TEXT COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\',
+            textd tinytext COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\',
 
             PRIMARY KEY (`ida`),
             UNIQUE KEY `texta` (`texta`),
@@ -302,6 +321,16 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         $this->_dbDriver->query( $sql );
 
         return;
+    }
+
+
+    /**
+     * Drops the test table
+     * @param string $table
+     */
+    private function _dropTempTable( $table = 'unittesttable' )
+    {
+        $res = $this->_dbDriver->query( 'DROP TABLE IF EXISTS `' . $table . '`' );
     }
 
 
@@ -333,7 +362,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
                 'numc' => '0.0000',
                 'numd' => '0',
                 'vartexta' => 'a',
-                'vartextb' => '',
+                'vartextb' => 'a',
                 'texta' => 'texta1',
                 'textb' => 'textb1',
                 'textc' => '',
@@ -349,7 +378,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
                 'numc' => '0.0000',
                 'numd' => '0',
                 'vartexta' => 'a',
-                'vartextb' => '',
+                'vartextb' => 'a',
                 'texta' => 'texta2',
                 'textb' => 'textb2',
                 'textc' => '',
@@ -365,7 +394,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
                 'numc' => '0.0000',
                 'numd' => '0',
                 'vartexta' => 'a',
-                'vartextb' => '',
+                'vartextb' => 'a',
                 'texta' => 'texta3',
                 'textb' => 'textb3',
                 'textc' => '',

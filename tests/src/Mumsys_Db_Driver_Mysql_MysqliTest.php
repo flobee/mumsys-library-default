@@ -285,7 +285,9 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setThrowErrors( false );
         $this->_object->query( 'SELECT' );
         $actual1 = $this->_object->sqlError();
-        $this->assertContains( 'You have an error in your SQL syntax', $actual1 );
+        $this->assertTrue(
+            preg_match( '/(You have an error in your SQL syntax)/', $actual1 ) == 1
+        );
     }
 
 
@@ -445,7 +447,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
     {
         // update one
         $params['fields'] = array(
-            'texta' => 'textaNew', 'textb' => 'null', 'textc' => 'now()'
+            'texta' => 'textaNew', 'textb' => 'not null', 'textc' => 'now()'
         );
         $params['table'] = $this->_tempTable;
         $params['where'] = array(
@@ -461,11 +463,11 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
             'SELECT * FROM ' . $this->_tempTable . ' WHERE ida = 1', 'ASSOC'
         );
         $this->assertEquals(
-            'UPDATE mumsysunittesttemp SET `texta`=\'textaNew\',`textb`=NULL,'
+            'UPDATE mumsysunittesttemp SET `texta`=\'textaNew\',`textb`=\'not null\','
             . '`textc`=NOW() WHERE (`ida`=\'1\' AND `ida`=1)', $queryA
         );
         $this->assertEquals( 'textaNew', $actual[0]['texta'] );
-        $this->assertEquals( '', $actual[0]['textb'] );
+        $this->assertEquals( 'not null', $actual[0]['textb'] );
         $this->assertRegExp(
             MUMSYS_REGEX_DATETIME_MYSQL, $actual[0]['textc']
         );
@@ -1266,13 +1268,15 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
      * Possible:
      * 10.0.17-MariaDB-log
      * 5.5.5-10.0.17-MariaDB-log
+     * 5.5.5-10.3.11-MariaDB
      * 5.5.5-MySQL-log
      */
     public function testGetServerInfo()
     {
         $actual = $this->_object->getServerInfo();
+        //
         $test = preg_match(
-            '/^(\d{1,3}.\d{1,3}.\d{1,3})-((mariadb|mysql).*)/i', $actual
+            '/^(\d{1,3}.\d{1,3}.\d{1,3})-(.*)-((mariadb|mysql).*)/i', $actual
         );
         $this->assertTrue( ($test == 1 ) );
     }
@@ -1314,61 +1318,61 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->escape( array(1, 2, 3) );
     }
 
-    /**
-     * Test escape errors
-     * @covers Mumsys_Db_Driver_Mysql_Mysqli::escape
-     */
-//    public function testEscapeErrorA()
-//    {
-//        $this->_object->setThrowErrors(false);
-//        $this->_object->setDebugMode(false);
-//
-//        $toTest = array();
-//
-//        $this->_object->setThrowErrors(true);
-//        $this->expectExceptionMessageRegExp('Escape failt. Not a scalar type:
-//        "array"');
-//        $this->expectException('Mumsys_Db_Exception');
-//        $this->_object->escape($toTest);
-//    }
-//
-//    public function testSaveEscapedCharsetDefaultAndUtf8()
-//    {
-//        $object = $this->_object;
-//
-//        $params = array(
-//            'fields' => array('texta' => 'öäüß?&$%§'),
-//            'table' => $this->_tempTable,
-//            'where' => array('ida' => 1)
-//        );
-//
-//        $object->update($params);
-//        $actualA = $object->getQuery();
-//        // query in utf8, connection in latin1, ok
-//        $expectedA = 'UPDATE mumsysunittesttemp SET `texta`=\'öäüß?&$%§\'
-//        WHERE `ida`=\'1\'';
-//
-//        $data = $object->fetchData('SELECT texta FROM mumsysunittesttemp
-//        WHERE ida=1', 'LINE');
-//        $actualB = $data['texta'];
-//        $expectedB = 'öäüß?&$%§';
-//
-//        $this->assertEquals($expectedA, $actualA);
-//        $this->assertEquals($expectedB, $actualB);
-//
-//        // what is in the DB when using utf8 connection?
-//        $this->_dbConfig['charset'] = 'utf8';
-//        $object = new Mumsys_Db_Driver_Mysql($this->_dbConfig);
-//
-//        $data = $object->fetchData('SELECT texta FROM mumsysunittesttemp
-//        WHERE ida=1', 'LINE');
-//        $actualC = $data['texta'];
-//        $expectedC = 'Ã¶Ã¤Ã¼ÃŸ?&$%Â§'; // crap is correct! if not this
-//        will be a problem!
-//
-//        $this->assertEquals($expectedC, $actualC);
-//        $this->assertEquals('utf8', $object->getCharset());
-//    }
+        /**
+         * Test escape errors
+         * @covers Mumsys_Db_Driver_Mysql_Mysqli::escape
+         */
+    //    public function testEscapeErrorA()
+    //    {
+    //        $this->_object->setThrowErrors(false);
+    //        $this->_object->setDebugMode(false);
+    //
+    //        $toTest = array();
+    //
+    //        $this->_object->setThrowErrors(true);
+    //        $this->expectExceptionMessageRegExp('Escape failt. Not a scalar type:
+    //        "array"');
+    //        $this->expectException('Mumsys_Db_Exception');
+    //        $this->_object->escape($toTest);
+    //    }
+    //
+    //    public function testSaveEscapedCharsetDefaultAndUtf8()
+    //    {
+    //        $object = $this->_object;
+    //
+    //        $params = array(
+    //            'fields' => array('texta' => 'öäüß?&$%§'),
+    //            'table' => $this->_tempTable,
+    //            'where' => array('ida' => 1)
+    //        );
+    //
+    //        $object->update($params);
+    //        $actualA = $object->getQuery();
+    //        // query in utf8, connection in latin1, ok
+    //        $expectedA = 'UPDATE mumsysunittesttemp SET `texta`=\'öäüß?&$%§\'
+    //        WHERE `ida`=\'1\'';
+    //
+    //        $data = $object->fetchData('SELECT texta FROM mumsysunittesttemp
+    //        WHERE ida=1', 'LINE');
+    //        $actualB = $data['texta'];
+    //        $expectedB = 'öäüß?&$%§';
+    //
+    //        $this->assertEquals($expectedA, $actualA);
+    //        $this->assertEquals($expectedB, $actualB);
+    //
+    //        // what is in the DB when using utf8 connection?
+    //        $this->_dbConfig['charset'] = 'utf8';
+    //        $object = new Mumsys_Db_Driver_Mysql($this->_dbConfig);
+    //
+    //        $data = $object->fetchData('SELECT texta FROM mumsysunittesttemp
+    //        WHERE ida=1', 'LINE');
+    //        $actualC = $data['texta'];
+    //        $expectedC = 'Ã¶Ã¤Ã¼ÃŸ?&$%Â§'; // crap is correct! if not this
+    //        will be a problem!
+    //
+    //        $this->assertEquals($expectedC, $actualC);
+    //        $this->assertEquals('utf8', $object->getCharset());
+    //    }
 
 
     /**
@@ -1399,23 +1403,23 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
     {
         $sql = 'CREATE TABLE if not exists `' . $table . '` (
             ida INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            idb TINYINT (1) NOT NULL,
-            idc smallint (2) NOT NULL,
-            idd BIGINT (1) NOT NULL,
+            idb TINYINT (1) NOT NULL DEFAULT 0,
+            idc smallint (2) NOT NULL DEFAULT 0,
+            idd BIGINT (1) NOT NULL DEFAULT 0,
 
-            numa float (8,4) UNSIGNED NOT NULL,
-            numb decimal (8,4) UNSIGNED NOT NULL,
-            numc double (8,4) UNSIGNED NOT NULL,
+            numa float (8,4) UNSIGNED NOT NULL DEFAULT 0,
+            numb decimal (8,4) UNSIGNED NOT NULL DEFAULT 0,
+            numc double (8,4) UNSIGNED NOT NULL DEFAULT 0,
             -- # max limit by hardware, float without a limit!
-            numd float UNSIGNED NOT NULL,
+            numd float UNSIGNED NOT NULL DEFAULT 0,
 
-            `vartexta` enum(\'a\',\'b\',\'c\') COLLATE utf8_unicode_ci NOT NULL,
-            `vartextb` set(\'a\',\'b\',\'c\') COLLATE utf8_unicode_ci NOT NULL,
+            `vartexta` enum(\'a\',\'b\',\'c\') COLLATE utf8_unicode_ci NOT NULL DEFAULT \'a\',
+            `vartextb` set(\'a\',\'b\',\'c\') COLLATE utf8_unicode_ci NOT NULL DEFAULT \'a\',
 
-            texta CHAR( 255 ) COLLATE utf8_unicode_ci NOT NULL,
-            textb VARCHAR( 255 ) COLLATE utf8_unicode_ci NOT NULL,
-            textc TEXT COLLATE utf8_unicode_ci NOT NULL,
-            textd tinytext COLLATE utf8_unicode_ci NOT NULL,
+            texta CHAR( 255 ) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\',
+            textb VARCHAR( 255 ) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\',
+            textc TEXT COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\',
+            textd tinytext COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\',
 
             PRIMARY KEY (`ida`),
             UNIQUE KEY `texta` (`texta`),
@@ -1474,7 +1478,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
                 'type' => 'tinyint',
                 'null' => 'NO',
                 'key' => '',
-                'default' => null,
+                'default' => '0',
                 'extra' => '',
                 'typeval' => '1',
             ),
@@ -1483,7 +1487,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
                 'type' => 'smallint',
                 'null' => 'NO',
                 'key' => '',
-                'default' => null,
+                'default' => '0',
                 'extra' => '',
                 'typeval' => '2',
             ),
@@ -1492,7 +1496,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
                 'type' => 'bigint',
                 'null' => 'NO',
                 'key' => '',
-                'default' => null,
+                'default' => '0',
                 'extra' => '',
                 'typeval' => '1',
             ),
@@ -1501,7 +1505,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
                 'type' => 'float',
                 'null' => 'NO',
                 'key' => '',
-                'default' => null,
+                'default' => '0.0000',
                 'extra' => '',
                 'typeval' => '8,4',
                 'typeattr' => 'unsigned',
@@ -1511,7 +1515,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
                 'type' => 'decimal',
                 'null' => 'NO',
                 'key' => '',
-                'default' => null,
+                'default' => '0.0000',
                 'extra' => '',
                 'typeval' => '8,4',
                 'typeattr' => 'unsigned',
@@ -1521,7 +1525,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
                 'type' => 'double',
                 'null' => 'NO',
                 'key' => '',
-                'default' => null,
+                'default' => '0.0000',
                 'extra' => '',
                 'typeval' => '8,4',
                 'typeattr' => 'unsigned',
@@ -1531,7 +1535,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
                 'type' => 'float unsigned',
                 'null' => 'NO',
                 'key' => '',
-                'default' => null,
+                'default' => '0',
                 'extra' => '',
                 'typeval' => false,
             ),
@@ -1540,7 +1544,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
                 'type' => 'enum',
                 'null' => 'NO',
                 'key' => '',
-                'default' => null,
+                'default' => 'a',
                 'extra' => '',
                 'typeval' => array(
                     0 => '',
@@ -1554,7 +1558,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
                 'type' => 'set',
                 'null' => 'NO',
                 'key' => '',
-                'default' => null,
+                'default' => 'a',
                 'extra' => '',
                 'typeval' => array(
                     0 => '',
@@ -1577,7 +1581,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
                 'type' => 'varchar',
                 'null' => 'NO',
                 'key' => 'UNI',
-                'default' => null,
+                'default' => '',
                 'extra' => '',
                 'typeval' => '255',
             ),
@@ -1586,7 +1590,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
                 'type' => 'text',
                 'null' => 'NO',
                 'key' => '',
-                'default' => null,
+                'default' => '\'\'',
                 'extra' => '',
             ),
             array(
@@ -1594,7 +1598,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
                 'type' => 'tinytext',
                 'null' => 'NO',
                 'key' => '',
-                'default' => null,
+                'default' => '\'\'',
                 'extra' => '',
             ),
         );
