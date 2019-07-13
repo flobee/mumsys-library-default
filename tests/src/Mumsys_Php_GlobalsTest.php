@@ -36,7 +36,7 @@ class Mumsys_Php_GlobalsTest
      */
     protected function setUp(): void
     {
-        $this->_version = '2.0.0';
+        $this->_version = '2.1.0';
         // in
         $this->_file = $_FILES = array(
             'test' => array(
@@ -60,6 +60,7 @@ class Mumsys_Php_GlobalsTest
      */
     protected function tearDown(): void
     {
+        $_FILES = null;
         $this->_object = null;
     }
 
@@ -74,7 +75,26 @@ class Mumsys_Php_GlobalsTest
         $actual1 = $this->_object->getServerVar( 'REMOTE_ADDR', 'no address' );
 
         $expected2 = 'phpunit';
-        $actual2 = $this->_object->getServerVar( 'PHP_SELF', 'PHP_SELF' );
+        $actual2 = $this->_object->getServerVar( 'PHP_SELF', 0 );
+
+        $this->assertEquals( $expected1, $actual1 );
+        $this->assertRegExp( '/(' . $expected2 . ')/i', $actual2 );
+    }
+
+
+    /**
+     * @covers Mumsys_Php_Globals::getServerServerVar
+     *
+     * @runInSeparateProcess
+     */
+    public function testGetServerServerVar()
+    {
+        // not exists in shell
+        $expected1 = 'fail';
+        $actual1 = $this->_object->getServerServerVar( 'REMOTE_ADDR', 'fail' );
+
+        $expected2 = 'phpunit';
+        $actual2 = $this->_object->getServerServerVar( 'PHP_SELF', 'not set' );
 
         $this->assertEquals( $expected1, $actual1 );
         $this->assertRegExp( '/(' . $expected2 . ')/i', $actual2 );
@@ -176,9 +196,13 @@ class Mumsys_Php_GlobalsTest
         $expected3 = array('test'=> array($this->_file['test']));
         $actual3 = $this->_object->getFilesVar( null, false );
 
+        $expected4 = $_FILES = null;
+        $actual4 = $this->_object->getFilesVar( 'x', false );
+
         $this->assertEquals( $expected1, $actual1 );
         $this->assertEquals( $expected2, $actual2 );
         $this->assertEquals( $expected3, $actual3 );
+        $this->assertEquals( $expected4, $actual4 );
     }
 
     /**

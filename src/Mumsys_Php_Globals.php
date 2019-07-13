@@ -39,7 +39,7 @@ class Mumsys_Php_Globals
     /**
      * Version ID information.
      */
-    const VERSION = '2.0.0';
+    const VERSION = '2.1.0';
 
     /**
      * Cache container for uploaded files
@@ -66,6 +66,24 @@ class Mumsys_Php_Globals
     public static function getServerVar( $key, $default = null )
     {
         return self::_getEnvVar( $key, $default );
+    }
+
+
+    /**
+     * Returns the php $_SERVER variable if set by given key.
+     *
+     * @param string $key ID to check for
+     * @param mixed $default Return value
+     *
+     * @return mixed Value or $default if $key was not set/null
+     */
+    public static function getServerServerVar( $key, $default = null )
+    {
+        if ( isset( $_SERVER[$key] ) ) {
+            $default = $_SERVER[$key];
+        }
+
+        return $default;
     }
 
 
