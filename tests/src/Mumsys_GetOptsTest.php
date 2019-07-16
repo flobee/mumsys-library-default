@@ -30,7 +30,7 @@ class Mumsys_GetOptsTest
      */
     protected function setUp(): void
     {
-        $this->_version = '3.6.0';
+        $this->_version = '3.6.1';
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_GetOpts' => $this->_version,
@@ -453,12 +453,13 @@ class Mumsys_GetOptsTest
     public function testGetHelp()
     {
         $actual = $this->_object->getHelp();
-        $expected = '-v|--verbose' . PHP_EOL
+        $expected = 'Actions/ options/ information:' .PHP_EOL
+            . '-v|--verbose' . PHP_EOL
             . '-i|--input <yourValue/s>' . PHP_EOL
             . '-b|--bits <yourValue/s>' . PHP_EOL
             . '-f <yourValue/s>' . PHP_EOL
             . '--help|-h' . PHP_EOL
-            . "\thelp option and this value is the help info place"
+            . "    help option and this value is the help info place"
             . PHP_EOL
             . PHP_EOL
         ;
@@ -495,16 +496,16 @@ class Mumsys_GetOptsTest
 
         $actual = $object->getHelp();
         $expected = 'action1' . PHP_EOL
-            . "\t--verbose|-v" . PHP_EOL
-            . "\t--input <yourValue/s>" . PHP_EOL
-            . "\tdesc for input in action" . PHP_EOL . PHP_EOL
-            . "\t--flag" . PHP_EOL
+            . "    --verbose|-v" . PHP_EOL
+            . "    --input <yourValue/s>" . PHP_EOL
+            . "        desc for input in action" . PHP_EOL . PHP_EOL
+            . "    --flag" . PHP_EOL
             . PHP_EOL
             . "action2" . PHP_EOL
-            . "\t--verbose|-v" . PHP_EOL
-            . "\t--input <yourValue/s>" . PHP_EOL
-            . "\tdesc for input in action" . PHP_EOL . PHP_EOL
-            . "\t--flag" . PHP_EOL
+            . "    --verbose|-v" . PHP_EOL
+            . "    --input <yourValue/s>" . PHP_EOL
+            . "        desc for input in action" . PHP_EOL . PHP_EOL
+            . "    --flag" . PHP_EOL
             . PHP_EOL
         ;
 
@@ -540,6 +541,10 @@ replace some options. But this must be handled in your buissness logic. E.g. see
 Mumsys_Multirename class.
 The un-flag option will always disable/ remove a value.
 
+Your options:
+
+Actions/ options/ information:
+
 TEXT;
         $expected .= ''
             . '-v|--verbose' . PHP_EOL
@@ -547,7 +552,7 @@ TEXT;
             . '-b|--bits <yourValue/s>' . PHP_EOL
             . '-f <yourValue/s>' . PHP_EOL
             . '--help|-h' . PHP_EOL
-            . "\thelp option and this value is the help info place"
+            . "    help option and this value is the help info place"
             . PHP_EOL
             . PHP_EOL
         ;

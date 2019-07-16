@@ -30,12 +30,22 @@
  * E.g. --no-history. It will check if the option --history was set and will
  * unset it like it wasn't set in the cmd line. This is usefule when working
  * with different options. One from a config file and the cmd line adds or
- * replace some options. But this must be handled in your buissness logic. E.g. see
- * Mumsys_Multirename class.
+ * replace some options. But this must be handled in your buissness logic.
+ * E.g. see Mumsys_Multirename class.
  * The un-flag option will always disable/ remove a value.
  *
  * @todo global config parameters like "help", "version" or "cron" ?
  * @todo Actions groups must be validated, extend whitelist configuration
+ * @todo 2019-04-30 eg a --power flag is set:
+ *      'power' => true
+ * invalidate:
+ *      --power --no-power:
+ *      'power' => false
+ * not set:
+ *      [] not set
+ * power is boolean but not a mix of bool or unset!?
+ *
+ * @todo 2019-05-14 Several actions without options not implemented! ? run.php act1 act2 ...
  *
  * Example:
  * <code>
@@ -98,7 +108,7 @@ class Mumsys_GetOpts
     /**
      * Version ID information
      */
-    const VERSION = '3.6.0';
+    const VERSION = '3.6.1';
 
     /**
      * Cmd line.
@@ -183,8 +193,8 @@ class Mumsys_GetOpts
         }
 
         if ( empty( $input ) ) {
-            $this->_argv = $_SERVER['argv'];
-            $this->_argc = $_SERVER['argc'];
+            $this->_argv = Mumsys_Php_Globals::getServerServerVar( 'argv', array() );
+            $this->_argc = Mumsys_Php_Globals::getServerServerVar( 'argc', 0 );
         } else {
             $this->_argv = $input;
             $this->_argc = count( $input );
@@ -298,7 +308,8 @@ class Mumsys_GetOpts
                 } else {
                     // action / sub program call or flag detected!
                     //$action = $arg;
-                    //$return[$action] = array();
+//                    $return[$action] = array(); // 2019-05-14: enable shows (some) actions
+//                    without options but act in a weired order if order not match the config
                     //throw new Mumsys_GetOpts_Exception('action / sub program call or flag detected' . $arg);
                 }
 
@@ -429,7 +440,7 @@ class Mumsys_GetOpts
                 $parts .= $action . ' ';
             }
 
-            foreach ($values as $k => $v) {
+            foreach ( $values as $k => $v ) {
 //                if ($k === 0) {
 //                    continue;
 //                }
@@ -473,10 +484,14 @@ class Mumsys_GetOpts
         $str = '';
         $tab = '';
 
+        if ( !$this->_hasActions ) {
+            $str .= 'Actions/ options/ information:' . PHP_EOL;
+        }
+
         foreach ( $this->_options as $action => $values ) {
-            if ( $action != '_default_' ) {
-                $str .= $action . '' . PHP_EOL;
-                $tab = "\t";
+            if ( $action !== '_default_' ) {
+                $str .= "" . $action . '' . PHP_EOL;
+                $tab = "    "; // as 4 spaces
             }
 
             foreach ( $values as $k => $v ) {
@@ -501,8 +516,8 @@ class Mumsys_GetOpts
                 }
 
                 if ( $desc ) {
-                    $desc = PHP_EOL . "\t"
-                        . wordwrap( $desc, 76, PHP_EOL . "\t" )
+                    $desc = PHP_EOL . $tab . "    "
+                        . wordwrap( $desc, 76, PHP_EOL . "    " )
                         . PHP_EOL;
                 }
 
@@ -540,6 +555,9 @@ with different options. One from a config file and the cmd line adds or
 replace some options. But this must be handled in your buissness logic. E.g. see
 Mumsys_Multirename class.
 The un-flag option will always disable/ remove a value.
+
+Your options:
+
 
 TEXT;
         return $string . $this->getHelp();
@@ -604,8 +622,8 @@ TEXT;
     {
         $mapping = array();
 
-        foreach ($options as $action => $values) {
-            foreach ($values as $opkey => $opValue) {
+        foreach ( $options as $action => $values ) {
+            foreach ( $values as $opkey => $opValue ) {
                 if ( is_string( $opkey ) ) {
                     $opValue = $opkey;
                 }
