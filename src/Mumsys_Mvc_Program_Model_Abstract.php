@@ -24,6 +24,7 @@
  */
 abstract class Mumsys_Mvc_Program_Model_Abstract
     extends Mumsys_Abstract
+    implements Mumsys_Mvc_Program_Model_Interface
 {
     /**
      * Version ID information
