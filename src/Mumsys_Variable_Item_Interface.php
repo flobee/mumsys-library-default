@@ -272,6 +272,14 @@ interface Mumsys_Variable_Item_Interface
 
 
     /**
+     * Set/ replaces the list of error messages.
+     *
+     * @param array $list List of key/value pairs of error messages
+     */
+    public function setErrorMessages( array $list );
+
+
+    /**
      * Returns all error messages of this item if any exists.
      *
      * @return array List of key/value pairs of error messages
