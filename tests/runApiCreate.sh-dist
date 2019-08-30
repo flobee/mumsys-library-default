@@ -11,19 +11,21 @@
 #
 #cmd=/usr/bin/phpdoc;
 #echo 'building API';
-#
 # --parseprivate
 #$cmd \
-#--title "Mumsys library" \
-#--template="responsive" \
-#-t ../docs/API/ \
-#--directory ../src/ \
-#--ignore "Zend/*,Smarty/*,getid3/*,phpthumb/*,graph/*"
+#   --title "Mumsys library" \
+#   --template="responsive" \
+#   -t ../docs/API/ \
+#   --directory ../src/ \
+#   --ignore "Zend/*,Smarty/*,getid3/*,phpthumb/*,graph/*"
 
 
 # Using ApiGen
 # cd ./
 # apigen generate --source ../src/ --destination ../docs/API/
-# php5 ../../phpDocumentor.phar run -d ../src -t ../docs/API
-php7.1 ~/workspace/externals/dev-tools/phpDocumentor.2.9.0.phar run -d ../src -t ../docs/API
 
+# php5 ../../phpDocumentor.phar run -d ../src -t ../docs/API
+# php7.1 ~/workspace/externals/dev-tools/phpDocumentor.2.9.0.phar run -d ../src -t ../docs/API
+
+echo "Find an API generator as .phar file. Dependencies are difficult using composer!";
+exit 1;
