@@ -555,7 +555,7 @@ class Mumsys_Multirename
         $files = array();
 
         $dirinfo = $this->_oFiles->scanDirInfo(
-            $config['path'], ($config['hidden'] ? false : true ),
+            $config['path'], ( $config['hidden'] ? false : true ),
             $config['recursive']
         );
 
@@ -1094,7 +1094,7 @@ class Mumsys_Multirename
     {
         foreach ( $this->_configs as $n => $config ) {
             $this->_logger->log(
-                'Configuration number ' . ($n + 1) . ' (index:' . $n . '):', 6
+                'Configuration number ' . ( $n + 1 ) . ' (index:' . $n . '):', 6
             );
             $this->_showConfig( $config );
         }
@@ -1226,12 +1226,12 @@ class Mumsys_Multirename
             if ( is_numeric( $search ) && is_array( $replace ) ) {
                 foreach ( $replace as $key => &$value ) {
                     foreach ( $paths as $pk => &$pv ) {
-                        if ( ($newValue = str_replace( $pk, $pv, $key )) != $key ) {
+                        if ( ( $newValue = str_replace( $pk, $pv, $key ) ) != $key ) {
                             $substitutions[$search][$newValue] = $value;
                             unset( $substitutions[$search][$key] );
                         }
 
-                        if ( ($newValue = str_replace( $pk, $pv, $value )) != $value ) {
+                        if ( ( $newValue = str_replace( $pk, $pv, $value ) ) != $value ) {
                             $substitutions[$search][$key] = $newValue;
                         }
                     }
@@ -1284,8 +1284,8 @@ class Mumsys_Multirename
         }
 
         foreach ( $substitutions as $search => $replace ) {
-            if ( (is_array( $search ) && is_array( $replace ))
-                || (is_scalar( $search ) && is_scalar( $replace ))
+            if ( ( is_array( $search ) && is_array( $replace ) )
+                || ( is_scalar( $search ) && is_scalar( $replace ) )
             ) {
                 $name = str_replace( $search, $replace, $name );
             } else {

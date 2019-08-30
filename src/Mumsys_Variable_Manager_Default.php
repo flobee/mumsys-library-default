@@ -600,7 +600,7 @@ class Mumsys_Variable_Manager_Default
     {
         $return = true;
 
-        if ( ($expr = $item->getRegex()) && ($value = $item->getValue()) ) {
+        if ( ( $expr = $item->getRegex() ) && ( $value = $item->getValue() ) ) {
             foreach ( $expr as $regex ) {
                 $match = preg_match( $regex, $value );
 
@@ -707,14 +707,13 @@ class Mumsys_Variable_Manager_Default
         $allowEmpty = $item->getAllowEmpty();
         $required = $item->getRequired();
 
-        if (
-            ( $required == false && $allowEmpty === true && empty( $value )) ||
+        if ( ( $required == false && $allowEmpty === true && empty( $value ) ) ||
             ( $required == true && $allowEmpty === true && $value !== null && empty( $value ) )
         ) {
             return true;
         }
 
-        if ( $value === null && ( $required || ($allowEmpty === false) ) ) {
+        if ( $value === null && ( $required || ( $allowEmpty === false ) ) ) {
             if ( $required ) {
                 $item->setErrorMessage(
                     self::REQUIRED_MISSING,
@@ -823,7 +822,7 @@ class Mumsys_Variable_Manager_Default
         $messages = array();
 
         foreach ( $this->_items as $key => $item ) {
-            if ( ($errors = $item->getErrorMessages() ) ) {
+            if ( ( $errors = $item->getErrorMessages() ) ) {
                 $messages[$key] = $errors;
             }
         }
@@ -1177,7 +1176,7 @@ class Mumsys_Variable_Manager_Default
                     $message = sprintf(
                         $this->_messageTemplates['CALLBACK_ERROR'], $cmd,
                         $itemName,
-                        (is_array( $value ) ? print_r( $value, true ) : $value )
+                        ( is_array( $value ) ? print_r( $value, true ) : $value )
                     );
                     $item->setErrorMessage( self::CALLBACK_ERROR, $message );
                 } else {

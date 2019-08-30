@@ -49,7 +49,7 @@ class Mumsys_Geolocation_ByIp_GeoPlugin
      * @param string $remoteAddr IP address of the requesting client.
      * @param string $currency Optional; Not implemented yet; Currency code
      */
-    public function __construct($remoteAddr='', $currency='' )
+    public function __construct( $remoteAddr = '', $currency = '' )
     {
         $this->_ip = (string) $remoteAddr;
         $this->_currency = (string) $currency;

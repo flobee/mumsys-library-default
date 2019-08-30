@@ -53,7 +53,7 @@ class Mumsys_TimerTest
         $this->_object->start();
         $expected = microtime( 1 );
         $actual = $this->_object->startTimeGet();
-        $this->assertTrue( ((int)$expected == (int)$actual) );
+        $this->assertTrue( ( (int)$expected == (int)$actual ) );
         //echo PHP_EOL.$expected.PHP_EOL.$actual. PHP_EOL;
         //echo round($expected, 3) . PHP_EOL . round($actual, 3) . PHP_EOL;
         $this->assertEquals( round( $expected, 2 ), round( $actual, 2 ) );

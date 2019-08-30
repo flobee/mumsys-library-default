@@ -122,7 +122,7 @@ class Mumsys_Config_File
      */
     public function register( $key, $value = null )
     {
-        if ( ($test = $this->get( $key )) !== null ) {
+        if ( ( $test = $this->get( $key ) ) !== null ) {
             $message = sprintf( 'Config key "%1$s" already exists', $key );
             throw new Mumsys_Config_Exception( $message );
         }

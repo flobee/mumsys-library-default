@@ -105,7 +105,7 @@ class Mumsys_Request_Default
     {
         $key = (string) $key;
 
-        if ( (null === $value) && isset( $this->_inputPost[$key] ) ) {
+        if ( ( null === $value ) && isset( $this->_inputPost[$key] ) ) {
             unset( $this->_inputPost[$key] );
             unset( $this->_input[$key] );
         } elseif ( null !== $value ) {
@@ -153,7 +153,7 @@ class Mumsys_Request_Default
     {
         $key = (string) $key;
 
-        if ( (null === $value) && isset( $this->_inputGet[$key] ) ) {
+        if ( ( null === $value ) && isset( $this->_inputGet[$key] ) ) {
             unset( $this->_inputGet[$key] );
             unset( $this->_input[$key] );
         } elseif ( null !== $value ) {

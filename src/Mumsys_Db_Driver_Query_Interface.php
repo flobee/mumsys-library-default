@@ -305,16 +305,16 @@ interface Mumsys_Db_Driver_Query_Interface
      * @return string|false seperated string by given separator
      * @throws Mumsys_Db_Exception Throws excetion on errors
      */
-    public function sqlImplode($separator=',', array $array=array(),
-        $withKeys=false, $defaults=array(), $valwrap='', $keyValWrap='',
-        $keyWrap='');
+    public function sqlImplode($separator = ',', array $array = array(),
+        $withKeys = false, $defaults = array(), $valwrap = '', $keyValWrap = '',
+        $keyWrap = '');
 
     /**
      * Sets the flag to throw errors or not.
      *
      * @param boolean $flag True for throw errors or false to collect errors.
      */
-    public function setThrowErrors($flag);
+    public function setThrowErrors( $flag );
 
     /**
      * Returns the status if throw errors is enabled or not.
@@ -328,7 +328,7 @@ interface Mumsys_Db_Driver_Query_Interface
      *
      * @param boolean $flag True for enable debug mode.
      */
-    public function setDebugMode($flag);
+    public function setDebugMode( $flag );
 
     /**
      * Returns if debug mode is enabled or not.

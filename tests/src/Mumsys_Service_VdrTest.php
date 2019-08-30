@@ -179,8 +179,8 @@ class Mumsys_Service_VdrTest
         // caches the results which can be a huge list
         $actual3 = $this->_object->execute( 'LSTR', 1 );
 
-        $this->assertTrue( (count( $actual2 ) >= 1) );
-        $this->assertTrue( (count( $actual3 ) == 1 ), 'cnt: '.count( $actual3 ) );
+        $this->assertTrue( ( count( $actual2 ) >= 1 ) );
+        $this->assertTrue( ( count( $actual3 ) == 1 ), 'cnt: ' . count( $actual3 ) );
     }
 
 

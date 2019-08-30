@@ -90,7 +90,7 @@ class Mumsys_Loader
             $path = __DIR__ . '/';
             $classfile = $path . $instance . '.php';
 
-            if ( ($test = file_exists( $classfile ) ) ) {
+            if ( ( $test = file_exists( $classfile ) ) ) {
                 $test = require_once $classfile;
             }
         }

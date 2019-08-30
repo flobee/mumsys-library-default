@@ -43,4 +43,3 @@ class Php
     const VERSION = '2.0.0';
 
 }
-

@@ -75,7 +75,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      */
     public function getKey( $default = null )
     {
-        return (isset( $this->_input['key'] ) ? (string) $this->_input['key'] : $default);
+        return ( isset( $this->_input['key'] ) ? (string) $this->_input['key'] : $default );
     }
 
 
@@ -106,7 +106,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      */
     public function getLabel( $default = null )
     {
-        return (isset( $this->_input['label'] )) ? (string) $this->_input['label'] : $default;
+        return ( isset( $this->_input['label'] ) ) ? (string) $this->_input['label'] : $default;
     }
 
 
@@ -137,7 +137,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      */
     public function getSign( $default = null )
     {
-        return (isset( $this->_input['sign'] )) ? (string) $this->_input['sign'] : $default;
+        return ( isset( $this->_input['sign'] ) ) ? (string) $this->_input['sign'] : $default;
     }
 
 
@@ -168,7 +168,7 @@ abstract class Mumsys_Weather_Item_Unit_Abstract
      */
     public function getCode( $default = null )
     {
-        return (isset( $this->_input['code'] )) ? (string) $this->_input['code'] : $default;
+        return ( isset( $this->_input['code'] ) ) ? (string) $this->_input['code'] : $default;
     }
 
 

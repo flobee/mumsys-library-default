@@ -192,7 +192,7 @@ class Mumsys_HtmlTest
         foreach ( $this->_versions as $must => $value ) {
             $message = 'Invalid: ' . $must . '::' . $value;
             $this->assertTrue( isset( $possible[$must] ), $message );
-            $this->assertTrue( ($possible[$must] == $value ), $message );
+            $this->assertTrue( ( $possible[$must] == $value ), $message );
         }
     }
 

@@ -196,7 +196,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
             'Flush tables', 'Open tables', 'Queries per second avg'];
         foreach ( $find as $key ) {
             $this->assertTrue(
-                (preg_match( '/(' . $key . ')/', $actual1 ) === 1 )
+                ( preg_match( '/(' . $key . ')/', $actual1 ) === 1 )
             );
         }
     }
@@ -1278,7 +1278,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $test = preg_match(
             '/^(\d{1,3}.\d{1,3}.\d{1,3})-(.*)-((mariadb|mysql).*)/i', $actual
         );
-        $this->assertTrue( ($test == 1 ) );
+        $this->assertTrue( ( $test == 1 ) );
     }
 
 

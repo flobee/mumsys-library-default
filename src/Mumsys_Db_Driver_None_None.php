@@ -190,7 +190,7 @@ class Mumsys_Db_Driver_None_None
             $this->_querys[] = $sql;
         }
 
-        if ( ($error = $this->sqlError() ) ) {
+        if ( ( $error = $this->sqlError() ) ) {
             return $this->_setError( $error );
         }
 
@@ -474,7 +474,7 @@ class Mumsys_Db_Driver_None_None
      */
     public function insert( array $params = array() )
     {
-        if ( ($r = $this->_save( $params, 'insert' ) ) ) {
+        if ( ( $r = $this->_save( $params, 'insert' ) ) ) {
             return $r->lastInsertId();
         }
 
@@ -493,7 +493,7 @@ class Mumsys_Db_Driver_None_None
      */
     public function replace( array $params = array() )
     {
-        if ( ($r = $this->_save( $params, 'replace' ) ) ) {
+        if ( ( $r = $this->_save( $params, 'replace' ) ) ) {
             return $r->affectedRows();
         }
 

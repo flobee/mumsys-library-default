@@ -48,9 +48,8 @@ abstract class Mumsys_Service_Spss_Abstract
      */
     public function __construct( $iface )
     {
-        if (
-            !( $iface instanceof \SPSS\Sav\Reader)
-            && !($iface instanceof \SPSS\Sav\Writer)
+        if ( !( $iface instanceof \SPSS\Sav\Reader )
+            && !( $iface instanceof \SPSS\Sav\Writer )
         ) {
             $mesg = 'Invalid Reader/Writer instance';
             throw new Mumsys_Service_Spss_Exception( $mesg );
@@ -78,7 +77,7 @@ abstract class Mumsys_Service_Spss_Abstract
      */
     public function isReader(): bool
     {
-        if ( $this->_spss instanceof \SPSS\Sav\Reader) {
+        if ( $this->_spss instanceof \SPSS\Sav\Reader ) {
             return true;
         }
 
@@ -93,7 +92,7 @@ abstract class Mumsys_Service_Spss_Abstract
      */
     public function isWriter(): bool
     {
-        if ( $this->_spss instanceof \SPSS\Sav\Writer) {
+        if ( $this->_spss instanceof \SPSS\Sav\Writer ) {
             return true;
         }
 

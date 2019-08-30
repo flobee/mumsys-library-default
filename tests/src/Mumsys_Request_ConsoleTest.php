@@ -65,9 +65,9 @@ class Mumsys_Request_ConsoleTest
         $this->_object = new Mumsys_Request_Console( $this->_options );
         $actual = $this->_object->getParams();
 
-        $this->assertTrue( ($actual['unit'] === 'test') );
+        $this->assertTrue( ( $actual['unit'] === 'test' ) );
         $this->assertTrue( in_array( 'unit=test', $actual ) );
-        $this->assertTrue( (count( $actual ) >= 2) );
+        $this->assertTrue( ( count( $actual ) >= 2 ) );
     }
 
 

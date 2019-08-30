@@ -28,4 +28,3 @@ class Mumsys_Geolocation_Exception extends Mumsys_Exception
 {
 
 }
-

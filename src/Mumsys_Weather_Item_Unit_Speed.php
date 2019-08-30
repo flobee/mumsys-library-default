@@ -216,7 +216,7 @@ class Mumsys_Weather_Item_Unit_Speed
      * @return float Returns the calculated value for the target code
      * @throws Mumsys_Weather_Item_Unit_Exception If implementation is missing
      */
-    public function convert( $value, string $codeTo = 'm/s')
+    public function convert( $value, string $codeTo = 'm/s' )
     {
         $codeFrom = $this->getCode();
         if ( $codeFrom === $codeTo ) {

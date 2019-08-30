@@ -313,7 +313,7 @@ class Mumsys_Php_GlobalsTest
         if ( !isset( $_SERVER['argv'][0] ) ) {
             $_SERVER['argv'][0] = 'test get';
         }
-        $expected8 = (is_array( $_SERVER['argv'] ) && isset( $_SERVER['argv'][0] ) )  ? $_SERVER['argv'][0] : null;
+        $expected8 = ( is_array( $_SERVER['argv'] ) && isset( $_SERVER['argv'][0] ) )  ? $_SERVER['argv'][0] : null;
         $actual8 = $this->_object->get( 0, 'no argv' );
 
         $this->assertEquals( $expected1, $actual1 );

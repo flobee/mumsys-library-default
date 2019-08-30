@@ -453,7 +453,7 @@ class Mumsys_GetOptsTest
     public function testGetHelp()
     {
         $actual = $this->_object->getHelp();
-        $expected = 'Actions/ options/ information:' .PHP_EOL
+        $expected = 'Actions/ options/ information:' . PHP_EOL
             . '-v|--verbose' . PHP_EOL
             . '-i|--input <yourValue/s>' . PHP_EOL
             . '-b|--bits <yourValue/s>' . PHP_EOL

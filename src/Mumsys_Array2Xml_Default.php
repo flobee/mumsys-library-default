@@ -696,7 +696,7 @@ class Mumsys_Array2Xml_Default
      * @param string $num_sp Numer of spaces from Spacer
      * @return string Returns empty string ToDo: To Check
      */
-    protected function _parse(array $a, $numSp=0)
+    protected function _parse( array $a, $numSp = 0 )
     {
         if ( !isset( $a[$this->_cfg['ID']['NN']] ) || empty( $a[$this->_cfg['ID']['NN']] ) ) {
             // there must be elements in current node

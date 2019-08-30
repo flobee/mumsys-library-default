@@ -156,7 +156,7 @@ class Mumsys_Php
      */
     public static function is_int( $value )
     {
-        return (is_numeric( $value ) ? intval( $value ) == $value : false);
+        return ( is_numeric( $value ) ? intval( $value ) == $value : false );
     }
 
 
@@ -215,7 +215,7 @@ class Mumsys_Php
         // scheme: http:// https:// ftp:// file:// php:// c:\ d:\ etc..
         $scheme = self::parseUrl( $url, PHP_URL_SCHEME );
 
-        if ( (PHP_VERSION_ID >= '50000') && !empty( $scheme ) ) {
+        if ( ( PHP_VERSION_ID >= '50000' ) && !empty( $scheme ) ) {
             if ( @fclose( @fopen( $url, 'r' ) ) ) {
                 return true;
             } else {
@@ -744,7 +744,7 @@ class Mumsys_Php
         $matches = array();
         foreach ( $haystack as $key => &$value ) {
 
-            if ( ($stopOnFirstMatch && $stopOnFirstMatch === 'break' ) ) {
+            if ( ( $stopOnFirstMatch && $stopOnFirstMatch === 'break' ) ) {
                 break;
             }
             // echo ":$needle:=:$key: m: $stopOnFirstMatch\n";

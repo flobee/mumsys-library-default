@@ -345,7 +345,7 @@ abstract class Mumsys_Request_Abstract
     {
         $key = (string) $key;
 
-        if ( ($value === null) && isset( $this->_input[$key] ) ) {
+        if ( ( $value === null ) && isset( $this->_input[$key] ) ) {
             unset( $this->_input[$key] );
         } elseif ( $value !== null ) {
             $this->_input[$key] = $value;

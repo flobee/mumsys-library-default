@@ -113,7 +113,7 @@ class Mumsys_PhpTest
         // this will use php's file_exists()
         $this->assertTrue( Mumsys_Php::file_exists( __FILE__ ) );
         // using fopen to test existense
-        $this->assertTrue( Mumsys_Php::file_exists( 'file://'.__FILE__ ) );
+        $this->assertTrue( Mumsys_Php::file_exists( 'file://' . __FILE__ ) );
         // empty url
         $this->assertFalse( Mumsys_Php::file_exists() );
         // not existing url
@@ -130,7 +130,7 @@ class Mumsys_PhpTest
         $oldLimit = Mumsys_Php::ini_get( 'memory_limit' );
 
         $c = ini_set( 'memory_limit', '32M' );
-        $this->assertEquals( (32 * 1048576), Mumsys_Php::ini_get( 'memory_limit' ) );
+        $this->assertEquals( ( 32 * 1048576 ), Mumsys_Php::ini_get( 'memory_limit' ) );
 //
 //        $c = ini_set('memory_limit', '1G');
 //        $this->assertEquals(1073741824, Mumsys_Php::ini_get('memory_limit'));

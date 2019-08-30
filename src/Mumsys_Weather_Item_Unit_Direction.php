@@ -115,9 +115,9 @@ class Mumsys_Weather_Item_Unit_Direction
             $codes = array('N', 'NO', 'O', 'SO', 'S', 'SW', 'W', 'NW', 'N');
         }
 
-        $div = (360 / $steps); //45, 22.5
+        $div = ( 360 / $steps ); //45, 22.5
 
-        $codeIndex = ( ( ( $degrees + ($div / 2) ) / 360 * $steps ) );
+        $codeIndex = ( ( ( $degrees + ( $div / 2 ) ) / 360 * $steps ) );
 
         return $codes[round( $codeIndex, 0 ) - 1];
     }

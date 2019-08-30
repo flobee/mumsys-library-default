@@ -355,8 +355,8 @@ class Mumsys_GetOpts
     {
         $key = key( $config );
 
-        if ( ( isset( $config[$key] ) && isset( $config[$key][0] ) && $config[$key][0] === '-')
-            || ( $key[0] === '-' && (is_string( $config[$key] ) || is_bool( $config[$key] ) ) )
+        if ( ( isset( $config[$key] ) && isset( $config[$key][0] ) && $config[$key][0] === '-' )
+            || ( $key[0] === '-' && ( is_string( $config[$key] ) || is_bool( $config[$key] ) ) )
         ) {
             $return = array('_default_' => $config);
         } else if ( isset( $config[$key] ) && is_integer( $config[$key] ) ) {

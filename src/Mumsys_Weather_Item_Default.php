@@ -352,10 +352,10 @@ class Mumsys_Weather_Item_Default
         if ( isset( $location['longitude'] ) ) {
             $this->_record['location']['longitude'] = (float) $location['longitude'];
         }
-        if ( (isset( $location['altitude'] ) ) ) {
+        if ( ( isset( $location['altitude'] ) ) ) {
             $this->_record['location']['altitude'] = (float) $location['altitude'];
         }
-        if ( (isset( $location['tz_offset'] ) ) ) {
+        if ( ( isset( $location['tz_offset'] ) ) ) {
             $this->_record['location']['tz_offset'] = (string) $location['tz_offset'];
         }
     }
@@ -429,7 +429,7 @@ class Mumsys_Weather_Item_Default
             $this->_record['temperature']['morn'] = (float) $temp['morn'];
         }
         if ( isset( $temp['unit'] ) ) {
-            if ( ($item = $this->_createUnit( 'Temperature', $temp['unit'] ) ) ) {
+            if ( ( $item = $this->_createUnit( 'Temperature', $temp['unit'] ) ) ) {
                 $this->_record['temperature']['unit'] = $item;
             }
         }
@@ -463,7 +463,7 @@ class Mumsys_Weather_Item_Default
             $this->_record['pressure']['ground'] = (float) $press['ground'];
         }
         if ( isset( $press['unit'] ) ) {
-            if ( ($item = $this->_createUnit( 'Default', $press['unit'] ) ) ) {
+            if ( ( $item = $this->_createUnit( 'Default', $press['unit'] ) ) ) {
                 $this->_record['pressure']['unit'] = $item;
             }
         }
@@ -489,7 +489,7 @@ class Mumsys_Weather_Item_Default
             $this->_record['humidity']['value'] = (float) $humidity['value'];
         }
         if ( isset( $humidity['unit'] ) ) {
-            if ( ($item = $this->_createUnit( 'Default', $humidity['unit'] ) ) ) {
+            if ( ( $item = $this->_createUnit( 'Default', $humidity['unit'] ) ) ) {
                 $this->_record['humidity']['unit'] = $item;
             }
         }
@@ -513,7 +513,7 @@ class Mumsys_Weather_Item_Default
             $this->_record['visibility']['value'] = (float) $visibility['value'];
         }
         if ( isset( $visibility['unit'] ) ) {
-            if ( ($item = $this->_createUnit( 'Default', $visibility['unit'] ) ) ) {
+            if ( ( $item = $this->_createUnit( 'Default', $visibility['unit'] ) ) ) {
                 $this->_record['visibility']['unit'] = $item;
             }
         }
@@ -580,7 +580,7 @@ class Mumsys_Weather_Item_Default
             $this->_record['wind']['speed']['gust'] = (float) $speed['gust'];
         }
         if ( isset( $speed['unit'] ) ) {
-            if ( ($item = $this->_createUnit( 'Speed', $speed['unit'] ) ) ) {
+            if ( ( $item = $this->_createUnit( 'Speed', $speed['unit'] ) ) ) {
                 $this->_record['wind']['speed']['unit'] = $item;
             }
         }
@@ -625,7 +625,7 @@ class Mumsys_Weather_Item_Default
             $this->_record['wind']['direction']['end'] = (float) $direct['end'];
         }
         if ( isset( $direct['unit'] ) ) {
-            if ( ($item = $this->_createUnit( 'Direction', $direct['unit'] ) ) ) {
+            if ( ( $item = $this->_createUnit( 'Direction', $direct['unit'] ) ) ) {
                 $this->_record['wind']['direction']['unit'] = $item;
             }
         }
@@ -737,7 +737,7 @@ class Mumsys_Weather_Item_Default
             $this->_record['precipitation']['rain']['value'] = (string) $rain['value'];
         }
         if ( isset( $rain['unit'] ) ) {
-            if ( ($item = $this->_createUnit( 'Default', $rain['unit'] ) ) ) {
+            if ( ( $item = $this->_createUnit( 'Default', $rain['unit'] ) ) ) {
                 $this->_record['precipitation']['rain']['unit'] = $item;
             }
         }

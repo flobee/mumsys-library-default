@@ -31,4 +31,3 @@ class Mumsys_Mvc_Controller_Exception extends Mumsys_Exception
 {
 
 }
-

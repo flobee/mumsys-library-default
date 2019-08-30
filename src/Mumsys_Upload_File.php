@@ -79,11 +79,9 @@ class Mumsys_Upload_File
 
             $errCode = $fileInput['error'];
 
-            $errMsg = (
-                isset( $uploaderrors[(int) $errCode] )
+            $errMsg = ( isset( $uploaderrors[(int) $errCode] )
                 ? $uploaderrors[$errCode]
-                : 'Unknown error, not part of php upload error'
-            );
+                : 'Unknown error, not part of php upload error' );
             $mesg = sprintf(
                 'Upload error! Code: "%1$s", Message: "%2$s"', $errCode, $errMsg
             );

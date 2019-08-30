@@ -182,7 +182,7 @@ class Mumsys_Cookie_Default
         if ( $test ) {
             unset( $_COOKIE[$key] );
             $return = $this->setCookie(
-                $key, '', (time() - 3600 ), $path, $domain, $secure, $httponly
+                $key, '', ( time() - 3600 ), $path, $domain, $secure, $httponly
             );
         } else {
             $return = true;

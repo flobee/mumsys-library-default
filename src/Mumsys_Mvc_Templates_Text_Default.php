@@ -170,11 +170,11 @@ class Mumsys_Mvc_Templates_Text_Default
         }
 
         if ( $func ) {
-            $retour .= ' || Function/Methode: ' . ($func);
+            $retour .= ' || Function/Methode: ' . ( $func );
         }
 
         if ( $class ) {
-            $retour .= ' || Class: ' . ($class);
+            $retour .= ' || Class: ' . ( $class );
         }
 
         $retour .= _NL;

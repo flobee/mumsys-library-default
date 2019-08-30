@@ -210,7 +210,7 @@ abstract class Mumsys_Array2Xml_Abstract
     public function buffer( $value )
     {
         if ( $this->_cfg['cache'] && $value > '' ) {
-            if ( !($this->_writer instanceof Mumsys_Logger_Writer_Interface) ) {
+            if ( !( $this->_writer instanceof Mumsys_Logger_Writer_Interface ) ) {
                 $mesg = 'Can not buffer. Writer not set';
                 throw new Mumsys_Array2Xml_Exception( $mesg );
             }

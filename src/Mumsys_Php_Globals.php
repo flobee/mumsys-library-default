@@ -120,7 +120,7 @@ class Mumsys_Php_Globals
             $default = $server[$key];
         } elseif ( isset( $env[$key] ) ) {
             $default = $env[$key];
-        } elseif ( ($x = getenv( $key ) ) ) {
+        } elseif ( ( $x = getenv( $key ) ) ) {
             $default = $x;
         }
 
@@ -259,7 +259,6 @@ class Mumsys_Php_Globals
         if ( isset( self::$_files[$key] ) ) {
             $default = self::$_files[$key];
         }
-
 
         return $default;
     }

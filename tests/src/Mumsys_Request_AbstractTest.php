@@ -89,7 +89,7 @@ class Mumsys_Request_AbstractTest
     {
         $actual1 = $this->_object->getRequestId();
 
-        $this->assertTrue( (strlen( $actual1 )===23) );
+        $this->assertTrue( ( strlen( $actual1 )===23 ) );
         $this->assertEquals( $actual1, $this->_object->getRequestId() );
     }
 

@@ -87,7 +87,7 @@ class Mumsys_Php_Encoding
         }
         $_encodings = implode( ', ', $encodings );
 
-        if ( ($encoding = mb_detect_encoding( $string, "$_encodings", true ) ) === false ) {
+        if ( ( $encoding = mb_detect_encoding( $string, "$_encodings", true ) ) === false ) {
             throw new Mumsys_Php_Exception( 'Error detecting input encoding' );
         }
 

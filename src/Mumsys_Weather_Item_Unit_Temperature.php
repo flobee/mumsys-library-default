@@ -118,16 +118,16 @@ class Mumsys_Weather_Item_Unit_Temperature
 
         $units = array(
             'celsius' => array(
-                'fahrenheit' => ($value * 9 / 5 + 32),
-                'kelvin' => ($value + 273.15),
+                'fahrenheit' => ( $value * 9 / 5 + 32 ),
+                'kelvin' => ( $value + 273.15 ),
             ),
             'fahrenheit' => array(
-                'celsius' => ( ($value - 32) / 1.8 ),
-                'kelvin' => (($value + 459.67) * 5 / 9),
+                'celsius' => ( ( $value - 32 ) / 1.8 ),
+                'kelvin' => ( ( $value + 459.67 ) * 5 / 9 ),
             ),
             'kelvin' => array(
-                'celsius' => ($value - 273.15),
-                'fahrenheit' => (($value - 459.67) * 5 / 9),
+                'celsius' => ( $value - 273.15 ),
+                'fahrenheit' => ( ( $value - 459.67 ) * 5 / 9 ),
             ),
         );
 

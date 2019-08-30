@@ -173,7 +173,7 @@ class Mumsys_Html
                         $quote = 1;
                     } else {
                         $quote = 0;
-                        if ( ($attrib > 0) && ($tmp != '') ) {
+                        if ( ( $attrib > 0 ) && ( $tmp != '' ) ) {
                             $result .= '="' . $tmp . '"';
                         }
                         $tmp = '';
@@ -200,7 +200,7 @@ class Mumsys_Html
                         $quote = 1;
                     } else {
                         $quote = 0;
-                        if ( ($attrib > 0) && ($tmp != '') ) {
+                        if ( ( $attrib > 0 ) && ( $tmp != '' ) ) {
                             $result .= '="' . $tmp . '"';
                         }
                         $tmp = '';
@@ -228,7 +228,7 @@ class Mumsys_Html
         }
 
         // check, old html attributes are in standalone mode like "nowrap"?
-        if ( ($quote == 0) && ($tmp != '') ) {
+        if ( ( $quote == 0 ) && ( $tmp != '' ) ) {
             if ( $attrib == 1 ) {
                 // the name of an attrib, add the '='
                 $result .= '=';

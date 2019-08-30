@@ -169,7 +169,7 @@ class Mumsys_Service_Spss_Reader
         if ( $regexs ) {
             foreach ( $map as $internal => $public ) {
                 foreach ( $regexs as $req ) {
-                    if ( ($match = preg_match( $req, $public )) === false ) {
+                    if ( ( $match = preg_match( $req, $public ) ) === false ) {
                         throw new Mumsys_Service_Spss_Exception( 'Regex error' );
                     }
 

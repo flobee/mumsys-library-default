@@ -44,7 +44,7 @@ interface Mumsys_Db_Driver_Interface
      * - 'compress' boolean optional Deside to compress the connection or not
      * - mixed other parameters you may need for your own connection/ driver
      */
-    public function __construct(  Mumsys_Context_Item $context, array $args );
+    public function __construct( Mumsys_Context_Item $context, array $args );
 
     /**
      * Destructor. Close current connection.
@@ -222,7 +222,7 @@ interface Mumsys_Db_Driver_Interface
      * @return array|false The columns propertys with lower case array keys
      * @throws Mumsys_Db_Exception Throws exception on error
      */
-    public function showColumns($table='', $field=null);
+    public function showColumns( $table = '', $field = null );
 
     /**
      * Get current system status for uptime, threads, queries, open tables,
@@ -265,7 +265,7 @@ interface Mumsys_Db_Driver_Interface
      * - on empty query statement (if throw errors was set)
      * - on query error (if throw errors was set)
      */
-    public function query($sql=false, $unbuffered=false);
+    public function query( $sql = false, $unbuffered = false );
 
     /**
      * Test if given resource from a query is in error state

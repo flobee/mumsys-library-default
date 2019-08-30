@@ -25,4 +25,3 @@
 class Mumsys_Permissions_Exception extends Mumsys_Exception
 {
 }
-

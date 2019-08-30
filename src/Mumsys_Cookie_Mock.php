@@ -51,7 +51,7 @@ class Mumsys_Cookie_Mock
         if ( $cookieFile && $isDir ) {
             $this->_cookieFile = $cookieFile;
         } else {
-            $this->_cookieFile = sprintf('/tmp/%1$s.%2$s.tmp', __CLASS__, Mumsys_Php_Globals::getRemoteUser() );
+            $this->_cookieFile = sprintf( '/tmp/%1$s.%2$s.tmp', __CLASS__, Mumsys_Php_Globals::getRemoteUser() );
         }
 
         $this->_loadCookieData();

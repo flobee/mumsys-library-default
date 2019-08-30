@@ -111,7 +111,7 @@ class Mumsys_Logger_Decorator_AbstractTest
         $actual = $obj->log( __METHOD__, 6 );
 
         $regex = '/(' . __METHOD__ . ')/i';
-        $this->assertTrue( (preg_match( $regex, $actual ) === 1 ) );
+        $this->assertTrue( ( preg_match( $regex, $actual ) === 1 ) );
     }
 
 

@@ -130,14 +130,14 @@ class Mumsys_File
      */
     public function open()
     {
-        if ( ($this->_fh = @fopen( $this->_file, $this->_way )) === false ) {
+        if ( ( $this->_fh = @fopen( $this->_file, $this->_way ) ) === false ) {
             $msg = sprintf(
                 'Can not open file "%1$s" with mode "%2$s". Directory is '
                 . 'writeable: "%3$s", readable: "%4$s".',
                 $this->_file,
                 $this->_way,
-                (self::bool2str( $this->isWriteable() ) ),
-                (self::bool2str( $this->isReadable() ) )
+                ( self::bool2str( $this->isWriteable() ) ),
+                ( self::bool2str( $this->isReadable() ) )
             );
 
             throw new Mumsys_File_Exception( $msg );
@@ -197,7 +197,7 @@ class Mumsys_File
             throw new Mumsys_File_Exception( $message );
         }
 
-        if ( ($numBytes = @fwrite( $this->_fh, $content )) === false ) {
+        if ( ( $numBytes = @fwrite( $this->_fh, $content ) ) === false ) {
             $message = sprintf(
                 'Can not write to file: "%1$s". IsOpen: "%2$s", Is writeable: "%3$s".',
                 $this->_file,
@@ -247,10 +247,10 @@ class Mumsys_File
             $buf = $this->_buffer;
         }
 
-        if ( ($r = @fread( $this->_fh, $buf )) === false ) {
+        if ( ( $r = @fread( $this->_fh, $buf ) ) === false ) {
             $msg = sprintf(
                 'Error when reading the file: "%1$s". IsOpen: "%2$s".',
-                $this->_file, (self::bool2str( $this->_isOpen ) )
+                $this->_file, ( self::bool2str( $this->_isOpen ) )
             );
             throw new Mumsys_File_Exception( $msg );
         }
@@ -449,7 +449,7 @@ class Mumsys_File
      */
     private static function bool2str( $str )
     {
-        return ($str ? 'Yes' : 'No');
+        return ( $str ? 'Yes' : 'No' );
     }
 
 }

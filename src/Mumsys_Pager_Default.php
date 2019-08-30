@@ -443,12 +443,12 @@ class Mumsys_Pager_Default
                         } else {
                             // zeige 10 ($steps) vor und 10 ($steps) nach dem
                             // aktuellen eintrag,
-                            if ( ($selected - $steps <= $i) && ($selected + $steps >= $i) ) {
+                            if ( ( $selected - $steps <= $i ) && ( $selected + $steps >= $i ) ) {
                                 $slider[] = sprintf(
                                     '<a href="%1$s&amp;%2$s=%3$s">%4$s</a>',
                                     $basiclink,
                                     $pagestartVarname,
-                                    ($limit * $i ),
+                                    ( $limit * $i ),
                                     $x
                                 );
                             }
@@ -486,7 +486,7 @@ class Mumsys_Pager_Default
             $html .= $this->_slider;
         }
 
-        if ( ($pagestart + $limit) >= $cntitems ) {
+        if ( ( $pagestart + $limit ) >= $cntitems ) {
             // next page
             $this->_pageNext = '' . $this->_templates[self::PAGER_PAGENEXT];
             $html .= $this->_pageNext;
@@ -498,7 +498,7 @@ class Mumsys_Pager_Default
                 '<a href="%1$s&amp;%2$s=%3$s">%4$s</a>',
                 $basiclink,
                 $pagestartVarname,
-                ($pagestart + $limit ),
+                ( $pagestart + $limit ),
                 $this->_templates[self::PAGER_PAGENEXT]
             );
             $html .= $this->_pageNext;
@@ -507,7 +507,7 @@ class Mumsys_Pager_Default
                 '<a href="%1$s&amp;%2$s=%3$s">%4$s</a>',
                 $basiclink,
                 $pagestartVarname,
-                ($cnt * $limit - $limit ),
+                ( $cnt * $limit - $limit ),
                 $this->_templates[self::PAGER_PAGELAST]
             );
         }

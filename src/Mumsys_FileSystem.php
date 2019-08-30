@@ -92,7 +92,7 @@ class Mumsys_FileSystem
         if ( @is_dir( $dir ) && is_readable( $dir ) && !is_link( $dir ) ) {
             $cnt = 0;
             if ( $dh = @opendir( $dir ) ) {
-                while ( ($file = readdir( $dh )) !== false ) {
+                while ( ( $file = readdir( $dh ) ) !== false ) {
                     if ( $file == '.' || $file == '..' ) {
                         continue;
                     }
@@ -468,7 +468,7 @@ class Mumsys_FileSystem
             $toExists = file_exists( $to );
             $toIsLink = is_link( $to );
 
-            if ( $keepCopy && ($toExists || $toIsLink) ) {
+            if ( $keepCopy && ( $toExists || $toIsLink ) ) {
                 return $this->link( $file, $to . '.lnk', $type, $keepCopy );
             }
 
@@ -484,7 +484,7 @@ class Mumsys_FileSystem
                 chdir( $dirTo );
 
                 // from and to in reverse as parameter ? why?
-                if ( ($relDir = $this->getRelativeDir( $dirTo, $dirFrom ) ) > '' ) {
+                if ( ( $relDir = $this->getRelativeDir( $dirTo, $dirFrom ) ) > '' ) {
                     $srcFile = $relDir . '/' . basename( $file );
                 } else {
                     $srcFile = basename( $file );
@@ -612,7 +612,7 @@ class Mumsys_FileSystem
         }
         $stack = array(basename( $dir ));
         $path = null;
-        while ( ($d = dirname( $dir ) ) ) {
+        while ( ( $d = dirname( $dir ) ) ) {
             if ( !is_dir( $d ) ) {
                 $stack[] = basename( $d );
                 $dir = $d;
@@ -623,7 +623,7 @@ class Mumsys_FileSystem
         }
 
         /** @todo test this exception */
-        if ( $path && ($path = realpath( $path )) === false ) {
+        if ( $path && ( $path = realpath( $path ) ) === false ) {
             $message = 'Can not determine realpath("' . $path . '".)';
             throw new Mumsys_FileSystem_Exception( $message );
         }
@@ -746,7 +746,7 @@ class Mumsys_FileSystem
             } else {
                 $rest = $cntFrom - $key;
                 if ( $rest > 1 ) {
-                    $padLength = (count( $resultParts ) + $rest - 1) * -1;
+                    $padLength = ( count( $resultParts ) + $rest - 1 ) * -1;
                     $resultParts = array_pad( $resultParts, $padLength, '..' );
                     break;
                 } else {
@@ -779,19 +779,19 @@ class Mumsys_FileSystem
                 $txt = 'Bytes';
                 break;
 
-            case ($n === 1):
+            case ( $n === 1 ):
                 $txt = 'KB';
                 break;
 
-            case ($n === 2):
+            case ( $n === 2 ):
                 $txt = 'MB';
                 break;
 
-            case ($n === 3):
+            case ( $n === 3 ):
                 $txt = 'GB';
                 break;
 
-            case ($n === 4):
+            case ( $n === 4 ):
             default:
                 $txt = 'TB';
         }

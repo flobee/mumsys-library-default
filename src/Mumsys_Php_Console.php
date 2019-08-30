@@ -106,7 +106,7 @@ class Mumsys_Php_Console
 
         // cached data check
         $i = array_search( $path, $paths );
-        if ( $i !== false && isset( $times[$i] ) && ($now - $times[$i]) <= $secCmp ) {
+        if ( $i !== false && isset( $times[$i] ) && ( $now - $times[$i] ) <= $secCmp ) {
             if ( $sizes[$i] >= $maxSizeCmp ) {
                 $message = __METHOD__ . ': disc space overflow: ' . $sizes[$i]
                     . ' (' . $maxSizeCmp . ' is max limit!)';

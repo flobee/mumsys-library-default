@@ -101,11 +101,11 @@ class Mumsys_Service_SshTool_Default
         $serverUser = Mumsys_Php_Globals::getServerVar( 'USER', null );
 
         $this->_home = './';
-        if ( isset( $serverHome ) && ($_home = (string) $serverHome ) ) {
+        if ( isset( $serverHome ) && ( $_home = (string) $serverHome ) ) {
             $this->_home = $this->_checkPath( $_home );
         }
 
-        if ( isset( $serverUser ) && ($_user = (string) $serverUser ) ) {
+        if ( isset( $serverUser ) && ( $_user = (string) $serverUser ) ) {
             $this->_user = $_user;
         }
 
@@ -155,7 +155,7 @@ class Mumsys_Service_SshTool_Default
             $path = $this->_home . '/.ssh/conffiles';
         }
 
-        if ($path[0] === '~') {
+        if ( $path[0] === '~' ) {
             $path = str_replace( '~', $this->_home, $path );
         }
 
@@ -288,7 +288,7 @@ class Mumsys_Service_SshTool_Default
                             switch ( $idTarget )
                             {
                                 case '*':
-                                    $idSrc = $pathIDFile .'/*';
+                                    $idSrc = $pathIDFile . '/*';
                                     $configList[$idSrc] = $pathIDFile;
                                     break;
 
@@ -302,8 +302,8 @@ class Mumsys_Service_SshTool_Default
                             }
 
                         } else {
-                            if ($idSrc == '*') {
-                                $idSrc = $pathIDFile .'/*';
+                            if ( $idSrc == '*' ) {
+                                $idSrc = $pathIDFile . '/*';
                             }
 
                             $addPub = false;
@@ -417,7 +417,7 @@ class Mumsys_Service_SshTool_Default
                             $fileList[] = $file;
                     }
 
-                    $targetUser = $this->_getUserForHost($targetHost);
+                    $targetUser = $this->_getUserForHost( $targetHost );
                     $this->_revokeExecute( $fileList, $targetUser, $targetHost );
                 }
             }
@@ -551,7 +551,7 @@ class Mumsys_Service_SshTool_Default
     {
         $idFile = '';
         if ( isset( $config['IdentityFile'] ) ) {
-            if ($config['IdentityFile'] === true) {
+            if ( $config['IdentityFile'] === true ) {
                 $idFile = $this->_globalIdenittyFile;
             } else {
                 $idFile = $config['IdentityFile'];

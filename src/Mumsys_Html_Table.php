@@ -311,7 +311,7 @@ class Mumsys_Html_Table
      */
     public function getNumRows()
     {
-        return ($this->_numRows = count( $this->_content ) );
+        return ( $this->_numRows = count( $this->_content ) );
     }
 
 
@@ -351,7 +351,7 @@ class Mumsys_Html_Table
             if ( $_isAltrowKeyChg && $this->_colorChangeVal == $val ) {
                 $color = current( $this->_altRowColor );
             } else {
-                if ( ($c = next( $this->_altRowColor ) ) ) {
+                if ( ( $c = next( $this->_altRowColor ) ) ) {
                     $color = $c;
                 } else {
                     $color = reset( $this->_altRowColor );
@@ -649,7 +649,7 @@ class Mumsys_Html_Table
             $theHtml .= '<tbody>' . _NL;
         }
 
-        foreach ($records as $row => $value) {
+        foreach ( $records as $row => $value ) {
             // col content
             $tmp = array_values( $records[$row] );
 

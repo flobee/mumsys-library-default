@@ -106,7 +106,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function getName( $default = null )
     {
-        return (isset( $this->_input['name'] ) ? (string) $this->_input['name'] : $default);
+        return ( isset( $this->_input['name'] ) ? (string) $this->_input['name'] : $default );
     }
 
 
@@ -135,7 +135,7 @@ abstract class Mumsys_Variable_Item_Abstract
      */
     public function getValue( $default = null )
     {
-        return (isset( $this->_input['value'] )) ? $this->_input['value'] : $default;
+        return ( isset( $this->_input['value'] ) ) ? $this->_input['value'] : $default;
     }
 
 

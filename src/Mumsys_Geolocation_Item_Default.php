@@ -242,28 +242,28 @@ class Mumsys_Geolocation_Item_Default
         if ( isset( $location['longitude'] ) ) {
             $this->_record['location']['longitude'] = (float) $location['longitude'];
         }
-        if ( (isset( $location['altitude'] ) ) ) {
+        if ( ( isset( $location['altitude'] ) ) ) {
             $this->_record['location']['altitude'] = (float) $location['altitude'];
         }
-        if ( (isset( $location['tz_offset'] ) ) ) {
+        if ( ( isset( $location['tz_offset'] ) ) ) {
             $this->_record['location']['tz_offset'] = (float) $location['tz_offset'];
         }
-        if ( (isset( $location['tz_name'] ) ) ) {
+        if ( ( isset( $location['tz_name'] ) ) ) {
             $this->_record['location']['tz_name'] = (string) $location['tz_name'];
         }
-        if ( (isset( $location['dmaCode'] ) ) ) {
+        if ( ( isset( $location['dmaCode'] ) ) ) {
             $this->_record['location']['dmaCode'] = (string) $location['dmaCode'];
         }
-        if ( (isset( $location['currencyCode'] ) ) ) {
+        if ( ( isset( $location['currencyCode'] ) ) ) {
             $this->_record['location']['currencyCode'] = substr( (string) $location['currencyCode'], 0, 4 );
         }
-        if ( (isset( $location['currencySymbol'] ) ) ) {
+        if ( ( isset( $location['currencySymbol'] ) ) ) {
             $this->_record['location']['currencySymbol'] = (string) $location['currencySymbol'];
         }
-        if ( (isset( $location['currencyConverter'] ) ) ) {
+        if ( ( isset( $location['currencyConverter'] ) ) ) {
             $this->_record['location']['currencyConverter'] = (float) $location['currencyConverter'];
         }
-        if ( (isset( $location['phonePrefixCode'] ) ) ) {
+        if ( ( isset( $location['phonePrefixCode'] ) ) ) {
             $this->_record['location']['phonePrefixCode'] = (string) $location['phonePrefixCode'];
         }
     }

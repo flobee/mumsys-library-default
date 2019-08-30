@@ -488,7 +488,7 @@ class Mumsys_FileSystemTest
     {
         $dir = $this->_testdirs['dir'];
         $this->_object->mkdir( $dir );
-        touch( ($file = $dir . '/toUnlink.test' ) );
+        touch( ( $file = $dir . '/toUnlink.test' ) );
 
         $this->assertTrue( $this->_object->unlink( $dir ) ); // not a file
         $this->assertTrue( $this->_object->unlink( $file ) );

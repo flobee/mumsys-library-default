@@ -82,7 +82,7 @@ abstract class Mumsys_Weather_Abstract
      * 'name', 'sign', 'code'
      * @throws Mumsys_Weather_Exception
      */
-    public function getUnitUniversal( $code = '', $value=false )
+    public function getUnitUniversal( $code = '', $value = false )
     {
         $result = null;
 
@@ -154,7 +154,7 @@ abstract class Mumsys_Weather_Abstract
      * @throws Mumsys_Weather_Exception Throws exception if given $unit was
      * invalid
      */
-    public function getUnitPressure( $unit='hectopascal' )
+    public function getUnitPressure( $unit = 'hectopascal' )
     {
         // 1 hPa = 100 Pa
         // 101325 Pa = 1013,25 hPa = 101,325 kPa  (Hektopascal = Millibar) = 1

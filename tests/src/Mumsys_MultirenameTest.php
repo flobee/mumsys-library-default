@@ -212,7 +212,7 @@ class Mumsys_MultirenameTest
         $expected3 = 'Mumsys_Multirename ' . Mumsys_Multirename::VERSION;
 
         foreach ( $expected as $toCheck ) {
-            $res = (preg_match( '/' . $toCheck . '/im', $current ) ? true : false);
+            $res = ( preg_match( '/' . $toCheck . '/im', $current ) ? true : false );
             $this->assertTrue( $res );
         }
         $this->assertEquals( $expected2, $current2 );
@@ -635,7 +635,7 @@ class Mumsys_MultirenameTest
     {
         $actual = $this->_object->saveConfig( $this->_config['path'] );
 
-        $this->assertTrue( (is_numeric( $actual ) && $actual > 0) );
+        $this->assertTrue( ( is_numeric( $actual ) && $actual > 0 ) );
 
         $this->assertFalse( $this->_object->saveConfig( '/root/' ) );
 
@@ -670,7 +670,7 @@ class Mumsys_MultirenameTest
     public function testMergerConfig()
     {
         $actual = $this->_object->saveConfig( $this->_config['path'] );
-        $this->assertTrue( (is_numeric( $actual ) && $actual > 0) );
+        $this->assertTrue( ( is_numeric( $actual ) && $actual > 0 ) );
 
         $config['from-config'] = $this->_config['path'];
         $this->_object->run( $config );
@@ -796,7 +796,10 @@ class Mumsys_MultirenameTest
 
         foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue( isset( $possible[$must] ) );
-            $this->assertTrue( ($possible[$must] == $value), 'Version mismatch:'. $possible[$must] .' - '. $value );
+            $this->assertTrue(
+                ( $possible[$must] == $value ),
+                'Version mismatch:' . $possible[$must] . ' - ' . $value
+            );
         }
     }
 

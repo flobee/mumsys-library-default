@@ -377,7 +377,7 @@ abstract class Mumsys_Service_Vdr_Abstract
         static $extras = null;
         $record = array();
 
-        switch ( ($line[0] ) )
+        switch ( ( $line[0] ) )
         {
             case 'c':   // end of a channel
                 break;

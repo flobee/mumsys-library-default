@@ -334,7 +334,7 @@ class Mumsys_Weather_OpenWeatherMap
             // every 20min - 3h new data will be available!
             // not more than every 10min a request should be made! at all!
             // at this end we cache re-requested data for 15min.
-            $oCache->write( $ttl = (15 * 60), $data );
+            $oCache->write( $ttl = ( 15 * 60 ), $data );
 
             // --- just tracking new records ---
             $tmp = $url . PHP_EOL . print_r( json_decode( $data ), true );
@@ -405,7 +405,7 @@ class Mumsys_Weather_OpenWeatherMap
         }
 
         /** note: needs to be set/checked before _format will be set to parameters! $_format can change here! */
-        if ( ($result = $this->_buildSearch( $query ) ) ) {
+        if ( ( $result = $this->_buildSearch( $query ) ) ) {
             foreach ( $result as $value ) {
                 $parameters[] = $value;
             }
@@ -531,7 +531,7 @@ class Mumsys_Weather_OpenWeatherMap
         $objects = array();
         $data = json_decode( $response );
 
-        if ( (isset( $data->cod ) && $data->cod == 404 ) ) {
+        if ( ( isset( $data->cod ) && $data->cod == 404 ) ) {
             return false;
         }
 
@@ -765,7 +765,7 @@ class Mumsys_Weather_OpenWeatherMap
      */
     private function _parseXml( $response )
     {
-        if ( $response === false || (isset( $data->cod ) && $data->cod == 404) ) {
+        if ( $response === false || ( isset( $data->cod ) && $data->cod == 404 ) ) {
             return false;
         }
 

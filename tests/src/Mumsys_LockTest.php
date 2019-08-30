@@ -141,7 +141,7 @@ class Mumsys_LockTest
 
         foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue( isset( $possible[$must] ) );
-            $this->assertTrue( ($possible[$must] == $value ) );
+            $this->assertTrue( ( $possible[$must] == $value ) );
         }
     }
 

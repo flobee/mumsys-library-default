@@ -208,7 +208,7 @@ class Mumsys_Weather_Item_DefaultTest
     {
         $this->_object->__construct( $this->_prps, true );
         $actual = $this->_object->toArray();
-        $this->assertTrue( (count( $actual ) == 12 ) );
+        $this->assertTrue( ( count( $actual ) == 12 ) );
     }
 
 
@@ -227,7 +227,7 @@ class Mumsys_Weather_Item_DefaultTest
 
         $this->assertEquals( $expected, $actual );
         $this->assertFalse( $this->_object->get( 'notexists', false ) );
-        $this->assertTrue( ( is_array( ($x = $this->_object->get() ) ) && $x ) );
+        $this->assertTrue( ( is_array( ( $x = $this->_object->get() ) ) && $x ) );
     }
 
 

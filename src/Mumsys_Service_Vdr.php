@@ -249,13 +249,13 @@ class Mumsys_Service_Vdr
             //$posEnd = strpos($parts[0], ';');
 
             $channelID = substr( $parts[0], 0, $posStart );
-            $names = explode( ';', (substr( $parts[0], $posStart + 1 ) ) );
+            $names = explode( ';', ( substr( $parts[0], $posStart + 1 ) ) );
             $recordName = str_replace( '|', ':', $names[0] );
 
             $channelList[$channelID] = $this->channelItemCreate(
                 $channelID,
                 $recordName,
-                (isset( $names[1] ) ? $names[1] : $names[0] ),
+                ( isset( $names[1] ) ? $names[1] : $names[0] ),
                 $parts[1],
                 $parts[2],
                 $parts[3],
@@ -337,7 +337,7 @@ class Mumsys_Service_Vdr
         $posEnd = strpos( $parts[0], ';' );
 
         $channelID = substr( $parts[0], 0, $posStart );
-        $names = explode( ';', (substr( $parts[0], $posStart + 1 ) ) );
+        $names = explode( ';', ( substr( $parts[0], $posStart + 1 ) ) );
         $recordName = str_replace( '|', ':', $names[0] );
 
         $item = $this->channelItemCreate(
@@ -411,7 +411,7 @@ class Mumsys_Service_Vdr
                 'date' => $dateString,
                 'time_start' => $partA[2],
                 'duration' => substr( $partA[3], 0, 5 ),
-                'new' => (($partB == '*') ? 1 : 0),
+                'new' => ( ( $partB == '*' ) ? 1 : 0 ),
                 'title' => $title,
             );
 
@@ -614,10 +614,10 @@ class Mumsys_Service_Vdr
 
         $posStart = strpos( $parts[0], ' ' );
 
-        $recordId = substr( $parts[0], 0, ($posStart ) );
+        $recordId = substr( $parts[0], 0, ( $posStart ) );
 
         $record = $this->timerRecordGet(
-            substr( $parts[0], ($posStart + 1 ) ),
+            substr( $parts[0], ( $posStart + 1 ) ),
             $parts[1],
             $parts[2],
             $parts[3],

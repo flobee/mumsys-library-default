@@ -79,7 +79,7 @@ class Mumsys_Permissions_Console
      *
      * @return mixed the values which was set in progCfgSet()
      */
-    public function progCfgGet( $program, $controller, $param='' )
+    public function progCfgGet( $program, $controller, $param = '' )
     {
         $mesg = ' Not implemented yet';
         throw new Mumsys_Permissions_Exception( __METHOD__ . $mesg );
@@ -111,7 +111,7 @@ class Mumsys_Permissions_Console
      *
      * @return string the name of the program
      */
-    public function progNameGet( $program=false, $controller=false )
+    public function progNameGet( $program = false, $controller = false )
     {
         $mesg = ' Not implemented yet';
         throw new Mumsys_Permissions_Exception( __METHOD__ . $mesg );
@@ -229,7 +229,7 @@ class Mumsys_Permissions_Console
      *
      * @return array returns a list of levels: integer level => string level-name
      */
-    public function getAuthLevels( $level=null )
+    public function getAuthLevels( $level = null )
     {
         $mesg = ' Not implemented yet';
         throw new Mumsys_Permissions_Exception( __METHOD__ . $mesg );

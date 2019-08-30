@@ -45,7 +45,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     {
         try
         {
-            if ($this->_isConnected && $this->_dbc) {
+            if ( $this->_isConnected && $this->_dbc ) {
                 return $this->_dbc;
             }
 
@@ -61,7 +61,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
              * MYSQLI_CLIENT_SSL            Use SSL (encryption)
              */
 
-            if ($this->_conCompession) {
+            if ( $this->_conCompession ) {
                 $chk = mysqli_real_connect(
                     $this->_dbc,
                     $this->_host,
@@ -135,7 +135,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function setCharset( $charset )
     {
-        if ( ($result = mysqli_set_charset( $this->_dbc, $charset ) ) == false ) {
+        if ( ( $result = mysqli_set_charset( $this->_dbc, $charset ) ) == false ) {
             return $this->_setError( 'Setting client character set failt' );
         }
 
@@ -151,7 +151,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function getCharset()
     {
-        if ( ($result = @mysqli_get_charset( $this->_dbc ) ) == false ) {
+        if ( ( $result = @mysqli_get_charset( $this->_dbc ) ) == false ) {
             return $this->_setError( 'Getting character set failt' );
         }
 
@@ -263,7 +263,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             $this->_querys[] = $sql;
         }
 
-        if ( ($error = $this->sqlError() ) ) {
+        if ( ( $error = $this->sqlError() ) ) {
             return $this->_setError( $error );
         }
 
@@ -665,7 +665,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     {
         $return = false;
         if ( $this->_dbc ) {
-            if ( ($r = mysqli_stat( $this->_dbc ) ) ) {
+            if ( ( $r = mysqli_stat( $this->_dbc ) ) ) {
                 $return = $r;
             }
         }
@@ -712,7 +712,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             case 'now()':
             case 'asc':
             case 'desc':
-            case ($string === ''):
+            case ( $string === '' ):
                 return $string;
         }
 
@@ -816,11 +816,11 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * @return Mumsys_Db_Driver_Mysql_Mysqli_Result|false Result object or false
      * @throws Mumsys_Db_Exception
      */
-    protected function _save($params, $action='update')
+    protected function _save( $params, $action = 'update' )
     {
         $r = false;
-        if ( ( empty( $params['updateall'] ) && (empty( $params['where'] )
-            && ( $action == 'update' || $action == 'delete') ) )
+        if ( ( empty( $params['updateall'] ) && ( empty( $params['where'] )
+            && ( $action == 'update' || $action == 'delete' ) ) )
             || ( empty( $params['fields'] ) && $action != 'delete' )
             || empty( $params['table'] )
         ) {
@@ -952,7 +952,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function insert( array $params = array() )
     {
-        if ( ($r = $this->_save( $params, 'insert' ) ) ) {
+        if ( ( $r = $this->_save( $params, 'insert' ) ) ) {
             return $r->lastInsertId();
         }
 
@@ -976,7 +976,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function replace( array $params = array() )
     {
-        if ( ($r = $this->_save( $params, 'replace' ) ) ) {
+        if ( ( $r = $this->_save( $params, 'replace' ) ) ) {
             return $r->affectedRows();
             //return true;
         }
@@ -1438,7 +1438,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
                     $data[] = (string) $value;
                     break;
 
-                case (is_null( $value ) === true):
+                case ( is_null( $value ) === true ):
                 case $value === 'null':
                 case $value === 'NULL':
                     $data[] = '`' . $col . '`=NULL';

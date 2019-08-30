@@ -135,7 +135,7 @@ class Mumsys_Variable_Item_DefaultTest
     {
         $expected = array('/\w*/i', '/\d*/i');
 
-        $this->assertTrue( (array() === $this->_object->getRegex()) );
+        $this->assertTrue( ( array() === $this->_object->getRegex() ) );
 
         $this->_object->setRegex( $expected[0] );
         $this->assertEquals( array($expected[0]), $this->_object->getRegex() );

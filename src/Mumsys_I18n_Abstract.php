@@ -164,7 +164,7 @@ abstract class Mumsys_I18n_Abstract
             case 'tk':
             case 'ur':
             case 'zu':
-                return ($number == 1) ? 0 : 1;
+                return ( $number == 1 ) ? 0 : 1;
             case 'am':
             case 'bh':
             case 'fil':
@@ -177,7 +177,7 @@ abstract class Mumsys_I18n_Abstract
             case 'xbr':
             case 'ti':
             case 'wa':
-                return (($number == 0) || ($number == 1)) ? 0 : 1;
+                return ( ( $number == 0 ) || ( $number == 1 ) ) ? 0 : 1;
             case 'be':
             case 'bs':
             case 'hr':
@@ -187,10 +187,9 @@ abstract class Mumsys_I18n_Abstract
                 // return (($number % 10 == 1) && ($number % 100 != 11)) ? 0
                 // : ((($number % 10 >= 2) && ($number % 10 <= 4) &&
                 //   (($number % 100 < 10) || ($number % 100 >= 20))) ? 1 : 2);
-                if ( ($number % 10 == 1) && ($number % 100 != 11) ) {
+                if ( ( $number % 10 == 1 ) && ( $number % 100 != 11 ) ) {
                     return 0;
-                } else if (
-                    ( $number % 10 >= 2 ) && ( $number % 10 <= 4 )
+                } else if ( ( $number % 10 >= 2 ) && ( $number % 10 <= 4 )
                     && ( ( $number % 100 < 10 ) || ( $number % 100 >= 20 ) )
                 ) {
                     return 1;
@@ -203,7 +202,7 @@ abstract class Mumsys_I18n_Abstract
                 //return ($number == 1) ? 0 : ((($number >= 2) && ($number <= 4)) ? 1 : 2);
                 if ( $number == 1 ) {
                     return 0;
-                } else if ( ($number >= 2) && ($number <= 4) ) {
+                } else if ( ( $number >= 2 ) && ( $number <= 4 ) ) {
                     return 1;
                 } else {
                     return 2;
@@ -219,9 +218,9 @@ abstract class Mumsys_I18n_Abstract
                     return 1;
                 } else if ( $number == 2 ) {
                     return 2;
-                } else if ( ( $number >= 3) && ($number <= 10) ) {
+                } else if ( ( $number >= 3 ) && ( $number <= 10 ) ) {
                     return 3;
-                } else if ( ( $number >= 11) && ($number <= 99) ) {
+                } else if ( ( $number >= 11 ) && ( $number <= 99 ) ) {
                     return 4;
                 } else {
                     return 5;
@@ -234,20 +233,20 @@ abstract class Mumsys_I18n_Abstract
                     return 0;
                 } else if ( $number == 2 ) {
                     return 1;
-                } else if ( ($number == 8) || ($number == 11) ) {
+                } else if ( ( $number == 8 ) || ( $number == 11 ) ) {
                     return 2;
                 } else {
                     return 3;
                 }
 
             case 'ga':
-                return ($number == 1) ? 0 : (($number == 2) ? 1 : 2);
+                return ( $number == 1 ) ? 0 : ( ( $number == 2 ) ? 1 : 2 );
 
             case 'lt':
                 // return (($number % 10 == 1) && ($number % 100 != 11)) ? 0 :
                 // ((($number % 10 >= 2) && (($number % 100 < 10) ||
                 // ($number % 100 >= 20))) ? 1 : 2);
-                if ( ($number % 10 == 1) && ($number % 100 != 11) ) {
+                if ( ( $number % 10 == 1 ) && ( $number % 100 != 11 ) ) {
                     return 0;
                 } else if ( ( $number % 10 >= 2 ) &&
                     ( ( $number % 100 < 10 ) || ( $number % 100 >= 20 ) )
@@ -262,14 +261,14 @@ abstract class Mumsys_I18n_Abstract
                 // && ($number % 100 != 11)) ? 1 : 2);
                 if ( $number == 0 ) {
                     return 0;
-                } else if ( (($number % 10 == 1) && ($number % 100 != 11) ) ) {
+                } else if ( ( ( $number % 10 == 1 ) && ( $number % 100 != 11 ) ) ) {
                     return 1;
                 } else {
                     return 2;
                 }
 
             case 'mk':
-                return ($number % 10 == 1) ? 0 : 1;
+                return ( $number % 10 == 1 ) ? 0 : 1;
 
             case 'mt':
                 // return ($number == 1) ? 0 : ((($number == 0) ||
@@ -277,9 +276,9 @@ abstract class Mumsys_I18n_Abstract
                 // ((($number % 100 > 10) && ($number % 100 < 20)) ? 2 : 3));
                 if ( $number == 1 ) {
                     return 0;
-                } else if ( $number == 0 || ( ( $number % 100 > 1) && ( $number % 100 < 11) ) ) {
+                } else if ( $number == 0 || ( ( $number % 100 > 1 ) && ( $number % 100 < 11 ) ) ) {
                     return 1;
-                } else if ( ($number % 100 > 10) && ($number % 100 < 20) ) {
+                } else if ( ( $number % 100 > 10 ) && ( $number % 100 < 20 ) ) {
                     return 2;
                 } else {
                     return 3;
@@ -317,7 +316,7 @@ abstract class Mumsys_I18n_Abstract
                 // 1 : ((($number % 100 == 3) || ($number % 100 == 4)) ? 2 : 3));
                 if ( $number % 100 == 1 ) {
                     return 0;
-                } else if ( ($number % 100 == 2 ) ) {
+                } else if ( ( $number % 100 == 2 ) ) {
                     return 1;
                 } else if ( ( $number % 100 == 3 ) || ( $number % 100 == 4 ) ) {
                     return 2;

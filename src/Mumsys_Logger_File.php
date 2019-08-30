@@ -115,7 +115,7 @@ class Mumsys_Logger_File
 
         parent::__construct( $options );
 
-        if ( ($message = $this->checkMaxFilesize() ) !== '' ) {
+        if ( ( $message = $this->checkMaxFilesize() ) !== '' ) {
             $this->log( $message, Mumsys_Logger_Abstract::INFO );
         }
     }
@@ -200,7 +200,7 @@ class Mumsys_Logger_File
             return $message;
         }
 
-        if ( ($fsize = filesize( $this->_logfile )) > $this->_maxfilesize ) {
+        if ( ( $fsize = filesize( $this->_logfile ) ) > $this->_maxfilesize ) {
             $this->_writer->truncate();
             $message = sprintf(
                 'Max filesize (%1$s Bytes) reached. Log purged now',
