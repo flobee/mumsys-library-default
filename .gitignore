@@ -11,7 +11,6 @@ vendor/
 # Local configs
 config/autoload/*.local.php
 */config/*.php
-
 # credentials.php
 tests/config/config4tests.php
 */config/credentials.php
@@ -26,10 +25,13 @@ data/cache/
 data/sessions/
 data/tmp/
 temp/
+/tests/tmp/*
+/tmp/*
 
 # Legacy
 extras/documentation
-old/
+
+/helper/fix-author.cfg
 
 .gitmodules
 copy-free-scripts-from-lib.php
@@ -46,6 +48,5 @@ logs/
 /docs/GitStats/*
 /docs/gitstat*
 /docs/API/*
-/tests/tmp/*
 
 tests/.phpunit.result.cache
