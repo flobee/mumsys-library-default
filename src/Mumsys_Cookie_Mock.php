@@ -31,8 +31,8 @@ class Mumsys_Cookie_Mock
     const VERSION = '1.0.0';
 
     /**
-     * Optional: Location for the local cookie file.
-     * Default: /tmp/toolboxCookieMock.{USERNAME}.tmp
+     * Optional location for the local cookie file.
+     * Default: /tmp/{__CLASS__}.{USERNAME}.tmp
      * @var string
      */
     private $_cookieFile;
@@ -51,8 +51,7 @@ class Mumsys_Cookie_Mock
         if ( $cookieFile && $isDir ) {
             $this->_cookieFile = $cookieFile;
         } else {
-            $this->_cookieFile = '/tmp/MumsysCookieMock.'
-                . Mumsys_Php_Globals::getRemoteUser() . '.tmp';
+            $this->_cookieFile = sprintf('/tmp/%1$s.%2$s.tmp', __CLASS__, Mumsys_Php_Globals::getRemoteUser() );
         }
 
         $this->_loadCookieData();

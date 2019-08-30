@@ -21,6 +21,7 @@ fi
 
 echo "still in checkout...";
 
+exit 1;
 
 # php-cs-fixer.phar fix 
 echo "--fixers=\
