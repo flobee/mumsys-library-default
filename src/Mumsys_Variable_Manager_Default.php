@@ -54,7 +54,7 @@ class Mumsys_Variable_Manager_Default
     /**
      * Version ID information
      */
-    const VERSION = '1.2.3';
+    const VERSION = '1.3.3';
 
     /**
      * Value "%1$s" does not match the regex rule: "%2$s"
@@ -1196,6 +1196,120 @@ class Mumsys_Variable_Manager_Default
         $item->setValidated( $status );
 
         return $status;
+    }
+
+
+    /**
+     * Compare two item values.
+     *
+     * copy from Mumsys_Fields
+     *
+     * Values should be numeric or string
+     * usage: array('stringFieldKeyToCompare','comp_operators')
+     *
+     * @param Mumsys_Variable_Item_Interface $oItemA Base item
+     * @param Mumsys_Variable_Item_Interface $oItemB Item to compare its value
+     * to item A based on the type
+     * @param string $op Operator to use for comparison:
+     *  'eq', '==',
+     *  'type_eq', '==='
+     *  'neq','!=',
+     *  'type_neq' = '!==',
+     *  'gt' '>', 'gte', '>=',
+     *  'lt', '<', 'lte', '<='
+     *
+     * @return boolean Returns false on error or true on success
+     */
+    public function compare( Mumsys_Variable_Item_Interface $oItemA,
+        Mumsys_Variable_Item_Interface $oItemB, $op = '===' ): bool
+    {
+        $typeA = $oItemA->getType();
+        $typeB = $oItemB->getType();
+        if ( $typeA !== $typeB ) {
+            $mesg = sprintf(
+                'Invalid types. Type of item A: "%1$s", item B "%2$s"',
+                $typeA,
+                $typeB
+            );
+            throw new Mumsys_Variable_Manager_Exception( $mesg );
+        }
+
+        $valueA = $oItemA->getValue();
+        $valueB = $oItemB->getValue();
+
+        // todo: more operators
+        $_operators = array(
+            'eq' => '==',
+            'type_eq' => '===', // exact test
+            'neq' => '!=',
+            'type_neq' => '!==', // exact test
+            'gt' => '>',
+            'gte' => '>=',
+            'lt' => '<',
+            'lte' => '<='
+        );
+
+        // find operator
+        if ( in_array($op, $_operators) ) {
+            $op = $op;
+        } elseif ( isset($_operators[$op]) ) {
+            $op = $_operators[$op];
+        } else {
+            $mesg = sprintf( 'Operator "%1$s" not implemented', $op );
+            throw new Mumsys_Variable_Manager_Exception( $mesg );
+        }
+
+        switch ( $op ) {
+            case '==':
+                $compareFn = function( $a, $b ) {
+                    return ($a == $b);
+                };
+                break;
+
+            case '===':
+                $compareFn = function( $a, $b ) {
+                    return ($a === $b);
+                };
+                break;
+
+            case '!=':
+                $compareFn = function( $a, $b ) {
+                    return ($a != $b);
+                };
+                break;
+
+            case '!==':
+                $compareFn = function( $a, $b ) {
+                    return ($a !== $b);
+                };
+                break;
+
+            case '>':
+                $compareFn = function( $a, $b ) {
+                    return ($a > $b);
+                };
+                break;
+
+            case '>=':
+                $compareFn = function( $a, $b ) {
+                    return ($a >= $b);
+                };
+                break;
+
+            case '<':
+                $compareFn = function( $a, $b ) {
+                    return ($a < $b);
+                };
+                break;
+
+            case '<=':
+                $compareFn = function( $a, $b ) {
+                    return ($a <= $b);
+                };
+                break;
+        }
+
+        return ( $compareFn( $valueA, $valueB, $op ) );
     }
 
 
