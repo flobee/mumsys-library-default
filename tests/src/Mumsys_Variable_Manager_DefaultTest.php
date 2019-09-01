@@ -52,7 +52,7 @@ class Mumsys_Variable_Manager_DefaultTest
      * @var Mumsys_Variable_Manager_Default
      */
     protected $_object;
-    protected $_version = '1.2.3';
+    protected $_version = '1.3.3';
     protected $_values = array();
     protected $_config = array();
 
@@ -635,6 +635,84 @@ class Mumsys_Variable_Manager_DefaultTest
 
         $this->assertEquals( $expected1, $actual1 );
         $this->assertEquals( $expected2, $actual2 );
+    }
+
+
+    /**
+     * @covers Mumsys_Variable_Manager_Default::compare
+     */
+    public function testCompare()
+    {
+        $oItemA = $this->_object->getItem( 'username' );
+        $oItemB = clone $oItemA;
+
+        // genaral tests
+
+        // == tests
+        $actualA = $this->_object->compare( $oItemA, $oItemB, '==' );
+        $actualB = $this->_object->compare( $oItemA, $oItemB, 'eq' );
+        $actualC = $this->_object->compare( $oItemA, $oItemB, '===' );
+        $actualD = $this->_object->compare( $oItemA, $oItemB, 'type_eq' );
+        // != tests
+        $actualE = $this->_object->compare( $oItemA, $oItemB, 'neq' );
+        $actualF = $this->_object->compare( $oItemA, $oItemB, 'type_neq' );
+
+        // <, > tests
+        $actualG = $this->_object->compare( $oItemA, $oItemB, '<' );
+        $actualH = $this->_object->compare( $oItemA, $oItemB, 'lt' );
+
+        $actualI = $this->_object->compare( $oItemA, $oItemB, '<=' );
+        $actualJ = $this->_object->compare( $oItemA, $oItemB, 'lte' );
+
+        $actualK = $this->_object->compare( $oItemA, $oItemB, '>' );
+        $actualL = $this->_object->compare( $oItemA, $oItemB, 'gt' );
+
+        $actualM = $this->_object->compare( $oItemA, $oItemB, '>=' );
+        $actualN = $this->_object->compare( $oItemA, $oItemB, 'gte' );
+
+        //
+        // comparisions
+
+        $this->assertTrue( $actualA );
+        $this->assertTrue( $actualB );
+        $this->assertTrue( $actualC );
+        $this->assertTrue( $actualD );
+
+        $this->assertFalse( $actualE );
+        $this->assertFalse( $actualF );
+
+        $this->assertFalse( $actualG );
+        $this->assertFalse( $actualH );
+
+        $this->assertTrue( $actualI );
+        $this->assertTrue( $actualJ );
+
+        $this->assertFalse( $actualK );
+        $this->assertFalse( $actualL );
+
+        $this->assertTrue( $actualM );
+        $this->assertTrue( $actualN );
+
+        $this->expectException( 'Mumsys_Variable_Manager_Exception' );
+        $this->expectExceptionMessage( 'Operator "XX" not implemented' );
+        $this->_object->compare( $oItemA, $oItemB, 'XX' );
+    }
+
+
+    /**
+     * @covers Mumsys_Variable_Manager_Default::compare
+     */
+    public function testCompareExceptionA()
+    {
+        $oItemA = $this->_object->getItem( 'username' );
+        $oItemB = clone $oItemA;
+        $oItemB->setType( 'integer' );
+
+        $this->assertNotEquals( $oItemA, $oItemB );
+
+        //$this->expectException('Mumsys_Variable_Manager_Exception');
+        $this->expectExceptionMessage( 'Invalid types. Type of item A: "string", item B "integer"' );
+        $this->_object->compare( $oItemA, $oItemB, '==' );
     }
 
 
