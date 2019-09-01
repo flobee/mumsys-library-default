@@ -21,5 +21,6 @@ require_once __DIR__ . '/../src/Mumsys_Loader.php';
 spl_autoload_register( array('Mumsys_Loader', 'autoload') );
 spl_autoload_extensions( '.php' );
 
+require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/testconstants.php';
 require_once __DIR__ . '/MumsysTestHelper.php';
