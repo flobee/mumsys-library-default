@@ -25,7 +25,7 @@
         "phpmd/phpmd": "*",
         "sebastian/phpcpd": "*",
         "phing/phing": "^2",
-        "phpbench/phpbench": "^0.14.0",
+        "phpbench/phpbench": "^0.16.10",
         "tedivm/jshrink": "^1"
     },
     "autoload": {

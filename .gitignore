@@ -51,3 +51,5 @@ logs/
 /docs/API/*
 
 tests/.phpunit.result.cache
+
+/benchmarks/phpbench.json

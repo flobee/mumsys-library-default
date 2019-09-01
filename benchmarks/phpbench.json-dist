@@ -1,0 +1,5 @@
+{
+    "path": "./src",
+    "progress": "dots",
+    "xml_storage_path": "logs/phpbench_history"
+}
