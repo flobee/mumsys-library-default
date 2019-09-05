@@ -194,7 +194,7 @@ class Mumsys_Variable_Manager_Default
      * List key/validation items.
      * @var array
      */
-    private $_items;
+    private $_items = array();
 
     /**
      * List of error messages used in this manager
