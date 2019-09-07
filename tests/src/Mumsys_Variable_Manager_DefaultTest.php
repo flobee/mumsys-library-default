@@ -4,29 +4,36 @@
 /**
  * Callback test class
  */
-class cbtest_class
+class Mumsys_Variable_Manager_DefaultTest_CBClass
 {
-    public static function runA( Mumsys_Variable_Item_Interface $item, $data = null, $params = null )
+    public static function runA( Mumsys_Variable_Item_Interface $item,
+        $data = null, $params = null )
     {
+        unset( $item, $data, $params );
         return true;
     }
 
 
-    public static function runB( Mumsys_Variable_Item_Interface $item, $data = null, $params = null )
+    public static function runB( Mumsys_Variable_Item_Interface $item,
+        $data = null, $params = null )
     {
+        unset( $item, $data, $params );
         return true;
     }
 
 
-    public static function runC( Mumsys_Variable_Item_Interface $item, $data = null, $params = null )
+    public static function runC( Mumsys_Variable_Item_Interface $item,
+        $data = null, $params = null )
     {
+        unset( $item, $data, $params );
         return true;
     }
 
 
-    public static function runFalse( Mumsys_Variable_Item_Interface $item, $data = null,
-        $params = null )
+    public static function runFalse( Mumsys_Variable_Item_Interface $item,
+        $data = null, $params = null )
     {
+        unset( $item, $data, $params );
         return false;
     }
 
@@ -36,8 +43,10 @@ class cbtest_class
 /**
  * Callback test function
  */
-function cbtest_function( Mumsys_Variable_Item_Interface $item, $data = null, $params = null )
+function Mumsys_Variable_Manager_DefaultTest_CBFunc( Mumsys_Variable_Item_Interface $item,
+    $data = null, $params = null )
 {
+    unset( $item, $data, $params );
     return true;
 }
 
@@ -52,8 +61,20 @@ class Mumsys_Variable_Manager_DefaultTest
      * @var Mumsys_Variable_Manager_Default
      */
     protected $_object;
+
+    /**
+     * @var string
+     */
     protected $_version = '1.3.3';
+
+    /**
+     * @var array
+     */
     protected $_values = array();
+
+    /**
+     * @var array
+     */
     protected $_config = array();
 
 
@@ -62,7 +83,8 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->_config = array(
             'username' => array(
                 'label' => 'Username',
-                'type' => 'string', // string, array (list), email, numeric, float, integer, date, datetime, ipv4, ipv6
+                //type: string, array (list), email, numeric, float, integer, date, datetime, ipv4, ipv6
+                'type' => 'string',
                 'minlen' => 1,
                 'maxlen' => 45,
                 'allowEmpty' => false,
@@ -90,12 +112,23 @@ class Mumsys_Variable_Manager_DefaultTest
      */
     public function test_construct()
     {
-        $object = new Mumsys_Variable_Manager_Default( $this->_config, $this->_values );
-
+        // A
+        $objectA = new Mumsys_Variable_Manager_Default( $this->_config, $this->_values );
         $this->_config['username']['name'] = 'username';
         $this->_config['username']['value'] = 'unittest';
-        $expected = array('username' => new Mumsys_Variable_Item_Default( $this->_config['username'] ));
-        $this->assertEquals( $expected, $this->_object->getItems() );
+        $expectedA = array(
+            'username' => new Mumsys_Variable_Item_Default( $this->_config['username'] )
+        );
+
+        $this->assertInstanceOf( Mumsys_Variable_Manager_Default::class, $objectA );
+        $this->assertInstanceOf( 'Mumsys_Variable_Manager_Interface', $objectA );
+        $this->assertEquals( $expectedA, $this->_object->getItems() );
+
+        // B
+        $this->expectException('Mumsys_Variable_Manager_Exception');
+        $this->expectExceptionMessage('Item name "user" and item address "username" are not identical. Drop item "name" or "address" in config');
+        $this->_config['username']['name'] = 'user';
+        new Mumsys_Variable_Manager_Default( $this->_config, $this->_values );
     }
 
 
@@ -132,6 +165,7 @@ class Mumsys_Variable_Manager_DefaultTest
             'datetime' => '2000-12-31 23:58:59',
             'ipv4' => '127.0.0.1',
             'ipv6' => '::1',
+            'unixtime' => '1234567890',
         );
         $item = $this->_object->getItem( 'username' );
 
@@ -139,8 +173,8 @@ class Mumsys_Variable_Manager_DefaultTest
             $item->setType( $type );
             $item->setValue( $value );
 
-            $actual = $this->_object->validateType( $item );
-            $this->assertTrue( $actual, print_r( $item->getErrorMessages(), true ) );
+            $actualA = $this->_object->validateType( $item );
+            $this->assertTrue( $actualA, print_r( $item->getErrorMessages(), true ) );
 
             // generate failures
             switch ( $type ) {
@@ -164,9 +198,11 @@ class Mumsys_Variable_Manager_DefaultTest
                     break;
                 case 'ipv6': $item->setValue( 'localhost' );
                     break;
+                case 'unixtime': $item->setValue( 'string' );
+                    break;
             }
-            $actual = $this->_object->validateType( $item );
-            $this->assertFalse( $actual );
+            $actualB = $this->_object->validateType( $item );
+            $this->assertFalse( $actualB );
         }
 
         $this->expectExceptionMessageRegExp( '/(Type "unittest" not implemented)/i' );
@@ -196,27 +232,47 @@ class Mumsys_Variable_Manager_DefaultTest
             $item->setMinLength( 1 );
             $item->setMaxLength( 4.123 );
 
-            $actual = $this->_object->validateMinMax( $item );
-            $this->assertTrue( $actual );
+            $actualA = $this->_object->validateMinMax( $item );
+            $this->assertTrue( $actualA );
 
             // generate failures
             $item->setMinLength( 5 );
             $item->setMaxLength( 1 );
-            $actual = $this->_object->validateMinMax( $item );
-            $this->assertFalse( $actual );
+            $actualB = $this->_object->validateMinMax( $item );
+            $this->assertFalse( $actualB );
         }
 
         // for code coverage
-        $item = $this->_object->createItem( array('value' => array('unittest', 'a'=>'b', 'c'=>'d')) );
+        $itemC = $this->_object->createItem( array('value' => array('unittest', 'a'=>'b', 'c'=>'d')) );
+        $actualC = $this->_object->validateMinMax( $itemC );
+        $this->assertTrue( $actualC ); // no min/max set, just return
 
-        $actual = $this->_object->validateMinMax( $item );
-        $this->assertTrue( $actual ); // no min/max set, just return
+        $itemC->setType( 'array' );
+        $itemC->setMinLength( 4 );
+        $itemC->setMaxLength( 1 );
+        $actualD = $this->_object->validateMinMax( $itemC );
+        $this->assertFalse( $actualD );
+    }
 
-        $item->setType( 'array' );
-        $item->setMinLength( 4 );
-        $item->setMaxLength( 1 );
-        $actual = $this->_object->validateMinMax( $item );
-        $this->assertFalse( $actual );
+    /**
+     * @covers Mumsys_Variable_Manager_Default::validateMinMax
+     */
+    public function testValidateMinMaxUnknownTypeError()
+    {
+        $this->_config['username']['type'] = 'unknowntype';
+        $object = new Mumsys_Variable_Manager_Default( $this->_config, $this->_values );
+        $item = $object->getItem( 'username' );
+
+        $actualA = $this->_object->validateMinMax( $item );
+        $actualB = $item->getErrorMessages();
+
+        $this->assertFalse( $actualA );
+        $this->assertTrue( ( count( $actualB ) === 1 ) );
+        $this->assertTrue( ( key($actualB)  === 'MINMAX_TYPE_ERROR' ) );
+        $this->assertEquals(
+            'Min/max type error "unknowntype". Must be "string", "integer", "numeric", "float" or "double"',
+            reset( $actualB )
+        );
     }
 
 
@@ -440,38 +496,38 @@ class Mumsys_Variable_Manager_DefaultTest
     public function testGetSetAttributes()
     {
         // value for some items
-        $attributes = array('values' => array('username' => 'unittest value'));
-        $this->_object->setAttributes( $attributes );
+        $attributesA = array('values' => array('username' => 'unittest value'));
+        $this->_object->setAttributes( $attributesA );
 
-        $items = $this->_object->getItems();
-        foreach ( $items as $item ) {
+        $itemsA = $this->_object->getItems();
+        foreach ( $itemsA as $item ) {
             $this->assertEquals( 'unittest value', $item->getValue() );
         }
 
         // value for all items
-        $attributes = array('value' => '2nd. unittest value');
-        $this->_object->setAttributes( $attributes );
-        $items = $this->_object->getItems();
-        foreach ( $items as $item ) {
+        $attributesB = array('value' => '2nd. unittest value');
+        $this->_object->setAttributes( $attributesB );
+        $itemsB = $this->_object->getItems();
+        foreach ( $itemsB as $item ) {
             $this->assertEquals( '2nd. unittest value', $item->getValue() );
         }
 
         // labels for some items
-        $attributes = array('labels' => array('username' => 'unittest label'));
-        $this->_object->setAttributes( $attributes );
-        $item = $this->_object->getItem( 'username' );
-        $this->assertEquals( 'unittest label', $item->getLabel() );
+        $attributesC = array('labels' => array('username' => 'unittest label'));
+        $this->_object->setAttributes( $attributesC );
+        $itemC = $this->_object->getItem( 'username' );
+        $this->assertEquals( 'unittest label', $itemC->getLabel() );
 
         // "state" for all items
-        $attributes = array('state' => 'onSave');
-        $this->_object->setAttributes( $attributes );
-        $item = $this->_object->getItem( 'username' );
-        $this->assertEquals( 'unittest label', $item->getLabel() );
+        $attributesD = array('state' => 'onSave');
+        $this->_object->setAttributes( $attributesD );
+        $itemD = $this->_object->getItem( 'username' );
+        $this->assertEquals( 'unittest label', $itemD->getLabel() );
 
         $this->expectExceptionMessageRegExp( '/(Set item attributes for "unittest" not implemented)/i' );
         $this->expectException( 'Mumsys_Variable_Manager_Exception' );
-        $attributes = array('unittest' => 'throw an exception');
-        $this->_object->setAttributes( $attributes );
+        $attributesE = array('unittest' => 'throw an exception');
+        $this->_object->setAttributes( $attributesE );
     }
 
 
@@ -518,9 +574,25 @@ class Mumsys_Variable_Manager_DefaultTest
     public function testFiltersApply()
     {
         $this->_object->filtersApply();
+        $actualA = $this->_object->getErrorMessages();
 
-        $actual = $this->_object->getErrorMessages();
-        $this->assertEquals( array(), $actual );
+        $this->_config['username']['filters'] = array(
+            'onView' => array(
+                'is_array',
+            )
+        );
+
+        $object = new Mumsys_Variable_Manager_Default( $this->_config, $this->_values );
+        $object->filtersApply();
+        $actualB = $object->getErrorMessages();
+        $expectedB = array(
+            'username' => array(
+                'FILTER_ERROR' => 'Filter "is_array" failt for label/name: "Username"'
+            )
+        );
+
+        $this->assertEquals( array(), $actualA );
+        $this->assertEquals( $expectedB, $actualB );
     }
 
 
@@ -611,30 +683,34 @@ class Mumsys_Variable_Manager_DefaultTest
             'value' => ' unittest & test value ',
             'callbacks' => array(
                 'onView' => array(
-                    'cbtest_function' => array('%value%', 12, 34, 56),
-                    'cbtest_class::runA' => '%value%',
-                    'cbtest_class::runB' => '123',
-                    'cbtest_class::runC',
+                    'Mumsys_Variable_Manager_DefaultTest_CBFunc' => array('%value%', 12, 34, 56),
+                    'Mumsys_Variable_Manager_DefaultTest_CBClass::runA' => '%value%',
+                    'Mumsys_Variable_Manager_DefaultTest_CBClass::runB' => '123',
+                    'Mumsys_Variable_Manager_DefaultTest_CBClass::runC',
                     'callbackNotExists',
-                    'cbtest_class::runFalse',
+                    'Mumsys_Variable_Manager_DefaultTest_CBClass::runFalse',
                 ),
             )
         );
         $newItem = $this->_object->createItem( $itmProps );
         $this->_object->registerItem( 'unittest', $newItem );
-        $actual1 = $this->_object->callbackItem( $newItem );
-        $expected1 = false;
+        $actualA = $this->_object->callbackItem( $newItem );
+        $expectedA = false;
 
-        $actual2 = $this->_object->getErrorMessages();
-        $expected2 = array(
+        $actualB = $this->_object->getErrorMessages();
+        $expectedB = array(
             'unittest' => array(
                 'CALLBACK_NOTFOUND' => 'Callback function "callbackNotExists" not found for item: "unittest"',
-                'CALLBACK_ERROR' => 'Callback "cbtest_class::runFalse" for "unittest" failt for value: "1"',
+                'CALLBACK_ERROR' => 'Callback "Mumsys_Variable_Manager_DefaultTest_CBClass::runFalse" '
+                . 'for "unittest" failt for value: "1"',
             )
         );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $actualC = $this->_object->callbacksApply();
+
+        $this->assertEquals( $expectedA, $actualA );
+        $this->assertEquals( $expectedB, $actualB );
+        $this->assertFalse( $actualC );
     }
 
 

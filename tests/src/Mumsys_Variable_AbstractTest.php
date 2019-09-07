@@ -25,7 +25,7 @@ class Mumsys_Variable_AbstractTest
      */
     protected function setUp(): void
     {
-        $this->_version = '1.2.1';
+        $this->_version = '1.2.2';
         $this->_object = null;
     }
 
@@ -41,8 +41,7 @@ class Mumsys_Variable_AbstractTest
 
 
     /**
-     * @ c o v e r s Mumsys_Variable_Abstract::getTypes
-     * @ c o v e r s Mumsys_Variable_Abstract::VERSION
+     * @covers Mumsys_Variable_Abstract::getTypes
      */
     public function testCheckConstants()
     {
@@ -56,6 +55,7 @@ class Mumsys_Variable_AbstractTest
             'datetime', 'timestamp',
             'email',
             'ipv4', 'ipv6',
+            'unixtime',
             'unittest',
         );
 

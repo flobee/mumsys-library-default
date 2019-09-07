@@ -1,4 +1,4 @@
-<?php
+<?php declare (strict_types=1);
 
 /**
  * Mumsys_Variable_Abstract
@@ -28,7 +28,7 @@ abstract class Mumsys_Variable_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.2.1';
+    const VERSION = '1.2.2';
 
     /**
      * Variable / validation types.
@@ -59,6 +59,7 @@ abstract class Mumsys_Variable_Abstract
         'email',
         'ipv4',
         'ipv6',
+        'unixtime',
         'unittest'
     );
 

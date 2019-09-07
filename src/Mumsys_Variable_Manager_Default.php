@@ -1,4 +1,4 @@
-<?php
+<?php declare (strict_types=1);
 
 /**
  * Mumsys_Variable_Manager_Default
@@ -127,6 +127,11 @@ class Mumsys_Variable_Manager_Default
     const TYPE_INVALID_IPV6 = 'TYPE_INVALID_IPV6';
 
     /**
+     * Value (json):"%1$s" is not a "unixtime"
+     */
+    const TYPE_INVALID_UNIXTIME = 'TYPE_INVALID_UNIXTIME';
+
+    /**
      * Value "%1$s" must contain at least "%2$s" characters
      */
     const MINMAX_TOO_SHORT_STR = 'MINMAX_TOO_SHORT_STR';
@@ -186,7 +191,7 @@ class Mumsys_Variable_Manager_Default
      * List key/validation items.
      * @var array
      */
-    private $_items;
+    private $_items = array();
 
     /**
      * List of error messages used in this manager
@@ -211,6 +216,7 @@ class Mumsys_Variable_Manager_Default
         self::TYPE_INVALID_DATETIME => 'Value (json): "%1$s" is not of type "datetime"',
         self::TYPE_INVALID_IPV4 => 'Value (json):"%1$s" is not an "ipv4" address',
         self::TYPE_INVALID_IPV6 => 'Value (json):"%1$s" is not an "ipv6" address',
+        self::TYPE_INVALID_UNIXTIME => 'Value (json):"%1$s" is not a "unixtime"',
         //min max checks
         self::MINMAX_TOO_SHORT_STR => 'Value "%1$s" must contain at least '
             . '"%2$s" characters',
@@ -259,7 +265,7 @@ class Mumsys_Variable_Manager_Default
      *          )
      * ), ...
      * $values = $_REQUEST;
-     * $validator = new Mumsys_Validate_Manager_Default($config, $values);
+     * $validator = new Mumsys_Variable_Manager_Default($config, $values);
      *
      * // Sets the state and applys it to the items so that filters are ready
      * // befor validatation. Default is "onView";
@@ -325,7 +331,7 @@ class Mumsys_Variable_Manager_Default
     public function validate()
     {
         $status = true;
-        foreach ( $this->_items as $key => $item ) {
+        foreach ( $this->_items as $item ) {
             if ( !$this->isValid( $item ) ) {
                 $status = false;
             }
@@ -450,17 +456,23 @@ class Mumsys_Variable_Manager_Default
                 }
                 break;
 
-            case 'unixtime':
-                $message = sprintf( 'Type "%1$s" not implemented', $type );
-                throw new Mumsys_Variable_Manager_Exception( $message );
-                break;
-
             case 'ipv4':
                 $return = $this->validateIPv4( $item );
                 break;
 
             case 'ipv6':
                 $return = $this->validateIPv6( $item );
+                break;
+
+            case 'unixtime':
+                $value = is_numeric( $value ) ? (int) $value : $value;
+                if ( is_int( $value ) === false || $value < 0 ) {
+                    $errorKey = self::TYPE_INVALID_UNIXTIME;
+                    $errorMessage = sprintf(
+                        $this->_messageTemplates['TYPE_INVALID_UNIXTIME'],
+                        json_encode( $value )
+                    );
+                }
                 break;
 
             default:
@@ -533,7 +545,7 @@ class Mumsys_Variable_Manager_Default
             case 'date':
             case 'datetime':
             case 'unixtime':
-                $strlen = strlen( $value );
+                $strlen = strlen( (string)$value );
                 if ( isset( $min ) && $strlen < $min ) {
                     $errorKey = self::MINMAX_TOO_SHORT_STR;
                     $errorMessage = sprintf(
@@ -728,15 +740,15 @@ class Mumsys_Variable_Manager_Default
             $status = false;
         }
 
-        if ( !$this->validateType( $item ) ) {
+        if ( $this->validateType( $item ) === false ) {
             $status = false;
         }
 
-        if ( !$this->validateMinMax( $item ) ) {
+        if ( $this->validateMinMax( $item ) === false ) {
             $status = false;
         }
 
-        if ( !$this->validateRegex( $item ) ) {
+        if ( $this->validateRegex( $item ) === false ) {
             $status = false;
         }
 
@@ -931,7 +943,6 @@ class Mumsys_Variable_Manager_Default
                             $fieldKey
                         );
                         throw new Mumsys_Variable_Manager_Exception( $msg );
-                        break;
                 }
             }
         }
@@ -976,7 +987,7 @@ class Mumsys_Variable_Manager_Default
     public function externalsApply( $data = null )
     {
         $status = false;
-        if ( $this->filtersApply() && $this->callbacksApply() ) {
+        if ( $this->filtersApply() && $this->callbacksApply( $data ) ) {
             $status = true;
         }
 
@@ -1091,7 +1102,7 @@ class Mumsys_Variable_Manager_Default
     /**
      * Apply/ execute all callbacks.
      *
-     * @param mixed Mixed data to pipe to the callback function
+     * @param mixed $data Mixed data to pipe to the callback function
      *
      * @return boolean Returns true on success or false on failure
      */
@@ -1200,12 +1211,9 @@ class Mumsys_Variable_Manager_Default
 
 
     /**
-     * Compare two item values.
+     * Compare two item values if the items types are equal.
      *
-     * copy from Mumsys_Fields
-     *
-     * Values should be numeric or string
-     * usage: array('stringFieldKeyToCompare','comp_operators')
+     * A copy from old Mumsys_Fields
      *
      * @param Mumsys_Variable_Item_Interface $oItemA Base item
      * @param Mumsys_Variable_Item_Interface $oItemB Item to compare its value
@@ -1254,62 +1262,47 @@ class Mumsys_Variable_Manager_Default
             $op = $op;
         } elseif ( isset($_operators[$op]) ) {
             $op = $_operators[$op];
-        } else {
-            $mesg = sprintf( 'Operator "%1$s" not implemented', $op );
-            throw new Mumsys_Variable_Manager_Exception( $mesg );
         }
 
         switch ( $op ) {
             case '==':
-                $compareFn = function( $a, $b ) {
-                    return ($a == $b);
-                };
+                $result = ($valueA == $valueB);
                 break;
 
             case '===':
-                $compareFn = function( $a, $b ) {
-                    return ($a === $b);
-                };
+                $result = ($valueA === $valueB);
                 break;
 
             case '!=':
-                $compareFn = function( $a, $b ) {
-                    return ($a != $b);
-                };
+                $result = ($valueA != $valueB);
                 break;
 
             case '!==':
-                $compareFn = function( $a, $b ) {
-                    return ($a !== $b);
-                };
+                $result = ($valueA !== $valueB);
                 break;
 
             case '>':
-                $compareFn = function( $a, $b ) {
-                    return ($a > $b);
-                };
+                $result = ($valueA > $valueB);
                 break;
 
             case '>=':
-                $compareFn = function( $a, $b ) {
-                    return ($a >= $b);
-                };
+                $result = ($valueA >= $valueB);
                 break;
 
             case '<':
-                $compareFn = function( $a, $b ) {
-                    return ($a < $b);
-                };
+                $result = ($valueA < $valueB);
                 break;
 
             case '<=':
-                $compareFn = function( $a, $b ) {
-                    return ($a <= $b);
-                };
+                $result = ($valueA <= $valueB);
                 break;
+
+            default:
+                $mesg = sprintf( 'Operator "%1$s" not implemented', $op );
+                throw new Mumsys_Variable_Manager_Exception( $mesg );
         }
 
-        return ( $compareFn( $valueA, $valueB, $op ) );
+        return $result;
     }
 
 
@@ -1325,7 +1318,7 @@ class Mumsys_Variable_Manager_Default
     private function _execExternal( $cmd, $params, $ptype = 'string' )
     {
         /* future for callbacks:
-          if ($ptype=='array') {
+          if ($ptype==='array') {
           return call_user_func_array($cmd, $params);
           } */
 
@@ -1335,15 +1328,15 @@ class Mumsys_Variable_Manager_Default
         switch ( $cmd )
         {
             case 'trim':
-                $value = trim( $params );
+                $value = trim( (string)$params );
                 break;
 
             case 'htmlspecialchars':
-                $value = htmlspecialchars( $params );
+                $value = htmlspecialchars( (string)$params );
                 break;
 
             case 'htmlentities':
-                $value = htmlentities( $params );
+                $value = htmlentities( (string)$params );
                 break;
 
             default:

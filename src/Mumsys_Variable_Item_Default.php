@@ -1,4 +1,4 @@
-<?php
+<?php declare (strict_types=1);
 
 /**
  * Mumsys_Variable_Item_Default
@@ -72,19 +72,20 @@ class Mumsys_Variable_Item_Default
      *
      * @see $_properties
      *
-     * @param array $properties List of key/value config parameters to be set.
+     * @param array $props List of key/value config parameters to be set.
      * Config values MUST NOT be null!
      */
-    public function __construct( array $properties = array() )
+    public function __construct( array $props = array() )
     {
+        // set allowed whitelist
         foreach ( $this->_properties as $key => $value ) {
-            if ( isset( $properties[$key] ) ) {
-                $this->_input[$key] = $properties[$key];
+            if ( isset( $props[$key] ) ) {
+                $this->_input[$key] = $props[$key];
             }
         }
 
-        if ( isset( $properties['state'] ) ) {
-            $this->stateSet( $properties['state'] );
+        if ( isset( $props['state'] ) ) {
+            $this->stateSet( $props['state'] );
         }
     }
 
