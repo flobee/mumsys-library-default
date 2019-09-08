@@ -125,8 +125,10 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->assertEquals( $expectedA, $this->_object->getItems() );
 
         // B
-        $this->expectException('Mumsys_Variable_Manager_Exception');
-        $this->expectExceptionMessage('Item name "user" and item address "username" are not identical. Drop item "name" or "address" in config');
+        $this->expectException( 'Mumsys_Variable_Manager_Exception' );
+        $mesg = 'Item name "user" and item address "username" are not identical. '
+            . 'Drop item "name" or "address" in config';
+        $this->expectExceptionMessage( $mesg );
         $this->_config['username']['name'] = 'user';
         new Mumsys_Variable_Manager_Default( $this->_config, $this->_values );
     }
@@ -268,7 +270,7 @@ class Mumsys_Variable_Manager_DefaultTest
 
         $this->assertFalse( $actualA );
         $this->assertTrue( ( count( $actualB ) === 1 ) );
-        $this->assertTrue( ( key($actualB)  === 'MINMAX_TYPE_ERROR' ) );
+        $this->assertTrue( ( key( $actualB )  === 'MINMAX_TYPE_ERROR' ) );
         $this->assertEquals(
             'Min/max type error "unknowntype". Must be "string", "integer", "numeric", "float" or "double"',
             reset( $actualB )

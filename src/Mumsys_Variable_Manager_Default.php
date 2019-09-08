@@ -1258,43 +1258,43 @@ class Mumsys_Variable_Manager_Default
         );
 
         // find operator
-        if ( in_array($op, $_operators) ) {
+        if ( in_array( $op, $_operators ) ) {
             $op = $op;
-        } elseif ( isset($_operators[$op]) ) {
+        } elseif ( isset( $_operators[$op] ) ) {
             $op = $_operators[$op];
         }
 
         switch ( $op ) {
             case '==':
-                $result = ($valueA == $valueB);
+                $result = ( $valueA == $valueB );
                 break;
 
             case '===':
-                $result = ($valueA === $valueB);
+                $result = ( $valueA === $valueB );
                 break;
 
             case '!=':
-                $result = ($valueA != $valueB);
+                $result = ( $valueA != $valueB );
                 break;
 
             case '!==':
-                $result = ($valueA !== $valueB);
+                $result = ( $valueA !== $valueB );
                 break;
 
             case '>':
-                $result = ($valueA > $valueB);
+                $result = ( $valueA > $valueB );
                 break;
 
             case '>=':
-                $result = ($valueA >= $valueB);
+                $result = ( $valueA >= $valueB );
                 break;
 
             case '<':
-                $result = ($valueA < $valueB);
+                $result = ( $valueA < $valueB );
                 break;
 
             case '<=':
-                $result = ($valueA <= $valueB);
+                $result = ( $valueA <= $valueB );
                 break;
 
             default:

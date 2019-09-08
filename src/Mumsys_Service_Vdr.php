@@ -57,11 +57,12 @@ class Mumsys_Service_Vdr
 
     /**
      * Return the list of available channels.
-     *
      * Example:<pre>
      * id title;[semikolon]bouquet/transp:
+     * phpcs:disable
      * id Name ;bouquet :Frequenz :Parameter          :Signalquelle:Symbolrate:VPID :APID     :TPID:CAID:SID  :NID :TID :RID
      * 30 NDR 2;ZDFmobil:674000000:B8C23D12G4M16S0T8Y0:R           :0         :673=2:674=deu@3:679 :0   :16426:8468:4097:0</pre>
+     * phpcs:enable
      *
      * @return array|false Returns list of key/value pair where the key is the
      * channels ID and the value the channels name
