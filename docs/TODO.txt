@@ -1,5 +1,11 @@
 # TODOs
 
+phpunit
+
+    Update tests: Setup stuff in phpunit-coverage.xml, phpunit.xml and fix 
+    issues for a strict test mode
+
+
 Mumsys_Abstract
 - [ ] All tests must contain test against the Mumsys_Abstract class if 
       implemented. As hint: The VERSION constant will be used later for 

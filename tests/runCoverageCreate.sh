@@ -16,6 +16,14 @@ else
     . "${CUR_DIR}/../.env-dist";
 fi
 
+# setup: $ ./phpunit --dump-xdebug-filter build/xdebug-filter.php
+COVERAGE_SPEEDUP='';
+if [ -f "${BASEDIR}/tests/build/xdebug-filter.php" ]; then
+    COVERAGE_SPEEDUP='--prepend build/xdebug-filter.php';
+    echo "Using also: '${COVERAGE_SPEEDUP}'";
+fi
+
 ${PHP_BIN} ${BASEDIR}/vendor/bin/phpunit  --colors \
     --configuration ${BASEDIR}/tests/phpunit-coverage.xml \
-    --bootstrap ${BASEDIR}/tests/bootstrap.php $*
+    --bootstrap ${BASEDIR}/tests/bootstrap.php \
+    ${COVERAGE_SPEEDUP} $*

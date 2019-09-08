@@ -2,8 +2,20 @@
 <phpunit 
     bootstrap="bootstrap.php"
     colors="true"
+    forceCoversAnnotation="true"
+    beStrictAboutCoversAnnotation="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTodoAnnotatedTests="true" 
     verbose="true"
 >
+    <!--
+    @todo to be added to <phpunit attributes (above):
+    forceCoversAnnotation="true"
+    beStrictAboutCoversAnnotation="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTodoAnnotatedTests="true" 
+    -->
+
     <testsuites>
         <testsuite name="MUMSYS Library test suite - free version">
             <directory>src/</directory>
