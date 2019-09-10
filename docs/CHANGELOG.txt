@@ -1,22 +1,25 @@
 # Changes
 
-2019-09-07
-    Mumsys_Variable_*
+2019-09
+
+    + Adds performance tests unsing [phpbench](github.com/phpbench) for the 
+      library and also for common or private intresting php performance tests
+
+    + Mumsys_Variable_*
         + Enables 'strict_types'
         + Improves tests
 
-    Mumsys_Variable_Abstract
+    + Mumsys_Variable_Abstract
         + Adds 'unixtime' property
 
-    Mumsys_Variable_Item_Default
+    + Mumsys_Variable_Item_Default
         + Improves __construct()
 
-    Mumsys_Variable_Manager_Default
+    + Mumsys_Variable_Manager_Default
         + Enables 'strict_types'
         + Adds TYPE_INVALID_UNIXTIME for unixtime property/ validation
         + Fixes CS
         + Fixes missing $data param to externalsApply() to callbacksApply( $data )
-
     
 2018-02-02
     - Adds misc path as external for coding style, vc checks
@@ -56,7 +59,7 @@
 
 2016-05-27
     Mumsys_Cache
-    - maked as depricated
+    - marked as depricated
     - Adds removeCache() methode
     - Updates tests
     - Improves coding style

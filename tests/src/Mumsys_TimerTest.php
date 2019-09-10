@@ -1,4 +1,18 @@
-<?php
+<?php declare( strict_types=1 );
+
+/**
+ * Mumsys_TimerTest
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright (c) 2006 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Timer
+ */
+
 
 /**
  * Test class for Mumsys_Timer.
@@ -45,15 +59,19 @@ class Mumsys_TimerTest
         $this->assertGreaterThan( 0, $this->_object->startTimeGet() );
 
         $this->_object = new Mumsys_Timer( $_SERVER['REQUEST_TIME_FLOAT'] );
-        $this->assertEquals( $_SERVER['REQUEST_TIME_FLOAT'], $this->_object->startTimeGet() );
+
+        $this->assertEquals(
+            $_SERVER['REQUEST_TIME_FLOAT'], $this->_object->startTimeGet()
+        );
     }
+
 
     public function testStart()
     {
         $this->_object->start();
-        $expected = microtime( 1 );
+        $expected = microtime( true );
         $actual = $this->_object->startTimeGet();
-        $this->assertTrue( ( (int)$expected == (int)$actual ) );
+        $this->assertTrue( ( (int) $expected == (int) $actual ) );
         //echo PHP_EOL.$expected.PHP_EOL.$actual. PHP_EOL;
         //echo round($expected, 3) . PHP_EOL . round($actual, 3) . PHP_EOL;
         $this->assertEquals( round( $expected, 2 ), round( $actual, 2 ) );
@@ -63,7 +81,7 @@ class Mumsys_TimerTest
     public function testStop()
     {
         $this->_object->stop();
-        $expected = microtime( 1 );
+        $expected = microtime( true );
         $actual = $this->_object->stopTimeGet();
 
         $this->assertEquals( round( $expected, 2 ), round( $actual, 2 ) );
@@ -91,7 +109,7 @@ class Mumsys_TimerTest
     public function test__ToString()
     {
         $this->_object->__toString();
-        $expected = microtime( 1 );
+        $expected = microtime( true );
         $actual = $this->_object->stopTimeGet();
 
         $this->assertEquals( round( $expected, 1 ), round( $actual, 1 ) );

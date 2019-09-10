@@ -1,4 +1,4 @@
-<?php
+<?php declare( strict_types=1 );
 
 /**
  * Mumsys_Timer
@@ -169,7 +169,7 @@ class Mumsys_Timer
      */
     protected function _microtimeGet()
     {
-        return microtime( 1 );
+        return microtime( true );
     }
 
 

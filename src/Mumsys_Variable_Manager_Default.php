@@ -606,6 +606,7 @@ class Mumsys_Variable_Manager_Default
      * Item validation agains regular expressions.
      *
      * @param Mumsys_Variable_Item_Interface $item Validate item object
+     *
      * @return boolean True on success or if no regex was set or false on error
      */
     public function validateRegex( Mumsys_Variable_Item_Interface $item )

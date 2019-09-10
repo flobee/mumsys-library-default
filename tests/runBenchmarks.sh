@@ -16,6 +16,9 @@ else
     . "${CUR_DIR}/../.env-dist";
 fi
 
-cmd="${PHP_BENCH} run "$*" --report=aggregate --store --bootstrap=${BASEDIR}/tests/bootstrap.php --config=${BASEDIR}/tests/phpbench.json"
+
+# --store
+
+cmd="${PHP_BENCH} run "$*" --report=aggregate --bootstrap=${BASEDIR}/tests/bootstrap.php --config=${BASEDIR}/tests/phpbench.json"
 echo "Running:\n----------\n$cmd\n----------\n";
 $cmd;
