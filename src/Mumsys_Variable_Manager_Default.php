@@ -54,7 +54,7 @@ class Mumsys_Variable_Manager_Default
     /**
      * Version ID information
      */
-    const VERSION = '1.2.3';
+    const VERSION = '1.2.4';
 
     /**
      * Value "%1$s" does not match the regex rule: "%2$s"
@@ -742,7 +742,7 @@ class Mumsys_Variable_Manager_Default
             return true;
         }
 
-        if ( $value === null && ( $required || ($allowEmpty === false) ) ) {
+        if ( ($value === null || $value === '' ) && ( $required || ($allowEmpty === false ) ) ) {
             if ( $required ) {
                 $item->setErrorMessage(
                     self::REQUIRED_MISSING,
