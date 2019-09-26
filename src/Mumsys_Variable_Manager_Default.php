@@ -54,7 +54,7 @@ class Mumsys_Variable_Manager_Default
     /**
      * Version ID information
      */
-    const VERSION = '1.3.3';
+    const VERSION = '1.3.4';
 
     /**
      * Value "%1$s" does not match the regex rule: "%2$s"
@@ -168,6 +168,11 @@ class Mumsys_Variable_Manager_Default
     const MINMAX_TYPE_ERROR = 'MINMAX_TYPE_ERROR';
 
     /**
+     * Value is not of type: "%1$s"
+     */
+    const MINMAX_TOO_INVALID_VALUE = 'MINMAX_TOO_INVALID_VALUE';
+
+    /**
      * Filter "%1$s" failt for label/name: "%2$s"
      */
     const FILTER_ERROR = 'FILTER_ERROR';
@@ -179,6 +184,9 @@ class Mumsys_Variable_Manager_Default
 
     /**
      * Callback "%1$s" for "%2$s" failt for value: "%3$s"'
+     * %1$s = __METHODE__
+     * %2$s = item label
+     * %3$s = values
      */
     const CALLBACK_ERROR = 'CALLBACK_ERROR';
 
@@ -195,16 +203,24 @@ class Mumsys_Variable_Manager_Default
 
     /**
      * List of error messages used in this manager
+     *
+     * @todo generalize order of error parameters! E.g:
+     *      "subject name",
+     *      "current value",
+     *      "expected value"
+     *
      * @var array
      */
     private $_messageTemplates = array(
         // basic checks
         self::REQUIRED_MISSING => 'A required value is missing',
         self::ALLOWEMPTY_ERROR => 'Missing value',
+
         //regex checks
         self::REGEX_FAILURE => 'Value "%1$s" does not match the regular '
             . 'expression/s (json): "%2$s"',
         self::REGEX_ERROR => 'Error in regular expression. Check syntax!',
+
         // type checks
         self::TYPE_INVALID_STRING => 'Value (json): "%1$s" is not a "string"',
         self::TYPE_INVALID_ARRAY => 'Value (json): "%1$s" is not an "array"',
@@ -226,6 +242,7 @@ class Mumsys_Variable_Manager_Default
         self::MINMAX_TOO_LONG_NUM => 'Value "%1$s" can be maximum "%2$s"',
         self::MINMAX_TOO_SHORT_ARRAY => 'Found "%1$s" values, minimum "%2$s" values',
         self::MINMAX_TOO_LONG_ARRAY => 'Found "%1$s" values, maximum "%2$s" values',
+        self::MINMAX_TOO_INVALID_VALUE => 'Value is not of type: "%1$s"',
         // types
         self::MINMAX_TYPE_ERROR => 'Min/max type error "%1$s". Must be '
             . '"string", "integer", "numeric", "float" or "double"',
@@ -233,7 +250,7 @@ class Mumsys_Variable_Manager_Default
         self::FILTER_ERROR => 'Filter "%1$s" failt for label/name: "%2$s"',
         self::FILTER_NOTFOUND => 'Filter function "%1$s" not found for item: "%2$s"',
         // callbacks
-        self::CALLBACK_ERROR => 'Callback "%1$s" for "%2$s" failt for value: "%3$s"',
+        self::CALLBACK_ERROR => 'Callback "%1$s" for "%2$s" failt for value (json): "%3$s"',
         self::CALLBACK_NOTFOUND => 'Callback function "%1$s" not found for item: "%2$s"',
     );
 
@@ -518,6 +535,16 @@ class Mumsys_Variable_Manager_Default
         switch ( $type )
         {
             case 'array':
+                if (!is_array($value)) {
+                    $errorKey = self::MINMAX_TOO_INVALID_VALUE;
+                    $errorMessage = sprintf(
+                        $this->_messageTemplates['MINMAX_TOO_INVALID_VALUE'],
+                        $type
+                    );
+
+                    break;
+                }
+
                 if ( isset( $min ) && count( $value ) < $min ) {
                     $errorKey = self::MINMAX_TOO_SHORT_ARRAY;
                     $errorMessage = sprintf(
@@ -726,7 +753,7 @@ class Mumsys_Variable_Manager_Default
             return true;
         }
 
-        if ( $value === null && ( $required || ( $allowEmpty === false ) ) ) {
+        if ( ($value === null || $value === '' ) && ( $required || ($allowEmpty === false ) ) ) {
             if ( $required ) {
                 $item->setErrorMessage(
                     self::REQUIRED_MISSING,
@@ -953,19 +980,24 @@ class Mumsys_Variable_Manager_Default
     /**
      * Returns the list of key/value pairs for all items.
      *
-     * @param boolean $byAddress If true the item address will be used as key
-     * otherwise the item name property (default)
+     * @todo 2018-07-11 construction has change. Now supports manipulation of the array
+     * key of each list
+     *
+     * @param string $strip Strip part of the address to get other array indexes as the
+     * default. E.g: "user.id" is the address but you want the "id"
+     * @param string $add Optional replacement string for the strip. Default: ""
      *
      * @return array List of key/value pairs
      */
-    public function toArray( $byAddress = false )
+    public function toArray( $strip = '', $add = '' )
     {
         $list = array();
         foreach ( $this->_items as $address => $item ) {
-            if ( $byAddress ) {
-                $list[$address] = $item->getValue();
+
+            if ( $strip && is_string( $strip ) ) {
+                $list[str_replace( $strip, $add, $address )] = $item->getValue();
             } else {
-                $list[$item->getName()] = $item->getValue();
+                $list[$address] = $item->getValue();
             }
         }
 
@@ -1186,9 +1218,10 @@ class Mumsys_Variable_Manager_Default
                     /* false as return or false of the callback ?
                      * boolean values should not be filtered! */
                     $message = sprintf(
-                        $this->_messageTemplates['CALLBACK_ERROR'], $cmd,
+                        $this->_messageTemplates['CALLBACK_ERROR'],
+                        $cmd,
                         $itemName,
-                        ( is_array( $value ) ? print_r( $value, true ) : $value )
+                        json_encode($value)
                     );
                     $item->setErrorMessage( self::CALLBACK_ERROR, $message );
                 } else {
@@ -1198,8 +1231,7 @@ class Mumsys_Variable_Manager_Default
             } else {
                 $status = false;
                 $message = sprintf(
-                    $this->_messageTemplates['CALLBACK_NOTFOUND'], $cmd,
-                    $itemName
+                    $this->_messageTemplates['CALLBACK_NOTFOUND'], $cmd, $itemName
                 );
                 $item->setErrorMessage( self::CALLBACK_NOTFOUND, $message );
             }
@@ -1319,7 +1351,7 @@ class Mumsys_Variable_Manager_Default
     private function _execExternal( $cmd, $params, $ptype = 'string' )
     {
         /* future for callbacks:
-          if ($ptype==='array') {
+          if ( $ptype === 'array' ) {
           return call_user_func_array($cmd, $params);
           } */
 

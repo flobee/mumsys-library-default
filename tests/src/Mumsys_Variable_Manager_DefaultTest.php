@@ -65,7 +65,7 @@ class Mumsys_Variable_Manager_DefaultTest
     /**
      * @var string
      */
-    protected $_version = '1.3.3';
+    protected $_version = '1.3.4';
 
     /**
      * @var array
@@ -704,7 +704,7 @@ class Mumsys_Variable_Manager_DefaultTest
             'unittest' => array(
                 'CALLBACK_NOTFOUND' => 'Callback function "callbackNotExists" not found for item: "unittest"',
                 'CALLBACK_ERROR' => 'Callback "Mumsys_Variable_Manager_DefaultTest_CBClass::runFalse" '
-                . 'for "unittest" failt for value: "1"',
+                . 'for "unittest" failt for value (json): "true"',
             )
         );
 

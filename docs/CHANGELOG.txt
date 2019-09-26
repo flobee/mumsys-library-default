@@ -7,6 +7,7 @@
 
     + Mumsys_Variable_*
         + Enables 'strict_types'
+        + Fixes valiable manager default to be more strict in 'allowEmpty' flag
         + Improves tests
 
     + Mumsys_Variable_Abstract
