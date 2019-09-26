@@ -52,7 +52,7 @@ class Mumsys_Variable_Manager_DefaultTest
      * @var Mumsys_Variable_Manager_Default
      */
     protected $_object;
-    protected $_version = '1.2.3';
+    protected $_version = '1.2.4';
     protected $_values = array();
     protected $_config = array();
 
