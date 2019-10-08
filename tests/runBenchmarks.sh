@@ -19,6 +19,8 @@ fi
 
 # --store
 
-cmd="${PHP_BENCH} run "$*" --report=aggregate --bootstrap=${BASEDIR}/tests/bootstrap.php --config=${BASEDIR}/tests/phpbench.json"
-echo "Running:\n----------\n$cmd\n----------\n";
-$cmd;
+${PHP_BENCH} run \
+    --report=aggregate \
+    --bootstrap=${BASEDIR}/tests/bootstrap.php \
+    --config=${BASEDIR}/tests/phpbench.json \
+    "$*"

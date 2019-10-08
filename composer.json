@@ -26,7 +26,8 @@
         "sebastian/phpcpd": "*",
         "phing/phing": "^2",
         "phpbench/phpbench": "^0.16.10",
-        "tedivm/jshrink": "^1"
+        "tedivm/jshrink": "^1",
+        "phpstan/phpstan": "^0.11.16"
     },
     "autoload": {
         "classmap": [
