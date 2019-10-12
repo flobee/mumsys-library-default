@@ -322,7 +322,6 @@ $arr['nodeValues'][1]['nodeValues'] = 'Media value';
 // $obj = new Array2Xml($options);
 // $obj->echoXML();
 
-
 $options = array(
     'encoding_from' => 'iso-8859-1',
     'encoding_to' => 'iso-8859-1',
@@ -341,7 +340,5 @@ $opts['nodeAttr']['name'] = 'Array2Xml Creator';
 //$opts['nodeValues'] = array();
 
 $obj->setRoot( $opts );
-
-
 
 $obj->echoXML();
