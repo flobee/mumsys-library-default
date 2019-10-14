@@ -212,14 +212,16 @@ class Mumsys_Variable_Item_Default
      */
     public function getRegex()
     {
-        $value = & $this->_input['regex'];
         $return = array();
 
-        if ( isset( $value ) ) {
+        if ( isset( $this->_input['regex'] )
+            && $this->_input['regex']  !== false // to be removed in future
+        ) {
+            $value = $this->_input['regex'];
             if ( is_array( $value ) ) {
-                $return = (array) $value;
+                $return = $value;
             } else if ( is_string( $value ) && $value > '' ) {
-                $return = $this->_input['regex'] = array($this->_input['regex']);
+                $return = array($this->_input['regex']);
             }
         }
 

@@ -628,7 +628,7 @@ class Mumsys_Variable_Manager_Default
     {
         $return = true;
 
-        if ( ($expr = $item->getRegex()) && ($value = $item->getValue()) ) {
+        if ( count($expr = $item->getRegex()) > 0 && ($value = $item->getValue()) ) {
             foreach ( $expr as $regex ) {
                 $match = preg_match( $regex, $value );
 
