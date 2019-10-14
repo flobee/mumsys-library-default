@@ -2,22 +2,22 @@
 
 phpunit
 
-    Update tests: Setup stuff in phpunit-coverage.xml, phpunit.xml and fix 
+    Update tests: Setup stuff in phpunit-coverage.xml, phpunit.xml and fix
     issues for a strict test mode
 
 
 Mumsys_Abstract
-- [ ] All tests must contain test against the Mumsys_Abstract class if 
-      implemented. As hint: The VERSION constant will be used later for 
+- [ ] All tests must contain test against the Mumsys_Abstract class if
+      implemented. As hint: The VERSION constant will be used later for
       dependency checks.
 
 
 Mumsys_GetOpts
 ==============
 
-- [99%] Mumsys_GetOpts: Actions groups must be validated/checked. Extend the 
+- [99%] Mumsys_GetOpts: Actions groups must be validated/checked. Extend the
         whitelist -> the configuration options
-- [99%] Mumsys_GetOpts: add actions/operation mode(s) e.g.: 
+- [99%] Mumsys_GetOpts: add actions/operation mode(s) e.g.:
         call thisAction --opt1 --opt2 or
         call secondAction --dryrun --no-history anotherAction --thatFlag
 - [00%] A value can contain a "-" or '--' or -9. Extend the parser or redesign?

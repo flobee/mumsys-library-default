@@ -24,12 +24,12 @@ git filter-branch -f --env-filter '
             grep "^$1=" "$authors_file" |
             sed "s/^.*=\(.*\) <.*>$/\1/"
         }
-    
+
         get_email () {
             grep "^$1=" "$authors_file" |
             sed "s/^.*=.* <\(.*\)>$/\1/"
         }
-    
+
         name=$(get_name "$GIT_COMMITTER_EMAIL")
         email=$(get_email "$GIT_COMMITTER_EMAIL")
         GIT_AUTHOR_NAME="$name" &&

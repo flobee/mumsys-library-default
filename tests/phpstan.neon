@@ -1,0 +1,11 @@
+# first setup, tobe updated
+parameters:
+    bootstrap: bootstrap.php
+    level: 7
+    autoload_directories:
+        - %rootDir%/../../../tests/src
+        - %rootDir%/../../../src
+#    autoload_files:
+#        - %rootDir%/../../src/config/default.php
+#    excludes_analyse:
+#        - %rootDir%/../../../src/www
