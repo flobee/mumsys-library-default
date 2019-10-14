@@ -40,7 +40,7 @@
  * @subpackage  Mvc_Program
  */
 class Mumsys_Mvc_Program_Config
-    extends Mumsys_Config
+    extends Mumsys_Config_File
 {
     /**
      * Version ID information
@@ -67,11 +67,12 @@ class Mumsys_Mvc_Program_Config
      * Note: This may be including a different DB driver, so take care and clone
      * or create a new Context if needed
      * @param array $config Config parameter to be set.
+     * @param array $paths List of locations for config files
      */
-    public function __construct( Mumsys_Context_Interface $context, array $config = array() )
+    public function __construct( Mumsys_Context_Interface $context,
+        array $config = array(), array $paths = array() )
     {
-        $this->_context = $context;
-        $this->_config = $config;
+        parent::__construct( $config, $paths );
     }
 
 }

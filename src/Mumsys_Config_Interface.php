@@ -25,15 +25,6 @@
 interface Mumsys_Config_Interface
 {
     /**
-     * Initialize the config object.
-     *
-     * @param array $config Config parameters to be set
-     * @param array $paths List of locations for config files
-     */
-    public function __construct( array $config = array(), array $paths = array() );
-
-
-    /**
      * Returns all config parameters
      *
      * @return array All existing config parameters
