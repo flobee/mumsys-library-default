@@ -1152,9 +1152,9 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
      * @covers Mumsys_Db_Driver_Mysql_Mysqli::sqlImplode
      * @covers Mumsys_Db_Driver_Mysql_Mysqli::_setError
      *
-     * @todo // deprecated! api change needed,now 100% code coverage
+     * @ todo // deprecated! api change needed,now 100% code coverage
      *         'deprecated_Test IS NOT NULL' => false,
-     * @todo asString => false ??
+     * @ todo asString => false ??
      *      'suggested_Test' => 'IS NOT NULL',
      */
     public function testSqlImplode()
@@ -1256,7 +1256,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         );
         $this->expectException( 'Mumsys_Db_Exception' );
 
-        $actual = $this->_object->sqlImplode(
+        $this->_object->sqlImplode(
             $separator, $data, true, array(), array(), $keyValWrap, $keyWrap
         );
     }

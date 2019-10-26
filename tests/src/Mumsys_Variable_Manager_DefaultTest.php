@@ -6,6 +6,8 @@
  */
 class Mumsys_Variable_Manager_DefaultTest_CBClass
 {
+    const VERSION = '0.0.0';
+
     public static function runA( Mumsys_Variable_Item_Interface $item,
         $data = null, $params = null )
     {

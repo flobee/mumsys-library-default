@@ -117,7 +117,6 @@ class Mumsys_CacheTest
 
     /**
      * @covers Mumsys_Cache::setEnable
-     * @todo   Implement testSetEnable().
      */
     public function testSetEnable()
     {

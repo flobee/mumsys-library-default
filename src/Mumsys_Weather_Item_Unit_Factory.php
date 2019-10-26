@@ -36,7 +36,7 @@ class Mumsys_Weather_Item_Unit_Factory
      * @param array $input List of key/values pairs for the construction of the
      * item
      *
-     * @return \Mumsys_Weather_Item_Unit_Interface Unit item interface
+     * @return Mumsys_Weather_Item_Unit_Interface Unit item interface
      * @throws Mumsys_Weather_Exception
      */
     public static function createItem( string $name = null,

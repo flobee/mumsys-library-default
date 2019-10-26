@@ -18,9 +18,9 @@
 /**
  * Test class to check invalid interface usage
  */
-class Mumsys_Upload_MissingIfaceTest
+class Mumsys_Upload_FactoryMissingIfaceTest
 {
-
+    const VERSION = '0.0.0';
 }
 
 
@@ -96,10 +96,10 @@ class Mumsys_Upload_FactoryTest
     public function testGetAdapterException1MissingIface()
     {
         $this->expectException( 'Mumsys_Upload_Exception' );
-        $regex = '/(Class "Mumsys_Upload_MissingIfaceTest" does not '
+        $regex = '/(Class "Mumsys_Upload_FactoryMissingIfaceTest" does not '
             . 'implement interface "Mumsys_Upload_Interface")/i';
         $this->expectExceptionMessageRegExp( $regex );
-        $this->_object->getAdapter( 'MissingIfaceTest' );
+        $this->_object->getAdapter( 'FactoryMissingIfaceTest' );
     }
 
 

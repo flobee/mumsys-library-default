@@ -341,7 +341,7 @@ class Mumsys_Html_Table
      * IMPLEMENTED YET)
      * @param string $val Value to detect a color change
      *
-     * @return string|false New color sting or false for no change
+     * @return string|false New color string or false for no change
      */
     public function getAltRowColor( $num, $val = null )
     {

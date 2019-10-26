@@ -28,7 +28,7 @@ class Mumsys_Cookie_NoneTest
      */
     protected function tearDown(): void
     {
-        $this->_object = null;
+        unset( $this->_object );
     }
 
 

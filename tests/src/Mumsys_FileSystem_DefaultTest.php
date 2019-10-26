@@ -550,8 +550,6 @@ class Mumsys_FileSystem_DefaultTest
     /**
      * @covers Mumsys_FileSystem_Default::mkdirs
      * @covers Mumsys_FileSystem_Default::mkdir
-     *
-     * @todo how to test for 100% code coverage?
      */
     public function testMkdirs()
     {

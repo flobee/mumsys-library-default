@@ -52,9 +52,9 @@ class Mumsys_Weather_Factory
             $service = self::_autodetectService();
             $newService = self::_initService( $service, $params );
         } else if ( in_array( $service, array('openweathermaps') ) ) {
-            $newService = $this->_initService( $service, $params );
+            $newService = self::_initService( $service, $params );
         } else {
-            $newService = new Mumsys_Weater_OpenWeatherMap( $params );
+            $newService = new Mumsys_Weather_OpenWeatherMap( $params );
         }
 
         return $newService;
@@ -78,6 +78,8 @@ class Mumsys_Weather_Factory
      * Initialize weather service object.
      *
      * @param string $service Service to initialize.
+     *
+     * @return Mumsys_Weather_Interface Weather service
      */
     private static function _initService( $service, array $params = array() )
     {
@@ -86,6 +88,9 @@ class Mumsys_Weather_Factory
             case 'openweathermaps':
                 $newService = new Mumsys_Weather_OpenWeatherMap( $params );
                 break;
+
+            default:
+                throw new Mumsys_Weather_Exception( 'Service not implemented' );
         }
 
         return $newService;

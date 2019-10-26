@@ -1,8 +1,11 @@
 <?php
 
-class Mumsys_Cookie_MissingIfaceTest
+/**
+ * Test class for these tests
+ */
+class Mumsys_Cookie_FactoryMissingIfaceTest
 {
-
+    const VERSION = '0.0.0';
 }
 
 
@@ -34,7 +37,7 @@ class Mumsys_Cookie_FactoryTest
      */
     protected function tearDown(): void
     {
-        $this->_object = null;
+        unset( $this->_object );
     }
 
 
@@ -72,10 +75,10 @@ class Mumsys_Cookie_FactoryTest
     public function testGetAdapterException1MissingIface()
     {
         $this->expectException( 'Mumsys_Cookie_Exception' );
-        $regex = '/(Adapter "Mumsys_Cookie_MissingIfaceTest" does not '
+        $regex = '/(Adapter "Mumsys_Cookie_FactoryMissingIfaceTest" does not '
             . 'implement interface "Mumsys_Cookie_Interface")/i';
         $this->expectExceptionMessageRegExp( $regex );
-        $this->_object->getAdapter( 'MissingIfaceTest' );
+        $this->_object->getAdapter( 'FactoryMissingIfaceTest' );
     }
 
 
@@ -87,7 +90,7 @@ class Mumsys_Cookie_FactoryTest
         $this->expectException( 'Mumsys_Cookie_Exception' );
         $regex = '/(Adapter "Mumsys_Cookie_12345" not available)/i';
         $this->expectExceptionMessageRegExp( $regex );
-        $this->_object->getAdapter( 12345 );
+        $this->_object->getAdapter( '12345' );
     }
 
 }

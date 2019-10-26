@@ -541,8 +541,6 @@ class Mumsys_FileSystemTest
     /**
      * @covers Mumsys_FileSystem::mkdirs
      * @covers Mumsys_FileSystem::mkdir
-     *
-     * @todo how to test for 100% code coverage?
      */
     public function testMkdirs()
     {
@@ -613,7 +611,6 @@ class Mumsys_FileSystemTest
 
     /**
      * @covers Mumsys_FileSystem::getRelativeDir
-     * @todo   Implement testGetRelativeDir().
      */
     public function testGetRelativeDir()
     {

@@ -386,7 +386,7 @@ class Mumsys_Weather_Item_Default
             $item['icon'] = (string) $desc['icon'];
         }
 
-        if ( $item ) {
+        if ( isset( $item ) ) {
             $this->_record['description'] = $item;
         }
     }
@@ -843,7 +843,7 @@ class Mumsys_Weather_Item_Default
      * - 'sign' string A sign or code for a sign
      * - 'code' string Code, short univeral key
      *
-     * @return Mumsys_Weather_Item_Unit_Interrface
+     * @return Mumsys_Weather_Item_Unit_Interface
      */
     private function _createUnit( $type = 'Default', array $input = array() )
     {

@@ -162,7 +162,7 @@ class Mumsys_Context_Item
     /**
      * Returns the logger object.
      *
-     * @return Mumsys_Logger Returns the logger object
+     * @return Mumsys_Logger_Interface Returns the logger object
      *
      * @throws Mumsys_Context_Exception If class was not set
      */

@@ -44,7 +44,7 @@ abstract class Mumsys_Registry
     /**
      * Replaces/ sets the value to the registry by given key.
      *
-     * @param sting $key Key to be set
+     * @param string $key Key to be set
      * @param mixed $value Value to be set
      *
      * @throws Mumsys_Registry_Exception Throws exception if key is not a string
@@ -59,7 +59,7 @@ abstract class Mumsys_Registry
     /**
      * Registers the value to the registry by given key.
      *
-     * @param sting $key Key to register
+     * @param string $key Key to register
      * @param mixed $value Value to be set
 
      * @throws Mumsys_Registry_Exception Throws exception if key already exists

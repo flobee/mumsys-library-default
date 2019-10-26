@@ -3,9 +3,9 @@
 /**
  * Test class for the mailer factory
  */
-class Mumsys_Mail_MyTestMailer
+class Mumsys_Mail_FactoryMyTestMailer
 {
-
+    const VERSION = '0.0.0';
 }
 
 
@@ -63,10 +63,10 @@ class Mumsys_Mail_FactoryTest
      */
     public function testGetAdapterException2()
     {
-        $regex = '/(Adapter "Mumsys_Mail_MyXMailer" not available)/i';
+        $regex = '/(Adapter "Mumsys_Mail_NoExistsAdapter" not available)/i';
         $this->expectExceptionMessageRegExp( $regex );
         $this->expectException( 'Mumsys_Mail_Exception' );
-        $actual1 = $this->_object->getAdapter( 'MyXMailer' );
+        $actual1 = $this->_object->getAdapter( 'NoExistsAdapter' );
     }
 
     /**
@@ -74,11 +74,11 @@ class Mumsys_Mail_FactoryTest
      */
     public function testGetAdapterException3()
     {
-        $regex = '/(Adapter "Mumsys_Mail_MyTestMailer" does not implement '
+        $regex = '/(Adapter "Mumsys_Mail_FactoryMyTestMailer" does not implement '
             . 'interface "Mumsys_Mail_Interface")/i';
         $this->expectExceptionMessageRegExp( $regex );
         $this->expectException( 'Mumsys_Mail_Exception' );
-        $actual1 = $this->_object->getAdapter( 'MyTestMailer' );
+        $actual1 = $this->_object->getAdapter( 'FactoryMyTestMailer' );
     }
 
 }

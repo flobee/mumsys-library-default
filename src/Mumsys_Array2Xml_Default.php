@@ -160,11 +160,11 @@ class Mumsys_Array2Xml_Default
 
     /**
      * Changing the Identifier of your incomming data array.
-     * @param  array $ids
+     * @param array $ids
      */
     public function setIdentifier( $ids )
     {
-        if ( isset( $ids ) && is_array( $ids ) ) {
+        if ( $ids && is_array( $ids ) ) {
             foreach ( $ids as $key => $value ) {
                 if ( $value === '' || !isset( $this->_cfg['ID'][$key] ) ) {
                     $this->_error[] = sprintf(
@@ -290,6 +290,9 @@ class Mumsys_Array2Xml_Default
             case Mumsys_Array2Xml_Abstract::TAG_CASE_UPPER:
                 $ret = strtoupper( $value );
                 break;
+
+            default:
+                throw new Mumsys_Array2Xml_Exception( 'Tag case not implemented' );
         }
 
         return $ret;
@@ -559,6 +562,7 @@ class Mumsys_Array2Xml_Default
      */
     public function encode( $value )
     {
+        $php_errormsg = null;
         $encFrom = $this->_cfg['charset_from'];
         $encTo = $this->_cfg['charset_to'];
         $value = iconv( $encFrom, $encTo, $value );

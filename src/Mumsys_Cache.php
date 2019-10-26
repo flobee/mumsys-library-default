@@ -50,6 +50,19 @@ class Mumsys_Cache
      */
     protected $_prefix = 'cache_';
 
+    /**
+     * Individual group name (a-z) to define a cache file to find on the
+     * filesystem more easier if needed to look for manually..
+     * @var string
+     */
+    private $_group;
+
+    /**
+     * Individual ID to define a cache file which will be md5 encrypted.
+     * @var string
+     */
+    private $_id;
+
 
     /**
      * Initialize the cache object and sets group and id to store it.

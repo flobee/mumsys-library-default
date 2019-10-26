@@ -1,5 +1,20 @@
 # Changes
 
+2019-10
+
+    + Updates phpunit V 8.4.1, update test config beeing more strict
+    + Improves tests/bootstrap
+    + Updates phpstan config and sca runner (starting in a low level=1 )
+    + Updates tests and implementation when VERSION was not set
+    + Fixes typehints in phpdoc and updates inline doc
+    + Improves CS
+
+    + Mumsys_Multirename
+        + Improves check of logger usage on init.
+        + Improves phpdoc using phpstan up to level 5 now
+        + Fixes getVersionLong()
+
+
 2019-09
 
     + Adds performance tests unsing [phpbench](github.com/phpbench) for the 

@@ -18,7 +18,7 @@
 /**
  * Default variable item manager to handle variable items.
  *
- * This class hold your variables as objects and is able to to show specific
+ * This class hold your variables as objects and is able to show specific
  * informations (if set) or does the validation after a user input.
  * Example:
  * <code>
@@ -36,7 +36,7 @@
  * $object = new Mumsys_Variable_Manager_Default($config, $_POST);
  * // in edit mode
  * $usernameObject = $object->getItem('username');
- * // in template, e.g.:
+ * // in template/ output case, e.g.:
  * if ($usernameObject->getDescription()) echo $usernameObject->getDescription();
  * if ($usernameObject->getInformation()) echo $usernameObject->getInformation();
  * echo $usernameObject->getLabel() . ': ' . $usernameObject->getValue()
@@ -273,7 +273,7 @@ class Mumsys_Variable_Manager_Default
      *      'maxlen' => 45,
      *      'allowEmpty' => false,
      *      'required' => true,
-     *      'regex' => '/^([a-zA-Z0-9-_]{4,45})*$/i',
+     *      'regex' => array('/^([a-zA-Z0-9-_]{4,45})*$/i'),
      *      'default' => '',
      *      'filters' => array(
      *          'onSave' => array(
@@ -535,7 +535,7 @@ class Mumsys_Variable_Manager_Default
         switch ( $type )
         {
             case 'array':
-                if (!is_array($value)) {
+                if ( !is_array( $value ) ) {
                     $errorKey = self::MINMAX_TOO_INVALID_VALUE;
                     $errorMessage = sprintf(
                         $this->_messageTemplates['MINMAX_TOO_INVALID_VALUE'],
@@ -753,7 +753,7 @@ class Mumsys_Variable_Manager_Default
             return true;
         }
 
-        if ( ($value === null || $value === '' ) && ( $required || ($allowEmpty === false ) ) ) {
+        if ( ( $value === null || $value === '' ) && ( $required || ( $allowEmpty === false ) ) ) {
             if ( $required ) {
                 $item->setErrorMessage(
                     self::REQUIRED_MISSING,
@@ -1221,7 +1221,7 @@ class Mumsys_Variable_Manager_Default
                         $this->_messageTemplates['CALLBACK_ERROR'],
                         $cmd,
                         $itemName,
-                        json_encode($value)
+                        json_encode( $value )
                     );
                     $item->setErrorMessage( self::CALLBACK_ERROR, $message );
                 } else {

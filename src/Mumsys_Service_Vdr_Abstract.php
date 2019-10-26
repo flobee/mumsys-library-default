@@ -208,8 +208,6 @@ abstract class Mumsys_Service_Vdr_Abstract
         $this->execute( 'QUIT' );
         $return = fclose( $this->_connection );
 
-        $this->_isOpen = false;
-
         $this->_logger->log( 'Connection close: ' . $this->_host, 7 );
 
         return $return;

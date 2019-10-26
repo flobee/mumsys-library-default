@@ -28,6 +28,11 @@ class Mumsys_Weather_OpenWeatherMap
     implements Mumsys_Weather_Interface
 {
     /**
+     * Version ID information.
+     */
+    const VERSION = '2.5.0';
+
+    /**
      * Format of the service to be used.
      * @var string
      */
@@ -217,7 +222,7 @@ class Mumsys_Weather_OpenWeatherMap
      * @param string|array $query [[Name of the city],[country code]], array containing "lon" and "lat" keys for
      * getting a weather by coordinate or city IDs (a comma seperated list of city IDs) is possible e.g:
      * '524901,2172797,703448,2643743') 'London,uk' or array('lon'=>139, 'lat'=>35)
-     * @param type $numDays Number of days in 3 hour interval to return. Default is 7, max 14 days
+     * @param integer $numDays Number of days in 3 hour interval to return. Default is 7, max 14 days
      *
      * @return array|false List of Mumsys_Weather_Item's
      */
@@ -238,11 +243,11 @@ class Mumsys_Weather_OpenWeatherMap
      * Returns a list of Mumsys_Weather_Item's searching exactly to your searching word of city parameter.
      *
      * @param string $city Exact name of the city to search for
-     * @param interger $numResults Number of results to return. Default is 5
+     * @param integer $numResults Number of results to return. Default is 5
      *
      * @return array|false List of Mumsys_Weather_Item's
      */
-    public function getWeatherFindAccurate( $city = '', $numResults = 5 )
+    public function getWeatherFindAccurate( $city = '', int $numResults = 5 )
     {
         $num = (int) $numResults;
         $action = 'find/accurate/' . $num;
@@ -255,7 +260,7 @@ class Mumsys_Weather_OpenWeatherMap
      * Returns a list of Mumsys_Weather_Item's searching with sounds like to your searching word of city paramerter
      *
      * @param string $city Name of the city to search for
-     * @param interger $numResults Number of results to return. Default is 5
+     * @param integer $numResults Number of results to return. Default is 5
      *
      * @return array|false List of Mumsys_Weather_Item's
      */
@@ -306,7 +311,7 @@ class Mumsys_Weather_OpenWeatherMap
     /**
      * Returns a newly created weather item.
      *
-     * @return Mumsys_Weather_Item
+     * @return Mumsys_Weather_Item_Default
      */
     public function createItem()
     {
@@ -493,7 +498,7 @@ class Mumsys_Weather_OpenWeatherMap
      * Receives the requested content and parses the response to return a homogeneous structure.
      *
      * @param string $url Full api url to request
-     * @return array
+     * @return array|false
      */
     private function _getContent( $url )
     {
@@ -502,6 +507,7 @@ class Mumsys_Weather_OpenWeatherMap
             return false;
         }
 
+        $result = false;
         switch ( $this->_format )
         {
             case 'json':
@@ -522,8 +528,9 @@ class Mumsys_Weather_OpenWeatherMap
      *
      * @todo only for weather, group action at the moment. forecast missing
      *
-     * @param json $response Json response from api request
-     * @return array Returns list of Mumsys_Weather_Item's for futher actions
+     * @param string $response Json response from api request
+     *
+     * @return array Returns list of Mumsys_Weather_Item_Default's for futher actions
      * @throws Mumsys_Weather_Exception
      */
     private function _parseJson( $response )
@@ -760,12 +767,14 @@ class Mumsys_Weather_OpenWeatherMap
      *
      * @see _parseJson implementation which contains different, more complete data except the descriptions.
      *
-     * @param xml $response Xml response from api request
+     * @param string $response Xml response from api request
      * @return array homogeneous structure for futher actions
      */
     private function _parseXml( $response )
     {
-        if ( $response === false || ( isset( $data->cod ) && $data->cod == 404 ) ) {
+        if ( $response === false
+            //|| ( isset( $data->cod ) && $data->cod == 404 )
+        ) {
             return false;
         }
 
@@ -1003,9 +1012,9 @@ class Mumsys_Weather_OpenWeatherMap
      * Returns a newly created weather item.
      *
      * @param array $params Parameters to initialise
-     * @return Mumsys_Weather_Item
+     * @return Mumsys_Weather_Item_Default
      */
-    private function _createItem( $params )
+    private function _createItem( array $params )
     {
         return new Mumsys_Weather_Item_Default( $params, false );
     }

@@ -37,6 +37,12 @@ class Mumsys_Cookie_Mock
      */
     private $_cookieFile;
 
+    /**
+     * The cookie data.
+     * @var array|null
+     */
+    private $_cookie;
+
 
     /**
      * Initialize the cookie object.
@@ -51,7 +57,11 @@ class Mumsys_Cookie_Mock
         if ( $cookieFile && $isDir ) {
             $this->_cookieFile = $cookieFile;
         } else {
-            $this->_cookieFile = sprintf( '/tmp/%1$s.%2$s.tmp', __CLASS__, Mumsys_Php_Globals::getRemoteUser() );
+            $this->_cookieFile = sprintf(
+                '/tmp/%1$s.%2$s.tmp',
+                __CLASS__,
+                Mumsys_Php_Globals::getRemoteUser()
+            );
         }
 
         $this->_loadCookieData();
@@ -74,21 +84,19 @@ class Mumsys_Cookie_Mock
      *
      * If $key is NULL it will return all cookie parameters
      *
-     * @param string $key Value of the key to return to
+     * @param string|null $key Value of the key to return to
      * @param scalar $default Value to return if key not found
      *
      * @return mixed Stored value or $default if key was not set.
      */
-    public function getCookie( $key = null, $default = null )
+    public function getCookie( string $key = null, $default = null )
     {
-        $cookie = $this->_loadCookieData();
-
-        if ( isset( $cookie ) && $key === null ) {
-            return $cookie;
+        if ( isset( $this->_cookie ) && $key === null ) {
+            return $this->_cookie;
         }
 
-        if ( isset( $cookie[$key] ) ) {
-            $default = $cookie[$key];
+        if ( isset( $this->_cookie[$key] ) ) {
+            $default = $this->_cookie[$key];
         }
 
         return $default;

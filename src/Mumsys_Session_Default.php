@@ -45,12 +45,11 @@ class Mumsys_Session_Default
          * session_cache_expire(180);
          * echo $cache_expire = session_cache_expire();
          */
-        if ( ( $sessionId = session_id() ) == '' || !isset( $_SESSION ) ) {
+        if ( session_status() == PHP_SESSION_NONE && !headers_sent() ) {
             session_start();
-            $sessionId = session_id();
         }
-
-        parent::__construct( $_SESSION, $sessionId, $appkey );
+        /** @todo not merged from stable yet Mumsys_Php_Globals::getSessionVar(); */
+        parent::__construct( $_SESSION, session_id(), $appkey );
     }
 
 

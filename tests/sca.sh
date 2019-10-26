@@ -1,5 +1,10 @@
 #!/bin/sh
 
+#
+# Introduction (pro/cons) from 
+# https://talks.benjamin-cremer.de/phpugms_sca/#/
+#
+
 PROGRAM='phpstan';
 
 CUR_DIR="$(dirname $(readlink -f "$0"))";
@@ -20,4 +25,8 @@ then
     exit 1;
 fi
 
-${PHP_BIN} ${BASEDIR}/vendor/bin/${PROGRAM} $*
+if [ "$1" = "--help" ] ; then
+    echo "runs: ./sca analyse <options> <path|file>";
+fi
+
+${PHP_BIN} ${BASEDIR}/vendor/bin/${PROGRAM} analyse $*

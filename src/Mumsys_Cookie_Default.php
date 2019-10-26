@@ -45,12 +45,12 @@ class Mumsys_Cookie_Default
      * Returns a cookie variable by given key.
      * If $key is NULL it will return all cookie parameters
      *
-     * @param string $key Value of the key to return to
+     * @param string|null $key Value of the key to return to
      * @param scalar $default Value to return if key not found
      *
      * @return mixed Stored value or $default if key was not set.
      */
-    public function getCookie( $key = null, $default = null )
+    public function getCookie( string $key = null, $default = null )
     {
         return Mumsys_Php_Globals::getCookieVar( $key, $default );
     }
@@ -178,14 +178,13 @@ class Mumsys_Cookie_Default
     public function unsetCookie( string $key, string $path = '',
         string $domain = '', bool $secure = false, bool $httponly = false ): bool
     {
+        $return = true;
         $test = Mumsys_Php_Globals::getCookieVar( $key );
         if ( $test ) {
             unset( $_COOKIE[$key] );
             $return = $this->setCookie(
                 $key, '', ( time() - 3600 ), $path, $domain, $secure, $httponly
             );
-        } else {
-            $return = true;
         }
 
         return $return;

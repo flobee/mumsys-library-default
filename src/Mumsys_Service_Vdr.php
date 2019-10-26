@@ -108,20 +108,20 @@ class Mumsys_Service_Vdr
      * Adds a new channel to the vdr.
      *
      * @param string $name Chanel name
-     * @param type $transponder
-     * @param type $frequency
-     * @param type $parameter
-     * @param type $source
-     * @param type $symbolrate
-     * @param type $VPID
-     * @param type $APID
-     * @param type $TPID
-     * @param type $CAID
-     * @param type $SID
-     * @param type $NID
-     * @param type $TID
-     * @param type $RID
-     * @param integer $channelID Internal channel ID
+     * @param string $transponder
+     * @param string $frequency
+     * @param string $parameter
+     * @param string $source
+     * @param string $symbolrate
+     * @param string $VPID
+     * @param string $APID
+     * @param string $TPID
+     * @param string $CAID
+     * @param string $SID
+     * @param string $NID
+     * @param string $TID
+     * @param string $RID
+     * @param integer|null $channelID Internal channel ID
      *
      * @return array Channel item containing the new ID
      *
@@ -280,7 +280,7 @@ class Mumsys_Service_Vdr
     /**
      * Returns the channel string to execute.
      *
-     * @param integer $channelID
+     * @param integer|null $channelID
      * @param string $name
      * @param string $transponder
      * @param string $frequency
@@ -296,16 +296,16 @@ class Mumsys_Service_Vdr
      * @param string $TID
      * @param string $RID
      *
-     * @return type
+     * @return string
      */
     private function _channelStringGet( $channelID, $name, $transponder,
         $frequency, $parameter, $source, $symbolrate, $VPID, $APID, $TPID,
         $CAID, $SID, $NID, $TID, $RID )
     {
-        if ( isset( $channelID ) ) {
-            $template = '%15$s %1$s;%2$s:%3$s:%4$s:%5$s:%6$s:%7$s:%8$s:%9$s:%10$s:%11$s:%12$s:%13$s:%14$s';
-        } else {
+        if ( $channelID === null ) {
             $template = '%1$s;%2$s:%3$s:%4$s:%5$s:%6$s:%7$s:%8$s:%9$s:%10$s:%11$s:%12$s:%13$s:%14$s';
+        } else {
+            $template = '%15$s %1$s;%2$s:%3$s:%4$s:%5$s:%6$s:%7$s:%8$s:%9$s:%10$s:%11$s:%12$s:%13$s:%14$s';
         }
 
         $timerString = sprintf(
@@ -483,7 +483,7 @@ class Mumsys_Service_Vdr
      */
     private function _timersGet( $timerID = null )
     {
-        if ( $id !== null && (int) $id <= 0 ) {
+        if ( $timerID !== null && (int) $timerID <= 0 ) {
             throw new Mumsys_Session_Exception( 'Invalid timer id' );
         }
 
@@ -515,13 +515,13 @@ class Mumsys_Service_Vdr
      * @param string $notes Additional Informations, optional
      * @param integer $id ID of the timer. Null for a new one or id to modify/update
      *
-     * @return Return the timer item.
+     * @return array|false Return the timer item.
      */
     public function timerAdd( $activ, $channelID, $dayOfMonth, $timeStart,
         $timeEnd, $priority, $lifetime, $title, $notes, $id = null )
     {
         $timerString = $this->_timerStringGet(
-            $activ, $channelID, $day, $timeStart, $timeEnd, $priority,
+            $id, $activ, $channelID, $dayOfMonth, $timeStart, $timeEnd, $priority,
             $lifetime, $title, $notes
         );
 
@@ -617,7 +617,8 @@ class Mumsys_Service_Vdr
 
         $recordId = substr( $parts[0], 0, ( $posStart ) );
 
-        $record = $this->timerRecordGet(
+        $record = $this->timerItemCreate(
+            //$record = $this->timerRecordGet(
             substr( $parts[0], ( $posStart + 1 ) ),
             $parts[1],
             $parts[2],
@@ -668,7 +669,7 @@ class Mumsys_Service_Vdr
      *
      * Api note: [nummer] aktiv:Kanalnummer:Tag_des_Monats:Startzeit:Endzeit:Priorität:Dauerhaftigkeit:Titel:
      *
-     * @param integer|nul $id ID of the timer. Null for a new one or id to modify/update
+     * @param integer|null $id ID of the timer. Null for a new one or id to modify/update
      * @param integer $activ Aktiv (1) or inactiv (0)
      * @param integer $channelID Channel ID
      * @param integer $dayOfMonth Day of the month

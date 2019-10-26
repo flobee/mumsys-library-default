@@ -27,7 +27,7 @@ interface Mumsys_GetterSetter_Interface
     /**
      * Replaces/ sets the value for a given key.
      *
-     * @param sting $key Key to be set
+     * @param string $key Key to be set
      * @param mixed $value Value to be set
      */
     public function replace( $key, $value = null );
@@ -36,7 +36,7 @@ interface Mumsys_GetterSetter_Interface
     /**
      * Registers the value by given key.
      *
-     * @param sting $key Key to register
+     * @param string $key Key to register
      * @param mixed $value Value to be set
      *
      * @throws Mumsys_Exception|Mumsys_[domain]_Exception If key exists

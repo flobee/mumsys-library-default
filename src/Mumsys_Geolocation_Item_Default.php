@@ -30,6 +30,11 @@
 class Mumsys_Geolocation_Item_Default
 {
     /**
+     * Version ID information.
+     */
+    const VERSION = '1.0.0';
+
+    /**
      * The store for all data. See $_itemDefaults for all possible properties.
      * @var array
      */

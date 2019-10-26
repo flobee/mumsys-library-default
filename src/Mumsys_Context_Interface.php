@@ -122,7 +122,7 @@ interface Mumsys_Context_Interface
     /**
      * Returns the logger object.
      *
-     * @return Mumsys_Logger Returns the logger object
+     * @return Mumsys_Logger_Interface Returns the logger object
      *
      * @throws Mumsys_Exception If class was not set
      */

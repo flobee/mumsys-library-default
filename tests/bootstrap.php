@@ -3,9 +3,12 @@
 /**
  * Bootstrap for Mumsys Library tests
  */
-if ( in_array( 'root', $_SERVER ) ) {
-    $mesg = 'Something belongs to root. Use a different user! Security exit.'
-        . PHP_EOL;
+
+$denyList = array('root', 'admin', 'administrator', 'sysadmin');
+if ( in_array( strtolower( @$_SERVER['USER'] ), $denyList ) ) {
+    $userList = '\'' . implode( '\', ', $denyList ) . '\'';
+    $mesg = 'Something belongs to ' . $userList
+        . ' Use a different user! Security exit.' . PHP_EOL;
     exit( $mesg );
 }
 

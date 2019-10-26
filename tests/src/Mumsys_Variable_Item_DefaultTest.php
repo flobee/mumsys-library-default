@@ -156,7 +156,6 @@ class Mumsys_Variable_Item_DefaultTest
     /**
      * @covers Mumsys_Variable_Item_Default::getAllowEmpty
      * @covers Mumsys_Variable_Item_Default::setAllowEmpty
-     * @todo   Implement testGetAllowEmpty().
      */
     public function testGetSetAllowEmpty()
     {

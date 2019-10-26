@@ -54,12 +54,12 @@ class Mumsys_Cookie_Memory
      * Returns a cookie variable by given key.
      * If $key is NULL it will return all cookie parameters
      *
-     * @param string $key Value of the key to return to
+     * @param string|null $key Value of the key to return to
      * @param scalar $default Value to return if key not found
      *
      * @return mixed Stored value or $default if key was not set.
      */
-    public function getCookie( $key = null, $default = null )
+    public function getCookie( string $key = null, $default = null )
     {
         if ( isset( $this->_cookie ) && $key === null ) {
             return $this->_cookie;

@@ -26,9 +26,15 @@ class Mumsys_MultirenameTest
     protected $_object;
 
     /**
-     * @var Mumsys_Logger
+     * @var Mumsys_Logger_Decorator_Interface
      */
     protected $_logger;
+
+    /**
+     * Logfile location
+     * @var string
+     */
+    private static $_logFile;
 
     /**
      * @var Mumsys_FileSystem
@@ -68,7 +74,7 @@ class Mumsys_MultirenameTest
 
         $this->_testsDir = MumsysTestHelper::getTestsBaseDir();
 
-        $logfile = $this->_testsDir . '/tmp/test_' . basename( __FILE__ ) . '.log';
+        self::$_logFile = $this->_testsDir . '/tmp/test_' . basename( __FILE__ ) . '.log';
         $_SERVER['HOME'] = $this->_testsDir . '/tmp';
 
         for ( $i = 10; $i <= 19; $i++ ) {
@@ -95,13 +101,28 @@ class Mumsys_MultirenameTest
             'history-size' => 3,
         );
 
-        $opts = array('way' => 'a', 'logfile' => $logfile, 'msglogLevel' => -1);
+        $opts = array('way' => 'a', 'logfile' => self::$_logFile, 'msglogLevel' => -1);
 
         $fileLogger = new Mumsys_Logger_File( $opts );
         $this->_logger = new Mumsys_Logger_Decorator_None( $fileLogger, $opts );
         $this->_oFiles = new Mumsys_FileSystem();
 
         $this->_object = new Mumsys_Multirename( $this->_config, $this->_oFiles, $this->_logger );
+    }
+
+
+    /**
+     * Execute after all tests. Deletes the log file
+     */
+    public static function tearDownAfterClass(): void
+    {
+        if ( !headers_sent() ) {
+            return;
+        }
+
+        if ( file_exists( self::$_logFile ) ) {
+            unlink( self::$_logFile );
+        }
     }
 
 
@@ -148,35 +169,40 @@ class Mumsys_MultirenameTest
         $_SERVER['USER'] = $tmp;
     }
 
-//
-//    /**
-//     * Test show version
-//     * @covers Mumsys_Multirename::run
-//     * @covers Mumsys_Multirename::showVersion
-//     */
-//    public function testConstructorGetShowVersionA()
-//    {
-//        $this->_config['version'] = true;
-//        ob_start();
-//        $this->_object = new Mumsys_Multirename($this->_config, $this->_oFiles, $this->_logger);
-//        $current = ob_get_clean();
-//
-//        // this needs in the single test
-//        $expected = array(
-//            'multirename ' . Mumsys_Multirename::VERSION . ' by Florian Blasel' . PHP_EOL . PHP_EOL,
-//            'Mumsys_Abstract                     ' . Mumsys_Abstract::VERSION . PHP_EOL,
-//            'Mumsys_FileSystem_Common_Abstract   ' . Mumsys_FileSystem_Common_Abstract::VERSION . PHP_EOL,
-//            'Mumsys_FileSystem                   ' . Mumsys_FileSystem::VERSION . PHP_EOL,
-//            'Mumsys_Logger_File                  ' . Mumsys_Logger_File::VERSION . PHP_EOL,
-//            'Mumsys_Logger_Abstract              ' . Mumsys_Logger_Abstract::VERSION . PHP_EOL,
-//            'Mumsys_File                         ' . Mumsys_File::VERSION . PHP_EOL,
-//            'Mumsys_Multirename                  ' . Mumsys_Multirename::VERSION . PHP_EOL,
-//        );
-//        foreach ($expected as $toCheck) {
-//            $res = (preg_match('/' . $toCheck . '/im', $current) ? true : false);
-//            $this->assertTrue($res, $toCheck . ' ' . $current);
-//        }
-//    }
+
+    /**
+     * Test show version
+     * @covers Mumsys_Multirename::run
+     * @covers Mumsys_Multirename::showVersion
+     *
+     * Must be set to get only the classes for this. Otherwise all unittest
+     * classes and implementation comes in
+     * @runInSeparateProcess
+     */
+    public function testConstructorGetShowVersionA()
+    {
+        $this->_config['version'] = true;
+        ob_start();
+        new Mumsys_Multirename( $this->_config, $this->_oFiles, $this->_logger );
+        $current = ob_get_clean();
+
+        // this needs in the single test
+        $expected = array(
+            'multirename ' . Mumsys_Multirename::VERSION . ' by Florian Blasel' . PHP_EOL . PHP_EOL,
+            'Mumsys_Abstract                     ' . Mumsys_Abstract::VERSION . PHP_EOL,
+            'Mumsys_FileSystem_Common_Abstract   ' . Mumsys_FileSystem_Common_Abstract::VERSION . PHP_EOL,
+            'Mumsys_FileSystem                   ' . Mumsys_FileSystem::VERSION . PHP_EOL,
+            'Mumsys_Logger_File                  ' . Mumsys_Logger_File::VERSION . PHP_EOL,
+            'Mumsys_Logger_Abstract              ' . Mumsys_Logger_Abstract::VERSION . PHP_EOL,
+            'Mumsys_File                         ' . Mumsys_File::VERSION . PHP_EOL,
+            'Mumsys_Multirename                  ' . Mumsys_Multirename::VERSION . PHP_EOL,
+        );
+
+        foreach ( $expected as $toCheck ) {
+            $res = ( preg_match( '/' . $toCheck . '/im', $current ) ? true : false );
+            $this->assertTrue( $res, $toCheck . ' ' . $current );
+        }
+    }
 
 
     /**
@@ -187,12 +213,20 @@ class Mumsys_MultirenameTest
      * @covers Mumsys_Multirename::getVersionLong
      * @covers Mumsys_Multirename::getVersionShort
      * @covers Mumsys_Multirename::showVersion
+     *
+     * Must be set to get only the classes for this. Otherwise all unittest
+     * classes and implementation comes in
+     * @runInSeparateProcess
      */
     public function testConstructorGetShowVersionB()
     {
         ob_start();
         $this->_config['version'] = true;
-        $this->_object = new Mumsys_Multirename( $this->_config, $this->_oFiles, $this->_logger );
+        $object = new Mumsys_Multirename(
+            $this->_config,
+            $this->_oFiles,
+            $this->_logger
+        );
         $current = ob_get_clean();
         // this needs in the single test
         $expected = array(
@@ -205,10 +239,10 @@ class Mumsys_MultirenameTest
             'Mumsys_Multirename                  ' . Mumsys_Multirename::VERSION . PHP_EOL,
         );
 
-        $current2 = $this->_object->getVersionID();
+        $current2 = $object->getVersionID();
         $expected2 = Mumsys_Multirename::VERSION;
 
-        $current3 = $this->_object->getVersion();
+        $current3 = $object->getVersion();
         $expected3 = 'Mumsys_Multirename ' . Mumsys_Multirename::VERSION;
 
         foreach ( $expected as $toCheck ) {
@@ -217,7 +251,7 @@ class Mumsys_MultirenameTest
         }
         $this->assertEquals( $expected2, $current2 );
         $this->assertEquals( $expected3, $current3 );
-        $this->assertInstanceOf( 'Mumsys_Multirename', $this->_object );
+        $this->assertInstanceOf( 'Mumsys_Multirename', $object );
     }
 
 

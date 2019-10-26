@@ -35,7 +35,7 @@ class Mumsys_Cookie_MockTest
      */
     protected function tearDown(): void
     {
-        $this->_object = null;
+        unset( $this->_object );
         if ( file_exists( $this->_testCookieFile ) ) {
             @unlink( $this->_testCookieFile );
         }

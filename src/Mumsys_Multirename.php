@@ -29,13 +29,13 @@ class Mumsys_Multirename
     extends Mumsys_Abstract
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '1.4.5';
 
     /**
      * Logger to log and output messages.
-     * @var Mumsys_Logger_File
+     * @var Mumsys_Logger_Interface
      */
     private $_logger;
 
@@ -112,7 +112,7 @@ class Mumsys_Multirename
 
     /**
      * Bitmask for json encode options; @see toJson()
-     * @var bitmask
+     * @var integer
      */
     private $_jsonOptions = JSON_PRETTY_PRINT;
 
@@ -123,8 +123,8 @@ class Mumsys_Multirename
      * @param array $config Setup parameters. @see getSetup() for more.
      * @param Mumsys_FileSystem $oFiles Filesystem object for the primary
      * execution.
-     * @param Mumsys_Logger_Interface $logger Log object to track the work and/
-     * or show the output when using as shell script or cronjob
+     * @param Mumsys_Logger_Interface $logger Log object to track the
+     * work and/or to show the output when using as shell script or cronjob
      */
     public function __construct( array $config, Mumsys_FileSystem $oFiles,
         Mumsys_Logger_Interface $logger )
@@ -149,7 +149,9 @@ class Mumsys_Multirename
         $this->_logger = $logger;
 
         if ( isset( $config['loglevel'] ) ) {
-            $this->_logger->setMessageLoglevel( (int) $config['loglevel'] );
+            if ( $this->_logger instanceof Mumsys_Logger_Decorator_Messages ) {
+                $this->_logger->setMessageLoglevel( (int) $config['loglevel'] );
+            }
         }
 
         $this->_counter = array(
@@ -604,7 +606,7 @@ class Mumsys_Multirename
      * @param string $lookup Keyword to look for in the subject
      * @param string $subject Subject to test for matches
      *
-     * @return nummeric|false Returns 1 for a match, 0 for no match, false for
+     * @return integer|false Returns 1 for a match, 0 for no match, false for
      * an error
      */
     private function _relevantFilesCheckMatches( $lookup, $subject )
@@ -624,7 +626,7 @@ class Mumsys_Multirename
      * Undo last rename action.
      *
      * @param array $config Current action config
-     * @param string $keepCopy Flag to set to what to do if old file already
+     * @param boolean $keepCopy Flag to set to what to do if old file already
      * exists again on undo. On true the existing file will be kept, on false
      * overwriting take affect.
      */
@@ -654,7 +656,7 @@ class Mumsys_Multirename
                     case 'link-Test':
                     case 'symlink-Test':
                     case 'rename-Test':
-                        $this->_undoTest( $lastActions, $mode, $keepCopy );
+                        $this->_undoTest( $lastActions, $mode );
                         break;
 
                     default:
@@ -683,9 +685,6 @@ class Mumsys_Multirename
      * @param array $files List of files (orig=>newvalue) to be re-done
      * @param string $mode Type of the undo mode links symlink, rename to show
      * to the output
-     * @param string $keepCopy Flag to set to what to do if old file already
-     * exists again on undo. On true the existing file will be kept, on false
-     * overwriting take affect.
      */
     private function _undoTest( array $files = array(), $mode = '' )
     {
@@ -705,15 +704,15 @@ class Mumsys_Multirename
     /**
      * Undo a rename action.
      *
-     * @param string $files List of files from/to pairs to undo/ reverse.
-     * @param string $keepCopy Flag to set to what to do if old file already
+     * @param array $files List of files from/to pairs to undo/ reverse.
+     * @param boolean $keepCopy Flag to set to what to do if old file already
      * exists again on undo. On true the existing file will be kept, on false
      * overwriting take affect.
      *
      * @throws Mumsys_FileSystem_Exception Throws exception on error eg: source
      * not found
      */
-    private function _undoRename( $files, $keepCopy = true )
+    private function _undoRename( array $files, $keepCopy = true )
     {
         // reverse (old to is now from)
         foreach ( $files as $to => $from ) {
@@ -744,9 +743,8 @@ class Mumsys_Multirename
     /**
      * Undo a link/symlink action.
      *
-     * @param string $mode Type of the undo mode links symlink, rename to show
-     * to the output
-     * @param string $keepCopy Flag to set to what to do if old link already
+     * @param array $files List of files to unlink sysm/hardlinks
+     * @param boolean $keepCopy Flag to set to what to do if old link already
      * exists, again, on undo. On true the existing  will be kept, on false the
      * link will be deleted. Default: false.
      */
@@ -934,7 +932,7 @@ class Mumsys_Multirename
      *
      * @return boolean Returns true on success or false on failure
      */
-    private function _setCollection( array $data, $path = false )
+    private function _setCollection( array $data, string $path )
     {
         $data[md5( $path )] = str_replace( '//', '/', $path );
         asort( $data );
@@ -1155,7 +1153,7 @@ class Mumsys_Multirename
      * );
      *
      * @param string $path Path of the current file
-     * @param string $conifgPath Path of the current config, recursiv scans may
+     * @param string $configPath Path of the current config, recursiv scans may
      * differ
      *
      * @return array List of path-breadcrumbs of the current file.
@@ -1264,10 +1262,10 @@ class Mumsys_Multirename
      * @param boolean $substitutePaths Flag to enable to sustitude %path%
      * informations or not; Default: false
      *
-     * @return Returns the new substituted filename
+     * @return string Returns the new substituted filename
      */
     private function _substitute( $name, $curPath, array $breadcrumbs = array(),
-        $substitutePaths = false )
+        $substitutePaths = false ): string
     {
         if ( $substitutePaths ) {
             if ( !isset( $this->_pathSubstitutions[$curPath] ) ) {
@@ -1357,13 +1355,19 @@ class Mumsys_Multirename
         $versions = parent::getVersions();
 
         $verGlobal = array(0, 0, 0);
+        $verFallback = $verGlobal;
         foreach ( $versions as $class => $ver ) {
             $version .= str_pad( $class, 35, ' ', STR_PAD_RIGHT ) . ' ' . $ver . PHP_EOL;
 
             $verParts = explode( '.', $ver );
-            $verGlobal[0] += $verParts[0];
-            $verGlobal[1] += $verParts[1];
-            $verGlobal[2] += $verParts[2];
+            if ( count( $verParts ) !== 3 ) {
+                // Version probably not set or not setable (eg. from generic stdClass()
+                $verParts = $verFallback;
+            }
+
+            $verGlobal[0] += (int)$verParts[0];
+            $verGlobal[1] += (int)$verParts[1];
+            $verGlobal[2] += (int)$verParts[2];
         }
 
         $version .= str_pad( 'Global version ID', 35, ' ', STR_PAD_RIGHT )
