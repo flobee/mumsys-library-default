@@ -14,4 +14,3 @@ define( 'MUMSYS_REGEX_AZ09X', '/^([_-]|[0-9a-zA-Z])+$/i' );
  */
 define( 'MUMSYS_REGEX_DATETIME_MYSQL', '/^(\d{4})-(\d{2})-(\d{2} (\d{1,2}):(\d{1,2}):(\d{1,2}))$/' );
 define( 'MUMSYS_REGEX_AZ09X_', '/^([ ]|[_-]|[0-9a-zA-Z])+$/i' );
-
