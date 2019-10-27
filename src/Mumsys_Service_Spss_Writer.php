@@ -33,10 +33,15 @@ class Mumsys_Service_Spss_Writer
      */
     const VERSION = '1.0.0';
 
-
+    /**
+     * Initialize the writer interface.
+     *
+     * @param \SPSS\Sav\Reader $iface Writer interface
+     * @throws Mumsys_Service_Spss_Exception
+     */
     public function __construct( $iface )
     {
-        throw new Mumsys_Service_Spss_Exception( 'Not implemented yet' );
+        parent::__construct( $iface );
     }
 
 }

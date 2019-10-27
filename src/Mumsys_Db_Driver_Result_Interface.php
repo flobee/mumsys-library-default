@@ -153,7 +153,7 @@ interface Mumsys_Db_Driver_Result_Interface
      * column name. If undefined, the first field is retrieved.
      * @param resource $res The result resource that is being evaluated. This
      * result comes from a call to mysql_query().
-     * @return s|false The contents of one cell from a MySQL result set on
+     * @return string|false The contents of one cell from a MySQL result set on
      * success, or FALSE on failure.
      */
     public function getFirst( $row = 0, $field = 0, $res = false );

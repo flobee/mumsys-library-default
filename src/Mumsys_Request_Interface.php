@@ -116,7 +116,7 @@ interface Mumsys_Request_Interface
      * Sets/ replaces the controller key name
      *
      * @param string $key Key name of the controller
-     * @return Zend_Controller_Request_Abstract
+     * @return self
      */
     public function setControllerKey( $key = 'controller' );
 

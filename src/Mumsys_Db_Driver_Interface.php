@@ -270,7 +270,7 @@ interface Mumsys_Db_Driver_Interface
     /**
      * Test if given resource from a query is in error state
      *
-     * @param Mumsys_DB_Driver_Result_Interface|resource $res Optional, the
+     * @param Mumsys_DB_Driver_Result_Interface $res Optional, the
      * driver result interface otherwise the default/current resultset will be
      * used.
      *
@@ -312,9 +312,7 @@ interface Mumsys_Db_Driver_Interface
      * count for selects or just the limit count e.g. array(limit count) for
      * select, delete, updates.
      *
-     * @return Mumsys_Db_Driver_Mysql_Result Object or false on error
-     * @return Mumsys_Db_Driver_Result_Interface Returns
-     * Mumsys_Db_Driver_Result_Interface object or false on error
+     * @return Mumsys_Db_Driver_Result_Interface Object or false on error
      */
     public function select( array $params = array() );
 
@@ -332,9 +330,10 @@ interface Mumsys_Db_Driver_Interface
     /**
      * Replace existing data at the database.
      *
-     * @param array $params Parameters to be set/ replaced:<br/>
-     * [fields] required Fields to set in the replace command<br/>
-     * [table] required Table to insert<br/>
+     * @param array $params Parameters to be set/ replaced:
+     * [fields] required Fields to set in the replace command
+     * [table] required Table to insert
+     *
      * @return integer|false Returns number of affected rows or false on error
      */
     public function replace( array $params = array() );
@@ -342,18 +341,19 @@ interface Mumsys_Db_Driver_Interface
     /**
      * Delete data from storage.
      *
-     * @param array $params Parameters as follow:<br/>
-     * [table] required Table to delete from<br/>
-     * [where] required Array key=>value pairs for the where clause; <br/>
+     * @param array $params Parameters as follow:
+     *  [table] required Table to delete from
+     *  [where] required Array key=>value pairs for the where clause;
      * Note: only AND conditions will be made to delete entrys
-     * [where] required Array key=>value construct for the where clause;
-     * Note: only AND conditions will be made<br/>
-     * [updateall] optional if set an empty where parameter will be accepted
+     *  [where] required Array key=>value construct for the where clause;
+     * Note: only AND conditions will be made
+     *  [updateall] optional if set an empty where parameter will be accepted
      * to update or delete ALL existing data without any restrictions.
-     * be careful to use it<br/>
-     * [limit] optional array containing the offset (the start value), limit
+     * be careful to use it
+     *  [limit] optional array containing the offset (the start value), limit
      * count or just the limit count e.g. array(limit count)
-     * @return Mumsys_Db_Driver_Mysql_Result|false Returns false on error
+     *
+     * @return Mumsys_Db_Driver_Result_Interface|false Returns false on error
      */
     public function delete( array $params = array() );
 

@@ -55,6 +55,12 @@ class Mumsys_Db_Driver_None_None_Result
      */
     private $_numRows;
 
+    /**
+     * Optional options
+     * @var array
+     */
+    private $_options;
+
 
     /**
      * Initialization of database result (mysqldbr)
@@ -68,6 +74,7 @@ class Mumsys_Db_Driver_None_None_Result
     {
         $this->_dbc = $oDB->connect();
         $this->_result = $result;
+        $this->_options = $options;
     }
 
 
@@ -329,10 +336,10 @@ class Mumsys_Db_Driver_None_None_Result
      *
      * @deprecated since version interface 3.0.0
      *
-     * @param type $row
-     * @param type $field
-     * @param type $res
-     * @return type
+     * @param integer $row
+     * @param integer $field
+     * @param mixed $res
+     * @return string|false
      */
     public function sqlResult( $row = 0, $field = 0, $res = false )
     {

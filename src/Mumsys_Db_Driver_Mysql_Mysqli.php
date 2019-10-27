@@ -906,8 +906,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      *
      * @TODO return affected rows? yes/no?
      *
-     * @return Mumsys_Db_Driver_Mysql_Result|false Mumsys_Db_Driver_Mysql_Result
-     * object or false on error
+     * @return Mumsys_Db_Driver_Mysql_Mysqli_Result|false Result object or false on error
      * @throws Mumsys_Db_Exception
      */
     public function update( array $params = array() )
@@ -931,7 +930,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * [limit] optional array containing the offset (the start value), limit count
      * for selects or just the limit count e.g. array(limit count) for select,
      * delete, updates.<br/>
-     * @return Mumsys_Db_Driver_Mysql_Result Object or false on error
+     * @return Mumsys_Db_Driver_Mysql_Mysqli_Result Object or false on error
      */
     public function select( array $params = array() )
     {
@@ -1000,7 +999,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      * [limit] optional array containing the offset (the start value), limit
      * count or just the limit count e.g. array(limit count)
      *
-     * @return Mumsys_Db_Driver_Mysql_Result|false Returns false on error
+     * @return Mumsys_Db_Driver_Mysql_Mysqli_Result|false Returns false on error
      */
     public function delete( array $params = array() )
     {
@@ -1376,7 +1375,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      *
      * @param array $fields List of fields to select.
      *
-     * @return string|flase Column list for the select statment or false on error
+     * @return string|false Column list for the select statment or false on error
      * @throws Mumsys_Db_Exception Throws exception on errors if throw errors
      * was set
      */
@@ -1567,6 +1566,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     private function _compileQueryWhere( array $where = array() )
     {
         $expressions = '';
+        $outerCmp = '';
 
         foreach ( $where as $oCmp => $exprlists ) {
             $outerCmp = $oCmp; // hold outside while stmt

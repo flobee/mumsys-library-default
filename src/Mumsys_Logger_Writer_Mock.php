@@ -64,9 +64,9 @@ class Mumsys_Logger_Writer_Mock
     /**
      * Set writeability.
      *
-     * @param booleam $boolean True for writeable, false for no writeability
+     * @param boolean $bool True for writeable, false for no writeability
      */
-    public function setWriteable( $boolean )
+    public function setWriteable( bool $bool ): void
     {
         $this->_isWriteable = true;
     }

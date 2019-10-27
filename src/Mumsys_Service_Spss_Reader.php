@@ -307,10 +307,10 @@ class Mumsys_Service_Spss_Reader
 
 
     /**
-     * Check if a \Variable item is in the list of mapping we want.
+     * Check if a Variable item is in the list of mapping we want.
      *
      * @param array $labelMap List of internal/public map
-     * @param \Variable $oVar Variable item
+     * @param SPSS\Sav\Record\Variable $oVar Variable item
      *
      * @return boolean true for found, otherwise false
      */

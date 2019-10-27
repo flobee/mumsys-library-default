@@ -172,7 +172,7 @@ interface Mumsys_Db_Driver_Query_Interface
      *
      * @param array $fields List of fields to select.
      *
-     * @return string|flase Column list for the select statment or false on
+     * @return string|false Column list for the select statment or false on
      * error
      * @throws Mumsys_Db_Exception Throws exception on errors if throw errors
      * was set

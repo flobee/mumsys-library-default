@@ -187,9 +187,9 @@ abstract class Mumsys_Array2Xml_Abstract
 
         if ( isset( $params['tag_case'] ) ) {
             switch ( $params['tag_case'] ) {
-                case 1:
-                case -1:
-                case 0:
+                case ( $params['tag_case'] === Mumsys_Array2Xml_Abstract::TAG_CASE_AS_IS ):
+                case ( $params['tag_case'] === Mumsys_Array2Xml_Abstract::TAG_CASE_LOWER ):
+                case ( $params['tag_case'] === Mumsys_Array2Xml_Abstract::TAG_CASE_UPPER ):
                     $this->_cfg['tag_case'] = $params['tag_case'];
                     break;
 
@@ -240,6 +240,39 @@ abstract class Mumsys_Array2Xml_Abstract
     public function setWriter( Mumsys_Logger_Writer_Interface $value )
     {
         $this->_writer = $value;
+    }
+
+
+    /**
+     * Sets the tag case of the current value.
+     *
+     * Changing character case of the tagt in an xml document.
+     *
+     * @param  string $value String to alter the string case if set
+     *
+     * @return string Returns the modified or untouched string
+     * @throws Mumsys_Array2Xml_Exception If an invalid case was set
+     */
+    public function getCase( $value ): string
+    {
+        $case = $this->_cfg['tag_case'];
+        switch ( $case )
+        {
+            case Mumsys_Array2Xml_Abstract::TAG_CASE_LOWER:
+                $ret = strtolower( $value );
+                break;
+
+            case Mumsys_Array2Xml_Abstract::TAG_CASE_UPPER:
+                $ret = strtoupper( $value );
+                break;
+
+            case Mumsys_Array2Xml_Abstract::TAG_CASE_AS_IS:
+            default:
+                $ret = $value;
+                break;
+        }
+
+        return $ret;
     }
 
 }

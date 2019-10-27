@@ -30,6 +30,27 @@ class Mumsys_Array2Xml_DefaultTest
     protected $_versions;
 
     /**
+     * @var string
+     */
+    private $_refxmldata;
+
+    /**
+     * @var array
+     */
+    private $_xmldata;
+
+    /**
+     * @var array
+     */
+    private $_objectoptions;
+
+    /**
+     * @var array
+     */
+    private $_objectoptions2;
+
+
+    /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
@@ -137,7 +158,7 @@ class Mumsys_Array2Xml_DefaultTest
 
     public function __destruct()
     {
-        if ( !$this->_object || !$this->_object2 ) {
+        if ( !isset( $this->_object ) || !isset( $this->_object2 ) ) {
             return;
         }
 
@@ -148,8 +169,7 @@ class Mumsys_Array2Xml_DefaultTest
                 unlink( $file );
             }
         }
-        $this->_object = null;
-        $this->_object2 = null;
+        unset( $this->_object2, $this->_object );
     }
 
 
@@ -433,21 +453,21 @@ class Mumsys_Array2Xml_DefaultTest
 
 
     /**
-     * @covers Mumsys_Array2Xml_Default::setCase
+     * @covers Mumsys_Array2Xml_Default::getCase
      */
-    public function testSetCase()
+    public function testGetCase()
     {
         $opi = $this->_objectoptions;
         $opi['tag_case'] = Mumsys_Array2Xml_Default::TAG_CASE_AS_IS;
-        $o1 = new Mumsys_Array2Xml_Default( $opi );
-        $expected1 = $o1->getXML();
+        $oA = new Mumsys_Array2Xml_Default( $opi );
+        $expected1 = $oA->getXML();
 
-        $o2 = $this->_object;
-        $expected2 = $o2->getXML();
+        $oB = $this->_object;
+        $expected2 = $oB->getXML();
 
         $opi['tag_case'] = Mumsys_Array2Xml_Default::TAG_CASE_UPPER;
-        $o3 = new Mumsys_Array2Xml_Default( $opi );
-        $expected3 = $o3->getXML();
+        $oC = new Mumsys_Array2Xml_Default( $opi );
+        $expected3 = $oC->getXML();
 
         // as of construction: "set to lower": then both should match
         $this->assertEquals( $expected1, $expected2 );
@@ -456,6 +476,11 @@ class Mumsys_Array2Xml_DefaultTest
         $this->assertEquals( strlen( $expected3 ), strlen( $expected1 ) );
         // check for upper case parts
         $this->assertTrue( ( preg_match( '/(ROOT VERSION)/', $expected3 ) === 1 ) );
+
+        $this->expectException( 'Mumsys_Array2Xml_Exception' );
+        $opi['tag_case'] = 'nocase';
+        $obj = new Mumsys_Array2Xml_Default( $opi );
+        $obj->getCase( 'none' );
     }
 
 
@@ -516,7 +541,7 @@ class Mumsys_Array2Xml_DefaultTest
             . $this->_objectoptions['linebreak'];
 
         //test 4, tag just exists
-        $actual4 = $this->_object->createElements( 'node', 0 );
+        $actual4 = $this->_object->createElements( 'node', '0' );
         $expected4 = '<node />' . $this->_objectoptions['linebreak'];
 
         $this->assertEquals( $expected1, $actual1 );

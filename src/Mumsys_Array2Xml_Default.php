@@ -196,8 +196,8 @@ class Mumsys_Array2Xml_Default
     /**
      * Sets the character encoding for the data in- and output.
      *
-     * @param string $charset_from Encoding to transform from; default: iso-8859-1
-     * @param string $charset_to Encoding to transform to; default: utf-8
+     * @param string $encodingFrom Encoding to transform from; default: iso-8859-1
+     * @param string $encodingTo Encoding to transform to; default: utf-8
      */
     public function setEncoding( $encodingFrom = 'iso-8859-1', $encodingTo = 'utf-8' )
     {
@@ -262,40 +262,6 @@ class Mumsys_Array2Xml_Default
         } else {
             throw new Mumsys_Array2Xml_Exception( _( 'No data given to be set.' ) );
         }
-    }
-
-
-    /**
-     * Sets the tag case of the current value.
-     *
-     * Changing character case of the tagt in an xml document.
-     *
-     * @param  string $value String to alter the string case if set
-     *
-     * @return string Returns the modified or untouched string
-     * @throws Mumsys_Array2Xml_Exception If an invalid case was set
-     */
-    public function setCase( $value )
-    {
-        switch ( $this->_cfg['tag_case'] )
-        {
-            case Mumsys_Array2Xml_Abstract::TAG_CASE_AS_IS:
-                $ret = $value;
-                break;
-
-            case Mumsys_Array2Xml_Abstract::TAG_CASE_LOWER:
-                $ret = strtolower( $value );
-                break;
-
-            case Mumsys_Array2Xml_Abstract::TAG_CASE_UPPER:
-                $ret = strtoupper( $value );
-                break;
-
-            default:
-                throw new Mumsys_Array2Xml_Exception( 'Tag case not implemented' );
-        }
-
-        return $ret;
     }
 
 
@@ -376,11 +342,11 @@ class Mumsys_Array2Xml_Default
                 $i++;
             }
 
-            $ret .= '<' . $this->setCase( $newNodeName ) . $attr;
+            $ret .= '<' . $this->getCase( $newNodeName ) . $attr;
 
             if ( !empty( $desc ) ) {
                 $ret .= '>' . $this->validate( $desc ) . '</'
-                    . $this->setCase( $newNodeName ) . '>';
+                    . $this->getCase( $newNodeName ) . '>';
             } else {
                 $ret .= ' />';
             }
@@ -388,11 +354,11 @@ class Mumsys_Array2Xml_Default
             $val = '';
             if ( !empty( $elements ) ) {
                 $val = $this->validate( $elements );
-                $ret = '<' . $this->setCase( $newNodeName ) . '>'
+                $ret = '<' . $this->getCase( $newNodeName ) . '>'
                     . $val
-                    . '</' . $this->setCase( $newNodeName ) . '>';
+                    . '</' . $this->getCase( $newNodeName ) . '>';
             } else {
-                $ret = '<' . $this->setCase( $newNodeName ) . ' />';
+                $ret = '<' . $this->getCase( $newNodeName ) . ' />';
             }
         }
         $ret .= $this->_cfg['linebreak'];
@@ -421,7 +387,7 @@ class Mumsys_Array2Xml_Default
                     throw new Mumsys_Array2Xml_Exception( $errorMsg );
                 }
                 $string .= ' '
-                    . $this->validate( $this->setCase( $key ), false )
+                    . $this->validate( $this->getCase( $key ), false )
                     . '="' . $this->validate( $val, false ) . '"';
             }
         }
@@ -542,8 +508,10 @@ class Mumsys_Array2Xml_Default
             } else {
                 $search = '/(&[a-zA-Z]{2,7};)/';
                 $replace = "'&#'.ord(html_entity_decode('$1',ENT_QUOTES)).';'";
-                $value = htmlentities( $value );
-                $value = preg_replace( $search, $replace, $value );
+                $value = preg_replace( $search, $replace, htmlentities( $value ) );
+                if ( $value === null ) {
+                    throw new Mumsys_Array2Xml_Exception( 'Regex error' );
+                }
             }
         }
         // TBA !!! $value = $this->encode($value);
@@ -635,7 +603,7 @@ class Mumsys_Array2Xml_Default
      * @return void
      * @throws Mumsys_Array2Xml_Exception If the $data parameter is empty.
      */
-    private function _mkRoot( array $data = array() )
+    private function _mkRoot( array $data = array() ): void
     {
         if ( empty( $data ) ) {
             $mesg = 'No data to create a root element';
@@ -648,17 +616,19 @@ class Mumsys_Array2Xml_Default
             if ( isset( $data[$this->_cfg['ID']['NA']] ) ) {
                 $attr = $this->getAttributes( $data[$this->_cfg['ID']['NA']] );
             } else {
-                $attr = array();
+                $attr = '';
             }
 
             if ( isset( $data[$this->_cfg['ID']['NN']] ) ) {
                 $nodeName = $data[$this->_cfg['ID']['NN']];
                 $this->_curNodeName = $nodeName;
                 $this->_root[0] .= sprintf(
-                    '<%1$s%2$s>%3$s', $this->setCase( $nodeName ), $attr,
+                    '<%1$s%2$s>%3$s',
+                    $this->getCase( $nodeName ),
+                    $attr,
                     $this->_cfg['linebreak']
                 );
-                $this->_root[1] = '</' . $this->setCase( $nodeName ) . '>'
+                $this->_root[1] = '</' . $this->getCase( $nodeName ) . '>'
                     . $this->_cfg['linebreak'];
             } else {
                 $this->_root = array('', '');
@@ -697,7 +667,8 @@ class Mumsys_Array2Xml_Default
      * Parsing the data array and returning the xml tree.
      *
      * @param array $a Array of data to parse
-     * @param string $num_sp Numer of spaces from Spacer
+     * @param integer $numSp Number of spaces from Spacer
+     *
      * @return string Returns empty string ToDo: To Check
      */
     protected function _parse( array $a, $numSp = 0 )
@@ -707,8 +678,8 @@ class Mumsys_Array2Xml_Default
             return $this->createElements( $this->_curNodeName, $a );
         } else {
             $this->_curNodeName = $a[$this->_cfg['ID']['NN']];
-            //$element =  $this->_cfg['linebreak'] . $sp . '<'. $this->setCase($a[$this->_cfg['ID']['NN']]);
-            $element = $this->_sp( $numSp ) . '<' . $this->setCase( $a[$this->_cfg['ID']['NN']] );
+            //$element =  $this->_cfg['linebreak'] . $sp . '<'. $this->getCase($a[$this->_cfg['ID']['NN']]);
+            $element = $this->_sp( $numSp ) . '<' . $this->getCase( $a[$this->_cfg['ID']['NN']] );
         }
 
         // check available Attributes
@@ -738,11 +709,11 @@ class Mumsys_Array2Xml_Default
                         $element .= $this->_cfg['linebreak'] . $this->createElements( $this->_curNodeName, $childs );
                     }
                 }
-                $element .= '</' . $this->setCase( $a[$this->_cfg['ID']['NN']] ) . '>';
+                $element .= '</' . $this->getCase( $a[$this->_cfg['ID']['NN']] ) . '>';
             } else {
                 // Textnode
                 $element .= '>' . $this->validate( $a[$this->_cfg['ID']['NV']] );
-                $element .= '</' . $this->setCase( $a[$this->_cfg['ID']['NN']] ) . '>';
+                $element .= '</' . $this->getCase( $a[$this->_cfg['ID']['NN']] ) . '>';
             }
         } else {
             // Element ist leer
