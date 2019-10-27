@@ -40,6 +40,11 @@
         <exec command="${bindir}phpcs -n --standard=misc/coding/Mumsys src tests tests/bootstrap.php tests/MumsysTestHelper.php"
               checkreturn="true" logoutput="true"/>
     </target>
+    
+    <target name="sca" description="Executes the static code analysis (sca) (low level here)">
+        <echo msg="Executing the static code analysis sniffer" />
+        <exec command="./sca.sh ../src/" dir="tests" checkreturn="true" logoutput="true" />
+    </target>
 
     <target name="all" depends="coverage,check,api" description="Execute all parts of the package">
     </target>
