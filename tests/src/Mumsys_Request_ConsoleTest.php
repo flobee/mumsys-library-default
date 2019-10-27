@@ -56,6 +56,8 @@ class Mumsys_Request_ConsoleTest
 
     /**
      * @covers Mumsys_Request_Console::__construct
+     *
+     * @runInSeparateProcess
      */
     public function test_Construct()
     {

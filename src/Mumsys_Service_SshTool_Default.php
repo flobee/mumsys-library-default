@@ -72,7 +72,7 @@ class Mumsys_Service_SshTool_Default
     private $_home;
 
     /**
-     * Cuurent running user.
+     * Current running user.
      * @var string
      */
     private $_user;
@@ -97,16 +97,12 @@ class Mumsys_Service_SshTool_Default
      */
     public function __construct( string $configsPath = null, string $outFile = null )
     {
-        $serverHome = Mumsys_Php_Globals::getServerVar( 'HOME', null );
-        $serverUser = Mumsys_Php_Globals::getServerVar( 'USER', null );
+        $this->_user = Mumsys_Php_Globals::getServerVar( 'USER', 'unknown' );
 
+        $serverHome = Mumsys_Php_Globals::getServerVar( 'HOME', null );
         $this->_home = './';
         if ( isset( $serverHome ) && ( $_home = (string) $serverHome ) ) {
             $this->_home = $this->_checkPath( $_home );
-        }
-
-        if ( isset( $serverUser ) && ( $_user = (string) $serverUser ) ) {
-            $this->_user = $_user;
         }
 
         if ( $outFile ) {

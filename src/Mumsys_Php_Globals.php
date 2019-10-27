@@ -1,4 +1,4 @@
-<?php
+<?php declare (strict_types=1);
 
 /**
  * Mumsys_Php_Globals
@@ -15,7 +15,7 @@
 
 
 /**
- * Nice interface for php's GLOBAL VARIABLES.
+ * Interface for php's GLOBAL VARIABLES with special improvements.
  *
  * Wraper for $GLOBALS, $_SERVER, $_GET, $_POST, $_FILES, $_COOKIE, $_SESSION,
  * $_REQUEST and $_ENV and getenv().
@@ -39,7 +39,7 @@ class Mumsys_Php_Globals
     /**
      * Version ID information.
      */
-    const VERSION = '2.1.0';
+    const VERSION = '2.2.0';
 
     /**
      * Cache container for uploaded files
@@ -63,7 +63,7 @@ class Mumsys_Php_Globals
      *
      * @return mixed Value or $default if $key is not set/null
      */
-    public static function getServerVar( $key, $default = null )
+    public static function getServerServerVar( string $key, $default = null )
     {
         return self::_getEnvVar( $key, $default );
     }
@@ -72,15 +72,24 @@ class Mumsys_Php_Globals
     /**
      * Returns the php $_SERVER variable if set by given key.
      *
-     * @param string $key ID to check for
-     * @param mixed $default Return value
+     * If key parameter is NULL the complete _SERVER var will return.
+     * If key is not found, $default will return.
+     *
+     * @param string|null $key ID to check for
+     * @param null|mixed $default Return value if $key not found
      *
      * @return mixed Value or $default if $key was not set/null
      */
-    public static function getServerServerVar( $key, $default = null )
+    public static function getServerVar( string $key = null, $default = null )
     {
-        if ( isset( $_SERVER[$key] ) ) {
-            $default = $_SERVER[$key];
+        /** @var array|null $server 4SCA */
+        $server = & $_SERVER;
+        if ( isset( $server ) && $key === null ) {
+            return $server;
+        }
+
+        if ( isset( $server[$key] ) ) {
+            $default = $server[$key];
         }
 
         return $default;
@@ -96,32 +105,34 @@ class Mumsys_Php_Globals
      *
      * @return mixed Value or $default if $key is not set/null
      */
-    public static function getEnvVar( $key, $default = null )
+    public static function getEnvVar( string $key, $default = null )
     {
         return self::_getEnvVar( $key, $default );
     }
 
 
     /**
-     * Returns an eviroment variable in this order: getenv() befor _ENV befor
-     * _SERVER.
+     * Returns a session variable if exists.
      *
-     * @param string $key ID to check for
-     * @param mixed $default Return value
+     * If key parameter is NULL the complete session will return if $_SESSION
+     * was initialised otherwise $default returns.
      *
-     * @return mixed Value or $default if $key is not set/null
+     * @param string|null $key ID to check for
+     * @param mixed|null $default Default return value if key/ID not exists
+     *
+     * @return mixed|null Existing value or $default if $key is not set/null
+     * (missing session_start()?)
      */
-    private static function _getEnvVar( $key, $default = null )
+    public static function getSessionVar( string $key = null, $default = null )
     {
-        $server = & $_SERVER;
-        $env = & $_ENV;
+        /** @var array|null $sess */
+        $sess = & $_SESSION;
+        if ( isset( $sess ) && $key === null ) {
+            return $sess;
+        }
 
-        if ( isset( $server[$key] ) ) {
-            $default = $server[$key];
-        } elseif ( isset( $env[$key] ) ) {
-            $default = $env[$key];
-        } elseif ( ( $x = getenv( $key ) ) ) {
-            $default = $x;
+        if ( isset( $sess[$key] ) ) {
+            $default = $sess[$key];
         }
 
         return $default;
@@ -132,13 +143,14 @@ class Mumsys_Php_Globals
      * Returns a post variable by given key.
      * If $key is NULL it will return all posts parameters
      *
-     * @param string $key ID to check for
+     * @param string|null $key ID to check for
      * @param mixed $default Default return value if key not exists
      *
      * @return array|mixed Value or $default if $key not exists
      */
-    public static function getPostVar( $key = null, $default = null )
+    public static function getPostVar( string $key = null, $default = null )
     {
+        /** @var array|null $posts */
         $posts = & $_POST;
 
         if ( isset( $posts ) && $key === null ) {
@@ -158,13 +170,14 @@ class Mumsys_Php_Globals
      *
      * If $key is NULL and get vars exists it will return all get parameters
      *
-     * @param string $key ID to check for
+     * @param string|null $key ID to check for
      * @param mixed $default Default return value if key not exists
      *
      * @return mixed Value or $default if $key is not set/null
      */
     public static function getGetVar( $key = null, $default = null )
     {
+        /** @var array|null $gets */
         $gets = & $_GET;
 
         if ( isset( $gets ) && $key === null ) {
@@ -189,8 +202,9 @@ class Mumsys_Php_Globals
      *
      * @return mixed Value or $default if $key is not set/null
      */
-    public static function getCookieVar( $key = null, $default = array() )
+    public static function getCookieVar( string $key = null, $default = array() )
     {
+        /** @var array|null $cookies */
         $cookies = & $_COOKIE;
 
         if ( isset( $cookies ) && $key === null ) {
@@ -223,7 +237,9 @@ class Mumsys_Php_Globals
      */
     public static function getFilesVar( $key = null, $default = null )
     {
-        if ( ! isset( $_FILES ) ) {
+        /** @var array|null $files 4SCA */
+        $files = & $_FILES;
+        if ( ! isset( $files ) ) {
             return $default;
         }
 
@@ -278,11 +294,13 @@ class Mumsys_Php_Globals
      */
     public static function getGlobalVar( $key = null, $default = null )
     {
-        if ( isset( $GLOBALS ) && $key === null ) {
-            return $GLOBALS;
+        /** @var array|null $globals 4SCA */
+        $globals = & $GLOBALS;
+        if ( isset( $globals ) && $key === null ) {
+            return $globals;
         }
-        if ( isset( $GLOBALS[$key] ) ) {
-            $default = $GLOBALS[$key];
+        if ( isset( $globals[$key] ) ) {
+            $default = $globals[$key];
         }
 
         return $default;
@@ -290,11 +308,10 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns a global value and look in the other super globals if the global
-     * variable could not be found.
+     * Returns a global or super global value.
      *
-     * Returns a value of the super global variables except the upload files in
-     * the following order:
+     * Looks in the other super globals if the global variable could not be
+     * found, except the _FILES in the following order:
      *      GLOBALS
      *      befor (if cli mode) argv
      *      befor getenv()
@@ -302,17 +319,16 @@ class Mumsys_Php_Globals
      *      befor _SERVER
      *      befor _SESSION
      *      before _COOKIE
-     *      befor _REQUEST: (binding through gpc order in php ini)
+     *      befor _REQUEST: (binding through gpc order in php.ini)
      *
      * Dont use it until you really need to look for a global variable!
-     * Returns a global variable and looks in all super globals.
      *
      * @param string $key ID to check for
      * @param mixed $default Return value if no other can be found
      *
      * @return mixed Value or $default if $key is not set/null
      */
-    public static function get( $key, $default = null )
+    public static function get( string $key, $default = null )
     {
         if ( isset( $GLOBALS[$key] ) ) {
             return $GLOBALS[$key];
@@ -336,7 +352,9 @@ class Mumsys_Php_Globals
      * Returns the remote user.
      *
      * This can be the http autenticated user or the remote user when using
-     * apache, a logname from the envoroment or the user from a shell account.
+     * apache, a logname from the enviroment or the user from a shell account.
+     *
+     * Note: Dont trust the return value! A string but... could be anything
      *
      * @return string remote username
      */
@@ -359,6 +377,32 @@ class Mumsys_Php_Globals
         }
 
         return self::$_remoteuser;
+    }
+
+
+    /**
+     * Returns an eviroment variable in this order: getenv() befor _ENV befor
+     * _SERVER.
+     *
+     * @param string $key ID to check for
+     * @param mixed $default Return value
+     *
+     * @return mixed Value or $default if $key is not set/null
+     */
+    private static function _getEnvVar( string $key, $default = null )
+    {
+        $server = & $_SERVER;
+        $env = & $_ENV;
+
+        if ( isset( $server[$key] ) ) {
+            $default = $server[$key];
+        } elseif ( isset( $env[$key] ) ) {
+            $default = $env[$key];
+        } elseif ( ( $x = getenv( $key ) ) ) {
+            $default = $x;
+        }
+
+        return $default;
     }
 
 }

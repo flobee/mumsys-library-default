@@ -9,7 +9,7 @@ phpunit
 Mumsys_Abstract
 - [ ] All tests must contain test against the Mumsys_Abstract class if
       implemented. As hint: The VERSION constant will be used later for
-      dependency checks.
+      dependency checks and version/technical release control.
 
 
 Mumsys_GetOpts

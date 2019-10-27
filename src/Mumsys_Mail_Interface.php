@@ -73,7 +73,7 @@ interface Mumsys_Mail_Interface
      * @note Dont use it! update the interface would be the best choice!
      *
      * @param string $name Name of the methode to call
-     * @param mixed $params Parameter/s to pipe the the methode
+     * @param array $params Parameter/s to pipe the the methode
      */
     public function __call( $name, array $params = array() );
 
@@ -93,7 +93,7 @@ interface Mumsys_Mail_Interface
      * @param string $email Email address to add
      * @param string $name Name of the person the email belongs to
      */
-    public function addCc( $email, $name );
+    public function addCc( string $email, string $name = '' );
 
 
     /**
@@ -102,7 +102,7 @@ interface Mumsys_Mail_Interface
      * @param string $email Email address to add
      * @param string $name Name of the person the email belongs to
      */
-    public function addBcc( $email, $name );
+    public function addBcc( string $email, string $name = '' );
 
 
     /**
@@ -113,7 +113,7 @@ interface Mumsys_Mail_Interface
      *
      * @return boolean True on success, false if address already used or invalid
      */
-    public function addReplyTo( $email, $name = '' );
+    public function addReplyTo( string $email, string $name = '' );
 
 
     /**
@@ -124,7 +124,7 @@ interface Mumsys_Mail_Interface
      * @param boolean $auto On true (default) sets the Sender address (Return
      * -Path) of the message
      */
-    public function setFrom( $email, $name = '', $auto = true );
+    public function setFrom( string $email, $name = '', $auto = true );
 
 
     /**
@@ -173,7 +173,7 @@ interface Mumsys_Mail_Interface
      *
      * @return boolean Returns false if the file could not be found or read.
      */
-    public function addAttachment( $path, $encoding = 'base64', $type = '',
+    public function addAttachment( $location, $encoding = 'base64', $type = '',
         $disposition = 'attachment' ): bool;
 
 
@@ -204,7 +204,7 @@ interface Mumsys_Mail_Interface
      * @return boolean Returns true on success
      */
     public function setCertificate( string $certFile, string $privateKeyFile,
-        string $keyPwd = null, string $chain = '' ): bool;
+        string $keyPwd = '', string $chain = '' ): bool;
 
 
     /**

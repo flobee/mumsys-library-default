@@ -46,6 +46,9 @@ class Mumsys_TimerTest
     }
 
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testConstructor()
     {
         $this->_object = new Mumsys_Timer();

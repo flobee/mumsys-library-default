@@ -48,8 +48,12 @@ class Mumsys_Session_Default
         if ( session_status() == PHP_SESSION_NONE && !headers_sent() ) {
             session_start();
         }
-        /** @todo not merged from stable yet Mumsys_Php_Globals::getSessionVar(); */
-        parent::__construct( $_SESSION, session_id(), $appkey );
+
+        parent::__construct(
+            Mumsys_Php_Globals::getSessionVar( null, array() ),
+            session_id(),
+            $appkey
+        );
     }
 
 

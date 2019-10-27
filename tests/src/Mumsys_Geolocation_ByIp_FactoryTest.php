@@ -53,6 +53,8 @@ class Mumsys_Geolocation_ByIp_FactoryTest
      * @covers Mumsys_Geolocation_ByIp_Factory::getInstance
      * @covers Mumsys_Geolocation_ByIp_Factory::autodetectService
      * @covers Mumsys_Geolocation_ByIp_Factory::_initService
+     *
+     * @runInSeparateProcess
      */
     public function testGetInstance()
     {

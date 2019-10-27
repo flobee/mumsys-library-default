@@ -165,7 +165,7 @@ class Mumsys_MultirenameTest
         $tmp = $_SERVER['USER'];
         $_SERVER['USER'] = 'root';
         //$regex = '/(Something which belongs to "root" is forbidden. Sorry! Use a different user!)/' . PHP_EOL;
-        $this->_object = new Mumsys_Multirename( $this->_config, $this->_oFiles, $this->_logger );
+        new Mumsys_Multirename( $this->_config, $this->_oFiles, $this->_logger );
         $_SERVER['USER'] = $tmp;
     }
 
@@ -766,6 +766,8 @@ class Mumsys_MultirenameTest
 
     /**
      * Mumsys_Multirename::install
+     *
+     * @runInSeparateProcess
      */
     public function testInstall()
     {
@@ -784,6 +786,9 @@ class Mumsys_MultirenameTest
     }
 
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testUpgrade()
     {
         $_SERVER['HOME'] = $this->_oldHome;

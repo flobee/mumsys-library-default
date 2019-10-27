@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test class for the mailer factory
@@ -29,7 +29,7 @@ class Mumsys_Mail_FactoryTest
 
     protected function tearDown(): void
     {
-        $this->_object = null;
+        unset( $this->_object );
     }
 
 

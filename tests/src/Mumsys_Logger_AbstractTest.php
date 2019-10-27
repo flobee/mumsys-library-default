@@ -58,6 +58,8 @@ class Mumsys_Logger_AbstractTest
 
     /**
      * @covers Mumsys_Logger_Abstract::__construct
+     *
+     * @runInSeparateProcess
      */
     public function test__constructor1()
     {
@@ -78,6 +80,8 @@ class Mumsys_Logger_AbstractTest
     /**
      * For 100% code coverage.
      * @covers Mumsys_Logger_Abstract::__construct
+     *
+     * @runInSeparateProcess
      */
     public function test__constructor2()
     {

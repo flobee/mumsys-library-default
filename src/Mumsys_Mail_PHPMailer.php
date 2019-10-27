@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Mumsys_Mail_PHPMailer
@@ -16,7 +16,6 @@
  * $Id: class.mailsys.php 2369 2011-12-08 22:02:37Z flobee $
  */
 
-use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * Mumsys PHPMailer interface
@@ -41,7 +40,7 @@ class Mumsys_Mail_PHPMailer
 
     /**
      * Mail driver to be used.
-     * @var PHPMailer\PHPMailer\PHPMailer
+     * @var \PHPMailer\PHPMailer\PHPMailer
      */
     private $_mailer;
 
@@ -77,16 +76,12 @@ class Mumsys_Mail_PHPMailer
      * Import Password! may be empty but parameter must not be omitted!)
      *      'chain' - Optional path to chain certificateThe location to your
      *              chain file e.g.: '/path/to/certchain.pem'
-     * @throws Exception If config not set
+     * @throws Exception If config not set or loading of base mailer fails
      */
     public function __construct( array $config )
     {
-        $dir = '../vendor/phpmailer/phpmailer/src';
-        require_once $dir . '/PHPMailer.php';
-        require_once $dir . '/SMTP.php';
-        require_once $dir . '/POP3.php';
-        require_once $dir . '/Exception.php';
-        $this->_mailer = new PHPMailer( true );
+        require_once '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+        $this->_mailer = new \PHPMailer\PHPMailer\PHPMailer( true );
 
         $this->_config = $config;
 
@@ -170,20 +165,28 @@ class Mumsys_Mail_PHPMailer
      * $mailer->addCc('email');
      *
      * @param string $name Name of the methode of the driver to be called
-     * @param mixed $params Parameters to pipe the method
+     * @param array $params Parameters to pipe the method
      *
      * @return mixed
+     * @throws Mumsys_Mail_Exception If method not exists/ implemented
      */
     public function __call( $name, array $params = array() )
     {
-        return call_user_func_array( array($this->_mailer, $name), $params );
+        if ( method_exists( $this->_mailer, $name ) ) {
+            /** @var callable $cb 4SCA */
+            $cb = array($this->_mailer, $name);
+            return call_user_func_array( $cb, $params );
+        }
+
+        $mesg = sprintf( 'Method "%1$s" not implemented', $name );
+        throw new Mumsys_Mail_Exception( $mesg );
     }
 
 
     /**
      * Returns the mailer object.
      *
-     * @return object Implemented mailer driver
+     * @return mixed Implemented mailer driver
      */
     public function getMailer()
     {
@@ -251,7 +254,7 @@ class Mumsys_Mail_PHPMailer
      *
      * @return boolean True on success, false on failure
      *
-     * @throws phpmailerException
+     * @throws \PHPMailer\PHPMailer\Exception Phpmailer Exception
      */
     public function setFrom( $email, $name = '', $auto = false ): bool
     {
@@ -286,7 +289,7 @@ class Mumsys_Mail_PHPMailer
      * @return boolean true on success, false if address already used or invalid
      * in some way
      */
-    public function addReplyTo( $email, $name = '' )
+    public function addReplyTo( string $email, string $name = '' )
     {
         return $this->_mailer->addReplyTo( $email, $name );
     }
@@ -294,6 +297,7 @@ class Mumsys_Mail_PHPMailer
 
     /**
      * Sets the subject of the mail.
+     *
      * @param string $subject
      */
     public function setSubject( $subject )
@@ -334,14 +338,15 @@ class Mumsys_Mail_PHPMailer
      *
      * @param string $htmlMsg HTML message string
      * @param string $pathInlineAtt base directory for inline attachments
-     * @param boolean|callable $advanced Whether to use the internal HTML to
+     * @param false|callable $advanced Whether to use the internal HTML to
      * text converter or your own custom converter @see PHPMailer::html2text()
      *
      * @return string Html message string
      */
-    public function setMessageHtml( string $htmlMsg, string $pathInlineAtt = '' ): string
+    public function setMessageHtml( string $htmlMsg, string $pathInlineAtt = '',
+        $advanced = false ): string
     {
-        return $this->_mailer->msgHTML( $htmlMsg, $pathInlineAtt, false );
+        return $this->_mailer->msgHTML( $htmlMsg, $pathInlineAtt, $advanced );
     }
 
 
@@ -369,8 +374,7 @@ class Mumsys_Mail_PHPMailer
      * @param string $disposition Disposition to use
      *
      * @return boolean Returns false if the file could not be found or read.
-     *
-     * @throws phpmailerException
+     * @throws \PHPMailer\PHPMailer\Exception Phpmailer exception
      */
     public function addAttachment( $location, $name = '', $encoding = 'base64',
         $type = '', $disposition = 'attachment' ): bool
@@ -471,7 +475,7 @@ class Mumsys_Mail_PHPMailer
     /**
      * Sends the mail message.
      *
-     * @return true Returns true on success
+     * @return boolean Returns true on success
      *
      * @throws Exception On errors
      */
@@ -493,7 +497,7 @@ class Mumsys_Mail_PHPMailer
      * @return boolean Returns true on success
      */
     public function setCertificate( string $certFile, string $privateKeyFile,
-        string $keyPwd = null, string $chain = '' ): bool
+        string $keyPwd = '', string $chain = '' ): bool
     {
         $this->_mailer->sign( $certFile, $privateKeyFile, $keyPwd, $chain );
 
@@ -505,7 +509,7 @@ class Mumsys_Mail_PHPMailer
      * Adds a custom header.
      *
      * @param string $name Header name
-     * @param string $value Header value
+     * @param string|null $value Header value
      */
     public function addCustomHeader( string $name, string $value = null ): bool
     {

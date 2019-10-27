@@ -2,18 +2,42 @@
 
 2019-10
 
+    + API change in Mumsys_Php_Globals pls check if relevant for you (see below)!
     + Updates phpunit V 8.4.1, update test config beeing more strict
     + Improves tests/bootstrap
     + Updates phpstan config and sca runner (starting in a low level=1 )
     + Updates tests and implementation when VERSION was not set
     + Fixes typehints in phpdoc and updates inline doc
     + Improves CS
+    + Updates travis setup
+
+    + Mumsys_Mail_*
+        + Adds strict_types to tests + implementation
+        + Updates interface,
+        + Updates tests
+        + Improves phpdoc using phpstan up to level 5 now
+
+    + Mumsys_Php_Globals
+        + Merges from stable (1.0.8) to add missing methodes: Adds getSessionVar().
+        + Improves implementation + tests
+        + Adds strict_types to tests + implementation
+        + API change: changes/toggles getServerServerVar() getServerVar() implementation:
+          getServerVar() is for the _SERVER now
+          getServerServerVar() for all possible server and enviroment variables
+          This is better communication :-) for the usage.
+        + Updates typehints
+
+    + Mumsys_Session_*
+        + Update usage of Mumsys_Php_Globals
 
     + Mumsys_Multirename
         + Improves check of logger usage on init.
         + Improves phpdoc using phpstan up to level 5 now
         + Fixes getVersionLong()
 
+    + Mumsys_Cookie
+        + Fixes phpdoc, updates test
+        + Improves phpdoc using phpstan up to level 7 now
 
 2019-09
 

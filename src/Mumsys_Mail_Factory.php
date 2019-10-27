@@ -1,4 +1,4 @@
-<?php
+<?php declare (strict_types=1);
 
 /**
  * Mumsys_Mail_Factory
@@ -39,8 +39,7 @@ class Mumsys_Mail_Factory
      * @param array $options List of configuration parameters to initialise the
      * object
      *
-     * @return \Mumsys_Mail_Interface Returns the mail object
-     *
+     * @return Mumsys_Mail_Interface Returns the mail object
      * @throws Mumsys_Mail_Exception On errors initialising the object.
      */
     public static function getAdapter( string $adapter = 'Default',
@@ -62,6 +61,7 @@ class Mumsys_Mail_Factory
             throw new Mumsys_Mail_Exception( $message );
         }
 
+        /** @var Mumsys_Mail_Interface $object */
         $object = new $adaptername( $options );
 
         if ( !( $object instanceof $iface ) ) {

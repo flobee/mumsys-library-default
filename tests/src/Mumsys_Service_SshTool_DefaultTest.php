@@ -323,6 +323,8 @@ class Mumsys_Service_SshTool_DefaultTest
      * @covers Mumsys_Service_SshTool_Default::deploy
      * @covers Mumsys_Service_SshTool_Default::_deployExecute
      * @covers Mumsys_Service_SshTool_Default::_getUserForHost
+     *
+     * @runInSeparateProcess
      */
     public function testDeployAction()
     {
@@ -357,8 +359,9 @@ class Mumsys_Service_SshTool_DefaultTest
      * @covers Mumsys_Service_SshTool_Default::_registerExecute
      * @covers Mumsys_Service_SshTool_Default::_getAllPublicKeysByHosts
      * @covers Mumsys_Service_SshTool_Default::_getUserForHost
-     *
      * @covers Mumsys_Service_SshTool_Default::addHostConfig
+     *
+     * @runInSeparateProcess
      */
     public function testRegisterAction()
     {
@@ -429,6 +432,8 @@ class Mumsys_Service_SshTool_DefaultTest
      * @covers Mumsys_Service_SshTool_Default::revoke
      * @covers Mumsys_Service_SshTool_Default::_revokeExecute
      * @covers Mumsys_Service_SshTool_Default::_getIdentityLocation
+     *
+     * @runInSeparateProcess
      */
     public function testRevokeAction()
     {

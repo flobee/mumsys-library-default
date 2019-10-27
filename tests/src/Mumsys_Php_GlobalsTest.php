@@ -1,5 +1,4 @@
-<?php
-
+<?php declare (strict_types=1);
 
 /**
  * Mumsys_Php_Globals Test
@@ -36,9 +35,8 @@ class Mumsys_Php_GlobalsTest
      */
     protected function setUp(): void
     {
-        $this->_version = '2.1.0';
-        // in
-        $this->_file = $_FILES = array(
+        $this->_version = '2.2.0';
+        $this->_file = array(
             'test' => array(
                 'name' => 'test.jpg',
                 'type' => 'image/jpeg',
@@ -60,22 +58,21 @@ class Mumsys_Php_GlobalsTest
      */
     protected function tearDown(): void
     {
-        $_FILES = null;
-        $this->_object = null;
+        unset( $this->_object );
     }
 
 
     /**
-     * @covers Mumsys_Php_Globals::getServerVar
+     * @covers Mumsys_Php_Globals::getServerServerVar
      * @covers Mumsys_Php_Globals::_getEnvVar
      */
-    public function testGetServerVar()
+    public function testGetServerServerVar()
     {
         $expected1 = 'no address';
-        $actual1 = $this->_object->getServerVar( 'REMOTE_ADDR', 'no address' );
+        $actual1 = $this->_object->getServerServerVar( 'REMOTE_ADDR', 'no address' );
 
         $expected2 = 'phpunit';
-        $actual2 = $this->_object->getServerVar( 'PHP_SELF', 0 );
+        $actual2 = $this->_object->getServerServerVar( 'PHP_SELF', 0 );
 
         $this->assertEquals( $expected1, $actual1 );
         $this->assertRegExp( '/(' . $expected2 . ')/i', $actual2 );
@@ -83,18 +80,18 @@ class Mumsys_Php_GlobalsTest
 
 
     /**
-     * @covers Mumsys_Php_Globals::getServerServerVar
+     * @covers Mumsys_Php_Globals::getServerVar
      *
      * @runInSeparateProcess
      */
-    public function testGetServerServerVar()
+    public function testGetServerVar()
     {
         // not exists in shell
         $expected1 = 'fail';
-        $actual1 = $this->_object->getServerServerVar( 'REMOTE_ADDR', 'fail' );
+        $actual1 = $this->_object->getServerVar( 'REMOTE_ADDR', 'fail' );
 
         $expected2 = 'phpunit';
-        $actual2 = $this->_object->getServerServerVar( 'PHP_SELF', 'not set' );
+        $actual2 = $this->_object->getServerVar( 'PHP_SELF', 'not set' );
 
         $this->assertEquals( $expected1, $actual1 );
         $this->assertRegExp( '/(' . $expected2 . ')/i', $actual2 );
@@ -104,6 +101,8 @@ class Mumsys_Php_GlobalsTest
     /**
      * @covers Mumsys_Php_Globals::getEnvVar
      * @covers Mumsys_Php_Globals::_getEnvVar
+     *
+     * @runInSeparateProcess
      */
     public function testGetEnvVar()
     {
@@ -124,6 +123,29 @@ class Mumsys_Php_GlobalsTest
         $this->assertEquals( $expected2, $actual2 );
         $this->assertEquals( $expected3, $actual3 );
         $this->assertEquals( $expected4, $actual4 );
+    }
+
+
+    /**
+     * Without session_start() test.
+     *
+     * @covers Mumsys_Php_Globals::getSessionVar
+     */
+    public function testGetSessionVar()
+    {
+        $actual1 = $this->_object->getSessionVar();
+
+        $expected2 = $_SESSION['HOME'] = 'unittest';
+        $actual2 = $this->_object->getSessionVar( 'HOME', 'no home' );
+
+        // returns all
+        $actual3 = $this->_object->getSessionVar();
+        $expected3 = array('HOME' => 'unittest');
+
+        $this->assertNull( $actual1 );
+        $this->assertEquals( $expected2, $actual2 );
+        $this->assertEquals( $expected2, $actual2 );
+        $this->assertEquals( $expected3, $actual3 );
     }
 
 
@@ -187,6 +209,10 @@ class Mumsys_Php_GlobalsTest
      */
     public function testGetFilesVar()
     {
+        $actualInit = array();
+        $expectedInit = $_FILES;
+
+        $_FILES = $this->_file;
         $expected1 = array($this->_file['test']);
         $actual1 = $this->_object->getFilesVar( 'test', false );
 
@@ -199,6 +225,7 @@ class Mumsys_Php_GlobalsTest
         $expected4 = $_FILES = null;
         $actual4 = $this->_object->getFilesVar( 'x', false );
 
+        $this->assertEquals( $expectedInit, $actualInit );
         $this->assertEquals( $expected1, $actual1 );
         $this->assertEquals( $expected2, $actual2 );
         $this->assertEquals( $expected3, $actual3 );
@@ -284,6 +311,7 @@ class Mumsys_Php_GlobalsTest
 
     /**
      * @covers Mumsys_Php_Globals::get
+     *
      * @runInSeparateProcess
      */
     public function testGet()
@@ -314,7 +342,7 @@ class Mumsys_Php_GlobalsTest
             $_SERVER['argv'][0] = 'test get';
         }
         $expected8 = ( is_array( $_SERVER['argv'] ) && isset( $_SERVER['argv'][0] ) )  ? $_SERVER['argv'][0] : null;
-        $actual8 = $this->_object->get( 0, 'no argv' );
+        $actual8 = $this->_object->get( '0', 'no argv' );
 
         $this->assertEquals( $expected1, $actual1 );
         $this->assertEquals( $expected2, $actual2 );
@@ -328,6 +356,7 @@ class Mumsys_Php_GlobalsTest
 
     /**
      * @covers Mumsys_Php_Globals::getRemoteUser
+     *
      * @runInSeparateProcess
      */
     public function testGetRemoteUser()
@@ -345,6 +374,7 @@ class Mumsys_Php_GlobalsTest
 
     /**
      * @covers Mumsys_Php_Globals::getRemoteUser
+     *
      * @runInSeparateProcess
      */
     public function testGetRemoteUserPHP_AUTH_USER()
@@ -356,6 +386,7 @@ class Mumsys_Php_GlobalsTest
 
     /**
      * @covers Mumsys_Php_Globals::getRemoteUser
+     *
      * @runInSeparateProcess
      */
     public function testGetRemoteUserREMOTE_USER()
@@ -367,6 +398,7 @@ class Mumsys_Php_GlobalsTest
 
     /**
      * @covers Mumsys_Php_Globals::getRemoteUser
+     *
      * @runInSeparateProcess
      */
     public function testGetRemoteUserUSER()
@@ -378,6 +410,7 @@ class Mumsys_Php_GlobalsTest
 
     /**
      * @covers Mumsys_Php_Globals::getRemoteUser
+     *
      * @runInSeparateProcess
      */
     public function testGetRemoteUserLOGNAME()
