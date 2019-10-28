@@ -55,7 +55,8 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns an eviroment variable in this order: getenv() befor _ENV befor _SERVER.
+     * Returns an eviroment variable in this order: getenv() befor _ENV befor
+     * _SERVER.
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
@@ -64,12 +65,31 @@ class Mumsys_Php_Globals
      */
     public static function getServerVar( $key, $default = null )
     {
-        return self::_getEnvVar($key, $default);
+        return self::_getEnvVar( $key, $default );
     }
 
 
     /**
-     * Returns an eviroment variable in this order: getenv() befor _ENV befor _SERVER.
+     * Returns the php $_SERVER variable if set by given key.
+     *
+     * @param string $key ID to check for
+     * @param mixed $default Return value
+     *
+     * @return mixed Value or $default if $key was not set/null
+     */
+    public static function getServerServerVar( $key, $default = null )
+    {
+        if ( isset( $_SERVER[$key] ) ) {
+            $default = $_SERVER[$key];
+        }
+
+        return $default;
+    }
+
+
+    /**
+     * Returns an eviroment variable in this order: getenv() befor _ENV befor
+     * _SERVER.
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
@@ -78,12 +98,13 @@ class Mumsys_Php_Globals
      */
     public static function getEnvVar( $key, $default = null )
     {
-        return self::_getEnvVar($key, $default);
+        return self::_getEnvVar( $key, $default );
     }
 
 
     /**
-     * Returns an eviroment variable in this order: getenv() befor _ENV befor _SERVER.
+     * Returns an eviroment variable in this order: getenv() befor _ENV befor
+     * _SERVER.
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
@@ -92,16 +113,20 @@ class Mumsys_Php_Globals
      */
     private static function _getEnvVar( $key, $default = null )
     {
-        if ( isset($_SERVER[$key]) ) {
-            $default = $_SERVER[$key];
-        } elseif ( isset($_ENV[$key]) ) {
-            $default = $_ENV[$key];
-        } elseif ( ($x = getenv($key) ) ) {
+        $server = & $_SERVER;
+        $env = & $_ENV;
+
+        if ( isset( $server[$key] ) ) {
+            $default = $server[$key];
+        } elseif ( isset( $env[$key] ) ) {
+            $default = $env[$key];
+        } elseif ( ( $x = getenv( $key ) ) ) {
             $default = $x;
         }
 
         return $default;
     }
+
 
     /**
      * Returns a session variable if exists.
@@ -140,12 +165,14 @@ class Mumsys_Php_Globals
      */
     public static function getPostVar( $key = null, $default = null )
     {
-        if ( isset($_POST) && $key === null ) {
-            return $_POST;
+        $posts = & $_POST;
+
+        if ( isset( $posts ) && $key === null ) {
+            return $posts;
         }
 
-        if ( isset($_POST[$key]) ) {
-            $default = $_POST[$key];
+        if ( isset( $posts[$key] ) ) {
+            $default = $posts[$key];
         }
 
         return $default;
@@ -154,7 +181,8 @@ class Mumsys_Php_Globals
 
     /**
      * Returns a get variable by given key.
-     * If $key is NULL it will return all get parameters
+     *
+     * If $key is NULL and get vars exists it will return all get parameters
      *
      * @param string $key ID to check for
      * @param mixed $default Default return value if key not exists
@@ -163,12 +191,14 @@ class Mumsys_Php_Globals
      */
     public static function getGetVar( $key = null, $default = null )
     {
-        if ( isset($_GET) && $key === null ) {
-            return $_GET;
+        $gets = & $_GET;
+
+        if ( isset( $gets ) && $key === null ) {
+            return $gets;
         }
 
-        if ( isset($_GET[$key]) ) {
-            $default = $_GET[$key];
+        if ( isset( $gets[$key] ) ) {
+            $default = $gets[$key];
         }
 
         return $default;
@@ -177,21 +207,24 @@ class Mumsys_Php_Globals
 
     /**
      * Returns a cookie variable by given key.
-     * If $key is NULL it will return all cookie parameters
+     *
+     * If $key is NULL and a cookie exists it will return all cookie parameters.
      *
      * @param string $key ID to check for
      * @param mixed $default Default return value if key not exists
      *
      * @return mixed Value or $default if $key is not set/null
      */
-    public static function getCookieVar( $key = null, $default = null )
+    public static function getCookieVar( $key = null, $default = array() )
     {
-        if ( isset($_COOKIE) && $key === null ) {
-            return $_COOKIE;
+        $cookies = & $_COOKIE;
+
+        if ( isset( $cookies ) && $key === null ) {
+            return $cookies;
         }
 
-        if ( isset($_COOKIE[$key]) ) {
-            $default = $_COOKIE[$key];
+        if ( isset( $cookies[$key] ) ) {
+            $default = $cookies[$key];
         }
 
         return $default;
@@ -200,6 +233,67 @@ class Mumsys_Php_Globals
 
     /**
      * Returns a list of uploaded file variables by given key.
+     *
+     * @todo create list of upload item interfaces to return
+     *
+     * If $key is NULL it will return all file parameter BUT in a new/
+     * normalised way.: E.g:
+     * upload file[] and file[]
+     * files[file][0][name] and files[file][1][name] are available and NOT:
+     * files[file][name][0] and files[file][name][1] (PHP default style)
+     *
+     * @param string $key ID to check for
+     * @param mixed $default Default return value if key not exists
+     *
+     * @return mixed Value or $default if $key is not set/null
+     */
+    public static function getFilesVar( $key = null, $default = null )
+    {
+        if ( ! isset( $_FILES ) ) {
+            return $default;
+        }
+
+        if ( self::$_files === null ) {
+            $newFiles = array();
+
+            foreach ( $_FILES as $index => $file ) {
+
+                if ( !is_array( $file['name'] ) ) {
+                    $newFiles[$index][] = $file;
+                    continue;
+                }
+
+                foreach ( $file['name'] as $idx => $name ) {
+                    // Mumsys_Upload_Item_Default() ?
+                    $newFiles[$index][$idx] = array(
+                        'name' => $name,
+                        'type' => $file['type'][$idx],
+                        'tmp_name' => $file['tmp_name'][$idx],
+                        'error' => $file['error'][$idx],
+                        'size' => $file['size'][$idx]
+                    );
+                }
+            }
+
+            self::$_files = $newFiles;
+        }
+
+        if ( $key === null ) {
+            $default = self::$_files;
+        }
+
+        if ( isset( self::$_files[$key] ) ) {
+            $default = self::$_files[$key];
+        }
+
+        return $default;
+    }
+
+
+    /**
+     * Returns a list of uploaded file variables by given key.
+     *
+     * @depricated since version 1.0.1 Use getFile**s**Var()
      *
      * If $key is NULL it will return all file parameter BUT in a new/
      * normalised way.: E.g:
@@ -214,12 +308,12 @@ class Mumsys_Php_Globals
      */
     public static function getFileVar( $key = null, $default = null )
     {
-        if ( isset($_FILES) && $_FILES ) {
+        if ( isset( $_FILES ) && $_FILES ) {
             if ( self::$_files === null ) {
                 $newFiles = array();
 
                 foreach ( $_FILES as $index => $file ) {
-                    if ( !is_array($file['name']) ) {
+                    if ( !is_array( $file['name'] ) ) {
                         $newFiles[$index][] = $file;
                         continue;
                     }
@@ -242,7 +336,7 @@ class Mumsys_Php_Globals
                 $default = self::$_files;
             }
 
-            if ( isset(self::$_files[$key]) ) {
+            if ( isset( self::$_files[$key] ) ) {
                 $default = self::$_files[$key];
             }
         }
@@ -265,10 +359,10 @@ class Mumsys_Php_Globals
      */
     public static function getGlobalVar( $key = null, $default = null )
     {
-        if ( isset($GLOBALS) && $key === null ) {
+        if ( isset( $GLOBALS ) && $key === null ) {
             return $GLOBALS;
         }
-        if ( isset($GLOBALS[$key]) ) {
+        if ( isset( $GLOBALS[$key] ) ) {
             $default = $GLOBALS[$key];
         }
 
@@ -277,11 +371,10 @@ class Mumsys_Php_Globals
 
 
     /**
-     * Returns a global value and looks in the other super globals if the global
-     * variable value could not be found.
+     * Returns a global value or super global value.
      *
-     * Returns a value of the super global variables except the upload files (see
-     * getFileVar()) in the following order:
+     * Looks in the other super globals if the global variable could not be
+     * found, except the _FILES in the following order:
      *      GLOBALS
      *      befor (if cli mode) argv
      *      befor getenv()
@@ -289,10 +382,9 @@ class Mumsys_Php_Globals
      *      befor _SERVER
      *      befor _SESSION
      *      before _COOKIE
-     *      befor _REQUEST:
+     *      befor _REQUEST: (binding through gpc order in php ini)
      *
-     * Dont use it until you really need to look for a global variable anywhere!
-     *
+     * Dont use it until you really need to look for a global variable!
      *
      * @param string $key ID to check for
      * @param mixed $default Return value if no other can be found
@@ -301,18 +393,18 @@ class Mumsys_Php_Globals
      */
     public static function get( $key, $default = null )
     {
-        if ( isset($GLOBALS[$key]) ) {
+        if ( isset( $GLOBALS[$key] ) ) {
             return $GLOBALS[$key];
-        } elseif ( isset($GLOBALS['_REQUEST'][$key]) ) {
+        } elseif ( isset( $GLOBALS['_REQUEST'][$key] ) ) {
             $return = $GLOBALS['_REQUEST'][$key];
-        } elseif ( isset($GLOBALS['_COOKIE'][$key]) ) {
+        } elseif ( isset( $GLOBALS['_COOKIE'][$key] ) ) {
             $return = $GLOBALS['_COOKIE'][$key];
-        } elseif ( isset($GLOBALS['_SESSION'][$key]) ) {
+        } elseif ( isset( $GLOBALS['_SESSION'][$key] ) ) {
             $return = $GLOBALS['_SESSION'][$key];
-        } elseif ( PHP_SAPI == 'cli' && isset($_SERVER['argv'][$key]) ) {
+        } elseif ( PHP_SAPI == 'cli' && isset( $_SERVER['argv'][$key] ) ) {
             $return = $_SERVER['argv'][$key];
         } else {
-            $return = self::_getEnvVar($key, $default);
+            $return = self::_getEnvVar( $key, $default );
         }
 
         return $return;
@@ -333,13 +425,13 @@ class Mumsys_Php_Globals
             return self::$_remoteuser;
         }
 
-        if ( isset($_SERVER['PHP_AUTH_USER']) ) {
+        if ( isset( $_SERVER['PHP_AUTH_USER'] ) ) {
             self::$_remoteuser = (string) $_SERVER['PHP_AUTH_USER'];
-        } else if ( isset($_SERVER['REMOTE_USER']) ) {
+        } else if ( isset( $_SERVER['REMOTE_USER'] ) ) {
             self::$_remoteuser = (string) $_SERVER['REMOTE_USER'];
-        } else if ( isset($_SERVER['USER']) ) {
+        } else if ( isset( $_SERVER['USER'] ) ) {
             self::$_remoteuser = (string) $_SERVER['USER'];
-        } else if ( isset($_SERVER['LOGNAME']) ) {
+        } else if ( isset( $_SERVER['LOGNAME'] ) ) {
             self::$_remoteuser = (string) $_SERVER['LOGNAME'];
         } else {
             self::$_remoteuser = 'unknown';

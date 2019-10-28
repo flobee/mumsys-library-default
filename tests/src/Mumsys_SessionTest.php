@@ -37,7 +37,7 @@ class Mumsys_SessionTest extends Mumsys_Unittest_Testcase
      */
     protected function tearDown()
     {
-        $this->_object = NULL;
+        $this->_object = null;
     }
 
 
@@ -58,9 +58,9 @@ class Mumsys_SessionTest extends Mumsys_Unittest_Testcase
         $expected6 = array();
 
         // test setter
-        $this->_object->replace('testkey', array('val1','val2'));
+        $this->_object->replace( 'testkey', array('val1','val2') );
 
-        $actual1 = $this->_object->get('testkey');
+        $actual1 = $this->_object->get( 'testkey' );
         $expected1 = array('val1','val2');
 
         $actual2 = $this->_object->getAll();
@@ -68,35 +68,35 @@ class Mumsys_SessionTest extends Mumsys_Unittest_Testcase
         $expected2 = $_SESSION;
 
         $actual3 = $this->_object->getID();
-        $expected3 = key($_SESSION);
+        $expected3 = key( $_SESSION );
 
         $actual5 = $this->_object->getCurrent();
         $expected5 = $expected2[$expected3];
 
-        $this->_object->register('newkey', array('val5','val6'));
-        $actual4 = $this->_object->get('newkey');
+        $this->_object->register( 'newkey', array('val5','val6') );
+        $actual4 = $this->_object->get( 'newkey' );
         $expected4 = array('val5','val6');
         // test default return
-        $actual7 = $this->_object->get('notsetbefor', 'dingding');
+        $actual7 = $this->_object->get( 'notsetbefor', 'dingding' );
         $expected7 = 'dingding';
 
         // get
-        $this->assertEquals($expected1, $actual1);
+        $this->assertEquals( $expected1, $actual1 );
         // __destruct
-        $this->assertEquals($expected2, $actual2);
+        $this->assertEquals( $expected2, $actual2 );
         // getID
-        $this->assertEquals($expected3, $actual3);
+        $this->assertEquals( $expected3, $actual3 );
         // register
-        $this->assertEquals($expected4, $actual4);
+        $this->assertEquals( $expected4, $actual4 );
         // getCurrent
-        $this->assertEquals($expected5, $actual5);
+        $this->assertEquals( $expected5, $actual5 );
         // clear
-        $this->assertEquals($expected6, $actual6);
+        $this->assertEquals( $expected6, $actual6 );
         // test default return
-        $this->assertEquals($expected7, $actual7);
+        $this->assertEquals( $expected7, $actual7 );
 
         // version checks
-        $this->assertEquals('Mumsys_Session 1.0.0', $this->_object->getVersion());
+        $this->assertEquals( 'Mumsys_Session 1.0.0', $this->_object->getVersion() );
 
         // test register existing
         $this->expectException( 'Mumsys_Session_Exception' );

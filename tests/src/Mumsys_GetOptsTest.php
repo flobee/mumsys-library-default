@@ -63,7 +63,7 @@ class Mumsys_GetOptsTest
             '--file:' => 'csv file location to/for import',
         );
 
-        $this->_object = new Mumsys_GetOpts($this->opts, $input);
+        $this->_object = new Mumsys_GetOpts( $this->opts, $input );
     }
 
 
@@ -81,7 +81,7 @@ class Mumsys_GetOptsTest
     public function testConstruct1()
     {
         // use server vars, not input parameters
-        $x = new Mumsys_GetOpts($this->opts);
+        $x = new Mumsys_GetOpts( $this->opts );
     }
 
     // for 100% code coverage
@@ -90,7 +90,7 @@ class Mumsys_GetOptsTest
         $inp[] = 'programToCall';
         $inp[] = '--help';
         $inp[] = '--no-help';
-        $x = new Mumsys_GetOpts($this->opts, $inp);
+        $x = new Mumsys_GetOpts( $this->opts, $inp );
     }
 
 
@@ -101,27 +101,27 @@ class Mumsys_GetOptsTest
         $inp[] = '--no-unknown';
 
         ob_start();
-        $x = new Mumsys_GetOpts($this->opts, $inp);
+        $x = new Mumsys_GetOpts( $this->opts, $inp );
         $actual = ob_get_clean();
 
         $regex = 'Option "--no-unknown" not found in option list\/configuration';
-        $this->assertTrue( (preg_match('/'.$regex.'/im', $actual) === 1 ) );
+        $this->assertTrue( ( preg_match( '/' . $regex . '/im', $actual ) === 1 ) );
     }
 
     public function testConstructException()
     {
-        $this->expectException('Mumsys_GetOpts_Exception');
+        $this->expectException( 'Mumsys_GetOpts_Exception' );
         $this->expectExceptionMessage(
             'Empty options detected. Can not parse shell arguments'
         );
-        $x = new Mumsys_GetOpts(array(), $input = array());
+        $x = new Mumsys_GetOpts( array(), $input = array() );
     }
 
 
     public function testConstructException2()
     {
-        $this->expectException('Mumsys_GetOpts_Exception');
-        $this->expectExceptionMessage('Missing value for parameter "-h"' . PHP_EOL);
+        $this->expectException( 'Mumsys_GetOpts_Exception' );
+        $this->expectExceptionMessage( 'Missing value for parameter "-h"' . PHP_EOL );
         $options = array(
             '-h:',
             '--action:' => 'Action to call: finalize, cron, import',
@@ -131,7 +131,7 @@ class Mumsys_GetOptsTest
             'finalize' => 'Bring cache to storage an drop cache after a successful execution',
         );
 
-        $o = new Mumsys_GetOpts($options, array('cmd', '-h'));
+        $o = new Mumsys_GetOpts( $options, array('cmd', '-h') );
     }
 
 
@@ -148,8 +148,8 @@ class Mumsys_GetOptsTest
             'help' => true
         );
 
-        $this->assertEquals($expected, $actual1);
-        $this->assertEquals($expected, $actual2);
+        $this->assertEquals( $expected, $actual1 );
+        $this->assertEquals( $expected, $actual2 );
     }
 
     public function testGetMapping()
@@ -173,7 +173,7 @@ class Mumsys_GetOptsTest
             '--no-coverage' => '--no-coverage',
         );
 
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals( $expected, $actual );
     }
 
 
@@ -181,33 +181,33 @@ class Mumsys_GetOptsTest
     {
         $actual = $this->_object->getCmd();
         $expected = '--verbose --input i_input --bits b_input -f f_param --help';
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals( $expected, $actual );
 
         $input = array('program', '--verbose', '--input', "true", '--bits', 'false', '-f', 'f_param', '--no-f');
-        $this->_object = new Mumsys_GetOpts($this->opts, $input);
+        $this->_object = new Mumsys_GetOpts( $this->opts, $input );
         $actual = $this->_object->getCmd();
         $expected = '--verbose --input true --bits false --no-f';
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals( $expected, $actual );
     }
 
 
     public function testGetCmd2()
     {
-        $o = new Mumsys_GetOpts(array('-y:'), array('cmd', '-y', 'yes'));
+        $o = new Mumsys_GetOpts( array('-y:'), array('cmd', '-y', 'yes') );
         $actual = $o->getCmd();
         $expected = '-y yes';
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals( $expected, $actual );
 
-        $this->expectException('Mumsys_GetOpts_Exception');
-        $this->expectExceptionMessage('Missing value for parameter "-x"');
-        $o = new Mumsys_GetOpts(array('-x:'), array('cmd', '-x'));
+        $this->expectException( 'Mumsys_GetOpts_Exception' );
+        $this->expectExceptionMessage( 'Missing value for parameter "-x"' );
+        $o = new Mumsys_GetOpts( array('-x:'), array('cmd', '-x') );
         $actual = $o->getCmd();
     }
 
 
     public function testGetHelp()
     {
-        $actual = $this->_object->getHelp(76, "    ");
+        $actual = $this->_object->getHelp( 76, "    " );
         $expected = '-v|--verbose' . PHP_EOL
             . '-i|--input <yourValue/s>' . PHP_EOL
             . '-b|--bits <yourValue/s>' . PHP_EOL
@@ -222,7 +222,7 @@ class Mumsys_GetOptsTest
             . '--no-coverage'
         ;
 
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals( $expected, $actual );
     }
 
 
@@ -232,9 +232,9 @@ class Mumsys_GetOptsTest
     {
         $possible = $this->_object->getVersions();
 
-        foreach ($this->_versions as $must => $value) {
-            $this->assertTrue( isset($possible[$must]) );
-            $this->assertEquals($possible[$must], $value);
+        foreach ( $this->_versions as $must => $value ) {
+            $this->assertTrue( isset( $possible[$must] ) );
+            $this->assertEquals( $possible[$must], $value );
         }
     }
 

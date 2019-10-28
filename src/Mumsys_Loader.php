@@ -60,16 +60,16 @@ class Mumsys_Loader
      *
      * @throws Mumsys_Exception Throws exception if loading of class file fails.
      */
-    public static function load($instance, array $args = array())
+    public static function load( $instance, array $args = array() )
     {
         try {
             // autoload will be called for "new $instance($args)"
-            if (!class_exists($instance) && !isset(self::$loadedClasses[$instance])) {
-                throw new Mumsys_Loader_Exception(sprintf('Error! could not load: "%1$s".', $instance));
+            if ( !class_exists( $instance ) && !isset( self::$loadedClasses[$instance] ) ) {
+                throw new Mumsys_Loader_Exception( sprintf( 'Error! could not load: "%1$s".', $instance ) );
             } else {
-                $x = new $instance($args);
+                $x = new $instance( $args );
             }
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             throw $e;
         }
 
@@ -84,23 +84,23 @@ class Mumsys_Loader
      *
      * @return boolean Returns true on success or false if class could not be loaded
      */
-    public static function autoload($instance)
+    public static function autoload( $instance )
     {
         $test = true;
-        if (!class_exists($instance)) {
+        if ( !class_exists( $instance ) ) {
             $path = __DIR__ . '/';
 
-            if (substr($instance, 0, 6) == 'Mumsys' || substr( $instance,0,3 ) == 'Php') {
+            if ( substr( $instance, 0, 6 ) == 'Mumsys' || substr( $instance, 0, 3 ) == 'Php' ) {
                 $classfile = $path . $instance . '.php';
             } else {
                 $classfile = $path . 'class.' . $instance . '.php';
             }
 
-            if (($test = file_exists($classfile))) {
+            if ( ( $test = file_exists( $classfile ) ) ) {
                 $test = require_once $classfile;
             }
 
-            if ($test !== false) {
+            if ( $test !== false ) {
                 self::$loadedClasses[$instance] = $instance;
             }
         }
@@ -116,10 +116,10 @@ class Mumsys_Loader
      *
      * @return boolean true on success or false if the class could not be loaded
      */
-    protected static function _require($location)
+    protected static function _require( $location )
     {
         $test = false;
-        if ($location && file_exists($location)) {
+        if ( $location && file_exists( $location ) ) {
             $test = require_once $location;
         }
 
@@ -134,10 +134,10 @@ class Mumsys_Loader
      *
      * @return boolean true on success or false if the class could not be loaded
      */
-    protected static function _include($location)
+    protected static function _include( $location )
     {
         $test = false;
-        if ($location && file_exists($location)) {
+        if ( $location && file_exists( $location ) ) {
             $test = include_once $location;
         }
 

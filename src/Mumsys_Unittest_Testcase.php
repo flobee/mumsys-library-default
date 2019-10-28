@@ -52,7 +52,7 @@ class Mumsys_Unittest_Testcase
     protected function _checkVersionList( $allList, $myList )
     {
         foreach ( $myList as $className => $version ) {
-            $test = ($allList[$className] === $version);
+            $test = ( $allList[$className] === $version );
             $message = 'Failure: ' . $className . ':' . $version . ' !== ' . $allList[$className];
             $this->assertTrue( $test, $message );
         }

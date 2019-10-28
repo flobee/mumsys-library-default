@@ -60,7 +60,7 @@ class Mumsys_Session extends Mumsys_Abstract
          * PHP_SESSION_NONE if sessions are enabled, but none exists
          * PHP_SESSION_ACTIVE if sessions are enabled, and one exists
          */
-        if (isset($_SESSION)) {
+        if ( isset( $_SESSION ) ) {
             $this->_id = session_id();
             $this->_records = & $_SESSION;
         } else {
@@ -89,7 +89,7 @@ class Mumsys_Session extends Mumsys_Abstract
      */
     public function get( $key, $default = null )
     {
-        if (isset($this->_records[$this->_id][$key])) {
+        if ( isset( $this->_records[$this->_id][$key] ) ) {
             return $this->_records[$this->_id][$key];
         }
 
@@ -137,9 +137,9 @@ class Mumsys_Session extends Mumsys_Abstract
     {
         $key = (string)$key;
 
-        if (array_key_exists($key, $this->_records[$this->_id])) {
-            $message = sprintf('Session key "%1$s" exists', $key);
-            throw new Mumsys_Session_Exception($message);
+        if ( array_key_exists( $key, $this->_records[$this->_id] ) ) {
+            $message = sprintf( 'Session key "%1$s" exists', $key );
+            throw new Mumsys_Session_Exception( $message );
         }
 
         $this->_records[$this->_id][$key] = $value;

@@ -59,13 +59,13 @@ class Mumsys_Logger
     const VERSION = '3.1.0';
 
 
-    const EMERG   = 0;  // 0 EMERG 		emerg() 	System is unusable
-    const ALERT   = 1;  // 1 ALERT 		alert() 	Immediate action required
-    const CRIT    = 2;  // 2 CRIT 		crit() 		Critical conditions
-    const ERR     = 3;  // 3 ERR 		err() 		Error conditions
-    const WARN    = 4;  // 4 WARNING 	warn()      Warning conditions
-    const NOTICE  = 5;  // 5 NOTICE 	notice() 	Normal but significant
-    const INFO    = 6;  // 6 INFO       info() 		Informational
+    const EMERG   = 0;  // 0 EMERG         emerg()     System is unusable
+    const ALERT   = 1;  // 1 ALERT         alert()     Immediate action required
+    const CRIT    = 2;  // 2 CRIT         crit()         Critical conditions
+    const ERR     = 3;  // 3 ERR         err()         Error conditions
+    const WARN    = 4;  // 4 WARNING     warn()      Warning conditions
+    const NOTICE  = 5;  // 5 NOTICE     notice()     Normal but significant
+    const INFO    = 6;  // 6 INFO       info()         Informational
     const DEBUG   = 7;  // 7 DEBUG      debug()     Debug-level messages
 
     /**
@@ -202,7 +202,7 @@ class Mumsys_Logger
      * Number of bytes for a logfile befor it will be purged to zero lenght
      * zero means no limit.
      * If $_debug or verbose is enabled $_maxfilesize will not take affect.
-	 *
+     *
      * @var integer
      */
     private $_maxfilesize = 0;
@@ -246,28 +246,28 @@ class Mumsys_Logger
      *
      * @uses Mumsys_File Uses Mumsys_File object for file logging
      */
-    public function __construct( array $options=array( ) )
+    public function __construct( array $options = array( ) )
     {
-        if ( empty($options['logfile']) ) {
-            $this->_logfile = '/tmp/' . basename(__FILE__) .'_'. date('Y-m-d', time());
+        if ( empty( $options['logfile'] ) ) {
+            $this->_logfile = '/tmp/' . basename( __FILE__ ) . '_' . date( 'Y-m-d', time() );
         } else {
             $this->_logfile = $options['logfile'];
         }
 
-        if ( empty($options['way']) ) {
+        if ( empty( $options['way'] ) ) {
             $this->_logway = $options['way'] = 'a';
         } else {
             $this->_logway = (string)$options['way'];
         }
 
-        if ( empty($options['username']) ) {
-            if ( isset($_SERVER['PHP_AUTH_USER']) ) {
+        if ( empty( $options['username'] ) ) {
+            if ( isset( $_SERVER['PHP_AUTH_USER'] ) ) {
                 $this->username = (string)$_SERVER['PHP_AUTH_USER'];
-            } else if ( isset($_SERVER['REMOTE_USER']) ) {
+            } else if ( isset( $_SERVER['REMOTE_USER'] ) ) {
                 $this->username = (string)$_SERVER['REMOTE_USER'];
-            } else if ( isset($_SERVER['USER']) ) {
+            } else if ( isset( $_SERVER['USER'] ) ) {
                 $this->username = (string)$_SERVER['USER'];
-            } else if ( isset($_SERVER['LOGNAME']) ) {
+            } else if ( isset( $_SERVER['LOGNAME'] ) ) {
                 $this->username = (string)$_SERVER['LOGNAME'];
             } else {
                 $this->username = 'unknown';
@@ -276,50 +276,50 @@ class Mumsys_Logger
             $this->username = $options['username'];
         }
 
-        if ( isset($options['lineFormat']) ) {
+        if ( isset( $options['lineFormat'] ) ) {
             $this->_logFormat = (string)$options['lineFormat'];
-            if ( empty($this->_logFormat) ) {
-                throw new Mumsys_Logger_Exception('Log format empty');
+            if ( empty( $this->_logFormat ) ) {
+                throw new Mumsys_Logger_Exception( 'Log format empty' );
             }
         }
 
-        if ( isset($options['timeFormat']) ) {
+        if ( isset( $options['timeFormat'] ) ) {
             $this->_timeFormat = (string) $options['timeFormat'];
         }
 
-        if ( isset($options['logLevel']) ) {
+        if ( isset( $options['logLevel'] ) ) {
             $this->logLevel = $options['logLevel'];
         }
 
-        if ( isset($options['msglogLevel']) ) {
+        if ( isset( $options['msglogLevel'] ) ) {
             $this->msglogLevel = $options['msglogLevel'];
         }
 
-        if ( isset($options['msgLineFormat']) ) {
+        if ( isset( $options['msgLineFormat'] ) ) {
             $this->_logFormatMsg = (string)$options['msgLineFormat'];
         }
 
-        if ( isset($options['msgEcho']) ) {
+        if ( isset( $options['msgEcho'] ) ) {
             $this->msgEcho = $options['msgEcho'];
         }
 
-        if ( isset($options['msgReturn']) ) {
+        if ( isset( $options['msgReturn'] ) ) {
             $this->msgReturn = $options['msgReturn'];
         }
 
-        if ( isset($options['debug']) ) {
+        if ( isset( $options['debug'] ) ) {
             $this->debug = $options['debug'];
         }
 
-        if ( isset($options['verbose']) ) {
+        if ( isset( $options['verbose'] ) ) {
             $this->verbose = $options['verbose'];
         }
 
-        if ( isset($options['lf']) ) {
+        if ( isset( $options['lf'] ) ) {
             $this->lf = $options['lf'];
         }
 
-        if ( isset($options['maxfilesize']) ) {
+        if ( isset( $options['maxfilesize'] ) ) {
             $this->_maxfilesize = $options['maxfilesize'];
         }
 
@@ -327,18 +327,17 @@ class Mumsys_Logger
         /** @todo to be removed, to set in writer class? */
         $message = $this->checkMaxFilesize();
 
-
         $fileOptions = array(
             'file' => $this->_logfile,
             'way' => $this->_logway
         );
-        $this->_writer = new Mumsys_File($fileOptions);
+        $this->_writer = new Mumsys_File( $fileOptions );
 
-        $r = new ReflectionClass($this);
+        $r = new ReflectionClass( $this );
         $this->_loglevels = array_flip( $r->getConstants() );
 
-        if ($message) {
-            $this->log($message, self::INFO);
+        if ( $message ) {
+            $this->log( $message, self::INFO );
         }
 
     }
@@ -347,44 +346,44 @@ class Mumsys_Logger
     /**
      * Create a log entry by a given log level.
 
-     * 0 EMERG 		emerg() 	System is unusable
-     * 1 ALERT 		alert() 	Immediate action required
-     * 2 CRIT 		crit() 		Critical conditions
-     * 3 ERR 		err() 		Error conditions
-     * 4 WARNING 	warn()      Warning conditions
-     * 5 NOTICE 	notice() 	Normal but significant
-     * 6 INFO       info() 		Informational
-     * 7 DEBUG      debug() 	Debug-level messages
+     * 0 EMERG         emerg()     System is unusable
+     * 1 ALERT         alert()     Immediate action required
+     * 2 CRIT         crit()         Critical conditions
+     * 3 ERR         err()         Error conditions
+     * 4 WARNING     warn()      Warning conditions
+     * 5 NOTICE     notice()     Normal but significant
+     * 6 INFO       info()         Informational
+     * 7 DEBUG      debug()     Debug-level messages
      *
      * @param string|array $input Message or list of messages to be logged
      * @param integer $level Level number of log priority
      *
      * @return string|void Returns the log message if needed or nothing
      */
-    public function log( $input, $level=0 )
+    public function log( $input, $level = 0 )
     {
         try
         {
 
             $isArray = false;
             $datesting = '';
-            if ( !empty($this->_timeFormat) ) {
-                $datesting = date($this->_timeFormat, time());
+            if ( !empty( $this->_timeFormat ) ) {
+                $datesting = date( $this->_timeFormat, time() );
             }
 
-            if (!isset($this->_loglevels[$level])) {
+            if ( !isset( $this->_loglevels[$level] ) ) {
                 throw new Mumsys_Logger_Exception( 'Level "' . $level . '" not set' );
             }
 
             $levelName = $this->_loglevels[$level];
 
-            if ( ($isArray=is_array($input) ) )
+            if ( ( $isArray=is_array( $input ) ) )
             {
                 $_cnt = 0;
                 $message = '';
-                foreach($input as $key => $val) {
+                foreach( $input as $key => $val ) {
                     //$tmp = 'ff_' . $_cnt . ' key: "' . $key . '", value: "' . $val.'"';
-                    $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val.'");';
+                    $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val . '");';
                     $message .= sprintf(
                         $this->_logFormat,
                         $datesting,
@@ -399,30 +398,30 @@ class Mumsys_Logger
             }
             else
             {
-                $message = sprintf($this->_logFormat, $datesting, $this->username, $levelName, $level, $input);
+                $message = sprintf( $this->_logFormat, $datesting, $this->username, $levelName, $level, $input );
             }
 
             $message .= $this->lf;
 
-            if ( $level <= $this->logLevel || ($this->verbose || $this->debug) )
+            if ( $level <= $this->logLevel || ( $this->verbose || $this->debug ) )
             {
                 if ( $this->_logfile !== false ) {
                     $this->write( $message );
                 }
             }
 
-            if ( $level <= $this->msglogLevel || ($this->verbose || $this->debug) )
+            if ( $level <= $this->msglogLevel || ( $this->verbose || $this->debug ) )
             {
                 if ( $this->msgEcho )
                 {
-                    if ($this->_logFormatMsg && $this->_logFormatMsg != $this->_logFormat) {
-                        if ($isArray)
+                    if ( $this->_logFormatMsg && $this->_logFormatMsg != $this->_logFormat ) {
+                        if ( $isArray )
                         {
                             $msgOut = '';
                             $_cnt = 0;
-                            reset($input);
-                            foreach($input as $key => $val) {
-                                $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val.'");';
+                            reset( $input );
+                            foreach( $input as $key => $val ) {
+                                $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val . '");';
                                 $msgOut .= sprintf(
                                     $this->_logFormatMsg,
                                     $datesting,
@@ -457,7 +456,7 @@ class Mumsys_Logger
                 }
             }
 
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             throw $e;
         }
 
@@ -474,8 +473,8 @@ class Mumsys_Logger
     public function write( $content )
     {
         try {
-            $this->_writer->write($content);
-        } catch (Exception $e) {
+            $this->_writer->write( $content );
+        } catch ( Exception $e ) {
             throw $e;
         }
 
@@ -502,7 +501,7 @@ class Mumsys_Logger
      */
     public function levelNameGet( $level )
     {
-        if ( !isset($this->_loglevels[$level]) ) {
+        if ( !isset( $this->_loglevels[$level] ) ) {
             return 'unknown';
         }
         return $this->_loglevels[$level];
@@ -521,10 +520,10 @@ class Mumsys_Logger
         $message = false;
         if ( $this->_maxfilesize )
         {
-            if ( !($this->verbose || $this->debug)
-                && ($fsize=@filesize($this->_logfile)) > $this->_maxfilesize)
+            if ( !( $this->verbose || $this->debug )
+                && ( $fsize=@filesize( $this->_logfile ) ) > $this->_maxfilesize)
             {
-                file_put_contents($this->_logfile, '');
+                file_put_contents( $this->_logfile, '' );
                 $message = 'Max filesize reached. Log purged now';
             }
         }
@@ -542,7 +541,7 @@ class Mumsys_Logger
      */
     public function emerg( $message )
     {
-        return $this->log($message, Mumsys_Logger::EMERG);
+        return $this->log( $message, Mumsys_Logger::EMERG );
     }
 
 
@@ -555,7 +554,7 @@ class Mumsys_Logger
      */
     public function alert( $message )
     {
-        return $this->log($message, Mumsys_Logger::ALERT);
+        return $this->log( $message, Mumsys_Logger::ALERT );
     }
 
 
@@ -568,7 +567,7 @@ class Mumsys_Logger
      */
     public function crit( $message )
     {
-        return $this->log($message, Mumsys_Logger::CRIT);
+        return $this->log( $message, Mumsys_Logger::CRIT );
     }
 
 
@@ -581,7 +580,7 @@ class Mumsys_Logger
      */
     public function err( $message )
     {
-        return $this->log($message, Mumsys_Logger::ERR);
+        return $this->log( $message, Mumsys_Logger::ERR );
     }
 
 
@@ -594,7 +593,7 @@ class Mumsys_Logger
      */
     public function warn( $message )
     {
-        return $this->log($message, Mumsys_Logger::WARN);
+        return $this->log( $message, Mumsys_Logger::WARN );
     }
 
 
@@ -607,7 +606,7 @@ class Mumsys_Logger
      */
     public function notice( $message )
     {
-        return $this->log($message, Mumsys_Logger::NOTICE);
+        return $this->log( $message, Mumsys_Logger::NOTICE );
     }
 
 
@@ -620,7 +619,7 @@ class Mumsys_Logger
      */
     public function info( $message )
     {
-        return $this->log($message, Mumsys_Logger::INFO);
+        return $this->log( $message, Mumsys_Logger::INFO );
     }
 
 
@@ -633,7 +632,7 @@ class Mumsys_Logger
      */
     public function debug( $message )
     {
-        return $this->log($message, Mumsys_Logger::DEBUG);
+        return $this->log( $message, Mumsys_Logger::DEBUG );
     }
 
 }

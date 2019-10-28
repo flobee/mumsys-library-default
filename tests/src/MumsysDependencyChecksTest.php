@@ -78,7 +78,7 @@ class MumsysDependencyChecksTest
 
     public function test_CheckPhpExtensions()
     {
-        foreach ( $this->_requiredExtensions as $ext => $usage) {
+        foreach ( $this->_requiredExtensions as $ext => $usage ) {
             $mesg = sprintf(
                 '"%1$s" extension not installed/ found for: %2$s',
                 $ext,
@@ -91,16 +91,16 @@ class MumsysDependencyChecksTest
 
     public function test_CheckPhpIniSettings()
     {
-        foreach ( $this->_requiredPhpiniSetup as $iniValue => $possible) {
-            if (!is_array($possible)) {
+        foreach ( $this->_requiredPhpiniSetup as $iniValue => $possible ) {
+            if ( !is_array( $possible ) ) {
                 $possible = array($possible);
             }
 
             // once must fix
-            foreach($possible as $expected) {
-                $actual = ini_get($iniValue);
+            foreach( $possible as $expected ) {
+                $actual = ini_get( $iniValue );
 
-                if ($actual == $expected) {
+                if ( $actual == $expected ) {
                     break;
                 }
             }
@@ -108,10 +108,10 @@ class MumsysDependencyChecksTest
             $mesg = sprintf(
                 'php.ini: "%1$s"; Expect one of "%2$s"; Found: "%3$s"',
                 $iniValue,
-                '"' . implode( '"|"', $possible ) .'"',
+                '"' . implode( '"|"', $possible ) . '"',
                 $actual
             );
-            $this->assertEquals($expected, $actual, $mesg );
+            $this->assertEquals( $expected, $actual, $mesg );
         }
     }
 

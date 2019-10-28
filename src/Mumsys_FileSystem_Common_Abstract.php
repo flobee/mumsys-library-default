@@ -44,11 +44,11 @@ abstract class Mumsys_FileSystem_Common_Abstract
      * @param string $file Filename or file location
      * @return string string of the extension or '' (empty string)
      */
-    public static function extGet($file)
+    public static function extGet( $file )
     {
-        $ext = strrchr(basename($file), '.');
-        if ($ext) {
-            $ext = substr($ext, 1);
+        $ext = strrchr( basename( $file ), '.' );
+        if ( $ext ) {
+            $ext = substr( $ext, 1 );
         } else {
             $ext = '';
         }
@@ -64,11 +64,11 @@ abstract class Mumsys_FileSystem_Common_Abstract
      */
     public static function nameGet( $file = '' )
     {
-        $pos = strrpos($file, '.');
-        if ($pos === false) {
-            return basename($file);
+        $pos = strrpos( $file, '.' );
+        if ( $pos === false ) {
+            return basename( $file );
         } else {
-            return substr(basename($file), 0, $pos);
+            return substr( basename( $file ), 0, $pos );
         }
     }
 

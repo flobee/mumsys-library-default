@@ -28,4 +28,3 @@ class Mumsys_Pager_Exception extends Mumsys_Exception
 {
 
 }
-

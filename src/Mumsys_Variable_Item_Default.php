@@ -109,7 +109,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getType()
     {
-        return (isset( $this->_input['type'] )) ? $this->_input['type'] : null;
+        return ( isset( $this->_input['type'] ) ) ? $this->_input['type'] : null;
     }
 
 
@@ -148,7 +148,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getMinLength()
     {
-        return (isset( $this->_input['minlen'] )) ? $this->_input['minlen'] : null;
+        return ( isset( $this->_input['minlen'] ) ) ? $this->_input['minlen'] : null;
     }
 
 
@@ -180,7 +180,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getMaxLength()
     {
-        return (isset( $this->_input['maxlen'] )) ? $this->_input['maxlen'] : null;
+        return ( isset( $this->_input['maxlen'] ) ) ? $this->_input['maxlen'] : null;
     }
 
 
@@ -359,7 +359,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getDescription( $default = null )
     {
-        return (isset( $this->_input['desc'] )) ? $this->_input['desc'] : $default;
+        return ( isset( $this->_input['desc'] ) ) ? $this->_input['desc'] : $default;
     }
 
 
@@ -390,7 +390,7 @@ class Mumsys_Variable_Item_Default
      */
     public function getInformation( $default = null )
     {
-        return (isset( $this->_input['info'] )) ? $this->_input['info'] : $default;
+        return ( isset( $this->_input['info'] ) ) ? $this->_input['info'] : $default;
     }
 
 

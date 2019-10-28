@@ -51,7 +51,7 @@ class unittest
      *
      * @param string $_something
      */
-    public function __construct($something='a')
+    public function __construct( $something = 'a' )
     {
         $this->_something = $something;
     }

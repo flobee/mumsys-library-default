@@ -51,7 +51,7 @@ class Mumsys_Context
      */
     public function getConfig()
     {
-        return $this->_get('Mumsys_Config_Interface');
+        return $this->_get( 'Mumsys_Config_Interface' );
     }
 
     /**
@@ -63,7 +63,7 @@ class Mumsys_Context
      */
     public function registerConfig( Mumsys_Config_Interface $config )
     {
-        $this->_register('Mumsys_Config_Interface', $config);
+        $this->_register( 'Mumsys_Config_Interface', $config );
     }
 
     /**
@@ -75,7 +75,7 @@ class Mumsys_Context
      */
     public function getPermissions()
     {
-        return $this->_get('Mumsys_Permissions_Interface');
+        return $this->_get( 'Mumsys_Permissions_Interface' );
     }
 
     /**
@@ -87,7 +87,7 @@ class Mumsys_Context
      */
     public function registerPermissions( Mumsys_Permissions_Interface $permissions )
     {
-        $this->_register('Mumsys_Permissions_Interface', $permissions);
+        $this->_register( 'Mumsys_Permissions_Interface', $permissions );
     }
 
     /**
@@ -99,7 +99,7 @@ class Mumsys_Context
      */
     public function getSession()
     {
-        return $this->_get('Mumsys_Session_Interface');
+        return $this->_get( 'Mumsys_Session_Interface' );
     }
 
     /**
@@ -111,7 +111,7 @@ class Mumsys_Context
      */
     public function registerSession( Mumsys_Session_Interface $session )
     {
-        $this->_register('Mumsys_Session_Interface', $session);
+        $this->_register( 'Mumsys_Session_Interface', $session );
     }
 
     /**
@@ -122,7 +122,7 @@ class Mumsys_Context
      */
     public function getDatabase()
     {
-        return $this->_get('Mumsys_Db');
+        return $this->_get( 'Mumsys_Db' );
     }
 
     /**
@@ -133,7 +133,7 @@ class Mumsys_Context
      */
     public function registerDatabase( Mumsys_Db_Driver_Interface $db )
     {
-        $this->_register('Mumsys_Db', $db);
+        $this->_register( 'Mumsys_Db', $db );
     }
 
     /**
@@ -143,7 +143,7 @@ class Mumsys_Context
      */
     public function replaceDatabase( Mumsys_Db_Driver_Interface $db )
     {
-        $this->_replace('Mumsys_Db', $db);
+        $this->_replace( 'Mumsys_Db', $db );
     }
 
     /**
@@ -155,7 +155,7 @@ class Mumsys_Context
      */
     public function getControllerBackend()
     {
-        return $this->_get('Mumsys_Controller_Backend');
+        return $this->_get( 'Mumsys_Controller_Backend' );
     }
 
     /**
@@ -167,7 +167,7 @@ class Mumsys_Context
      */
     public function registerControllerBackend( Mumsys_Controller_Backend $controller )
     {
-        $this->_register('Mumsys_Controller_Backend', $controller);
+        $this->_register( 'Mumsys_Controller_Backend', $controller );
     }
 
     /**
@@ -182,7 +182,7 @@ class Mumsys_Context
      */
     public function getDisplay()
     {
-        return $this->_get('Mumsys_Mvc_Display_Control_Interface');
+        return $this->_get( 'Mumsys_Mvc_Display_Control_Interface' );
     }
 
     /**
@@ -195,7 +195,7 @@ class Mumsys_Context
      */
     public function registerDisplay( Mumsys_Mvc_Display_Control_Interface $display )
     {
-        $this->_register('Mumsys_Mvc_Display_Control_Interface', $display);
+        $this->_register( 'Mumsys_Mvc_Display_Control_Interface', $display );
     }
 
     /**
@@ -207,7 +207,7 @@ class Mumsys_Context
      */
     public function replaceDisplay( Mumsys_Mvc_Display_Control_Interface $display )
     {
-        $this->_replace('Mumsys_Mvc_Display_Control_Interface', $display);
+        $this->_replace( 'Mumsys_Mvc_Display_Control_Interface', $display );
     }
 
     /**
@@ -216,7 +216,7 @@ class Mumsys_Context
      */
     public function getControllerFrontend()
     {
-        return $this->_get('Mumsys_Mvc_Display_Control_Interface');
+        return $this->_get( 'Mumsys_Mvc_Display_Control_Interface' );
     }
 
     /**
@@ -225,7 +225,7 @@ class Mumsys_Context
      */
     public function registerControllerFrontend( Mumsys_Mvc_Display_Control_Interface $controller )
     {
-        $this->_register('Mumsys_Mvc_Display_Control_Interface', $controller);
+        $this->_register( 'Mumsys_Mvc_Display_Control_Interface', $controller );
     }
 
     /**
@@ -237,7 +237,7 @@ class Mumsys_Context
      */
     public function getTranslation()
     {
-        return $this->_get('Mumsys_I18n_Interface');
+        return $this->_get( 'Mumsys_I18n_Interface' );
     }
 
     /**
@@ -249,7 +249,7 @@ class Mumsys_Context
      */
     public function registerTranslation( Mumsys_I18n_Interface $translate )
     {
-        $this->_register('Mumsys_I18n_Interface', $translate);
+        $this->_register( 'Mumsys_I18n_Interface', $translate );
     }
 
     /**
@@ -261,7 +261,7 @@ class Mumsys_Context
      */
     public function getLogger()
     {
-        return $this->_get('Mumsys_Logger_Interface');
+        return $this->_get( 'Mumsys_Logger_Interface' );
     }
 
     /**
@@ -272,7 +272,7 @@ class Mumsys_Context
      */
     public function registerLogger( Mumsys_Logger_Interface $logger )
     {
-        $this->_register('Mumsys_Logger_Interface', $logger);
+        $this->_register( 'Mumsys_Logger_Interface', $logger );
     }
 
 
@@ -288,12 +288,12 @@ class Mumsys_Context
     public function getGeneric( $interface, $default = null )
     {
         try {
-            $return = $this->_get($interface);
+            $return = $this->_get( $interface );
         }
         catch ( Exception $e ) {
             if ( $default === null ) {
-                $message = sprintf('Generic interface "%1$s" not found. Message: "%2$s"', $interface, $e->getMessage());
-                throw new Mumsys_Exception($message);
+                $message = sprintf( 'Generic interface "%1$s" not found. Message: "%2$s"', $interface, $e->getMessage() );
+                throw new Mumsys_Exception( $message );
             } else {
                 $return = $default;
             }
@@ -313,12 +313,12 @@ class Mumsys_Context
      */
     public function registerGeneric( $interface, $value )
     {
-        if ( !is_object($value) || !is_a($value, $interface) ) {
-            $message = sprintf('Value does not implement the interface "%1$s"', $interface);
-            throw new Mumsys_Exception($message);
+        if ( !is_object( $value ) || !is_a( $value, $interface ) ) {
+            $message = sprintf( 'Value does not implement the interface "%1$s"', $interface );
+            throw new Mumsys_Exception( $message );
         }
 
-        $this->_register($interface, $value);
+        $this->_register( $interface, $value );
     }
 
     /**
@@ -330,8 +330,8 @@ class Mumsys_Context
      */
     private function _get( $key )
     {
-        if ( !isset($this->_config[$key]) ) {
-            throw new Mumsys_Exception('"' . $key . '" not set');
+        if ( !isset( $this->_config[$key] ) ) {
+            throw new Mumsys_Exception( '"' . $key . '" not set' );
         }
 
         return $this->_config[$key];
@@ -346,8 +346,8 @@ class Mumsys_Context
      */
     private function _register( $key, $value )
     {
-        if ( array_key_exists($key, $this->_config) ) {
-            throw new Mumsys_Exception('"' . $key . '" already set');
+        if ( array_key_exists( $key, $this->_config ) ) {
+            throw new Mumsys_Exception( '"' . $key . '" already set' );
         }
 
         $this->_config[$key] = $value;

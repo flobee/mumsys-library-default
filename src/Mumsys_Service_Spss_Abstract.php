@@ -44,10 +44,9 @@ abstract class Mumsys_Service_Spss_Abstract
      *
      * @param string $file Location of the file to read from/ write to.
      */
-    public function __construct($file)
+    public function __construct( $file )
     {
         $this->_file = $file;
     }
 
 }
-
