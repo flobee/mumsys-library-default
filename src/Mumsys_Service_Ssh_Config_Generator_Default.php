@@ -58,7 +58,7 @@ class Mumsys_Service_Ssh_Config_Generator_Default
     public function __construct()
     {
         $_home = '';
-        if ( isset( $_SERVER['HOME'] ) && ($_home = $_SERVER['HOME']) ) {
+        if ( isset( $_SERVER['HOME'] ) && ( $_home = $_SERVER['HOME'] ) ) {
             $_home = $this->_checkPath( $_home );
         }
 

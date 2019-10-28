@@ -34,11 +34,11 @@ class Mumsys_LoaderTest
 
     public function testLoad()
     {
-        $o2 = $this->object->load('unittest');
-        $o3 = $this->object->load('Mumsys_Timer');
+        $o2 = $this->object->load( 'unittest' );
+        $o3 = $this->object->load( 'Mumsys_Timer' );
 
-        $this->assertInstanceof('unittest', $o2);
-        $this->assertInstanceof('Mumsys_Timer', $o3);
+        $this->assertInstanceof( 'unittest', $o2 );
+        $this->assertInstanceof( 'Mumsys_Timer', $o3 );
     }
 
 
@@ -60,8 +60,8 @@ class Mumsys_LoaderTest
 
     public function testAutoload()
     {
-        $this->object->autoload('Mumsys_Timer');
-        $this->assertTrue(class_exists('Mumsys_Timer', $autoload = true));
+        $this->object->autoload( 'Mumsys_Timer' );
+        $this->assertTrue( class_exists( 'Mumsys_Timer', $autoload = true ) );
     }
 
 
@@ -70,12 +70,12 @@ class Mumsys_LoaderTest
         $actual = $this->object->loadedClassesGet();
         $expected = array();
 
-        $this->assertEquals(is_array($expected), is_array($actual));
+        $this->assertEquals( is_array( $expected ), is_array( $actual ) );
     }
 
     public function testGetVersionID()
     {
-        $this->assertEquals($this->_version, Mumsys_Loader::VERSION);
+        $this->assertEquals( $this->_version, Mumsys_Loader::VERSION );
     }
 
 }

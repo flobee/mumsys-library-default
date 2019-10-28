@@ -524,7 +524,7 @@ class Mumsys_Variable_Manager_Default
         switch ( $type )
         {
             case 'array':
-                if (!is_array($value)) {
+                if ( !is_array( $value ) ) {
                     $errorKey = self::MINMAX_TOO_INVALID_VALUE;
                     $errorMessage = sprintf(
                         $this->_messageTemplates['MINMAX_TOO_INVALID_VALUE'],
@@ -628,7 +628,7 @@ class Mumsys_Variable_Manager_Default
     {
         $return = true;
 
-        if ( count($expr = $item->getRegex()) > 0 && ($value = $item->getValue()) ) {
+        if ( count( $expr = $item->getRegex() ) > 0 && ( $value = $item->getValue() ) ) {
             foreach ( $expr as $regex ) {
                 $match = preg_match( $regex, $value );
 
@@ -735,14 +735,13 @@ class Mumsys_Variable_Manager_Default
         $allowEmpty = $item->getAllowEmpty();
         $required = $item->getRequired();
 
-        if (
-            ( $required == false && $allowEmpty === true && empty( $value )) ||
+        if ( ( $required == false && $allowEmpty === true && empty( $value ) ) ||
             ( $required == true && $allowEmpty === true && $value !== null && empty( $value ) )
         ) {
             return true;
         }
 
-        if ( ($value === null || $value === '' ) && ( $required || ($allowEmpty === false ) ) ) {
+        if ( ( $value === null || $value === '' ) && ( $required || ( $allowEmpty === false ) ) ) {
             if ( $required ) {
                 $item->setErrorMessage(
                     self::REQUIRED_MISSING,
@@ -851,7 +850,7 @@ class Mumsys_Variable_Manager_Default
         $messages = array();
 
         foreach ( $this->_items as $key => $item ) {
-            if ( ($errors = $item->getErrorMessages() ) ) {
+            if ( ( $errors = $item->getErrorMessages() ) ) {
                 $messages[$key] = $errors;
             }
         }
@@ -1211,7 +1210,7 @@ class Mumsys_Variable_Manager_Default
                         $this->_messageTemplates['CALLBACK_ERROR'],
                         $cmd,
                         $itemName,
-                        json_encode($value)
+                        json_encode( $value )
                     );
                     $item->setErrorMessage( self::CALLBACK_ERROR, $message );
                 } else {

@@ -191,9 +191,9 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
         $this->expectException( 'Mumsys_Service_Exception' );
         $this->expectExceptionMessageRegExp( '/(Config file not found)/' );
         $this->_dynTestFile = $this->_pathEmptyDir . '/test.php';
-        touch($this->_dynTestFile);
-        chmod($this->_dynTestFile, 0222);
-        $this->_object->setConfigsPath( $this->_pathEmptyDir);
+        touch( $this->_dynTestFile );
+        chmod( $this->_dynTestFile, 0222 );
+        $this->_object->setConfigsPath( $this->_pathEmptyDir );
         $this->_object->run();
     }
 

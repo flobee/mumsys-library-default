@@ -112,7 +112,7 @@ class Mumsys_Cache
         if ( $this->_enabled ) {
             $filename = $this->_getFilename();
 
-            if ( ($exists = file_exists( $filename ) ) && filemtime( $filename ) > time() ) {
+            if ( ( $exists = file_exists( $filename ) ) && filemtime( $filename ) > time() ) {
                 return true;
             }
 

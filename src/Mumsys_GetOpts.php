@@ -136,23 +136,23 @@ class Mumsys_GetOpts
      * @param array $options List of argument parameters to look for
      * @param array $input List of input arguments
      */
-    public function __construct(array $options=array( ), array $input=null)
+    public function __construct( array $options = array( ), array $input = null )
     {
-        if ( empty($options) ) {
+        if ( empty( $options ) ) {
             $msg = 'Empty options detected. Can not parse shell arguments';
-            throw new Mumsys_GetOpts_Exception($msg);
+            throw new Mumsys_GetOpts_Exception( $msg );
         }
 
-        if ( empty($input) ) {
+        if ( empty( $input ) ) {
             $argv = $_SERVER['argv'];
             $argc = $_SERVER['argc'];
         } else {
             $argv = $input;
-            $argc = count($input);
+            $argc = count( $input );
         }
         $this->_argv = $argv;
 
-        $map = $this->_mapOptions($options);
+        $map = $this->_mapOptions( $options );
 
         $this->_options = $options;
 
@@ -167,25 +167,25 @@ class Mumsys_GetOpts
             $arg = $argv[$argPos];
 
             // skip values as they are expected in argPos + 1, if any
-            if (isset($arg[0]) && $arg[0] == '-' )
+            if ( isset( $arg[0] ) && $arg[0] == '-' )
             {
                 if ( $arg[1] == '-' ) {
-                    $argTag = '--' . substr($arg, 2, strlen($arg));
+                    $argTag = '--' . substr( $arg, 2, strlen( $arg ) );
                 } else {
                     $argTag = '-' . $arg[1]; // take the short flag
                 }
 
-                if (!isset($map[ $argTag ]))
+                if ( !isset( $map[ $argTag ] ) )
                 {
                     // a --no-FLAG' to unset?
-                    $test = substr($argTag, 5, strlen($argTag));
-                    if (strlen($test)==1) {
+                    $test = substr( $argTag, 5, strlen( $argTag ) );
+                    if ( strlen( $test )==1 ) {
                         $unTag = '-' . $test;
                     } else {
                         $unTag = '--' . $test;
                     }
 
-                    if ( isset($map[ $unTag ]) ) {
+                    if ( isset( $map[ $unTag ] ) ) {
                         $unflag[] = $unTag;
                     } else {
                         $errorNotice .= sprintf(
@@ -201,18 +201,18 @@ class Mumsys_GetOpts
 
                 foreach ( $options as $_opk => $_opv )
                 {
-                    if ( is_string($_opk) ) {
+                    if ( is_string( $_opk ) ) {
                         $_opv = $_opk;
                     }
 
-                    if ( !isset($return[$var]) )
+                    if ( !isset( $return[$var] ) )
                     {
-                        if ( strpos($_opv, $arg) !== false )
+                        if ( strpos( $_opv, $arg ) !== false )
                         {
-                            if ( strpos($_opv, ':') !== false )
+                            if ( strpos( $_opv, ':' ) !== false )
                             {
-                                if (isset($argv[$argPos + 1])
-                                    && isset($argv[$argPos + 1][0])
+                                if ( isset( $argv[$argPos + 1] )
+                                    && isset( $argv[$argPos + 1][0] )
                                     && $argv[$argPos + 1][0] != '-')
                                 {
                                     $return[$var] = $argv[++$argPos];
@@ -220,13 +220,13 @@ class Mumsys_GetOpts
                                     /*@todo value[1] is a "-" ... missing parameter or is the value ? */
 
                                     //required not set for: $var
-                                    $errorMsg .= sprintf('Missing value for parameter "%1$s"' . PHP_EOL, $var);
+                                    $errorMsg .= sprintf( 'Missing value for parameter "%1$s"' . PHP_EOL, $var );
                                 }
                             } else {
                                 $return[$var] = true;
                             }
 
-                            unset($options[$_opk]);
+                            unset( $options[$_opk] );
                         }
                     }
                 }
@@ -242,9 +242,9 @@ class Mumsys_GetOpts
 
         if ( $errorMsg ) {
             $errorMsg .= PHP_EOL . 'Help: ' . PHP_EOL . $this->getHelp() . PHP_EOL;
-            throw new Mumsys_GetOpts_Exception($errorMsg);
+            throw new Mumsys_GetOpts_Exception( $errorMsg );
         }
-        
+
         if ( $errorNotice ) {
             $errorNotice .= PHP_EOL . 'Help: ' . PHP_EOL . $this->getHelp() . PHP_EOL;
             echo $errorNotice . PHP_EOL;
@@ -272,19 +272,19 @@ class Mumsys_GetOpts
      */
     public function getResult()
     {
-        if ($this->_resultClean) {
+        if ( $this->_resultClean ) {
             return $this->_resultClean;
         } else {
             $result = $this->_result;
-            $this->_resultClean[] = array_shift($result);
+            $this->_resultClean[] = array_shift( $result );
             // drop - and -- from keys
-            foreach ($result as $key => $value) {
-                if (isset($key[1]) && $key[1] == '-') {
+            foreach ( $result as $key => $value ) {
+                if ( isset( $key[1] ) && $key[1] == '-' ) {
                     $n = 2;
                 } else {
                     $n = 1;
                 }
-                $this->_resultClean[substr($key, $n)] = $value;
+                $this->_resultClean[substr( $key, $n )] = $value;
             }
             return $this->_resultClean;
         }
@@ -301,19 +301,19 @@ class Mumsys_GetOpts
     public function getCmd()
     {
         $this->_cmd = false;
-        foreach ($this->_result AS $k => $v) {
-            if ($k===0) {
+        foreach ( $this->_result as $k => $v ) {
+            if ( $k===0 ) {
                 continue;
             }
             if ( $v === false || $v === true )
             {
                 foreach ( $this->_options as $opk => $opv )
                 {
-                    if (is_string($opk)) {
+                    if ( is_string( $opk ) ) {
                         $opv = $opk;
                     }
 
-                    if ( preg_match('/(' . $k . ')/', $opv) )
+                    if ( preg_match( '/(' . $k . ')/', $opv ) )
                     {
 //                        if ( strpos($opv, ':') )
 //                        {
@@ -328,18 +328,18 @@ class Mumsys_GetOpts
 //                            $this->_cmd .= $k . ' ';
 //                        }
 //                        break;
-                        if ($v === false) {
-                            $this->_cmd .= '--no' . str_replace('--', '-', $this->_mapping[$k]) . ' ';
+                        if ( $v === false ) {
+                            $this->_cmd .= '--no' . str_replace( '--', '-', $this->_mapping[$k] ) . ' ';
                         } else {
                             $this->_cmd .= $k . ' ';
                         }
                     }
                 }
             } else {
-                $this->_cmd .= sprintf('%1$s %2$s ', $k, $v);
+                $this->_cmd .= sprintf( '%1$s %2$s ', $k, $v );
             }
         }
-        $this->_cmd = trim($this->_cmd);
+        $this->_cmd = trim( $this->_cmd );
         /* debug
         echo '$this->_options:';print_r($this->_options);
         echo '$this->_cmdresults:';print_r($this->_cmdresults);
@@ -358,14 +358,14 @@ class Mumsys_GetOpts
      *
      * @return string Help informations
      */
-    public function getHelp($wordWrap=80, $indentComment="    ")
+    public function getHelp( $wordWrap = 80, $indentComment = "    " )
     {
         $str = '';
-        $wrap = $wordWrap - strlen($indentComment);
+        $wrap = $wordWrap - strlen( $indentComment );
 
-        foreach ( $this->_options AS $k => $v )
+        foreach ( $this->_options as $k => $v )
         {
-            if (is_string($k)) {
+            if ( is_string( $k ) ) {
                 $option = $k;
                 $desc = $v;
             } else {
@@ -373,20 +373,20 @@ class Mumsys_GetOpts
                 $desc = '';
             }
 
-            $needvalue = strpos($option, ':');
-            $option = str_replace(':', '', $option);
+            $needvalue = strpos( $option, ':' );
+            $option = str_replace( ':', '', $option );
 
-            if ($needvalue) {
+            if ( $needvalue ) {
                 $option .= ' <yourValue/s>';
             }
 
-            if ($desc) {
-                $desc = $indentComment . wordwrap($desc, $wrap, PHP_EOL . $indentComment) . PHP_EOL . PHP_EOL;
+            if ( $desc ) {
+                $desc = $indentComment . wordwrap( $desc, $wrap, PHP_EOL . $indentComment ) . PHP_EOL . PHP_EOL;
             }
 
             $str .= $option . PHP_EOL . $desc;
         }
-        $str = trim($str);
+        $str = trim( $str );
         return $str;
     }
 
@@ -397,27 +397,27 @@ class Mumsys_GetOpts
      * @param array $options List of incoming options
      * @return array List of key value pair which is the mapping of options
      */
-    private function _mapOptions(array $options=array())
+    private function _mapOptions( array $options = array() )
     {
         $mapping = array();
 
-        foreach ($options as $opkey => $opValue)
+        foreach ( $options as $opkey => $opValue )
         {
-            if (is_string($opkey)) {
+            if ( is_string( $opkey ) ) {
                 $opValue = $opkey;
             }
 
-            $opValue = str_replace(':', '', $opValue);
+            $opValue = str_replace( ':', '', $opValue );
 
-            $parts = explode('|', $opValue);
+            $parts = explode( '|', $opValue );
 
 //            foreach($parts as $pk => & $pv) {
 //                $parts[$pk] = preg_replace('/^(--|-)/', '', $pv, -1);
 //            }
 
-            if (isset($parts[1]))
+            if ( isset( $parts[1] ) )
             {
-                if (strlen($parts[0]) > strlen($parts[1])) {
+                if ( strlen( $parts[0] ) > strlen( $parts[1] ) ) {
                     $mapping[$parts[0]] = $parts[0];
                     $mapping[$parts[1]] = $parts[0];
                 } else {

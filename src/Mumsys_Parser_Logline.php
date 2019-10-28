@@ -319,7 +319,7 @@ class Mumsys_Parser_Logline
         }
 
         $return = array();
-        if ( ($ok = $this->_applyFilters( $result ) ) ) {
+        if ( ( $ok = $this->_applyFilters( $result ) ) ) {
             $return = $ok;
         }
 

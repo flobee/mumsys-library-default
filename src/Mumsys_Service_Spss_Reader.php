@@ -33,4 +33,3 @@ class Mumsys_Service_Spss_Reader
      */
     const VERSION = '1.0.0';
 }
-

@@ -51,7 +51,7 @@ class Mumsys_Counter extends Mumsys_Abstract
      */
     public function __construct( $startCount = false )
     {
-        if ($startCount) {
+        if ( $startCount ) {
             $this->_counts += 1;
         }
     }
@@ -65,7 +65,7 @@ class Mumsys_Counter extends Mumsys_Abstract
      */
     public function add( $count )
     {
-        if ($count <= 0) {
+        if ( $count <= 0 ) {
             $count *= -1;
         }
 
@@ -81,7 +81,7 @@ class Mumsys_Counter extends Mumsys_Abstract
      */
     public function sub( $count )
     {
-        if ($count <= 0) {
+        if ( $count <= 0 ) {
             $count *= -1;
         }
 

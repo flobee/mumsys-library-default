@@ -33,4 +33,3 @@ class Mumsys_Config_Exception extends Mumsys_Exception
 {
 
 }
-

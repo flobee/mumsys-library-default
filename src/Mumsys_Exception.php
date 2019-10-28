@@ -26,11 +26,11 @@
  * @category    Mumsys
  * @package     Mumsys_Library
  */
-class Mumsys_Exception extends Exception {
+class Mumsys_Exception extends Exception
+{
     /**
      * Default error code for technical errors, no futher reason as discribed
      * in the error message.
      */
      const ERRCODE_DEFAULT = 1;
 }
-

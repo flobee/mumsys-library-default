@@ -75,8 +75,10 @@ class Mumsys_FileTest
     {
         $this->_object->setFile( $this->_fileNotOk );
 
-        $regex = '/(Can not open file "' . str_replace( '/', '\/',
-                $this->_testsDir )
+        $regex = '/(Can not open file "' . str_replace(
+            '/', '\/',
+            $this->_testsDir
+        )
             . '\/tmp\/notExists\/file.tmp" with mode "w\+". Directory is '
             . 'writeable: "No", readable: "No")/';
         $this->expectExceptionMessageRegExp( $regex );
@@ -376,7 +378,7 @@ class Mumsys_FileTest
 
         foreach ( $this->_versions as $must => $value ) {
             $this->assertTrue( isset( $possible[$must] ) );
-            $this->assertTrue( ($possible[$must] == $value ) );
+            $this->assertTrue( ( $possible[$must] == $value ) );
         }
     }
 

@@ -25,7 +25,7 @@
 
 /**
  * Generic Exception class.
- * 
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Array2Xml
