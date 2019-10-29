@@ -39,7 +39,7 @@ class Mumsys_Variable_Item_Default
     /**
      * Version ID information
      */
-    const VERSION = '1.1.2';
+    const VERSION = '1.1.3';
 
     /**
      * List of key/value pairs (property/[boolean: en|dis-abled] handled by
@@ -71,19 +71,20 @@ class Mumsys_Variable_Item_Default
      *
      * @see $_properties
      *
-     * @param array $properties List of key/value config parameters to be set.
+     * @param array $props List of key/value config parameters to be set.
      * Config values MUST NOT be null!
      */
-    public function __construct( array $properties = array() )
+    public function __construct( array $props = array() )
     {
+        // set allowed whitelist
         foreach ( $this->_properties as $key => $value ) {
-            if ( isset( $properties[$key] ) ) {
-                $this->_input[$key] = $properties[$key];
+            if ( isset( $props[$key] ) ) {
+                $this->_input[$key] = $props[$key];
             }
         }
 
-        if ( isset( $properties['state'] ) ) {
-            $this->stateSet( $properties['state'] );
+        if ( isset( $props['state'] ) ) {
+            $this->stateSet( $props['state'] );
         }
     }
 
@@ -212,16 +213,14 @@ class Mumsys_Variable_Item_Default
      */
     public function getRegex()
     {
+        $value = & $this->_input['regex'];
         $return = array();
 
-        if ( isset( $this->_input['regex'] )
-            && $this->_input['regex']  !== false // to be removed in future
-        ) {
-            $value = $this->_input['regex'];
+        if ( isset( $value ) ) {
             if ( is_array( $value ) ) {
-                $return = $value;
+                $return = (array) $value;
             } else if ( is_string( $value ) && $value > '' ) {
-                $return = array($this->_input['regex']);
+                $return = $this->_input['regex'] = array($this->_input['regex']);
             }
         }
 
