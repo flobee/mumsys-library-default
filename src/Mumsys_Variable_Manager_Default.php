@@ -277,7 +277,7 @@ class Mumsys_Variable_Manager_Default
      *          )
      * ), ...
      * $values = $_REQUEST;
-     * $validator = new Mumsys_Validate_Manager_Default($config, $values);
+     * $validator = new Mumsys_Variable_Manager_Default($config, $values);
      *
      * // Sets the state and applys it to the items so that filters are ready
      * // befor validatation. Default is "onView";
