@@ -50,7 +50,7 @@ class Mumsys_Timer
     /**
      * Version ID information.
      */
-    const VERSION = '3.2.0';
+    const VERSION = '3.2.1';
 
     /**
      * Float start time in seconds or microtime format

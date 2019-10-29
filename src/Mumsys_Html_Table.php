@@ -64,7 +64,7 @@ class Mumsys_Html_Table
     /**
      * Version ID information
      */
-    const VERSION = '3.2.1';
+    const VERSION = '3.2.3';
 
     /**
      * Array containing the table attributes used in the constructor
@@ -148,6 +148,17 @@ class Mumsys_Html_Table
         $this->_headlines['attr'] = array();
     }
 
+    /**
+     * Returns the html code of the table.
+     *
+     * This will render the table.
+     *
+     * @return string Html got of the redered table
+     */
+    public function __toString()
+    {
+        return $this->toHtml();
+    }
 
     /**
      * Set attributes for the < table > tag.

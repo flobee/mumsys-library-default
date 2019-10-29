@@ -26,7 +26,7 @@ class Mumsys_Context
     implements Mumsys_Context_Interface
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '2.0.0';
 

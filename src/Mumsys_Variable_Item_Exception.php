@@ -11,8 +11,7 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Variable
- * @version     1.1.1
- * Created: 2006 based on Mumsys_Field_EXception, renew 2016
+ * Created: 2006 based on Mumsys_Field_Exception, renew 2016
  */
 
 
@@ -26,5 +25,8 @@
 class Mumsys_Variable_Item_Exception
     extends Mumsys_Exception
 {
-
+    /**
+     * Version ID information.
+     */
+    const VERSION = '1.1.2';
 }

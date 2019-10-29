@@ -11,7 +11,7 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Config
- * @version     3.0.0
+ * Created: 2009-11-29
  */
 
 
@@ -25,5 +25,8 @@
 class Mumsys_Config_Exception
     extends Mumsys_Exception
 {
-
+    /**
+     * Version ID information.
+     */
+    const VERSION = '3.0.0';
 }

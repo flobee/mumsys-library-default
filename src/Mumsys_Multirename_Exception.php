@@ -27,5 +27,8 @@
 class Mumsys_Multirename_Exception
     extends Mumsys_Exception
 {
-
+    /**
+     * Version ID information.
+     */
+    const VERSION = '1.0.1';
 }

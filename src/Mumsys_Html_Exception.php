@@ -26,5 +26,8 @@
 class Mumsys_Html_Exception
     extends Mumsys_Exception
 {
-
+    /**
+     * Version ID information.
+     */
+    const VERSION = '3.0.0';
 }

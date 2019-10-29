@@ -46,7 +46,7 @@ class Mumsys_Service_Spss_ReaderTest
      */
     protected function setUp(): void
     {
-        $this->_version = '1.0.0';
+        $this->_version = '1.2.0';
 
         $this->_spssFile = __DIR__ . '/../testfiles/Service/Spss/pspp.sav';
         $this->_spssFileDump = $this->_spssFile . '.php-dump.txt';
@@ -280,7 +280,6 @@ class Mumsys_Service_Spss_ReaderTest
     public function testVersion()
     {
         $actual = Mumsys_Service_Spss_Reader::VERSION;
-
         $this->assertEquals( $this->_version, $actual );
     }
 }

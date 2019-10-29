@@ -104,7 +104,7 @@ class Mumsys_Php_ConsoleTest
     public function testVersion()
     {
         $this->assertEquals( $this->_version, Mumsys_Php_Console::VERSION );
-        $this->assertEquals( '3.1.1', Mumsys_Php::VERSION );
+        $this->assertEquals( '3.2.1', Mumsys_Php::VERSION );
     }
 
 }

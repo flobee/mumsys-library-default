@@ -11,7 +11,8 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Logger
- * @version     3.1.0
+ * @version     3.1.1
+ * Created on 2011/02
  */
 
 

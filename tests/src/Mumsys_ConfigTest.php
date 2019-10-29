@@ -10,9 +10,9 @@ class Mumsys_ConfigTest
     /**
      * @var Mumsys_Config
      */
-    protected $_object;
-    protected $_config;
-    protected $_context;
+    private $_object;
+    private $_config;
+    private $_context;
 
 
     /**
@@ -22,9 +22,7 @@ class Mumsys_ConfigTest
     protected function setUp(): void
     {
         $this->_context = new Mumsys_Context();
-
         $this->_config = MumsysTestHelper::getConfigs();
-
         $this->_object = new Mumsys_Config( $this->_config );
     }
 
@@ -35,7 +33,7 @@ class Mumsys_ConfigTest
      */
     protected function tearDown(): void
     {
-        $this->_object = null;
+        unset( $this->_object );
     }
 
 

@@ -12,7 +12,6 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  GetOpts
- * @version     3.1.0
  * Created: 2011-04-11
  * -----------------------------------------------------------------------
  */
@@ -29,5 +28,8 @@
 class Mumsys_GetOpts_Exception
     extends Mumsys_Exception
 {
-
+    /**
+     * Version ID information.
+     */
+    const VERSION = '3.1.1';
 }

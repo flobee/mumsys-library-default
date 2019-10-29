@@ -39,12 +39,11 @@ class Mumsys_Variable_Item_Default
     /**
      * Version ID information
      */
-    const VERSION = '1.1.2';
+    const VERSION = '1.1.3';
 
     /**
-     * List of key/value pairs (property/[boolean: en|dis-abled] handled by this item as whitelist.
-     *
-     * @todo Do we need a getProperties() methode?
+     * List of key/value pairs (property/[boolean: en|dis-abled] handled by
+     * this item as whitelist.
      *
      * @var array
      */
@@ -87,6 +86,17 @@ class Mumsys_Variable_Item_Default
         if ( isset( $props['state'] ) ) {
             $this->stateSet( $props['state'] );
         }
+    }
+
+
+    /**
+     * Returns the list of possible properties and activation flag.
+     *
+     * @return array List of property-name/flag-available pairs
+     */
+    public function getProperties()
+    {
+        return $this->_properties;
     }
 
 

@@ -29,7 +29,7 @@ class Mumsys_FileSystem_DefaultTest
         $this->_version = '3.1.0';
         $this->_versions = array(
             'Mumsys_FileSystem_Default' => $this->_version,
-            'Mumsys_FileSystem_Common_Abstract' => '3.1.0',
+            'Mumsys_FileSystem_Common_Abstract' => '3.1.1',
         );
 
         $this->_testsDir = realpath( dirname( __FILE__ ) . '/../' );
@@ -703,7 +703,7 @@ class Mumsys_FileSystem_DefaultTest
     /**
      * @covers Mumsys_Abstract::getVersions
      */
-    public function testgetVersions()
+    public function testGetVersions()
     {
         $message = 'A new version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '

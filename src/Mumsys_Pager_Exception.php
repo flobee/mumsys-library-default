@@ -27,5 +27,8 @@
 class Mumsys_Pager_Exception
     extends Mumsys_Exception
 {
-
+    /**
+     * Version ID information.
+     */
+    const VERSION = '1.1.2';
 }

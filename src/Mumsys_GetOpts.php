@@ -106,7 +106,7 @@ class Mumsys_GetOpts
     extends Mumsys_Abstract
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
     const VERSION = '3.6.1';
 
@@ -219,6 +219,7 @@ class Mumsys_GetOpts
         $var = null;
         $return = array();
         $errorMsg = '';
+        $errorNotice = '';
         $unflag = array();
 
         foreach ( $this->_options as $action => $params ) {

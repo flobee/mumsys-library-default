@@ -11,7 +11,7 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Registry
- * @version     1.0.0
+ * @version     1.0.1
  */
 
 

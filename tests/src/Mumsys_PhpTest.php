@@ -25,7 +25,7 @@ class Mumsys_PhpTest
      */
     protected function setUp(): void
     {
-        $this->_version = '3.1.1';
+        $this->_version = '3.2.1';
 
         $this->_testsDir = MumsysTestHelper::getTestsBaseDir();
         $this->object = new Mumsys_Php();

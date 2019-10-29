@@ -19,7 +19,7 @@ class Mumsys_FileSystemTest
         $this->_version = '3.0.7';
         $this->_versions = array(
             'Mumsys_FileSystem' => $this->_version,
-            'Mumsys_FileSystem_Common_Abstract' => '3.1.0',
+            'Mumsys_FileSystem_Common_Abstract' => '3.1.1',
         );
 
         $this->_testsDir = realpath( dirname( __FILE__ ) . '/../' );

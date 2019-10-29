@@ -31,7 +31,7 @@ class Mumsys_Lock
     /**
      * Version ID information
      */
-    const VERSION = '3.0.0';
+    const VERSION = '3.1.0';
 
     /**
      * Location to the lock file. Default in "/tmp/Mumsys_Lock_default.lock"

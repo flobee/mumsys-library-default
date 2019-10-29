@@ -9,8 +9,8 @@ class Mumsys_CacheTest
     /**
      * @var Mumsys_Cache
      */
-    protected $_object;
-    protected $_version;
+    private $_object;
+    private $_version;
 
 
     /**
@@ -19,9 +19,9 @@ class Mumsys_CacheTest
      */
     protected function setUp(): void
     {
-        $this->_version = '1.1.1';
+        $this->_version = '1.2.1';
         $this->_versions = array(
-            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
+            'Mumsys_Abstract' => '3.0.2',
             'Mumsys_Cache' => $this->_version,
         );
         $this->_object = new Mumsys_Cache( 'group', 'id' );

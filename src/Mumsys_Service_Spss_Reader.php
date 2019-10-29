@@ -38,7 +38,7 @@ class Mumsys_Service_Spss_Reader
     /**
      * Version ID information.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.2.0';
 
     /**
      * Variable mapping (internal -> public name)

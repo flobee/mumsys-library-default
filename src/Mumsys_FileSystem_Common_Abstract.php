@@ -29,7 +29,7 @@ abstract class Mumsys_FileSystem_Common_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '3.1.0';
+    const VERSION = '3.1.1';
 
 
     /**

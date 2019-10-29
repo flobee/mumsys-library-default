@@ -23,7 +23,13 @@ class Mumsys_TimerTest
     /**
      * @var Mumsys_TimerTest
      */
-    protected $_object;
+    private $_object;
+
+    /**
+     * Version ID
+     * @var string
+     */
+    private $_version;
 
 
     /**
@@ -32,6 +38,7 @@ class Mumsys_TimerTest
      */
     protected function setUp(): void
     {
+        $this->_version = '3.2.1';
         $this->_object = new Mumsys_Timer();
     }
 
@@ -122,8 +129,9 @@ class Mumsys_TimerTest
 
     public function testGetVersion()
     {
-        $this->assertEquals( 'Mumsys_Timer 3.2.0', $this->_object->getVersion() );
-        $this->assertEquals( '3.2.0', $this->_object->getVersionID() );
+        $this->assertEquals( 'Mumsys_Timer ' . $this->_version, $this->_object->getVersion() );
+        $this->assertEquals( Mumsys_Timer::VERSION, $this->_object->getVersionID() );
+        $this->assertEquals( Mumsys_Timer::VERSION, $this->_version );
     }
 
 }

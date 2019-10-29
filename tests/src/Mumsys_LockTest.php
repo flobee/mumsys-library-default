@@ -19,10 +19,10 @@ class Mumsys_LockTest
      */
     protected function setUp(): void
     {
-        $this->_version = '3.0.0';
+        $this->_version = '3.1.0';
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
-            'Mumsys_Lock' => '3.0.0',
+            'Mumsys_Lock' => $this->_version,
         );
         $this->_object = new Mumsys_Lock();
     }
@@ -135,7 +135,7 @@ class Mumsys_LockTest
     /**
      * @covers Mumsys_Lock::getVersions
      */
-    public function testgetVersions()
+    public function testGetVersions()
     {
         $possible = $this->_object->getVersions();
 

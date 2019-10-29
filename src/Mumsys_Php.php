@@ -44,7 +44,7 @@ class Mumsys_Php
     /**
      * Version ID information.
      */
-    const VERSION = '3.1.1';
+    const VERSION = '3.2.1';
 
     /**
      * @var string
@@ -601,6 +601,32 @@ class Mumsys_Php
     //
     // --- Array methodes ------------------------------------------------------
     //
+
+
+    /**
+     * Combines two arrays.
+     *
+     * Like array_merge_* but replaces the values from the right to the left and
+     * returns the new array. Go it? Left is the default, right is the new data
+     * we want and if exists on left replace with right.
+     *
+     * @param array $left Array with default values
+     * @param array $right Array to insert/replace to the left
+     *
+     * @return array The combined array
+     */
+    public static function array_combine( array $left, array $right )
+    {
+        foreach ( $right as $key => $value ) {
+            if ( isset( $left[$key] ) && is_array( $left[$key] ) && is_array( $value ) ) {
+                $left[$key] = self::array_combine( $left[$key], $value );
+            } else {
+                $left[$key] = $value;
+            }
+        }
+
+        return $left;
+    }
 
 
     /**

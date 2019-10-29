@@ -25,7 +25,7 @@ class Mumsys_Variable_Item_AbstractTest
      */
     protected function setUp(): void
     {
-        $this->_version = '1.2.1';
+        $this->_version = '1.3.1';
 
         $this->_config = array(
             'name' => 'somevariable',
@@ -83,6 +83,17 @@ class Mumsys_Variable_Item_AbstractTest
     {
         $this->_object->setValue( 'unittest' );
         $this->assertEquals( $this->_object->getValue(), $this->_object );
+    }
+
+
+    /**
+     * @covers Mumsys_Variable_Item_Abstract::getItemValues
+     */
+    public function testGetItemValues()
+    {
+        $config = $this->_config;
+        unset( $config['invalid'] );
+        $this->assertEquals( $config, $this->_object->getItemValues() );
     }
 
 

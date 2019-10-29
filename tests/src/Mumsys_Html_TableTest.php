@@ -38,7 +38,7 @@ class Mumsys_Html_TableTest
      */
     protected function setUp(): void
     {
-        $this->_version = '3.2.1';
+        $this->_version = '3.2.3';
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Html_Table' => $this->_version,

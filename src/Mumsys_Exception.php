@@ -25,9 +25,8 @@ class Mumsys_Exception
     extends Exception
 {
     /**
-     * Default error code for technical errors, no futher reason,
-     * discribed in the error message
-     * @var constant
+     * Default error code for technical errors, no futher reason as discribed
+     * in the error message.
      */
     const ERRCODE_DEFAULT = 1;
 

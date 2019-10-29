@@ -30,7 +30,7 @@ class Mumsys_Variable_Item_DefaultTest
      */
     protected function setUp(): void
     {
-        $this->_version = '1.1.2';
+        $this->_version = '1.1.3';
 
         $this->_config = array(
             'name' => 'some name',
@@ -73,6 +73,32 @@ class Mumsys_Variable_Item_DefaultTest
         $this->assertInstanceOf( 'Mumsys_Variable_Item_Interface', $object );
         $this->assertInstanceOf( 'Mumsys_Variable_Item_Abstract', $object );
         $this->assertInstanceOf( 'Mumsys_Variable_Item_Default', $object );
+    }
+
+
+    /**
+     * @covers Mumsys_Variable_Item_Default::getProperties
+     */
+    public function testGetProperties()
+    {
+        $propsExpected = array(
+            'name' => true,
+            'value' => true,
+            'label' => true,
+            'desc' => true,
+            'info' => true,
+            'default' => true,
+            'type' => true,
+            'minlen' => true,
+            'maxlen' => true,
+            'regex' => true,
+            'allowEmpty' => true,
+            'required' => true,
+            'errors' => true,
+            'filters' => true,
+            'callbacks' => true,
+        );
+        $this->assertEquals( $propsExpected, $this->_object->getProperties() );
     }
 
 

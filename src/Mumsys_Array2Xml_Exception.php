@@ -24,5 +24,5 @@
  */
 class Mumsys_Array2Xml_Exception extends Mumsys_Exception
 {
-    const VERSION = '1.3.1';
+    const VERSION = '1.3.2';
 }

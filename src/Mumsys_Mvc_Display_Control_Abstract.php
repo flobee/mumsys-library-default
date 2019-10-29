@@ -32,7 +32,7 @@ abstract class Mumsys_Mvc_Display_Control_Abstract
     /**
      * Version ID information.
      */
-    const VERSION = '1.1.0';
+    const VERSION = '1.1.1';
 
     /**
      * Buffer of content to output or return.

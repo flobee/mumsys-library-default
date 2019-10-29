@@ -93,6 +93,10 @@ class Mumsys_Loader
             if ( ( $test = file_exists( $classfile ) ) ) {
                 $test = require_once $classfile;
             }
+
+            if ( $test !== false ) {
+                self::$loadedClasses[$instance] = $instance;
+            }
         }
 
         return $test;

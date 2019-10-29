@@ -30,7 +30,7 @@ class Mumsys_Cache
     /**
      * Version ID information
      */
-    const VERSION = '1.1.1';
+    const VERSION = '1.2.1';
 
     /**
      * Flag if caching is enabled or not
@@ -125,10 +125,13 @@ class Mumsys_Cache
         if ( $this->_enabled ) {
             $filename = $this->_getFilename();
 
-            if ( file_exists( $filename ) && filemtime( $filename ) > time() ) {
+            if ( ( $exists = file_exists( $filename ) ) && filemtime( $filename ) > time() ) {
                 return true;
             }
-            @unlink( $filename );
+
+            if ( $exists ) {
+                unlink( $filename );
+            }
         }
 
         return false;

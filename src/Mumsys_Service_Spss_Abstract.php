@@ -31,7 +31,7 @@ abstract class Mumsys_Service_Spss_Abstract
     /**
      * Version ID information.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * SPSS Reader|Writer adapter/interface

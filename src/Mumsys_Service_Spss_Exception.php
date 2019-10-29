@@ -11,7 +11,6 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Service
- * @version     1.0.0
  * Created: 2017-11-30
  */
 
@@ -27,5 +26,8 @@
 class Mumsys_Service_Spss_Exception
     extends Mumsys_Service_Exception
 {
-
+    /**
+     * Version ID information.
+     */
+    const VERSION = '1.0.1';
 }

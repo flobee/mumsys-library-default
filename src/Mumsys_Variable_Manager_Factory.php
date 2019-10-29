@@ -27,7 +27,7 @@ class Mumsys_Variable_Manager_Factory
     /**
      * Version ID information.
      */
-    const VERSION = '1.1.1';
+    const VERSION = '1.1.2';
 
 
     /**

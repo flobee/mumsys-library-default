@@ -33,7 +33,7 @@ abstract class Mumsys_Variable_Item_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.2.1';
+    const VERSION = '1.3.1';
 
     /**
      * List of initial incoming variable properties to be set on construction.
@@ -88,11 +88,22 @@ abstract class Mumsys_Variable_Item_Abstract
     /**
      * Returns the item value for output.
      *
-     * @return string
+     * @return string Converts the value to string if differerent.
      */
     public function __toString()
     {
-        return $this->getValue();
+        return (string) $this->getValue();
+    }
+
+
+    /**
+     * Returns the registered item input properties available.
+     *
+     * @return array List of key/value pairs of the item
+     */
+    public function getItemValues()
+    {
+        return $this->_input;
     }
 
 
