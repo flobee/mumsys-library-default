@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Test class for Mumsys_FileSystem.
  */
@@ -516,6 +517,32 @@ class Mumsys_FileSystemTest
             $this->assertEquals( $message, $e->getMessage() );
             $this->assertInstanceOf( 'Mumsys_FileSystem_Exception', $e );
         }
+    }
+
+
+    /**
+     * @covers Mumsys_FileSystem::unlink
+     * @covers Mumsys_FileSystem::rmFile
+     */
+    public function testRemoveFile()
+    {
+        $file = $this->_testsDir . '/tmp/unlink.test';
+        $link = $this->_testsDir . '/tmp/unlink.test.link';
+        touch( $file );
+        symlink( $file, $link );
+
+        $this->assertTrue( file_exists( $file ) );
+        $this->assertTrue( file_exists( $link ) );
+
+        $this->assertTrue( $this->_object->unlink( $link ) );
+        $this->assertTrue( $this->_object->rmfile( $file ) );
+
+        $this->assertTrue( $this->_object->unlink( $this->_testsDir ) );
+
+        // test exception
+        /** @todo file with different ownership */
+//        $this->expectException('Mumsys_FileSystem_Exception', '/(Can not delete file "'.$file.'")/i');
+//        $this->_object->unlink($file);
     }
 
 

@@ -104,7 +104,43 @@ class Mumsys_Loader
 
 
     /**
-     * Get loaded classes.
+     * Requires/ loads a class file.
+     *
+     * @param string $location Location to the class file
+     *
+     * @return boolean true on success or false if the class could not be loaded
+     */
+    protected static function _require( $location )
+    {
+        $test = false;
+        if ( $location && file_exists( $location ) ) {
+            $test = require_once $location;
+        }
+
+        return $test;
+    }
+
+
+    /**
+     * Includes/ loads a class file.
+     *
+     * @param string $location Location to the class file
+     *
+     * @return boolean true on success or false if the class could not be loaded
+     */
+    protected static function _include( $location )
+    {
+        $test = false;
+        if ( $location && file_exists( $location ) ) {
+            $test = include_once $location;
+        }
+
+        return $test;
+    }
+
+
+    /**
+     * Get instanceiated classes.
      *
      * @return array Returns a list of loaded classes
      */

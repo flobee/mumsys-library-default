@@ -51,9 +51,9 @@ class DependencyChecks
             /** @see http://php.net/manual/en/function.htmlspecialchars.php */
             'default_charset' => array(
                 // defaults
-                'UTF-8', 'utf-8', 'ISO-8859-1', 'ISO-8859-5', 'ISO-8859-15',
-                'cp866', 'cp1251', 'cp1252', 'KOI8-R', 'BIG5', 'GB2312',
-                "BIG5-HKSCS", "Shift_JIS", 'EUC-JP', 'MacRoman',
+                'UTF-8', 'utf-8', 'ISO-8859-1', 'ISO-8859-5', 'ISO-8859-15', 'cp866',
+                'cp1251', 'cp1252', 'KOI8-R', 'BIG5', 'GB2312', "BIG5-HKSCS",
+                "Shift_JIS", 'EUC-JP', 'MacRoman',
                 // aliases
                 'ISO8859-1', 'ISO8859-5', 'ISO8859-15', 'ibm866', '866',
                 'Windows-1251', 'win-1251', '1251', 'Windows-1252', '1252',
@@ -78,7 +78,9 @@ class DependencyChecks
     {
         foreach ( $this->_requiredExtensions as $ext => $usage ) {
             $mesg = sprintf(
-                '"%1$s" extension not installed/ found for: %2$s', $ext, $usage
+                '"%1$s" extension not installed/ found for: %2$s',
+                $ext,
+                $usage
             );
             $this->assertTrue( extension_loaded( $ext ), $mesg );
         }
@@ -103,7 +105,9 @@ class DependencyChecks
 
             $mesg = sprintf(
                 'php.ini: "%1$s"; Expect one of "%2$s"; Found: "%3$s"',
-                $iniValue, '"' . implode( '"|"', $possible ) . '"', $actual
+                $iniValue,
+                '"' . implode( '"|"', $possible ) . '"',
+                $actual
             );
             $this->assertEquals( $expected, $actual, $mesg );
         }

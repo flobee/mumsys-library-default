@@ -14,6 +14,7 @@
  */
 
 
+
 /**
  * Test class for Mumsys_Timer.
  */
@@ -21,7 +22,7 @@ class Mumsys_TimerTest
     extends Mumsys_Unittest_Testcase
 {
     /**
-     * @var Mumsys_TimerTest
+     * @var Mumsys_Timer
      */
     private $_object;
 
@@ -124,6 +125,7 @@ class Mumsys_TimerTest
 
         $this->assertEquals( round( $expected, 1 ), round( $actual, 1 ) );
     }
+
 
     // Abstract class
 
