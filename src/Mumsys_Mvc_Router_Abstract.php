@@ -67,10 +67,73 @@ abstract class Mumsys_Mvc_Router_Abstract
     protected $_actionKey = 'action';
 
     /**
-     * Incomming request parameters
-     * @var array
+     * Request interface
+     * @var Mumsys_Request_Interface
      */
-    protected $_input = array();
+    protected $_request;
+
+    /**
+     * The route. Possible options: rewrite|http|html|js|json|console|shell|id|hash
+     * Most of them only decide the format to output or return. @see setRoute()
+     * @var string
+     */
+    protected $_route;
+
+
+    /**
+     * Initialise the router object.
+     *
+     * @param string $route Route to set. @see setRoute()
+     * @param Mumsys_Request_Interface Request interface
+     * @param array $options Optional initial options e.g.: 'programKey',
+     * 'controllerKey', 'actionKey' mappings to initialize the object
+     */
+    public function __construct( Mumsys_Request_Interface $request, $route = 'default', array $options = array() )
+    {
+        $this->_request = $request;
+        $this->setRoute($route);
+
+        if ( isset($options['programKey']) ) {
+            $this->setProgramKey($options['programKey']);
+        }
+
+        if ( isset($options['controllerKey']) ) {
+            $this->setControllerKey($options['controllerKey']);
+        }
+
+        if ( isset($options['actionKey']) ) {
+            $this->setActionKey($options['actionKey']);
+        }
+    }
+
+
+    /**
+     * Sets/ replaces the route.
+     *
+     * Note: Not all route options are possible from scratch.
+     * E.g. "hash" need a translator from db or config file to map the hash to
+     * program/controller/action
+     *
+     * @param string $route Route to be set:
+     * default|html = Html wrapped using ampersand "&amp;": program=Admin&ampcontroller=Index&amp;action=show
+     * rewrite = Rewrite rule; program/controller/action
+     * http|js|json = Http or js/json/console using "&" as delimiter
+     * console|shell = Using key=value pairs
+     * id = Dot seperated values. Like id=program.controller.action
+     * hash = md5 of program controller action
+     *
+     * @throws Mumsys_Mvc_Router_Exception
+     */
+    public function setRoute( $route )
+    {
+        $routes = array('default', 'rewrite', 'http', 'html', 'js', 'json', 'console', 'shell', 'id', 'hash');
+        if ( !in_array($route, $routes) ) {
+            $message = sprintf('Invalid route "%1$s" to set. Possible routes: "%2$s"', $route, implode('|', $routes));
+            throw new Mumsys_Mvc_Router_Exception($message);
+        }
+
+        $this->_route = (string) $route;
+    }
 
 
     /**

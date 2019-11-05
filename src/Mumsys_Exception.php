@@ -25,21 +25,22 @@ class Mumsys_Exception
     extends Exception
 {
     /**
-     * Default error code for technical errors, no futher reason as discribed
+     * Default error code for technical errors, no futher reason but discribed
      * in the error message.
+     * @var integer
      */
-    const ERRCODE_DEFAULT = 1;
+    public const ERRCODE_DEFAULT = 1;
 
     /**
      * File not found error code
      * @var integer
      */
-    const ERRCODE_404 = 404;
+    public const ERRCODE_404 = 404;
 
     /**
      * Server error.
      * @var integer
      */
-    const ERRCODE_500 = 500;
+    public const ERRCODE_500 = 500;
 
 }

@@ -17,8 +17,14 @@
 /**
  * Default router class to map incoming data to internal functionality.
  *
- * In detail: Incomming parameters like program/module, controler/subprogram
+ * In detail: Incomming parameters like program/module, controller/subprogram
  * action/subcalls are the parameters the router will working on in the mvc
+ * concept.
+ * These parameters will be taken and route to that endpoit. The simplest way
+ * E.g:
+ * index.php?program=User&controller=User&action=myaccount will repipe on the
+ * filesystem to: src/Programs/User/Controllers/UserController.php
+ *  -> function myaccountAction()
  *
  * The default is to use standard parameters to map and call the requested
  * program parts. E.g: program=User&controller=Index=action=show

@@ -39,20 +39,20 @@ class Mumsys_Mvc_Controller_Backend
      * Initialize the programm controller and run its requested or default
      * action.
      *
-     * @param string $program Program to select
-     * @param string $controller Program controller to select
-     * @param string $action Program action to use
+     * @param string $programName Program to select
+     * @param string $controllerName Program controller to select
+     * @param string $actionName Program action to use
      *
      * @throws Mumsys_Mvc_Controller_Exception
      */
-    public function initProgram( $program, $controller, $action )
+    public function initProgram( $programName, $controllerName, $actionName )
     {
         $config = $this->_configs;
         $programSettings = array();
 
-        $program = ucfirst( $program );
-        $controller = ucfirst( $controller );
-        $action = ucfirst( $action );
+        $program = ucfirst( $programName );
+        $controller = ucfirst( $controllerName );
+        $action = ucfirst( $actionName );
         /**
          * include settings file if exists for a program.
          * if not, please always create a blank file (performance!)
