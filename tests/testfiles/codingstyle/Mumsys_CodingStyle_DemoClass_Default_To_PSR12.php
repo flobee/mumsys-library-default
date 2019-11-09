@@ -26,7 +26,9 @@
  * @package     CodingStyle
  * @subpackage  DemoClass
  */
-class Mumsys_CodingStyle_DemoClass_Default extends Mumsys_Abstract implements Mumsys_Logger_Interface
+class Mumsys_CodingStyle_DemoClass_Default_To_PSR12
+    extends Mumsys_Abstract 
+    implements Mumsys_Logger_Interface
 {
     /**
      * Version ID information.
