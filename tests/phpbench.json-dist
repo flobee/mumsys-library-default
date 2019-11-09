@@ -1,12 +1,1 @@
-{
-    "path": "benchmarks/src",
-    "progress": "dots",
-    "xml_storage_path": "logs/phpbench_history",
-    "time_unit": "milliseconds",
-
-    "reports": {
-        "default": {
-            "extends": "aggregate"
-        }
-    }
-}
+../misc/testing/phpbench.json-dist
