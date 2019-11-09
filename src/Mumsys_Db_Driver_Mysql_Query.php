@@ -140,9 +140,9 @@ class Mumsys_Db_Driver_Mysql_Query
      */
     public function replaceQueryCompareValues( array $comparison )
     {
-        foreach ($comparison as $key => $list) {
-            if (is_numeric($key) || count($list) != 2) {
-                return $this->_setError('Invalid query operators configuration');
+        foreach ( $comparison as $key => $list ) {
+            if ( is_numeric( $key ) || count( $list ) != 2 ) {
+                return $this->_setError( 'Invalid query operators configuration' );
             }
         }
 
@@ -175,9 +175,9 @@ class Mumsys_Db_Driver_Mysql_Query
      */
     public function replaceQueryOperators( array $operators )
     {
-        foreach ($operators as $key => $list) {
-            if (is_numeric($key) || count($list) != 2) {
-                return $this->_setError('Invalid query operators configuration');
+        foreach ( $operators as $key => $list ) {
+            if ( is_numeric( $key ) || count( $list ) != 2 ) {
+                return $this->_setError( 'Invalid query operators configuration' );
             }
         }
 
@@ -208,9 +208,9 @@ class Mumsys_Db_Driver_Mysql_Query
      */
     public function replaceQuerySortations( array $sortations )
     {
-        foreach ($sortations as $key => $value) {
-            if (is_numeric($key) || !is_string($value)) {
-                return $this->_setError('Invalid query sortations configuration');
+        foreach ( $sortations as $key => $value ) {
+            if ( is_numeric( $key ) || !is_string( $value ) ) {
+                return $this->_setError( 'Invalid query sortations configuration' );
             }
         }
 
@@ -255,47 +255,47 @@ class Mumsys_Db_Driver_Mysql_Query
 
         try
         {
-            if ( (empty($params['updateall']) && (empty($params['where'])
-                && ($action == 'update' || $action == 'delete')) )
-                || ( empty($params['fields']) && $action != 'delete' )
-                || empty($params['table'])
+            if ( ( empty( $params['updateall'] ) && ( empty( $params['where'] )
+                && ( $action == 'update' || $action == 'delete' ) ) )
+                || ( empty( $params['fields'] ) && $action != 'delete' )
+                || empty( $params['table'] )
             ) {
                 $message = 'Unknown key or empty values. No "' . $action . '" action';
-                return $this->_setError($message);
+                return $this->_setError( $message );
             } else {
                 $where = '';
-                if ( isset($params['where']) ) {
-                    $where = $this->compileQueryWhere($params['where']);
+                if ( isset( $params['where'] ) ) {
+                    $where = $this->compileQueryWhere( $params['where'] );
                 }
 
                 $order = '';
-                if ( isset($params['order']) ) {
-                    $order = $this->compileQueryOrderBy($params['order']);
+                if ( isset( $params['order'] ) ) {
+                    $order = $this->compileQueryOrderBy( $params['order'] );
                 }
 
                 $limit = '';
-                if ( isset($params['limit']) ) {
-                    $limit = $this->compileQueryLimit($params['limit']);
+                if ( isset( $params['limit'] ) ) {
+                    $limit = $this->compileQueryLimit( $params['limit'] );
                 }
 
                 $sql = '';
-                $table = $this->escape($params['table']);
+                $table = $this->escape( $params['table'] );
 
                 switch ( $action )
                 {
                     case 'insert':
                         $sql = 'INSERT INTO ' . $table
-                            . $this->compileQuerySet($params['fields']);
+                            . $this->compileQuerySet( $params['fields'] );
                         break;
 
                     case 'replace':
                         $sql = 'REPLACE INTO ' . $table
-                            . $this->compileQuerySet($params['fields']);
+                            . $this->compileQuerySet( $params['fields'] );
                         break;
 
                     case 'update':
                         $sql = 'UPDATE ' . $table
-                            . $this->compileQuerySet($params['fields'])
+                            . $this->compileQuerySet( $params['fields'] )
                             . $where
                             . $order
                             . $limit;
@@ -310,7 +310,7 @@ class Mumsys_Db_Driver_Mysql_Query
                     case 'select':
                         $sql = sprintf(
                             'SELECT %1$s FROM %2$s%3$s%4$s%5$s',
-                            $this->compileQuerySelect($params['fields']),
+                            $this->compileQuerySelect( $params['fields'] ),
                             $table,
                             $where,
                             $order,
@@ -322,7 +322,7 @@ class Mumsys_Db_Driver_Mysql_Query
                 $r = $sql;
             }
 
-        } catch (Exception $ex) {
+        } catch ( Exception $ex ) {
             $r = false;
         }
 
@@ -352,7 +352,7 @@ class Mumsys_Db_Driver_Mysql_Query
      */
     public function update( array $params = array() )
     {
-        return $this->_save($params, 'update');
+        return $this->_save( $params, 'update' );
     }
 
 
@@ -376,7 +376,7 @@ class Mumsys_Db_Driver_Mysql_Query
      */
     public function select( array $params = array() )
     {
-        return $this->_save($params, 'select');
+        return $this->_save( $params, 'select' );
     }
 
 
@@ -391,9 +391,9 @@ class Mumsys_Db_Driver_Mysql_Query
      *
      * @return string|false The query string or false on error
      */
-    public function insert($params)
+    public function insert( $params )
     {
-        return $this->_save($params, 'insert');
+        return $this->_save( $params, 'insert' );
     }
 
 
@@ -411,9 +411,9 @@ class Mumsys_Db_Driver_Mysql_Query
      *
      * @return string|false The query string or false on error
      */
-    public function replace($params)
+    public function replace( $params )
     {
-        return $this->_save($params, 'replace');
+        return $this->_save( $params, 'replace' );
     }
 
 
@@ -435,9 +435,9 @@ class Mumsys_Db_Driver_Mysql_Query
      *
      * @return string|false The query string or false on error
      */
-    public function delete($params)
+    public function delete( $params )
     {
-        return $this->_save($params, 'delete');
+        return $this->_save( $params, 'delete' );
     }
 
 
@@ -482,16 +482,16 @@ class Mumsys_Db_Driver_Mysql_Query
      */
     public function compileQueryExpression( array $expression )
     {
-        list($operator, $keyval) = each($expression);
+        list($operator, $keyval) = each( $expression );
 
-        if ( is_array($keyval) && $operator !== '_' ) {
-            list($key, $value) = each($keyval);
-            if ( !is_string($key) ) {
+        if ( is_array( $keyval ) && $operator !== '_' ) {
+            list($key, $value) = each( $keyval );
+            if ( !is_string( $key ) ) {
                 $msg = sprintf(
                     'Invalid expression key "%1$s" for where expression: '
-                    . 'values (json): %2$s', $key, json_encode($value)
+                    . 'values (json): %2$s', $key, json_encode( $value )
                 );
-                return $this->_setError($msg);
+                return $this->_setError( $msg );
             }
         } else if ( $operator === '_' ) {
             $key = null;
@@ -500,27 +500,27 @@ class Mumsys_Db_Driver_Mysql_Query
             $msg = sprintf(
                 'Invalid input for where expression. Array expected. '
                 . 'Operator: "%1$s" values (json): %2$s',
-                $operator, json_encode($keyval)
+                $operator, json_encode( $keyval )
             );
-            return $this->_setError($msg);
+            return $this->_setError( $msg );
         }
 
         // escape / testing all
-        if ( $operator == '=' && is_array($value) ) {
+        if ( $operator == '=' && is_array( $value ) ) {
             $operator = 'IN';
             $new = array();
             foreach ( $value as $type ) {
-                if ( is_string($type) ) {
-                    $new[] = '\'' . $this->escape($type) . '\'';
-                } else if ( is_numeric($type) ) {
+                if ( is_string( $type ) ) {
+                    $new[] = '\'' . $this->escape( $type ) . '\'';
+                } else if ( is_numeric( $type ) ) {
                     $new[] = $type;
                 } else {
                     $msg = sprintf(
                         'Invalid value list for where expression. Strings|'
                         . 'numbers expected. operator: "%1$s" values (json): '
-                        . '%2$s', $operator, json_encode($keyval)
+                        . '%2$s', $operator, json_encode( $keyval )
                     );
-                    return $this->_setError($msg);
+                    return $this->_setError( $msg );
                 }
             }
             $value = $new;
@@ -531,34 +531,34 @@ class Mumsys_Db_Driver_Mysql_Query
             // no quotes but escaping
             // '_' => 'date >= now()',
             // '_' => array('date >= \'2010-12-31\'', 'date <= now()')
-            if ( is_array($value) ) {
+            if ( is_array( $value ) ) {
                 $new = array();
                 foreach ( $value as $string ) {
                     /** @todo cast to string or test for it? */
-                    if ( !is_string($string) ) {
+                    if ( !is_string( $string ) ) {
                         $msg = sprintf(
                             'Invalid value list for where expression'
                             . '. String expected. Operator: "_"'
-                            . ' values (json): "%1$s"', json_encode($value)
+                            . ' values (json): "%1$s"', json_encode( $value )
                         );
-                        return $this->_setError($msg);
+                        return $this->_setError( $msg );
                     }
                     $new[] = $string;
                 }
-                $value = '(' . implode(' AND ', $new) . ')';
-            } else if ( !is_string($value) ) {
+                $value = '(' . implode( ' AND ', $new ) . ')';
+            } else if ( !is_string( $value ) ) {
                 $msg = sprintf(
                     'Invalid value for where expression. Array|string '
                     . 'expected. Operator: "_" values (json): "%1$s"',
-                    json_encode($keyval)
+                    json_encode( $keyval )
                 );
-                return $this->_setError($msg);
+                return $this->_setError( $msg );
             }
         } else {
             $valIsInt = true;
-            if ( !is_int($value) ) {
+            if ( !is_int( $value ) ) {
                 $valIsInt = false;
-                $value = $this->escape($value);
+                $value = $this->escape( $value );
             }
         }
 
@@ -570,7 +570,7 @@ class Mumsys_Db_Driver_Mysql_Query
                 break;
 
             case 'IN':
-                $stmt = '`' . (string) $key . '` IN (' . implode(',', $value) . ')';
+                $stmt = '`' . (string) $key . '` IN (' . implode( ',', $value ) . ')';
                 break;
 
             case 'LIKE':  // "like" for "%contains%"
@@ -616,7 +616,7 @@ class Mumsys_Db_Driver_Mysql_Query
                 $msg = sprintf(
                     'Unknown operator "%1$s" to create expression', $operator
                 );
-                return $this->_setError($msg);
+                return $this->_setError( $msg );
                 break;
         }
 
@@ -627,13 +627,13 @@ class Mumsys_Db_Driver_Mysql_Query
 
     /**
      * ToDO:
-     * 	SELECT a
-     * 		FROM b
-     * 		WHERE c
-     * 		HAVING h
-     * 		GROUP g
-     * 		ORDER o
-     * 		LIMIT l
+     *     SELECT a
+     *         FROM b
+     *         WHERE c
+     *         HAVING h
+     *         GROUP g
+     *         ORDER o
+     *         LIMIT l
      * compile query by options
      * private ?
      *
@@ -650,7 +650,7 @@ class Mumsys_Db_Driver_Mysql_Query
      *  [limit] array|string array(0,1) or string 0,1
      * @return string Returns a compiled sql statement
      */
-    public function compileQuery(array $opts=array( ))
+    public function compileQuery( array $opts = array( ) )
     {
         $cols = '';
         $table = '';
@@ -661,17 +661,17 @@ class Mumsys_Db_Driver_Mysql_Query
         $limit = '';
 
         // select cols
-        if ( empty($opts['cols']) ) {
+        if ( empty( $opts['cols'] ) ) {
             $cols = '*';
         } else {
-            $cols = $this->compileQuerySelect($opts['cols']);
+            $cols = $this->compileQuerySelect( $opts['cols'] );
         }
 
         // table
-        if ( empty($opts['table']) ) {
-            return $this->_setError('No tables given to compile');
+        if ( empty( $opts['table'] ) ) {
+            return $this->_setError( 'No tables given to compile' );
         } else {
-            if ( is_array($opts['table']) ) {
+            if ( is_array( $opts['table'] ) ) {
                 foreach ( $opts['table'] as $t => $theJoin ) {
                     if ( $table ) {
                         $table .= ',';
@@ -679,7 +679,7 @@ class Mumsys_Db_Driver_Mysql_Query
                     $table .= $t;
                     // inner join, we need to c
                     // create WHERE clause
-                    if ( !empty($theJoin) ) {
+                    if ( !empty( $theJoin ) ) {
                         if ( $where ) {
                             $where .= ' AND ';
                         } else {
@@ -695,25 +695,25 @@ class Mumsys_Db_Driver_Mysql_Query
         }
 
         // where
-        if ( !empty($opts['where']) ) {
-            if ($where) {
-                $where .= ' AND ' . $this->_compileQueryWhere($opts['where']);
+        if ( !empty( $opts['where'] ) ) {
+            if ( $where ) {
+                $where .= ' AND ' . $this->_compileQueryWhere( $opts['where'] );
             } else {
-                $where = $this->compileQueryWhere($opts['where']);
+                $where = $this->compileQueryWhere( $opts['where'] );
             }
         }
 
         // group; as methode?
-        if ( !empty($opts['group']) ) {
-            $group = $this->compileQueryGroupBy($opts['group']);
+        if ( !empty( $opts['group'] ) ) {
+            $group = $this->compileQueryGroupBy( $opts['group'] );
         }
 
         // having
         // where sql filter
         // bring to having clause if set
-        if ( !empty($opts['having']) ) {
-            if ( is_array($opts['having']) ) {
-                foreach ( $opts['having'] AS $n => &$key ) {
+        if ( !empty( $opts['having'] ) ) {
+            if ( is_array( $opts['having'] ) ) {
+                foreach ( $opts['having'] as $n => &$key ) {
                     if ( $having ) {
                         $having .= ' AND ';
                     } else {
@@ -730,13 +730,13 @@ class Mumsys_Db_Driver_Mysql_Query
         }
 
         // order
-        if ( !empty($opts['order']) ) {
-            $order = $this->compileQueryOrderBy($opts['order']);
+        if ( !empty( $opts['order'] ) ) {
+            $order = $this->compileQueryOrderBy( $opts['order'] );
         }
 
         // limit
-        if ( !empty($opts['limit']) ) {
-            $limit = $this->compileQueryLimit($opts['limit']);
+        if ( !empty( $opts['limit'] ) ) {
+            $limit = $this->compileQueryLimit( $opts['limit'] );
         }
 
         $reture = sprintf(
@@ -788,15 +788,15 @@ class Mumsys_Db_Driver_Mysql_Query
     public function compileQuerySelect( array $fields )
     {
         $result = array();
-        foreach ( $fields AS $alias => $column ) {
-            if ($column =='*') {
+        foreach ( $fields as $alias => $column ) {
+            if ( $column =='*' ) {
                 $result[] = '*';
                 continue;
             }
-            if ( is_numeric($alias) ) {
-                $result[] =  '`' . $this->escape($column) . '`';
+            if ( is_numeric( $alias ) ) {
+                $result[] =  '`' . $this->escape( $column ) . '`';
 
-            } else if ( $alias === '_'  ) {
+            } else if ( $alias === '_' ) {
                 // '_' un-escaped, un-quoted values!
                 try {
                     $result[] = (string)$column;
@@ -804,18 +804,18 @@ class Mumsys_Db_Driver_Mysql_Query
                     $msg = sprintf(
                         'Error casting column "%1$s" to string. Values '
                         . '(json) %2$s. Message: "%3$s"',
-                        gettype($column),
-                        json_encode($column),
+                        gettype( $column ),
+                        json_encode( $column ),
                         $e->getMessage()
                     );
-                    return $this->_setError($msg);
+                    return $this->_setError( $msg );
                 }
             } else {
-                $result[] = '`' . $this->escape($column) . '` AS ' . $alias;
+                $result[] = '`' . $this->escape( $column ) . '` AS ' . $alias;
             }
         }
 
-        return implode(',', $result);
+        return implode( ',', $result );
     }
 
 
@@ -836,14 +836,14 @@ class Mumsys_Db_Driver_Mysql_Query
     public function compileQuerySet( array $set = array() )
     {
         $data = array();
-        foreach($set as $col => $value) {
+        foreach ( $set as $col => $value ) {
             switch ( $col )
             {
                 case '_':
                     $data[] = (string) $value;
                     break;
 
-                case (is_null($value)===true):
+                case ( is_null( $value )===true ):
                 case $value === 'null':
                 case $value === 'NULL':
                     $data[] = '`' . $col . '`=NULL';
@@ -855,11 +855,11 @@ class Mumsys_Db_Driver_Mysql_Query
                     break;
 
                 default:
-                    $data[] = '`' . $col . '`=\'' . $this->escape($value) . '\'';
+                    $data[] = '`' . $col . '`=\'' . $this->escape( $value ) . '\'';
 
             }
         }
-        return ' SET ' . implode(',', $data);
+        return ' SET ' . implode( ',', $data );
     }
 
 
@@ -912,15 +912,15 @@ class Mumsys_Db_Driver_Mysql_Query
      */
     public function compileQueryWhere( array $where = array() )
     {
-        if ( empty($where) ) {
+        if ( empty( $where ) ) {
             return ' WHERE 1=1';
         }
 
-        if ( !isset($this->_queryCompareValues[key($where)]) ) {
+        if ( !isset( $this->_queryCompareValues[key( $where )] ) ) {
             // compat. mode
-            $result = $this->_compileQueryWhereSimple($where);
+            $result = $this->_compileQueryWhereSimple( $where );
         } else {
-            $result = $this->_compileQueryWhere($where);
+            $result = $this->_compileQueryWhere( $where );
         }
 
         if ( $result ) {
@@ -939,21 +939,21 @@ class Mumsys_Db_Driver_Mysql_Query
     private function _compileQueryWhereSimple( array $where = array() )
     {
         $result = array();
-        foreach($where as $col => $value) {
-            if ( is_numeric($col) ) {
-                $result[] = $this->escape($value);
+        foreach ( $where as $col => $value ) {
+            if ( is_numeric( $col ) ) {
+                $result[] = $this->escape( $value );
             } else {
                 // '_' un-escaped values!
                 if ( $col === '_' ) {
                     $result[] = (string) $value;
                 } else {
                     $result[] = '`' . (string) $col . '`=\''
-                        . $this->escape($value) . '\'';
+                        . $this->escape( $value ) . '\'';
                 }
             }
         }
 
-        return implode(' AND ', $result);
+        return implode( ' AND ', $result );
     }
 
 
@@ -973,33 +973,32 @@ class Mumsys_Db_Driver_Mysql_Query
     {
         $expressions = '';
 
-        foreach($where as $oCmp => $exprlists) {
+        foreach ( $where as $oCmp => $exprlists ) {
             $outerCmp = $oCmp; // hold outside while stmt
-            foreach($exprlists as $i => $exprPart) {
-                if ( !is_array($exprPart) || empty($exprPart) ) {
+            foreach ( $exprlists as $i => $exprPart ) {
+                if ( !is_array( $exprPart ) || empty( $exprPart ) ) {
                     $msg = sprintf(
                         'Invalid sub-expression. Must be \'[operator] => [key/value]\'. Found '
-                        . '(json): %1$s ',
-                        json_encode($exprPart)
+                        . '(json): %1$s ', json_encode( $exprPart )
                     );
-                    return $this->_setError($msg);
+                    return $this->_setError( $msg );
                 }
 
-                $needle = key($exprPart); // check for the upcomming operator
-                if ( isset($this->_queryOperators[$needle]) || $needle === '_' ) {
-                    $compExpr[] = $this->compileQueryExpression($exprPart);
+                $needle = key( $exprPart ); // check for the upcomming operator
+                if ( isset( $this->_queryOperators[$needle] ) || $needle === '_' ) {
+                    $compExpr[] = $this->compileQueryExpression( $exprPart );
                 } else {
-                    $inner[] = $this->_compileQueryWhere($exprPart);
+                    $inner[] = $this->_compileQueryWhere( $exprPart );
                 }
             }
 
-            if ( isset($compExpr) && $compExpr ) {
-                $inner[] = '(' . implode(' ' . $outerCmp . ' ', $compExpr) . ')';
+            if ( isset( $compExpr ) && $compExpr ) {
+                $inner[] = '(' . implode( ' ' . $outerCmp . ' ', $compExpr ) . ')';
             }
         }
 
-        if ( isset($inner) ) {
-            $expressions = '' . implode(' ' . $outerCmp . ' ', $inner) . '';
+        if ( isset( $inner ) ) {
+            $expressions = '' . implode( ' ' . $outerCmp . ' ', $inner ) . '';
         }
 
         return $expressions;
@@ -1017,17 +1016,18 @@ class Mumsys_Db_Driver_Mysql_Query
     {
         $result = '';
         if ( $groupby ) {
-            foreach($groupby as $key ) {
+            foreach ( $groupby as $key ) {
                 if ( $result ) {
                     $result .= ',';
                 } else {
                     $result = ' GROUP BY ';
                 }
-                $result .= '`' . (string)$key . '`';
+                $result .= '`' . (string) $key . '`';
             }
         }
         return $result;
     }
+
 
     /**
      * Returns the 'order by' clause query statement.
@@ -1041,18 +1041,18 @@ class Mumsys_Db_Driver_Mysql_Query
     public function compileQueryOrderBy( array $orderby )
     {
         $res = '';
-        foreach ( $orderby AS $column => $way ) {
+        foreach ( $orderby as $column => $way ) {
             if ( $res ) {
                 $res .= ',';
             } else {
                 $res = ' ORDER BY ';
             }
 
-            if ( is_numeric($column) ) {
+            if ( is_numeric( $column ) ) {
                 $column = $way;
                 $way = 'ASC';
             } else {
-                if ( !isset($this->_querySortations[$way]) ) {
+                if ( !isset( $this->_querySortations[$way] ) ) {
                     $way = 'ASC';
                 }
             }
@@ -1079,12 +1079,12 @@ class Mumsys_Db_Driver_Mysql_Query
      */
     public function compileQueryLimit( array $limit )
     {
-        $cnt = count($limit);
-        if ($cnt===1) {
+        $cnt = count( $limit );
+        if ( $cnt===1 ) {
             $res = ' LIMIT ' . (int) $limit[0];
-        } else if ($cnt === 2) {
+        } else if ( $cnt === 2 ) {
             $res = ' LIMIT ' . (int) $limit[1]
-                .' OFFSET '. (int) $limit[0];
+                . ' OFFSET ' . (int) $limit[0];
         } else {
             $res = '';
         }
@@ -1116,13 +1116,13 @@ class Mumsys_Db_Driver_Mysql_Query
      * @return string|false seperated string by given separator
      * @throws Mumsys_Db_Exception Throws excetion on errors
      */
-    public function sqlImplode($separator=',', array $array=array(),
-        $withKeys=false, $defaults=array(), $valwrap='', $keyValWrap='',
-        $keyWrap='')
+    public function sqlImplode($separator = ',', array $array = array(),
+        $withKeys = false, $defaults = array(), $valwrap = '', $keyValWrap = '',
+        $keyWrap = '')
     {
         if ( $withKeys ) {
             $r = array();
-            while ( list($key, $value) = each($array) ) {
+            while ( list($key, $value) = each( $array ) ) {
                 // e.g.: value = "db.col IS NOT NULL"
                 if ( $value === false ) {
                     $_keyValWrap = '';
@@ -1131,7 +1131,7 @@ class Mumsys_Db_Driver_Mysql_Query
                 }
 
                 if ( $defaults ) {
-                    if ( !isset($defaults[$key]['type']) ) {
+                    if ( !isset( $defaults[$key]['type'] ) ) {
                         // ignore
                         //? continue; // set after unit test
                     } else {
@@ -1157,11 +1157,11 @@ class Mumsys_Db_Driver_Mysql_Query
                             case 'set':
                             case 'time':
                             case 'datetime':
-                                $value = $this->escape((string)$value);
+                                $value = $this->escape( (string)$value );
                                 break;
 
                             case 'timestamp':
-                                $value = $this->escape((string)$value);
+                                $value = $this->escape( (string)$value );
                                 /* //eg.: 2005-12-12 10:08:29
                                   if(strlen($value) != 19) {
 
@@ -1176,7 +1176,7 @@ class Mumsys_Db_Driver_Mysql_Query
                                  * what happen if default not exists?
                                  * escaping the default value?
                                  */
-                                if ( is_array($defaults[$key]['default']) ) {
+                                if ( is_array( $defaults[$key]['default'] ) ) {
                                     $value = $defaults[$key]['default'][0];
                                 } else {
                                     $value = $defaults[$key]['default'];
@@ -1194,16 +1194,16 @@ class Mumsys_Db_Driver_Mysql_Query
                             . $_valwrap . $value . $_valwrap;
                     }
                 } else {
-                    if ( !is_string($valwrap) ) {
+                    if ( !is_string( $valwrap ) ) {
                         $msg = sprintf(
-                            _('Value could not be used. Value warp: "%1$s"'),
-                            gettype($valwrap)
+                            _( 'Value could not be used. Value warp: "%1$s"' ),
+                            gettype( $valwrap )
                         );
-                        return $this->_setError($msg);
+                        return $this->_setError( $msg );
                     } else {
                         // produce a eg: `key` = 'value'
                         $r[] = $keyWrap . $key . $keyWrap . $_keyValWrap
-                            . $valwrap . $this->escape($value) . $valwrap;
+                            . $valwrap . $this->escape( $value ) . $valwrap;
                     }
                 }
             }
@@ -1211,7 +1211,7 @@ class Mumsys_Db_Driver_Mysql_Query
             $r = $array;
         }
 
-        return implode($separator, $r);
+        return implode( $separator, $r );
     }
 
 
@@ -1232,7 +1232,7 @@ class Mumsys_Db_Driver_Mysql_Query
      *
      * @param boolean $flag True for throw errors or false to collect errors.
      */
-    public function setThrowErrors($flag)
+    public function setThrowErrors( $flag )
     {
         $this->_throwErrors = (boolean)$flag;
     }
@@ -1252,7 +1252,7 @@ class Mumsys_Db_Driver_Mysql_Query
      *
      * @param boolean $flag True for enable debug mode.
      */
-    public function setDebugMode($flag)
+    public function setDebugMode( $flag )
     {
         $this->_debug = (boolean)$flag;
     }
@@ -1279,7 +1279,7 @@ class Mumsys_Db_Driver_Mysql_Query
      *
      * @throws Mumsys_Db_Exception If connection can't be made or ThrowErrors was set
      */
-    protected function _setError($message, $code=null, $previous=null)
+    protected function _setError( $message, $code = null, $previous = null )
     {
         if ( $this->_debug ) {
             //this blows up the memory! use carefully
@@ -1288,8 +1288,8 @@ class Mumsys_Db_Driver_Mysql_Query
             $this->_errorList[0] = array('message' => $message, 'code'=>$code);
         }
 
-        if ( $this->_throwErrors) {
-            throw new Mumsys_Db_Exception($message, $code, $previous);
+        if ( $this->_throwErrors ) {
+            throw new Mumsys_Db_Exception( $message, $code, $previous );
         }
 
         return false;

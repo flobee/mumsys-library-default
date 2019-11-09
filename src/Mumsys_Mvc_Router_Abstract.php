@@ -88,21 +88,22 @@ abstract class Mumsys_Mvc_Router_Abstract
      * @param array $options Optional initial options e.g.: 'programKey',
      * 'controllerKey', 'actionKey' mappings to initialize the object
      */
-    public function __construct( Mumsys_Request_Interface $request, $route = 'default', array $options = array() )
+    public function __construct( Mumsys_Request_Interface $request,
+        $route = 'default', array $options = array() )
     {
         $this->_request = $request;
-        $this->setRoute($route);
+        $this->setRoute( $route );
 
-        if ( isset($options['programKey']) ) {
-            $this->setProgramKey($options['programKey']);
+        if ( isset( $options['programKey'] ) ) {
+            $this->setProgramKey( $options['programKey'] );
         }
 
-        if ( isset($options['controllerKey']) ) {
-            $this->setControllerKey($options['controllerKey']);
+        if ( isset( $options['controllerKey'] ) ) {
+            $this->setControllerKey( $options['controllerKey'] );
         }
 
-        if ( isset($options['actionKey']) ) {
-            $this->setActionKey($options['actionKey']);
+        if ( isset( $options['actionKey'] ) ) {
+            $this->setActionKey( $options['actionKey'] );
         }
     }
 
@@ -127,9 +128,12 @@ abstract class Mumsys_Mvc_Router_Abstract
     public function setRoute( $route )
     {
         $routes = array('default', 'rewrite', 'http', 'html', 'js', 'json', 'console', 'shell', 'id', 'hash');
-        if ( !in_array($route, $routes) ) {
-            $message = sprintf('Invalid route "%1$s" to set. Possible routes: "%2$s"', $route, implode('|', $routes));
-            throw new Mumsys_Mvc_Router_Exception($message);
+        if ( !in_array( $route, $routes ) ) {
+            $message = sprintf(
+                'Invalid route "%1$s" to set. Possible routes: "%2$s"', $route,
+                implode( '|', $routes )
+            );
+            throw new Mumsys_Mvc_Router_Exception( $message );
         }
 
         $this->_route = (string) $route;

@@ -71,8 +71,8 @@ abstract class Mumsys_Mvc_Display_Helper_Url
      */
     public function url( $path, $params, $format = 'default' )
     {
-        $parts = explode('/', $path);
-        switch (count($parts))
+        $parts = explode( '/', $path );
+        switch ( count( $parts ) )
         {
             // program/controller/action
             case 3:
@@ -90,17 +90,17 @@ abstract class Mumsys_Mvc_Display_Helper_Url
                 break;
 
             default:
-                throw new Mumsys_Mvc_Router_Exception('Invalid parameters given to url()');
+                throw new Mumsys_Mvc_Router_Exception( 'Invalid parameters given to url()' );
         }
 
-        $result = $this->_urlFormat($result, $config);
+        $result = $this->_urlFormat( $result, $config );
     }
 
 
     protected function _urlFormat( $parts, $config )
     {
         $template = null;
-        switch (strtolower($config))
+        switch ( strtolower( $config ) )
         {
             case 'default':
             case 'html':
@@ -116,22 +116,20 @@ abstract class Mumsys_Mvc_Display_Helper_Url
                 $result = $parts[0] . '/' . $parts[1] . '/' . $parts[2];
                 break;
 
-
             case 'id':
                 $result = 'id=' . $parts[0] . '.' . $parts[1] . '.' . $parts[2];
                 break;
 
             case 'hash':
-                $result = 'hash=' . md5($parts[0] . $parts[1] . $parts[2]);
+                $result = 'hash=' . md5( $parts[0] . $parts[1] . $parts[2] );
                 break;
 
             default:
-                throw new Mumsys_Mvc_Router_Exception(sprintf('Invalid config "%1$s"', $config));
+                throw new Mumsys_Mvc_Router_Exception( sprintf( 'Invalid config "%1$s"', $config ) );
         }
 
-        if ($template)
-        {
-            switch (strtolower($this->_route))
+        if ( $template ) {
+            switch ( strtolower( $this->_route ) )
             {
                 case 'default':
                 case 'html':
@@ -151,10 +149,10 @@ abstract class Mumsys_Mvc_Display_Helper_Url
                     break;
 
                 default:
-                    throw new Mumsys_Mvc_Router_Exception(sprintf('Invalid route "%1$s"', $this->_route));
+                    throw new Mumsys_Mvc_Router_Exception( sprintf( 'Invalid route "%1$s"', $this->_route ) );
             }
 
-            $result = sprintf($template, $parts[0], $parts[1], $parts[2]);
+            $result = sprintf( $template, $parts[0], $parts[1], $parts[2] );
         }
 
         return $result;

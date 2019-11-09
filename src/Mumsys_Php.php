@@ -764,7 +764,7 @@ class Mumsys_Php
      * indexes to the specified key. Last value
      * contains the searched $needle; if the array is empty nothing were found
      */
-    public static function array_keys_search_recursive( $needle, & $haystack,
+    public static function array_keys_search_recursive( $needle, &$haystack,
         $stopOnFirstMatch = false )
     {
         $matches = array();
