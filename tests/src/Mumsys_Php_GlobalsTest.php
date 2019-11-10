@@ -87,14 +87,17 @@ class Mumsys_Php_GlobalsTest
     public function testGetServerVar()
     {
         // not exists in shell
-        $expected1 = 'fail';
-        $actual1 = $this->_object->getServerVar( 'REMOTE_ADDR', 'fail' );
+        $actualA = $this->_object->getServerVar( 'REMOTE_ADDR', 'fail' );
+        $expectedA = 'fail';
 
-        $expected2 = 'phpunit';
-        $actual2 = $this->_object->getServerVar( 'PHP_SELF', 'not set' );
+        $actualB = $this->_object->getServerVar( 'PHP_SELF', 'not set' );
+        $expectedB = 'phpunit';
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertRegExp( '/(' . $expected2 . ')/i', $actual2 );
+        $actualC = $this->_object->getServerVar( null );
+
+        $this->assertEquals( $expectedA, $actualA );
+        $this->assertRegExp( '/(' . $expectedB . ')/i', $actualB );
+        $this->assertEquals($_SERVER, $actualC);
     }
 
 
