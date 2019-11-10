@@ -50,6 +50,8 @@ logs/
 /docs/gitstat*
 /docs/API/*
 
+# tests helper/ tools
 tests/.phpunit.result.cache
-
+tests/cs
+tests/csf
 phpbench.json
