@@ -87,19 +87,37 @@ class Mumsys_Loader
     {
         $test = false;
         if ( !class_exists( $instance, true ) ) {
+            // fallback if %path% isnt set correctly for the current path
             $path = __DIR__ . '/';
             $classfile = $path . $instance . '.php';
 
-            if ( ( $test = file_exists( $classfile ) ) ) {
-                $test = require_once $classfile;
-            }
-
+            $test = self::_require($classfile);
             if ( $test !== false ) {
-                self::$loadedClasses[$instance] = $instance;
+                self::$_loadedClasses[$instance] = $instance;
             }
         }
 
         return $test;
+    }
+
+
+    /**
+     * Get instanceiated classes.
+     *
+     * @param string $prefix Prefix for filtering the return values (default: 'Mumsys_')
+     *
+     * @return array Returns a list of loaded classes
+     */
+    public static function loadedClassesGet( $prefix = 'Mumsys_' )
+    {
+        $classList = get_declared_classes();
+        foreach ( $classList as $class ) {
+            if ( substr( $class, 0, strlen( $prefix ) ) === $prefix ) {
+                self::$_loadedClasses[$class] = $class;
+            }
+        }
+
+        return self::$_loadedClasses;
     }
 
 
@@ -110,7 +128,7 @@ class Mumsys_Loader
      *
      * @return boolean true on success or false if the class could not be loaded
      */
-    protected static function _require( $location )
+    protected static function _require( string $location )
     {
         $test = false;
         if ( $location && file_exists( $location ) ) {
@@ -128,7 +146,7 @@ class Mumsys_Loader
      *
      * @return boolean true on success or false if the class could not be loaded
      */
-    protected static function _include( $location )
+    protected static function _include( string $location )
     {
         $test = false;
         if ( $location && file_exists( $location ) ) {
@@ -136,24 +154,6 @@ class Mumsys_Loader
         }
 
         return $test;
-    }
-
-
-    /**
-     * Get instanceiated classes.
-     *
-     * @return array Returns a list of loaded classes
-     */
-    public static function loadedClassesGet( $prefix = 'Mumsys_' )
-    {
-        $classList = get_declared_classes();
-        foreach ( $classList as $class ) {
-            if ( substr( $class, 0, strlen( $prefix ) ) === $prefix ) {
-                self::$_loadedClasses[$class] = $class;
-            }
-        }
-
-        return self::$_loadedClasses;
     }
 
 }
