@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Mumsys_Cache_Default
@@ -9,8 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Cache
+ * @package     Library
+ * @subpackage  Cache
  * Created: 2013-12-10
  */
 
@@ -33,14 +33,10 @@
  *      $cache->write( 3600, serialize($data) );
  * }
  * </code>
- *
- * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Cache
  */
 class Mumsys_Cache_Default
     extends Mumsys_Cache_File
     implements Mumsys_Cache_Interface
 {
-
+    public const VERSION = Mumsys_Cache_File::VERSION;
 }

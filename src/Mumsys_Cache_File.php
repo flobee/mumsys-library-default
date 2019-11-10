@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Mumsys_Cache_File
@@ -9,8 +9,8 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Cache
+ * @package     Library
+ * @subpackage  Cache
  * Created: 2013-12-10
  */
 
@@ -30,10 +30,6 @@
  *      $cache->write( 3600, serialize($data) );
  * }
  * </code>
- *
- * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Cache
  */
 class Mumsys_Cache_File
     extends Mumsys_Abstract
@@ -41,7 +37,7 @@ class Mumsys_Cache_File
     /**
      * Version ID information
      */
-    const VERSION = '1.1.2';
+    public const VERSION = '2.3.2';
 
     /**
      * Flag if caching is enabled or not
@@ -84,10 +80,10 @@ class Mumsys_Cache_File
      * @param string $group Groupname
      * @param string $id Unique ID e.g. requested area + userid
      */
-    public function __construct( $group, $id )
+    public function __construct( string $group, string $id )
     {
-        $this->_id = md5( (string) $id );
-        $this->_group = (string) $group;
+        $this->_id = md5( $id );
+        $this->_group = $group;
     }
 
 
@@ -97,9 +93,9 @@ class Mumsys_Cache_File
      * @param int $ttl Time to live in seconds
      * @param mixed $content Content to be cached
      */
-    public function write( $ttl, $content )
+    public function write( $ttl, $content ): void
     {
-        $filename = $this->_getFilename();
+        $filename = $this->getFilename();
 
         if ( $fp = fopen( $filename, 'wb' ) ) {
             if ( flock( $fp, LOCK_EX ) ) {
@@ -121,8 +117,10 @@ class Mumsys_Cache_File
      */
     public function read()
     {
-        $filename = $this->_getFilename();
-        $data = file_get_contents( $filename );
+        $filename = $this->getFilename();
+        if ( ($data = file_get_contents( $filename ) ) === false) {
+            throw new Mumsys_Cache_Exception('Can not read cache. File not found');
+        }
 
         return unserialize( $data );
     }
@@ -131,20 +129,20 @@ class Mumsys_Cache_File
     /**
      * Checks if an entry is cached.
      *
-     * @param string $group Groupname
-     * @param string $id Unique ID
-     *
      * @return boolean True if cache exists or false
      */
-    public function isCached()
+    public function isCached(): bool
     {
         if ( $this->_enabled ) {
-            $filename = $this->_getFilename();
+            $filename = $this->getFilename();
 
-            if ( file_exists( $filename ) && filemtime( $filename ) > time() ) {
+            if ( ( $exists = file_exists( $filename ) ) && filemtime( $filename ) > time() ) {
                 return true;
             }
-            @unlink( $filename );
+
+            if ( $exists ) {
+                unlink( $filename );
+            }
         }
 
         return false;
@@ -154,22 +152,16 @@ class Mumsys_Cache_File
     /**
      * Removes the cache file.
      *
-     * @return boolean True on success
-     *
-     * @throws Exception If remove of the cache fails
+     * @return boolean True on success, false if cache can not be deleted
      */
-    public function removeCache()
+    public function removeCache(): bool
     {
-        $filename = $this->_getFilename();
-        try {
-            file_exists( $filename );
-            unlink( $filename );
-        }
-        catch ( Exception $ex ) {
-            throw new Mumsys_Cache_Exception( $ex->getMessage(), $ex->getCode() );
+        $filename = $this->getFilename();
+        if ( file_exists( $filename ) === false ) {
+            return true;
         }
 
-        return true;
+        return unlink( $filename );
     }
 
 
@@ -178,9 +170,9 @@ class Mumsys_Cache_File
      *
      * @param string $prefix Filename prefix for the cache filename
      */
-    public function setPrefix( $prefix )
+    public function setPrefix( string $prefix ): void
     {
-        $this->_prefix = (string) $prefix;
+        $this->_prefix = $prefix;
     }
 
 
@@ -189,7 +181,7 @@ class Mumsys_Cache_File
      *
      * @return string Prefix of the cache filename default: "cache_"
      */
-    public function getPrefix()
+    public function getPrefix(): string
     {
         return $this->_prefix;
     }
@@ -198,9 +190,9 @@ class Mumsys_Cache_File
     /**
      * Sets the path for cache files.
      *
-     * @param string $store The dir where to store the cache files
+     * @param string $path The dir where to store the cache files
      */
-    public function setPath( $path )
+    public function setPath( $path ): void
     {
         $this->_path = rtrim( (string) $path, '/' ) . '/';
     }
@@ -211,7 +203,7 @@ class Mumsys_Cache_File
      *
      * @return string Path of the cache files
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->_path;
     }
@@ -222,7 +214,7 @@ class Mumsys_Cache_File
      *
      * If set to false it forces the isCached() method to return false.
      *
-     * @param boolean $flag True to enable the cache, false to disable
+     * @param boolean|int $flag True|1 to enable the cache, false|0 to disable
      */
     public function setEnable( $flag )
     {
@@ -235,7 +227,7 @@ class Mumsys_Cache_File
      *
      * @return string File location of the cache file
      */
-    protected function _getFilename()
+    public function getFilename()
     {
         return $this->_path . $this->_prefix . $this->_group . '_' . $this->_id;
     }

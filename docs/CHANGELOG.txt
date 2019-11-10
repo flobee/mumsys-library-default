@@ -1,5 +1,32 @@
 # Changes
 
+2019-11
+
+    + Updates tests tools which come now from `misc` repository
+    + Updates phpunit to 8.4
+
+    + Mumsys_Cache
+        + API changes in Mumsys_Cache_Interface Version 2.3.1
+        + Improvments in Mumsys_Cache_[Interface|File] 
+        + Improves CS, phpdoc, SCA checks; Updates tests
+        + Sets VERSION in Mumsys_Cache_Default
+        + Sets strict_types to all classes
+        + Removes @category, @package, @subpackage from class header; see file 
+          header
+
+    + Mumsys_Abstract 
+        + Version 3.0.3
+        + Fixes getVersions() unknown class version string to be valid with 
+          https://semver.org
+        + Sets strict_types
+        + Removes @category, @package, @subpackage from class header; seen file 
+          header
+
+    + MumsysTestHelper
+        + Sets strict_types
+        + Removes @category, @package, @subpackage from class header; seen file 
+          header
+    
 2019-10
 
     + API change in Mumsys_Php_Globals pls check if relevant for you (see below)!

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Mumsys_Cache_Exception
@@ -9,20 +9,17 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Cache
+ * @package     Library
+ * @subpackage  Cache
  * Created: 2013-12-10
  */
 
 
 /**
  * Generic exception class.
- *
- * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Cache
  */
-class Mumsys_Cache_Exception extends Mumsys_Exception
+class Mumsys_Cache_Exception
+    extends Mumsys_Exception
 {
 
 }

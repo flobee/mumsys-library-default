@@ -1,4 +1,18 @@
-<?php
+<?php declare(strict_types=1);
+
+/**
+ * Mumsys_Cache
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Cache
+ * Created: 2013-12-10
+ */
 
 /**
  * Mumsys_Cache Tests
@@ -10,7 +24,16 @@ class Mumsys_CacheTest
      * @var Mumsys_Cache
      */
     private $_object;
+
+    /**
+     * @var string
+     */
     private $_version;
+
+    /**
+     * @var array
+     */
+    private $_versions;
 
 
     /**
@@ -21,7 +44,7 @@ class Mumsys_CacheTest
     {
         $this->_version = '1.2.1';
         $this->_versions = array(
-            'Mumsys_Abstract' => '3.0.2',
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Cache' => $this->_version,
         );
         $this->_object = new Mumsys_Cache( 'group', 'id' );
@@ -35,8 +58,7 @@ class Mumsys_CacheTest
      */
     protected function tearDown(): void
     {
-        $this->object = null;
-        unset( $this->object );
+        unset( $this->_object );
     }
 
 
@@ -76,6 +98,12 @@ class Mumsys_CacheTest
     public function testIsCached()
     {
         $this->assertTrue( $this->_object->isCached() );
+
+        $this->_object->write( 1, 'data to cache' );
+        $this->assertTrue( $this->_object->isCached() );
+        sleep(2);// to invalidate the cache
+        $this->assertFalse( $this->_object->isCached() );
+
     }
 
 
@@ -85,6 +113,8 @@ class Mumsys_CacheTest
      */
     public function testRemoveCache()
     {
+        $this->_object->write( 1, 'data to cache' );
+
         $actual1 = $this->_object->isCached();
         $this->_object->removeCache();
         $actual2 = $this->_object->isCached();

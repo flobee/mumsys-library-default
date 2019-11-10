@@ -9,19 +9,16 @@
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Cache
+ * @package     Library
+ * @subpackage  Cache
+ * @version     2.3.1
  * Created: 2013-12-10
  */
 /* }}} */
 
 
 /**
- * Caching interface
- *
- * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Cache
+ * Caching interface to cache data for a while to a specific location.
  */
 interface Mumsys_Cache_Interface
 {
@@ -33,7 +30,7 @@ interface Mumsys_Cache_Interface
      * @param string $group Groupname
      * @param string $id Unique ID e.g. requested area + userid
      */
-    public function __construct( $group, $id );
+    public function __construct( string $group, string $id );
 
 
     /**
@@ -42,7 +39,7 @@ interface Mumsys_Cache_Interface
      * @param int $ttl Time to live in seconds
      * @param mixed $data Content to be cached
      */
-    public function write( $ttl, $data );
+    public function write( $ttl, $data ): void;
 
 
     /**
@@ -56,22 +53,17 @@ interface Mumsys_Cache_Interface
     /**
      * Checks if an entry is cached.
      *
-     * @param string $group Groupname
-     * @param string $id Unique ID
-     *
      * @return boolean True if cache exists or false
      */
-    public function isCached();
+    public function isCached(): bool;
 
 
     /**
      * Removes the cache file.
      *
-     * @return boolean True on success
-     *
-     * @throws Exception If remove of the cache fails
+     * @return boolean True on success, false if cache can not be deleted
      */
-    public function removeCache();
+    public function removeCache(): bool;
 
 
     /**
@@ -79,7 +71,7 @@ interface Mumsys_Cache_Interface
      *
      * @param string $prefix Filename prefix for the cache filename
      */
-    public function setPrefix( $prefix );
+    public function setPrefix( string $prefix ): void;
 
 
     /**
@@ -87,15 +79,15 @@ interface Mumsys_Cache_Interface
      *
      * @return string Prefix of the cache filename default: "cache_"
      */
-    public function getPrefix();
+    public function getPrefix(): string;
 
 
     /**
      * Sets the path for cache files.
      *
-     * @param string $store The dir where to store the cache files
+     * @param string $path The dir where to store the cache files
      */
-    public function setPath( $path );
+    public function setPath( $path ): void;
 
 
     /**
@@ -103,13 +95,13 @@ interface Mumsys_Cache_Interface
      *
      * @return string Path of the cache files
      */
-    public function getPath();
+    public function getPath(): string;
 
 
     /**
      * Sets caching mode to enabled or not.
      *
-     * @param boolean $flag True to enable the cache, false to disable
+     * @param boolean|int $flag True|1 to enable the cache, false|0 to disable
      */
     public function setEnable( $flag );
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Mumsys_Cache
@@ -28,9 +28,9 @@ class Mumsys_Cache
     extends Mumsys_Abstract
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
-    const VERSION = '1.2.1';
+    public const VERSION = '1.2.1';
 
     /**
      * Flag if caching is enabled or not
@@ -115,9 +115,6 @@ class Mumsys_Cache
     /**
      * Checks if an entry is cached.
      *
-     * @param string $group Groupname
-     * @param string $id Unique ID
-     *
      * @return boolean True if cache exists or false
      */
     public function isCached()
@@ -178,7 +175,7 @@ class Mumsys_Cache
     /**
      * Sets the path for cache files.
      *
-     * @param string $store The dir where to store the cache files
+     * @param string $path The dir where to store the cache files
      */
     public function setPath( $path )
     {

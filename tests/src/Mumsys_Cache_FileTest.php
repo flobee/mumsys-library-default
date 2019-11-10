@@ -1,4 +1,18 @@
-<?php
+<?php declare(strict_types=1);
+
+/**
+ * Mumsys_Cache_Default
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Cache
+ * Created: 2013-12-10
+ */
 
 /**
  * Mumsys_Cache_File Tests
@@ -7,11 +21,24 @@ class Mumsys_Cache_FileTest
     extends Mumsys_Unittest_Testcase
 {
     /**
-     * @var Mumsys_Cache
+     * @var Mumsys_Cache_File
      */
-    protected $_object;
-    protected $_version;
-    protected $_versions;
+    private $_object;
+
+    /**
+     * @var string
+     */
+    private $_version;
+
+    /**
+     * @var array
+     */
+    private $_versions;
+
+    /**
+     * @var string
+     */
+    private $_pathTmpDir;
 
 
     /**
@@ -20,13 +47,15 @@ class Mumsys_Cache_FileTest
      */
     protected function setUp(): void
     {
-        $this->_version = '1.1.2';
+        $this->_version = '2.3.2';
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Cache_File' => $this->_version,
         );
         $this->_object = new Mumsys_Cache_File( 'group', 'id' );
-        $this->_object->setPath( '/tmp/' );
+
+        $this->_pathTmpDir = MumsysTestHelper::getTestsBaseDir() . '/tmp';
+        $this->_object->setPath( $this->_pathTmpDir );
     }
 
 
@@ -36,7 +65,11 @@ class Mumsys_Cache_FileTest
      */
     protected function tearDown(): void
     {
-        $this->object = null;
+        $filename = $this->_object->getFilename();
+        if ( file_exists( $filename ) ) {
+            unlink( $filename );
+        }
+
         unset( $this->object );
     }
 
@@ -44,19 +77,18 @@ class Mumsys_Cache_FileTest
     /**
      * @covers Mumsys_Cache_File::__construct
      * @covers Mumsys_Cache_File::write
-     * @covers Mumsys_Cache_File::isCached
-     * @covers Mumsys_Cache_File::_getFilename
      */
     public function testWrite()
     {
-        $this->_object = new Mumsys_Cache_File( 'group', 'id' );
-        $this->_object->setPath( '/tmp/' );
+        $content = 'data to cache';
+        $actualA = $this->_object->isCached();
+        $this->_object->write( 1, $content );
+        $actualB = $this->_object->isCached();
+        $actualC = $this->_object->read();
 
-        $this->_object->isCached();
-
-        $this->_object->write( 2, 'data to cache' );
-        $actual = $this->_object->read();
-        $this->assertEquals( 'data to cache', $actual );
+        $this->assertFalse( $actualA );
+        $this->assertTrue( $actualB );
+        $this->assertEquals( $content, $actualC );
     }
 
 
@@ -65,36 +97,60 @@ class Mumsys_Cache_FileTest
      */
     public function testRead()
     {
+        $content = 'data to cache';
+        $this->_object->write( 2, $content );
         $actual = $this->_object->read();
-        $this->assertEquals( 'data to cache', $actual );
+
+        $this->assertEquals( $content, $actual );
+
+        $this->_object->removeCache();
+        $errBak = error_reporting();
+        error_reporting( 0 );
+        $this->expectException( 'Mumsys_Cache_Exception' );
+        $this->expectExceptionMessage( 'Can not read cache. File not found' );
+        try {
+            $this->_object->read();
+        }
+        catch ( Exception $ex ) {
+            error_reporting( $errBak );
+            throw $ex;
+        }
+        error_reporting( $errBak );
     }
 
 
     /**
      * @covers Mumsys_Cache_File::isCached
-     * @covers Mumsys_Cache_File::_getFilename
      */
     public function testIsCached()
     {
-        $this->assertTrue( $this->_object->isCached() );
+        $this->testWrite();
+        // 4CC to unlink the file
+        sleep( 1 );
+        $actualA = $this->_object->isCached();
+        $this->assertFalse( $actualA );
     }
 
 
     /**
      * @covers Mumsys_Cache_File::removeCache
-     * @covers Mumsys_Cache_File::_getFilename
      */
     public function testRemoveCache()
     {
-        $actual1 = $this->_object->isCached();
+        $actualA = $this->_object->isCached();
         $this->_object->removeCache();
-        $actual2 = $this->_object->isCached();
-        $this->assertTrue( $actual1 );
-        $this->assertFalse( $actual2 );
+        $actualB = $this->_object->isCached();
 
-        $this->expectExceptionMessageRegExp( '/(unlink)(.*)(No such file or directory)/i' );
-        $this->expectException( 'Mumsys_Cache_Exception' );
+        $content = 'data to cache';
+        $this->_object->write( 2, $content );
+        $actualC = $this->_object->isCached();
         $this->_object->removeCache();
+        $actualD = $this->_object->isCached();
+
+        $this->assertFalse( $actualA );
+        $this->assertFalse( $actualB );
+        $this->assertTrue( $actualC );
+        $this->assertFalse( $actualD );
     }
 
 
@@ -102,10 +158,10 @@ class Mumsys_Cache_FileTest
      * @covers Mumsys_Cache_File::setPrefix
      * @covers Mumsys_Cache_File::getPrefix
      */
-    public function testSetPrefix()
+    public function testGetSetPrefix()
     {
-        $this->_object->setPrefix( 'fx' );
-        $this->assertEquals( 'fx', $this->_object->getPrefix() );
+        $this->_object->setPrefix( 'prfx' );
+        $this->assertEquals( 'prfx', $this->_object->getPrefix() );
     }
 
 
@@ -115,8 +171,8 @@ class Mumsys_Cache_FileTest
      */
     public function testSetPath()
     {
-        $this->_object->setPath( '/tmp//' );
-        $this->assertEquals( '/tmp/', $this->_object->getPath() );
+        $this->_object->setPath( $this->_pathTmpDir . '//' );
+        $this->assertEquals( $this->_pathTmpDir . '/', $this->_object->getPath() );
     }
 
 
@@ -127,11 +183,30 @@ class Mumsys_Cache_FileTest
     {
         $this->_object->setEnable( false );
         $this->assertFalse( $this->_object->isCached() );
+        $this->_object->setEnable( 0 );
+        $this->assertFalse( $this->_object->isCached() );
+
+        $this->_object->setEnable( true );
+        $this->assertFalse( $this->_object->isCached() );
+        $this->_object->setEnable( 1 );
+        $this->assertFalse( $this->_object->isCached() );
+    }
+
+
+    /**
+     * @covers Mumsys_Cache_File::getFilename
+     */
+    public function testGetFilename()
+    {
+        $actualA = $this->_object->getFilename();
+
+        $expectedA = $this->_pathTmpDir . '/cache_group_' . md5( 'id' );
+        $this->assertEquals( $expectedA, $actualA );
     }
 
     //
     // test abstract class
-
+    //
 
     /**
      * @covers Mumsys_Cache_File::getVersion
