@@ -30,7 +30,7 @@ class Mumsys_Variable_Item_DefaultTest
      */
     protected function setUp()
     {
-        $this->_version = '1.1.2';
+        $this->_version = '1.1.3';
 
         $this->_config = array(
             'name' => 'some name',
