@@ -97,7 +97,7 @@ class Mumsys_Php_GlobalsTest
 
         $this->assertEquals( $expectedA, $actualA );
         $this->assertRegExp( '/(' . $expectedB . ')/i', $actualB );
-        $this->assertEquals($_SERVER, $actualC);
+        $this->assertEquals( $_SERVER, $actualC );
     }
 
 

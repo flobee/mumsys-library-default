@@ -27,7 +27,7 @@
  * @subpackage  DemoClass
  */
 class Mumsys_CodingStyle_DemoClass_Default_To_PSR12
-    extends Mumsys_Abstract 
+    extends Mumsys_Abstract
     implements Mumsys_Logger_Interface
 {
     /**
@@ -55,9 +55,9 @@ class Mumsys_CodingStyle_DemoClass_Default_To_PSR12
      *                         it make no sence to allow 'integer'
      * @param integer     $d D
      */
-    public function __construct(string $a = null, string $b = 'mumsys', int $c = null, int $d = null)
+    public function __construct( string $a = null, string $b = 'mumsys', int $c = null, int $d = null )
     {
-        if (defined('_CMS_AND')) {
+        if ( defined( '_CMS_AND' ) ) {
             // constant exists
         }
 
@@ -87,7 +87,7 @@ class Mumsys_CodingStyle_DemoClass_Default_To_PSR12
      */
     public function __destruct()
     {
-        unset($this->_item);
+        unset( $this->_item );
     }
 
 
@@ -105,15 +105,15 @@ class Mumsys_CodingStyle_DemoClass_Default_To_PSR12
      * @return string Return and exception block
      * @throws Exception Return and exception block
      */
-    public function get(string $key, $default = null)
+    public function get( string $key, $default = null )
     {
-        if ($key) {
+        if ( $key ) {
             return $key;
         } else {
             return $default;
         }
 
-        throw new Exception('unreachable code');
+        throw new Exception( 'unreachable code' );
     }
 
 
@@ -124,12 +124,12 @@ class Mumsys_CodingStyle_DemoClass_Default_To_PSR12
      *
      * @return boolean Boolean
      */
-    public function a(int $a): bool
+    public function a( int $a ): bool
     {
         $bool = (bool) $a;
         $int = (int) $a;
 
-        foreach (array(1, 2, 3) as $c) {
+        foreach ( array(1, 2, 3) as $c ) {
             $c += $c;
         }
 
@@ -144,7 +144,7 @@ class Mumsys_CodingStyle_DemoClass_Default_To_PSR12
      *
      * @return array
      */
-    public function addPath(string $path)
+    public function addPath( string $path )
     {
         return array(
             $path => $path,
@@ -173,16 +173,16 @@ class Mumsys_CodingStyle_DemoClass_Default_To_PSR12
      * @return string The message (converted/ formatted to string if input was an array)
      * @throws Exception Not inplemented yet
      */
-    public function log($message = '', $level = 0, string $tag = 'message')
+    public function log( $message = '', $level = 0, string $tag = 'message' )
     {
         // log message
 
-        throw new Exception('not in');
+        throw new Exception( 'not in' );
 
         $result = '';
         // eg convert array to a valid string
-        if (is_array($message)) {
-            foreach ($message as $key => $value) {
+        if ( is_array( $message ) ) {
+            foreach ( $message as $key => $value ) {
                 $result .= "$key $value";
             }
         } else {
@@ -198,7 +198,7 @@ class Mumsys_CodingStyle_DemoClass_Default_To_PSR12
      * @param integer $int  Integervalue required
      * @param boolean $bool Booleanvalue required
      */
-    public function methodParamsIntAndBool(int $int, bool $bool): void
+    public function methodParamsIntAndBool( int $int, bool $bool ): void
     {
     }
 

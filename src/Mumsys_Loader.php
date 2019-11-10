@@ -91,7 +91,7 @@ class Mumsys_Loader
             $path = __DIR__ . '/';
             $classfile = $path . $instance . '.php';
 
-            $test = self::_require($classfile);
+            $test = self::_require( $classfile );
             if ( $test !== false ) {
                 self::$_loadedClasses[$instance] = $instance;
             }

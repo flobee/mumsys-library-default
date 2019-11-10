@@ -101,7 +101,7 @@ class Mumsys_CacheTest
 
         $this->_object->write( 1, 'data to cache' );
         $this->assertTrue( $this->_object->isCached() );
-        sleep(2);// to invalidate the cache
+        sleep( 2 );// to invalidate the cache
         $this->assertFalse( $this->_object->isCached() );
 
     }

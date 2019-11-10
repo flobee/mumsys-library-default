@@ -53,8 +53,9 @@ class Mumsys_CodingStyle_DemoClass_DemoWithErrors extends Mumsys_Abstract implem
         $b = 'mumsys',
         int $c = null,
         int $d = null
-    ) {
-        if (defined('_CMS_AND')) {
+    )
+    {
+        if ( defined( '_CMS_AND' ) ) {
             // constant exists
         }
 
@@ -80,7 +81,7 @@ class Mumsys_CodingStyle_DemoClass_DemoWithErrors extends Mumsys_Abstract implem
      */
     public function __destruct()
     {
-        unset($this->_item);
+        unset( $this->_item );
     }
 
 
@@ -99,15 +100,15 @@ class Mumsys_CodingStyle_DemoClass_DemoWithErrors extends Mumsys_Abstract implem
      *
      * @throws Exception Return and exception block
      */
-    public function get($key, $default = null)
+    public function get( $key, $default = null )
     {
-        if ($key) {
+        if ( $key ) {
             return $key;
         } else {
             return $default;
         }
 
-        throw new Exception('unreachable code');
+        throw new Exception( 'unreachable code' );
     }
 
 
@@ -118,14 +119,14 @@ class Mumsys_CodingStyle_DemoClass_DemoWithErrors extends Mumsys_Abstract implem
      *
      * @param integer $a
      */
-    public function a(int $a)
+    public function a( int $a )
     {
         // to be fixed to 'bool' keyword and in lower case
         $bool = (bool)$a;
         $int = (int)$a; // to be fixed to 'int' keyword
 
         // 'as' not 'AS'
-        foreach (array(1,2,3) as $c) {
+        foreach ( array(1,2,3) as $c ) {
             $c += $c;
         }
 
@@ -134,7 +135,7 @@ class Mumsys_CodingStyle_DemoClass_DemoWithErrors extends Mumsys_Abstract implem
 
 
     // missing doc block warning
-    public function addPath($path)
+    public function addPath( $path )
     {
         return array(
             $path => $path,
@@ -155,12 +156,12 @@ class Mumsys_CodingStyle_DemoClass_DemoWithErrors extends Mumsys_Abstract implem
     }
 
 
-    public function register($key, $value = null)
+    public function register( $key, $value = null )
     {
     }
 
 
-    public function replace($key, $value = null)
+    public function replace( $key, $value = null )
     {
     }
 }

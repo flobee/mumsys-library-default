@@ -118,8 +118,8 @@ class Mumsys_Cache_File
     public function read()
     {
         $filename = $this->getFilename();
-        if ( ($data = file_get_contents( $filename ) ) === false) {
-            throw new Mumsys_Cache_Exception('Can not read cache. File not found');
+        if ( ( $data = file_get_contents( $filename ) ) === false ) {
+            throw new Mumsys_Cache_Exception( 'Can not read cache. File not found' );
         }
 
         return unserialize( $data );

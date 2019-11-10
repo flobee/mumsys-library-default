@@ -190,7 +190,7 @@ class Mumsys_Db_Driver_Mysql_Query
      *
      * @return array List of key/value pairs for the sortation
      */
-    public function getQuerySortations( array $sortations )
+    public function getQuerySortations()
     {
         return $this->_querySortations;
     }
