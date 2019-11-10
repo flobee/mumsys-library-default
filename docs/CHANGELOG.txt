@@ -26,7 +26,10 @@
         + Sets strict_types
         + Removes @category, @package, @subpackage from class header; seen file 
           header
-    
+
+    + Mumsys_Semver
+        + Init Mumsys_Semver + Tests for semver.org version checks of mumsys objects
+
 2019-10
 
     + API change in Mumsys_Php_Globals pls check if relevant for you (see below)!
