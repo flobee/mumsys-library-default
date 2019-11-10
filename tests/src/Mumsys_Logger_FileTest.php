@@ -38,7 +38,7 @@ class Mumsys_Logger_FileTest
         $this->_versions = array(
             'Mumsys_Logger_File' => '3.0.4',
             'Mumsys_Logger_Abstract' => '3.3.1',
-            'Mumsys_Abstract' => '3.0.2',
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
         );
 
         $this->_testsDir = realpath( dirname( __FILE__ ) . '/../' );

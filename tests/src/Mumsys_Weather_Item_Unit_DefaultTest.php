@@ -38,7 +38,7 @@ class Mumsys_Weather_Item_Unit_DefaultTest
         $this->_versions = array(
             'Mumsys_Weather_Item_Unit_Default' => $this->_version,
             'Mumsys_Weather_Item_Unit_Default' => '1.0.0',
-            'Mumsys_Abstract' => '3.0.2',
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
         );
 
         $this->_object = new Mumsys_Weather_Item_Unit_Default();

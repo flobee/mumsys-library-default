@@ -1,18 +1,16 @@
 <?php
 
 
-/** Test class for the tests */
+/** Test class A for the tests */
 class Mumsys_AbstractTestClass
     extends Mumsys_Abstract
 {
-    const VERSION = '0.0.1';
-
+    public const VERSION = '0.0.1';
 
     public function checkKey( $s )
     {
         parent::_checkKey( $s );
     }
-
 }
 
 
@@ -44,10 +42,10 @@ class Mumsys_AbstractTest
      */
     protected function setUp(): void
     {
-        $this->_version = '3.0.2';
+        $this->_version = '3.0.3';
         $this->_versions = array(
             'Mumsys_AbstractTestClass' => '0.0.1',
-            'Mumsys_Abstract' => '3.0.2',
+            'Mumsys_Abstract' => $this->_version,
         );
         $this->_object = new Mumsys_AbstractTestClass();
     }
@@ -59,7 +57,7 @@ class Mumsys_AbstractTest
      */
     protected function tearDown(): void
     {
-        $this->_object = null;
+        unset( $this->_object );
     }
 
 
@@ -80,13 +78,14 @@ class Mumsys_AbstractTest
      */
     public function testGetVersion()
     {
-        $actual1 = $this->_object->getVersion();
-        $expected1 = 'Mumsys_AbstractTestClass 0.0.1';
+        $actualA = $this->_object->getVersion();
+        $expectedA = 'Mumsys_AbstractTestClass 0.0.1';
 
-        $actual2 = Mumsys_Abstract::getVersion();
-        $expected2 = 'Mumsys_Abstract ' . $this->_version;
+        $actualB = Mumsys_Abstract::getVersion();
+        $expectedB = 'Mumsys_Abstract ' . $this->_version;
 
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertEquals( $expectedA, $actualA );
+        $this->assertEquals( $expectedB, $actualB );
     }
 
 

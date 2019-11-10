@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Mumsys_Abstract
@@ -16,17 +16,13 @@
 
 /**
  * Abstract class to extend mumsys classes with basic methodes and features.
- *
- * @category    Mumsys
- * @package     Library
- * @subpackage  Abstract
  */
 abstract class Mumsys_Abstract
 {
     /**
      * Version ID information.
      */
-    const VERSION = '3.0.2';
+    public const VERSION = '3.0.3';
 
 
     /**
@@ -66,11 +62,11 @@ abstract class Mumsys_Abstract
         $versions = array();
 
         foreach ( $list as $class ) {
-            if ( !preg_match( '/(exception|interface)/i', $class ) ) {
+            if ( preg_match( '/(exception|interface)/i', $class ) !== false ) {
                 if ( defined( $class . '::VERSION' ) ) {
                     $versions[$class] = $class::VERSION;
                 } else {
-                    $versions[$class] = '- unknown version -';
+                    $versions[$class] = '0.0.0-unknown-version';
                 }
             }
         }

@@ -60,7 +60,7 @@ class Mumsys_Array2Xml_DefaultTest
         $this->_versions = array(
             'Mumsys_Array2Xml_Default' => $this->_version,
             'Mumsys_Array2Xml_Abstract' => '1.0.0',
-            'Mumsys_Abstract' => '3.0.2',
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
         );
 
         $lf = "\n";

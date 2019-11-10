@@ -32,7 +32,7 @@ class Mumsys_Config_FileTest
     {
         $this->_versions = array(
             'Mumsys_Config_File' => '3.0.0',
-            'Mumsys_Abstract' => '3.0.2',
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
         );
         $this->_configs = array('testkey' => 'test value');
         $this->_paths = array(

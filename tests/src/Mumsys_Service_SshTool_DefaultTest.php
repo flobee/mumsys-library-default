@@ -45,7 +45,7 @@ class Mumsys_Service_SshTool_DefaultTest
         $this->_version = '1.0.0';
         $this->_versions = array(
             'Mumsys_Service_SshTool_Default' => $this->_version,
-            'Mumsys_Abstract' => '3.0.2',
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
         );
 
         $basePath = MumsysTestHelper::getTestsBaseDir();

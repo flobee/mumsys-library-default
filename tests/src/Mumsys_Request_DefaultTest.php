@@ -47,7 +47,7 @@ class Mumsys_Request_DefaultTest
         $this->_versions = array(
             'Mumsys_Request_Abstract' => '1.0.1',
             'Mumsys_Request_Default' => '1.1.0',
-            'Mumsys_Abstract' => '3.0.2',
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
         );
 
         $options = array(

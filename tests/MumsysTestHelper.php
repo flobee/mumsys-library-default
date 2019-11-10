@@ -1,8 +1,24 @@
-<?php
+<?php declare(strict_types=1);
+
+/**
+ * Mumsys_Cache
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Cache
+ * Created: 2013-12-10
+ */
 
 
+/**
+ * Mumsys tests helper class
+ */
 class MumsysTestHelper
-    extends PHPUnit\Framework\TestCase
 {
     /**
      * Config parametes
@@ -73,16 +89,20 @@ class MumsysTestHelper
     /**
      * Returns the location of the tests directory.
      *
+     * Note: without a DIRECTORY_SEPARATOR at the end of string
+     *
      * @return string location
      */
     public static function getTestsBaseDir()
     {
         if ( isset( self::$_params['testsBaseDir'] ) ) {
-            return self::$_params['testsBaseDir'];
+            $dir = self::$_params['testsBaseDir'];
         } else {
-            self::$_params['testsBaseDir'] = __DIR__ . '/';
-            return self::$_params['testsBaseDir'];
+            self::$_params['testsBaseDir'] = __DIR__;
+            $dir = self::$_params['testsBaseDir'];
         }
+
+        return rtrim( $dir, DIRECTORY_SEPARATOR );
     }
 
 }

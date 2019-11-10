@@ -20,7 +20,7 @@ class Mumsys_ContextTest
     {
         $this->_version = '2.0.0';
         $this->_versions = array(
-            'Mumsys_Abstract' => '3.0.2',
+            'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Context' => $this->_version,
         );
         $this->_logfile = '/tmp/' . basename( __FILE__ ) . '.log';
