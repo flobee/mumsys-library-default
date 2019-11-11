@@ -30,6 +30,11 @@
     + Mumsys_Semver
         + Init Mumsys_Semver + Tests for semver.org version checks of mumsys objects
 
+    + Mumsys_Variable*
+        + API change in Mumsys_Variable_Manager_Default::registerItem() to handle
+          inconsisteny for the manager when using createItem() before and have 
+          no 'name' attribute
+
 2019-10
 
     + API change in Mumsys_Php_Globals pls check if relevant for you (see below)!

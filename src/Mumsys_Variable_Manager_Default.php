@@ -54,7 +54,7 @@ class Mumsys_Variable_Manager_Default
     /**
      * Version ID information
      */
-    const VERSION = '1.3.4';
+    const VERSION = '2.3.4';
 
     /**
      * Value "%1$s" does not match the regex rule: "%2$s"
@@ -818,6 +818,8 @@ class Mumsys_Variable_Manager_Default
     /**
      * Register a variable item object.
      *
+     * If the item 'name' does not exists $key will be used for the 'name' property.
+     *
      * @param string $key Key/ identifier of the item
      * @param Mumsys_Variable_Item_Interface $item Variable item object
      *
@@ -826,6 +828,22 @@ class Mumsys_Variable_Manager_Default
     public function registerItem( $key, Mumsys_Variable_Item_Interface $item )
     {
         if ( !isset( $this->_items[$key] ) ) {
+            $itemName = $item->getName();
+            if ( $itemName === null ) {
+                $item->setName( $key );
+                $itemName = $key;
+            }
+
+            if ( $key !== $itemName ) {
+                $message = sprintf(
+                    'Item name "%1$s" and item address/key "%2$s" are not '
+                    . 'identical. Change item "name" or "$key"',
+                    $itemName, $key
+                );
+
+                throw new Mumsys_Variable_Manager_Exception( $message );
+            }
+
             $this->_items[$key] = $item;
         } else {
             $message = sprintf( 'Item "%1$s" already set', $key );
