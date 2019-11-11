@@ -62,12 +62,12 @@ class Mumsys_Variable_Manager_DefaultTest
     /**
      * @var Mumsys_Variable_Manager_Default
      */
-    protected $_object;
+    private $_object;
 
     /**
      * @var string
      */
-    protected $_version = '1.3.4';
+    protected $_version = '2.3.4';
 
     /**
      * @var array
@@ -246,6 +246,7 @@ class Mumsys_Variable_Manager_DefaultTest
             $this->assertFalse( $actualB );
         }
 
+
         // for code coverage
         $itemC = $this->_object->createItem( array('value' => array('unittest', 'a'=>'b', 'c'=>'d')) );
         $actualC = $this->_object->validateMinMax( $itemC );
@@ -256,6 +257,11 @@ class Mumsys_Variable_Manager_DefaultTest
         $itemC->setMaxLength( 1 );
         $actualD = $this->_object->validateMinMax( $itemC );
         $this->assertFalse( $actualD );
+
+        $itemC->setValue( 'notAnArray' );
+        $actualE = $this->_object->validateMinMax( $itemC );
+        $this->assertFalse( $actualE );
+
     }
 
     /**
@@ -406,18 +412,39 @@ class Mumsys_Variable_Manager_DefaultTest
     }
 
 
+    /**
+     * @covers Mumsys_Variable_Manager_Default::registerItem
+     */
     public function testRegisterItem()
     {
-        $item = $this->_object->getItem( 'username' );
-        $this->_object->registerItem( 'user2', $item );
+        $itemA = $this->_object->getItem( 'username' );
+        $itemA->setName('user2');
+        $this->_object->registerItem( 'user2', $itemA );
+        $this->assertEquals( $itemA, $this->_object->getItem( 'user2' ) );
 
-        $this->assertEquals( $item, $this->_object->getItem( 'user2' ) );
+        $itemB = $this->_object->createItem( array('value' => 'some value') );
+        $this->_object->registerItem( 'user3', $itemB );
+        $this->assertEquals( $itemB, $this->_object->getItem( 'user3' ) );
 
         $this->expectExceptionMessageRegExp( '/(Item "username" already set)/i' );
         $this->expectException( 'Mumsys_Variable_Manager_Exception' );
-        $this->_object->registerItem( 'username', $item );
+        $this->_object->registerItem( 'username', $itemA );
     }
 
+
+    /**
+     * @covers Mumsys_Variable_Manager_Default::registerItem
+     */
+    public function testRegisterItemExceptionB()
+    {
+        $item = $this->_object->getItem( 'username' );
+
+        $this->expectException( 'Mumsys_Variable_Manager_Exception' );
+        $mesg = 'Item name "username" and item address/key "keyFails" are not identical. '
+            . 'Change item "name" or "$key"';
+        $this->expectExceptionMessage($mesg);
+        $this->_object->registerItem( 'keyFails', $item );
+    }
 
     /**
      * @covers Mumsys_Variable_Manager_Default::createItem
@@ -438,6 +465,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->_config['username']['errors'] = array('REQUIRED_MISSING' => 'Missing required value');
         $item = new Mumsys_Variable_Item_Default( $this->_config['username'] );
 
+        $item->setName('testuser');
         $this->_object->registerItem( 'testuser', $item );
         $actual = $this->_object->getErrorMessages();
         $expected = array('testuser' => array('REQUIRED_MISSING' => 'Missing required value'));
@@ -540,20 +568,20 @@ class Mumsys_Variable_Manager_DefaultTest
      */
     public function testToArray()
     {
-        $actual1 = $this->_object->toArray();
-        $expected1 = array('username' => 'unittest');
+        $actualA = $this->_object->toArray();
+        $expectedA = array('username' => 'unittest');
 
         $itmProps = array(
-            'name' => 'unittest2',
+            'name' => 'domain.unittest2',
             'value' => 'Unittest 2',
         );
         $newItem = $this->_object->createItem( $itmProps );
-        $this->_object->registerItem( 'unittest.unittest', $newItem );
-        $actual2 = $this->_object->toArray( true );
-        $expected2 = array('username' => 'unittest', 'unittest.unittest' => 'Unittest 2');
+        $this->_object->registerItem( 'domain.unittest2', $newItem );
+        $actualB = $this->_object->toArray( 'domain.' );
+        $expectedB = array('username' => 'unittest', 'unittest2' => 'Unittest 2');
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertEquals( $expectedA, $actualA );
+        $this->assertEquals( $expectedB, $actualB );
     }
 
 
