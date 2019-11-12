@@ -20,7 +20,6 @@
  * @AfterMethods({"afterBenchmark"})
  *
  * @Iterations(3)
- * @ Iterations({1,5,10})
  */
 class NameSpaceWithoutBench
     extends Mumsys_Benchmarks_Testcase

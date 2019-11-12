@@ -22,7 +22,6 @@ namespace NameSpaceWithBench;
  * @AfterMethods({"afterBenchmark"})
  *
  * @Iterations(3)
- * @ Iterations({1,5,10})
  */
 class NameSpaceWithBench
     extends \Mumsys_Benchmarks_Testcase
