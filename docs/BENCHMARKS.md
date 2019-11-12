@@ -37,7 +37,7 @@
     - On implementation reduction
     - On e.g. php version or other runner software changes/ updates
 
-+ Finding the best way on how to use the functionality with less ressources
++ Finding the best way on how to use the functionality with less resources
 
 + Detect performance issues
     + Decision helper
