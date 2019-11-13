@@ -6,7 +6,6 @@
 
 # Composer files
 composer.phar
-/composer
 vendor/
 
 # Local configs
@@ -54,4 +53,5 @@ logs/
 tests/.phpunit.result.cache
 tests/cs
 tests/csf
+tests/sca
 phpbench.json
