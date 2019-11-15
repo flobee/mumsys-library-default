@@ -27,7 +27,7 @@ class Mumsys_Variable_Manager_Factory
     /**
      * Version ID information.
      */
-    const VERSION = '1.1.2';
+    const VERSION = '1.1.3';
 
 
     /**
@@ -39,26 +39,25 @@ class Mumsys_Variable_Manager_Factory
      * @param array $values List of key/value pairs to set/bind to the item
      * values e.g: the post parameters
      *
-     * @return Mumsys_Variable_Manager_Interface|Mumsys_Variable_Manager_Default|
-     * Mumsys_Variable_Manager_{name} Manager object
+     * @return Mumsys_Variable_Manager_Interface Manager object
      *
      * @throws Mumsys_Variable_Manager_Exception If name not an alnum type
      */
-    public static function createManager( $name = 'Default',
-        array $config = array(), array $values = array() )
+    public static function createManager( string $name = 'Default',
+        array $config = array(), array $values = array() ): Mumsys_Variable_Manager_Interface
     {
         if ( ctype_alnum( $name ) ) {
             $class = 'Mumsys_Variable_Manager_' . ucwords( $name );
         } else {
-            $message = sprintf( 'Invalid manager name: "%1$s"', $name );
-            throw new Mumsys_Variable_Manager_Exception( $message );
+            $mesg = sprintf( 'Invalid manager name: "%1$s"', $name );
+            throw new Mumsys_Variable_Manager_Exception( $mesg );
         }
 
         if ( !class_exists( $class ) ) {
-            $message = sprintf(
+            $mesg = sprintf(
                 'Initialisation of "%1$s" failed. Not found/ exists', $class
             );
-            throw new Mumsys_Variable_Manager_Exception( $message );
+            throw new Mumsys_Variable_Manager_Exception( $mesg );
         }
 
         return new $class( $config, $values );

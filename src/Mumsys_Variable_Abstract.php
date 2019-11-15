@@ -28,7 +28,7 @@ abstract class Mumsys_Variable_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '1.2.2';
+    public const VERSION = '1.2.2';
 
     /**
      * Variable / validation types.
@@ -66,7 +66,6 @@ abstract class Mumsys_Variable_Abstract
 
     /**
      * Returns the list of possible item types.
-     * {@link Mumsys_Variable_Abstract::getTypes()}
      *
      * @return array List of types for the item
      */

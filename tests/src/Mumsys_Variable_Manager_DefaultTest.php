@@ -65,9 +65,10 @@ class Mumsys_Variable_Manager_DefaultTest
     private $_object;
 
     /**
+     *  Version ID of Mumsys_Variable_Manager_Default
      * @var string
      */
-    protected $_version = '2.3.4';
+    protected $_version = '2.3.6';
 
     /**
      * @var array
@@ -91,7 +92,7 @@ class Mumsys_Variable_Manager_DefaultTest
                 'maxlen' => 45,
                 'allowEmpty' => false,
                 'required' => true,
-                'regex' => false,
+                'regex' => array(),// off when not using
                 'default' => '',
                 'value' => null,
                 'errors' => array(),
@@ -142,7 +143,6 @@ class Mumsys_Variable_Manager_DefaultTest
     public function testValidate()
     {
         $item = $this->_object->getItem( 'username' );
-
         $actual1 = $this->_object->validate();
 
         $item->setValue( '' );
@@ -246,7 +246,6 @@ class Mumsys_Variable_Manager_DefaultTest
             $this->assertFalse( $actualB );
         }
 
-
         // for code coverage
         $itemC = $this->_object->createItem( array('value' => array('unittest', 'a'=>'b', 'c'=>'d')) );
         $actualC = $this->_object->validateMinMax( $itemC );
@@ -293,18 +292,18 @@ class Mumsys_Variable_Manager_DefaultTest
     {
         $item = $this->_object->getItem( 'username' );
         $item->setValue( 'uNiTtEsT' );
-        $item->setRegex( '/^(unittest)$/i' );
+        $item->setRegex( array('/^(unittest)$/i') );
 
         $actual1 = $this->_object->validateRegex( $item );
 
-        $item->setRegex( '/^(somtest)$/i' );
+        $item->setRegex( array('/^(somtest)$/i') );
         $actual2 = $this->_object->validateRegex( $item );
 
         // regex error
         $displayErrors = ini_get( 'display_errors' );
         $errorReporting = ini_get( 'error_reporting' );
 
-        $item->setRegex( '\d' ); // invalid regex / syntax error
+        $item->setRegex( array('\d') ); // invalid regex / syntax error
 
         ini_set( 'display_errors', false );
         error_reporting( 0 );
@@ -384,7 +383,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $item->setAllowEmpty( false );
         $actual4 = $this->_object->isValid( $item );
 
-        $item->setRegex( '/(\d)/' );
+        $item->setRegex( array('/(\d)/') );
         $item->setValue( 'unittest' );
         $actual5 = $this->_object->isValid( $item );
 
@@ -408,7 +407,7 @@ class Mumsys_Variable_Manager_DefaultTest
             'username' => new Mumsys_Variable_Item_Default( $this->_config['username'] ));
         $this->assertEquals( $expected, $this->_object->getItems() );
         $this->assertEquals( $expected['username'], $this->_object->getItem( 'username' ) );
-        $this->assertFalse( $this->_object->getItem( 'unknown' ) );
+        $this->assertNull( $this->_object->getItem( 'unknown' ) );
     }
 
 
@@ -418,7 +417,7 @@ class Mumsys_Variable_Manager_DefaultTest
     public function testRegisterItem()
     {
         $itemA = $this->_object->getItem( 'username' );
-        $itemA->setName('user2');
+        $itemA->setName( 'user2' );
         $this->_object->registerItem( 'user2', $itemA );
         $this->assertEquals( $itemA, $this->_object->getItem( 'user2' ) );
 
@@ -442,7 +441,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->expectException( 'Mumsys_Variable_Manager_Exception' );
         $mesg = 'Item name "username" and item address/key "keyFails" are not identical. '
             . 'Change item "name" or "$key"';
-        $this->expectExceptionMessage($mesg);
+        $this->expectExceptionMessage( $mesg );
         $this->_object->registerItem( 'keyFails', $item );
     }
 
@@ -465,7 +464,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->_config['username']['errors'] = array('REQUIRED_MISSING' => 'Missing required value');
         $item = new Mumsys_Variable_Item_Default( $this->_config['username'] );
 
-        $item->setName('testuser');
+        $item->setName( 'testuser' );
         $this->_object->registerItem( 'testuser', $item );
         $actual = $this->_object->getErrorMessages();
         $expected = array('testuser' => array('REQUIRED_MISSING' => 'Missing required value'));

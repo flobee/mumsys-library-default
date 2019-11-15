@@ -49,151 +49,13 @@
  * @subpackage  Variable
  */
 class Mumsys_Variable_Manager_Default
+    extends Mumsys_Variable_Manager_Abstract
     implements Mumsys_Variable_Manager_Interface
 {
     /**
      * Version ID information
      */
-    const VERSION = '2.3.4';
-
-    /**
-     * Value "%1$s" does not match the regex rule: "%2$s"
-     */
-    const REGEX_FAILURE = 'REGEX_FAILURE';
-
-    /**
-     * Error in regular expression
-     */
-    const REGEX_ERROR = 'REGEX_ERROR';
-
-    /**
-     * Missing required value
-     */
-    const REQUIRED_MISSING = 'REQUIRED_MISSING';
-
-    /**
-     * Missing value
-     */
-    const ALLOWEMPTY_ERROR = 'ALLOWEMPTY_ERROR';
-
-    /**
-     * Value (json):"%1$s" is not a "string"
-     */
-    const TYPE_INVALID_STRING = 'TYPE_INVALID_STRING';
-
-    /**
-     * Value (json):"%1$s" is not an "array"
-     */
-    const TYPE_INVALID_ARRAY = 'TYPE_INVALID_ARRAY';
-
-    /**
-     * Value "%1$s" is not a valid value for type "email"
-     */
-    const TYPE_INVALID_EMAIL = 'TYPE_INVALID_EMAIL';
-
-    /**
-     * Value (json):"%1$s" is not a "numeric" type
-     */
-    const TYPE_INVALID_NUMERIC = 'TYPE_INVALID_NUMERIC';
-
-    /**
-     * Value (json):"%1$s" is not a "float" type
-     */
-    const TYPE_INVALID_FLOAT = 'TYPE_INVALID_FLOAT';
-
-    /**
-     * Value (json):"%1$s" is not an "integer" type
-     */
-    const TYPE_INVALID_INT = 'TYPE_INVALID_INT';
-
-    /**
-     * Value (json):"%1$s" is not a "date" type
-     */
-    const TYPE_INVALID_DATE = 'TYPE_INVALID_DATE';
-
-    /**
-     * Value (json):"%1$s" is not a "datetime" type
-     */
-    const TYPE_INVALID_DATETIME = 'TYPE_INVALID_DATETIME';
-
-    /**
-     * Value (json):"%1$s" is not an "ipv4" address
-     */
-    const TYPE_INVALID_IPV4 = 'TYPE_INVALID_IPV4';
-
-    /**
-     * Value (json):"%1$s" is not an "ipv6" address
-     */
-    const TYPE_INVALID_IPV6 = 'TYPE_INVALID_IPV6';
-
-    /**
-     * Value (json):"%1$s" is not a "unixtime"
-     */
-    const TYPE_INVALID_UNIXTIME = 'TYPE_INVALID_UNIXTIME';
-
-    /**
-     * Value "%1$s" must contain at least "%2$s" characters
-     */
-    const MINMAX_TOO_SHORT_STR = 'MINMAX_TOO_SHORT_STR';
-
-    /**
-     * Value "%1$s" must contain maximum of "%2$s" characters, "%3$s" given
-     */
-    const MINMAX_TOO_LONG_STR = 'MINMAX_TOO_LONG_STR';
-
-    /**
-     * Value "%1$s" must be minimum "%2$s"
-     */
-    const MINMAX_TOO_SHORT_NUM = 'MINMAX_TOO_SHORT_NUM';
-
-    /**
-     * Value "%1$s" can be maximum "%2$s"
-     */
-    const MINMAX_TOO_LONG_NUM = 'MINMAX_TOO_LONG_NUM';
-
-    /**
-     * Found "%1$s" values, minimum "%2$s" values
-     */
-    const MINMAX_TOO_SHORT_ARRAY = 'MINMAX_TOO_SHORT_ARRAY';
-
-    /**
-     * Found "%1$s" values, maximum "%2$s" values
-     */
-    const MINMAX_TOO_LONG_ARRAY = 'MINMAX_TOO_LONG_ARRAY';
-
-    /**
-     * Min/max type error "%1$s". Must be "string", "integer", "numeric",
-     * "float" or "double"
-     */
-    const MINMAX_TYPE_ERROR = 'MINMAX_TYPE_ERROR';
-
-    /**
-     * Value is not of type: "%1$s"
-     */
-    const MINMAX_TOO_INVALID_VALUE = 'MINMAX_TOO_INVALID_VALUE';
-
-    /**
-     * Filter "%1$s" failt for label/name: "%2$s"
-     */
-    const FILTER_ERROR = 'FILTER_ERROR';
-
-    /**
-     * Filter function "%1$s" not found for item: "%2$s"
-     */
-    const FILTER_NOTFOUND = 'FILTER_NOTFOUND';
-
-    /**
-     * Callback "%1$s" for "%2$s" failt for value: "%3$s"'
-     * %1$s = __METHODE__
-     * %2$s = item label
-     * %3$s = values
-     */
-    const CALLBACK_ERROR = 'CALLBACK_ERROR';
-
-    /**
-     * Callback function "%1$s" not found for item: "%2$s"
-     */
-    const CALLBACK_NOTFOUND = 'CALLBACK_NOTFOUND';
+    const VERSION = '2.3.6';
 
     /**
      * List key/validation items.
@@ -266,8 +128,8 @@ class Mumsys_Variable_Manager_Default
      *      'name' => 'name',  // real name of the item; optional if the address
      *                         // contains the same name otherwise a MUST HAVE
      *      'label' => 'User name',
-     *      'desc' => 'User group name',
-     *      'info' => "Allowed characters: a-z A-Z 0-9 _ - \nMin. 5 chars max. 45 chars.",
+     *      'desc' => 'A description. E.g: User/ Login name',
+     *      'info' => "Info about the value. E.g: Min. 5 chars max. 45 chars.",
      *      'type' => 'string',
      *      'minlen' => 5,
      *      'maxlen' => 45,
@@ -310,11 +172,6 @@ class Mumsys_Variable_Manager_Default
         array $values = array() )
     {
         foreach ( $config as $itemKey => $properties ) {
-            /**
-             * @todo name vs itemKey needs more understanding how to use it
-             * if name is missing then its easy but if both is set and
-             * different it is difficult to understand!
-             */
             if ( !isset( $properties['name'] ) ) {
                 $properties['name'] = $itemKey;
             }
@@ -345,7 +202,7 @@ class Mumsys_Variable_Manager_Default
      *
      * @return boolean True on success or false on error
      */
-    public function validate()
+    public function validate(): bool
     {
         $status = true;
         foreach ( $this->_items as $item ) {
@@ -367,7 +224,7 @@ class Mumsys_Variable_Manager_Default
      *
      * @return boolean True on success otherwise false.
      */
-    public function validateType( Mumsys_Variable_Item_Interface $item )
+    public function validateType( Mumsys_Variable_Item_Interface $item ): bool
     {
         $return = true;
 
@@ -516,7 +373,7 @@ class Mumsys_Variable_Manager_Default
      * @param Mumsys_Variable_Item_Interface $item
      * @return boolean True on success otherwise false
      */
-    public function validateMinMax( Mumsys_Variable_Item_Interface $item )
+    public function validateMinMax( Mumsys_Variable_Item_Interface $item ): bool
     {
         $return = true;
         $min = $item->getMinLength();
@@ -636,7 +493,7 @@ class Mumsys_Variable_Manager_Default
      *
      * @return boolean True on success or if no regex was set or false on error
      */
-    public function validateRegex( Mumsys_Variable_Item_Interface $item )
+    public function validateRegex( Mumsys_Variable_Item_Interface $item ): bool
     {
         $return = true;
 
@@ -662,7 +519,25 @@ class Mumsys_Variable_Manager_Default
                         $regex
                     );
                 }
-
+//
+//                switch ( $match ) {
+//                    case ( $match === 0 ):
+//                        $errorKey = self::REGEX_FAILURE;
+//                        $errorMessage = sprintf(
+//                            $this->_messageTemplates[self::REGEX_FAILURE],
+//                            $value, $regex
+//                        );
+//                        break;
+//
+//                    case ( $match === false ):
+//                        $errorKey = self::REGEX_ERROR;
+//                        $errorMessage = sprintf(
+//                            $this->_messageTemplates[self::REGEX_ERROR], $value,
+//                            $regex
+//                        );
+//                        break;
+//                }
+//
                 if ( $errorKey && $errorMessage ) {
                     $item->setErrorMessage( $errorKey, $errorMessage );
                     $return = false;
@@ -687,7 +562,7 @@ class Mumsys_Variable_Manager_Default
      *
      * @return boolean True on success or false for invalid ip format
      */
-    public function validateIPv4( Mumsys_Variable_Item_Interface $item )
+    public function validateIPv4( Mumsys_Variable_Item_Interface $item ): bool
     {
         $test = filter_var( $item->getValue(), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 );
         if ( $test === false ) {
@@ -711,7 +586,7 @@ class Mumsys_Variable_Manager_Default
      *
      * @return boolean True on success or false for invalid ip format
      */
-    public function validateIPv6( Mumsys_Variable_Item_Interface $item )
+    public function validateIPv6( Mumsys_Variable_Item_Interface $item ): bool
     {
         $test = filter_var( $item->getValue(), FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 );
         if ( $test === false ) {
@@ -740,7 +615,7 @@ class Mumsys_Variable_Manager_Default
      *
      * @return boolean Returns true on success otherwise false
      */
-    public function isValid( Mumsys_Variable_Item_Interface $item )
+    public function isValid( Mumsys_Variable_Item_Interface $item ): bool
     {
         $status = true;
         $value = $item->getValue();
@@ -789,11 +664,11 @@ class Mumsys_Variable_Manager_Default
     /**
      * Returns all variable items.
      *
-     * @return array List of key/variable items implementing
-     * Mumsys_Variable_Item_Interface where key is the identifier of the item/
-     * variable
+     * @return array<string,Mumsys_Variable_Item_Interface> List of key/variable
+     * items implementing Mumsys_Variable_Item_Interface where key is the
+     * identifier of the item
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->_items;
     }
@@ -803,15 +678,16 @@ class Mumsys_Variable_Manager_Default
      * Returns a variable item by given key.
      *
      * @param string $key Key/ identifier of the variable item
-     * @return Mumsys_Variable_Item_Interface|false Variable item or false
+     *
+     * @return Mumsys_Variable_Item_Interface|null Variable item or null if not available
      */
-    public function getItem( $key )
+    public function getItem( $key ): ?Mumsys_Variable_Item_Interface
     {
         if ( isset( $this->_items[$key] ) ) {
             return $this->_items[$key];
         }
 
-        return false;
+        return null;
     }
 
 
@@ -825,30 +701,31 @@ class Mumsys_Variable_Manager_Default
      *
      * @throws Mumsys_Variable_Manager_Exception If key already exists
      */
-    public function registerItem( $key, Mumsys_Variable_Item_Interface $item )
+    public function registerItem( string $key,
+        Mumsys_Variable_Item_Interface $item ): void
     {
-        if ( !isset( $this->_items[$key] ) ) {
-            $itemName = $item->getName();
-            if ( $itemName === null ) {
-                $item->setName( $key );
-                $itemName = $key;
-            }
-
-            if ( $key !== $itemName ) {
-                $message = sprintf(
-                    'Item name "%1$s" and item address/key "%2$s" are not '
-                    . 'identical. Change item "name" or "$key"',
-                    $itemName, $key
-                );
-
-                throw new Mumsys_Variable_Manager_Exception( $message );
-            }
-
-            $this->_items[$key] = $item;
-        } else {
+        if ( isset( $this->_items[$key] ) ) {
             $message = sprintf( 'Item "%1$s" already set', $key );
             throw new Mumsys_Variable_Manager_Exception( $message );
         }
+
+        $itemName = $item->getName();
+        if ( $itemName === null ) {
+            $item->setName( $key );
+            $itemName = $key;
+        }
+
+        if ( $key !== $itemName ) {
+            $message = sprintf(
+                'Item name "%1$s" and item address/key "%2$s" are not '
+                . 'identical. Change item "name" or "$key"',
+                $itemName, $key
+            );
+
+            throw new Mumsys_Variable_Manager_Exception( $message );
+        }
+
+        $this->_items[$key] = $item;
     }
 
 
@@ -857,13 +734,14 @@ class Mumsys_Variable_Manager_Default
      *
      * @see Mumsys_Variable_Item_Default
      *
-     * @param array $properties List of key/value pairs to initialize the variable item object
+     * @param array $props List of key/value pairs to initialize the variable
+     * item object
      *
-     * @return Mumsys_Variable_Item_Interface
+     * @return Mumsys_Variable_Item_Default
      */
-    public function createItem( array $properties = array() )
+    public function createItem( array $props = array() ): Mumsys_Variable_Item_Interface
     {
-        return new Mumsys_Variable_Item_Default( $properties );
+        return new Mumsys_Variable_Item_Default( $props );
     }
 
 
@@ -875,7 +753,7 @@ class Mumsys_Variable_Manager_Default
      *
      * @return array Returns the list of errors or empty array for no errors
      */
-    public function getErrorMessages()
+    public function getErrorMessages(): array
     {
         $messages = array();
 
@@ -894,7 +772,7 @@ class Mumsys_Variable_Manager_Default
      *
      * @return array List of error message templates
      */
-    public function getMessageTemplates()
+    public function getMessageTemplates(): array
     {
         return $this->_messageTemplates;
     }
@@ -908,7 +786,7 @@ class Mumsys_Variable_Manager_Default
      *
      * @param array $templates List of key/value pairs for the message templates.
      */
-    public function setMessageTemplates( array $templates )
+    public function setMessageTemplates( array $templates ): void
     {
         $this->_messageTemplates = $templates;
     }
@@ -920,7 +798,7 @@ class Mumsys_Variable_Manager_Default
      * @param string $key Message key/ID
      * @param string $value The message
      */
-    public function setMessageTemplate( $key, $value )
+    public function setMessageTemplate( string $key, string $value ): void
     {
         $this->_messageTemplates[(string) $key] = (string) $value;
     }
@@ -933,15 +811,18 @@ class Mumsys_Variable_Manager_Default
      *      array('value' => 'this value in all items')
      *      array('state' => 'onSave')
      *
-     * Additional and possible attributes to set in $attr are: "values" and
-     * "labels" where you can set some of the items and set an individual value.
-     * E.g: Item A gets value 1, item B gets value 2, item C gets value 3:
+     * Additional and possible attributes to set in $attr are: "value", "values",
+     * "labels" an "state" where you can set some of the items and set an
+     * individual value.
+     * E.g: Item A gets value 1, item B gets value 2:
      * <pre>
-     *  // for some
-     *  $attr = array('values' => array(a => '1', b => 2, c => 3 );
-     *  // dont work!
+     *  // 'values':
+     *  // 'labels':
+     *  // for some item values
+     *  $attr = array('values' => array(itemKeyA => '1', itemKeyB => 2, .... );
+     *  // pl. value*s* dont work this way:
      *  $attr = array('values' => 'new value');
-     *  // this works for all
+     *  // sing. for all
      *  $attr = array('value' => 'new value');
      * </pre>
      * Hint:
@@ -949,19 +830,21 @@ class Mumsys_Variable_Manager_Default
      *  - "values" must include a list of key/value pairs to set specific item
      *    values.
      *
-     * @param array $attr List of key->value pairs to be set
+     * @param array $attr List of key/value pairs to be set
+     *  - 'state' string set state to all existing items
+     *  - 'value' string Value to set to all items
+     *  - 'values' array<string,string> Values to set to specific items
+     *  - 'labels' array<string,string> Labels to set to specific items
      *
-     * @throw Mumsys_Variable_Manager_Exception If attribute setter not
-     * implemented
+     * @throw Mumsys_Variable_Manager_Exception If not implemented
      */
-    public function setAttributes( array $attr = array() )
+    public function setAttributes( array $attr = array() ): void
     {
         foreach ( $attr as $fieldKey => $value ) {
             foreach ( $this->_items as $item ) {
                 $fieldName = $item->getName();
 
-                switch ( $fieldKey )
-                {
+                switch ( $fieldKey ) {
                     // all items
                     case 'value':
                         $item->setValue( $value );
@@ -998,16 +881,13 @@ class Mumsys_Variable_Manager_Default
     /**
      * Returns the list of key/value pairs for all items.
      *
-     * @todo 2018-07-11 construction has change. Now supports manipulation of the array
-     * key of each list
-     *
-     * @param string $strip Strip part of the address to get other array indexes as the
-     * default. E.g: "user.id" is the address but you want the "id"
+     * @param string $strip Strip part of the address to get other array indexes
+     * as the default. E.g: "user.id" is the address but you want the "id"
      * @param string $add Optional replacement string for the strip. Default: ""
      *
      * @return array List of key/value pairs
      */
-    public function toArray( $strip = '', $add = '' )
+    public function toArray( string $strip = '', string $add = '' ): array
     {
         $list = array();
         foreach ( $this->_items as $address => $item ) {
@@ -1035,7 +915,7 @@ class Mumsys_Variable_Manager_Default
      *
      * @return boolean Status, true for success otherwise false
      */
-    public function externalsApply( $data = null )
+    public function externalsApply( $data = null ): bool
     {
         $status = false;
         if ( $this->filtersApply() && $this->callbacksApply( $data ) ) {
@@ -1051,7 +931,7 @@ class Mumsys_Variable_Manager_Default
      *
      * @return boolean Returns true on success or false on failure
      */
-    public function filtersApply()
+    public function filtersApply(): bool
     {
         $status = true;
 
@@ -1073,9 +953,9 @@ class Mumsys_Variable_Manager_Default
      *
      * @return boolean Returns true on success or false on failure
      */
-    public function filterItem( Mumsys_Variable_Item_Interface $item )
+    public function filterItem( Mumsys_Variable_Item_Interface $item ): bool
     {
-        $filters = $item->filtersGet( true );
+        $filters = $item->filtersGet( null );
         $state = $item->stateGet();
         $status = true;
 
@@ -1093,6 +973,7 @@ class Mumsys_Variable_Manager_Default
 
         foreach ( $_filters as $opts ) {
             $parameters = $opts['params'];
+            /** @var string $cmd 4sca */
             $cmd = $opts['cmd'];
 
             if ( is_callable( $cmd ) ) {
@@ -1127,8 +1008,7 @@ class Mumsys_Variable_Manager_Default
                     /* false as return or false of the callback ?
                      * boolean values should not be filtered! */
                     $message = sprintf(
-                        $this->_messageTemplates['FILTER_ERROR'], $cmd,
-                        $itemName
+                        $this->_messageTemplates['FILTER_ERROR'], $cmd, $itemName
                     );
                     $item->setErrorMessage( self::FILTER_ERROR, $message );
                 } else {
@@ -1153,11 +1033,11 @@ class Mumsys_Variable_Manager_Default
     /**
      * Apply/ execute all callbacks.
      *
-     * @param mixed $data Mixed data to pipe to the callback function
+     * @param array|string|null $data Mixed data to pipe to the callback function
      *
      * @return boolean Returns true on success or false on failure
      */
-    public function callbacksApply( $data = null )
+    public function callbacksApply( $data = null ): bool
     {
         $status = true;
 
@@ -1176,18 +1056,21 @@ class Mumsys_Variable_Manager_Default
      * Apply callbacks of the given item based on the current state.
      *
      * Callback function signature is:
-     * functionName(Mumsys_Variable_Item_Interface object, mixed
-     * $dataFromExtenrnalCallerFunc=null, array optionalParams=null);
+     * <code>
+     * functionName( Mumsys_Variable_Item_Interface object,
+     *      mixed $dataFromExtenrnalCallerFunc = null
+     * );
+     * </code>
      *
      * @param Mumsys_Variable_Item_Interface $item Validate item
-     * @param mixed Mixed data to pipe to the callback function
+     * @param array|string|null $data Mixed data to pipe to the callback function
      *
      * @return boolean Returns true on success or false on failure
      */
     public function callbackItem( Mumsys_Variable_Item_Interface $item,
-        $data = null )
+        $data = null ): bool
     {
-        $callbacks = $item->callbacksGet( true );
+        $callbacks = $item->callbacksGet( null );
         $state = $item->stateGet();
         $status = true;
 
@@ -1280,7 +1163,7 @@ class Mumsys_Variable_Manager_Default
      * @return boolean Returns false on error or true on success
      */
     public function compare( Mumsys_Variable_Item_Interface $oItemA,
-        Mumsys_Variable_Item_Interface $oItemB, $op = '===' ): bool
+        Mumsys_Variable_Item_Interface $oItemB, string $op = '===' ): bool
     {
         $typeA = $oItemA->getType();
         $typeB = $oItemB->getType();
@@ -1360,13 +1243,13 @@ class Mumsys_Variable_Manager_Default
     /**
      * Execute and return external filter or callback result.
      *
-     * @param string $cmd Funtion/method to be called
-     * @param string|array $params Parameters to pipe to the function
+     * @param string $cmd Function/method to be called
+     * @param string|array|null $params Parameters to pipe to the function
      * @param string $ptype Type of the parameters, eg: empty-string|string|array
      *
-     * @return mixed|false Returns to value of the callback or false on errors
+     * @return mixed|false Returns the result of the callback or false on errors
      */
-    private function _execExternal( $cmd, $params, $ptype = 'string' )
+    private function _execExternal( string $cmd, $params, $ptype = 'string' )
     {
         /* future for callbacks:
           if ( $ptype === 'array' ) {
@@ -1379,15 +1262,15 @@ class Mumsys_Variable_Manager_Default
         switch ( $cmd )
         {
             case 'trim':
-                $value = trim( (string)$params );
+                $value = trim( strval( $params ) );
                 break;
 
             case 'htmlspecialchars':
-                $value = htmlspecialchars( (string)$params );
+                $value = htmlspecialchars( strval( $params ) );
                 break;
 
             case 'htmlentities':
-                $value = htmlentities( (string)$params );
+                $value = htmlentities( strval($params ) );
                 break;
 
             default:

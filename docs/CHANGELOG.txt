@@ -31,9 +31,39 @@
         + Init Mumsys_Semver + Tests for semver.org version checks of mumsys objects
 
     + Mumsys_Variable*
+
         + API change in Mumsys_Variable_Manager_Default::registerItem() to handle
           inconsisteny for the manager when using createItem() before and have 
           no 'name' attribute
+        + Init Mumsys_Variable_Manager_Abstract
+
+        + Adds typehints but breaks versions: New major/ minor versions:
+
+            + Mumsys_Variable_Item_Default: 2.1.4 -> 3.2.4
+
+              - Simplyfies getRegex() which take account only if validation will
+                be used within the manager
+
+            + Mumsys_Variable_Item_Abstract: 1.3.1 -> 2.3.2
+              - Improves setErrorMessages()
+              - Removes 2nd parameter of _initExternalCalls(); Not needed
+              - Changes handling of callbacksGet( null| string )
+
+            + Mumsys_Variable_Item_Interface -> 2.2.4
+              - Adds missing methods from abstract class
+              - Updates method signatures with default values for the getters
+
+            + Mumsys_Variable_Manager_Default 2.3.5 -> 2.3.6
+              - createItem() returns Mumsys_Variable_Item_Interface
+              - getItem() returns null if not available
+              - moves constants to Mumsys_Variable_Manager_Abstract
+              
+            + Mumsys_Variable_Manager_Factory 1.1.2 -> 1.1.3
+              - Fixes typehints
+
+            + Mumsys_Variable_Manager_Interface 1.1.2 -> 2.2.4
+              - createItem() returns Mumsys_Variable_Item_Interface
+              - getItem() returns null if not available
 
 2019-10
 

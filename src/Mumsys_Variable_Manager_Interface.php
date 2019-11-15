@@ -11,17 +11,13 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Variable
- * @version     1.1.1
+ * @version     2.1.1
  * Created: 2006 based on Mumsys_Field, renew 2016
  */
 
 
 /**
  * Variable item manager interface.
- *
- * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
  */
 interface Mumsys_Variable_Manager_Interface
 {
@@ -41,7 +37,7 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return boolean True on success or false on error
      */
-    public function validate();
+    public function validate(): bool;
 
 
     /**
@@ -53,7 +49,7 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return boolean True on success otherwise false.
      */
-    public function validateType( Mumsys_Variable_Item_Interface $item );
+    public function validateType( Mumsys_Variable_Item_Interface $item ): bool;
 
 
     /**
@@ -67,7 +63,7 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return boolean True on success otherwise false
      */
-    public function validateMinMax( Mumsys_Variable_Item_Interface $item );
+    public function validateMinMax( Mumsys_Variable_Item_Interface $item ): bool;
 
 
     /**
@@ -77,7 +73,7 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return boolean True on success or if no regex was set or false on error
      */
-    public function validateRegex( Mumsys_Variable_Item_Interface $item );
+    public function validateRegex( Mumsys_Variable_Item_Interface $item ): bool;
 
 
     /**
@@ -92,17 +88,17 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return boolean Returns true on success otherwise false
      */
-    public function isValid( Mumsys_Variable_Item_Interface $item );
+    public function isValid( Mumsys_Variable_Item_Interface $item ): bool;
 
 
     /**
      * Returns all variable items.
      *
-     * @return array List of key/variable items implementing
-     * Mumsys_Variable_Item_Interface where key is the identifier of the item/
-     * variable
+     * @return array<string,Mumsys_Variable_Item_Interface> List of key/variable
+     * items implementing Mumsys_Variable_Item_Interface where the key is the
+     * identifier of the item
      */
-    public function getItems();
+    public function getItems(): array;
 
 
     /**
@@ -110,9 +106,9 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @param string $key Key/ identifier of the variable item
      *
-     * @return Mumsys_Variable_Item_Interface|false Variable item or false
+     * @return Mumsys_Variable_Item_Interface|null Variable item or null if not available
      */
-    public function getItem( $key );
+    public function getItem( $key ): ?Mumsys_Variable_Item_Interface;
 
 
     /**
@@ -123,7 +119,8 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @throws Mumsys_Variable_Manager_Exception If key already exists
      */
-    public function registerItem( $key, Mumsys_Variable_Item_Interface $item );
+    public function registerItem( string $key,
+        Mumsys_Variable_Item_Interface $item ): void;
 
 
     /**
@@ -136,7 +133,7 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return Mumsys_Variable_Item_Interface
      */
-    public function createItem( array $properties = array() );
+    public function createItem( array $properties = array() ): Mumsys_Variable_Item_Interface;
 
 
     /**
@@ -147,7 +144,7 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return array Returns the list of errors or empty array for no errors
      */
-    public function getErrorMessages();
+    public function getErrorMessages(): array;
 
 
     /**
@@ -155,7 +152,7 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return array List of error message templates
      */
-    public function getMessageTemplates();
+    public function getMessageTemplates(): array;
 
 
     /**
@@ -167,6 +164,6 @@ interface Mumsys_Variable_Manager_Interface
      * @param array $templates List of key/value pairs for the message
      * templates.
      */
-    public function setMessageTemplates( array $templates );
+    public function setMessageTemplates( array $templates ): void;
 
 }
