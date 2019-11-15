@@ -57,7 +57,9 @@ class Mumsys_Variable_Manager_FactoryTest
      */
     public function testCreateManagerException2()
     {
-        $this->expectExceptionMessageRegExp( '/(Initialisation of "Mumsys_Variable_Manager_Xxx" failed. Not found\/ exists)/i' );
+        $this->expectExceptionMessageRegExp(
+            '/(Initialisation of "Mumsys_Variable_Manager_Xxx" failed. Not found\/ exists)/i'
+        );
         $this->expectException( 'Mumsys_Variable_Manager_Exception' );
         Mumsys_Variable_Manager_Factory::createManager( 'xxx' );
     }

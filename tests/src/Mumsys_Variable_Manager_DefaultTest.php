@@ -349,7 +349,7 @@ class Mumsys_Variable_Manager_DefaultTest
     public function testRegisterItem()
     {
         $itemA = $this->_object->getItem( 'username' );
-        $itemA->setName('user2');
+        $itemA->setName( 'user2' );
         $this->_object->registerItem( 'user2', $itemA );
         $this->assertEquals( $itemA, $this->_object->getItem( 'user2' ) );
 
@@ -369,7 +369,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->expectException( 'Mumsys_Variable_Manager_Exception' );
         $mesg = 'Item name "username" and item address/key "keyFails" are not identical. '
             . 'Change item "name" or "$key"';
-        $this->expectExceptionMessage($mesg);
+        $this->expectExceptionMessage( $mesg );
         $this->_object->registerItem( 'keyFails', $item );
     }
 
@@ -392,7 +392,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->_config['username']['errors'] = array('REQUIRED_MISSING' => 'Missing required value');
         $item = new Mumsys_Variable_Item_Default( $this->_config['username'] );
 
-        $item->setName('testuser');
+        $item->setName( 'testuser' );
         $this->_object->registerItem( 'testuser', $item );
         $actual = $this->_object->getErrorMessages();
         $expected = array('testuser' => array('REQUIRED_MISSING' => 'Missing required value'));
@@ -531,10 +531,23 @@ class Mumsys_Variable_Manager_DefaultTest
      */
     public function testFiltersApply()
     {
+        // A
         $this->_object->filtersApply();
+        $actualA = $this->_object->getErrorMessages();
 
-        $actual = $this->_object->getErrorMessages();
-        $this->assertEquals( array(), $actual );
+        // B
+        $this->_config['username']['filters'] = array('onView'=>'imNotAFilter');
+        $this->_object = new Mumsys_Variable_Manager_Default( $this->_config, $this->_values );
+        $this->_object->filtersApply();
+        $actualB = $this->_object->getErrorMessages();
+        $expectedB = array(
+            'username' => array(
+                'FILTER_NOTFOUND' => 'Filter function "imNotAFilter" not found for item: "Username"'
+            )
+        );
+
+        $this->assertEquals( array(), $actualA );
+        $this->assertEquals( $expectedB, $actualB );
     }
 
 

@@ -28,9 +28,9 @@ class Mumsys_Variable_Item_DefaultTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->_version = '1.1.3';
+        $this->_version = '1.1.4';
 
         $this->_config = array(
             'name' => 'some name',
@@ -55,7 +55,7 @@ class Mumsys_Variable_Item_DefaultTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_object = null;
     }
@@ -159,7 +159,10 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testGetSetAddRegex()
     {
-        $expected = array('/\w*/i', '/\d*/i');
+        $expected = array(
+            '/\w*/i',
+            '/\d*/i'
+        );
 
         $this->assertTrue( ( array() === $this->_object->getRegex() ) );
 
@@ -174,8 +177,8 @@ class Mumsys_Variable_Item_DefaultTest
 
         // initial regex as string
         $this->_config['regex'] = $expected[0];
-        $this->_object = new Mumsys_Variable_Item_Default( $this->_config );
-        $this->assertEquals( array($expected[0]), $this->_object->getRegex() );
+        $object = new Mumsys_Variable_Item_Default( $this->_config );
+        $this->assertEquals( array($expected[0]), $object->getRegex() );
     }
 
 
