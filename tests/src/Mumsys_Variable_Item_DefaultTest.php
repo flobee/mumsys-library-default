@@ -30,7 +30,7 @@ class Mumsys_Variable_Item_DefaultTest
      */
     protected function setUp(): void
     {
-        $this->_version = '1.1.3';
+        $this->_version = '2.1.4';
 
         $this->_config = array(
             'name' => 'some name',
@@ -159,23 +159,24 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testGetSetAddRegex()
     {
-        $expected = array('/\w*/i', '/\d*/i');
+        $expected = array(
+            '/\w*/i',
+            '/\d*/i'
+        );
 
         $this->assertTrue( ( array() === $this->_object->getRegex() ) );
 
-        $this->_object->setRegex( $expected[0] );
+        $this->_object->setRegex( array($expected[0]) );
+        $this->_object->setRegex( array($expected[0]) ); // 4CC
         $this->assertEquals( array($expected[0]), $this->_object->getRegex() );
-
-        $x = $this->_object->setRegex( $expected );
-        $this->assertNull( $x );
 
         $this->_object->addRegex( $expected[1] );
         $this->assertEquals( $expected, $this->_object->getRegex() );
 
         // initial regex as string
         $this->_config['regex'] = $expected[0];
-        $this->_object = new Mumsys_Variable_Item_Default( $this->_config );
-        $this->assertEquals( array($expected[0]), $this->_object->getRegex() );
+        $object = new Mumsys_Variable_Item_Default( $this->_config );
+        $this->assertEquals( array($expected[0]), $object->getRegex() );
     }
 
 

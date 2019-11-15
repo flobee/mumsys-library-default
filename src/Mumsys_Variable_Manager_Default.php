@@ -54,7 +54,7 @@ class Mumsys_Variable_Manager_Default
     /**
      * Version ID information
      */
-    const VERSION = '2.3.4';
+    const VERSION = '2.3.5';
 
     /**
      * Value "%1$s" does not match the regex rule: "%2$s"
@@ -662,7 +662,25 @@ class Mumsys_Variable_Manager_Default
                         $regex
                     );
                 }
-
+//
+//                switch ( $match ) {
+//                    case ( $match === 0 ):
+//                        $errorKey = self::REGEX_FAILURE;
+//                        $errorMessage = sprintf(
+//                            $this->_messageTemplates[self::REGEX_FAILURE],
+//                            $value, $regex
+//                        );
+//                        break;
+//
+//                    case ( $match === false ):
+//                        $errorKey = self::REGEX_ERROR;
+//                        $errorMessage = sprintf(
+//                            $this->_messageTemplates[self::REGEX_ERROR], $value,
+//                            $regex
+//                        );
+//                        break;
+//                }
+//
                 if ( $errorKey && $errorMessage ) {
                     $item->setErrorMessage( $errorKey, $errorMessage );
                     $return = false;
@@ -793,7 +811,7 @@ class Mumsys_Variable_Manager_Default
      * Mumsys_Variable_Item_Interface where key is the identifier of the item/
      * variable
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->_items;
     }
@@ -827,28 +845,28 @@ class Mumsys_Variable_Manager_Default
      */
     public function registerItem( $key, Mumsys_Variable_Item_Interface $item )
     {
-        if ( !isset( $this->_items[$key] ) ) {
-            $itemName = $item->getName();
-            if ( $itemName === null ) {
-                $item->setName( $key );
-                $itemName = $key;
-            }
-
-            if ( $key !== $itemName ) {
-                $message = sprintf(
-                    'Item name "%1$s" and item address/key "%2$s" are not '
-                    . 'identical. Change item "name" or "$key"',
-                    $itemName, $key
-                );
-
-                throw new Mumsys_Variable_Manager_Exception( $message );
-            }
-
-            $this->_items[$key] = $item;
-        } else {
+        if ( isset( $this->_items[$key] ) ) {
             $message = sprintf( 'Item "%1$s" already set', $key );
             throw new Mumsys_Variable_Manager_Exception( $message );
         }
+
+        $itemName = $item->getName();
+        if ( $itemName === null ) {
+            $item->setName( $key );
+            $itemName = $key;
+        }
+
+        if ( $key !== $itemName ) {
+            $message = sprintf(
+                'Item name "%1$s" and item address/key "%2$s" are not '
+                . 'identical. Change item "name" or "$key"',
+                $itemName, $key
+            );
+
+            throw new Mumsys_Variable_Manager_Exception( $message );
+        }
+
+        $this->_items[$key] = $item;
     }
 
 

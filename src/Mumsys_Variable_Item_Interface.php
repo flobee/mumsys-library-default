@@ -155,7 +155,7 @@ interface Mumsys_Variable_Item_Interface
      *
      * @return array List of regular expression or null
      */
-    public function getRegex();
+    public function getRegex(): array;
 
 
     /**
@@ -163,7 +163,7 @@ interface Mumsys_Variable_Item_Interface
      *
      * @param string $value Regular expression
      */
-    public function setRegex( $value );
+    public function setRegex( array $value ): void;
 
 
     /**
@@ -171,7 +171,7 @@ interface Mumsys_Variable_Item_Interface
      *
      * @param string $value Regular expression
      */
-    public function addRegex( $value );
+    public function addRegex( string $value ): void;
 
 
     /**

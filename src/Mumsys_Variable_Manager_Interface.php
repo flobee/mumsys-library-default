@@ -102,7 +102,7 @@ interface Mumsys_Variable_Manager_Interface
      * Mumsys_Variable_Item_Interface where key is the identifier of the item/
      * variable
      */
-    public function getItems();
+    public function getItems(): array;
 
 
     /**
