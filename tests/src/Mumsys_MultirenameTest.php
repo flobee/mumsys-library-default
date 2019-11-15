@@ -480,6 +480,8 @@ class Mumsys_MultirenameTest
         $data = json_encode( $history );
         $result = file_put_contents( $file, $data );
         $this->_object->undo( $this->_config['path'] );
+
+        $this->assertTrue( true ); // success until here!
     }
 
 

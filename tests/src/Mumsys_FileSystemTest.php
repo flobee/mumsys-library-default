@@ -440,7 +440,9 @@ class Mumsys_FileSystemTest
 
         // hard link (owned by myself ok, otherwise possible error/exceptions with write perms)
         touch( $this->_testdirs['dir'] );
-        $actual3 = $this->_object->link( $this->_testdirs['dir'], $this->_testsDir . '/tmp/lnkname', 'hard', 'abs', false );
+        $actual3 = $this->_object->link(
+            $this->_testdirs['dir'], $this->_testsDir . '/tmp/lnkname', 'hard', 'abs', false
+        );
         $expected3 = $this->_testsDir . '/tmp/lnkname';
         @unlink( $this->_testsDir . '/tmp/lnkname' );
         @unlink( $this->_testdirs['dir'] );

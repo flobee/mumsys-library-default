@@ -82,6 +82,8 @@ class Mumsys_GetOptsTest
     {
         // use server vars, not input parameters
         $x = new Mumsys_GetOpts( $this->opts );
+
+        $this->assertInstanceOf( Mumsys_GetOpts::class, $x );
     }
 
     // for 100% code coverage
@@ -91,6 +93,8 @@ class Mumsys_GetOptsTest
         $inp[] = '--help';
         $inp[] = '--no-help';
         $x = new Mumsys_GetOpts( $this->opts, $inp );
+
+        $this->assertInstanceOf( Mumsys_GetOpts::class, $x );
     }
 
 

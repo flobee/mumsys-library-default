@@ -424,7 +424,8 @@ class Mumsys_Variable_Manager_DefaultTest
             'MINMAX_TOO_LONG_STR' => 'Value "%1$s" must contain maximum of "%2$s" characters, "%3$s" given',
             'MINMAX_TOO_SHORT_NUM' => 'Value "%1$s" must be minimum "%2$s"',
             'MINMAX_TOO_LONG_NUM' => 'Value "%1$s" can be maximum "%2$s"',
-            'MINMAX_TYPE_ERROR' => 'Min/max type error "%1$s". Must be "string", "integer", "numeric", "float" or "double"',
+            'MINMAX_TYPE_ERROR' =>
+                'Min/max type error "%1$s". Must be "string", "integer", "numeric", "float" or "double"',
         );
 
         $actual1 = $this->_object->getMessageTemplates();

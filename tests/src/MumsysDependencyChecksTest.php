@@ -97,7 +97,7 @@ class MumsysDependencyChecksTest
             }
 
             // once must fix
-            foreach( $possible as $expected ) {
+            foreach ( $possible as $expected ) {
                 $actual = ini_get( $iniValue );
 
                 if ( $actual == $expected ) {

@@ -6,7 +6,6 @@
 class Mumsys_LoggerTest
     extends Mumsys_Unittest_Testcase
 {
-
     /**
      * @var Mumsys_Logger
      */
@@ -57,6 +56,7 @@ class Mumsys_LoggerTest
         $opts['lf'] = "\n";
 
         $object = new Mumsys_Logger( $opts );
+        $this->assertInstanceOf( Mumsys_Logger::class, $object );
     }
 
     // for 100% code coverage
@@ -72,11 +72,15 @@ class Mumsys_LoggerTest
         $_SERVER['REMOTE_USER'] = 'flobee';
         $object = new Mumsys_Logger( $opts );
 
-        unset( $opts['username'], $_SERVER['REMOTE_USER'], $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'], $_SERVER['LOGNAME'] );
+        unset(
+            $opts['username'], $_SERVER['REMOTE_USER'], $_SERVER['PHP_AUTH_USER'],
+            $_SERVER['USER'], $_SERVER['LOGNAME']
+        );
         $object = new Mumsys_Logger( $opts );
 
         $_SERVER['LOGNAME'] = 'God';
         $object = new Mumsys_Logger( $opts );
+        $this->assertInstanceOf( Mumsys_Logger::class, $object );
     }
 
 
