@@ -54,5 +54,7 @@ tests/.phpunit.result.cache
 tests/cs
 tests/csf
 tests/sca
+tests/rt
+tests/rc
 
 phpbench.json

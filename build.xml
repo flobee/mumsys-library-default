@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="Mumsys library" default="options">
-    
+
     <property name="bindir" value="${project.basedir}/vendor/bin/" override="false" />
-    
+
     <target name="options" description="Options for phing">
         <echo msg="Option for phing required: test|check|coverage|api|gitstats|all" />
     </target>
-    
+
     <target name="test" description="Executes the unit tests">
         <echo msg="Executing unit tests" />
         <delete file="tests/phing-unittest.log" quiet="true" failonerror="false" />
@@ -23,10 +23,10 @@
               dir="tests" checkreturn="true" logoutput="true" />
     </target>
 
-    
+
     <target name="api" description="Generates the API">
         <echo msg="Generating the API" />
-        <exec command="./createApi.sh" dir="tests" checkreturn="true" logoutput="true" />
+        <exec command="./runApiCreate.sh" dir="tests" checkreturn="true" logoutput="true" />
     </target>
 
     <target name="gitstats" description="Generates git statistics">
@@ -34,19 +34,20 @@
         <exec command="gitstats . docs/GitStats" dir="./" checkreturn="true" logoutput="true" />
     </target>
 
-    
+
     <target name="check" description="Executes the coding style sniffer">
         <echo msg="Executing the coding style sniffer" />
-        <exec command="${bindir}phpcs -n --standard=misc/coding/Mumsys src tests tests/bootstrap.php tests/MumsysTestHelper.php"
-              checkreturn="true" logoutput="true"/>
-    </target>
-    
-    <target name="sca" description="Executes the static code analysis (sca) (low level here)">
-        <echo msg="Executing the static code analysis sniffer" />
-        <exec command="./sca.sh ../src/" dir="tests" checkreturn="true" logoutput="true" />
+        <exec command="./runCSCheck.sh -n ../src ./src bootstrap.php MumsysTestHelper.php"
+            dir="tests" checkreturn="true" logoutput="true"
+        />
     </target>
 
-    <target name="all" depends="coverage,check,api" description="Execute all parts of the package">
+    <target name="sca" description="Executes the static code analysis (sca) (low level here)">
+        <echo msg="Executing the static code analysis sniffer" />
+        <exec command="./runStaticCodeAnalysis.sh ../src/" dir="tests" checkreturn="true" logoutput="true" />
+    </target>
+
+    <target name="all" depends="check,coverage,api" description="Execute all main parts of the package (check,coverage,api)">
     </target>
 
 </project>
