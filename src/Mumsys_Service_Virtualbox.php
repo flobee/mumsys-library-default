@@ -199,7 +199,7 @@ class Mumsys_Service_Virtualbox
             }
         }
 
-        $status = ($this->_statusBefore === true) ? 'Already Up' : 'Down';
+        $status = ( $this->_statusBefore === true ) ? 'Already Up' : 'Down';
         $this->_logger->log( 'VM status: "' . $status . '"', 7 );
 
         return $this->_statusBefore;
