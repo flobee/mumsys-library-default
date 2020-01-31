@@ -553,7 +553,7 @@ class Mumsys_FileSystem
      * Creates a directory if not exists.
      *
      * @param string $dir Directory to be created
-     * @param octal $perm Permission mode of directory to be chmod eg.: 755
+     * @param octal $perm Permission mode of directory to be chmod eg.: 0755
      *
      * @return boolean True on success or false if directory exists.
      * @throws Mumsys_FileSystem_Exception Throws exception on any other error
@@ -582,7 +582,7 @@ class Mumsys_FileSystem
      * Create a given directory recursivly like "mkdir -p".
      *
      * @param string $dir Directory to be created
-     * @param octal $perm Permission mode of directory to be chmod eg.: 755
+     * @param octal|integer $perm Permission mode of directory to be chmod eg.: 755
      *
      * @return boolean true on success or false on failure
      *
