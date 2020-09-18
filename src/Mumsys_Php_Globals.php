@@ -58,6 +58,8 @@ class Mumsys_Php_Globals
      * Returns an eviroment variable in this order: getenv() befor _ENV befor
      * _SERVER.
      *
+     * HINT: Will be change in V >= 2.2.0 (getServerVar() for $_SERVER)
+     *
      * @param string $key ID to check for
      * @param mixed $default Return value
      *
@@ -71,6 +73,8 @@ class Mumsys_Php_Globals
 
     /**
      * Returns the php $_SERVER variable if set by given key.
+     *
+     * HINT: Will be change in V >= 2.2.0 (getServerServerVar() for env and server vars)
      *
      * @param string $key ID to check for
      * @param mixed $default Return value
