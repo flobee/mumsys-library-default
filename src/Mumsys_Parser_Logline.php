@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Mumsys_Parser_Logline
@@ -40,10 +40,6 @@
  *      $line = $file->fgets();
  *      $record = $parser->parse($line);
  * </pre>
- *
- * @category    Mumsys
- * @package     Library
- * @subpackage  Parser
  */
 class Mumsys_Parser_Logline
 {
@@ -70,7 +66,7 @@ class Mumsys_Parser_Logline
      * Log format to be used internally
      * @var string
      */
-    private $_logFormat;
+    private $_logFormat = '';
 
     /**
      * List of filters
@@ -177,13 +173,18 @@ class Mumsys_Parser_Logline
      * Returns the reqular expression based on format and patterns.
      *
      * @return string Regular expression
+     * @throw Mumsys_Parser_Exception If logformat is invalid
      */
     private function _getExpression()
     {
         $expr = $this->_logFormat;
-
         foreach ( $this->_patterns as $key => $replace ) {
             $expr = preg_replace( "/{$key}/", $replace, $expr );
+            // @codeCoverageIgnoreStart
+            if ( $expr === null ) {
+                throw new Mumsys_Parser_Exception( 'Invalid logformat' );
+            }
+            // @codeCoverageIgnoreEnd
         }
 
         return $expr;
@@ -261,7 +262,7 @@ class Mumsys_Parser_Logline
      * eg.: httpcode, user, time ...
      * @param array|string $value Value or list of values to look/ search for.
      * matching tests! not exact tests!
-     * @param type $sensitive Flag to enable sensitive mode or not. Default:
+     * @param boolean $sensitive Flag to enable sensitive mode or not. Default:
      * false (case insensitive)
      */
     public function addFilter( $key, $value = array(), $sensitive = false )

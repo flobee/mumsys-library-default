@@ -1,4 +1,4 @@
-<?php
+<?php declare (strict_types=1);
 
 /**
  * Mumsys_Pager_Default
@@ -36,7 +36,7 @@
  *      'slidersteps' => 8,
  *      'cssClassName' => 'pnnavi',
  * );
- * $oPager = new Mumsys_Pager($opts);
+ * $oPager = new Mumsys_Pager_Default($opts);
  * $html = $oPager->getHtml();
  * </code>
  *
@@ -50,7 +50,7 @@ class Mumsys_Pager_Default
     /**
      * Version ID information.
      */
-    const VERSION = '3.1.0';
+    const VERSION = '3.1.1';
 
     /**
      * Message for: "next page"
@@ -205,7 +205,7 @@ class Mumsys_Pager_Default
 
     /**
      * Html code for the previous page
-     * @var type
+     * @var string
      */
     private $_pagePrev;
 
@@ -275,36 +275,28 @@ class Mumsys_Pager_Default
      * - 'cssClassName' string Css class name for the slider and the summary
      * div container
      *
-     * @return string Html code for the pagination based on the setting.
+     * @throw Mumsys_Pager_Exception If config params are invalid
      */
     public function __construct( array $params = array() )
     {
-        $return = null;
-        try {
-            if ( $params ) {
-                $defaults = array(
-                    'cntitems', 'pagestart', 'pagestartVarname', 'limit',
-                    'basiclink', 'showPageNumbers', 'showSummary', 'dynamic',
-                    'slidersteps', 'cssClassName'
-                );
+        if ( $params ) {
+            $defaults = array(
+                'cntitems', 'pagestart', 'pagestartVarname', 'limit',
+                'basiclink', 'showPageNumbers', 'showSummary', 'dynamic',
+                'slidersteps', 'cssClassName'
+            );
 
-                foreach ( $params as $key => $val ) {
-                    if ( in_array( $key, $defaults ) ) {
-                        $this->{'_' . $key } = $val;
-                    } else {
-                        $message = 'Invalid parameter "' . $key . '" found';
-                        throw new Mumsys_Pager_Exception( $message );
-                    }
+            foreach ( $params as $key => $val ) {
+                if ( in_array( $key, $defaults ) ) {
+                    $this->{'_' . $key } = $val;
+                } else {
+                    $message = 'Invalid parameter "' . $key . '" found';
+                    throw new Mumsys_Pager_Exception( $message );
                 }
-
-                $return = $this->render();
             }
-        }
-        catch ( Exception $ex ) {
-            throw $ex;
-        }
 
-        return $return;
+            $this->render();
+        }
     }
 
 
@@ -361,7 +353,8 @@ class Mumsys_Pager_Default
     /**
      * Returns the summary of the pageination/ navigation.
      *
-     * @return string Returns the summary html code
+     * @return string|null Returns the summary html code or null if not
+     * requested with param 'showSummary'
      */
     public function getSummary()
     {
@@ -385,13 +378,12 @@ class Mumsys_Pager_Default
         $showPageNumbers = $this->_showPageNumbers;
         $showSummary = $this->_showSummary;
         $dynamic = $this->_dynamic;
-
+        $selected = 0;
         $steps = $this->_slidersteps;
 
         $html = '<div class="' . $this->_cssClassName . '">' . _NL;
         $slider = array();
 
-        $cnt = 0;
         $cnt = ceil( $cntitems / $limit );
         if ( $showPageNumbers ) {
             //$cnt = ceil($cntitems / $limit);

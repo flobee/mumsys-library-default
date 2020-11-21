@@ -1,4 +1,4 @@
-<?php
+<?php /** @todo declare(strict_types=1);*/
 
 /**
  * Php
@@ -130,11 +130,11 @@ class Mumsys_Php
      * Note: Don't use it! if you have a better/ different solution. Performance
      * reasons!
      *
-     * @param string $function Function to call
-     * @param mixed $arguments Mixed arguments
+     * @param callable $function Function to call
+     * @param array $arguments Mixed arguments
      * @return mixed
      */
-    public function __call( $function, $arguments )
+    public function __call( callable $function, array $arguments )
     {
         return call_user_func_array( $function, $arguments );
     }
@@ -149,14 +149,20 @@ class Mumsys_Php
     /**
      * Check if a value is an integer
      *
-     * @param interger $value Value to be checked
+     * @param integer $value Value to be checked
      *
-     * @return integer|false Returns the casted interger value or false if value
+     * @return boolean Returns the casted integer value or false if value
      * is not a nummeric type
      */
     public static function is_int( $value )
     {
-        return ( is_numeric( $value ) ? intval( $value ) == $value : false );
+        if ( is_numeric( $value ) ) {
+            if ( intval( $value ) == $value ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -165,23 +171,26 @@ class Mumsys_Php
      * If the value contains colons or dot's the given value will be cleand to
      * be a technical value.
      * Note: Behavior belongs to setlocale().
-     *
      * @see setlocale()
      *
-     * @param scalar $value
+     * @param mixed $value
      *
-     * @return boolean True on success or false
+     * @return float The float value of the given variable. Empty arrays return 0,
+     * non-empty arrays return 1. Strings will most likely return 0 although this
+     * depends on the leftmost characters of the string. The common rules of
+     * float casting apply.
      */
-    public static function floatval( $value )
+    public static function floatval( $value ): float
     {
+        $result = $value;
         if ( strstr( $value, ',' ) ) {
             // replace dots (thousand seps) with blancs
-            $value = str_replace( '.', '', $value );
+            $string = str_replace( '.', '', $value );
             // replace ',' with '.'
-            $value = str_replace( ',', '.', $value );
+            $result = str_replace( ',', '.', $string );
         }
 
-        return floatval( $value );
+        return floatval( $result );
     }
 
     //
@@ -205,7 +214,7 @@ class Mumsys_Php
      * exists; FALSE otherwise. This function will return FALSE for symlinks
      * pointing to non-existing files.
      * }}} */
-    public static function file_exists( $url = '' )
+    public static function file_exists( string $url = '' )
     {
         if ( empty( $url ) ) {
             return false;
@@ -263,7 +272,10 @@ class Mumsys_Php
      */
     public static function ini_get( $key )
     {
-        $value = ini_get( $key );
+        if ( ( $value = ini_get( $key ) ) === false ) {
+//            throw new Mumsys_Php_Exception( sprintf('ini_get(%1$s) not exists', $key) );
+        }
+
         $value = trim( $value );
 
         if ( empty( $value ) ) {
@@ -289,7 +301,7 @@ class Mumsys_Php
      * @return integer Number of bytes.
      * @throws Mumsys_Php_Exception If detection/ calculation fails
      */
-    public static function str2bytes( $value, $binType = true )
+    public static function str2bytes( string $value, $binType = true ): int
     {
         $value = trim( $value );
 
@@ -396,27 +408,34 @@ class Mumsys_Php
      *
      * @return string
      */
-    public static function htmlspecialchars( $str = '', $style = ENT_QUOTES )
+    public static function htmlspecialchars( string $str = '', $style = ENT_QUOTES )
     {
         // use forward look up to only convert & not &#abc; and not &amp;
-        $str = preg_replace( '/&(?!(#[0-9]|amp)+;)/s', "&amp;", $str );
+        if ( ($strA = preg_replace( '/&(?!(#[0-9]|amp)+;)/s', "&amp;", $str ) ) === null ) {
+            throw new Mumsys_Php_Exception('Regex error');
+        }
+
         //$str = preg_replace("/&(?![0-9a-z]+;)/s",'&amp;', $str );
-        $str = str_replace( '<', '&lt;', $str );
-        $str = str_replace( '>', '&gt;', $str );
+        $strB = str_replace( '<', '&lt;', $strA );
+        $string = str_replace( '>', '&gt;', $strB );
         switch ( $style )
         {
             case ENT_COMPAT:
-                $str = str_replace( '"', "&quot;", $str );
+                $result = str_replace( '"', "&quot;", $string );
                 break;
+
             case ENT_NOQUOTES:
                 // no quotes translation
+                $result = $string;
                 break;
+
             case ENT_QUOTES:    // both quotes translations
             default:
-                $str = str_replace( '"', "&quot;", $str );
-                $str = str_replace( "'", '&#039;', $str );
+                $resultA = str_replace( '"', "&quot;", $string );
+                $result = str_replace( "'", '&#039;', $resultA );
         }
-        return $str;
+
+        return $result;
     }
 
 
@@ -427,7 +446,7 @@ class Mumsys_Php
      * @param mixed $style by default: ENT_QUOTES ; ENT_COMPAT (convert ");
      * ENT_QUOTES convert both; ENT_NOQUOTES no quote conversation
      *
-     * @return stringreturns the re-converted html entity
+     * @return string Returns the re-converted html entity
      * */
     public static function xhtmlspecialchars( $str = '', $style = ENT_QUOTES )
     {
@@ -460,19 +479,19 @@ class Mumsys_Php
      *
      * @todo "\n -> <br />\n"; currently: "\n -> <br />"
      *
-     * @param string $s String to be check/added with <br> tags
+     * @param string $string String to be check/added with <br> tags
      *
      * @return string Returns nl2br  ( string $string  [, bool $is_xhtml=true] )
      */
-    public static function nl2br( $string, $isXhtml = true )
+    public static function nl2br( string $string, $isXhtml = true )
     {
         if ( $isXhtml ) {
-            $r = '<br />';
+            $str = '<br />';
         } else {
-            $r = '<br>';
+            $str = '<br>';
         }
 
-        return strtr( $string, array("\r\n" => $r, "\r" => $r, "\n" => $r) );
+        return strtr( $string, array("\r\n" => $str, "\r" => $str, "\n" => $str) );
     }
 
 
@@ -497,7 +516,7 @@ class Mumsys_Php
      * parseUrl — Parse a URL and return its components.
      *
      * @param string $url The URL to parse. Invalid characters are replaced by _.
-     * @param string $component Specify one of PHP_URL_SCHEME, PHP_URL_HOST,
+     * @param int $component Specify one of PHP_URL_SCHEME, PHP_URL_HOST,
      * PHP_URL_PORT, PHP_URL_USER, PHP_URL_PASS, PHP_URL_PATH, PHP_URL_QUERY or
      * PHP_URL_FRAGMENT to retrieve just a specific URL component as a string.
      *
@@ -519,18 +538,18 @@ class Mumsys_Php
      *
      * @thows Mumsys_Php_Exception Throws exception if parseUrl would return false.
      */
-    public static function parseUrl( $url, $component = null )
+    public static function parseUrl( string $url, int $component = null )
     {
         if ( isset( $component ) ) {
-            $x = parse_url( $url, $component );
+            $result = parse_url( $url, $component );
         } else {
-            $x = parse_url( $url );
+            $result = parse_url( $url );
         }
-        if ( $x === false ) {
+        if ( $result === false ) {
             throw new Mumsys_Php_Exception( 'parseUrl() failt.', 1 );
         }
 
-        return $x;
+        return $result;
     }
 
 
@@ -563,12 +582,12 @@ class Mumsys_Php
      * @param string $string String to parse.
      *
      * @return array Returns all portions in an associative array
-     *
      * @throws Mumsys_Php_Exception Throws exception if string could not be converted.
      */
-    public static function parseStr( $string )
+    public static function parseStr( string $string )
     {
-        $x = parse_str( $string, $res );
+        $res = null;
+        parse_str( $string, $res );
 
         if ( empty( $res ) ) {
             throw new Mumsys_Php_Exception( 'Mumsys_Php::parseStr() failt.', 1 );
@@ -580,21 +599,21 @@ class Mumsys_Php
 
     /**
      * Pad a number (int) to a certain length with another string as prefix.
-     * Adds prefixes to an interger number for a given length.
+     * Adds prefixes to an integer number for a given length.
      * E.g: You want number 123 to be 6 chars lenght and want zero fills as
      * prefix like: 000123
-     * Note: Given number will be casted to interger.
+     * Note: Given number will be casted to integer.
      * This is a simple helper and alias method of php's str_pad()
      *
-     * @param interger $integer Un/signd number
-     * @param type $digits Number of characters your number should contain
-     * @param type $padString String to be used as prefix char
+     * @param integer $integer Un/signed number
+     * @param integer $digits Number of characters your number should contain
+     * @param string $padString String to be used as prefix char
      *
      * @return string The padded string
      */
-    public static function numberPad( $integer, $digits, $padString = '0' )
+    public static function numberPad( int $integer, int $digits, $padString = '0' )
     {
-        return str_pad( (int) $integer, $digits, $padString, STR_PAD_LEFT );
+        return str_pad( (string)$integer, $digits, $padString, STR_PAD_LEFT );
     }
 
 
@@ -758,7 +777,7 @@ class Mumsys_Php
      *
      * @param string $needle Needle to look for
      * @param array $haystack Array to be scanned
-     * @param boolean $stopOnFirstMatch Flag
+     * @param boolean|string $stopOnFirstMatch Flag
      *
      * @return array Returns a list of key->value pairs by reference  array
      * indexes to the specified key. Last value
@@ -805,10 +824,10 @@ class Mumsys_Php
      *
      * @todo to be tested deeply
      *
-     * @param array $array1, $array2, $array3... Arrays be be merged
+     * @ param array|null $array List of arrays to be be merged or null to use
+     * func_get_args()
      *
      * @return array Returns the merged array
-     *
      * @throws Mumsys_Php_Exception Throws exception on unexpercted behaviour
      */
     public static function array_merge_recursive()

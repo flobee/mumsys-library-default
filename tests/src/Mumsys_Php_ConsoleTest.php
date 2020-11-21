@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Test class for php class.
@@ -11,7 +11,11 @@ class Mumsys_Php_ConsoleTest
      */
     protected $_object;
 
+    /**
+     * @var string
+     */
     protected $_testsDir;
+
     /**
      * Test are made vor version: ...
      * @var string

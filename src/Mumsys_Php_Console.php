@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Mumsys_Php_Console
@@ -68,15 +68,15 @@ class Mumsys_Php_Console
      * event should be thrown (max allowed/free size compare Value) Default: 92%
      * @param Mumsys_Logger_Interface $logger Logger object which needs at least
      * the log method
-     * @param string $cmd 'df' command to be executed. Maybe different on
+     * @param string $inputCmd 'df' command to be executed. Maybe different on
      * windows e.g: 'c:/cygwin/bin/df.exe -a [path]; Parameter %1$s is the
      * placeholder for the $path.
      *
      * @return boolean Returns true if disk size exceed the limit or false
      */
     public static function check_disk_free_space( $path = '', $secCmp = 60,
-        $maxSizeCmp = 92, Mumsys_Logger_Interface $logger = null,
-        $cmd = 'df -a %1$s' )
+        $maxSizeCmp = 92, Mumsys_Logger_Interface $logger,
+        $inputCmd = 'df -a %1$s' )
     {
         static $paths = null;
         static $sizes = null;
@@ -91,7 +91,7 @@ class Mumsys_Php_Console
             return true;
         }
 
-        $cmd = sprintf( $cmd, $path );
+        $cmd = sprintf( $inputCmd, $path );
 
         $now = time();
         $_v = array();

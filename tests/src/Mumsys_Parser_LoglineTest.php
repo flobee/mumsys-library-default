@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 
 /**
@@ -224,7 +224,7 @@ class Mumsys_Parser_LoglineTest
         $this->expectExceptionMessageRegExp( $regex );
         $this->expectException( 'Mumsys_Parser_Exception' );
 
-        $actual5 = $this->_object->parse( trim( $records[4] ) );
+        $this->_object->parse( trim( $records[4] ) );
     }
 
 

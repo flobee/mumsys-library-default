@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 
 /**
@@ -15,7 +15,7 @@ class Mumsys_Pager_DefaultTest
      * Version ID.
      * @var string
      */
-    private $_version = '3.1.0';
+    private $_version = '3.1.1';
 
     /**
      * List of options to initialise the object

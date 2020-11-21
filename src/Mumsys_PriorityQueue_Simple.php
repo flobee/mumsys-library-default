@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Mumsys_PriorityQueue_Simple
@@ -98,13 +98,13 @@ class Mumsys_PriorityQueue_Simple
      * @param string|integer $identifier Unique key/ID for the value to add
      * @param mixed $value Value to add
      * @param string $positionWay String "before" | "after" (default)
-     * @param string $positionID Name of the key/ID where to set (before/
+     * @param string|null $positionID Name of the key/ID where to set (before/
      * after) this new entrys
      *
      * @throws Mumsys_PriorityQueue_Exception If Key/ID already exists
      */
-    public function add( $identifier, $value, $positionWay = 'after',
-        $positionID = null )
+    public function add( $identifier, $value, string $positionWay = 'after',
+        string $positionID = null)
     {
         if ( isset( $this->_stack[$identifier] ) ) {
             $message = sprintf( 'Identifier "%1$s" already set', $identifier );
@@ -131,15 +131,14 @@ class Mumsys_PriorityQueue_Simple
      * @param string $posWay String "before" | "after" (default)
      *
      * @return integer Number of the position the found key is placed
-     *
-     * @throws Mumsys_PriorityQueue_Exception If the way dosnt contain "after"
+     * @throw Mumsys_PriorityQueue_Exception If the way dosnt contain "after"
      * or "before"
      */
-    private function _getPos( $posKey, $posWay = 'after' )
+    private function _getPos( string $posKey, $posWay = 'after' ): int
     {
         $i = 0;
-        $pos = false;
-        foreach ( $this->_stack as $key => & $tmp ) {
+        $pos = 0;
+        foreach ( $this->_stack as $key => &$tmp ) {
             if ( $posKey === $key ) {
                 $pos = $i;
                 break;
@@ -151,9 +150,11 @@ class Mumsys_PriorityQueue_Simple
             case 'before':
                 //$pos = $pos;
                 break;
+
             case 'after':
                 $pos = $pos + 1;
                 break;
+
             default:
                 $message = sprintf(
                     'Position way "%1$s" not implemented', $posWay
