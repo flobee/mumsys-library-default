@@ -3,7 +3,7 @@
     "description": "PHP library for the MUMSYS project",
     "keywords": ["PHP", "Library", "Web", "Shell", "DTO", "DAO"],
     "homepage": "https://mumsys.org",
-    "license": "LGPL3",
+    "license": "LGPL-3.0-or-later",
     "type": "project",
     "authors": [
         {
@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "php": "7.3.*",
+        "php": "7.3.* | 7.4.*",
         "phpmailer/phpmailer": "^6",
         "flobee/spss": "^3.1"
     },
