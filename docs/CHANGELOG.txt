@@ -1,5 +1,9 @@
 # Changes
 
+2020-11
+
+- Moves Assets domain to local branch
+
 2019-11
 
     + Updates tests tools which come now from `misc` repository
