@@ -57,8 +57,8 @@ class Mumsys_FileSystemTest
     public function test__constructor()
     {
         $this->_object = new Mumsys_FileSystem();
-        $this->assertInstanceOf( 'Mumsys_FileSystem', $this->_object );
-        $this->assertInstanceOf( 'Mumsys_Abstract', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_FileSystem', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Abstract', $this->_object );
     }
 
 
@@ -128,15 +128,14 @@ class Mumsys_FileSystemTest
         // unreadable path
         $actual3 = $this->_object->scanDirInfo( '/root', true, true );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertFalse( $actual3 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingFalse( $actual3 );
     }
 
 
     /**
      * @covers Mumsys_FileSystem::getFileDetails
-     * @covers Mumsys_FileSystem::_getFileDetailsPrepare
      */
     public function testGetFileDetails()
     {
@@ -153,20 +152,19 @@ class Mumsys_FileSystemTest
             dirname( __FILE__ ), basename( __FILE__ )
         );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected1, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual2 );
 
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(File "\/i\/don\/t\/exist" not found)/'
         );
-        $this->expectException( 'Mumsys_FileSystem_Exception' );
+        $this->expectingException( 'Mumsys_FileSystem_Exception' );
         $actual2 = $this->_object->getFileDetails( '/i/don/t/exist' );
     }
 
 
     /**
      * @covers Mumsys_FileSystem::getFileDetailsExtended
-     * @covers Mumsys_FileSystem::_getFileDetailsPrepare
      */
     public function testGetFileDetailsExtended()
     {
@@ -253,16 +251,16 @@ class Mumsys_FileSystemTest
             'filetype' => $this->_object->getFileType( $this->_testsDir . '/tmp/link' ),
             'is_executable' => true,
             'ext' => '',
-            'mimetype' => 'inode/x-empty',
+            'mimetype' => finfo_file( finfo_open(FILEINFO_MIME_TYPE), $this->_testsDir . '/tmp/link'),
             'target' => $this->_testsDir . '/tmp/unittest',
             'owner_name' => @reset( posix_getpwuid( $stat['uid'] ) ),
             'group_name' => @reset( posix_getgrgid( $stat['gid'] ) ),
         );
         @unlink( $this->_testsDir . '/tmp/link' );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
     }
 
 
@@ -282,10 +280,11 @@ class Mumsys_FileSystemTest
             "ELF 32-bit LSB shared object, Intel 80386, version 1 (SYSV)",
             'ELF 64-bit LSB executable, x86-64, version 1 (SYSV)',
             'ELF 64-bit LSB shared object, x86-64, version 1 (SYSV)',
+            'ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV)',
             "symbolic link to dash\n",
         );
 
-        $this->assertTrue( in_array( $actual, $expecteds ) );
+        $this->assertingTrue( in_array( $actual, $expecteds ) );
     }
 
 
@@ -311,15 +310,15 @@ class Mumsys_FileSystemTest
         $expected3 = $this->_testdirs['file'] . '.1';
         @unlink( $expected3 );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
 
         // source is a dir exception
         $regex = '/(Source file: A directory was found. only file copying is '
             . 'implemented)/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_FileSystem_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_FileSystem_Exception' );
         $this->_object->copy( $this->_testsDir . '/tmp/', '/home/' );
     }
 
@@ -330,8 +329,8 @@ class Mumsys_FileSystemTest
     public function testCopyException()
     {
         $regex = '/(Copy error)/i';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_FileSystem_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_FileSystem_Exception' );
         $this->_object->copy( $this->_testdirs['file'], '/' );
     }
 
@@ -363,15 +362,15 @@ class Mumsys_FileSystemTest
         @unlink( $expected2 );
         @rmdir( $this->_testdirs['dir'] );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
 
         // source emty exception
         $regex = '/(Rename failt for reason: Source "" is no directory and '
             . 'no file)/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_FileSystem_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_FileSystem_Exception' );
         $this->_object->rename( '', $this->_testsDir . '/tmp/something' );
     }
 
@@ -387,7 +386,7 @@ class Mumsys_FileSystemTest
             . 'copy(/root//unittest): failed to open stream: Permission denied';
         $msg[] = 'Rename failt for reason: rename(): Permission denied';
 
-        $this->expectException( 'Mumsys_FileSystem_Exception' );
+        $this->expectingException( 'Mumsys_FileSystem_Exception' );
         $this->_object->rename( $this->_testdirs['file'], '/root/' );
     }
 
@@ -434,11 +433,11 @@ class Mumsys_FileSystemTest
         );
         $expected5 = $this->_testdirs['dir'] . '.lnk';
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected1, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
-        $this->assertEquals( $expected4, $actual4 );
-        $this->assertEquals( $expected5, $actual5 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected4, $actual4 );
+        $this->assertingEquals( $expected5, $actual5 );
 
         // test realpath exception + last, catched exception
         unlink( $this->_testdirs['dir'] );
@@ -449,8 +448,8 @@ class Mumsys_FileSystemTest
             . 'Real path not found for "'
             . str_replace( '/', '\/', $this->_testsDir )
             . '\/tmp\/unittest-mkdir")/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_FileSystem_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_FileSystem_Exception' );
         $this->_object->link(
             $this->_testsDir . '/tmp', $this->_testdirs['dirs'], 'soft', 'rel',
             false
@@ -472,8 +471,8 @@ class Mumsys_FileSystemTest
             . '\/tmp\/unittest-mkdir"\. Invalid link type "invalidType" '
             . '\(Use soft\|hard\)'
             . ')/';
-        $this->expectExceptionMessageRegExp( $msg );
-        $this->expectException( 'Mumsys_FileSystem_Exception' );
+        $this->expectingExceptionMessageRegex( $msg );
+        $this->expectingException( 'Mumsys_FileSystem_Exception' );
         $this->_object->link(
             $this->_testsDir . '/tmp', $this->_testdirs['dir'], 'invalidType',
             'rel', false
@@ -491,8 +490,8 @@ class Mumsys_FileSystemTest
         $this->_object->mkdir( $dir );
         touch( ( $file = $dir . '/toUnlink.test' ) );
 
-        $this->assertTrue( $this->_object->unlink( $dir ) ); // not a file
-        $this->assertTrue( $this->_object->unlink( $file ) );
+        $this->assertingTrue( $this->_object->unlink( $dir ) ); // not a file
+        $this->assertingTrue( $this->_object->unlink( $file ) );
 
         $fileDifferentOwnership = '/usr/bin/php';
         try {
@@ -514,8 +513,8 @@ class Mumsys_FileSystemTest
             $message = sprintf(
                 'Can not delete file "%1$s"', $fileDifferentOwnership
             );
-            $this->assertEquals( $message, $e->getMessage() );
-            $this->assertInstanceOf( 'Mumsys_FileSystem_Exception', $e );
+            $this->assertingEquals( $message, $e->getMessage() );
+            $this->assertingInstanceOf( 'Mumsys_FileSystem_Exception', $e );
         }
     }
 
@@ -531,17 +530,17 @@ class Mumsys_FileSystemTest
         touch( $file );
         symlink( $file, $link );
 
-        $this->assertTrue( file_exists( $file ) );
-        $this->assertTrue( file_exists( $link ) );
+        $this->assertingTrue( file_exists( $file ) );
+        $this->assertingTrue( file_exists( $link ) );
 
-        $this->assertTrue( $this->_object->unlink( $link ) );
-        $this->assertTrue( $this->_object->rmfile( $file ) );
+        $this->assertingTrue( $this->_object->unlink( $link ) );
+        $this->assertingTrue( $this->_object->rmfile( $file ) );
 
-        $this->assertTrue( $this->_object->unlink( $this->_testsDir ) );
+        $this->assertingTrue( $this->_object->unlink( $this->_testsDir ) );
 
         // test exception
         /** @todo file with different ownership */
-//        $this->expectException('Mumsys_FileSystem_Exception', '/(Can not delete file "'.$file.'")/i');
+//        $this->expectingException('Mumsys_FileSystem_Exception', '/(Can not delete file "'.$file.'")/i');
 //        $this->_object->unlink($file);
     }
 
@@ -554,13 +553,13 @@ class Mumsys_FileSystemTest
         $dir = $this->_testdirs['dir'];
         $this->_object->mkdir( $dir );
 
-        $this->assertTrue( file_exists( $dir ) );
-        $this->assertFalse( $this->_object->mkdir( $dir ) ); // exists error
+        $this->assertingTrue( file_exists( $dir ) );
+        $this->assertingFalse( $this->_object->mkdir( $dir ) ); // exists error
 
         $regex = '/(Can not create dir: "\/xyz" mode: "755". Message: '
             . 'mkdir\(\): Permission denied)/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_FileSystem_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_FileSystem_Exception' );
         $this->_object->mkdir( '/xyz' );
     }
 
@@ -574,8 +573,8 @@ class Mumsys_FileSystemTest
         $dir = $this->_testdirs['dirs'];
         $this->_object->mkdirs( $dir );
 
-        $this->assertTrue( file_exists( $dir ) ); // created
-        $this->assertTrue( $this->_object->mkdirs( $dir ) ); // exists
+        $this->assertingTrue( file_exists( $dir ) ); // created
+        $this->assertingTrue( $this->_object->mkdirs( $dir ) ); // exists
     }
 
 
@@ -593,10 +592,10 @@ class Mumsys_FileSystemTest
         $this->_object->mkdirs(
             $this->_testdirs['dirs'] . '/x/../../home/user', 0700
         );
-        $this->assertFalse( file_exists( $dir ) );
+        $this->assertingFalse( file_exists( $dir ) );
 
-        $this->assertTrue( $this->_object->mkdirs( $dir ) ); // created
-        $this->assertTrue( file_exists( $dir ) );
+        $this->assertingTrue( $this->_object->mkdirs( $dir ) ); // created
+        $this->assertingTrue( file_exists( $dir ) );
 
         @rmdir( $dir );
     }
@@ -611,17 +610,17 @@ class Mumsys_FileSystemTest
         $dir = $this->_testdirs['dirs'];
         $this->_object->mkdirs( $dir );
 
-        $this->assertTrue( $this->_object->rmdir( '/not/existing/path' ) );
-        $this->assertTrue( $this->_object->rmdir( $dir ) );
+        $this->assertingTrue( $this->_object->rmdir( '/not/existing/path' ) );
+        $this->assertingTrue( $this->_object->rmdir( $dir ) );
 
         $this->_object->mkdirs( $dir );
-        $this->assertTrue( $this->_object->rmdirs( '/not/existing/path' ) );
-        $this->assertTrue( $this->_object->rmdirs( $this->_testdirs['dir'] ) );
+        $this->assertingTrue( $this->_object->rmdirs( '/not/existing/path' ) );
+        $this->assertingTrue( $this->_object->rmdirs( $this->_testdirs['dir'] ) );
 
         $regex = '/(Can not delete directory "\/tmp")/';
-        $this->expectException( 'Mumsys_FileSystem_Exception' );
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->assertTrue( $this->_object->rmdir( '/tmp' ) );
+        $this->expectingException( 'Mumsys_FileSystem_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->assertingTrue( $this->_object->rmdir( '/tmp' ) );
     }
 
 
@@ -631,7 +630,7 @@ class Mumsys_FileSystemTest
      */
     public function testRmDirsException()
     {
-        $this->expectException( 'Exception' );
+        $this->expectingException( 'Exception' );
         $this->_object->rmdirs( '/root/' );
     }
 
@@ -658,10 +657,10 @@ class Mumsys_FileSystemTest
         );
         $expected4 = './unittest-mkdir/mkdirs/';
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
-        $this->assertEquals( $expected4, $actual4 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected4, $actual4 );
     }
 
 
@@ -685,7 +684,7 @@ class Mumsys_FileSystemTest
             '10 TB',
             '1000 TB',
         );
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
     // --- test abstract and versions
@@ -699,8 +698,8 @@ class Mumsys_FileSystemTest
         $actual1 = $this->_object->extGet( 'filename.ext' );
         $actual2 = $this->_object->extGet( 'info' );
 
-        $this->assertEquals( 'ext', $actual1 );
-        $this->assertEquals( '', $actual2 );
+        $this->assertingEquals( 'ext', $actual1 );
+        $this->assertingEquals( '', $actual2 );
     }
 
 
@@ -712,8 +711,8 @@ class Mumsys_FileSystemTest
         $actual1 = $this->_object->nameGet( 'filename.ext' );
         $actual2 = $this->_object->nameGet( '/some/file/at/filename' );
 
-        $this->assertEquals( 'filename', $actual1 );
-        $this->assertEquals( 'filename', $actual2 );
+        $this->assertingEquals( 'filename', $actual1 );
+        $this->assertingEquals( 'filename', $actual2 );
     }
 
 
@@ -725,7 +724,7 @@ class Mumsys_FileSystemTest
         $message = 'A new version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_version, Mumsys_FileSystem::VERSION, $message
         );
 
@@ -733,8 +732,8 @@ class Mumsys_FileSystemTest
 
         foreach ( $this->_versions as $must => $value ) {
             $message = 'Invalid: ' . $must . '::' . $value;
-            $this->assertTrue( isset( $possible[$must] ), $message );
-            $this->assertEquals( $possible[$must], $value, $message );
+            $this->assertingTrue( isset( $possible[$must] ), $message );
+            $this->assertingEquals( $possible[$must], $value, $message );
         }
     }
 

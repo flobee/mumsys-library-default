@@ -47,8 +47,8 @@ class Mumsys_I18n_DefaultTest
     {
         $this->setUp();
 
-        $this->expectExceptionMessageRegExp( '/(Invalid locale "biglocale")/i' );
-        $this->expectException( 'Mumsys_I18n_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Invalid locale "biglocale")/i' );
+        $this->expectingException( 'Mumsys_I18n_Exception' );
         $o = new Mumsys_I18n_Default( 'biglocale' );
     }
 
@@ -61,7 +61,7 @@ class Mumsys_I18n_DefaultTest
         $expected = 'to translate';
         $actual = $this->_object->_t( $expected );
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -73,7 +73,7 @@ class Mumsys_I18n_DefaultTest
         $expected = 'to translate';
         $actual = $this->_object->_dt( 'domain', $expected );
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -88,8 +88,8 @@ class Mumsys_I18n_DefaultTest
         $actual1 = $this->_object->_dtn( 'domain', $singular, $plural, 1 ); //one flower
         $actual2 = $this->_object->_dtn( 'domain', $singular, $plural, 2 ); //two flowers
 
-        $this->assertEquals( $singular, $actual1 );
-        $this->assertEquals( $plural, $actual2 );
+        $this->assertingEquals( $singular, $actual1 );
+        $this->assertingEquals( $plural, $actual2 );
     }
 
 
@@ -100,18 +100,18 @@ class Mumsys_I18n_DefaultTest
      */
     public function testAbstractClass()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'Mumsys_I18n_Default ' . $this->_version,
             $this->_object->getVersion()
         );
 
-        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
+        $this->assertingEquals( $this->_version, $this->_object->getVersionID() );
 
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue( isset( $possible[$must] ) );
-            $this->assertTrue( ( $possible[$must] == $value ) );
+            $this->assertingTrue( isset( $possible[$must] ) );
+            $this->assertingTrue( ( $possible[$must] == $value ) );
         }
     }
 

@@ -42,9 +42,9 @@ class Mumsys_HtmlTest
     {
         $array = array('id' => 123, 'name' => 'attributeName');
         $string = $this->_object->attributesCreate( $array );
-        $this->assertEquals( 'id="123" name="attributeName"', $string );
+        $this->assertingEquals( 'id="123" name="attributeName"', $string );
 
-        $this->expectException( 'Mumsys_Html_Exception' );
+        $this->expectingException( 'Mumsys_Html_Exception' );
         $array2 = array('id' => 123, 'name' => array(1, 2));
         $string2 = $this->_object->attributesCreate( $array2 );
     }
@@ -55,7 +55,7 @@ class Mumsys_HtmlTest
         $htmlcode = '<p>hello world</p><p>hello world</p>';
         $code = $this->_object->strip( $htmlcode, $against_whitelist = false );
 
-        $this->assertEquals( 'hello worldhello world', $code );
+        $this->assertingEquals( 'hello worldhello world', $code );
     }
 
 
@@ -67,7 +67,7 @@ class Mumsys_HtmlTest
             . '<table cellpadding="2" title="aGlobalAllowAttribute"></table>';
         $code = $this->_object->strip( $htmlcode, $against_whitelist = true );
 
-        $this->assertEquals( $expected, $code );
+        $this->assertingEquals( $expected, $code );
     }
 
 
@@ -119,13 +119,13 @@ class Mumsys_HtmlTest
         $code7 = $this->_object->attributesFilter( 'td', ' xyz="abc"' );
         $expected7 = '';
 
-        $this->assertEquals( $expected1, $code1 );
-        $this->assertEquals( $expected2, $code2 );
-        $this->assertEquals( $expected3, $code3 );
-        $this->assertEquals( $expected4, $code4 );
-        $this->assertEquals( $expected5, $code5 );
-        $this->assertEquals( $expected6, $code6 );
-        $this->assertEquals( $expected7, $code7 );
+        $this->assertingEquals( $expected1, $code1 );
+        $this->assertingEquals( $expected2, $code2 );
+        $this->assertingEquals( $expected3, $code3 );
+        $this->assertingEquals( $expected4, $code4 );
+        $this->assertingEquals( $expected5, $code5 );
+        $this->assertingEquals( $expected6, $code6 );
+        $this->assertingEquals( $expected7, $code7 );
     }
 
 
@@ -150,7 +150,7 @@ class Mumsys_HtmlTest
 
         $code1 = $this->_object->filter( $html1 );
 
-        $this->assertEquals( $expected1, $code1 );
+        $this->assertingEquals( $expected1, $code1 );
     }
 
 
@@ -163,7 +163,7 @@ class Mumsys_HtmlTest
         $actual = $this->_object->attributesValidate(
             $whitelist, $properties, $universalAttributesAllow
         );
-        $this->assertEquals( array('name' => 'value'), $actual );
+        $this->assertingEquals( array('name' => 'value'), $actual );
 
         // check universal attributes
         $universalAttributesAllow = true;
@@ -171,7 +171,7 @@ class Mumsys_HtmlTest
         $actual = $this->_object->attributesValidate(
             $whitelist, $properties, $universalAttributesAllow
         );
-        $this->assertEquals( array('name' => 'value', 'id' => 999), $actual );
+        $this->assertingEquals( array('name' => 'value', 'id' => 999), $actual );
     }
 
 
@@ -185,14 +185,14 @@ class Mumsys_HtmlTest
         $message = 'A new version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
-        $this->assertEquals( $this->_version, Mumsys_Html::VERSION, $message );
+        $this->assertingEquals( $this->_version, Mumsys_Html::VERSION, $message );
 
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
             $message = 'Invalid: ' . $must . '::' . $value;
-            $this->assertTrue( isset( $possible[$must] ), $message );
-            $this->assertTrue( ( $possible[$must] == $value ), $message );
+            $this->assertingTrue( isset( $possible[$must] ), $message );
+            $this->assertingTrue( ( $possible[$must] == $value ), $message );
         }
     }
 

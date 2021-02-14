@@ -78,7 +78,7 @@ class Mumsys_Service_VdrTest
 
     public function testSetup()
     {
-        $this->assertTrue( self::$_isAvailable );
+        $this->assertingTrue( self::$_isAvailable );
     }
 
 
@@ -90,8 +90,8 @@ class Mumsys_Service_VdrTest
         $actual2 = $this->_object->__destruct();
         $actual3 = $this->_object->isOpen();
 
-        $this->assertTrue( $actual2 );
-        $this->assertFalse( $actual3 );
+        $this->assertingTrue( $actual2 );
+        $this->assertingFalse( $actual3 );
     }
 
     /**
@@ -108,9 +108,9 @@ class Mumsys_Service_VdrTest
         $actual2 = $this->_object->disconnect();
         $actual3 = $this->_object->connect();
 
-        $this->assertTrue( $actual1 );
-        $this->assertTrue( $actual2 );
-        $this->assertTrue( $actual3 );
+        $this->assertingTrue( $actual1 );
+        $this->assertingTrue( $actual2 );
+        $this->assertingTrue( $actual3 );
     }
 
 
@@ -124,9 +124,9 @@ class Mumsys_Service_VdrTest
         ini_set( 'display_errors', false );
         ini_set( 'error_reporting', 0 );
 
-        $this->expectException( 'Mumsys_Service_Exception' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
         $regex = '/(Connection to server "nohostexist" failt)/i';
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingExceptionMessageRegex( $regex );
         $this->_object = new Mumsys_Service_Vdr( $this->_context, 'nohostexist', 666, 5 );
 
         ini_set( 'display_errors', $origA );
@@ -145,9 +145,9 @@ class Mumsys_Service_VdrTest
         ini_set( 'display_errors', true );
         ini_set( 'error_reporting', -1 );
 
-        $this->expectException( 'Mumsys_Service_Exception' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
         $regex = '/(fsockopen)(.*)(php_network_getaddresses)(.*)(getaddrinfo failed)(.*)(Name or service not known)/i';
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingExceptionMessageRegex( $regex );
         $this->_object = new Mumsys_Service_Vdr( $this->_context, 'nohostexist', 666, 5 );
 
         ini_set( 'display_errors', $origA );
@@ -161,7 +161,7 @@ class Mumsys_Service_VdrTest
     public function testDisconnect()
     {
         $actual2 = $this->_object->disconnect();
-        $this->assertTrue( $actual2 );
+        $this->assertingTrue( $actual2 );
     }
 
 
@@ -179,8 +179,8 @@ class Mumsys_Service_VdrTest
         // caches the results which can be a huge list
         $actual3 = $this->_object->execute( 'LSTR', 1 );
 
-        $this->assertTrue( ( count( $actual2 ) >= 1 ) );
-        $this->assertTrue( ( count( $actual3 ) == 1 ), 'cnt: ' . count( $actual3 ) );
+        $this->assertingTrue( ( count( $actual2 ) >= 1 ) );
+        $this->assertingTrue( ( count( $actual3 ) == 1 ), 'cnt: ' . count( $actual3 ) );
     }
 
 
@@ -191,8 +191,8 @@ class Mumsys_Service_VdrTest
     {
         $this->_object->disconnect();
         $regex = '/(Not connected)/i';
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
 
         $this->_object->execute( 'SCAN' );
     }
@@ -204,8 +204,8 @@ class Mumsys_Service_VdrTest
     public function testExecuteException2()
     {
         $regex = '/(Command unknown or not implemented yet. Exiting)/i';
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
 
         $this->_object->execute( 'ImACommandThatNotExists' );
     }
@@ -243,7 +243,7 @@ class Mumsys_Service_VdrTest
             'RID' => '10',
         );
 
-        $this->assertEquals( $expected, $actual1 );
+        $this->assertingEquals( $expected, $actual1 );
 
         $delete = false;
         try {
@@ -256,14 +256,14 @@ class Mumsys_Service_VdrTest
         {
             $delete = $this->_object->channelDelete( $actual1['channel_id'] );
 
-            $this->assertEquals( '501', $exc->getCode() );
-            $this->assertEquals(
+            $this->assertingEquals( '501', $exc->getCode() );
+            $this->assertingEquals(
                 'Channel settings are not unique', trim( $exc->getMessage() )
             );
 
         }
 
-        $this->assertTrue( $delete );
+        $this->assertingTrue( $delete );
     }
 
 
@@ -272,9 +272,9 @@ class Mumsys_Service_VdrTest
      */
     public function testChannelDeleteException()
     {
-        $this->expectException( 'Mumsys_Service_Exception' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
         $regex = '/(Invalid channel ID)/i';
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingExceptionMessageRegex( $regex );
         $this->_object->channelDelete( 0 );
     }
 
@@ -297,7 +297,7 @@ class Mumsys_Service_VdrTest
         foreach ( $channelsList as $id => $parts ) {
             $current = $this->_object->channelGet( $id );
 
-            $this->assertEquals( $current, $parts );
+            $this->assertingEquals( $current, $parts );
         }
 
         $chanSearch = $this->_object->channelSearch( 'sat' );
@@ -306,12 +306,12 @@ class Mumsys_Service_VdrTest
         }
 
         foreach ( $chanSearch as $id => $parts ) {
-            $this->assertEquals( $channelsList[$id], $parts );
+            $this->assertingEquals( $channelsList[$id], $parts );
         }
 
         $regex = '/(Invalid channel parameter)/i';
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
         $this->_object->channelSearch( 0 );
     }
 
@@ -349,19 +349,19 @@ class Mumsys_Service_VdrTest
 //                $extras = array('stream_kind', 'stream_type', 'stream_lang', 'stream_desc');
 //                foreach ( $extras as $extr ) {
 //                    $acEx = reset($actual1['extras']);
-//                    $this->assertTrue( isset($acEx[$extr]));
+//                    $this->assertingTrue( isset($acEx[$extr]));
 //                }
 //            }
 //
-//            $this->assertTrue( isset($actual1[$key]), 'Error: "'. $key . '" not set' );
+//            $this->assertingTrue( isset($actual1[$key]), 'Error: "'. $key . '" not set' );
 //        }
 //
 //        $actual2 = $this->_object->recordingGet(1, true);
-//        $this->assertTrue(is_dir($actual2 . '/'), 'Directory "' . $actual2 . '" not found');
+//        $this->assertingTrue(is_dir($actual2 . '/'), 'Directory "' . $actual2 . '" not found');
 //
 //        $regex = '/(Invalid recording ID)/i';
-//        $this->expectException('Mumsys_Service_Exception');
-//        $this->expectExceptionMessageRegExp($regex);
+//        $this->expectingException('Mumsys_Service_Exception');
+//        $this->expectingExceptionMessageRegex($regex);
 //        $this->_object->recordingGet(0);
 //    }
 //
@@ -431,8 +431,8 @@ class Mumsys_Service_VdrTest
         $this->_object->disconnect();
         $actual2 = $this->_object->isOpen();
 
-        $this->assertTrue( $actual1 );
-        $this->assertFalse( $actual2 );
+        $this->assertingTrue( $actual1 );
+        $this->assertingFalse( $actual2 );
     }
 
 }

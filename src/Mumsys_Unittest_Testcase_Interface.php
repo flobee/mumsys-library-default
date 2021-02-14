@@ -44,28 +44,6 @@ interface Mumsys_Unittest_Testcase_Interface
     // Wrapper methods on top of phpunit
     //
 
-    /**
-     * Alias of phpunit 8,9 expectException()
-     *
-     * @param string $exception
-     */
-    public function expectingException( $exception );
-
-    /**
-     * - Alias of expectExceptionMessageRegExp() phpunit 8
-     * - Alias of expectExceptionMessageMatches() phpunit 9
-     *
-     * @param string $regex
-     */
-    public function expectingExceptionMessageRegex( $regex );
-
-    /**
-     * Alias of expectExceptionMessage() phpunit 8, 9
-     *
-     * @param string $exceptionMessage
-     */
-    public function expectingExceptionMessage( $exceptionMessage );
-
 
     /**
      * Alias of assertEquals() phpunit 8, 9
@@ -113,12 +91,46 @@ interface Mumsys_Unittest_Testcase_Interface
 
 
     /**
+     * Alias of assertRegExp() phpunit <7, 8, 9.
+     * @param string $pattern
+     * @param string $string
+     * @param string $message
+     */
+    public function assertingRegExp( $pattern, $string, $message = '' );
+
+
+    /**
      * Alias of assertInstanceOf() phpunit 7, 8, 9
      * @param string $expected
      * @param mixed $actual
      * @param string $message
      */
     public function assertingInstanceOf( $expected, $actual, $message );
+
+
+    /**
+     * Alias of phpunit 8,9 expectException()
+     *
+     * @param string $exception
+     */
+    public function expectingException( $exception );
+
+
+    /**
+     * - Alias of expectExceptionMessageRegExp() phpunit 8
+     * - Alias of expectExceptionMessageMatches() phpunit 9
+     *
+     * @param string $regex
+     */
+    public function expectingExceptionMessageRegex( $regex );
+
+
+    /**
+     * Alias of expectExceptionMessage() phpunit 8, 9
+     *
+     * @param string $exceptionMessage
+     */
+    public function expectingExceptionMessage( $exceptionMessage );
 
 
     //

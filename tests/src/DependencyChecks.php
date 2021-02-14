@@ -82,7 +82,7 @@ class DependencyChecks
                 $ext,
                 $usage
             );
-            $this->assertTrue( extension_loaded( $ext ), $mesg );
+            $this->assertingTrue( extension_loaded( $ext ), $mesg );
         }
     }
 
@@ -109,7 +109,7 @@ class DependencyChecks
                 '"' . implode( '"|"', $possible ) . '"',
                 $actual
             );
-            $this->assertEquals( $expected, $actual, $mesg );
+            $this->assertingEquals( $expected, $actual, $mesg );
         }
     }
 

@@ -88,7 +88,7 @@ class Mumsys_Upload_FileTest
         try {
             new Mumsys_Upload_File( $fileInput );
         } catch ( Exception $ex ) {
-            $this->assertEquals( 'Invalid file', $ex->getMessage() );
+            $this->assertingEquals( 'Invalid file', $ex->getMessage() );
         }
 
         // exception 2
@@ -96,7 +96,7 @@ class Mumsys_Upload_FileTest
             $fileInput['tmp_name'] = '/tmp/name.file';
             new Mumsys_Upload_File( $fileInput );
         } catch ( Exception $ex ) {
-            $this->assertEquals( 'No upload proccess detected', $ex->getMessage() );
+            $this->assertingEquals( 'No upload proccess detected', $ex->getMessage() );
         }
 
         // exception 3
@@ -104,7 +104,7 @@ class Mumsys_Upload_FileTest
             $fileInput['name'] = array(1,2);
             new Mumsys_Upload_File( $fileInput );
         } catch ( Exception $ex ) {
-            $this->assertEquals( 'Multiple uploads not implemented', $ex->getMessage() );
+            $this->assertingEquals( 'Multiple uploads not implemented', $ex->getMessage() );
         }
 
         // exception 4
@@ -112,7 +112,7 @@ class Mumsys_Upload_FileTest
             $fileInput['name'] = 'name.file';
             new Mumsys_Upload_File( $fileInput );
         } catch ( Exception $ex ) {
-            $this->assertEquals( 'Invalid file.', $ex->getMessage() );
+            $this->assertingEquals( 'Invalid file.', $ex->getMessage() );
         }
 
         // exception 5: some of the errors
@@ -121,7 +121,7 @@ class Mumsys_Upload_FileTest
             new Mumsys_Upload_File( $fileInput );
         } catch ( Exception $ex ) {
             $expected = 'Upload error! Code: "8", Message: "A PHP extension stopped the file upload."';
-            $this->assertEquals( $expected, $ex->getMessage() );
+            $this->assertingEquals( $expected, $ex->getMessage() );
         }
 
         // exception 6
@@ -131,7 +131,7 @@ class Mumsys_Upload_FileTest
             new Mumsys_Upload_File( $fileInput );
         } catch ( Exception $ex ) {
             $expected = 'Empty file uploads prohabited for: "name.file"';
-            $this->assertEquals( $expected, $ex->getMessage() );
+            $this->assertingEquals( $expected, $ex->getMessage() );
         }
 
 //        $this->_object = new Mumsys_Upload_File( $fileInput );
@@ -145,8 +145,8 @@ class Mumsys_Upload_FileTest
         $from = $this->_dirTestFiles . '/a.file';
         $to = '/unittest/test';
 
-        $this->expectException( 'Mumsys_Upload_Exception' );
-        $this->expectExceptionMessage( 'Target path "/unittest" not writeable' );
+        $this->expectingException( 'Mumsys_Upload_Exception' );
+        $this->expectingExceptionMessage( 'Target path "/unittest" not writeable' );
         $this->_object->move_uploaded_file( $from, $to );
     }
 
@@ -159,8 +159,8 @@ class Mumsys_Upload_FileTest
         $from = $this->_dirTestFiles . '/a.file';
         $to = $this->_dirTestFiles . '/b.file';
 
-        $this->expectException( 'Mumsys_Upload_Exception' );
-        $this->expectExceptionMessage( 'Upload error.' );
+        $this->expectingException( 'Mumsys_Upload_Exception' );
+        $this->expectingExceptionMessage( 'Upload error.' );
         $this->_object->move_uploaded_file( $from, $to );
     }
 
@@ -170,13 +170,13 @@ class Mumsys_Upload_FileTest
      */
     public function testIs_uploaded_file()
     {
-        $this->expectException( 'Mumsys_Upload_Exception' );
-        $this->expectExceptionMessage( 'Upload error' );
+        $this->expectingException( 'Mumsys_Upload_Exception' );
+        $this->expectingExceptionMessage( 'Upload error' );
 
         $from = $this->_dirTestFiles . '/a.file';
         $actual1 = $this->_object->is_uploaded_file( $from );
 
-        $this->assertFalse( $actual1 );
+        $this->assertingFalse( $actual1 );
     }
 
 }

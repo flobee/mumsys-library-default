@@ -64,9 +64,9 @@ class Mumsys_Config_DefaultTest
     {
         $this->_object = new Mumsys_Config_Default( $this->_configs, $this->_paths );
 
-        $this->assertInstanceOf( 'Mumsys_Config_Default', $this->_object );
-        $this->assertInstanceOf( 'Mumsys_Config_File', $this->_object );
-        $this->assertInstanceOf( 'Mumsys_Config_Interface', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Config_Default', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Config_File', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Config_Interface', $this->_object );
     }
 
 
@@ -87,11 +87,11 @@ class Mumsys_Config_DefaultTest
         $expected1 = 'test value';
         $expected2 = MumsysTestHelper::getContext()->getConfig()->get( 'credentials/database/host', 0 );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertFalse( $actual3 );
-        $this->assertEquals( $expected2, $actual4 );
-        $this->assertEquals( 'SELECT * FROM mumsys_config', $actual5 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingFalse( $actual3 );
+        $this->assertingEquals( $expected2, $actual4 );
+        $this->assertingEquals( 'SELECT * FROM mumsys_config', $actual5 );
     }
 
 
@@ -100,7 +100,7 @@ class Mumsys_Config_DefaultTest
      */
     public function testGetAll()
     {
-        $this->assertEquals( $this->_configs, $this->_object->getAll() );
+        $this->assertingEquals( $this->_configs, $this->_object->getAll() );
     }
 
 
@@ -123,10 +123,10 @@ class Mumsys_Config_DefaultTest
         $this->_object->replace( 'tests', array() );
         $actual4 = $this->_object->get( 'tests' );
 
-        $this->assertEquals( 'value test', $actual );
-        $this->assertEquals( 'new value', $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
-        $this->assertEquals( array(), $actual4 );
+        $this->assertingEquals( 'value test', $actual );
+        $this->assertingEquals( 'new value', $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
+        $this->assertingEquals( array(), $actual4 );
     }
 
 
@@ -137,8 +137,8 @@ class Mumsys_Config_DefaultTest
     {
         $this->_object->addPath( __DIR__ . '/../config' );
 
-        $this->expectExceptionMessageRegExp( '/(Path not found: "(.*)")/i' );
-        $this->expectException( 'Mumsys_Config_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Path not found: "(.*)")/i' );
+        $this->expectingException( 'Mumsys_Config_Exception' );
         $this->_object->addPath( __DIR__ . '/config' );
     }
 
@@ -156,11 +156,11 @@ class Mumsys_Config_DefaultTest
         $this->_object->register( 'tests/somevalues', $expected3 );
         $actual3 = $this->_object->get( 'tests/somevalues' );
 
-        $this->assertEquals( 'test', $actual );
-        $this->assertEquals( $expected3, $actual3 );
+        $this->assertingEquals( 'test', $actual );
+        $this->assertingEquals( $expected3, $actual3 );
 
-        $this->expectExceptionMessageRegExp( '/(Config key "tests\/somevalues" already exists)/i' );
-        $this->expectException( 'Mumsys_Config_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Config key "tests\/somevalues" already exists)/i' );
+        $this->expectingException( 'Mumsys_Config_Exception' );
         $this->_object->register( 'tests/somevalues', array() );
     }
 
@@ -170,8 +170,8 @@ class Mumsys_Config_DefaultTest
      */
     public function testLoad()
     {
-        $this->expectExceptionMessageRegExp( '/(Not implemented yet)/i' );
-        $this->expectException( 'Mumsys_Config_Exception', '/(Not implemented yet)/i' );
+        $this->expectingExceptionMessageRegex( '/(Not implemented yet)/i' );
+        $this->expectingException( 'Mumsys_Config_Exception', '/(Not implemented yet)/i' );
         $this->_object->load();
     }
 
@@ -185,7 +185,7 @@ class Mumsys_Config_DefaultTest
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
 
-        $this->assertEquals( $this->_version, Mumsys_Config_Default::VERSION, $message );
+        $this->assertingEquals( $this->_version, Mumsys_Config_Default::VERSION, $message );
         $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 

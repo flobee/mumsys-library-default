@@ -60,7 +60,7 @@ class Mumsys_Weather_Item_Unit_SpeedTest
         foreach ( $options as $code ) {
             $this->_object->__construct( array('code' => $code) );
 
-            $this->assertEquals( $code, $this->_object->getCode() );
+            $this->assertingEquals( $code, $this->_object->getCode() );
         }
 
         $options = array(
@@ -71,14 +71,14 @@ class Mumsys_Weather_Item_Unit_SpeedTest
         );
         $this->_object->__construct( $options );
 
-        $this->assertEquals( $options['key'], $this->_object->getKey() );
-        $this->assertEquals( $options['label'], $this->_object->getLabel() );
-        $this->assertEquals( $options['sign'], $this->_object->getSign() );
-        $this->assertEquals( $options['code'], $this->_object->getCode() );
+        $this->assertingEquals( $options['key'], $this->_object->getKey() );
+        $this->assertingEquals( $options['label'], $this->_object->getLabel() );
+        $this->assertingEquals( $options['sign'], $this->_object->getSign() );
+        $this->assertingEquals( $options['code'], $this->_object->getCode() );
 
-        $this->expectException( 'Mumsys_Weather_Exception' );
+        $this->expectingException( 'Mumsys_Weather_Exception' );
         $mesg = 'Invalid "code" to get a speed unit item: "failure"';
-        $this->expectExceptionMessage( $mesg );
+        $this->expectingExceptionMessage( $mesg );
         $options['code'] = 'failure';
         $this->_object->__construct( $options );
     }
@@ -89,8 +89,8 @@ class Mumsys_Weather_Item_Unit_SpeedTest
      */
     public function testConstructException()
     {
-        $this->expectException( 'Mumsys_Weather_Exception' );
-        $this->expectExceptionMessage( '"Code" must be set to initialise the object' );
+        $this->expectingException( 'Mumsys_Weather_Exception' );
+        $this->expectingExceptionMessage( '"Code" must be set to initialise the object' );
         $this->_object->__construct( array() );
     }
 
@@ -131,17 +131,17 @@ class Mumsys_Weather_Item_Unit_SpeedTest
                 $mesg = 'codeFrom: "' . $codeFrom . '", codeTo: "' . $codeTo . '" failed';
                 if ( $codeTo ==='bf' ) {
                     $actual = $this->_object->convert( 1, $codeTo );
-                    $this->assertEquals( (int)$expected, $actual, $mesg );
+                    $this->assertingEquals( (int)$expected, $actual, $mesg );
                 } else {
                     $actual = $this->_object->convert( 1, $codeTo );
-                    $this->assertEquals( $expected, $actual, $mesg );
+                    $this->assertingEquals( $expected, $actual, $mesg );
                 }
             }
         }
 
-        $this->expectException( 'Mumsys_Weather_Item_Unit_Exception' );
+        $this->expectingException( 'Mumsys_Weather_Item_Unit_Exception' );
         $mesg = 'Speed conversion not implemented yet for "mph" to "xyz"';
-        $this->expectExceptionMessage( $mesg );
+        $this->expectingExceptionMessage( $mesg );
         $this->_object->convert( 0, 'xyz' );
     }
 
@@ -149,7 +149,6 @@ class Mumsys_Weather_Item_Unit_SpeedTest
     /**
      * @covers Mumsys_Weather_Item_Unit_Speed::toArray
      * @covers Mumsys_Weather_Item_Unit_Speed::toRawArray
-     * @covers Mumsys_Weather_Item_Unit_Speed::_toArray
      */
     public function testToArray()
     {
@@ -173,8 +172,8 @@ class Mumsys_Weather_Item_Unit_SpeedTest
             'weather.item.unit.speed.key' => 'test key &"',
         );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
     }
 
 }

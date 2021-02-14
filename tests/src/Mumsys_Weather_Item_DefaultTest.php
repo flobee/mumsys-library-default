@@ -208,7 +208,7 @@ class Mumsys_Weather_Item_DefaultTest
     {
         $this->_object->__construct( $this->_prps, true );
         $actual = $this->_object->toArray();
-        $this->assertTrue( ( count( $actual ) == 12 ) );
+        $this->assertingTrue( ( count( $actual ) == 12 ) );
     }
 
 
@@ -225,9 +225,9 @@ class Mumsys_Weather_Item_DefaultTest
             'name' => 'publisher name'
         );
 
-        $this->assertEquals( $expected, $actual );
-        $this->assertFalse( $this->_object->get( 'notexists', false ) );
-        $this->assertTrue( ( is_array( ( $x = $this->_object->get() ) ) && $x ) );
+        $this->assertingEquals( $expected, $actual );
+        $this->assertingFalse( $this->_object->get( 'notexists', false ) );
+        $this->assertingTrue( ( is_array( ( $x = $this->_object->get() ) ) && $x ) );
     }
 
 
@@ -239,7 +239,7 @@ class Mumsys_Weather_Item_DefaultTest
         $expected = array('id' => '123', 'name' => 'Publisher name');
         $this->_object->setPublisher( $expected );
         $actual = $this->_object->toArray();
-        $this->assertEquals( $expected, $actual['publisher'] );
+        $this->assertingEquals( $expected, $actual['publisher'] );
     }
 
 
@@ -250,7 +250,7 @@ class Mumsys_Weather_Item_DefaultTest
     {
         $this->_object->setLastupdate( $this->_prps['lastupdate'] );
         $actual = $this->_object->toArray();
-        $this->assertEquals( $this->_prps['lastupdate'], $actual['lastupdate'] );
+        $this->assertingEquals( $this->_prps['lastupdate'], $actual['lastupdate'] );
     }
 
 
@@ -261,7 +261,7 @@ class Mumsys_Weather_Item_DefaultTest
     {
         $this->_object->setLanguage( $this->_prps['language'] );
         $actual = $this->_object->toArray();
-        $this->assertEquals( $this->_prps['language'], $actual['language'] );
+        $this->assertingEquals( $this->_prps['language'], $actual['language'] );
     }
 
 
@@ -272,7 +272,7 @@ class Mumsys_Weather_Item_DefaultTest
     {
         $this->_object->setLocation( $this->_prps['location'] );
         $actual = $this->_object->toArray();
-        $this->assertEquals( $this->_prps['location'], $actual['location'] );
+        $this->assertingEquals( $this->_prps['location'], $actual['location'] );
     }
 
 
@@ -283,7 +283,7 @@ class Mumsys_Weather_Item_DefaultTest
     {
         $this->_object->setWeatherDescription( $this->_prps['description'] );
         $actual = $this->_object->toArray();
-        $this->assertEquals( $this->_prps['description'], $actual['description'] );
+        $this->assertingEquals( $this->_prps['description'], $actual['description'] );
     }
 
 
@@ -299,7 +299,7 @@ class Mumsys_Weather_Item_DefaultTest
         $this->_object->setTemperature( $this->_prps['temperature'] );
         $actual = $this->_object->toArray();
         $this->_prps['temperature']['unit'] = $oUnit->toArray();
-        $this->assertEquals( $this->_prps['temperature'], $actual['temperature'] );
+        $this->assertingEquals( $this->_prps['temperature'], $actual['temperature'] );
     }
 
 
@@ -315,7 +315,7 @@ class Mumsys_Weather_Item_DefaultTest
         $this->_object->setPressure( $this->_prps['pressure'] );
         $actual = $this->_object->toArray();
         $this->_prps['pressure']['unit'] = $oUnit->toArray();
-        $this->assertEquals( $this->_prps['pressure'], $actual['pressure'] );
+        $this->assertingEquals( $this->_prps['pressure'], $actual['pressure'] );
     }
 
 
@@ -331,7 +331,7 @@ class Mumsys_Weather_Item_DefaultTest
         $this->_object->setHumidity( $this->_prps['humidity'] );
         $actual = $this->_object->toArray();
         $this->_prps['humidity']['unit'] = $oUnit->toArray();
-        $this->assertEquals( $this->_prps['humidity'], $actual['humidity'] );
+        $this->assertingEquals( $this->_prps['humidity'], $actual['humidity'] );
     }
 
 
@@ -347,7 +347,7 @@ class Mumsys_Weather_Item_DefaultTest
         $this->_object->setVisibility( $this->_prps['visibility'] );
         $actual = $this->_object->toArray();
         $this->_prps['visibility']['unit'] = $oUnit->toArray();
-        $this->assertEquals( $this->_prps['visibility'], $actual['visibility'] );
+        $this->assertingEquals( $this->_prps['visibility'], $actual['visibility'] );
     }
 
 
@@ -368,7 +368,7 @@ class Mumsys_Weather_Item_DefaultTest
         $this->_prps['wind']['speed']['unit'] = $oUnitSpeed->toArray();
         $this->_prps['wind']['direction']['unit'] = $oUnitDirection->toArray();
         $this->_prps['wind']['chill']['unit'] = $oUnitChill->toArray();
-        $this->assertEquals( $this->_prps['wind'], $actual['wind'] );
+        $this->assertingEquals( $this->_prps['wind'], $actual['wind'] );
     }
 
 
@@ -384,7 +384,7 @@ class Mumsys_Weather_Item_DefaultTest
         $this->_object->setWindSpeed( $this->_prps['wind']['speed'] );
         $actual = $this->_object->toArray();
         $this->_prps['wind']['speed']['unit'] = $oUnitSpeed->toArray();
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_prps['wind']['speed'], $actual['wind']['speed']
         );
     }
@@ -402,7 +402,7 @@ class Mumsys_Weather_Item_DefaultTest
         $this->_object->setWindDirection( $this->_prps['wind']['direction'] );
         $actual = $this->_object->toArray();
         $this->_prps['wind']['direction']['unit'] = $oUnitDirection->toArray();
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_prps['wind']['direction'],
             $actual['wind']['direction']
         );
@@ -420,7 +420,7 @@ class Mumsys_Weather_Item_DefaultTest
         $this->_object->setWindChill( $this->_prps['wind']['chill'] );
         $actual = $this->_object->toArray();
         $this->_prps['wind']['chill']['unit'] = $oUnitChill->toArray();
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_prps['wind']['chill'], $actual['wind']['chill']
         );
     }
@@ -437,7 +437,7 @@ class Mumsys_Weather_Item_DefaultTest
         $this->_object->setClouds( $this->_prps['clouds'] );
         $actual = $this->_object->toArray();
         $this->_prps['clouds']['unit'] = $oUnit->toArray();
-        $this->assertEquals( $this->_prps['clouds'], $actual['clouds'] );
+        $this->assertingEquals( $this->_prps['clouds'], $actual['clouds'] );
     }
 
 
@@ -455,7 +455,7 @@ class Mumsys_Weather_Item_DefaultTest
         $actual = $this->_object->toArray();
         $this->_prps['precipitation']['rain']['unit'] = $oUnitRain->toArray();
         $this->_prps['precipitation']['snow']['unit'] = $oUnitSnow->toArray();
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_prps['precipitation'], $actual['precipitation']
         );
     }
@@ -472,7 +472,7 @@ class Mumsys_Weather_Item_DefaultTest
         $this->_object->setPrecipitationRain( $this->_prps['precipitation']['rain'] );
         $actual = $this->_object->toArray();
         $this->_prps['precipitation']['rain']['unit'] = $oUnitRain->toArray();
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_prps['precipitation']['rain'],
             $actual['precipitation']['rain']
         );
@@ -490,7 +490,7 @@ class Mumsys_Weather_Item_DefaultTest
         $this->_object->setPrecipitationSnow( $this->_prps['precipitation']['snow'] );
         $actual = $this->_object->toArray();
         $this->_prps['precipitation']['snow']['unit'] = $oUnitSnow->toArray();
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_prps['precipitation']['snow'],
             $actual['precipitation']['snow']
         );
@@ -503,7 +503,7 @@ class Mumsys_Weather_Item_DefaultTest
     public function testToArray()
     {
         $actual = $this->_object->toArray();
-        $this->assertEquals( array(), $actual ); // no params in construction.
+        $this->assertingEquals( array(), $actual ); // no params in construction.
     }
 
 
@@ -519,7 +519,7 @@ class Mumsys_Weather_Item_DefaultTest
 
         $actual = $this->_object->toArray();
         $this->_prps['temperature']['unit'] = $oUnit->toArray();
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_prps['temperature'], $actual['temperature']
         );
     }

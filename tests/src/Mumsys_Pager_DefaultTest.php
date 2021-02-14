@@ -62,11 +62,11 @@ class Mumsys_Pager_DefaultTest
         $expected = 'results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b>';
         $actual = $this->_object->getSummary();
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
 
         $regex = '/(Invalid parameter "test" found)/i';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Pager_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Pager_Exception' );
         new Mumsys_Pager_Default( array('test'=> 'value') );
     }
 
@@ -101,8 +101,8 @@ class Mumsys_Pager_DefaultTest
         $this->_object = new Mumsys_Pager_Default( $this->_options );
         $actual2 = $this->_object->getParts();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
     }
 
 
@@ -122,7 +122,7 @@ class Mumsys_Pager_DefaultTest
 results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b></div>
 ';
 
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
     }
 
 
@@ -135,7 +135,7 @@ results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b></div>
         $expected1 = ' &gt;<strong>1</strong>&lt;  | <a href="index.php?&amp;offset=5">2</a> | '
             . '<a href="index.php?&amp;offset=10">3</a>';
 
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
     }
 
 
@@ -147,7 +147,7 @@ results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b></div>
         $actual1 = $this->_object->getSummary();
         $expected1 = 'results: <b>15</b>, results per page: <b>5</b>, pages: <b>3</b>';
 
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
     }
 
 
@@ -197,9 +197,9 @@ results: <b>150</b>, results per page: <b>5</b>, pages: <b>30</b></div>
 <div class="pnnavi summary">
 results: <b>50</b>, results per page: <b>24</b>, pages: <b>3</b></div>
 ';
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
     }
 
 
@@ -228,8 +228,8 @@ results: <b>50</b>, results per page: <b>24</b>, pages: <b>3</b></div>
         $this->_object->setMessageTemplates( $expected1 );
         $actual2 = $this->_object->getMessageTemplates();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected1, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual2 );
     }
 
 
@@ -238,7 +238,7 @@ results: <b>50</b>, results per page: <b>24</b>, pages: <b>3</b></div>
      */
     public function testCheckVersion()
     {
-        $this->assertEquals( $this->_version, Mumsys_Pager_Default::VERSION );
+        $this->assertingEquals( $this->_version, Mumsys_Pager_Default::VERSION );
     }
 
 }

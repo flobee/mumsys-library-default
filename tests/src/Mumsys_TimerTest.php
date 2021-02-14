@@ -61,17 +61,17 @@ class Mumsys_TimerTest
     {
         $this->_object = new Mumsys_Timer();
         $this->assertInstanceof( 'Mumsys_Timer', $this->_object );
-        $this->assertEquals( 0, $this->_object->startTimeGet() );
-        $this->assertEquals( 0, $this->_object->stopTimeGet() );
+        $this->assertingEquals( 0, $this->_object->startTimeGet() );
+        $this->assertingEquals( 0, $this->_object->stopTimeGet() );
 
         $this->_object = new Mumsys_Timer( true );
         $this->assertInstanceof( 'Mumsys_Timer', $this->_object );
-        $this->assertEquals( 0, $this->_object->stopTimeGet() );
+        $this->assertingEquals( 0, $this->_object->stopTimeGet() );
         $this->assertGreaterThan( 0, $this->_object->startTimeGet() );
 
         $this->_object = new Mumsys_Timer( $_SERVER['REQUEST_TIME_FLOAT'] );
 
-        $this->assertEquals(
+        $this->assertingEquals(
             $_SERVER['REQUEST_TIME_FLOAT'], $this->_object->startTimeGet()
         );
     }
@@ -82,10 +82,10 @@ class Mumsys_TimerTest
         $this->_object->start();
         $expected = microtime( true );
         $actual = $this->_object->startTimeGet();
-        $this->assertTrue( ( (int) $expected == (int) $actual ) );
+        $this->assertingTrue( ( (int) $expected == (int) $actual ) );
         //echo PHP_EOL.$expected.PHP_EOL.$actual. PHP_EOL;
         //echo round($expected, 3) . PHP_EOL . round($actual, 3) . PHP_EOL;
-        $this->assertEquals( round( $expected, 2 ), round( $actual, 2 ) );
+        $this->assertingEquals( round( $expected, 2 ), round( $actual, 2 ) );
     }
 
 
@@ -95,25 +95,25 @@ class Mumsys_TimerTest
         $expected = microtime( true );
         $actual = $this->_object->stopTimeGet();
 
-        $this->assertEquals( round( $expected, 2 ), round( $actual, 2 ) );
+        $this->assertingEquals( round( $expected, 2 ), round( $actual, 2 ) );
     }
 
 
     public function testStartTimeGet()
     {
-        $this->assertEquals( 0, $this->_object->startTimeGet() );
+        $this->assertingEquals( 0, $this->_object->startTimeGet() );
     }
 
 
     public function testStopTimeGet()
     {
-        $this->assertEquals( 0, $this->_object->stopTimeGet() );
+        $this->assertingEquals( 0, $this->_object->stopTimeGet() );
     }
 
 
     public function testElapsedTimeGet()
     {
-        $this->assertEquals( 0, $this->_object->elapsedTimeGet() );
+        $this->assertingEquals( 0, $this->_object->elapsedTimeGet() );
     }
 
 
@@ -123,7 +123,7 @@ class Mumsys_TimerTest
         $expected = microtime( true );
         $actual = $this->_object->stopTimeGet();
 
-        $this->assertEquals( round( $expected, 1 ), round( $actual, 1 ) );
+        $this->assertingEquals( round( $expected, 1 ), round( $actual, 1 ) );
     }
 
 
@@ -131,9 +131,9 @@ class Mumsys_TimerTest
 
     public function testGetVersion()
     {
-        $this->assertEquals( 'Mumsys_Timer ' . $this->_version, $this->_object->getVersion() );
-        $this->assertEquals( Mumsys_Timer::VERSION, $this->_object->getVersionID() );
-        $this->assertEquals( Mumsys_Timer::VERSION, $this->_version );
+        $this->assertingEquals( 'Mumsys_Timer ' . $this->_version, $this->_object->getVersion() );
+        $this->assertingEquals( Mumsys_Timer::VERSION, $this->_object->getVersionID() );
+        $this->assertingEquals( Mumsys_Timer::VERSION, $this->_version );
     }
 
 }

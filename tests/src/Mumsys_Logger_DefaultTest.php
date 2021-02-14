@@ -66,9 +66,9 @@ class Mumsys_Logger_DefaultTest
 
         $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
-        $this->assertInstanceOf( 'Mumsys_Logger_File', $object );
-        $this->assertInstanceOf( 'Mumsys_Logger_Default', $object );
-        $this->assertInstanceOf( 'Mumsys_Logger_Interface', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_File', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Default', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Interface', $object );
     }
 
 
@@ -96,9 +96,9 @@ class Mumsys_Logger_DefaultTest
         $_SERVER['LOGNAME'] = 'God';
         $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
-        $this->assertInstanceOf( 'Mumsys_Logger_File', $object );
-        $this->assertInstanceOf( 'Mumsys_Logger_Default', $object );
-        $this->assertInstanceOf( 'Mumsys_Logger_Interface', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_File', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Default', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Interface', $object );
     }
 
 
@@ -107,7 +107,7 @@ class Mumsys_Logger_DefaultTest
      */
     public function testVersions()
     {
-        $this->assertEquals( $this->_version, Mumsys_Logger_Default::VERSION );
+        $this->assertingEquals( $this->_version, Mumsys_Logger_Default::VERSION );
         $this->_checkVersionList(
             $this->_object->getVersions(),
             $this->_versions

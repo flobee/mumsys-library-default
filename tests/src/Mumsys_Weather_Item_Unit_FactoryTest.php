@@ -55,12 +55,12 @@ class Mumsys_Weather_Item_Unit_FactoryTest
     {
         $actual = $this->_object->createItem();
 
-        $this->assertInstanceOf( 'Mumsys_Weather_Item_Unit_Interface', $actual );
-        $this->assertInstanceOf( 'Mumsys_Weather_Item_Unit_Default', $actual );
+        $this->assertingInstanceOf( 'Mumsys_Weather_Item_Unit_Interface', $actual );
+        $this->assertingInstanceOf( 'Mumsys_Weather_Item_Unit_Default', $actual );
 
-        $this->expectException( 'Mumsys_Weather_Exception' );
+        $this->expectingException( 'Mumsys_Weather_Exception' );
         $mesg = 'Invalid characters in class name "Mumsys_Weather_Item_Unit_$$$"';
-        $this->expectExceptionMessage( $mesg );
+        $this->expectingExceptionMessage( $mesg );
         $this->_object->createItem( '$$$' );
     }
 
@@ -70,9 +70,9 @@ class Mumsys_Weather_Item_Unit_FactoryTest
      */
     public function testCreateItemException()
     {
-        $this->expectException( 'Mumsys_Weather_Exception' );
+        $this->expectingException( 'Mumsys_Weather_Exception' );
         $mesg = 'Class "Mumsys_Weather_Item_Unit_DriverNotIn" not found';
-        $this->expectExceptionMessage( $mesg );
+        $this->expectingExceptionMessage( $mesg );
         $actual = $this->_object->createItem( 'DriverNotIn' );
     }
 

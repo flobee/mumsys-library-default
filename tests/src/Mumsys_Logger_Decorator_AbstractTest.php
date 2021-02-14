@@ -73,7 +73,7 @@ class Mumsys_Logger_Decorator_AbstractTest
     public function test__construct()
     {
         $this->_object = new Mumsys_Logger_Decorator_Abstract_TestClass( $this->_logger );
-        $this->assertInstanceOf( 'Mumsys_Logger_Decorator_Interface', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $this->_object );
     }
 
 
@@ -83,8 +83,8 @@ class Mumsys_Logger_Decorator_AbstractTest
     public function test__clone()
     {
         $obj = clone $this->_object;
-        $this->assertInstanceOf( 'Mumsys_Logger_Decorator_Interface', $obj );
-        $this->assertInstanceOf( 'Mumsys_Logger_Decorator_Interface', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $obj );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $this->_object );
         $this->assertNotSame( $obj, $this->_object );
     }
 
@@ -98,7 +98,7 @@ class Mumsys_Logger_Decorator_AbstractTest
         $actual = $this->_object->getLevelName( 3 );
         $expected = 'ERR';
 
-        $this->assertEquals( $actual, $expected );
+        $this->assertingEquals( $actual, $expected );
     }
 
 
@@ -111,7 +111,7 @@ class Mumsys_Logger_Decorator_AbstractTest
         $actual = $obj->log( __METHOD__, 6 );
 
         $regex = '/(' . __METHOD__ . ')/i';
-        $this->assertTrue( ( preg_match( $regex, $actual ) === 1 ) );
+        $this->assertingTrue( ( preg_match( $regex, $actual ) === 1 ) );
     }
 
 
@@ -124,8 +124,8 @@ class Mumsys_Logger_Decorator_AbstractTest
         $actual1 = $obj->checkLevel( 3 );
         $actual2 = $obj->checkLevel( 99 );
 
-        $this->assertTrue( $actual1 );
-        $this->assertFalse( $actual2 );
+        $this->assertingTrue( $actual1 );
+        $this->assertingFalse( $actual2 );
     }
 
 
@@ -144,7 +144,7 @@ class Mumsys_Logger_Decorator_AbstractTest
      */
     public function testVersion()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_version, Mumsys_Logger_Decorator_Abstract::VERSION
         );
     }

@@ -23,13 +23,13 @@ class Mumsys_ConstantsTest
 
     public function testIncludedConstants()
     {
-        $this->assertEquals( MUMSYS_REGEX_AZ09, '/^([0-9a-zA-Z])+$/i' );
-        $this->assertEquals( MUMSYS_REGEX_ALNUM, '/^([_]|[0-9a-zA-Z])+$/i' );
-        $this->assertEquals( MUMSYS_REGEX_AZ09X, '/^([_-]|[0-9a-zA-Z])+$/i' );
-        $this->assertEquals( MUMSYS_REGEX_DATETIME_MYSQL, '/^(\d{4})-(\d{2})-(\d{2} (\d{1,2}):(\d{1,2}):(\d{1,2}))$/' );
-        $this->assertEquals( MUMSYS_REGEX_AZ09X_, '/^([ ]|[_-]|[0-9a-zA-Z])+$/i' );
+        $this->assertingEquals( MUMSYS_REGEX_AZ09, '/^([0-9a-zA-Z])+$/i' );
+        $this->assertingEquals( MUMSYS_REGEX_ALNUM, '/^([_]|[0-9a-zA-Z])+$/i' );
+        $this->assertingEquals( MUMSYS_REGEX_AZ09X, '/^([_-]|[0-9a-zA-Z])+$/i' );
+        $this->assertingEquals( MUMSYS_REGEX_DATETIME_MYSQL, '/^(\d{4})-(\d{2})-(\d{2} (\d{1,2}):(\d{1,2}):(\d{1,2}))$/' );
+        $this->assertingEquals( MUMSYS_REGEX_AZ09X_, '/^([ ]|[_-]|[0-9a-zA-Z])+$/i' );
 
-        $this->assertEquals( _NL, PHP_EOL );
+        $this->assertingEquals( _NL, PHP_EOL );
     }
 
 }

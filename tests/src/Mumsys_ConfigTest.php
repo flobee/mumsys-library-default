@@ -41,7 +41,7 @@ class Mumsys_ConfigTest
     {
         $expected = MumsysTestHelper::getConfigs();
         $testvalues = $this->_object->getAll();
-        $this->assertEquals( $expected, $testvalues );
+        $this->assertingEquals( $expected, $testvalues );
     }
 
 
@@ -53,8 +53,8 @@ class Mumsys_ConfigTest
         $expected2 = 123;
         $testvalue2 = $this->_object->get( 'notExists', 123 );
 
-        $this->assertEquals( $expected1, $testvalue1 );
-        $this->assertEquals( $expected2, 123 );
+        $this->assertingEquals( $expected1, $testvalue1 );
+        $this->assertingEquals( $expected2, 123 );
     }
 
 
@@ -62,8 +62,8 @@ class Mumsys_ConfigTest
     {
         $expected = $this->_object->getAll();
         $testvalues = MumsysTestHelper::getConfigs();
-        $this->assertEquals( $expected, $testvalues );
-        $this->assertTrue( is_array( $expected ) );
+        $this->assertingEquals( $expected, $testvalues );
+        $this->assertingTrue( is_array( $expected ) );
     }
 
 
@@ -74,10 +74,10 @@ class Mumsys_ConfigTest
         $expected1 = 'testvalue';
         $testvalue1 = $this->_object->get( 'testkey', false );
 
-        $this->assertEquals( $expected1, $testvalue1 );
+        $this->assertingEquals( $expected1, $testvalue1 );
 
-        $this->expectExceptionMessageRegExp( '/(Config key "testkey" already exists)/i' );
-        $this->expectException( 'Mumsys_Config_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Config key "testkey" already exists)/i' );
+        $this->expectingException( 'Mumsys_Config_Exception' );
         $this->_object->register( 'testkey', new stdClass() );
     }
 
@@ -87,14 +87,14 @@ class Mumsys_ConfigTest
         $this->_object->register( 'testkey2', 'testvalue2' );
         $this->_object->replace( 'testkey2', 'testvalue3' );
 
-        $this->assertEquals( 'testvalue3', $this->_object->get( 'testkey2' ) );
+        $this->assertingEquals( 'testvalue3', $this->_object->get( 'testkey2' ) );
     }
 
 
     public function testLoad()
     {
-        $this->expectExceptionMessageRegExp( '/(Not implemented yet)/i' );
-        $this->expectException( 'Mumsys_Config_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Not implemented yet)/i' );
+        $this->expectingException( 'Mumsys_Config_Exception' );
         $this->_object->load( 'mumsys2' );
     }
 

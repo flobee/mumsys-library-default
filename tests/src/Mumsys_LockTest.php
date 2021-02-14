@@ -43,7 +43,7 @@ class Mumsys_LockTest
 
     public function testLock()
     {
-        $this->assertTrue( $this->_object->lock() );
+        $this->assertingTrue( $this->_object->lock() );
     }
 
 
@@ -52,8 +52,8 @@ class Mumsys_LockTest
         $this->_object->lock();
         $regex = '/(Can not lock! Lock "\/tmp\/Mumsys_Lock.php_default.lock" '
             . 'exists)/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Exception' );
         $this->_object->lock();
     }
 
@@ -63,8 +63,8 @@ class Mumsys_LockTest
     {
         $this->_object = new Mumsys_Lock( '/root/nix.tmp' );
         $regex = '/(Locking failt for file "\/root\/nix.tmp")/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Exception' );
 
         $this->_object->lock();
     }
@@ -73,7 +73,7 @@ class Mumsys_LockTest
     public function testUnlock()
     {
         $this->_object->lock();
-        $this->assertTrue( $this->_object->unlock() );
+        $this->assertingTrue( $this->_object->unlock() );
     }
 
 
@@ -84,8 +84,8 @@ class Mumsys_LockTest
         $regex = '/(Unlock failt for: "'
             . str_replace( '/', '\/', $tmpFile )
             . '")/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Exception' );
         $o->unlock();
     }
 
@@ -93,9 +93,9 @@ class Mumsys_LockTest
     public function testIsLocked()
     {
         $this->_object->lock();
-        $this->assertTrue( $this->_object->isLocked() );
+        $this->assertingTrue( $this->_object->isLocked() );
         $this->_object->unlock();
-        $this->assertFalse( $this->_object->isLocked() );
+        $this->assertingFalse( $this->_object->isLocked() );
     }
 
 
@@ -104,8 +104,8 @@ class Mumsys_LockTest
         $tmpFile = '/tmp/where/the/hell/are/you';
         $o = new Mumsys_Lock( $tmpFile );
         $regex = '#(Lock directory "/tmp/where/the/hell/are/you" not exists)#i';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Exception' );
         $o->isLocked();
     }
 
@@ -117,7 +117,7 @@ class Mumsys_LockTest
      */
     public function testGetVersion()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'Mumsys_Lock ' . $this->_version, $this->_object->getVersion()
         );
     }
@@ -128,7 +128,7 @@ class Mumsys_LockTest
      */
     public function testgetVersionID()
     {
-        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
+        $this->assertingEquals( $this->_version, $this->_object->getVersionID() );
     }
 
 
@@ -140,8 +140,8 @@ class Mumsys_LockTest
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue( isset( $possible[$must] ) );
-            $this->assertTrue( ( $possible[$must] == $value ) );
+            $this->assertingTrue( isset( $possible[$must] ) );
+            $this->assertingTrue( ( $possible[$must] == $value ) );
         }
     }
 

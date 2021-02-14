@@ -94,8 +94,14 @@ class Mumsys_Db_Driver_Mysql_Mysqli
             }
         }
         catch ( Exception $e ) {
-            $msg = 'Connection to database failed. Messages: "'
-                . $e->getMessage() . '", "' . $this->sqlError() . '"';
+            try {
+                $errStr = $this->sqlError();
+            } catch( Error $err ) {
+                $errStr = '';
+            }
+//            throw $e;
+            $msg = 'Connection to database failed. Messages: "' . $e->getMessage()
+                . '", "' . $errStr . '"';
             return $this->_setError( $msg, null, $e );
         }
 
@@ -151,8 +157,10 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function getCharset()
     {
-        if ( ( $result = @mysqli_get_charset( $this->_dbc ) ) == false ) {
-            return $this->_setError( 'Getting character set failt' );
+        try {
+            $result = mysqli_get_charset( $this->_dbc );
+        } catch ( Error $ex ) {
+            return $this->_setError( 'Getting character set failt: "' . $ex->getMessage() . '"' );
         }
 
         return $result;
@@ -308,7 +316,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli
      */
     public function sqlError()
     {
-        return @mysqli_error( $this->_dbc );
+        return mysqli_error( $this->_dbc );
     }
 
 
@@ -760,7 +768,12 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     protected function _setError( $message, $code = null, $previous = null )
     {
         if ( $code === null ) {
-            $code = $this->sqlErrno();
+            try{
+                $code = $this->sqlErrno();
+            }
+            catch ( Error $ex ) {
+                $code = Mumsys_Db_Exception::ERRCODE_DEFAULT;
+            }
         }
 
         $this->_errorNumber = $code;

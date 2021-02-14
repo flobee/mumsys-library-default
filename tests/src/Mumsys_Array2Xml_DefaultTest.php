@@ -178,11 +178,11 @@ class Mumsys_Array2Xml_DefaultTest
 
     public function testVersionsAndConstants()
     {
-        $this->assertEquals( 0, Mumsys_Array2Xml_Abstract::TAG_CASE_LOWER );
-        $this->assertEquals( 1, Mumsys_Array2Xml_Abstract::TAG_CASE_UPPER );
-        $this->assertEquals( -1, Mumsys_Array2Xml_Abstract::TAG_CASE_AS_IS );
+        $this->assertingEquals( 0, Mumsys_Array2Xml_Abstract::TAG_CASE_LOWER );
+        $this->assertingEquals( 1, Mumsys_Array2Xml_Abstract::TAG_CASE_UPPER );
+        $this->assertingEquals( -1, Mumsys_Array2Xml_Abstract::TAG_CASE_AS_IS );
 
-        $this->assertEquals( $this->_version, Mumsys_Array2Xml_Default::VERSION );
+        $this->assertingEquals( $this->_version, Mumsys_Array2Xml_Default::VERSION );
         $this->_checkVersionList(
             $this->_object->getVersions(),
             $this->_versions
@@ -197,8 +197,8 @@ class Mumsys_Array2Xml_DefaultTest
      */
     public function test_construct()
     {
-        $this->expectException( 'Mumsys_Array2Xml_Exception' );
-        $this->expectExceptionMessage( 'Invalid tag case' );
+        $this->expectingException( 'Mumsys_Array2Xml_Exception' );
+        $this->expectingExceptionMessage( 'Invalid tag case' );
         $this->_objectoptions['tag_case'] = '69';
         new Mumsys_Array2Xml_Default( $this->_objectoptions );
     }
@@ -213,15 +213,15 @@ class Mumsys_Array2Xml_DefaultTest
         $this->_object2->buffer( 'test' );
         $current = file_get_contents( $this->_object2->getCacheFile() );
 
-        $this->assertEquals( 'test', $current );
-        $this->assertEquals(
+        $this->assertingEquals( 'test', $current );
+        $this->assertingEquals(
             $this->_objectoptions2['cachefile'], $this->_object2->getCacheFile()
         );
 
         // test buffer exception
         $this->_object->setCache( true );
-        $this->expectException( 'Mumsys_Array2Xml_Exception' );
-        $this->expectExceptionMessage( 'Can not buffer. Writer not set' );
+        $this->expectingException( 'Mumsys_Array2Xml_Exception' );
+        $this->expectingExceptionMessage( 'Can not buffer. Writer not set' );
         $this->_object->buffer( 'test' );
     }
 
@@ -237,8 +237,8 @@ class Mumsys_Array2Xml_DefaultTest
         $this->_object2->setWriter( $actual2 ); // 4 CC
 
         $this->assertNull( $actual1 );
-        $this->assertInstanceOf( 'Mumsys_Logger_Writer_Interface', $actual2 );
-        $this->assertInstanceOf( 'Mumsys_File', $actual2 );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Writer_Interface', $actual2 );
+        $this->assertingInstanceOf( 'Mumsys_File', $actual2 );
     }
 
 
@@ -247,11 +247,9 @@ class Mumsys_Array2Xml_DefaultTest
      */
     public function testSetWriterException1()
     {
-        $this->expectException( 'Error' );
-        $regex = '/(Argument 1 passed to Mumsys_Array2Xml_Abstract::setWriter\(\) '
-            . 'must implement interface Mumsys_Logger_Writer_Interface, instance '
-            . 'of Mumsys_Array2Xml_Default given, called in (.*) on line)/i';
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingException( 'Error' );
+        $regex = '/(must be of type Mumsys_Logger_Writer_Interface, Mumsys_Array2Xml_Default given)/i';
+        $this->expectingExceptionMessageRegex( $regex );
 
         $this->_object2->setWriter( $this->_object );
     }
@@ -267,10 +265,10 @@ class Mumsys_Array2Xml_DefaultTest
         $this->_objectoptions2['cachefile'] = $loc;
         $this->_objectoptions2['cache'] = true;
 
-        $this->expectException( 'Mumsys_File_Exception' );
+        $this->expectingException( 'Mumsys_File_Exception' );
         $message = 'Can not open file "/tmp/not-exists/no-nothing" with mode '
             . '"w". Directory is writeable: "No", readable: "No".';
-        $this->expectExceptionMessage( $message );
+        $this->expectingExceptionMessage( $message );
 
         $this->_object2 = new Mumsys_Array2Xml_Default( $this->_objectoptions2 );
         $writerOpts = array(
@@ -291,7 +289,7 @@ class Mumsys_Array2Xml_DefaultTest
     public function testToString()
     {
         $actual = $this->_object->__toString();
-        $this->assertEquals( $this->_refxmldata, $actual );
+        $this->assertingEquals( $this->_refxmldata, $actual );
     }
 
 
@@ -303,8 +301,8 @@ class Mumsys_Array2Xml_DefaultTest
     {
         $this->_object->setCache( true );
         $this->_object2->setCache( false );
-        $this->assertFalse( $this->_object2->getCache() );
-        $this->assertTrue( $this->_object->getCache() );
+        $this->assertingFalse( $this->_object2->getCache() );
+        $this->assertingTrue( $this->_object->getCache() );
     }
 
 
@@ -317,8 +315,8 @@ class Mumsys_Array2Xml_DefaultTest
         $loc = '/tmp/flobeewashere';
         $this->_object->setCacheFile( $loc );
         $this->_object2->setCacheFile( $loc );
-        $this->assertEquals( $loc, $this->_object->getCacheFile() );
-        $this->assertEquals( $loc, $this->_object2->getCacheFile() );
+        $this->assertingEquals( $loc, $this->_object->getCacheFile() );
+        $this->assertingEquals( $loc, $this->_object2->getCacheFile() );
     }
 
 
@@ -341,10 +339,10 @@ class Mumsys_Array2Xml_DefaultTest
             . '"bla", v: "bla bla bla"'
         );
 
-        $this->assertEquals( $expected, $actual );
-        $this->assertEquals( $newcfg, $this->_object->getIdentifier() );
+        $this->assertingEquals( $expected, $actual );
+        $this->assertingEquals( $newcfg, $this->_object->getIdentifier() );
 
-        $this->assertEquals( $error, $this->_object->getError() );
+        $this->assertingEquals( $error, $this->_object->getError() );
     }
 
 
@@ -358,11 +356,11 @@ class Mumsys_Array2Xml_DefaultTest
         $this->_object->setEncoding( 'iso-8859-1', 'utf-8' );
         $newEnc = $this->_object->getEncoding();
 
-        $this->assertEquals( $this->_objectoptions['charset_from'], $oldEnc['charset_from'] );
-        $this->assertEquals( $this->_objectoptions['charset_to'], $oldEnc['charset_to'] );
+        $this->assertingEquals( $this->_objectoptions['charset_from'], $oldEnc['charset_from'] );
+        $this->assertingEquals( $this->_objectoptions['charset_to'], $oldEnc['charset_to'] );
 
-        $this->assertEquals( 'iso-8859-1', $newEnc['charset_from'] );
-        $this->assertEquals( 'utf-8', $newEnc['charset_to'] );
+        $this->assertingEquals( 'iso-8859-1', $newEnc['charset_from'] );
+        $this->assertingEquals( 'utf-8', $newEnc['charset_to'] );
     }
 
 
@@ -405,13 +403,13 @@ class Mumsys_Array2Xml_DefaultTest
             . 'generator="Array2Xml Creator">' . "\n";
         $expected4[1] = '</mymusic>' . "\n";
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
-        $this->assertEquals( $expected4, $actual4 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected4, $actual4 );
 
-        $this->expectException( 'Mumsys_Array2Xml_Exception' );
-        $this->expectExceptionMessage( 'No data to create a root element' );
+        $this->expectingException( 'Mumsys_Array2Xml_Exception' );
+        $this->expectingExceptionMessage( 'No data to create a root element' );
         $this->_object->setRoot( array() );
     }
 
@@ -443,11 +441,11 @@ class Mumsys_Array2Xml_DefaultTest
         $this->_object->setData( $arr['nodeValues'] );
         $actual2 = $this->_object->getData();
 
-        $this->assertEquals( array(), $actual1 );
-        $this->assertEquals( $arr['nodeValues'], $actual2 );
+        $this->assertingEquals( array(), $actual1 );
+        $this->assertingEquals( $arr['nodeValues'], $actual2 );
 
-        $this->expectException( 'Mumsys_Array2Xml_Exception' );
-        $this->expectExceptionMessage( 'No data given to be set.' );
+        $this->expectingException( 'Mumsys_Array2Xml_Exception' );
+        $this->expectingExceptionMessage( 'No data given to be set.' );
         $this->_object->setData( array() );
     }
 
@@ -470,14 +468,14 @@ class Mumsys_Array2Xml_DefaultTest
         $expected3 = $oC->getXML();
 
         // as of construction: "set to lower": then both should match
-        $this->assertEquals( $expected1, $expected2 );
+        $this->assertingEquals( $expected1, $expected2 );
 
         // string lenght MUST be the same
-        $this->assertEquals( strlen( $expected3 ), strlen( $expected1 ) );
+        $this->assertingEquals( strlen( $expected3 ), strlen( $expected1 ) );
         // check for upper case parts
-        $this->assertTrue( ( preg_match( '/(ROOT VERSION)/', $expected3 ) === 1 ) );
+        $this->assertingTrue( ( preg_match( '/(ROOT VERSION)/', $expected3 ) === 1 ) );
 
-        $this->expectException( 'Mumsys_Array2Xml_Exception' );
+        $this->expectingException( 'Mumsys_Array2Xml_Exception' );
         $opi['tag_case'] = 'nocase';
         $obj = new Mumsys_Array2Xml_Default( $opi );
         $obj->getCase( 'none' );
@@ -491,7 +489,7 @@ class Mumsys_Array2Xml_DefaultTest
     {
         $doc = $this->_object->getDoctype();
         $ref = '<' . '?xml version="1.0" encoding="iso-8859-1" ?' . '>' . "\n";
-        $this->assertEquals( $ref, $doc );
+        $this->assertingEquals( $ref, $doc );
     }
 
 
@@ -544,19 +542,19 @@ class Mumsys_Array2Xml_DefaultTest
         $actual4 = $this->_object->createElements( 'node', '0' );
         $expected4 = '<node />' . $this->_objectoptions['linebreak'];
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
-        $this->assertEquals( $expected4, $actual4 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected4, $actual4 );
 
         // test 5
-        $this->expectException( 'Mumsys_Array2Xml_Exception' );
+        $this->expectingException( 'Mumsys_Array2Xml_Exception' );
         $actual5 = $this->_object->createElements(
             'node', $valueAndAttributesErr
         );
 
         //test 6
-        $this->expectException( 'Mumsys_Array2Xml_Exception' );
+        $this->expectingException( 'Mumsys_Array2Xml_Exception' );
         $actual6 = $this->_object->createElements(
             'node', $valueAndAttributesAttrErr
         );
@@ -572,11 +570,11 @@ class Mumsys_Array2Xml_DefaultTest
         $actual1 = $this->_object->getAttributes( $attr1 );
         $expected1 = ' attribute1="val1" attribute2="val2"';
 
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
 
         $attr2 = array('AttRiBuTe1' => 'val1', 1 => 'val2');
-        $this->expectException( 'Mumsys_Array2Xml_Exception' );
-        $this->expectExceptionMessage(
+        $this->expectingException( 'Mumsys_Array2Xml_Exception' );
+        $this->expectingExceptionMessage(
             'Numeric attribute key not allowed. key: "1", value: "val2".'
         );
         $actual1 = $this->_object->getAttributes( $attr2 );
@@ -607,7 +605,7 @@ class Mumsys_Array2Xml_DefaultTest
             . '</album>' . $lf
             . '</root>' . $lf;
 
-        $this->assertEquals( $xml, $this->_object->getXML() );
+        $this->assertingEquals( $xml, $this->_object->getXML() );
     }
 
 
@@ -627,7 +625,7 @@ class Mumsys_Array2Xml_DefaultTest
         $obj->addElementTree( array('nodeValues' => $this->_xmldata['nodeValues']) );
         $xml = $obj->getXML();
 
-        $this->assertEquals( $this->_refxmldata, $xml );
+        $this->assertingEquals( $this->_refxmldata, $xml );
     }
 
 
@@ -644,7 +642,7 @@ class Mumsys_Array2Xml_DefaultTest
         $actual2 = $obj->validate( 'this & that value' );
         $expected2 = 'this &amp; that value';
 
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
     }
 
 
@@ -666,9 +664,9 @@ class Mumsys_Array2Xml_DefaultTest
         $actual3 = $obj3->encode( $iso_8859_15 );
         $expected3 = $testStringUtf8;
 
-        $this->assertEquals( $testStringUtf8, $actual1 );
-        $this->assertEquals( $iso_8859_15, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
+        $this->assertingEquals( $testStringUtf8, $actual1 );
+        $this->assertingEquals( $iso_8859_15, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
     }
 
 
@@ -678,17 +676,17 @@ class Mumsys_Array2Xml_DefaultTest
      */
     public function testIsGetError()
     {
-        $this->assertFalse( $this->_object->isError() );
+        $this->assertingFalse( $this->_object->isError() );
 
-        $this->assertEquals( array(), $this->_object->getError() );
+        $this->assertingEquals( array(), $this->_object->getError() );
         // create an error
         $this->_object->setIdentifier( array('bla' => 'bla bla bla') );
         $error = array(
             'Error setIdentifier! Empty value or ID not found/wrong: '
             . '$key: "bla", v: "bla bla bla"'
         );
-        $this->assertTrue( $this->_object->isError() );
-        $this->assertEquals( $error, $this->_object->getError() );
+        $this->assertingTrue( $this->_object->isError() );
+        $this->assertingEquals( $error, $this->_object->getError() );
     }
 
 
@@ -700,11 +698,11 @@ class Mumsys_Array2Xml_DefaultTest
     {
         $this->_object->free();
 
-        $this->assertEquals( array(), $this->_object->getData() );
-        $this->assertEquals( array(), $this->_object->getError() );
-        $this->assertEquals( array(), $this->_object->getRoot() );
+        $this->assertingEquals( array(), $this->_object->getData() );
+        $this->assertingEquals( array(), $this->_object->getError() );
+        $this->assertingEquals( array(), $this->_object->getRoot() );
 
-        $this->expectException( 'Mumsys_Array2Xml_Exception' );
+        $this->expectingException( 'Mumsys_Array2Xml_Exception' );
         $this->_object->getXML();
     }
 

@@ -98,17 +98,17 @@ class Mumsys_Php_ConsoleTest
 
         @unlink( $logfile );
 
-        $this->assertFalse( $basicCall );
-        $this->assertFalse( $chkCache );
-        $this->assertTrue( $overflow );
-        $this->assertTrue( $err );
+        $this->assertingFalse( $basicCall );
+        $this->assertingFalse( $chkCache );
+        $this->assertingTrue( $overflow );
+        $this->assertingTrue( $err );
     }
 
 
     public function testVersion()
     {
-        $this->assertEquals( $this->_version, Mumsys_Php_Console::VERSION );
-        $this->assertEquals( '3.2.1', Mumsys_Php::VERSION );
+        $this->assertingEquals( $this->_version, Mumsys_Php_Console::VERSION );
+        $this->assertingEquals( '3.2.1', Mumsys_Php::VERSION );
     }
 
 }

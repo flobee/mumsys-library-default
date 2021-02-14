@@ -37,7 +37,7 @@ class Mumsys_Variable_Manager_FactoryTest
     public function testCreateManager()
     {
         $object = Mumsys_Variable_Manager_Factory::createManager( 'Default' );
-        $this->assertInstanceOf( 'Mumsys_Variable_Manager_Interface', $object );
+        $this->assertingInstanceOf( 'Mumsys_Variable_Manager_Interface', $object );
     }
 
 
@@ -46,8 +46,8 @@ class Mumsys_Variable_Manager_FactoryTest
      */
     public function testCreateManagerException1()
     {
-        $this->expectExceptionMessageRegExp( '/(Invalid manager name: "1 - \$5DefaultExit")/i' );
-        $this->expectException( 'Mumsys_Variable_Manager_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Invalid manager name: "1 - \$5DefaultExit")/i' );
+        $this->expectingException( 'Mumsys_Variable_Manager_Exception' );
         Mumsys_Variable_Manager_Factory::createManager( '1 - $5DefaultExit' );
     }
 
@@ -57,10 +57,10 @@ class Mumsys_Variable_Manager_FactoryTest
      */
     public function testCreateManagerException2()
     {
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(Initialisation of "Mumsys_Variable_Manager_Xxx" failed. Not found\/ exists)/i'
         );
-        $this->expectException( 'Mumsys_Variable_Manager_Exception' );
+        $this->expectingException( 'Mumsys_Variable_Manager_Exception' );
         Mumsys_Variable_Manager_Factory::createManager( 'xxx' );
     }
 
@@ -73,7 +73,7 @@ class Mumsys_Variable_Manager_FactoryTest
         $message = 'On error a new Version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '
             . 'the tests!';
-        $this->assertEquals( $this->_version, Mumsys_Variable_Manager_Factory::VERSION, $message );
+        $this->assertingEquals( $this->_version, Mumsys_Variable_Manager_Factory::VERSION, $message );
     }
 
 }

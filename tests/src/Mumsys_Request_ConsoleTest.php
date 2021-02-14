@@ -67,15 +67,15 @@ class Mumsys_Request_ConsoleTest
         $this->_object = new Mumsys_Request_Console( $this->_options );
         $actual = $this->_object->getParams();
 
-        $this->assertTrue( ( $actual['unit'] === 'test' ) );
-        $this->assertTrue( in_array( 'unit=test', $actual ) );
-        $this->assertTrue( ( count( $actual ) >= 2 ) );
+        $this->assertingTrue( ( $actual['unit'] === 'test' ) );
+        $this->assertingTrue( in_array( 'unit=test', $actual ) );
+        $this->assertingTrue( ( count( $actual ) >= 2 ) );
     }
 
 
     public function testVersions()
     {
-         $this->assertEquals( $this->_version, Mumsys_Request_Console::VERSION );
+         $this->assertingEquals( $this->_version, Mumsys_Request_Console::VERSION );
          $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 }

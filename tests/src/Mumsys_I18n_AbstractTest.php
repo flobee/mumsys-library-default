@@ -47,8 +47,8 @@ class Mumsys_I18n_AbstractTest
     {
         $this->setUp();
 
-        $this->expectExceptionMessageRegExp( '/(Invalid locale "biglocale")/i' );
-        $this->expectException( 'Mumsys_I18n_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Invalid locale "biglocale")/i' );
+        $this->expectingException( 'Mumsys_I18n_Exception' );
         $o = new Mumsys_I18n_Default( 'biglocale' );
     }
 
@@ -63,10 +63,10 @@ class Mumsys_I18n_AbstractTest
         $this->_object->setlocale( $expected );
         $actual = $this->_object->getLocale();
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
 
-        $this->expectExceptionMessageRegExp( '/(Invalid locale "invalid")/' );
-        $this->expectException( 'Mumsys_I18n_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Invalid locale "invalid")/' );
+        $this->expectingException( 'Mumsys_I18n_Exception' );
         $this->_object->setlocale( 'invalid' );
     }
 
@@ -96,7 +96,7 @@ class Mumsys_I18n_AbstractTest
         foreach ( $listOfLocales as $number => $locales ) {
             foreach ( $locales as $lc ) {
                 $this->_object->setlocale( $lc );
-                $this->assertEquals(
+                $this->assertingEquals(
                     'Flower',
                     $this->_object->_dtn( 'domain', 'Flower', 'Flowers', $number )
                 );
@@ -104,7 +104,7 @@ class Mumsys_I18n_AbstractTest
         }
 
         $this->_object->setlocale( 'xxxx' );
-        $this->assertEquals(
+        $this->assertingEquals(
             'Flower', $this->_object->_dtn( 'domain', 'Flower', 'Flowers', 1 )
         );
     }
@@ -117,18 +117,18 @@ class Mumsys_I18n_AbstractTest
      */
     public function testAbstractClass()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'Mumsys_I18n_Default ' . $this->_version,
             $this->_object->getVersion()
         );
 
-        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
+        $this->assertingEquals( $this->_version, $this->_object->getVersionID() );
 
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue( isset( $possible[$must] ) );
-            $this->assertTrue( ( $possible[$must] == $value ) );
+            $this->assertingTrue( isset( $possible[$must] ) );
+            $this->assertingTrue( ( $possible[$must] == $value ) );
         }
     }
 

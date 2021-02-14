@@ -39,7 +39,7 @@ class Mumsys_Cookie_DefaultTest
     {
         $object = new Mumsys_Cookie_Default();
 
-        $this->assertInstanceOf( 'Mumsys_Cookie_Interface', $object );
+        $this->assertingInstanceOf( 'Mumsys_Cookie_Interface', $object );
     }
 
 
@@ -57,10 +57,10 @@ class Mumsys_Cookie_DefaultTest
         $actual3 = $this->_object->setCookie( "a", 'b' );
         $actual4 = $this->_object->setRawCookie( "raw", 'raw' );
 
-        $this->assertEquals( $_COOKIE, $actual1 );
-        $this->assertEquals( $_COOKIE['unittest'], $actual2 );
-        $this->assertTrue( $actual3 );
-        $this->assertTrue( $actual4 );
+        $this->assertingEquals( $_COOKIE, $actual1 );
+        $this->assertingEquals( $_COOKIE['unittest'], $actual2 );
+        $this->assertingTrue( $actual3 );
+        $this->assertingTrue( $actual4 );
     }
 
 
@@ -74,7 +74,7 @@ class Mumsys_Cookie_DefaultTest
         $_COOKIE = array('a', 'b');
         $actual1 = $this->_object->clear();
 
-        $this->assertTrue( $actual1 );
+        $this->assertingTrue( $actual1 );
     }
 
 }

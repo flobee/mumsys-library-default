@@ -63,10 +63,10 @@ class Mumsys_Weather_Item_Unit_DirectionTest
         );
         $this->_object->__construct( $options );
 
-        $this->assertEquals( 'degrees', $this->_object->getKey() );
-        $this->assertEquals( $options['label'], $this->_object->getLabel() );
-        $this->assertEquals( $options['sign'], $this->_object->getSign() );
-        $this->assertEquals( $options['code'], $this->_object->getCode() );
+        $this->assertingEquals( 'degrees', $this->_object->getKey() );
+        $this->assertingEquals( $options['label'], $this->_object->getLabel() );
+        $this->assertingEquals( $options['sign'], $this->_object->getSign() );
+        $this->assertingEquals( $options['code'], $this->_object->getCode() );
     }
 
 
@@ -114,13 +114,13 @@ class Mumsys_Weather_Item_Unit_DirectionTest
 
                 $mesg = 'Presision: ' . (string) $precision . '; Expected: '
                     . $expected . '; Value: ' . $degrees;
-                $this->assertEquals( $expected, $actual, $mesg );
+                $this->assertingEquals( $expected, $actual, $mesg );
             }
         }
 
-        $this->expectException( 'Mumsys_Weather_Item_Unit_Exception' );
+        $this->expectingException( 'Mumsys_Weather_Item_Unit_Exception' );
         $mesg = 'Invalid value for degrees: "999"';
-        $this->expectExceptionMessage( $mesg );
+        $this->expectingExceptionMessage( $mesg );
         $this->_object->getDirectionCode( 999, 1 );
     }
 
@@ -145,14 +145,14 @@ class Mumsys_Weather_Item_Unit_DirectionTest
 
             $mesg = 'degrees: "' . $degrees . '", clock: "' . $expected
                 . '", res: ' . $actual . ' failed';
-            $this->assertEquals( $expected, $actual, $mesg );
+            $this->assertingEquals( $expected, $actual, $mesg );
         }
 
-        $this->assertEquals( 45, $this->_object->convert( 45, 'degrees' ) );
+        $this->assertingEquals( 45, $this->_object->convert( 45, 'degrees' ) );
 
-        $this->expectException( 'Mumsys_Weather_Item_Unit_Exception' );
+        $this->expectingException( 'Mumsys_Weather_Item_Unit_Exception' );
         $mesg = 'Direction conversion to "xyz" not implemented';
-        $this->expectExceptionMessage( $mesg );
+        $this->expectingExceptionMessage( $mesg );
         $this->_object->convert( 0, 'xyz' );
     }
 
@@ -162,9 +162,9 @@ class Mumsys_Weather_Item_Unit_DirectionTest
      */
     public function testConvertException()
     {
-        $this->expectException( 'Mumsys_Weather_Item_Unit_Exception' );
+        $this->expectingException( 'Mumsys_Weather_Item_Unit_Exception' );
         $mesg = 'Invalid value for degrees: "999"';
-        $this->expectExceptionMessage( $mesg );
+        $this->expectingExceptionMessage( $mesg );
         $this->_object->convert( 999, 'clock' );
     }
 
@@ -172,7 +172,6 @@ class Mumsys_Weather_Item_Unit_DirectionTest
     /**
      * @covers Mumsys_Weather_Item_Unit_Direction::toArray
      * @covers Mumsys_Weather_Item_Unit_Direction::toRawArray
-     * @covers Mumsys_Weather_Item_Unit_Direction::_toArray
      */
     public function testToArray()
     {
@@ -196,8 +195,8 @@ class Mumsys_Weather_Item_Unit_DirectionTest
             'weather.item.unit.direction.sign' => 'test key &"',
         );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
     }
 
 }

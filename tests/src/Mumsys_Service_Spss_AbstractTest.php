@@ -65,8 +65,8 @@ class Mumsys_Service_Spss_AbstractTest
         $parser = \SPSS\Sav\Reader::fromString( file_get_contents( $spssFile ) );
         $this->_object = new Mumsys_Service_Spss_AbstractTestClass( $parser );
 
-        $this->expectException( 'Mumsys_Service_Spss_Exception' );
-        $this->expectExceptionMessage( 'Invalid Reader/Writer instance' );
+        $this->expectingException( 'Mumsys_Service_Spss_Exception' );
+        $this->expectingExceptionMessage( 'Invalid Reader/Writer instance' );
         new Mumsys_Service_Spss_AbstractTestClass( '' );
     }
 
@@ -77,7 +77,7 @@ class Mumsys_Service_Spss_AbstractTest
     public function testGetInterface()
     {
         $actual = $this->_object->getAdapter();
-        $this->assertInstanceOf( 'SPSS\Sav\Reader', $actual );
+        $this->assertingInstanceOf( 'SPSS\Sav\Reader', $actual );
 
     }
 

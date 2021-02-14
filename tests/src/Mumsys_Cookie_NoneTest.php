@@ -40,7 +40,7 @@ class Mumsys_Cookie_NoneTest
     {
         $this->_object = new Mumsys_Cookie_None();
 
-        $this->assertInstanceOf( 'Mumsys_Cookie_Interface', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Cookie_Interface', $this->_object );
     }
 
 
@@ -58,9 +58,9 @@ class Mumsys_Cookie_NoneTest
         $actual4 = $this->_object->unsetCookie( '1' );
 
         $this->assertNull( $actual1 );
-        $this->assertTrue( $actual2 );
-        $this->assertTrue( $actual3 );
-        $this->assertTrue( $actual4 );
+        $this->assertingTrue( $actual2 );
+        $this->assertingTrue( $actual3 );
+        $this->assertingTrue( $actual4 );
     }
 
 
@@ -71,7 +71,7 @@ class Mumsys_Cookie_NoneTest
     {
         $actual = $this->_object->clear();
 
-        $this->assertTrue( $actual );
+        $this->assertingTrue( $actual );
     }
 
 }

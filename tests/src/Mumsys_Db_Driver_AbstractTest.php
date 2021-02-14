@@ -68,8 +68,8 @@ class Mumsys_Db_Driver_AbstractTest
     {
         $x = new Mumsys_Db_Driver_Testdummy( $this->_context, $this->_configs['database'] );
 
-        $this->assertInstanceOf( 'Mumsys_Db_Driver_Testdummy', $x );
-        $this->assertInstanceOf( 'Mumsys_Db_Driver_Abstract', $x );
+        $this->assertingInstanceOf( 'Mumsys_Db_Driver_Testdummy', $x );
+        $this->assertingInstanceOf( 'Mumsys_Db_Driver_Abstract', $x );
         $this->assertNotInstanceOf( 'Mumsys_Db_Driver_Interface', $x );
     }
 
@@ -80,7 +80,7 @@ class Mumsys_Db_Driver_AbstractTest
     public function test__destruct()
     {
         $expected = $this->_object->close();
-        $this->assertTrue( $expected );
+        $this->assertingTrue( $expected );
     }
 
 
@@ -89,9 +89,9 @@ class Mumsys_Db_Driver_AbstractTest
      */
     public function testEscape()
     {
-        $this->assertEquals( 'abc', $this->_object->escape( "abc" ) );
-        $this->assertEquals( '\\\'', $this->_object->escape( "'" ) );
-        $this->assertEquals( "ab\'c", $this->_object->escape( "ab'c" ) );
+        $this->assertingEquals( 'abc', $this->_object->escape( "abc" ) );
+        $this->assertingEquals( '\\\'', $this->_object->escape( "'" ) );
+        $this->assertingEquals( "ab\'c", $this->_object->escape( "ab'c" ) );
     }
 
 
@@ -100,7 +100,7 @@ class Mumsys_Db_Driver_AbstractTest
      */
     public function testQuote()
     {
-        $this->assertEquals( '\'ab\'c\'', $this->_object->quote( "ab'c" ) );
+        $this->assertingEquals( '\'ab\'c\'', $this->_object->quote( "ab'c" ) );
     }
 
 
@@ -109,7 +109,7 @@ class Mumsys_Db_Driver_AbstractTest
      */
     public function testGetDbName()
     {
-        $this->assertEquals( $this->_configs['database']['db'], $this->_object->getDbName() );
+        $this->assertingEquals( $this->_configs['database']['db'], $this->_object->getDbName() );
     }
 
 
@@ -118,7 +118,7 @@ class Mumsys_Db_Driver_AbstractTest
      */
     public function testGetNumQuerys()
     {
-        $this->assertEquals( 0, $this->_object->getNumQuerys() );
+        $this->assertingEquals( 0, $this->_object->getNumQuerys() );
     }
 
 
@@ -136,7 +136,7 @@ class Mumsys_Db_Driver_AbstractTest
      */
     public function testGetQueryStmts()
     {
-        $this->assertEquals( array(), $this->_object->getQueryStmts() );
+        $this->assertingEquals( array(), $this->_object->getQueryStmts() );
     }
 
 
@@ -149,7 +149,7 @@ class Mumsys_Db_Driver_AbstractTest
             'AND' => array(_CMS_AND, _CMS_AND),
             'OR' => array(_CMS_OR, _CMS_OR),
         );
-        $this->assertEquals( $expected, $this->_object->getQueryCompareValues() );
+        $this->assertingEquals( $expected, $this->_object->getQueryCompareValues() );
     }
 
 
@@ -164,10 +164,10 @@ class Mumsys_Db_Driver_AbstractTest
         );
         $this->_object->replaceQueryCompareValues( $expected );
 
-        $this->assertEquals( $expected, $this->_object->getQueryCompareValues() );
+        $this->assertingEquals( $expected, $this->_object->getQueryCompareValues() );
 
         $x = $this->_object->replaceQueryCompareValues( array(1, 2, 3, 4) );
-        $this->assertEquals( 'Invalid query compare value configuration', $x[0] );
+        $this->assertingEquals( 'Invalid query compare value configuration', $x[0] );
         $this->assertNull( $x[1] );
         $this->assertNull( $x[2] );
     }
@@ -199,11 +199,11 @@ class Mumsys_Db_Driver_AbstractTest
         $this->_object->replaceQueryOperators( array('=' => 'eg') );
         $actual2 = $this->_object->getQueryOperators();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
 
         $x = $this->_object->replaceQueryOperators( array(1, 2, 3, 4) );
-        $this->assertEquals( 'Invalid query operators configuration', $x[0] );
+        $this->assertingEquals( 'Invalid query operators configuration', $x[0] );
         $this->assertNull( $x[1] );
         $this->assertNull( $x[2] );
     }
@@ -218,7 +218,7 @@ class Mumsys_Db_Driver_AbstractTest
             'ASC' => 'Ascending (a-z, 0-9)',
             'DESC' => 'Descending (z-a, 9-0)',
         );
-        $this->assertEquals( $expected, $this->_object->getQuerySortations() );
+        $this->assertingEquals( $expected, $this->_object->getQuerySortations() );
     }
 
 
@@ -233,10 +233,10 @@ class Mumsys_Db_Driver_AbstractTest
             'ASC' => 'Ascending (a-z, 0-9)',
         );
         $this->_object->replaceQuerySortations( $expected );
-        $this->assertEquals( $expected, $this->_object->getQuerySortations() );
+        $this->assertingEquals( $expected, $this->_object->getQuerySortations() );
 
         $x = $this->_object->replaceQuerySortations( array(1, 2, 3, 4) );
-        $this->assertEquals( 'Invalid query sortations configuration', $x[0] );
+        $this->assertingEquals( 'Invalid query sortations configuration', $x[0] );
         $this->assertNull( $x[1] );
         $this->assertNull( $x[2] );
     }
@@ -247,7 +247,7 @@ class Mumsys_Db_Driver_AbstractTest
      */
     public function testGetErrors()
     {
-        $this->assertEquals( array(), $this->_object->getErrors() );
+        $this->assertingEquals( array(), $this->_object->getErrors() );
     }
 
 
@@ -276,10 +276,10 @@ class Mumsys_Db_Driver_AbstractTest
     public function testGetSetThrowErrors()
     {
         $this->_object->setThrowErrors( 1 );
-        $this->assertTrue( $this->_object->getThrowErrors() );
+        $this->assertingTrue( $this->_object->getThrowErrors() );
 
         $this->_object->setThrowErrors( 0 );
-        $this->assertFalse( $this->_object->getThrowErrors() );
+        $this->assertingFalse( $this->_object->getThrowErrors() );
     }
 
 
@@ -290,10 +290,10 @@ class Mumsys_Db_Driver_AbstractTest
     public function testGetSetDebugMode()
     {
         $this->_object->setDebugMode( 1 );
-        $this->assertTrue( $this->_object->getDebugMode() );
+        $this->assertingTrue( $this->_object->getDebugMode() );
 
         $this->_object->setDebugMode( 0 );
-        $this->assertFalse( $this->_object->getDebugMode() );
+        $this->assertingFalse( $this->_object->getDebugMode() );
     }
 
 }

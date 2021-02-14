@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit 
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
     bootstrap="bootstrap.php"
     colors="true"
-    forceCoversAnnotation="true"
+    forceCoversAnnotation="false"
     beStrictAboutCoversAnnotation="false"
     beStrictAboutOutputDuringTests="true"
     beStrictAboutTodoAnnotatedTests="true"
     verbose="true"
 >
+    <coverage>
+        <include>
+            <directory>../src/</directory>
+        </include>
+        <exclude>
+            <file>../src/Mumsys_Unittest_Testcase.php</file>
+        </exclude>
+    </coverage>
 
     <testsuites>
         <testsuite name="MUMSYS Library test suite - free version">
@@ -16,18 +24,7 @@
     </testsuites>
 
     <logging>
-        <log type="junit" target="logs/phpunit.log.xml" />
+        <junit outputFile="logs/phpunit.log.xml"/>
     </logging>
-    
-    <filter>
-        <whitelist>
-            <directory>../src/</directory>
-            <exclude>
-                <file>../src/Mumsys_Unittest_Testcase.php</file>
-                <!-- <directory>../externals</directory>
-                <directory>./tests</directory>
-                <directory>../vendor</directory> -->
-            </exclude>
-        </whitelist>
-    </filter>
+
 </phpunit>

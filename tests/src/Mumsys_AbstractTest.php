@@ -36,6 +36,12 @@ class Mumsys_AbstractTest
     protected $_versions;
 
 
+//    public function __construct( $name = null, $data = array(), $dataName = '' )
+//    {
+//        parent::__construct( $name, $data, $dataName );
+//    }
+
+
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -69,7 +75,7 @@ class Mumsys_AbstractTest
         $actual = $this->_object->getVersionID();
         $expected = '0.0.1';
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -84,8 +90,8 @@ class Mumsys_AbstractTest
         $actualB = Mumsys_Abstract::getVersion();
         $expectedB = 'Mumsys_Abstract ' . $this->_version;
 
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
     }
 
 
@@ -96,10 +102,10 @@ class Mumsys_AbstractTest
     {
         $this->_object->checkKey( 'validkey' );
 
-        $this->expectException( 'Mumsys_Exception' );
+        $this->expectingException( 'Mumsys_Exception' );
         $regex = '/(Invalid initialisation key for a setter. '
             . 'A string is required)/';
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingExceptionMessageRegex( $regex );
 
         $this->_object->checkKey( array('somekey') );
     }
@@ -110,7 +116,7 @@ class Mumsys_AbstractTest
      */
     public function testVersions()
     {
-        $this->assertEquals( $this->_version, Mumsys_Abstract::VERSION );
+        $this->assertingEquals( $this->_version, Mumsys_Abstract::VERSION );
         $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 

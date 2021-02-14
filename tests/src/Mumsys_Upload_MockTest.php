@@ -85,10 +85,10 @@ class Mumsys_Upload_MockTest
         }
         $actual1 = $this->_object->move_uploaded_file( $from, $to );
 
-        $this->assertTrue( $actual1 );
+        $this->assertingTrue( $actual1 );
 
-        $this->expectException( 'Mumsys_Upload_Exception' );
-        $this->expectExceptionMessage( 'Upload file not found/ exists' );
+        $this->expectingException( 'Mumsys_Upload_Exception' );
+        $this->expectingExceptionMessage( 'Upload file not found/ exists' );
         $this->_object->move_uploaded_file(
             '/root/.ssh/config', $this->_dirTmpFiles . '/c.file'
         );
@@ -104,9 +104,9 @@ class Mumsys_Upload_MockTest
         $to = $this->_dirTestFiles . '/notExists/c.file';
         $from = $this->_dirTestFiles . '/c.file';
 
-        $this->expectException( 'Mumsys_Upload_Exception' );
+        $this->expectingException( 'Mumsys_Upload_Exception' );
         $mesg = '/(Target path )(.*)( not writeable)/i';
-        $this->expectExceptionMessageRegExp( $mesg );
+        $this->expectingExceptionMessageRegex( $mesg );
         $this->_object->move_uploaded_file( $from, $to );
     }
 
@@ -133,7 +133,7 @@ class Mumsys_Upload_MockTest
             $fail = true;
         }
         catch ( Exception $ex ) {
-            $this->assertEquals( 'Upload error.', $ex->getMessage() );
+            $this->assertingEquals( 'Upload error.', $ex->getMessage() );
         }
 
         unlink( $to );
@@ -158,10 +158,10 @@ class Mumsys_Upload_MockTest
         $actual1 = $this->_object->is_uploaded_file( $fromA );
         $expected1 = file_exists( $fromA );
 
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
 
-        $this->expectException( 'Mumsys_Upload_Exception' );
-        $this->expectExceptionMessage( 'Upload error' );
+        $this->expectingException( 'Mumsys_Upload_Exception' );
+        $this->expectingExceptionMessage( 'Upload error' );
         $this->_object->is_uploaded_file( $fromB );
     }
 

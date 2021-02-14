@@ -70,10 +70,10 @@ class Mumsys_Upload_FactoryTest
         );
         $actual1 = $this->_object->getAdapter( 'File', $fileInput );
         $actual2 = $this->_object->getAdapter( 'Mock', $fileInput );
-        $this->assertInstanceOf( 'Mumsys_Upload_Interface', $actual1 );
-        $this->assertInstanceOf( 'Mumsys_Upload_Interface', $actual2 );
+        $this->assertingInstanceOf( 'Mumsys_Upload_Interface', $actual1 );
+        $this->assertingInstanceOf( 'Mumsys_Upload_Interface', $actual2 );
 
-        $this->expectException( 'Mumsys_Upload_Exception' );
+        $this->expectingException( 'Mumsys_Upload_Exception' );
         $this->_object->getAdapter( 'NoAdapter' );
     }
 
@@ -83,9 +83,9 @@ class Mumsys_Upload_FactoryTest
      */
     public function testGetAdapterException1NoALNUM()
     {
-        $this->expectException( 'Mumsys_Upload_Exception' );
+        $this->expectingException( 'Mumsys_Upload_Exception' );
         $regex = '/(Invalid characters in class name "Mumsys_Upload_12\$\&3")/i';
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingExceptionMessageRegex( $regex );
         $this->_object->getAdapter( '12$&3' );
     }
 
@@ -95,10 +95,10 @@ class Mumsys_Upload_FactoryTest
      */
     public function testGetAdapterException1MissingIface()
     {
-        $this->expectException( 'Mumsys_Upload_Exception' );
+        $this->expectingException( 'Mumsys_Upload_Exception' );
         $regex = '/(Class "Mumsys_Upload_FactoryMissingIfaceTest" does not '
             . 'implement interface "Mumsys_Upload_Interface")/i';
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingExceptionMessageRegex( $regex );
         $this->_object->getAdapter( 'FactoryMissingIfaceTest' );
     }
 
@@ -108,9 +108,9 @@ class Mumsys_Upload_FactoryTest
      */
     public function testGetAdapterException2NotAvailable()
     {
-        $this->expectException( 'Mumsys_Upload_Exception' );
+        $this->expectingException( 'Mumsys_Upload_Exception' );
         $regex = '/(Class "Mumsys_Upload_12345" not available)/i';
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingExceptionMessageRegex( $regex );
         $this->_object->getAdapter( 12345 );
     }
 

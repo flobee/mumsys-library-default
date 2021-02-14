@@ -60,9 +60,9 @@ class Mumsys_Variable_AbstractTest
         );
 
         $actual = Mumsys_Variable_Abstract::getTypes();
-        $this->assertEquals( $expected, $actual );
-        $this->assertEquals( count( $expected ), count( $actual ) );
-        $this->assertEquals( $this->_version, Mumsys_Variable_Abstract::VERSION );
+        $this->assertingEquals( $expected, $actual );
+        $this->assertingEquals( count( $expected ), count( $actual ) );
+        $this->assertingEquals( $this->_version, Mumsys_Variable_Abstract::VERSION );
     }
 
 }

@@ -69,8 +69,8 @@ class Mumsys_Weather_Item_Unit_AbstractTest
         $this->_object->setKey( $expected2 ); //4 CC
         $actual2 = $this->_object->getKey();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
     }
 
 
@@ -88,8 +88,8 @@ class Mumsys_Weather_Item_Unit_AbstractTest
         $this->_object->setLabel( $expected2 ); //4 CC
         $actual2 = $this->_object->getLabel();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
     }
 
 
@@ -107,8 +107,8 @@ class Mumsys_Weather_Item_Unit_AbstractTest
         $this->_object->setSign( $expected2 ); //4 CC
         $actual2 = $this->_object->getSign();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
     }
 
 
@@ -126,8 +126,8 @@ class Mumsys_Weather_Item_Unit_AbstractTest
         $this->_object->setCode( $expected2 ); //4 CC
         $actual2 = $this->_object->getCode();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
     }
 
 
@@ -144,8 +144,8 @@ class Mumsys_Weather_Item_Unit_AbstractTest
         $this->_object->setModified( $expected2 );
         $actual2 = $this->_object->isModified();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
     }
 
 
@@ -171,7 +171,7 @@ class Mumsys_Weather_Item_Unit_AbstractTest
             'code' => 'test key &amp;&quot;',
         );
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -202,14 +202,14 @@ class Mumsys_Weather_Item_Unit_AbstractTest
             'weather.item.unit.default.code' => 'test key &"',
         );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
     }
 
 
     public function testVersions()
     {
-        $this->assertEquals( $this->_version, Mumsys_Weather_Item_Unit_Default::VERSION );
+        $this->assertingEquals( $this->_version, Mumsys_Weather_Item_Unit_Default::VERSION );
 
         $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
     }

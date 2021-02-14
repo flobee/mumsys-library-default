@@ -62,7 +62,7 @@ class Mumsys_Weather_FactoryTest
         );
         $actual = Mumsys_Weather_Factory::getInstance( 'auto', $options );
         $expected = 'Mumsys_Weather_OpenWeatherMap';
-        $this->assertInstanceOf( $expected, $actual );
+        $this->assertingInstanceOf( $expected, $actual );
     }
 
 }

@@ -130,11 +130,11 @@ class Mumsys_Php
      * Note: Don't use it! if you have a better/ different solution. Performance
      * reasons!
      *
-     * @param callable $function Function to call
+     * @param string $function Function to call
      * @param array $arguments Mixed arguments
      * @return mixed
      */
-    public function __call( callable $function, array $arguments )
+    public function __call( string $function, array $arguments )
     {
         return call_user_func_array( $function, $arguments );
     }
@@ -200,7 +200,7 @@ class Mumsys_Php
     /** {{{
      * Test if a file exists
      *
-     * altn. function to file_exists() std file_exists() overwrites the last
+     * altn. function to file_exists(). std file_exists() overwrites the last
      * access time (atime). If php version >= 5 and the url (in given parameter)
      * contains a scheme the test will use fopen instead of php internal
      * file_exists().
@@ -225,7 +225,8 @@ class Mumsys_Php
         $scheme = self::parseUrl( $url, PHP_URL_SCHEME );
 
         if ( ( PHP_VERSION_ID >= '50000' ) && !empty( $scheme ) ) {
-            if ( @fclose( @fopen( $url, 'r' ) ) ) {
+            if ( ( $fp = fopen( $url, 'r' ) ) !== false ) {
+                fclose( $fp );
                 return true;
             } else {
                 return false;
@@ -411,8 +412,8 @@ class Mumsys_Php
     public static function htmlspecialchars( string $str = '', $style = ENT_QUOTES )
     {
         // use forward look up to only convert & not &#abc; and not &amp;
-        if ( ($strA = preg_replace( '/&(?!(#[0-9]|amp)+;)/s', "&amp;", $str ) ) === null ) {
-            throw new Mumsys_Php_Exception('Regex error');
+        if ( ( $strA = preg_replace( '/&(?!(#[0-9]|amp)+;)/s', "&amp;", $str ) ) === null ) {
+            throw new Mumsys_Php_Exception( 'Regex error' );
         }
 
         //$str = preg_replace("/&(?![0-9a-z]+;)/s",'&amp;', $str );

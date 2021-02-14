@@ -99,7 +99,7 @@ class Mumsys_Request_DefaultTest
         $_COOKIE = array('HIDDEN' => 'COOK');
 
         $this->_object = new Mumsys_Request_Default( $options );
-        $this->assertInstanceOf( 'Mumsys_Request_Default', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Request_Default', $this->_object );
     }
 
 
@@ -117,9 +117,9 @@ class Mumsys_Request_DefaultTest
         $actual2 = $this->_object->getInputPost( 'programTest' );
         $actual3 = $this->_object->getInputPost( 'notExists', 123 );
 
-        $this->assertEquals( $this->_inputPost, $actual1 );
-        $this->assertEquals( $this->_inputPost['programTest'], $actual2 );
-        $this->assertEquals( '123', $actual3 );
+        $this->assertingEquals( $this->_inputPost, $actual1 );
+        $this->assertingEquals( $this->_inputPost['programTest'], $actual2 );
+        $this->assertingEquals( '123', $actual3 );
     }
 
 
@@ -137,14 +137,14 @@ class Mumsys_Request_DefaultTest
         $actual2 = $this->_object->getInputGet( 'programTest' );
         $actual3 = $this->_object->getInputGet( 'notExists', 123 );
 
-        $this->assertEquals( $this->_inputGet, $actual1 );
-        $this->assertEquals( $this->_inputGet['programTest'], $actual2 );
-        $this->assertEquals( '123', $actual3 );
+        $this->assertingEquals( $this->_inputGet, $actual1 );
+        $this->assertingEquals( $this->_inputGet['programTest'], $actual2 );
+        $this->assertingEquals( '123', $actual3 );
     }
 
     public function testVersions()
     {
-         $this->assertEquals( $this->_version, Mumsys_Request_Default::VERSION );
+         $this->assertingEquals( $this->_version, Mumsys_Request_Default::VERSION );
 
          $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
     }

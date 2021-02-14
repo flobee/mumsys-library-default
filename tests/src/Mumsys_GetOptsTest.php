@@ -81,11 +81,11 @@ class Mumsys_GetOptsTest
         // use server vars, not input parameters
         $x = new Mumsys_GetOpts( $this->_opts );
 
-        $this->assertInstanceOf( 'Mumsys_GetOpts', $x );
+        $this->assertingInstanceOf( 'Mumsys_GetOpts', $x );
 
         $regex = '/(Empty options detected. Can not parse shell arguments)/i';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_GetOpts_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_GetOpts_Exception' );
         new Mumsys_GetOpts();
     }
 
@@ -97,8 +97,8 @@ class Mumsys_GetOptsTest
     public function testConstructException2()
     {
         $regex = '/(Missing value for parameter "-h" in action "_default_")/m';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_GetOpts_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_GetOpts_Exception' );
 
         $options = array(
             '-h:', // a value required
@@ -121,9 +121,9 @@ class Mumsys_GetOptsTest
         $inp = $this->_input;
         $inp[] = '--no-unknown';
 
-        $this->expectException( 'Mumsys_GetOpts_Exception' );
+        $this->expectingException( 'Mumsys_GetOpts_Exception' );
         $regex = '/(Option "--no-unknown" not found in option list\/configuration)/';
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingExceptionMessageRegex( $regex );
         new Mumsys_GetOpts( $this->_opts, $inp );
     }
 
@@ -151,9 +151,9 @@ class Mumsys_GetOptsTest
         $object->setMappingOptions( $incomming2 );
         $mapping2 = $object->getMapping();
 
-        $this->assertEquals( $newOpts, $incomming1 );
-        $this->assertEquals( $newOpts, $incomming2 );
-        $this->assertEquals( $mapping1, $mapping2 );
+        $this->assertingEquals( $newOpts, $incomming1 );
+        $this->assertingEquals( $newOpts, $incomming2 );
+        $this->assertingEquals( $mapping1, $mapping2 );
     }
 
 
@@ -164,8 +164,8 @@ class Mumsys_GetOptsTest
     public function testConstructVerifyOptionsException1()
     {
         $regex = '/(Invalid input config found)/i';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_GetOpts_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_GetOpts_Exception' );
 
         $opts = array(0, 1);
         $this->_object->verifyOptions( $opts );
@@ -179,8 +179,8 @@ class Mumsys_GetOptsTest
     public function testConstructVerifyOptionsException2()
     {
         $regex = '/(Invalid input config found)/i';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_GetOpts_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_GetOpts_Exception' );
 
         $optsError = array('somevalue', '-v|--verbose');
         $this->_object->verifyOptions( $optsError );
@@ -223,8 +223,8 @@ class Mumsys_GetOptsTest
         $expected2['verbose'] = false;
         $expected2['h'] = false;
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
     }
 
 
@@ -241,8 +241,8 @@ class Mumsys_GetOptsTest
         $input = array('script.php', '--verbose', '--input', 'file.txt', '--others');
 
         $regex = '/(Option "--others" not found in option list\/configuration for action "_default_")/i';
-        $this->expectException( 'Mumsys_GetOpts_Exception' );
-        $this->expectExceptionMessageRegExp( $regex );
+        $this->expectingException( 'Mumsys_GetOpts_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
         new Mumsys_GetOpts( $config, $input );
     }
 
@@ -260,8 +260,8 @@ class Mumsys_GetOptsTest
         $input = array('script.php', '--verbose', '--input');
 
         $regex = '/(Missing value for parameter "--input" in action "_default_")/i';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_GetOpts_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_GetOpts_Exception' );
         new Mumsys_GetOpts( $config, $input );
     }
 
@@ -296,7 +296,7 @@ class Mumsys_GetOptsTest
             'action2' => array('input' => 'file2.txt', 'verbose' => false),
         );
 
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
 
         // current implementation does NOT support this:
         // a fixed configuration with two actions
@@ -331,7 +331,7 @@ class Mumsys_GetOptsTest
 //            'actions' => array('run','setconfig', 'showconfig'),
 //        );
 //
-//        $this->assertEquals($expected, $actual);
+//        $this->assertingEquals($expected, $actual);
     }
 
 
@@ -351,8 +351,8 @@ class Mumsys_GetOptsTest
             'help' => true,
         );
 
-        $this->assertEquals( $expected, $actual1 );
-        $this->assertEquals( $expected, $actual2 );
+        $this->assertingEquals( $expected, $actual1 );
+        $this->assertingEquals( $expected, $actual2 );
     }
 
 
@@ -363,14 +363,14 @@ class Mumsys_GetOptsTest
     {
         $actual = $this->_object->getCmd();
         $expected = '--verbose --input tmp/file.txt --bits bits -f f --help';
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
 
         $input = array('program', '--verbose', '--input', "true", '--bits', 'false', '-f', 'f_param', '--no-f');
         $this->_object = new Mumsys_GetOpts( $this->_opts, $input );
 
         $actual = $this->_object->getCmd();
         $expected = '--verbose --input true --bits false --no-f';
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -382,10 +382,10 @@ class Mumsys_GetOptsTest
         $o = new Mumsys_GetOpts( array('-y:'), array('cmd', '-y', 'yes') );
         $actual = $o->getCmd();
         $expected = '-y yes';
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
 
-        $this->expectException( 'Mumsys_GetOpts_Exception' );
-        $this->expectExceptionMessageRegExp( '/(Missing value for parameter "-x")/' );
+        $this->expectingException( 'Mumsys_GetOpts_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Missing value for parameter "-x")/' );
         $o = new Mumsys_GetOpts( array('-x:'), array('cmd', '-x') );
         $actual = $o->getCmd();
     }
@@ -418,7 +418,7 @@ class Mumsys_GetOptsTest
         $actual = $object->getCmd();
         $expected = 'action1 --verbose --input file1.txt --flag action2 '
             . '--input file2.txt --no-verbose';
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -442,7 +442,7 @@ class Mumsys_GetOptsTest
             )
         );
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -464,8 +464,8 @@ class Mumsys_GetOptsTest
             . PHP_EOL
         ;
 
-        $this->assertEquals( $expected, $actual );
-        $this->assertEquals( $expected, $this->_object );
+        $this->assertingEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $this->_object );
     }
 
 
@@ -509,8 +509,8 @@ class Mumsys_GetOptsTest
             . PHP_EOL
         ;
 
-        $this->assertEquals( $expected, $actual );
-        $this->assertEquals( $expected, $object );
+        $this->assertingEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $object );
     }
 
 
@@ -558,7 +558,7 @@ TEXT;
         ;
         ;
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -578,7 +578,7 @@ TEXT;
             )
         );
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -588,7 +588,7 @@ TEXT;
     public function testGetRawInput()
     {
         $actual = $this->_object->getRawInput();
-        $this->assertEquals( $this->_input, $actual );
+        $this->assertingEquals( $this->_input, $actual );
     }
 
 
@@ -599,8 +599,8 @@ TEXT;
     {
         $this->_object->resetResults();
 
-        $this->assertEquals( array(), $this->_object->getMapping() );
-        $this->assertEquals( array(), $this->_object->getResult() );
+        $this->assertingEquals( array(), $this->_object->getMapping() );
+        $this->assertingEquals( array(), $this->_object->getResult() );
     }
 
 
@@ -613,8 +613,8 @@ TEXT;
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue( isset( $possible[$must] ) );
-            $this->assertEquals( $possible[$must], $value );
+            $this->assertingTrue( isset( $possible[$must] ) );
+            $this->assertingEquals( $possible[$must], $value );
         }
     }
 

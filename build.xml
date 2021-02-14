@@ -11,16 +11,14 @@
     <target name="test" description="Executes the unit tests">
         <echo msg="Executing unit tests" />
         <delete file="tests/phing-unittest.log" quiet="true" failonerror="false" />
-        <exec command="${bindir}phpunit -d memory_limit=-1 --configuration=phpunit.xml"
-              dir="tests" checkreturn="true" logoutput="true"/>
+        <exec command="./runTests.sh" dir="tests" checkreturn="true" logoutput="true"/>
     </target>
 
     <target name="coverage" description="Executes the unit tests and generates the code coverage">
         <echo msg="Generating code coverage report" />
         <delete file="tests/phing-unittest.log" quiet="true" failonerror="false" />
         <delete dir="docs/CodeCoverage" quiet="true" failonerror="false" />
-        <exec command="${bindir}phpunit -d memory_limit=-1 --configuration=phpunit-coverage.xml"
-              dir="tests" checkreturn="true" logoutput="true" />
+        <exec command="./runTestsCoverageCreate.sh" dir="tests" checkreturn="true" logoutput="true" />
     </target>
 
 

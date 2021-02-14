@@ -66,8 +66,8 @@ class Mumsys_Html_TableTest
     public function test_construct()
     {
         $this->_object = new Mumsys_Html_Table( array('width' => '600') );
-        $this->expectExceptionMessageRegExp( '/(No content found to create a table)/' );
-        $this->expectException( 'Mumsys_Html_Exception' );
+        $this->expectingExceptionMessageRegex( '/(No content found to create a table)/' );
+        $this->expectingException( 'Mumsys_Html_Exception' );
         $actual = $this->_object->getSource();
     }
 
@@ -109,7 +109,7 @@ class Mumsys_Html_TableTest
         $this->_object->setHeadlinesAttributes( $expected );
         $actual = $this->_object->getHeadlinesAttributes();
 
-        $this->assertEquals( ' class="headlAttr"', $actual );
+        $this->assertingEquals( ' class="headlAttr"', $actual );
     }
 
 
@@ -123,7 +123,7 @@ class Mumsys_Html_TableTest
         $this->_object->setHeadlinesAttribute( 0, $attr );
         $actual = $this->_object->getHeadlinesAttribute( 0 );
 
-        $this->assertEquals( ' align="right"', $actual );
+        $this->assertingEquals( ' align="right"', $actual );
     }
 
 
@@ -142,7 +142,7 @@ class Mumsys_Html_TableTest
 </tr>
 </thead>
 ';
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -178,9 +178,9 @@ class Mumsys_Html_TableTest
         $expected2 = $data[1];
         $actual3 = $this->_object->getContent();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertEquals( $data, $actual3 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingEquals( $data, $actual3 );
     }
 
 
@@ -197,7 +197,7 @@ class Mumsys_Html_TableTest
         $this->_object->setContent( $data );
 
         $actual = $this->_object->getNumCols();
-        $this->assertEquals( 2, $actual );
+        $this->assertingEquals( 2, $actual );
     }
 
 
@@ -214,7 +214,7 @@ class Mumsys_Html_TableTest
         $this->_object->setContent( $data );
 
         $actual = $this->_object->getNumRows();
-        $this->assertEquals( 3, $actual );
+        $this->assertingEquals( 3, $actual );
     }
 
 
@@ -237,14 +237,14 @@ class Mumsys_Html_TableTest
         $this->_object->getAltRowColor( null, 1 );
         $actual8 = $this->_object->getAltRowColor( null, 1 );
 
-        $this->assertEquals( $this->_colors[0], $actual1 );
-        $this->assertEquals( $this->_colors[0], $actual2 );
-        $this->assertEquals( $this->_colors[1], $actual3 );
-        $this->assertEquals( $this->_colors[2], $actual4 );
-        $this->assertEquals( $this->_colors[1], $actual5 );
-        $this->assertEquals( $this->_colors[2], $actual6 );
-        $this->assertEquals( $this->_colors[3], $actual7 );
-        $this->assertEquals( $this->_colors[1], $actual8 );
+        $this->assertingEquals( $this->_colors[0], $actual1 );
+        $this->assertingEquals( $this->_colors[0], $actual2 );
+        $this->assertingEquals( $this->_colors[1], $actual3 );
+        $this->assertingEquals( $this->_colors[2], $actual4 );
+        $this->assertingEquals( $this->_colors[1], $actual5 );
+        $this->assertingEquals( $this->_colors[2], $actual6 );
+        $this->assertingEquals( $this->_colors[3], $actual7 );
+        $this->assertingEquals( $this->_colors[1], $actual8 );
     }
 
 
@@ -299,9 +299,9 @@ class Mumsys_Html_TableTest
         $this->_object->setContent( $data2 );
         $actual3 = $this->_object->getHeadlines();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
     }
 
 
@@ -319,7 +319,7 @@ class Mumsys_Html_TableTest
 
         $actual1 = $this->_object->getColAttributes( 1, 1 );
         $expected1 = ' class="row1colAttrib" style="color: globalColAttrib;"';
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
     }
 
 
@@ -337,7 +337,7 @@ class Mumsys_Html_TableTest
         $actual1 = $this->_object->getRowAttributes( 1 );
         $expected1 = ' style="row1attrib" class="globalRowAttrib"';
 
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
     }
 
 
@@ -366,13 +366,13 @@ class Mumsys_Html_TableTest
         $actual3 = $this->_object->getColContents( 2, 1, 'row 3 col 1' );
         $expected3 = 'row 3 col 1';
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
 
         $regex = '/(Invalid row value to set col contents)/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Html_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Html_Exception' );
         $this->_object->setColContents( 'str1', 'invalidRowID', 1 );
     }
 
@@ -384,8 +384,8 @@ class Mumsys_Html_TableTest
     public function testGetSetColContentsException2()
     {
         $regex = '/(Invalid column value to set col contents)/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Html_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Html_Exception' );
         $this->_object->setColContents( 'str1', 1, 'invalidColID' );
     }
 
@@ -435,15 +435,15 @@ class Mumsys_Html_TableTest
         $this->_object->setColContents( 'row2', 1, 1 );
         $actual2 = $this->_object->getHtml();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected1, $actual2 );
-        $this->assertEquals(
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual2 );
+        $this->assertingEquals(
             htmlentities( $expected1 ), $this->_object->getSource()
         );
 
         $regex = '/(Column key not exists to change a color for rows: "3")/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Html_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Html_Exception' );
         $this->_object->setAltRowColor( $this->_colors, 3 );
         $this->_object->setContent( $data1 );
         $this->_object->toHtml();
@@ -485,7 +485,7 @@ class Mumsys_Html_TableTest
 </tbody>
 </table>
 ';
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
     }
 
 
@@ -494,8 +494,8 @@ class Mumsys_Html_TableTest
      */
     public function testGetHtmlException()
     {
-        $this->expectExceptionMessageRegExp( '/(No content found to create a table)/' );
-        $this->expectException( 'Mumsys_Html_Exception' );
+        $this->expectingExceptionMessageRegex( '/(No content found to create a table)/' );
+        $this->expectingException( 'Mumsys_Html_Exception' );
         $this->_object->getHtml();
     }
 
@@ -507,8 +507,8 @@ class Mumsys_Html_TableTest
      */
     public function testToHtmlException()
     {
-        $this->expectExceptionMessageRegExp( '/(No content found to create a table)/' );
-        $this->expectException( 'Mumsys_Html_Exception' );
+        $this->expectingExceptionMessageRegex( '/(No content found to create a table)/' );
+        $this->expectingException( 'Mumsys_Html_Exception' );
         $this->_object->toHtml();
     }
 
@@ -523,7 +523,7 @@ class Mumsys_Html_TableTest
         $message = 'A new version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
-        $this->assertEquals( $this->_version, Mumsys_Html_Table::VERSION, $message );
+        $this->assertingEquals( $this->_version, Mumsys_Html_Table::VERSION, $message );
 
         $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
     }

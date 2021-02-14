@@ -1270,7 +1270,7 @@ class Mumsys_Variable_Manager_Default
                 break;
 
             case 'htmlentities':
-                $value = htmlentities( strval($params ) );
+                $value = htmlentities( strval( $params ) );
                 break;
 
             default:

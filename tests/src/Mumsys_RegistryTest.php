@@ -50,12 +50,12 @@ class Mumsys_RegistryTest
         Mumsys_Registry::replace( $this->_key, 'new value' );
         $actual = Mumsys_Registry::get( $this->_key );
 
-        $this->assertEquals( 'new value', $actual );
+        $this->assertingEquals( 'new value', $actual );
 
         // invalid key exception
         $regex = '/(Invalid initialisation key for a setter. A string is required!)/i';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Exception' );
         Mumsys_Registry::replace( new stdClass, 'new value' );
     }
 
@@ -69,11 +69,11 @@ class Mumsys_RegistryTest
         Mumsys_Registry::register( $this->_key, 'new value' );
         $actual = Mumsys_Registry::get( 'unittest' );
 
-        $this->assertEquals( 'new value', $actual );
+        $this->assertingEquals( 'new value', $actual );
 
         // invalid key exception
-        $this->expectExceptionMessageRegExp( '/(Registry key "unittest" exists)/i' );
-        $this->expectException( 'Mumsys_Registry_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Registry key "unittest" exists)/i' );
+        $this->expectingException( 'Mumsys_Registry_Exception' );
         Mumsys_Registry::register( $this->_key, 'new value' );
     }
 
@@ -89,8 +89,8 @@ class Mumsys_RegistryTest
 
         $actual2 = Mumsys_Registry::get( 'notsetValue', false );
 
-        $this->assertEquals( 'new value', $actual1 );
-        $this->assertFalse( $actual2 );
+        $this->assertingEquals( 'new value', $actual1 );
+        $this->assertingFalse( $actual2 );
     }
 
 
@@ -102,7 +102,7 @@ class Mumsys_RegistryTest
         Mumsys_Registry::register( $this->_key, 'new value' );
         Mumsys_Registry::remove( 'unittest' );
         $actual1 = Mumsys_Registry::get( 'unittest', false );
-        $this->assertFalse( $actual1 );
+        $this->assertingFalse( $actual1 );
     }
 
     // test abstracts
@@ -116,7 +116,7 @@ class Mumsys_RegistryTest
         $message = 'A new version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
-        $this->assertEquals( 'Mumsys_Registry ' . $this->_version, Mumsys_Registry::getVersion(), $message );
+        $this->assertingEquals( 'Mumsys_Registry ' . $this->_version, Mumsys_Registry::getVersion(), $message );
     }
 
 
@@ -128,7 +128,7 @@ class Mumsys_RegistryTest
         $message = 'A new version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
-        $this->assertEquals( $this->_version, Mumsys_Registry::VERSION, $message );
+        $this->assertingEquals( $this->_version, Mumsys_Registry::VERSION, $message );
     }
 
 
@@ -140,8 +140,8 @@ class Mumsys_RegistryTest
         $possible = Mumsys_Registry::getVersions();
         // echo '<pre>'; print_r($possible);
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue( isset( $possible[$must] ) );
-            $this->assertTrue( ( $possible[$must] == $value ) );
+            $this->assertingTrue( isset( $possible[$must] ) );
+            $this->assertingTrue( ( $possible[$must] == $value ) );
         }
     }
 

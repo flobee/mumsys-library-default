@@ -11,6 +11,35 @@ class Mumsys_FileTest
      */
     protected $_object;
 
+    /**
+     * Version ID of tested object
+     * @var string
+     */
+    private $_version;
+
+    /**
+     * List of versions of expected parent classes/ dependencies
+     * @var array
+     */
+    private $_versions;
+
+    /**
+     * Location to the tests directory ( ./../ )
+     * @var string
+     */
+    private $_testsDir = '';
+    /**
+     * Location to existing file.
+     * @var string
+     */
+    private $_fileOk = '';
+
+    /**
+     * Location to not existing file.
+     * @var string
+     */
+    private $_fileNotOk = '';
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -60,14 +89,14 @@ class Mumsys_FileTest
     public function test__destruct()
     {
         $this->_object->__destruct();
-        $this->assertFalse( $this->_object->isOpen() );
+        $this->assertingFalse( $this->_object->isOpen() );
     }
 
 
     public function testOpen()
     {
         $this->_object->setFile( $this->_fileOk );
-        $this->assertTrue( $this->_object->open() );
+        $this->assertingTrue( $this->_object->open() );
     }
 
 
@@ -81,8 +110,8 @@ class Mumsys_FileTest
         )
             . '\/tmp\/notExists\/file.tmp" with mode "w\+". Directory is '
             . 'writeable: "No", readable: "No")/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_File_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_File_Exception' );
 
         $this->_object->open();
     }
@@ -90,7 +119,7 @@ class Mumsys_FileTest
 
     public function testClose()
     {
-        $this->assertTrue( $this->_object->close() );
+        $this->assertingTrue( $this->_object->close() );
     }
 
 
@@ -100,8 +129,8 @@ class Mumsys_FileTest
         $x = false;
         $x = $this->_object->write( 'hello world' );
 
-        $this->assertTrue( $x );
-        $this->assertEquals( 'hello world', file_get_contents( $this->_fileOk ) );
+        $this->assertingTrue( $x );
+        $this->assertingEquals( 'hello world', file_get_contents( $this->_fileOk ) );
     }
 
 
@@ -112,8 +141,8 @@ class Mumsys_FileTest
         $regex = '/(File not open. Can not write to file: "'
             . str_replace( '/', '\/', $this->_testsDir )
             . '\/tmp\/Mumsys_FileTest.php.tmp".)/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_File_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_File_Exception' );
         $x = $this->_object->write( 'hello world' );
     }
 
@@ -130,14 +159,14 @@ class Mumsys_FileTest
         $o->setMode( 'r' );
         $o->open();
 
-        $this->assertTrue( $o->isReadable() );
-        $this->assertFalse( $o->isWriteable() );
+        $this->assertingTrue( $o->isReadable() );
+        $this->assertingFalse( $o->isWriteable() );
 
         $regex = '/(File not writeable: "'
             . str_replace( '/', '\/', $this->_testsDir )
             . '\/tmp\/Mumsys_FileTest.php.tmp".)/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_File_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_File_Exception' );
         $x = $o->write( 'hello world' );
     }
 
@@ -154,9 +183,19 @@ class Mumsys_FileTest
             . str_replace( '/', '\/', $this->_testsDir )
             . '\/tmp\/Mumsys_FileTest.php.tmp". '
             . 'IsOpen: "Yes", Is writeable: "Yes".)/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_File_Exception' );
-        $x = $o->write( $this );
+        $errRepBak = error_reporting();
+        error_reporting( 0 );
+        $this->expectingException( 'Mumsys_File_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        try {
+            $x = $o->write( 'this' );
+        }
+        catch ( Exception $ex ) {
+            error_reporting( $errRepBak );
+            throw $ex;
+        }
+
+        $this->assertFalse( true, 'Exception not thrown' );
     }
 
 
@@ -173,8 +212,8 @@ class Mumsys_FileTest
         $text2 = $o->read();
         $o->close();
 
-        $this->assertEquals( 'hello', $text1 );
-        $this->assertEquals( ' world', $text2 );
+        $this->assertingEquals( 'hello', $text1 );
+        $this->assertingEquals( ' world', $text2 );
     }
 
 
@@ -186,8 +225,8 @@ class Mumsys_FileTest
         $regex = '/(File not open. Can not read from file: "'
             . str_replace( '/', '\/', $this->_testsDir )
             . '\/tmp\/notExists\/file.tmp".)/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_File_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_File_Exception' );
         $text1 = $o->read();
     }
 
@@ -200,34 +239,46 @@ class Mumsys_FileTest
         chmod( $this->_fileOk, 0222 );
 //        exec('ls -al '.$this->_fileOk, $x);
 //        print_r($x);
-        $o = new Mumsys_File();
-        $o->setFile( $this->_fileOk );
-        $o->setMode( 'w' );
-        $o->open();
+        $object = new Mumsys_File();
+        $object->setFile( $this->_fileOk );
+        $object->setMode( 'w' );
+        $object->open();
 
-        $this->assertFalse( $o->isReadable() );
-        $this->assertTrue( $o->isWriteable() );
+        $this->assertingFalse( $object->isReadable() );
+        $this->assertingTrue( $object->isWriteable() );
 
         $regex = '/(File "' . str_replace( '/', '\/', $this->_testsDir )
             . '\/tmp\/Mumsys_FileTest.php.tmp" not readable with mode "w". '
             . 'Is writeable "Yes", readable: "No".)/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_File_Exception' );
-        $x = $o->read();
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_File_Exception' );
+        $object->read();
     }
 
 
     // empty file error?
     public function testReadException3()
     {
-        $o = new Mumsys_File( array('file' => $this->_fileOk, 'way' => 'w') );
-
+        $object = new Mumsys_File( array('file' => $this->_fileOk, 'way' => 'w') );
+        $object->setBuffer(3);
         $regex = '/(Error when reading the file: "'
             . str_replace( '/', '\/', $this->_testsDir )
             . '\/tmp\/Mumsys_FileTest.php.tmp". IsOpen: "Yes".)/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_File_Exception' );
-        $text1 = $o->read();
+        $this->expectingException( 'Mumsys_File_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+
+        $errRepBak = error_reporting();
+        error_reporting( 0 );
+        try {
+            $object->read();
+        }
+        catch ( Exception $ex ) {
+            error_reporting( $errRepBak );
+
+            throw $ex;
+        }
+
+        $this->assertTrue( false, 'Exception not thrown' );
     }
 
 
@@ -239,13 +290,13 @@ class Mumsys_FileTest
         $o = new Mumsys_File( array('file' => $this->_fileOk, 'way' => 'w') );
         $current1 = $o->truncate();
 
-        $this->assertTrue( $current1 );
+        $this->assertingTrue( $current1 );
 
         $o->close();
-        $this->expectException( 'Mumsys_File_Exception' );
+        $this->expectingException( 'Mumsys_File_Exception' );
         $mesg = '/(Can not truncate file ")(.*)(\/tests\/tmp\/Mumsys_FileTest\.'
             . 'php\.tmp"\. File not open)/';
-        $this->expectExceptionMessageRegExp( $mesg );
+        $this->expectingExceptionMessageRegex( $mesg );
         $o->truncate();
     }
 
@@ -258,7 +309,7 @@ class Mumsys_FileTest
         $o->setBuffer( 17 );
         $string = $o->read();
         $o->close();
-        $this->assertEquals( "hello world\nhello", $string );
+        $this->assertingEquals( "hello world\nhello", $string );
     }
 
 
@@ -270,7 +321,7 @@ class Mumsys_FileTest
         $o->setBuffer( 17 );
         $string = $o->read();
         $o->close();
-        $this->assertEquals( "hello world\nhello", $string );
+        $this->assertingEquals( "hello world\nhello", $string );
     }
 
 
@@ -279,22 +330,22 @@ class Mumsys_FileTest
         $this->_object->write( "hello world\nhello flobee" );
 
         $o = new Mumsys_File( array('file' => $this->_fileOk, 'way' => 'r') );
-        $this->expectException( 'Mumsys_File_Exception' );
-        $this->expectExceptionMessageRegExp( '/(Invalid mode)/' );
+        $this->expectingException( 'Mumsys_File_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Invalid mode)/' );
         $o->setMode( 'this is wrong' );
     }
 
 
     public function testGetFile()
     {
-        $this->assertEquals( $this->_fileOk, $this->_object->getFile() );
+        $this->assertingEquals( $this->_fileOk, $this->_object->getFile() );
     }
 
 
     public function testSetFile()
     {
         $this->_object->setFile( $this->_fileNotOk );
-        $this->assertEquals( $this->_fileNotOk, $this->_object->getFile() );
+        $this->assertingEquals( $this->_fileNotOk, $this->_object->getFile() );
     }
 
 
@@ -302,19 +353,19 @@ class Mumsys_FileTest
     {
         // connection already opened in setup
         $actual = $this->_object->isWriteable();
-        $this->assertTrue( $actual );
+        $this->assertingTrue( $actual );
 
         // no changes when closing
         $this->_object->close();
         $actual = $this->_object->isWriteable();
-        $this->assertTrue( $actual );
+        $this->assertingTrue( $actual );
 
         $this->_object->setFile( $this->_fileOk );
         $this->_object->setMode( 'r' );
         $this->_object->open();
         $actual = $this->_object->isWriteable();
         $this->_object->close();
-        $this->assertTrue( $actual ); // the owner always can write!
+        $this->assertingTrue( $actual ); // the owner always can write!
     }
 
 
@@ -322,10 +373,10 @@ class Mumsys_FileTest
     {
         // file will be opend and created in setup() must exists
         $actual = file_exists( $this->_fileOk );
-        $this->assertTrue( $actual );
+        $this->assertingTrue( $actual );
 
         $actual = $this->_object->isReadable();
-        $this->assertTrue( $actual );
+        $this->assertingTrue( $actual );
 
         // test with no auto opening
         $this->_object->setFile( $this->_fileOk );
@@ -333,14 +384,14 @@ class Mumsys_FileTest
         $this->_object->open();
         $actual = $this->_object->isReadable();
         $this->_object->close();
-        $this->assertTrue( $actual ); // the owner always can read!
+        $this->assertingTrue( $actual ); // the owner always can read!
         //
         // not opened and readable
         $o = new Mumsys_File();
         $o->setFile( $this->_fileOk );
         $actual = $o->isReadable();
         $o->close();
-        $this->assertTrue( $actual ); // the owner always can read!
+        $this->assertingTrue( $actual ); // the owner always can read!
     }
 
     // test abstracts
@@ -351,7 +402,7 @@ class Mumsys_FileTest
      */
     public function testGetVersion()
     {
-        $this->assertEquals( 'Mumsys_File ' . $this->_version, $this->_object->getVersion() );
+        $this->assertingEquals( 'Mumsys_File ' . $this->_version, $this->_object->getVersion() );
     }
 
 
@@ -360,7 +411,7 @@ class Mumsys_FileTest
      */
     public function testgetVersionID()
     {
-        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
+        $this->assertingEquals( $this->_version, $this->_object->getVersionID() );
     }
 
 
@@ -377,8 +428,8 @@ class Mumsys_FileTest
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue( isset( $possible[$must] ) );
-            $this->assertTrue( ( $possible[$must] == $value ) );
+            $this->assertingTrue( isset( $possible[$must] ) );
+            $this->assertingTrue( ( $possible[$must] == $value ) );
         }
     }
 

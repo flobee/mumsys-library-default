@@ -66,19 +66,19 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
     {
         $config = $this->_configs['database'];
 
-        $this->assertInstanceOf( 'mysqli', $this->_object->connect() );
+        $this->assertingInstanceOf( 'mysqli', $this->_object->connect() );
 
         // compression
         $config['compress'] = true;
         $object = Mumsys_Db_Factory::getInstance( $this->_context, $config );
-        $this->assertInstanceOf( 'mysqli', $object->connect() );
+        $this->assertingInstanceOf( 'mysqli', $object->connect() );
 
         /** @todo not connected w/o exception, will throw it anyway! */
         $config['compress'] = false;
         $config['host'] = '127.0.0.9'; //invalidHostname
         $config['throwErrors'] = false;
         $object = Mumsys_Db_Factory::getInstance( $this->_context, $config );
-        $this->assertFalse( $object->connect() );
+        $this->assertingFalse( $object->connect() );
     }
 
 
@@ -87,7 +87,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
      */
     public function testClose()
     {
-        $this->assertTrue( $this->_object->close() );
+        $this->assertingTrue( $this->_object->close() );
     }
 
 
@@ -102,15 +102,15 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setThrowErrors( false );
         $actual3 = $this->_object->setCharset( 'invalid charset' );
 
-        $this->assertInstanceOf( 'stdClass', $actual1 );
-        $this->assertTrue( $actual2 );
-        $this->assertFalse( $actual3 );
+        $this->assertingInstanceOf( 'stdClass', $actual1 );
+        $this->assertingTrue( $actual2 );
+        $this->assertingFalse( $actual3 );
 
         $this->_object->setThrowErrors( true );
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(Setting client character set failt)/i'
         );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->setCharset( 'invalid charset' );
     }
 
@@ -120,19 +120,20 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
      */
     public function testGetCharsetErrors()
     {
+        // no connected
         $config = $this->_configs['database'];
         $config['throwErrors'] = false;
         $object = Mumsys_Db_Factory::getInstance( $this->_context, $config );
-        $actual1 = $object->getCharset();
+        $actualA = $object->getCharset();
 
-        $this->assertFalse( $actual1 );
+        $this->assertingFalse( $actualA );
 
         $config['throwErrors'] = true;
         $object = Mumsys_Db_Factory::getInstance( $this->_context, $config );
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(Getting character set failt)/i'
         );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $object->getCharset();
     }
 
@@ -146,11 +147,11 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $actual2 = $this->_object->selectDB( $this->_configs['database']['db'] );
         $actual3 = $this->_object->selectDB( $this->_configs['database']['db'] );
 
-        $this->assertTrue( $actual1 );
-        $this->assertTrue( $actual2 );
-        $this->assertTrue( $actual3 ); // for code coverage
+        $this->assertingTrue( $actual1 );
+        $this->assertingTrue( $actual2 );
+        $this->assertingTrue( $actual3 ); // for code coverage
         // access denied message expected
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->selectDB( 'testdbnotexists' );
     }
 
@@ -161,8 +162,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
     public function testShowDBs()
     {
         $actual1 = $this->_object->showDBs();
-        $this->assertTrue( isset( $actual1['information_schema'] ) );
-        $this->assertTrue( isset( $actual1[$this->_configs['database']['db']] ) );
+        $this->assertingTrue( isset( $actual1['information_schema'] ) );
+        $this->assertingTrue( isset( $actual1[$this->_configs['database']['db']] ) );
     }
 
 
@@ -178,7 +179,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
 
 //        Not implementet yet:
         foreach ( $this->_configs['database']['tables'] as $k => $table ) {
-            $this->assertEquals( $table, $actual1[$table] );
+            $this->assertingEquals( $table, $actual1[$table] );
         }
     }
 
@@ -195,7 +196,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $find = ['Uptime', 'Threads', 'Questions', 'Slow queries', 'Opens',
             'Flush tables', 'Open tables', 'Queries per second avg'];
         foreach ( $find as $key ) {
-            $this->assertTrue(
+            $this->assertingTrue(
                 ( preg_match( '/(' . $key . ')/', $actual1 ) === 1 )
             );
         }
@@ -214,26 +215,26 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $actual2 = $this->_object->query( 'SELECT \'abc\', \'def\'', true );
         $actual3 = $this->_object->query( '' );
 
-        $this->assertInstanceOf(
+        $this->assertingInstanceOf(
             'Mumsys_Db_Driver_Mysql_Mysqli_Result', $actual1
         );
-        $this->assertFalse( $actual2 );
-        $this->assertFalse( $actual3 );
+        $this->assertingFalse( $actual2 );
+        $this->assertingFalse( $actual3 );
 
         // for code coverage
         $this->_object->close();
         $actual4 = $this->_object->query( 'SELECT 1,2,3' );
-        $this->assertInstanceOf(
+        $this->assertingInstanceOf(
             'Mumsys_Db_Driver_Mysql_Mysqli_Result', $actual4
         );
         // for code coverage query error
         $actual5 = $this->_object->query( 'SELECT 1,2,3 FROM notExists' );
-        $this->assertFalse( $actual5 );
+        $this->assertingFalse( $actual5 );
 
         $this->_object->setThrowErrors( true );
         $error = '/(Query empty. Cant not query empty sql statment)/i';
-        $this->expectExceptionMessageRegExp( $error );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingExceptionMessageRegex( $error );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->query( '' );
     }
 
@@ -250,12 +251,12 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $actual1 = $this->_object->queryUnbuffered( 'SELECT \'abc\', \'def\'' );
         $actual2 = $this->_object->getErrorMessage();
 
-        $this->assertFalse( $actual1 );
-        $this->assertEquals( $errorMsg, $actual2 );
+        $this->assertingFalse( $actual1 );
+        $this->assertingEquals( $errorMsg, $actual2 );
 
         $this->_object->setThrowErrors( true );
-        $this->expectExceptionMessageRegExp( '/(' . $errorMsg . ')/i' );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingExceptionMessageRegex( '/(' . $errorMsg . ')/i' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->queryUnbuffered( 'SELECT \'abc\', \'def\'' );
     }
 
@@ -272,8 +273,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $res2 = $this->_object->query( 'SELECT' );
         $actual2 = $this->_object->isError( $res2 );
 
-        $this->assertFalse( $actual1 );
-        $this->assertTrue( $actual2 );
+        $this->assertingFalse( $actual1 );
+        $this->assertingTrue( $actual2 );
     }
 
 
@@ -285,7 +286,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setThrowErrors( false );
         $this->_object->query( 'SELECT' );
         $actual1 = $this->_object->sqlError();
-        $this->assertTrue(
+        $this->assertingTrue(
             preg_match( '/(You have an error in your SQL syntax)/', $actual1 ) == 1
         );
     }
@@ -304,8 +305,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->query( 'SELECT 123' );
         $actual2 = $this->_object->sqlErrno();
 
-        $this->assertEquals( 1064, $actual1 );
-        $this->assertEquals( 0, $actual2 );
+        $this->assertingEquals( 1064, $actual1 );
+        $this->assertingEquals( 0, $actual2 );
     }
 
 
@@ -346,17 +347,17 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         );
         $expected7 = array(array('a b c' => 'a b c', 1 => '1', 2 => '2', 3 => '3'));
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
-        $this->assertEquals( $expected4, $actual4 );
-        $this->assertEquals( $expected5, $actual5 );
-        $this->assertEquals( $expected6, $actual6 );
-        $this->assertEquals( $expected7, $actual7 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected4, $actual4 );
+        $this->assertingEquals( $expected5, $actual5 );
+        $this->assertingEquals( $expected6, $actual6 );
+        $this->assertingEquals( $expected7, $actual7 );
 
         $this->_object->setThrowErrors( false );
         $actualFalse = $this->_object->fetchData( 'SELECT *', 'defaultASassoc' );
-        $this->assertFalse( $actualFalse );
+        $this->assertingFalse( $actualFalse );
     }
 
 
@@ -370,23 +371,23 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $expectedA = $this->_getTempTableColumnValues( $this->_tempTable );
 
         $actualA = $this->_object->showColumns( $this->_tempTable );
-        $this->assertEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedA, $actualA );
 
         $this->_object->setThrowErrors( false );
 
         $actualAA = $this->_object->showColumns( 'tableNotExists' );
-        $this->assertFalse( $actualAA );
+        $this->assertingFalse( $actualAA );
 
         $actualB = $this->_object->showColumns( $this->_tempTable, 'ida' );
-        $this->assertEquals( array($expectedA[0]), $actualB );
+        $this->assertingEquals( array($expectedA[0]), $actualB );
 
         $actualC = $this->_object->showColumns(
             $this->_tempTable, 'fieldNotExists'
         );
-        $this->assertFalse( $actualC ); // php mysql_query() bughandle in class
+        $this->assertingFalse( $actualC ); // php mysql_query() bughandle in class
 
         $actualE = $this->_object->showColumns();
-        $this->assertFalse( $actualE );
+        $this->assertingFalse( $actualE );
 
         $this->_object->setThrowErrors( true );
         $serverinfo = $this->_object->getServerInfo();
@@ -402,8 +403,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
             $errorMsg = null;
         }
 
-        $this->expectExceptionMessageRegExp( '/(' . $errorMsg . ')/i' );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingExceptionMessageRegex( '/(' . $errorMsg . ')/i' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->showColumns();
     }
 
@@ -415,10 +416,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
     {
         $this->_object->setThrowErrors( true );
         $this->_object->setDebugMode( false ); // disable debug output
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(tableNotExists\' doesn\'t exist)/i'
         );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->showColumns( 'tableNotExists' );
     }
 
@@ -430,11 +431,11 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
     {
         $this->_object->setThrowErrors( true );
         $this->_object->setDebugMode( false ); // disable debug output
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(Error getting columns. Does the columne "fieldNotExists" '
             . 'exists\?)/'
         );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->showColumns( $this->_tempTable, 'fieldNotExists' );
     }
 
@@ -462,13 +463,13 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $actual = $this->_object->fetchData(
             'SELECT * FROM ' . $this->_tempTable . ' WHERE ida = 1', 'ASSOC'
         );
-        $this->assertEquals(
+        $this->assertingEquals(
             'UPDATE mumsysunittesttemp SET `texta`=\'textaNew\',`textb`=\'not null\','
             . '`textc`=NOW() WHERE (`ida`=\'1\' AND `ida`=1)', $queryA
         );
-        $this->assertEquals( 'textaNew', $actual[0]['texta'] );
-        $this->assertEquals( 'not null', $actual[0]['textb'] );
-        $this->assertRegExp(
+        $this->assertingEquals( 'textaNew', $actual[0]['texta'] );
+        $this->assertingEquals( 'not null', $actual[0]['textb'] );
+        $this->assertingRegExp(
             MUMSYS_REGEX_DATETIME_MYSQL, $actual[0]['textc']
         );
 
@@ -478,7 +479,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $params['fields'] = array('textc' => 'textaNew');
         $this->_object->update( $params );
         $queryA = $this->_object->getQuery();
-        $this->assertEquals(
+        $this->assertingEquals(
             'UPDATE mumsysunittesttemp SET `textc`=\'textaNew\' WHERE 1=1',
             $queryA
         );
@@ -487,7 +488,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         );
 
         foreach ( $actual as $item ) {
-            $this->assertEquals( 'textaNew', $item['textc'] );
+            $this->assertingEquals( 'textaNew', $item['textc'] );
         }
 
         // test failure as return
@@ -495,14 +496,14 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setThrowErrors( false );
         $params = array();
         $actual = $this->_object->update( $params );
-        $this->assertFalse( $actual );
+        $this->assertingFalse( $actual );
 
         // test failure Exception
         $this->_object->setThrowErrors( true );
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(Unknown key or empty values. No "update" action)/i'
         );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->update( $params );
     }
 
@@ -535,11 +536,11 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
 
         $i = 0;
         while ( $row = $result->fetch( 'assoc' ) ) {
-            $this->assertEquals( $expected[$i], $row );
+            $this->assertingEquals( $expected[$i], $row );
             $i++;
         }
-        $this->assertEquals( 3, $result->numRows() );
-        $this->assertEquals( $queryA, $queryB );
+        $this->assertingEquals( 3, $result->numRows() );
+        $this->assertingEquals( $queryA, $queryB );
     }
 
 
@@ -555,18 +556,18 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         );
         $actual = $this->_object->insert( $params );
 
-        $this->assertEquals( 4, $actual );
+        $this->assertingEquals( 4, $actual );
 
         $this->_object->setDebugMode( false ); // hide std out
         $this->_object->setThrowErrors( false );
         $actual = $this->_object->insert( $params );
-        $this->assertFalse( $actual );
+        $this->assertingFalse( $actual );
 
         $this->_object->setThrowErrors( true );
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(Duplicate entry \'4\' for key \'PRIMARY\')/i'
         );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $actual = $this->_object->insert( $params );
     }
 
@@ -585,7 +586,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
             'fields' => array('ida' => 4, 'idb' => 4, 'idc' => 4),
         );
         $lastInsertId = $this->_object->insert( $params );
-        $this->assertEquals( 4, $lastInsertId );
+        $this->assertingEquals( 4, $lastInsertId );
 
         // replace test record
         $params = array(
@@ -595,7 +596,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         );
         // affectedRows: 2 -> for the insert (which was found for this id) and
         // one for the replace
-        $this->assertEquals( 2, $this->_object->replace( $params ) );
+        $this->assertingEquals( 2, $this->_object->replace( $params ) );
 
         // test replacement
         $select = array(
@@ -607,21 +608,21 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
             array('ida' => 4, 'idb' => 0, 'idc' => 0, 'textc' => 'lot of text')
         );
         $result = $this->_object->select( $select );
-        $this->assertEquals( 1, $result->numRows() );
+        $this->assertingEquals( 1, $result->numRows() );
         $data = $result->fetchAll( 'assoc' );
-        $this->assertEquals( $expected, $data );
+        $this->assertingEquals( $expected, $data );
 
         // replace failure
         $this->_object->setDebugMode( false );
         $this->_object->setThrowErrors( false );
-        $this->assertFalse( $this->_object->replace( array() ) );
+        $this->assertingFalse( $this->_object->replace( array() ) );
 
         $this->_object->setThrowErrors( true );
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(Unknown key or empty values. No "replace" action)/i'
         );
-        $this->expectException( 'Mumsys_Db_Exception' );
-        $this->assertFalse( $this->_object->replace( array() ) );
+        $this->expectingException( 'Mumsys_Db_Exception' );
+        $this->assertingFalse( $this->_object->replace( array() ) );
     }
 
 
@@ -643,11 +644,11 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
             )
         );
         $result = $this->_object->delete( $params );
-        $this->assertEquals( 1, $result->affectedRows() );
+        $this->assertingEquals( 1, $result->affectedRows() );
         $expected = $this->_object->fetchData(
             'SELECT * FROM mumsysunittesttemp WHERE 1', 'ASSOC'
         );
-        $this->assertEquals( 2, count( $expected ) );
+        $this->assertingEquals( 2, count( $expected ) );
     }
 
 
@@ -664,11 +665,11 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setDebugMode( false );
 
         $actualA = $this->_object->compileQueryExpression( $exprA );
-        $this->assertFalse( $actualA );
+        $this->assertingFalse( $actualA );
 
         $this->_object->setThrowErrors( true );
-        $this->expectException( 'Mumsys_Db_Exception' );
-        $this->expectExceptionMessageRegExp(
+        $this->expectingException( 'Mumsys_Db_Exception' );
+        $this->expectingExceptionMessageRegex(
             '/(Invalid expression key "0" for where expression: values '
             . '\(json\): "value")/i'
         );
@@ -689,11 +690,11 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setDebugMode( false );
 
         $actualB = $this->_object->compileQueryExpression( $exprB );
-        $this->assertFalse( $actualB );
+        $this->assertingFalse( $actualB );
 
         $this->_object->setThrowErrors( true );
-        $this->expectException( 'Mumsys_Db_Exception' );
-        $this->expectExceptionMessage(
+        $this->expectingException( 'Mumsys_Db_Exception' );
+        $this->expectingExceptionMessage(
             'Invalid input for where expression. Array expected. Operator: '
             . '"=" values (json): "key\/value string'
         );
@@ -715,11 +716,11 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setDebugMode( false );
 
         $actualC = $this->_object->compileQueryExpression( $exprC );
-        $this->assertFalse( $actualC );
+        $this->assertingFalse( $actualC );
 
         $this->_object->setThrowErrors( true );
-        $this->expectException( 'Mumsys_Db_Exception' );
-        $this->expectExceptionMessageRegExp(
+        $this->expectingException( 'Mumsys_Db_Exception' );
+        $this->expectingExceptionMessageRegex(
             '/(Invalid value list for where expression. Strings|numbers '
             . 'expected. operator: "IN" values \(json\): {"key":[[1],[2]]})/i'
         );
@@ -740,11 +741,11 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setDebugMode( false );
 
         $actualD = $this->_object->compileQueryExpression( $exprD );
-        $this->assertFalse( $actualD );
+        $this->assertingFalse( $actualD );
 
         $this->_object->setThrowErrors( true );
-        $this->expectException( 'Mumsys_Db_Exception' );
-        $this->expectExceptionMessageRegExp(
+        $this->expectingException( 'Mumsys_Db_Exception' );
+        $this->expectingExceptionMessageRegex(
             '/(Invalid value list for where expression. String expected. '
             . 'Operator: "_" values \(json\))/i'
         );
@@ -765,14 +766,14 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setDebugMode( false );
 
         $actualE = $this->_object->compileQueryExpression( $exprE );
-        $this->assertFalse( $actualE );
+        $this->assertingFalse( $actualE );
 
         $this->_object->setThrowErrors( true );
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(Invalid value for where expression. Array|string expected. '
             . 'Operator: "_" values \(json\): "12345")/i'
         );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->compileQueryExpression( $exprE );
     }
 
@@ -790,13 +791,13 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setDebugMode( false );
 
         $actual = $this->_object->compileQueryExpression( $expr );
-        $this->assertFalse( $actual );
+        $this->assertingFalse( $actual );
 
         $this->_object->setThrowErrors( true );
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(Unknown operator "notExists" to create expression)/i'
         );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->compileQueryExpression( $expr );
     }
 
@@ -861,9 +862,9 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
             . 'AND (id > 1)  ORDER BY `id` ASC,`col2` DESC LIMIT 2 OFFSET 1';
 
         // test
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
-        $this->assertEquals( $expectedC, $actualC );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedC, $actualC );
 
         // error, exception
         $optionsD = $optionsA;
@@ -871,11 +872,11 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setThrowErrors( false );
         $this->_object->setDebugMode( false );
         $actualD = $this->_object->compileQuery( $optionsD );
-        $this->assertFalse( $actualD );
+        $this->assertingFalse( $actualD );
 
         $this->_object->setThrowErrors( true );
-        $this->expectExceptionMessageRegExp( '/(No tables given to compile)/i' );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingExceptionMessageRegex( '/(No tables given to compile)/i' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $actualD = $this->_object->compileQuery( $optionsD );
     }
 
@@ -911,19 +912,19 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
             . 'dd,`E` AS ee,`F`';
         $expectedE = '*';
 
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
-        $this->assertEquals( $expectedC, $actualC );
-        $this->assertFalse( $actualD );
-        $this->assertEquals( $expectedE, $actualE );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedC, $actualC );
+        $this->assertingFalse( $actualD );
+        $this->assertingEquals( $expectedE, $actualE );
 
         $this->_object->setThrowErrors( true );
 
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(Error casting column "array" to string. Values \(json\) '
             . '{"0":"A","b":"B"})/i'
         );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->compileQuerySelect( $fieldsD );
     }
 
@@ -937,10 +938,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setDebugMode( false );
         $fields = array(array('A'), array('B'));
 
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(Escape failt. Not a scalar type: "array")/i'
         );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->compileQuerySelect( $fields );
     }
 
@@ -956,7 +957,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         );
         $actual = $this->_object->compileQuerySet( $fields );
         $expected = ' SET a=c,`texta`=\'textaNew\',`textb`=NULL,`textc`=NOW()';
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -1033,10 +1034,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $actualB = $this->_object->compileQueryWhere( $arrayB );
         $actualC = $this->_object->compileQueryWhere( $arrayC );
 
-        $this->assertEquals( $expected, $actual );
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
-        $this->assertEquals( $expectedC, $actualC );
+        $this->assertingEquals( $expected, $actual );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedC, $actualC );
     }
 
 
@@ -1058,9 +1059,9 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $expectedB = ' WHERE name >= \'Name\' AND `date`=\'2000-12-31\'';
         $expectedC = ' WHERE escaped = \\\'value\\\'';
 
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
-        $this->assertEquals( $expectedC, $actualC );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedC, $actualC );
     }
 
 
@@ -1081,14 +1082,14 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $this->_object->setThrowErrors( false );
         $this->_object->setDebugMode( false );
         $actual = $this->_object->compileQueryWhere( $array );
-        $this->assertFalse( $actual );
+        $this->assertingFalse( $actual );
 
         $this->_object->setThrowErrors( true );
         $this->_object->setDebugMode( false );
         $regex = '/(Invalid sub-expression. Must be \'\[operator\] => '
             . '\[key\/value\]\'. Found \(json\): "expression not an array")/i';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->compileQueryWhere( $array );
     }
 
@@ -1101,7 +1102,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $groupbyA = array('a', 'b', 'c');
         $expectedA = ' GROUP BY `a`,`b`,`c`';
         $actualA = $this->_object->compileQueryGroupBy( $groupbyA );
-        $this->assertEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedA, $actualA );
     }
 
 
@@ -1119,8 +1120,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $actualA = $this->_object->compileQueryOrderBy( $orderA );
         $actualB = $this->_object->compileQueryOrderBy( $orderB );
 
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
     }
 
 
@@ -1141,10 +1142,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $actualB = $this->_object->compileQueryLimit( $limitB );
         $actualC = $this->_object->compileQueryLimit( $limitC );
 
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
-        $this->assertEquals( $expectedC, $actualC );
-        $this->assertEmpty( $actualC );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedC, $actualC );
+        $this->assertingEmpty( $actualC );
     }
 
 
@@ -1214,7 +1215,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
             . '"timestamp"=´1970-12-31 23:58:59´,"mix"=´a default´,'
             . '"defenum"=´a´';
 
-        $this->assertEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedA, $actualA );
 
         // test without defaults
         $actualB = $this->_object->sqlImplode(
@@ -1225,14 +1226,14 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
             . '"float"=´1.23´,"timestamp"=´1970-12-31 23:58:59´,'
             . '"mix"=´mix val´,"defenum"=´ab´'
             . '';
-        $this->assertEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedB, $actualB );
 
         // test without keys, no defaults: normal implode
         $actualC = $this->_object->sqlImplode(
             $separator, $data, false, array(), $valwrap, $keyValWrap, $keyWrap
         );
         $expectedC = 'value,b,123,1.23,1970-12-31 23:58:59,mix val,ab';
-        $this->assertEquals( $expectedC, $actualC );
+        $this->assertingEquals( $expectedC, $actualC );
 
         //
         // exception when valWrap is no string
@@ -1242,19 +1243,19 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
             $separator, $data, $withKeys = true, $defaults = array(),
             $valwrap = array(), $keyValWrap, $keyWrap
         );
-        $this->assertFalse( $actual );
+        $this->assertingFalse( $actual );
         $x = $this->_object->getErrors();
         $message = $x[0]['message'];
-        $this->assertEquals(
+        $this->assertingEquals(
             'Value could not be used. Value warp: "array"', $message
         );
 
         // as exception
         $this->_object->setThrowErrors( true );
-        $this->expectExceptionMessageRegExp(
+        $this->expectingExceptionMessageRegex(
             '/(Value could not be used. Value warp: "array")/i'
         );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
 
         $this->_object->sqlImplode(
             $separator, $data, true, array(), array(), $keyValWrap, $keyWrap
@@ -1278,7 +1279,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $test = preg_match(
             '/^(\d{1,3}.\d{1,3}.\d{1,3})-(.*)-((mariadb|mysql).*)/i', $actual
         );
-        $this->assertTrue( ( $test == 1 ) );
+        $this->assertingTrue( ( $test == 1 ) );
     }
 
 
@@ -1303,18 +1304,18 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
 
         foreach ( $test as $toTest => $expected ) {
             $actual = $this->_object->escape( $toTest );
-            $this->assertEquals( $expected, $actual );
+            $this->assertingEquals( $expected, $actual );
         }
 
         // with re connect
         $closed = $this->_object->close();
-        $this->assertTrue( $closed );
+        $this->assertingTrue( $closed );
         $actual = $this->_object->escape( '\n' );
-        $this->assertEquals( '\\\n', $actual );
+        $this->assertingEquals( '\\\n', $actual );
 
         // not scalar exception
-        $this->expectExceptionMessageRegExp( '/(Not a scalar type: "array")/i' );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Not a scalar type: "array")/i' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $this->_object->escape( array(1, 2, 3) );
     }
 
@@ -1330,9 +1331,9 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
     //        $toTest = array();
     //
     //        $this->_object->setThrowErrors(true);
-    //        $this->expectExceptionMessageRegExp('Escape failt. Not a scalar type:
+    //        $this->expectingExceptionMessageRegex('Escape failt. Not a scalar type:
     //        "array"');
-    //        $this->expectException('Mumsys_Db_Exception');
+    //        $this->expectingException('Mumsys_Db_Exception');
     //        $this->_object->escape($toTest);
     //    }
     //
@@ -1357,8 +1358,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
     //        $actualB = $data['texta'];
     //        $expectedB = 'öäüß?&$%§';
     //
-    //        $this->assertEquals($expectedA, $actualA);
-    //        $this->assertEquals($expectedB, $actualB);
+    //        $this->assertingEquals($expectedA, $actualA);
+    //        $this->assertingEquals($expectedB, $actualB);
     //
     //        // what is in the DB when using utf8 connection?
     //        $this->_dbConfig['charset'] = 'utf8';
@@ -1370,8 +1371,8 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
     //        $expectedC = 'Ã¶Ã¤Ã¼ÃŸ?&$%Â§'; // crap is correct! if not this
     //        will be a problem!
     //
-    //        $this->assertEquals($expectedC, $actualC);
-    //        $this->assertEquals('utf8', $object->getCharset());
+    //        $this->assertingEquals($expectedC, $actualC);
+    //        $this->assertingEquals('utf8', $object->getCharset());
     //    }
 
 
@@ -1389,7 +1390,7 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
 
         foreach ( $test as $toTest => $expected ) {
             $actual = $this->_object->quote( $toTest );
-            $this->assertEquals( $expected, $actual );
+            $this->assertingEquals( $expected, $actual );
         }
     }
 

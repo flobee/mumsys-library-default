@@ -345,7 +345,7 @@ class Mumsys_GetOpts
 
 
     /**
-     * Checks and verfiy incomming options for he parser.
+     * Checks and verfiy incomming options for the parser.
      *
      * @param array $config Configuration to check for actions and validity
      *
@@ -357,9 +357,10 @@ class Mumsys_GetOpts
         $key = key( $config );
 
         if ( ( isset( $config[$key] ) && isset( $config[$key][0] ) && $config[$key][0] === '-' )
-            || ( $key[0] === '-' && ( is_string( $config[$key] ) || is_bool( $config[$key] ) ) )
+            || ( isset( $key[0] ) && $key[0] === '-' && ( is_string( $config[$key] ) || is_bool( $config[$key] ) ) )
         ) {
             $return = array('_default_' => $config);
+
         } else if ( isset( $config[$key] ) && is_integer( $config[$key] ) ) {
             $message = sprintf(
                 'Invalid input config found for key: "%1$s", value: "%2$s"',

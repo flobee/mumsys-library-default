@@ -86,9 +86,9 @@ class Mumsys_Cache_FileTest
         $actualB = $this->_object->isCached();
         $actualC = $this->_object->read();
 
-        $this->assertFalse( $actualA );
-        $this->assertTrue( $actualB );
-        $this->assertEquals( $content, $actualC );
+        $this->assertingFalse( $actualA );
+        $this->assertingTrue( $actualB );
+        $this->assertingEquals( $content, $actualC );
     }
 
 
@@ -101,13 +101,13 @@ class Mumsys_Cache_FileTest
         $this->_object->write( 2, $content );
         $actual = $this->_object->read();
 
-        $this->assertEquals( $content, $actual );
+        $this->assertingEquals( $content, $actual );
 
         $this->_object->removeCache();
         $errBak = error_reporting();
         error_reporting( 0 );
-        $this->expectException( 'Mumsys_Cache_Exception' );
-        $this->expectExceptionMessage( 'Can not read cache. File not found' );
+        $this->expectingException( 'Mumsys_Cache_Exception' );
+        $this->expectingExceptionMessage( 'Can not read cache. File not found' );
         try {
             $this->_object->read();
         }
@@ -128,7 +128,7 @@ class Mumsys_Cache_FileTest
         // 4CC to unlink the file
         sleep( 1 );
         $actualA = $this->_object->isCached();
-        $this->assertFalse( $actualA );
+        $this->assertingFalse( $actualA );
     }
 
 
@@ -147,10 +147,10 @@ class Mumsys_Cache_FileTest
         $this->_object->removeCache();
         $actualD = $this->_object->isCached();
 
-        $this->assertFalse( $actualA );
-        $this->assertFalse( $actualB );
-        $this->assertTrue( $actualC );
-        $this->assertFalse( $actualD );
+        $this->assertingFalse( $actualA );
+        $this->assertingFalse( $actualB );
+        $this->assertingTrue( $actualC );
+        $this->assertingFalse( $actualD );
     }
 
 
@@ -161,7 +161,7 @@ class Mumsys_Cache_FileTest
     public function testGetSetPrefix()
     {
         $this->_object->setPrefix( 'prfx' );
-        $this->assertEquals( 'prfx', $this->_object->getPrefix() );
+        $this->assertingEquals( 'prfx', $this->_object->getPrefix() );
     }
 
 
@@ -172,7 +172,7 @@ class Mumsys_Cache_FileTest
     public function testSetPath()
     {
         $this->_object->setPath( $this->_pathTmpDir . '//' );
-        $this->assertEquals( $this->_pathTmpDir . '/', $this->_object->getPath() );
+        $this->assertingEquals( $this->_pathTmpDir . '/', $this->_object->getPath() );
     }
 
 
@@ -182,14 +182,14 @@ class Mumsys_Cache_FileTest
     public function testSetEnable()
     {
         $this->_object->setEnable( false );
-        $this->assertFalse( $this->_object->isCached() );
+        $this->assertingFalse( $this->_object->isCached() );
         $this->_object->setEnable( 0 );
-        $this->assertFalse( $this->_object->isCached() );
+        $this->assertingFalse( $this->_object->isCached() );
 
         $this->_object->setEnable( true );
-        $this->assertFalse( $this->_object->isCached() );
+        $this->assertingFalse( $this->_object->isCached() );
         $this->_object->setEnable( 1 );
-        $this->assertFalse( $this->_object->isCached() );
+        $this->assertingFalse( $this->_object->isCached() );
     }
 
 
@@ -201,7 +201,7 @@ class Mumsys_Cache_FileTest
         $actualA = $this->_object->getFilename();
 
         $expectedA = $this->_pathTmpDir . '/cache_group_' . md5( 'id' );
-        $this->assertEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedA, $actualA );
     }
 
     //
@@ -213,7 +213,7 @@ class Mumsys_Cache_FileTest
      */
     public function testGetVersion()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'Mumsys_Cache_File ' . $this->_version, $this->_object->getVersion()
         );
     }
@@ -224,7 +224,7 @@ class Mumsys_Cache_FileTest
      */
     public function testgetVersionID()
     {
-        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
+        $this->assertingEquals( $this->_version, $this->_object->getVersionID() );
     }
 
 

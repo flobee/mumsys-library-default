@@ -65,8 +65,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         $actual1 = new Mumsys_Db_Driver_Mysql_Mysqli( $this->_context, $this->_dbConfig );
         $actual2 = $this->_dbDriver->query( 'SELECT 1+1 AS colname' );
 
-        $this->assertInstanceOf( 'Mumsys_Db_Driver_Mysql_Mysqli', $actual1 );
-        $this->assertInstanceOf( 'Mumsys_Db_Driver_Mysql_Mysqli_Result', $actual2 );
+        $this->assertingInstanceOf( 'Mumsys_Db_Driver_Mysql_Mysqli', $actual1 );
+        $this->assertingInstanceOf( 'Mumsys_Db_Driver_Mysql_Mysqli_Result', $actual2 );
     }
 
 
@@ -89,7 +89,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
             $actual = $this->_object->fetch( $way );
             $this->_object->seek( 0 );
 
-            $this->assertEquals( $expected, $actual );
+            $this->assertingEquals( $expected, $actual );
         }
     }
 
@@ -115,27 +115,27 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         // cleanup
         $this->_dropTempTable( $table );
 
-        $this->assertEquals( $expected, $actual1 );
-        $this->assertFalse( $actual2 );
+        $this->assertingEquals( $expected, $actual1 );
+        $this->assertingFalse( $actual2 );
     }
 
 
     public function testNumRows()
     {
         $n = $this->_object->numRows();
-        $this->assertEquals( 1, $n );
+        $this->assertingEquals( 1, $n );
 
         $n = $this->_object->numRows();
-        $this->assertEquals( 1, $n );
+        $this->assertingEquals( 1, $n );
 
         $o = $this->_dbDriver->query( 'SELECT 1 AS colname' );
 
         $n = $o->numRows();
 
-        $this->assertEquals( 1, $n );
+        $this->assertingEquals( 1, $n );
 
-        $this->expectExceptionMessageRegExp( '/(Error getting number of found rows)/i' );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Invalid result set)/i' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $n = $o->numRows( true ); // fakin result as parameter
     }
 
@@ -152,11 +152,11 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
             (3, 3, 3, \'texta3\', \'textb3\' )';
         $result = $this->_dbDriver->query( $sql );
         $n = $result->affectedRows();
-        $this->assertEquals( 3, $n );
+        $this->assertingEquals( 3, $n );
 
         $link = $this->_dbDriver->connect();
         $n = $result->affectedRows( $link );
-        $this->assertEquals( 3, $n );
+        $this->assertingEquals( 3, $n );
     }
 
 
@@ -171,11 +171,11 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
             VALUES (98, 3, 3, \'texta3\', \'textb3\' )';
         $result = $this->_dbDriver->query( $sql );
         $n = $result->lastInsertId();
-        $this->assertEquals( 98, $n );
+        $this->assertingEquals( 98, $n );
 
         $link = $this->_dbDriver->connect();
         $n = $result->lastInsertId( $link );
-        $this->assertEquals( 98, $n );
+        $this->assertingEquals( 98, $n );
 
         $this->_dropTempTable( $table );
     }
@@ -192,11 +192,11 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         $result = $this->_dbDriver->query( $sql );
 
         $n = $result->insertID();
-        $this->assertEquals( 99, $n );
+        $this->assertingEquals( 99, $n );
 
         $link = $this->_dbDriver->connect();
         $n = $result->lastInsertId( $link );
-        $this->assertEquals( 99, $n );
+        $this->assertingEquals( 99, $n );
     }
 
 
@@ -222,14 +222,14 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
         $xE = $result->getFirst( 0, 'idc' );
 
-        $this->assertEquals( 1, $xA );
-        $this->assertEquals( 2, $xB );
-        $this->assertEquals( 3, $xC );
-        $this->assertEquals( false, $xD );
-        $this->assertEquals( 1, $xE );
+        $this->assertingEquals( 1, $xA );
+        $this->assertingEquals( 2, $xB );
+        $this->assertingEquals( 3, $xC );
+        $this->assertingEquals( false, $xD );
+        $this->assertingEquals( 1, $xE );
 
-        $this->expectExceptionMessageRegExp( '/(Seeking to row 10 failed)/i' );
-        $this->expectException( 'Mumsys_Db_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Seeking to row 10 failed)/i' );
+        $this->expectingException( 'Mumsys_Db_Exception' );
         $result = $this->_dbDriver->query( 'SELECT * FROM ' . $table );
         $result->sqlResult( 10 );
 
@@ -249,16 +249,16 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         $result->seek( 0 );
         $i = 1;
         while ( $row = $result->fetch( 'assoc' ) ) {
-            $this->assertEquals( $i++, $row['ida'] );
+            $this->assertingEquals( $i++, $row['ida'] );
         }
 
         $mysqlresult = $result->getResult();
         $result->seek( 2, $mysqlresult );
         $row = $result->fetch( 'assoc' );
-        $this->assertEquals( 3, $row['ida'] );
+        $this->assertingEquals( 3, $row['ida'] );
 
         $x = $result->seek( 99 );
-        $this->assertEquals( false, $x );
+        $this->assertingEquals( false, $x );
 
         // cleanup
         $this->_dropTempTable( $table );
@@ -282,13 +282,13 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         // cleanup
         $this->_dropTempTable( $table );
 
-        $this->assertEquals( true, $xA );
-        $this->assertEquals( true, $xB );
+        $this->assertingEquals( true, $xA );
+        $this->assertingEquals( true, $xB );
 
-        $regex = '/(mysqli_free_result\(\) expects parameter 1 to be mysqli_result, string given)/i';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Db_Exception' );
-        $xC = $result->free( 'crapRx' );
+        $regex = '/(mysqli_free_result\(\): Argument #1 \(\$result\) must be of type mysqli_result, string given)/';
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Db_Exception' );
+        $result->free( 'crapRx' );
     }
 
 

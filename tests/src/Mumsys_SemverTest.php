@@ -65,12 +65,12 @@ class Mumsys_SemverTest
     {
         foreach ( $this->_testVersions as $ver => $testVersion ) {
             $actual = new Mumsys_Semver( $testVersion, $ver );
-            $this->assertInstanceOf( Mumsys_Semver::class, $actual );
+            $this->assertingInstanceOf( Mumsys_Semver::class, $actual );
         }
 
         // test exception for validation: invalid semver
-        $this->expectException( 'Mumsys_Exception' );
-        $this->expectExceptionMessage( 'Regex error for "1.2.3" or semver not available' );
+        $this->expectingException( 'Mumsys_Exception' );
+        $this->expectingExceptionMessage( 'Regex error for "1.2.3" or semver not available' );
         $actual = new Mumsys_Semver( '1.2.3', '0.0.1' );
         //$actual->validate( $listINValid[0] );
     }
@@ -164,14 +164,14 @@ class Mumsys_SemverTest
         for ( $i = 0; $i < count( $listISValid ) - 1; $i++ ) {
             // valid checks
             if ( isset( $listISValid[$i] ) ) {
-                $this->assertTrue(
+                $this->assertingTrue(
                     $this->_object->validate( $listISValid[$i] ),
                     "Valid list: $listISValid[$i] failed"
                 );
             }
             // invalid check
             if ( isset( $listINValid[$i] ) ) {
-                $this->assertFalse(
+                $this->assertingFalse(
                     $this->_object->validate( $listINValid[$i] ),
                     "Invalid list: $listINValid[$i] failed"
                 );
@@ -192,8 +192,8 @@ class Mumsys_SemverTest
         $actualB =  $objectB->getMajorID();
         $expectedB = null;
 
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
     }
 
 
@@ -209,8 +209,8 @@ class Mumsys_SemverTest
         $actualB =  $objectB->getMinorID();
         $expectedB = null;
 
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
     }
 
 
@@ -226,8 +226,8 @@ class Mumsys_SemverTest
         $actualB =  $objectB->getPatchID();
         $expectedB = null;
 
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
     }
 
 
@@ -243,8 +243,8 @@ class Mumsys_SemverTest
         $actualB =  $objectB->getPreRelease();
         $expectedB = null;
 
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
     }
 
 
@@ -261,8 +261,8 @@ class Mumsys_SemverTest
         $actualB =  $objectB->getBuildMetadata();
         $expectedB = null;
 
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
     }
 
 
@@ -284,6 +284,6 @@ class Mumsys_SemverTest
             4 => 'unknown-version',
         );
 
-        $this->assertEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedA, $actualA );
     }
 }

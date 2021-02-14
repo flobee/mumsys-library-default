@@ -50,10 +50,10 @@ class Mumsys_Xml_AbstractTest
         $expected = 'name="value" id="12345" customAttribute="custom value"';
         $actual = $this->_object->attributesCreate( $input );
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
 
-        $this->expectExceptionMessageRegExp( '/(Invalid attribute value for key: "0": "array")/i' );
-        $this->expectException( 'Mumsys_Xml_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Invalid attribute value for key: "0": "array")/i' );
+        $this->expectingException( 'Mumsys_Xml_Exception' );
         $input = array(array(1 => 2), array(2));
         $this->_object->attributesCreate( $input );
     }

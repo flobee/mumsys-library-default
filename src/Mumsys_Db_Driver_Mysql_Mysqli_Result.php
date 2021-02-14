@@ -172,6 +172,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
      *
      * @param object $result optional The result set of a different mysql-query
      * otherwise the number of rows form the last query will be returned
+     *
      * @return integer Returns the number of rows
      * @throws Mumsys_Db_Exception If calculation of num rows fails
      */
@@ -179,7 +180,12 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
     {
         $numRows = null;
         if ( $result ) {
-            $numRows = @mysqli_num_rows( $result );
+            try {
+                $numRows = mysqli_num_rows( $result );
+            }
+            catch ( Error | Exception $ex ) {
+                throw new Mumsys_Db_Exception( 'Invalid result set' );
+            }
         } else {
             if ( $this->_numRows !== null ) {
                 $numRows = $this->_numRows;
@@ -386,7 +392,8 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
      *
      * @param resource $res The result resource that is being evaluated. This
      * result comes from a call to mysql_query().
-     * @return boolean Returns TRUE on success or FALSE on failure.
+     *
+     * @return boolean Returns TRUE on success.
      */
     public function free( $res = false )
     {
@@ -397,7 +404,7 @@ class Mumsys_Db_Driver_Mysql_Mysqli_Result
         try {
             mysqli_free_result( $res );
         }
-        catch ( Exception $e ) {
+        catch ( Error | Exception $e ) {
             throw new Mumsys_Db_Exception(
                 $e->getMessage(), $e->getCode(), $e->getPrevious()
             );

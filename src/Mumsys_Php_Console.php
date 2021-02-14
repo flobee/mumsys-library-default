@@ -75,12 +75,16 @@ class Mumsys_Php_Console
      * @return boolean Returns true if disk size exceed the limit or false
      */
     public static function check_disk_free_space( $path = '', $secCmp = 60,
-        $maxSizeCmp = 92, Mumsys_Logger_Interface $logger,
+        $maxSizeCmp = 92, Mumsys_Logger_Interface $logger = null,
         $inputCmd = 'df -a %1$s' )
     {
         static $paths = null;
         static $sizes = null;
         static $times = null;
+
+        if ( !( $logger instanceof Mumsys_Logger_Interface ) ) {
+            throw new Mumsys_Php_Exception( 'Invalid logger interface' );
+        }
 
         // key of exec result in $cmd
         $resultKey = 4;

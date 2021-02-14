@@ -81,7 +81,7 @@ class Mumsys_Logger_FileTest
 
         $object = new Mumsys_Logger_File( $opts );
 
-        $this->assertInstanceOf( 'Mumsys_Logger_Interface', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Interface', $object );
     }
 
 
@@ -107,14 +107,14 @@ class Mumsys_Logger_FileTest
         $_SERVER['LOGNAME'] = 'God';
         $object = new Mumsys_Logger_File( $opts );
 
-        $this->assertInstanceOf( 'Mumsys_Logger_File', $object );
-        $this->assertInstanceOf( 'Mumsys_Logger_Interface', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_File', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Interface', $object );
     }
 
 
     public function testGetLogfile()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_opts['logfile'],
             $this->_object->getLogFile()
         );
@@ -123,16 +123,16 @@ class Mumsys_Logger_FileTest
 
     public function testLevelNameGet()
     {
-        $this->assertEquals( 'EMERG', $this->_object->getLevelName( 0 ) );
-        $this->assertEquals( 'ALERT', $this->_object->getLevelName( 1 ) );
-        $this->assertEquals( 'CRIT', $this->_object->getLevelName( 2 ) );
-        $this->assertEquals( 'ERR', $this->_object->getLevelName( 3 ) );
-        $this->assertEquals( 'WARN', $this->_object->getLevelName( 4 ) );
-        $this->assertEquals( 'NOTICE', $this->_object->getLevelName( 5 ) );
-        $this->assertEquals( 'INFO', $this->_object->getLevelName( 6 ) );
-        $this->assertEquals( 'DEBUG', $this->_object->getLevelName( 7 ) );
+        $this->assertingEquals( 'EMERG', $this->_object->getLevelName( 0 ) );
+        $this->assertingEquals( 'ALERT', $this->_object->getLevelName( 1 ) );
+        $this->assertingEquals( 'CRIT', $this->_object->getLevelName( 2 ) );
+        $this->assertingEquals( 'ERR', $this->_object->getLevelName( 3 ) );
+        $this->assertingEquals( 'WARN', $this->_object->getLevelName( 4 ) );
+        $this->assertingEquals( 'NOTICE', $this->_object->getLevelName( 5 ) );
+        $this->assertingEquals( 'INFO', $this->_object->getLevelName( 6 ) );
+        $this->assertingEquals( 'DEBUG', $this->_object->getLevelName( 7 ) );
 
-        $this->assertEquals( 'unknown', $this->_object->getLevelName( 999 ) );
+        $this->assertingEquals( 'unknown', $this->_object->getLevelName( 999 ) );
     }
 
 
@@ -141,7 +141,7 @@ class Mumsys_Logger_FileTest
      */
     public function testEmerg()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'log emergency', trim( $this->_object->emerg( 'log emergency' ) )
         );
     }
@@ -152,7 +152,7 @@ class Mumsys_Logger_FileTest
      */
     public function testAlert()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'log alert', trim( $this->_object->alert( 'log alert' ) )
         );
     }
@@ -163,7 +163,7 @@ class Mumsys_Logger_FileTest
      */
     public function testCrit()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'log critical', trim( $this->_object->crit( 'log critical' ) )
         );
     }
@@ -174,7 +174,7 @@ class Mumsys_Logger_FileTest
      */
     public function testErr()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'log error', trim( $this->_object->err( 'log error' ) )
         );
     }
@@ -185,7 +185,7 @@ class Mumsys_Logger_FileTest
      */
     public function testWarn()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'log warning', trim( $this->_object->warn( 'log warning' ) )
         );
     }
@@ -196,7 +196,7 @@ class Mumsys_Logger_FileTest
      */
     public function testNotice()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'log notice', trim( $this->_object->notice( 'log notice' ) )
         );
     }
@@ -207,7 +207,7 @@ class Mumsys_Logger_FileTest
      */
     public function testInfo()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'log info', trim( $this->_object->info( 'log info' ) )
         );
     }
@@ -218,7 +218,7 @@ class Mumsys_Logger_FileTest
      */
     public function testDebug()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'log debug', trim( $this->_object->debug( 'log debug' ) )
         );
     }
@@ -230,12 +230,12 @@ class Mumsys_Logger_FileTest
      */
     public function testLog()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             'long log', trim( $this->_object->log( 'long log', 7 ) )
         );
 
         $exp = '["long log"]';
-        $this->assertEquals(
+        $this->assertingEquals(
             $exp, trim( $this->_object->log( array('long log'), 7 ) )
         );
     }
@@ -254,8 +254,8 @@ class Mumsys_Logger_FileTest
         $object = new Mumsys_Logger_File( $opts, $writer );
         $writer->close();
 
-        $this->expectException( 'Mumsys_Logger_Exception' );
-        $this->expectExceptionMessage( 'File not open. Can not write to file' );
+        $this->expectingException( 'Mumsys_Logger_Exception' );
+        $this->expectingExceptionMessage( 'File not open. Can not write to file' );
 
         $object->log( 'error', 3 );
     }
@@ -272,7 +272,7 @@ class Mumsys_Logger_FileTest
         $object = new Mumsys_Logger_File( $this->_opts, $writer );
 
         $actual = $object->checkMaxFilesize();
-        $this->assertEquals( 'Max filesize (10 Bytes) reached. Log purged now', $actual );
+        $this->assertingEquals( 'Max filesize (10 Bytes) reached. Log purged now', $actual );
         $writer->close();
     }
 
@@ -282,7 +282,7 @@ class Mumsys_Logger_FileTest
      */
     public function testVersions()
     {
-        $this->assertEquals( $this->_version, Mumsys_Logger_File::VERSION );
+        $this->assertingEquals( $this->_version, Mumsys_Logger_File::VERSION );
         $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 

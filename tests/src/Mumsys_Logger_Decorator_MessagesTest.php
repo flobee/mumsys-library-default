@@ -75,10 +75,10 @@ class Mumsys_Logger_Decorator_MessagesTest
 
         $object2 = new Mumsys_Logger_Decorator_Messages( $this->_logger, $this->_opts );
 
-        $this->assertInstanceOf( 'Mumsys_Logger_Interface', $object1 );
-        $this->assertInstanceOf( 'Mumsys_Logger_Decorator_Abstract', $object1 );
-        $this->assertInstanceOf( 'Mumsys_Logger_Decorator_Messages', $object1 );
-        $this->assertInstanceOf( 'Mumsys_Logger_Decorator_Interface', $object1 );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Interface', $object1 );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Abstract', $object1 );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Messages', $object1 );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $object1 );
     }
 
 
@@ -88,8 +88,8 @@ class Mumsys_Logger_Decorator_MessagesTest
     public function test__clone()
     {
         $obj = clone $this->_object;
-        $this->assertInstanceOf( 'Mumsys_Logger_Decorator_Interface', $obj );
-        $this->assertInstanceOf( 'Mumsys_Logger_Decorator_Interface', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $obj );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $this->_object );
         $this->assertNotSame( $obj, $this->_object );
     }
 
@@ -116,7 +116,7 @@ class Mumsys_Logger_Decorator_MessagesTest
             . chr( 27 ) . '[0m'
             . ' end' . "\n";
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -139,7 +139,7 @@ class Mumsys_Logger_Decorator_MessagesTest
 
         $expected = date( 'H:i', time() ) . ' flobeeunit [ALERT] {} end' . "\n";
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -160,7 +160,7 @@ class Mumsys_Logger_Decorator_MessagesTest
         $actual = ob_get_clean();
         $expected = date( 'H:i', time() ) . ' flobeeunit [ALERT] bam end' . "\n";
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -172,8 +172,8 @@ class Mumsys_Logger_Decorator_MessagesTest
         $object = new Mumsys_Logger_Decorator_Messages( $this->_logger, $this->_opts );
 
         $regex = '/(Level "99" unknown to set the message log level)/i';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Logger_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Logger_Exception' );
         $object->setMessageLoglevel( 99 );
     }
 
@@ -208,7 +208,7 @@ class Mumsys_Logger_Decorator_MessagesTest
             $actual = ob_get_clean();
 
             $expected = sprintf( $colorTemplate, $color, $message );
-            $this->assertEquals( $expected, $actual, 'error with level: ' . $level );
+            $this->assertingEquals( $expected, $actual, 'error with level: ' . $level );
         }
     }
 
@@ -223,7 +223,7 @@ class Mumsys_Logger_Decorator_MessagesTest
         $expected[99] = '[49m';
         $this->_object->setColors( $expected );
 
-        $this->assertEquals( $expected, $this->_object->getColors() );
+        $this->assertingEquals( $expected, $this->_object->getColors() );
     }
 
 
@@ -232,10 +232,10 @@ class Mumsys_Logger_Decorator_MessagesTest
      */
     public function testVersion()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_version, Mumsys_Logger_Decorator_Messages::VERSION
         );
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_versions['Mumsys_Logger_Decorator_Abstract'],
             Mumsys_Logger_Decorator_Abstract::VERSION
         );

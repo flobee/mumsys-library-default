@@ -219,7 +219,7 @@ abstract class Mumsys_Weather_Abstract
             $curl = curl_init();
             curl_setopt( $curl, CURLOPT_URL, $url );
             curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
-            $version = 'Mumsys_Weather_Interface ' . parent::VERSION;
+            $version = 'Mumsys_Weather_Interface ' . self::VERSION;
             curl_setopt( $curl, CURLOPT_USERAGENT, $version );
             $data = curl_exec( $curl );
             curl_close( $curl );

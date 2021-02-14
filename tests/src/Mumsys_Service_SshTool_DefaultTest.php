@@ -99,7 +99,7 @@ class Mumsys_Service_SshTool_DefaultTest
 
     public function testVersions()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_version,
             Mumsys_Service_SshTool_Default::VERSION
         );
@@ -122,12 +122,12 @@ class Mumsys_Service_SshTool_DefaultTest
         );
         $objectB = new Mumsys_Service_SshTool_Default( $this->_pathConfigs );
 
-        $this->assertInstanceOf( 'Mumsys_Service_SshTool_Default', $objectA );
-        $this->assertInstanceOf( 'Mumsys_Service_SshTool_Default', $objectB );
-        $this->assertInstanceOf( 'Mumsys_Abstract', $objectA );
+        $this->assertingInstanceOf( 'Mumsys_Service_SshTool_Default', $objectA );
+        $this->assertingInstanceOf( 'Mumsys_Service_SshTool_Default', $objectB );
+        $this->assertingInstanceOf( 'Mumsys_Abstract', $objectA );
 
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessageRegExp( '/(Given config file path not found)/i' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Given config file path not found)/i' );
         new Mumsys_Service_SshTool_Default(
             $this->_pathConfigs, $this->_sshFile . '/not/exists'
         );
@@ -153,8 +153,8 @@ class Mumsys_Service_SshTool_DefaultTest
      */
     public function testInitException1()
     {
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessageRegExp( '/(Config file not found)/' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Config file not found)/' );
 
         $this->_dynTestFile = $this->_pathEmptyDir . '/test.php';
         touch( $this->_dynTestFile );
@@ -171,11 +171,11 @@ class Mumsys_Service_SshTool_DefaultTest
     {
         $this->_object->setConfigsPath( $this->_pathConfigs );
         // in create() we will test deeply
-        $this->assertTrue( file_exists( $this->_testConfigFile ) );
+        $this->assertingTrue( file_exists( $this->_testConfigFile ) );
 
         // test exception
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessageRegExp( '/(Configs paths not found)/' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Configs paths not found)/' );
         $this->_object->setConfigsPath( '~/.ssh/conffiles' );
     }
 
@@ -186,8 +186,8 @@ class Mumsys_Service_SshTool_DefaultTest
      */
     public function testSetConfigsPathException()
     {
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessageRegExp( '/(Configs paths not found)/' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Configs paths not found)/' );
         $this->_object->setConfigsPath();
     }
 
@@ -202,11 +202,11 @@ class Mumsys_Service_SshTool_DefaultTest
 
         $this->_object->create();
         // in create() we will test deeply
-        $this->assertTrue( file_exists( $this->_sshFile ) );
+        $this->assertingTrue( file_exists( $this->_sshFile ) );
 
         // test exception 1
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessageRegExp( '/(Path does not exists)/' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Path does not exists)/' );
         $this->_object->setConfigFile( $this->_sshFile . '/not/exists' );
         $this->_object->create();
     }
@@ -218,8 +218,8 @@ class Mumsys_Service_SshTool_DefaultTest
      */
     public function testSetFileCheckPathException()
     {
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessageRegExp( '/(Path not writable)/' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Path not writable)/' );
         $this->_object->setConfigFile( '/root/testsshfile' );
         $this->_object->create();
     }
@@ -233,11 +233,11 @@ class Mumsys_Service_SshTool_DefaultTest
         $this->_object->setMode( 0666 );
         $this->_object->create();
         // in create() we will test deeply
-        $this->assertTrue( file_exists( $this->_sshFile ) );
+        $this->assertingTrue( file_exists( $this->_sshFile ) );
 
         $expected = 100666;
         $actual = decoct( fileperms( $this->_sshFile ) );
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -257,10 +257,10 @@ class Mumsys_Service_SshTool_DefaultTest
 
         $this->_object->addHostConfig( 'localhost2', $config );
         $actual = $this->_object->getHostConfigs();
-        $this->assertTrue( array_key_exists( 'localhost2', $actual ) );
+        $this->assertingTrue( array_key_exists( 'localhost2', $actual ) );
 
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessage( 'Host "localhost" already set' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessage( 'Host "localhost" already set' );
         $this->_object->addHostConfig( 'localhost', $config );
     }
 
@@ -277,7 +277,7 @@ class Mumsys_Service_SshTool_DefaultTest
         $this->_object->init();
         $this->_object->create();
 
-        $this->assertTrue( file_exists( $this->_sshFile ) );
+        $this->assertingTrue( file_exists( $this->_sshFile ) );
 
         $expectedA = '# localhost' . "\n"
             . 'Host localhost' . "\n"
@@ -312,8 +312,8 @@ class Mumsys_Service_SshTool_DefaultTest
             . $expectedA . PHP_EOL
         ;
 
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
     }
 
 
@@ -347,7 +347,7 @@ class Mumsys_Service_SshTool_DefaultTest
             . "scp ~/.ssh/* flobee@secondhost:~/.ssh/keys/from/localhost\n"
         ;
 
-        $this->assertEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedA, $actualA );
     }
 
 
@@ -396,12 +396,12 @@ class Mumsys_Service_SshTool_DefaultTest
             . PHP_EOL
         ;
 
-        $this->assertEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedA, $actualA );
 
-        $this->expectException( 'Mumsys_Service_Exception' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
         $mesg = 'Invalid "register" configuration found in host file '
             . '"localhost2" for target "host"';
-        $this->expectExceptionMessage( $mesg );
+        $this->expectingExceptionMessage( $mesg );
 
         $hostConfig = array(
             'config' => array(
@@ -458,7 +458,7 @@ class Mumsys_Service_SshTool_DefaultTest
             . '~/.ssh/authorized_keys ; rm -f ~/.ssh/my/id_rsa.pub"' . PHP_EOL
         ;
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 }

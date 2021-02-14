@@ -197,7 +197,7 @@ class Mumsys_File
             throw new Mumsys_File_Exception( $message );
         }
 
-        if ( ( $numBytes = @fwrite( $this->_fh, $content ) ) === false ) {
+        if ( ( $numBytes = fwrite( $this->_fh, $content ) ) === false ) {
             $message = sprintf(
                 'Can not write to file: "%1$s". IsOpen: "%2$s", Is writeable: "%3$s".',
                 $this->_file,
@@ -214,30 +214,28 @@ class Mumsys_File
     /**
      * Read from file or number of bytes set in setBuffer().
      *
-     * @return string|boolean Returns file contents or false on errors
+     * @return string|mixed Returns the file contents
      *
      * @throws Mumsys_File_Exception Throws exception if reading fails
      */
     public function read()
     {
         if ( !$this->_isOpen ) {
-            throw new Mumsys_File_Exception(
-                sprintf(
-                    'File not open. Can not read from file: "%1$s".',
-                    $this->_file
-                )
+            $mesg = sprintf(
+                'File not open. Can not read from file: "%1$s".', $this->_file
             );
+            throw new Mumsys_File_Exception( $mesg );
         }
 
         if ( !$this->isReadable() ) {
-            $msg = sprintf(
+            $mesg = sprintf(
                 'File "%1$s" not readable with mode "%2$s". Is writeable '
                 . '"%3$s", readable: "%4$s".',
                 $this->_file, $this->_way,
                 self::bool2str( $this->isWriteable() ),
                 self::bool2str( $this->isReadable() )
             );
-            throw new Mumsys_File_Exception( $msg );
+            throw new Mumsys_File_Exception( $mesg );
         }
 
         if ( empty( $this->_buffer ) ) {
@@ -247,14 +245,20 @@ class Mumsys_File
             $buf = $this->_buffer;
         }
 
-        if ( ( $r = @fread( $this->_fh, $buf ) ) === false ) {
-            $msg = sprintf(
-                'Error when reading the file: "%1$s". IsOpen: "%2$s".',
-                $this->_file, ( self::bool2str( $this->_isOpen ) )
-            );
-            throw new Mumsys_File_Exception( $msg );
+        if ( $buf === 0 ) {
+            return '';
         }
-        return $r;
+
+        if ( ( $result = fread( $this->_fh, $buf ) ) === false ) {
+            $mesg = sprintf(
+                'Error when reading the file: "%1$s". IsOpen: "%2$s".',
+                $this->_file,
+                ( self::bool2str( $this->_isOpen ) )
+            );
+            throw new Mumsys_File_Exception( $mesg );
+        }
+
+        return $result;
     }
 
 

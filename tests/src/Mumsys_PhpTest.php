@@ -44,8 +44,8 @@ class Mumsys_PhpTest
 
     public function test__get()
     {
-        $this->assertEquals( strtoupper( substr( PHP_OS, 0, 3 ) ), Mumsys_Php::$os );
-        $this->assertEquals( $this->object->os, Mumsys_Php::$os );
+        $this->assertingEquals( strtoupper( substr( PHP_OS, 0, 3 ) ), Mumsys_Php::$os );
+        $this->assertingEquals( $this->object->os, Mumsys_Php::$os );
     }
 
     public function test__set()
@@ -53,10 +53,10 @@ class Mumsys_PhpTest
         if ( PHP_VERSION_ID < 70000 ) {
             $get_magic_quotes_gpc = $this->object->get_magic_quotes_gpc;
 
-            $this->assertEquals( 0, $get_magic_quotes_gpc );
+            $this->assertingEquals( 0, $get_magic_quotes_gpc );
 
             $this->object->get_magic_quotes_gpc = true;
-            $this->assertEquals( true, $this->object->get_magic_quotes_gpc );
+            $this->assertingEquals( true, $this->object->get_magic_quotes_gpc );
 
             // set invalid, throw exception
             try {
@@ -68,25 +68,27 @@ class Mumsys_PhpTest
 
             $this->object->get_magic_quotes_gpc = $get_magic_quotes_gpc;
         } else {
-            $actual = get_magic_quotes_gpc();
-            $expected = false;
-            $this->assertEquals( $expected, $actual );
+            if ( function_exists( 'get_magic_quotes_gpc' ) ) {
+                $actual = get_magic_quotes_gpc();
+                $expected = false;
+                $this->assertingEquals( $expected, $actual );
+            }
 
-            $this->expectException( 'Mumsys_Php_Exception' );
+            $this->expectingException( 'Mumsys_Php_Exception' );
             $this->object->none = 123;
         }
     }
 
     public function testIs_int()
     {
-        $this->assertTrue( Mumsys_Php::is_int( 0 ) );
-        $this->assertTrue( Mumsys_Php::is_int( 12 ) );
-        $this->assertTrue( Mumsys_Php::is_int( '12' ) );
-        $this->assertTrue( Mumsys_Php::is_int( '1234' ) );
-        $this->assertFalse( Mumsys_Php::is_int( 1.9 ) );
-        $this->assertFalse( Mumsys_Php::is_int( '1.9' ) );
-        $this->assertFalse( Mumsys_Php::is_int( '1.9999' ) );
-        $this->assertFalse( Mumsys_Php::is_int( '1k' ) );
+        $this->assertingTrue( Mumsys_Php::is_int( 0 ) );
+        $this->assertingTrue( Mumsys_Php::is_int( 12 ) );
+        $this->assertingTrue( Mumsys_Php::is_int( '12' ) );
+        $this->assertingTrue( Mumsys_Php::is_int( '1234' ) );
+        $this->assertingFalse( Mumsys_Php::is_int( 1.9 ) );
+        $this->assertingFalse( Mumsys_Php::is_int( '1.9' ) );
+        $this->assertingFalse( Mumsys_Php::is_int( '1.9999' ) );
+        $this->assertingFalse( Mumsys_Php::is_int( '1k' ) );
     }
 
     /**
@@ -94,13 +96,13 @@ class Mumsys_PhpTest
      */
     public function test_floatval()
     {
-        $this->assertEquals( 1.2, Mumsys_Php::floatval( '1.2' ) );
-        $this->assertEquals( 1234.56, Mumsys_Php::floatval( '1.234,56' ) );
-        $this->assertEquals( 12, Mumsys_Php::floatval( '12' ) );
-        $this->assertEquals( 0.12345, Mumsys_Php::floatval( '0,12345' ) );
-        $this->assertEquals( 1234.56, Mumsys_Php::floatval( '1.234,56' ) );
-        $this->assertEquals( 1234.56, Mumsys_Php::floatval( '1.234,56ABC' ) );
-        $this->assertEquals( 1.23456, Mumsys_Php::floatval( '1,234.56' ) );
+        $this->assertingEquals( 1.2, Mumsys_Php::floatval( '1.2' ) );
+        $this->assertingEquals( 1234.56, Mumsys_Php::floatval( '1.234,56' ) );
+        $this->assertingEquals( 12, Mumsys_Php::floatval( '12' ) );
+        $this->assertingEquals( 0.12345, Mumsys_Php::floatval( '0,12345' ) );
+        $this->assertingEquals( 1234.56, Mumsys_Php::floatval( '1.234,56' ) );
+        $this->assertingEquals( 1234.56, Mumsys_Php::floatval( '1.234,56ABC' ) );
+        $this->assertingEquals( 1.23456, Mumsys_Php::floatval( '1,234.56' ) );
     }
 
     /**
@@ -109,15 +111,20 @@ class Mumsys_PhpTest
     public function test_file_exists()
     {
         $url = 'http://php.net/';
-        $this->assertTrue( Mumsys_Php::file_exists( $url ) );
+        $this->assertingTrue( Mumsys_Php::file_exists( $url ) );
         // this will use php's file_exists()
-        $this->assertTrue( Mumsys_Php::file_exists( __FILE__ ) );
+        $this->assertingTrue( Mumsys_Php::file_exists( __FILE__ ) );
         // using fopen to test existense
-        $this->assertTrue( Mumsys_Php::file_exists( 'file://' . __FILE__ ) );
+        $this->assertingTrue( Mumsys_Php::file_exists( 'file://' . __FILE__ ) );
         // empty url
-        $this->assertFalse( Mumsys_Php::file_exists() );
+        $this->assertingFalse( Mumsys_Php::file_exists() );
+
         // not existing url
-        $this->assertFalse( Mumsys_Php::file_exists( 'file://noWay' ) );
+        $errRepBak = error_reporting();
+        error_reporting(0);
+        $actual = Mumsys_Php::file_exists( 'file:///noWay' );
+        error_reporting($errRepBak);
+        $this->assertingFalse( $actual );
     }
 
 
@@ -130,20 +137,20 @@ class Mumsys_PhpTest
         $oldLimit = Mumsys_Php::ini_get( 'memory_limit' );
 
         $c = ini_set( 'memory_limit', '32M' );
-        $this->assertEquals( ( 32 * 1048576 ), Mumsys_Php::ini_get( 'memory_limit' ) );
+        $this->assertingEquals( ( 32 * 1048576 ), Mumsys_Php::ini_get( 'memory_limit' ) );
 //
 //        $c = ini_set('memory_limit', '1G');
-//        $this->assertEquals(1073741824, Mumsys_Php::ini_get('memory_limit'));
+//        $this->assertingEquals(1073741824, Mumsys_Php::ini_get('memory_limit'));
 //        $c = ini_set('memory_limit', '1T');
-//        $this->assertEquals(1099511627776, Mumsys_Php::ini_get('memory_limit'));
+//        $this->assertingEquals(1099511627776, Mumsys_Php::ini_get('memory_limit'));
 //
 //        $c = ini_set('memory_limit', '1P');
-//        $this->assertEquals(1125899906842624, Mumsys_Php::ini_get('memory_limit'));
+//        $this->assertingEquals(1125899906842624, Mumsys_Php::ini_get('memory_limit'));
 
-        $this->assertEquals( ini_get( 'display_errors' ), Mumsys_Php::ini_get( 'display_errors' ) );
+        $this->assertingEquals( ini_get( 'display_errors' ), Mumsys_Php::ini_get( 'display_errors' ) );
         $this->assertNull( Mumsys_Php::ini_get( 'html_errors' ) );
 
-        $this->assertEquals( '', Mumsys_Php::ini_get( 'hä?WhatsThis?' ) );
+        $this->assertingEquals( '', Mumsys_Php::ini_get( 'hä?WhatsThis?' ) );
         $this->assertNull( Mumsys_Php::ini_get( '' ) );
 
         ini_set( 'memory_limit', $oldLimit );
@@ -168,11 +175,11 @@ class Mumsys_PhpTest
         foreach ( $tests as $key => $expected ) {
             $actual = $this->object->str2bytes( $key );
             $message = $key . ' doesn\'t match ' . $expected;
-            $this->assertEquals( $expected, $actual, $message );
+            $this->assertingEquals( $expected, $actual, $message );
         }
 
-        $this->expectException( 'Mumsys_Php_Exception' );
-        $this->expectExceptionMessage( 'Detection of size failt for "X"' );
+        $this->expectingException( 'Mumsys_Php_Exception' );
+        $this->expectingExceptionMessage( 'Detection of size failt for "X"' );
         $actual = $this->object->str2bytes( '1X' );
     }
 
@@ -180,10 +187,10 @@ class Mumsys_PhpTest
     public function testIn_string()
     {
         $str = 'ABCDEFG';
-        $this->assertEquals( 'CDEFG', Mumsys_Php::in_string( 'CDE', $str, $insensitive = false ) );
-        $this->assertEquals( 'CDEFG', Mumsys_Php::in_string( 'cDe', $str, $insensitive = true ) );
-        $this->assertEquals( 'AB', Mumsys_Php::in_string( 'CDE', $str, $insensitive = false, $before_needle = true ) );
-        $this->assertEquals( 'AB', Mumsys_Php::in_string( 'cDe', $str, $insensitive = true, $before_needle = true ) );
+        $this->assertingEquals( 'CDEFG', Mumsys_Php::in_string( 'CDE', $str, $insensitive = false ) );
+        $this->assertingEquals( 'CDEFG', Mumsys_Php::in_string( 'cDe', $str, $insensitive = true ) );
+        $this->assertingEquals( 'AB', Mumsys_Php::in_string( 'CDE', $str, $insensitive = false, $before_needle = true ) );
+        $this->assertingEquals( 'AB', Mumsys_Php::in_string( 'cDe', $str, $insensitive = true, $before_needle = true ) );
     }
 
     /**
@@ -192,23 +199,23 @@ class Mumsys_PhpTest
     public function test_htmlspecialchars()
     {
         // ENT_QUOTES
-        $this->assertEquals( '&amp;', Mumsys_Php::htmlspecialchars( '&', ENT_QUOTES ) );
-        $this->assertEquals( '&amp; &amp;', Mumsys_Php::htmlspecialchars( '& &amp;', ENT_QUOTES ) );
+        $this->assertingEquals( '&amp;', Mumsys_Php::htmlspecialchars( '&', ENT_QUOTES ) );
+        $this->assertingEquals( '&amp; &amp;', Mumsys_Php::htmlspecialchars( '& &amp;', ENT_QUOTES ) );
         // ENT_COMPAT -> only " > and <
-        $this->assertEquals(
+        $this->assertingEquals(
             '&lt;a href=\'test\'&gt;&amp; Test&lt;/a&gt;',
             Mumsys_Php::htmlspecialchars( '<a href=\'test\'>& Test</a>', ENT_COMPAT )
         );
         // ENT_NOQUOTES no quotes translation
-        $this->assertEquals(
+        $this->assertingEquals(
             '&lt;a href=\'test\' id="123"&gt;&amp; Test&lt;/a&gt;',
             Mumsys_Php::htmlspecialchars( '<a href=\'test\' id="123">& Test</a>', ENT_NOQUOTES )
         );
         // php vs my php function
         $phpphp = htmlspecialchars( "<a href='test'>Test</a>", ENT_QUOTES );
         $myphp = Mumsys_Php::htmlspecialchars( "<a href='test'>Test</a>", ENT_QUOTES );
-        $this->assertEquals( '&lt;a href=&#039;test&#039;&gt;Test&lt;/a&gt;', $phpphp );
-        $this->assertEquals( '&lt;a href=&#039;test&#039;&gt;Test&lt;/a&gt;', $myphp );
+        $this->assertingEquals( '&lt;a href=&#039;test&#039;&gt;Test&lt;/a&gt;', $phpphp );
+        $this->assertingEquals( '&lt;a href=&#039;test&#039;&gt;Test&lt;/a&gt;', $myphp );
 
         // difference between htmlspecialchars and Mumsys_Php::htmlspecialchars
         $phpphp = htmlspecialchars(
@@ -217,32 +224,32 @@ class Mumsys_PhpTest
         $myphp = Mumsys_Php::htmlspecialchars(
             '&copy; &#169; &#982; &forall; &#8704; &#dasgibtsnicht; &#x3B1;', ENT_QUOTES
         );
-        $this->assertEquals( $phpphp, $myphp );
+        $this->assertingEquals( $phpphp, $myphp );
     }
 
     public function test_xhtmlspecialchars()
     {
-        $this->assertEquals( '&', Mumsys_Php::xhtmlspecialchars( '&amp;' ) );
-        $this->assertEquals( '<', Mumsys_Php::xhtmlspecialchars( '&lt;' ) );
-        $this->assertEquals( '>', Mumsys_Php::xhtmlspecialchars( '&gt;' ) );
-        $this->assertEquals( '"', Mumsys_Php::xhtmlspecialchars( '&quot;' ) );
-        $this->assertEquals( "'", Mumsys_Php::xhtmlspecialchars( '&#039;' ) );
+        $this->assertingEquals( '&', Mumsys_Php::xhtmlspecialchars( '&amp;' ) );
+        $this->assertingEquals( '<', Mumsys_Php::xhtmlspecialchars( '&lt;' ) );
+        $this->assertingEquals( '>', Mumsys_Php::xhtmlspecialchars( '&gt;' ) );
+        $this->assertingEquals( '"', Mumsys_Php::xhtmlspecialchars( '&quot;' ) );
+        $this->assertingEquals( "'", Mumsys_Php::xhtmlspecialchars( '&#039;' ) );
 
-        $this->assertEquals( '"""', Mumsys_Php::xhtmlspecialchars( '"&quot;"', ENT_COMPAT ) );
-        $this->assertEquals( '&"&quot;"', Mumsys_Php::xhtmlspecialchars( '&amp;"&quot;"', ENT_NOQUOTES ) );
+        $this->assertingEquals( '"""', Mumsys_Php::xhtmlspecialchars( '"&quot;"', ENT_COMPAT ) );
+        $this->assertingEquals( '&"&quot;"', Mumsys_Php::xhtmlspecialchars( '&amp;"&quot;"', ENT_NOQUOTES ) );
 
     }
 
     public function testPhp_nl2br()
     {
-        $this->assertEquals( "x<br />", Mumsys_Php::nl2br( "x\n", true ) );
-        $this->assertEquals( "x<br /><br />", Mumsys_Php::nl2br( "x\n\n", true ) );
+        $this->assertingEquals( "x<br />", Mumsys_Php::nl2br( "x\n", true ) );
+        $this->assertingEquals( "x<br /><br />", Mumsys_Php::nl2br( "x\n\n", true ) );
 
         $str1 = "<br />\nnew line<br />\nnew line<br />\n";
         $str2 = '<br /><br />new line<br /><br />new line<br /><br />';
-        $this->assertEquals( $str2, Mumsys_Php::nl2br( $str1, true ) );
+        $this->assertingEquals( $str2, Mumsys_Php::nl2br( $str1, true ) );
 
-        $this->assertEquals( "x<br>", Mumsys_Php::nl2br( "x\n", false ) );
+        $this->assertingEquals( "x<br>", Mumsys_Php::nl2br( "x\n", false ) );
     }
 
 
@@ -250,7 +257,7 @@ class Mumsys_PhpTest
     {
         $string = "test<br />";
         $result = "test\n";
-        $this->assertEquals( $result, Mumsys_Php::br2nl( $string, "\n" ) );
+        $this->assertingEquals( $result, Mumsys_Php::br2nl( $string, "\n" ) );
     }
 
 
@@ -260,19 +267,19 @@ class Mumsys_PhpTest
 
         $actual = $this->object->parseUrl( 'file:///' );
         $expected = parse_url( 'file:///' );
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
 
         $expected = parse_url( 'file://' );
-        $this->assertFalse( $expected, '"file://" should return false "file:///" should be valid' );
+        $this->assertingFalse( $expected, '"file://" should return false "file:///" should be valid' );
 
         $actual = $this->object->parseUrl( $url );
         $expected = parse_url( $url );
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
 
         $actual = $this->object->parseUrl( $url, PHP_URL_SCHEME );
         $expected = parse_url( $url, PHP_URL_SCHEME );
-        $this->assertEquals( $expected, $actual );
-        $this->assertEquals( 'https', $actual );
+        $this->assertingEquals( $expected, $actual );
+        $this->assertingEquals( 'https', $actual );
 
 //        try {
 //            $this->object->parseUrl('file://'); // raise exception
@@ -281,7 +288,7 @@ class Mumsys_PhpTest
 //        }
 //        $this->fail('Mumsys_Php_Exception: "file://" not allowed, use "file:///" three slashes "///"!');
 
-        $this->expectException( 'Mumsys_Php_Exception' );
+        $this->expectingException( 'Mumsys_Php_Exception' );
         $this->object->parseUrl( 'file://' ); // raise exception
     }
 
@@ -291,26 +298,26 @@ class Mumsys_PhpTest
 
         $actual1 = $this->object->parseStr( 'file:///' );
         parse_str( 'file:///', $expected1 );
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
 
         $actual1 = $this->object->parseStr( 'abcde' );
         parse_str( 'abcde', $expected1 );
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
 
         $actual1 = $this->object->parseStr( 'a=b&c=d&e' );
         parse_str( 'a=b&c=d&e', $expected1 );
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
         // keys are arrays, values not!
         $actual1 = $this->object->parseStr( 'a[]=b&c[]=d[]&e[]' );
         parse_str( 'a[]=b&c[]=d[]&e[]', $expected1 );
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
 
         // empty string will throw error, php will return array()
-        $this->expectException( 'Mumsys_Php_Exception' );
-        $this->expectExceptionMessageRegExp( '/(Mumsys_Php::parseStr\(\) failt)/i' );
+        $this->expectingException( 'Mumsys_Php_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Mumsys_Php::parseStr\(\) failt)/i' );
         $actual1 = $this->object->parseStr( '' );
         // parse_str('', $expected1);
-        // $this->assertEquals($expected1, $actual1);
+        // $this->assertingEquals($expected1, $actual1);
     }
 
     public function testNumberPad()
@@ -321,8 +328,8 @@ class Mumsys_PhpTest
         $actual2 = $this->object->numberPad( 123, 2, '0' );
         $expected2 = '123';
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
     }
 
 
@@ -339,7 +346,7 @@ class Mumsys_PhpTest
         $php = current( $result );
         $my = Mumsys_Php::current( $array );
         // b=b
-        $this->assertEquals( $php, $my );
+        $this->assertingEquals( $php, $my );
     }
 
 
@@ -348,7 +355,7 @@ class Mumsys_PhpTest
         $have1 =   array('flo'=>'was', 'bee'=>'here', array('in'=>'side'));
         $totest1 = array('flo'=>'was', 'bee'=>'here', array('in'=>'side'));
         $res1 = Mumsys_Php::compareArray( $have1, $totest1, 'vals' );
-        $this->assertEquals( array(), $res1 );
+        $this->assertingEquals( array(), $res1 );
 
         $have2 = array('flo'=>'was', 'bee'=>'here', array('in'=>'side', 'in2'=>'side2'), 'flo'=>'flo', 'was'=>'was');
         $totest2 = array('flo', 'was', 'here', 'flo'=>'flo', 'was'=>'was');
@@ -358,7 +365,7 @@ class Mumsys_PhpTest
         $totest2 = array('flo', 'was', 'here', $have1);
         $res2 = Mumsys_Php::compareArray( $have2, $totest2, 'keys' );
 
-        // to check! $this->assertEquals( array('flo'=>'was','bee'=>'here',array('in'=>'side') ) , $res2 );
+        // to check! $this->assertingEquals( array('flo'=>'was','bee'=>'here',array('in'=>'side') ) , $res2 );
     }
 
 
@@ -386,9 +393,9 @@ class Mumsys_PhpTest
         $matchedKeys2 = Mumsys_Php::array_keys_search_recursive_check( 'name', $bigarray );
         $notFound = Mumsys_Php::array_keys_search_recursive_check( 'noKey', $bigarray );
 
-        $this->assertTrue( $matchedKeys1 );
-        $this->assertTrue( $matchedKeys2 );
-        $this->assertFalse( $notFound );
+        $this->assertingTrue( $matchedKeys1 );
+        $this->assertingTrue( $matchedKeys2 );
+        $this->assertingFalse( $notFound );
     }
 
 
@@ -420,7 +427,7 @@ class Mumsys_PhpTest
             'namex' => 1,
         );
         $matchedKeys1 = Mumsys_Php::array_keys_search_recursive( 'key1', $bigarray, true );
-        $this->assertEquals( array($bigarray), $matchedKeys1 );
+        $this->assertingEquals( array($bigarray), $matchedKeys1 );
 
         $matchedKeys2 = Mumsys_Php::array_keys_search_recursive( 'name', $bigarray, false );
         $expected2 = array(
@@ -428,16 +435,16 @@ class Mumsys_PhpTest
             1 => array('name' => 'me2'),
             2 => array('name' => 'me3')
         );
-        $this->assertEquals( $expected2, $matchedKeys2 );
+        $this->assertingEquals( $expected2, $matchedKeys2 );
 
         $matchedKeys3 = Mumsys_Php::array_keys_search_recursive( 'text', $bigarray, true );
-        $this->assertEquals( array(0 => array('text' => 'something')), $matchedKeys3 );
+        $this->assertingEquals( array(0 => array('text' => 'something')), $matchedKeys3 );
 
         // check reference,
         //$matchedKeys1[0]['name'] = 'new value';
         // print_r($bigarray['key1']['key2']);
         // print_r($matchedKeys1);
-        $this->assertEquals( $matchedKeys2[0]['name'], $bigarray['key1']['key2']['c']['name'] );
+        $this->assertingEquals( $matchedKeys2[0]['name'], $bigarray['key1']['key2']['c']['name'] );
     }
 
 
@@ -463,16 +470,16 @@ class Mumsys_PhpTest
         $actual3 = $this->object->array_merge_recursive( $array1, $array2 );
         $expected3 = array();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
-        $this->assertEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected3, $actual3 );
 
         // not an array argurment exception
         $array1 = array('Uta ruf');
         $array2 = 'foo';
         $message = '/(Mumsys_Php::array_merge_recursive given argument is not an array "foo")/i';
-        $this->expectException( 'Mumsys_Exception' );
-        $this->expectExceptionMessageRegExp( $message );
+        $this->expectingException( 'Mumsys_Exception' );
+        $this->expectingExceptionMessageRegex( $message );
         $this->object->array_merge_recursive( $array1, $array2 );
     }
 
@@ -480,8 +487,8 @@ class Mumsys_PhpTest
     public function testArrayMergeRecursiveExceptionNumArgs()
     {
         $message = '/(Mumsys_Php::array_merge_recursive needs at least two arrays as arguments)/i';
-        $this->expectException( 'Mumsys_Exception' );
-        $this->expectExceptionMessageRegExp( $message );
+        $this->expectingException( 'Mumsys_Exception' );
+        $this->expectingExceptionMessageRegex( $message );
         $this->object->array_merge_recursive( array() );
     }
 
@@ -491,7 +498,7 @@ class Mumsys_PhpTest
         // PHP >= 5.3.0 !!
         if ( PHP_VERSION_ID >= 50300 ) {
             // Mumsys_Php::strstr not implemented in class!
-            $this->assertEquals( '12345', Mumsys_Php::strstr( '12345', '123' ) );
+            $this->assertingEquals( '12345', Mumsys_Php::strstr( '12345', '123' ) );
         }
         if ( PHP_VERSION_ID < 50300 ) {
             $this->markTestIncomplete( 'PHP < 5.3.0; Can not be called.' );
@@ -502,13 +509,13 @@ class Mumsys_PhpTest
     public function test__call()
     {
         // call by callback of a nativ php function
-        $this->assertEquals( 'ABCDEF', $this->object->strstr( 'ABCDEF', 'ABC' ) );
+        $this->assertingEquals( 'ABCDEF', $this->object->strstr( 'ABCDEF', 'ABC' ) );
     }
 
 
     public function testVersion()
     {
-        $this->assertEquals( $this->_version, Mumsys_Php::VERSION );
+        $this->assertingEquals( $this->_version, Mumsys_Php::VERSION );
     }
 
 }

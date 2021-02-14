@@ -47,14 +47,14 @@ class Mumsys_ContextTest
      */
     public function testGetVersion()
     {
-        $this->assertEquals( 'Mumsys_Context ' . $this->_version, $this->_object->getVersion() );
-        $this->assertEquals( $this->_version, $this->_object->getVersionID() );
+        $this->assertingEquals( 'Mumsys_Context ' . $this->_version, $this->_object->getVersion() );
+        $this->assertingEquals( $this->_version, $this->_object->getVersionID() );
 
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue( isset( $possible[$must] ) );
-            $this->assertTrue( ( $possible[$must] == $value ) );
+            $this->assertingTrue( isset( $possible[$must] ) );
+            $this->assertingTrue( ( $possible[$must] == $value ) );
         }
     }
 
