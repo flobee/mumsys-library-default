@@ -31,7 +31,7 @@
  *
  * eg:
     possible: $this->assertArrayHasKey( $key, $array )
-    better  : $this->assertTrue( array_key_exists( $key, $array ) , 'Key not found');
+    php way : $this->assertTrue( array_key_exists( $key, $array ) , 'Key not found');
  *
  * @category    Mumsys
  * @package     Library
@@ -161,7 +161,7 @@ interface Mumsys_Unittest_Testcase_Interface
      *
      * @return boolean Returns true on success
      */
-    public function _checkVersionList( $allList, $myList );
+    public function checkVersionList( $allList, $myList );
 
 
     /**
@@ -172,7 +172,7 @@ interface Mumsys_Unittest_Testcase_Interface
      * @param array $myList List of expected classes, interfaces...
      * @return boolean True on success
      */
-    public function _checkClassList( $list, $myList );
+    public function checkClassList( $list, $myList );
 
 
     /**

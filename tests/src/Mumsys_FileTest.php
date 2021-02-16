@@ -260,7 +260,7 @@ class Mumsys_FileTest
     public function testReadException3()
     {
         $object = new Mumsys_File( array('file' => $this->_fileOk, 'way' => 'w') );
-        $object->setBuffer(3);
+        $object->setBuffer( 3 );
         $regex = '/(Error when reading the file: "'
             . str_replace( '/', '\/', $this->_testsDir )
             . '\/tmp\/Mumsys_FileTest.php.tmp". IsOpen: "Yes".)/';

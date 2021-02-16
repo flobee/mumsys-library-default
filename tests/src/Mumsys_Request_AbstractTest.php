@@ -264,7 +264,7 @@ class Mumsys_Request_AbstractTest
     {
          $this->assertingEquals( $this->_version, Mumsys_Request_Abstract::VERSION );
 
-         $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
+         $this->checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 
 }

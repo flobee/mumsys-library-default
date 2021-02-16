@@ -525,7 +525,7 @@ class Mumsys_Html_TableTest
             . 'all existing tests where checked!';
         $this->assertingEquals( $this->_version, Mumsys_Html_Table::VERSION, $message );
 
-        $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
+        $this->checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 
 }

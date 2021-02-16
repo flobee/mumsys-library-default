@@ -117,7 +117,7 @@ class Mumsys_AbstractTest
     public function testVersions()
     {
         $this->assertingEquals( $this->_version, Mumsys_Abstract::VERSION );
-        $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
+        $this->checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 
 }

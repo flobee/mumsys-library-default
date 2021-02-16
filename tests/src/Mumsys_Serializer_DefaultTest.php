@@ -74,7 +74,7 @@ class Mumsys_Serializer_DefaultTest
         $actualD = $this->_object->unserialize( 'b:0;' );
 
         $this->assertingEquals( 'abc', $actualA );
-        $this->assertingTrue( ($actualB === null ) );
+        $this->assertingTrue( ( $actualB === null ) );
         $this->assertingTrue( $actualC );
         $this->assertingFalse( $actualD );
     }

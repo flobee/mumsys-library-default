@@ -121,9 +121,9 @@ class Mumsys_PhpTest
 
         // not existing url
         $errRepBak = error_reporting();
-        error_reporting(0);
+        error_reporting( 0 );
         $actual = Mumsys_Php::file_exists( 'file:///noWay' );
-        error_reporting($errRepBak);
+        error_reporting( $errRepBak );
         $this->assertingFalse( $actual );
     }
 
@@ -189,8 +189,12 @@ class Mumsys_PhpTest
         $str = 'ABCDEFG';
         $this->assertingEquals( 'CDEFG', Mumsys_Php::in_string( 'CDE', $str, $insensitive = false ) );
         $this->assertingEquals( 'CDEFG', Mumsys_Php::in_string( 'cDe', $str, $insensitive = true ) );
-        $this->assertingEquals( 'AB', Mumsys_Php::in_string( 'CDE', $str, $insensitive = false, $before_needle = true ) );
-        $this->assertingEquals( 'AB', Mumsys_Php::in_string( 'cDe', $str, $insensitive = true, $before_needle = true ) );
+        $this->assertingEquals(
+            'AB', Mumsys_Php::in_string( 'CDE', $str, $insensitive = false, $before_needle = true )
+        );
+        $this->assertingEquals(
+            'AB', Mumsys_Php::in_string( 'cDe', $str, $insensitive = true, $before_needle = true )
+        );
     }
 
     /**

@@ -251,7 +251,7 @@ class Mumsys_FileSystemTest
             'filetype' => $this->_object->getFileType( $this->_testsDir . '/tmp/link' ),
             'is_executable' => true,
             'ext' => '',
-            'mimetype' => finfo_file( finfo_open(FILEINFO_MIME_TYPE), $this->_testsDir . '/tmp/link'),
+            'mimetype' => finfo_file( finfo_open( FILEINFO_MIME_TYPE ), $this->_testsDir . '/tmp/link' ),
             'target' => $this->_testsDir . '/tmp/unittest',
             'owner_name' => @reset( posix_getpwuid( $stat['uid'] ) ),
             'group_name' => @reset( posix_getgrgid( $stat['gid'] ) ),

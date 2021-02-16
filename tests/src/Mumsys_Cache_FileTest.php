@@ -233,7 +233,7 @@ class Mumsys_Cache_FileTest
      */
     public function testgetVersions()
     {
-        $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
+        $this->checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 
 }

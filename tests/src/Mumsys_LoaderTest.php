@@ -106,7 +106,7 @@ class Mumsys_LoaderTest
         $expectedList = array('Mumsys_Counter', 'Mumsys_Timer', 'Mumsys_Abstract');
 
         $this->assertingTrue(
-            $this->_checkClassList( $loadedList, $expectedList ),
+            $this->checkClassList( $loadedList, $expectedList ),
             'Check class list failed'
         );
 
@@ -123,7 +123,7 @@ class Mumsys_LoaderTest
         $loadedList = $this->_object->loadedClassesGet( '' );
         $expectedList = array('Mumsys_Counter', 'Mumsys_Timer', 'Mumsys_Abstract');
 
-        $actual = $this->_checkClassList( $loadedList, $expectedList );
+        $actual = $this->checkClassList( $loadedList, $expectedList );
         $this->assertingTrue( $actual, 'Check class list failed' );
     }
 

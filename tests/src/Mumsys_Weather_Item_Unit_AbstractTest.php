@@ -211,7 +211,7 @@ class Mumsys_Weather_Item_Unit_AbstractTest
     {
         $this->assertingEquals( $this->_version, Mumsys_Weather_Item_Unit_Default::VERSION );
 
-        $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
+        $this->checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 
 }

@@ -76,6 +76,6 @@ class Mumsys_Request_ConsoleTest
     public function testVersions()
     {
          $this->assertingEquals( $this->_version, Mumsys_Request_Console::VERSION );
-         $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
+         $this->checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 }

@@ -150,6 +150,28 @@ class Mumsys_Unittest_Testcase
 
 
     /**
+     * Check multiple regular expressions on a string.
+     *
+     * @param list $patternList List of key/ string pattern pairs where
+     * key/index can contain an identifier/ hint for debuging output
+     * @param string $content Content to test
+     * @param string $message Message to output on failure. Use %1$ for the
+     * array index/identifier and/or %2$s for the regex to get them in the error
+     * string
+     */
+    public function assertingRegExpPlural( array $patternList, $content, $message = '' )
+    {
+        if ( empty( $message ) ) {
+            $message = 'Content not found for case/index "%1$s" regex:"%2$s"';
+        }
+
+        foreach ( $patternList as $case => $regex ) {
+            $this->assertTrue( ( preg_match( $regex, $content ) === 1 ), sprintf( $message, $case, $regex ) );
+        }
+    }
+
+
+    /**
      * Alias of assertInstanceOf() phpunit 7, 8, 9
      * @param string $expected
      * @param mixed $actual
@@ -216,7 +238,7 @@ class Mumsys_Unittest_Testcase
      *
      * @return boolean Returns true on success
      */
-    public function _checkVersionList( $allList, $myList )
+    public function checkVersionList( $allList, $myList )
     {
         foreach ( $myList as $className => $version ) {
             $test = ( $allList[$className] === $version );
@@ -236,7 +258,7 @@ class Mumsys_Unittest_Testcase
      * @param array $myList List of expected classes, interfaces...
      * @return boolean True on success
      */
-    public function _checkClassList( $list, $myList )
+    public function checkClassList( $list, $myList )
     {
         foreach ( $myList as $className ) {
             $this->assertTrue(
@@ -245,6 +267,27 @@ class Mumsys_Unittest_Testcase
         }
 
         return true;
+    }
+
+
+    /**
+     * Helper to test methods behind the scene (private, protected methods)
+     *
+     * Makes accessibility on to be testable.
+     *
+     * @param string $class Name of the class
+     * @param string $method Name of the method to access
+     *
+     * @return ReflectionMethod
+     * @throws ReflectionException
+     */
+    public function getReflectionMethod( string $class, string $method = 'Unknown' )
+    {
+        $object = new ReflectionClass( $class );
+        $action = $object->getMethod( $method );
+        $action->setAccessible( true );
+
+        return $method;
     }
 
 }

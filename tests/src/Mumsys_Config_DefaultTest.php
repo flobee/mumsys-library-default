@@ -186,7 +186,7 @@ class Mumsys_Config_DefaultTest
             . 'all existing tests where checked!';
 
         $this->assertingEquals( $this->_version, Mumsys_Config_Default::VERSION, $message );
-        $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
+        $this->checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 
 }

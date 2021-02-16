@@ -183,7 +183,7 @@ class Mumsys_Array2Xml_DefaultTest
         $this->assertingEquals( -1, Mumsys_Array2Xml_Abstract::TAG_CASE_AS_IS );
 
         $this->assertingEquals( $this->_version, Mumsys_Array2Xml_Default::VERSION );
-        $this->_checkVersionList(
+        $this->checkVersionList(
             $this->_object->getVersions(),
             $this->_versions
         );

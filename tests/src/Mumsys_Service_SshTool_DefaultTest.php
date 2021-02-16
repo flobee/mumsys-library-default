@@ -104,7 +104,7 @@ class Mumsys_Service_SshTool_DefaultTest
             Mumsys_Service_SshTool_Default::VERSION
         );
 
-        $this->_checkVersionList(
+        $this->checkVersionList(
             $this->_object->getVersions(), $this->_versions
         );
     }

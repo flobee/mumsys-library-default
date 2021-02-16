@@ -108,7 +108,7 @@ class Mumsys_Logger_DefaultTest
     public function testVersions()
     {
         $this->assertingEquals( $this->_version, Mumsys_Logger_Default::VERSION );
-        $this->_checkVersionList(
+        $this->checkVersionList(
             $this->_object->getVersions(),
             $this->_versions
         );

@@ -146,6 +146,6 @@ class Mumsys_Request_DefaultTest
     {
          $this->assertingEquals( $this->_version, Mumsys_Request_Default::VERSION );
 
-         $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
+         $this->checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 }

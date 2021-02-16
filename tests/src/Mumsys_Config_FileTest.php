@@ -181,7 +181,7 @@ class Mumsys_Config_FileTest
     public function testVersions()
     {
         $this->assertingEquals( $this->_version, Mumsys_Config_File::VERSION );
-        $this->_checkVersionList( $this->_object->getVersions(), $this->_versions );
+        $this->checkVersionList( $this->_object->getVersions(), $this->_versions );
     }
 
 }
