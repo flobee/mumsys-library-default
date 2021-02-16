@@ -91,7 +91,7 @@ interface Mumsys_Unittest_Testcase_Interface
 
 
     /**
-     * Alias of assertRegExp() phpunit <7, 8, 9.
+     * Alias of assertRegExp(), assertMatchesRegularExpression() phpunit <7, 8, 9.
      * @param string $pattern
      * @param string $string
      * @param string $message
@@ -100,12 +100,24 @@ interface Mumsys_Unittest_Testcase_Interface
 
 
     /**
+     * Check multiple regular expressions in a string.
+     *
+     * @param list $patternList List of key/ pattern pairs where key/index can contain an
+     * identifier/ hint for debuging output
+     * @param string $content Content/ string to test for a match
+     * @param string $message Message to output on failure. Use %1$ for the array index/
+     * identifier and/or %2$s for the regex to get them in the error string
+     */
+    public function assertingRegExpPlural( array $patternList, $content, $message = '' );
+
+
+    /**
      * Alias of assertInstanceOf() phpunit 7, 8, 9
      * @param string $expected
      * @param mixed $actual
      * @param string $message
      */
-    public function assertingInstanceOf( $expected, $actual, $message );
+    public function assertingInstanceOf( $expected, $actual, $message = '' );
 
 
     /**
@@ -117,6 +129,14 @@ interface Mumsys_Unittest_Testcase_Interface
 
 
     /**
+     * Alias of expectExceptionMessage() phpunit 8, 9
+     *
+     * @param string $exceptionMessage
+     */
+    public function expectingExceptionMessage( $exceptionMessage );
+
+
+    /**
      * - Alias of expectExceptionMessageRegExp() phpunit 8
      * - Alias of expectExceptionMessageMatches() phpunit 9
      *
@@ -125,17 +145,10 @@ interface Mumsys_Unittest_Testcase_Interface
     public function expectingExceptionMessageRegex( $regex );
 
 
-    /**
-     * Alias of expectExceptionMessage() phpunit 8, 9
-     *
-     * @param string $exceptionMessage
-     */
-    public function expectingExceptionMessage( $exceptionMessage );
-
-
     //
     // test helper for the mumsys project
     //
+
 
     /**
      * Checks for available class versions.
@@ -160,5 +173,18 @@ interface Mumsys_Unittest_Testcase_Interface
      * @return boolean True on success
      */
     public function _checkClassList( $list, $myList );
+
+
+    /**
+     * Helper to test methods behind the scene (private, protected methods)
+     *
+     * @param string $className Name of the class
+     * @param string $methodName Name of the method to access
+     *
+     * @return ReflectionMethod
+     * @throws ReflectionException
+     */
+    public function getReflectionMethod( string $className, string $methodName = 'Unknown' );
+
 
 }
