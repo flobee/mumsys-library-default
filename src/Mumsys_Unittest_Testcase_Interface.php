@@ -39,7 +39,6 @@
  */
 interface Mumsys_Unittest_Testcase_Interface
 {
-
     //
     // Wrapper methods on top of phpunit
     //
@@ -185,6 +184,5 @@ interface Mumsys_Unittest_Testcase_Interface
      * @throws ReflectionException
      */
     public function getReflectionMethod( string $className, string $methodName = 'Unknown' );
-
 
 }

@@ -6,14 +6,19 @@ php:
 #  - '7.3'
 #  - '7.4'
   - '8.0'
-
-# Off because its too upfront
 #  - nightly
 
+addons:
+  mariadb: '10.5'
+
 before_script: 
+  - sleep 15
 #  - curl -s http://getcomposer.org/installer | php
 #  - php composer.phar install --no-interaction
-  - composer install
+  - composer install || sleep 30 && composer install
+  - ./phing travis
+  - echo "<?php return array('database' => array('type' => 'mysql:mysqli','host' => 'localhost','port' => '3306','username' => 'root','password' => '','db' => 'mumsys', 'charset' => 'utf8','compress' => false,'throwErrors' => true,'debug' => false,'socket' => false)); > tests/config/credentials.php"
+    echo "return array('debug' => true,'database' => array('type' => 'mysql:mysqli','host' => 'localost','port' => '3306','username' => 'root','password' => '','db' => 'mumsys','charset' => 'utf8','compress' => false,'throwErrors' => true,'debug' => false,'socket' => false,'tables' => array('table_access' => 'mumsys_access','table_programs' => 'mumsys_programs','table_blocks' => 'mumsys_blocks','table_sessions' => 'mumsys_sessions','table_sessionsuser' => 'mumsys_sessionsuser','table_config' => 'mumsys_config'))); > tests/config/default.php"
 
 # script: ../vendor/bin/phpunit --no-coverage
 # script: cd tests && ./runTests.sh

@@ -48,4 +48,23 @@
     <target name="all" depends="check,coverage,api" description="Execute all main parts of the package (check,coverage,api)">
     </target>
 
+
+    <!-- travis-ci service see also .travis-ci.yml file -->
+    <target name="travis" description="Run check,coverage,api on travis-ci">
+        <if>
+            <equals arg1="${env.USER}" arg2="travis" />
+            <then>
+                <!-- Externals first -->
+                <!-- <phing target="travis" haltonfailure="true" dir="${coredir}/some/path" /> -->
+                <echo msg="Copy configs" />
+                <copy file=".env-dist" tofile=".env"/>
+                <copy file="tests/config/default.php-dist" tofile="tests/config/default.php"/>
+                <copy file="tests/config/credentials.php-dist" tofile="tests/config/credentials.php"/>
+            </then>
+            <else>
+                <echo msg="Only the user travis should call the travis task!" />
+                <fail message="Only the user travis should call the travis task!" />
+            </else>
+        </if>
+    </target>
 </project>

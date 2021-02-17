@@ -11,11 +11,11 @@ return array(
      */
     'database' => array(
         'type' => 'mysql:mysqli',
-        'host' => 'localost.localdomain',
+        'host' => 'localost',
         'port' => '3306',
         'username' => 'username',
         'password' => 'password',
-        'db' => 'some database name to connect to',
+        'db' => 'mumsys',
         'charset' => 'utf8',
         'compress' => false,
         'throwErrors' => true,
