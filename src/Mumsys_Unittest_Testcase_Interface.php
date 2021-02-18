@@ -90,6 +90,14 @@ interface Mumsys_Unittest_Testcase_Interface
 
 
     /**
+     * Alias of assertNull() phpunit <7, 8, 9
+     * @param mixed $actual
+     * @param string $message Optional error message if test fails
+     */
+    public function assertingNull( $actual, $message = '' );
+
+
+    /**
      * Alias of assertRegExp(), assertMatchesRegularExpression() phpunit <7, 8, 9.
      * @param string $pattern
      * @param string $string

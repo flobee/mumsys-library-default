@@ -145,7 +145,7 @@ class Mumsys_Php_GlobalsTest
         $actual3 = $this->_object->getSessionVar();
         $expected3 = array('HOME' => 'unittest');
 
-        $this->assertNull( $actual1 );
+        $this->assertingNull( $actual1 );
         $this->assertingEquals( $expected2, $actual2 );
         $this->assertingEquals( $expected2, $actual2 );
         $this->assertingEquals( $expected3, $actual3 );

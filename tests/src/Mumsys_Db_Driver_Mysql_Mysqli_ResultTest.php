@@ -285,7 +285,11 @@ class Mumsys_Db_Driver_Mysql_Mysqli_ResultTest
         $this->assertingEquals( true, $xA );
         $this->assertingEquals( true, $xB );
 
-        $regex = '/(mysqli_free_result\(\): Argument #1 \(\$result\) must be of type mysqli_result, string given)/';
+        $regex =
+            // php8
+            '/((mysqli_free_result\(\): Argument #1 \(\$result\) must be of type mysqli_result, string given)'
+            // php7.3|4
+            . '|(mysqli_free_result\(\) expects parameter 1 to be mysqli_result, string given))/';
         $this->expectingExceptionMessageRegex( $regex );
         $this->expectingException( 'Mumsys_Db_Exception' );
         $result->free( 'crapRx' );

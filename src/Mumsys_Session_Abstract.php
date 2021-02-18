@@ -49,7 +49,7 @@ abstract class Mumsys_Session_Abstract
      *
      * @param array $records All session records available
      * @param string $sessionId ID of the current session
-     * @param string $secret Application key/ Installation key
+     * @param string $appKey Application key/ Installation key
      */
     public function __construct( array $records, $sessionId, $appKey )
     {

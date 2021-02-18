@@ -57,7 +57,7 @@ class Mumsys_Cookie_NoneTest
         $actual3 = $this->_object->setRawCookie( '1', '2' );
         $actual4 = $this->_object->unsetCookie( '1' );
 
-        $this->assertNull( $actual1 );
+        $this->assertingNull( $actual1 );
         $this->assertingTrue( $actual2 );
         $this->assertingTrue( $actual3 );
         $this->assertingTrue( $actual4 );

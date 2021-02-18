@@ -407,7 +407,7 @@ class Mumsys_Variable_Manager_DefaultTest
             'username' => new Mumsys_Variable_Item_Default( $this->_config['username'] ));
         $this->assertingEquals( $expected, $this->_object->getItems() );
         $this->assertingEquals( $expected['username'], $this->_object->getItem( 'username' ) );
-        $this->assertNull( $this->_object->getItem( 'unknown' ) );
+        $this->assertingNull( $this->_object->getItem( 'unknown' ) );
     }
 
 

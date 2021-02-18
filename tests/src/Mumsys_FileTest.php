@@ -195,7 +195,7 @@ class Mumsys_FileTest
             throw $ex;
         }
 
-        $this->assertFalse( true, 'Exception not thrown' );
+        $this->assertingFalse( true, 'Exception not thrown' );
     }
 
 
@@ -278,7 +278,7 @@ class Mumsys_FileTest
             throw $ex;
         }
 
-        $this->assertTrue( false, 'Exception not thrown' );
+        $this->assertingTrue( false, 'Exception not thrown' );
     }
 
 

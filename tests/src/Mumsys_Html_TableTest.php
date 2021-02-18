@@ -80,7 +80,7 @@ class Mumsys_Html_TableTest
     {
         $x = $this->_object->setTableProps( array('width' => '500') );
 
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 
@@ -93,8 +93,8 @@ class Mumsys_Html_TableTest
         $x = $this->_object->setHeadlines( true );
         $y = $this->_object->setHeadlines( array('a', 'b', 'c') );
 
-        $this->assertNull( $x );
-        $this->assertNull( $y );
+        $this->assertingNull( $x );
+        $this->assertingNull( $y );
     }
 
 
@@ -154,7 +154,7 @@ class Mumsys_Html_TableTest
     {
         $x = $this->_object->setAutoFill( 'x.x' );
 
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 

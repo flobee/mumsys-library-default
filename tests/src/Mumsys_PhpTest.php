@@ -148,10 +148,10 @@ class Mumsys_PhpTest
 //        $this->assertingEquals(1125899906842624, Mumsys_Php::ini_get('memory_limit'));
 
         $this->assertingEquals( ini_get( 'display_errors' ), Mumsys_Php::ini_get( 'display_errors' ) );
-        $this->assertNull( Mumsys_Php::ini_get( 'html_errors' ) );
+        $this->assertingNull( Mumsys_Php::ini_get( 'html_errors' ) );
 
         $this->assertingEquals( '', Mumsys_Php::ini_get( 'hä?WhatsThis?' ) );
-        $this->assertNull( Mumsys_Php::ini_get( '' ) );
+        $this->assertingNull( Mumsys_Php::ini_get( '' ) );
 
         ini_set( 'memory_limit', $oldLimit );
     }

@@ -40,7 +40,7 @@ class Mumsys_Unittest_Testcase
     /**
      * Version ID information.
      */
-    const VERSION = '3.3.2';
+    const VERSION = '3.13.2';
 
     /**
      * Methods memory container
@@ -136,6 +136,15 @@ class Mumsys_Unittest_Testcase
         parent::assertEmpty( $actual, $message );
     }
 
+    /**
+     * Alias of assertNull() phpunit <7, 8, 9
+     * @param mixed $actual
+     * @param string $message Optional error message if test fails
+     */
+    public function assertingNull( $actual, $message = '' )
+    {
+        parent::assertNull( $actual, $message );
+    }
 
     /**
      * Alias of assertRegExp(), assertMatchesRegularExpression() phpunit <7, 8, 9.

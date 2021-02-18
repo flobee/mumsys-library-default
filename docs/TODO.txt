@@ -1,9 +1,37 @@
 # TODOs
 
-phpunit
+For php8.0
 
-    Update tests: Setup stuff in phpunit-coverage.xml, phpunit.xml and fix
-    issues for a strict test mode
++ Add declare (strict_types=1); to all scripts
+
+    - phpunit
+      
+      Update tests: Setup stuff in phpunit-coverage.xml, phpunit.xml and fix
+      issues for a strict test mode
+
++ Compare stable and unstable. some breaking stuff, some are newer in stable
+  but version update is missing
+
++ Add VERSION to exceptions
+
++ Disalow error_reporting( -1 ); use E_ALL !
+
++ Sync test methods (stable and unstable fist):
+  ```
+find . -type f -iname \*.php | xargs sed -i 's,assertTrue(,assertingTrue(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertFalse(,assertingFalse(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertEquals(,assertingEquals(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertEmpty(,assertingEmpty(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertNull(,assertingNull(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertInstanceOf(,assertingInstanceOf(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertRegExp(,assertingRegExp(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertRegExpPlural(,assertingRegExpPlural(,g';
+find . -type f -iname \*.php | xargs sed -i 's,expectException(,expectingException(,g';
+find . -type f -iname \*.php | xargs sed -i 's,expectExceptionMessage(,expectingExceptionMessage(,g';
+find . -type f -iname \*.php | xargs sed -i 's,expectingExceptionMessageRegExp(,expectingExceptionMessageRegex(,g';
+find . -type f -iname \*.php | xargs sed -i 's,expectExceptionMessageRegExp(,expectingExceptionMessageRegex(,g';
+  ```
+
 
 
 Mumsys_Abstract

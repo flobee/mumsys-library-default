@@ -23,7 +23,7 @@ return array(
         // each target. Deside using this case or the custom case (see below).
         '*', // just enabled for unittests!
 
-        // custome way
+        // custom way
         'otherhost' => array(
             // '*' and 'IdentityFile' are handled the same way. Use the
             // IdentityFile.pub file to authorise the key.

@@ -141,8 +141,8 @@ class Mumsys_Service_SshTool_DefaultTest
      */
     public function testInit()
     {
-        $this->assertNull( $this->_object->init() );
-        $this->assertNull( $this->_object->init() ); // 4CC
+        $this->assertingNull( $this->_object->init() );
+        $this->assertingNull( $this->_object->init() ); // 4CC
     }
 
 

@@ -332,6 +332,7 @@ class Mumsys_Parser_Logline
      * Apply filters.
      *
      * @param array $result list of parameters from the log line.
+     *
      * @return array Retruns an empty array if filters take affect otherwise the
      * it returns the incoming result array
      */

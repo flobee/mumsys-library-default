@@ -113,7 +113,7 @@ class Mumsys_Mail_PHPMailerTest
     {
         /** @var \PHPMailer\PHPMailer\PHPMailer $object */
         $object = $this->_object;
-        $this->assertNull( $object->isQmail() );
+        $this->assertingNull( $object->isQmail() );
 
         $this->expectingException( 'Mumsys_Mail_Exception' );
         $this->expectingExceptionMessage( 'Method "mumsysMailMethod" not implemented' );

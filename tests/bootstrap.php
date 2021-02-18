@@ -13,7 +13,7 @@ if ( in_array( strtolower( @$_SERVER['USER'] ), $denyList ) ) {
 }
 
 ini_set( 'include_path', '../src' . PATH_SEPARATOR . get_include_path() );
-error_reporting( -1 );
+error_reporting( E_ALL );
 ini_set( 'display_errors', 1 );
 
 date_default_timezone_set( 'Europe/Berlin' );

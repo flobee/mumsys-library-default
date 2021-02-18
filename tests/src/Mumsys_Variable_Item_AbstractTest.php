@@ -107,7 +107,7 @@ class Mumsys_Variable_Item_AbstractTest
         $this->assertingEquals( 'somevariable2', $this->_object->getName() );
 
         $x = $this->_object->setName( 'somevariable2' );
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 
@@ -121,7 +121,7 @@ class Mumsys_Variable_Item_AbstractTest
         $this->assertingEquals( 'somevariable2', $this->_object->getValue() );
 
         $x = $this->_object->setValue( 'somevariable2' );
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 

@@ -236,7 +236,7 @@ class Mumsys_Array2Xml_DefaultTest
         $actual2 = $this->_object2->getWriter();
         $this->_object2->setWriter( $actual2 ); // 4 CC
 
-        $this->assertNull( $actual1 );
+        $this->assertingNull( $actual1 );
         $this->assertingInstanceOf( 'Mumsys_Logger_Writer_Interface', $actual2 );
         $this->assertingInstanceOf( 'Mumsys_File', $actual2 );
     }
@@ -248,7 +248,9 @@ class Mumsys_Array2Xml_DefaultTest
     public function testSetWriterException1()
     {
         $this->expectingException( 'Error' );
-        $regex = '/(must be of type Mumsys_Logger_Writer_Interface, Mumsys_Array2Xml_Default given)/i';
+        $regex = '/((must be of type Mumsys_Logger_Writer_Interface, Mumsys_Array2Xml_Default given)'
+            . '|(must implement interface Mumsys_Logger_Writer_Interface))/i';
+
         $this->expectingExceptionMessageRegex( $regex );
 
         $this->_object2->setWriter( $this->_object );

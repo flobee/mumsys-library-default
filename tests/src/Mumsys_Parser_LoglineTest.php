@@ -91,7 +91,7 @@ class Mumsys_Parser_LoglineTest
     {
         $x = $this->_object->setFormat( $this->_format );
 
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 
@@ -102,7 +102,7 @@ class Mumsys_Parser_LoglineTest
     {
         $x = $this->_object->setPattern( 'c5', '(?P<col_5>(\w*))' );
 
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 
@@ -113,7 +113,7 @@ class Mumsys_Parser_LoglineTest
     {
         $x = $this->_object->setHideFilterResults();
 
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 
@@ -124,7 +124,7 @@ class Mumsys_Parser_LoglineTest
     {
         $x = $this->_object->setShowFilterResults();
 
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 
@@ -151,8 +151,8 @@ class Mumsys_Parser_LoglineTest
         $x = $this->_object->addFilter( 'c5', 'delim', true );
         $y = $this->_object->addFilter( 'c5', array('delim', 'del'), false );
 
-        $this->assertNull( $x );
-        $this->assertNull( $y );
+        $this->assertingNull( $x );
+        $this->assertingNull( $y );
     }
 
 

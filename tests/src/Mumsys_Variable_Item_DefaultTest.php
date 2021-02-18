@@ -108,7 +108,7 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testGetSetType()
     {
-        $this->assertNull( $this->_object->setType( $this->_object->getType() ) );
+        $this->assertingNull( $this->_object->setType( $this->_object->getType() ) );
         $this->_object->setType( 'integer' );
         $this->assertingEquals( 'integer', $this->_object->getType() );
 
@@ -214,7 +214,7 @@ class Mumsys_Variable_Item_DefaultTest
         $this->assertingEquals( 'some label', $this->_object->getLabel() );
         // same again
         $x = $this->_object->setLabel( 'some label' );
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
         $this->assertingEquals( 'some label', $this->_object->getLabel() );
 
         // initially no name, no lable

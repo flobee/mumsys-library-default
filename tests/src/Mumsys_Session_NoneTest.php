@@ -57,7 +57,7 @@ class Mumsys_Session_NoneTest
         $this->assertingEquals( 'value1', $actual1 );
         $this->assertingEquals( 'value2', $actual2 );
         $this->assertingEquals( 'value3', $actual3 );
-        $this->assertNull( $actual4 );
+        $this->assertingNull( $actual4 );
 
         $expected1 = array(
             'key1' => 'value1',

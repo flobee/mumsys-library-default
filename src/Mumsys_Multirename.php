@@ -274,8 +274,7 @@ class Mumsys_Multirename
      * Parameters will be validated, defaults set and prepares it for the usage
      * internally.
      *
-     * @param array $config Configuration/ setup parameters. see initSetup() for
-     * help/ a complete list!
+     * @param array $config Configuration/ setup parameters.
      *
      * @return array Returns the new, checked configuration.
      *

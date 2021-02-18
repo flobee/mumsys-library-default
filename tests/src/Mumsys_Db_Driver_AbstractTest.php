@@ -127,7 +127,7 @@ class Mumsys_Db_Driver_AbstractTest
      */
     public function testGetQuery()
     {
-        $this->assertNull( $this->_object->getQuery() );
+        $this->assertingNull( $this->_object->getQuery() );
     }
 
 
@@ -168,8 +168,8 @@ class Mumsys_Db_Driver_AbstractTest
 
         $x = $this->_object->replaceQueryCompareValues( array(1, 2, 3, 4) );
         $this->assertingEquals( 'Invalid query compare value configuration', $x[0] );
-        $this->assertNull( $x[1] );
-        $this->assertNull( $x[2] );
+        $this->assertingNull( $x[1] );
+        $this->assertingNull( $x[2] );
     }
 
 
@@ -204,8 +204,8 @@ class Mumsys_Db_Driver_AbstractTest
 
         $x = $this->_object->replaceQueryOperators( array(1, 2, 3, 4) );
         $this->assertingEquals( 'Invalid query operators configuration', $x[0] );
-        $this->assertNull( $x[1] );
-        $this->assertNull( $x[2] );
+        $this->assertingNull( $x[1] );
+        $this->assertingNull( $x[2] );
     }
 
 
@@ -237,8 +237,8 @@ class Mumsys_Db_Driver_AbstractTest
 
         $x = $this->_object->replaceQuerySortations( array(1, 2, 3, 4) );
         $this->assertingEquals( 'Invalid query sortations configuration', $x[0] );
-        $this->assertNull( $x[1] );
-        $this->assertNull( $x[2] );
+        $this->assertingNull( $x[1] );
+        $this->assertingNull( $x[2] );
     }
 
 
@@ -256,7 +256,7 @@ class Mumsys_Db_Driver_AbstractTest
      */
     public function testGetErrorMessage()
     {
-        $this->assertNull( $this->_object->getErrorMessage() );
+        $this->assertingNull( $this->_object->getErrorMessage() );
     }
 
 
@@ -265,7 +265,7 @@ class Mumsys_Db_Driver_AbstractTest
      */
     public function testGetErrorCode()
     {
-        $this->assertNull( $this->_object->getErrorCode() );
+        $this->assertingNull( $this->_object->getErrorCode() );
     }
 
 
