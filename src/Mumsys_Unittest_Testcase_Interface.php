@@ -31,7 +31,7 @@
  *
  * eg:
     possible: $this->assertArrayHasKey( $key, $array )
-    better  : $this->assertTrue( array_key_exists( $key, $array ) , 'Key not found');
+    php way : $this->assertTrue( array_key_exists( $key, $array ) , 'Key not found');
  *
  * @category    Mumsys
  * @package     Library
@@ -39,7 +39,6 @@
  */
 interface Mumsys_Unittest_Testcase_Interface
 {
-
     //
     // Wrapper methods on top of phpunit
     //
@@ -88,6 +87,14 @@ interface Mumsys_Unittest_Testcase_Interface
      * @return void
      */
     public function assertingEmpty( $actual, $message = '' );
+
+
+    /**
+     * Alias of assertNull() phpunit <7, 8, 9
+     * @param mixed $actual
+     * @param string $message Optional error message if test fails
+     */
+    public function assertingNull( $actual, $message = '' );
 
 
     /**
@@ -161,7 +168,7 @@ interface Mumsys_Unittest_Testcase_Interface
      *
      * @return boolean Returns true on success
      */
-    public function _checkVersionList( $allList, $myList );
+    public function checkVersionList( $allList, $myList );
 
 
     /**
@@ -172,7 +179,7 @@ interface Mumsys_Unittest_Testcase_Interface
      * @param array $myList List of expected classes, interfaces...
      * @return boolean True on success
      */
-    public function _checkClassList( $list, $myList );
+    public function checkClassList( $list, $myList );
 
 
     /**
@@ -185,6 +192,5 @@ interface Mumsys_Unittest_Testcase_Interface
      * @throws ReflectionException
      */
     public function getReflectionMethod( string $className, string $methodName = 'Unknown' );
-
 
 }

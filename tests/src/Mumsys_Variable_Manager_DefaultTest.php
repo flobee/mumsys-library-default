@@ -95,7 +95,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->_config['username']['name'] = 'username';
         $this->_config['username']['value'] = 'unittest';
         $expected = array('username' => new Mumsys_Variable_Item_Default( $this->_config['username'] ));
-        $this->assertEquals( $expected, $this->_object->getItems() );
+        $this->assertingEquals( $expected, $this->_object->getItems() );
     }
 
 
@@ -111,8 +111,8 @@ class Mumsys_Variable_Manager_DefaultTest
         $item->setValue( '' );
         $actual2 = $this->_object->validate();
 
-        $this->assertTrue( $actual1 );
-        $this->assertFalse( $actual2 );
+        $this->assertingTrue( $actual1 );
+        $this->assertingFalse( $actual2 );
     }
 
 
@@ -140,7 +140,7 @@ class Mumsys_Variable_Manager_DefaultTest
             $item->setValue( $value );
 
             $actual = $this->_object->validateType( $item );
-            $this->assertTrue( $actual, print_r( $item->getErrorMessages(), true ) );
+            $this->assertingTrue( $actual, print_r( $item->getErrorMessages(), true ) );
 
             // generate failures
             switch ( $type ) {
@@ -166,11 +166,11 @@ class Mumsys_Variable_Manager_DefaultTest
                     break;
             }
             $actual = $this->_object->validateType( $item );
-            $this->assertFalse( $actual );
+            $this->assertingFalse( $actual );
         }
 
-        $this->expectExceptionMessageRegExp( '/(Type "unittest" not implemented)/i' );
-        $this->expectException( 'Mumsys_Variable_Manager_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Type "unittest" not implemented)/i' );
+        $this->expectingException( 'Mumsys_Variable_Manager_Exception' );
         $item->setType( 'unittest' );
         $this->_object->validateType( $item );
     }
@@ -197,26 +197,26 @@ class Mumsys_Variable_Manager_DefaultTest
             $item->setMaxLength( 4.123 );
 
             $actualA = $this->_object->validateMinMax( $item );
-            $this->assertTrue( $actualA );
+            $this->assertingTrue( $actualA );
 
             // generate failures
             $item->setMinLength( 5 );
             $item->setMaxLength( 1 );
             $actualB = $this->_object->validateMinMax( $item );
-            $this->assertFalse( $actualB );
+            $this->assertingFalse( $actualB );
         }
 
         // for code coverage
         $item = $this->_object->createItem( array('value' => array('unittest', 'a'=>'b', 'c'=>'d')) );
 
         $actualC = $this->_object->validateMinMax( $item );
-        $this->assertTrue( $actualC ); // no min/max set, just return
+        $this->assertingTrue( $actualC ); // no min/max set, just return
 
         $item->setType( 'array' );
         $item->setMinLength( 4 );
         $item->setMaxLength( 1 );
         $actualD = $this->_object->validateMinMax( $item );
-        $this->assertFalse( $actualD );
+        $this->assertingFalse( $actualD );
     }
 
 
@@ -248,9 +248,9 @@ class Mumsys_Variable_Manager_DefaultTest
         ini_set( 'display_errors', $displayErrors );
         error_reporting( $errorReporting );
 
-        $this->assertTrue( $actual1 );
-        $this->assertFalse( $actual2 );
-        $this->assertFalse( $actual3 );
+        $this->assertingTrue( $actual1 );
+        $this->assertingFalse( $actual2 );
+        $this->assertingFalse( $actual3 );
     }
 
 
@@ -268,8 +268,8 @@ class Mumsys_Variable_Manager_DefaultTest
         $item2->setValue( 'noipv4' );
         $actual2 = $this->_object->validateIpv4( $item2 );
 
-        $this->assertTrue( $actual1 );
-        $this->assertFalse( $actual2 );
+        $this->assertingTrue( $actual1 );
+        $this->assertingFalse( $actual2 );
     }
 
 
@@ -287,8 +287,8 @@ class Mumsys_Variable_Manager_DefaultTest
         $item2->setValue( 'noipv6' );
         $actual2 = $this->_object->validateIpv6( $item2 );
 
-        $this->assertTrue( $actual1 );
-        $this->assertFalse( $actual2 );
+        $this->assertingTrue( $actual1 );
+        $this->assertingFalse( $actual2 );
     }
 
 
@@ -322,11 +322,11 @@ class Mumsys_Variable_Manager_DefaultTest
         $item->setValue( 'unittest' );
         $actual5 = $this->_object->isValid( $item );
 
-        $this->assertTrue( $actual1 );
-        $this->assertTrue( $actual2 );
-        $this->assertFalse( $actual3 );
-        $this->assertFalse( $actual4 );
-        $this->assertFalse( $actual5 );
+        $this->assertingTrue( $actual1 );
+        $this->assertingTrue( $actual2 );
+        $this->assertingFalse( $actual3 );
+        $this->assertingFalse( $actual4 );
+        $this->assertingFalse( $actual5 );
     }
 
 
@@ -340,9 +340,9 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->_config['username']['value'] = 'unittest';
         $expected = array(
             'username' => new Mumsys_Variable_Item_Default( $this->_config['username'] ));
-        $this->assertEquals( $expected, $this->_object->getItems() );
-        $this->assertEquals( $expected['username'], $this->_object->getItem( 'username' ) );
-        $this->assertFalse( $this->_object->getItem( 'unknown' ) );
+        $this->assertingEquals( $expected, $this->_object->getItems() );
+        $this->assertingEquals( $expected['username'], $this->_object->getItem( 'username' ) );
+        $this->assertingFalse( $this->_object->getItem( 'unknown' ) );
     }
 
 
@@ -351,14 +351,14 @@ class Mumsys_Variable_Manager_DefaultTest
         $itemA = $this->_object->getItem( 'username' );
         $itemA->setName( 'user2' );
         $this->_object->registerItem( 'user2', $itemA );
-        $this->assertEquals( $itemA, $this->_object->getItem( 'user2' ) );
+        $this->assertingEquals( $itemA, $this->_object->getItem( 'user2' ) );
 
         $itemB = $this->_object->createItem( array('value' => 'some value') );
         $this->_object->registerItem( 'user3', $itemB );
-        $this->assertEquals( $itemB, $this->_object->getItem( 'user3' ) );
+        $this->assertingEquals( $itemB, $this->_object->getItem( 'user3' ) );
 
-        $this->expectExceptionMessageRegExp( '/(Item "username" already set)/i' );
-        $this->expectException( 'Mumsys_Variable_Manager_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Item "username" already set)/i' );
+        $this->expectingException( 'Mumsys_Variable_Manager_Exception' );
         $this->_object->registerItem( 'username', $itemA );
     }
 
@@ -366,10 +366,10 @@ class Mumsys_Variable_Manager_DefaultTest
     {
         $item = $this->_object->getItem( 'username' );
 
-        $this->expectException( 'Mumsys_Variable_Manager_Exception' );
+        $this->expectingException( 'Mumsys_Variable_Manager_Exception' );
         $mesg = 'Item name "username" and item address/key "keyFails" are not identical. '
             . 'Change item "name" or "$key"';
-        $this->expectExceptionMessage( $mesg );
+        $this->expectingExceptionMessage( $mesg );
         $this->_object->registerItem( 'keyFails', $item );
     }
 
@@ -380,7 +380,7 @@ class Mumsys_Variable_Manager_DefaultTest
     {
         $expected = new Mumsys_Variable_Item_Default( $this->_config['username'] );
         $actual = $this->_object->createItem( $this->_config['username'] );
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -397,7 +397,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $actual = $this->_object->getErrorMessages();
         $expected = array('testuser' => array('REQUIRED_MISSING' => 'Missing required value'));
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -431,9 +431,9 @@ class Mumsys_Variable_Manager_DefaultTest
         $actual1 = $this->_object->getMessageTemplates();
         $actual2 = $actual1 = $this->_object->getMessageTemplates( $this->_object->setMessageTemplates( $expected ) );
 
-        $this->assertEquals( $expected, $actual1 );
-        $this->assertEquals( $expected, $actual2 );
-        $this->assertEquals( count( $expected ), count( $actual1 ) );
+        $this->assertingEquals( $expected, $actual1 );
+        $this->assertingEquals( $expected, $actual2 );
+        $this->assertingEquals( count( $expected ), count( $actual1 ) );
     }
 
 
@@ -445,7 +445,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->_object->setMessageTemplate( 'unittest', 'Unittest template message' );
         $actual1 = $this->_object->getMessageTemplates();
 
-        $this->assertEquals( $actual1['unittest'], 'Unittest template message' );
+        $this->assertingEquals( $actual1['unittest'], 'Unittest template message' );
     }
 
 
@@ -460,7 +460,7 @@ class Mumsys_Variable_Manager_DefaultTest
 
         $items = $this->_object->getItems();
         foreach ( $items as $item ) {
-            $this->assertEquals( 'unittest value', $item->getValue() );
+            $this->assertingEquals( 'unittest value', $item->getValue() );
         }
 
         // value for all items
@@ -468,23 +468,23 @@ class Mumsys_Variable_Manager_DefaultTest
         $this->_object->setAttributes( $attributes );
         $items = $this->_object->getItems();
         foreach ( $items as $item ) {
-            $this->assertEquals( '2nd. unittest value', $item->getValue() );
+            $this->assertingEquals( '2nd. unittest value', $item->getValue() );
         }
 
         // labels for some items
         $attributes = array('labels' => array('username' => 'unittest label'));
         $this->_object->setAttributes( $attributes );
         $item = $this->_object->getItem( 'username' );
-        $this->assertEquals( 'unittest label', $item->getLabel() );
+        $this->assertingEquals( 'unittest label', $item->getLabel() );
 
         // "state" for all items
         $attributes = array('state' => 'onSave');
         $this->_object->setAttributes( $attributes );
         $item = $this->_object->getItem( 'username' );
-        $this->assertEquals( 'unittest label', $item->getLabel() );
+        $this->assertingEquals( 'unittest label', $item->getLabel() );
 
-        $this->expectExceptionMessageRegExp( '/(Set item attributes for "unittest" not implemented)/i' );
-        $this->expectException( 'Mumsys_Variable_Manager_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Set item attributes for "unittest" not implemented)/i' );
+        $this->expectingException( 'Mumsys_Variable_Manager_Exception' );
         $attributes = array('unittest' => 'throw an exception');
         $this->_object->setAttributes( $attributes );
     }
@@ -507,8 +507,8 @@ class Mumsys_Variable_Manager_DefaultTest
         $actualB = $this->_object->toArray( 'domain.' );
         $expectedB = array('username' => 'unittest', 'unittest2' => 'Unittest 2');
 
-        $this->assertEquals( $expectedA, $actualA );
-        $this->assertEquals( $expectedB, $actualB );
+        $this->assertingEquals( $expectedA, $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
     }
 
 
@@ -522,7 +522,7 @@ class Mumsys_Variable_Manager_DefaultTest
 
         $actual = $this->_object->getErrorMessages();
         $expected = array();
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -547,8 +547,8 @@ class Mumsys_Variable_Manager_DefaultTest
             )
         );
 
-        $this->assertEquals( array(), $actualA );
-        $this->assertEquals( $expectedB, $actualB );
+        $this->assertingEquals( array(), $actualA );
+        $this->assertingEquals( $expectedB, $actualB );
     }
 
 
@@ -613,15 +613,15 @@ class Mumsys_Variable_Manager_DefaultTest
             )
         );
 
-        $this->assertTrue( $actual1 );
-        $this->assertEquals( $expected1, $actual2 );
-        $this->assertFalse( $actual3 ); // err
-        $this->assertEquals( $expected2, $actual4 ); // in=out on errors
-        $this->assertEquals( $expected5, $actual5 );
-        $this->assertTrue( $actual6 );
-        $this->assertEquals( $expected66, $actual66 );
-        $this->assertEquals( $expected7, $actual7 ); // casted to empty string
-        $this->assertEquals( $expected8, $actual8 );
+        $this->assertingTrue( $actual1 );
+        $this->assertingEquals( $expected1, $actual2 );
+        $this->assertingFalse( $actual3 ); // err
+        $this->assertingEquals( $expected2, $actual4 ); // in=out on errors
+        $this->assertingEquals( $expected5, $actual5 );
+        $this->assertingTrue( $actual6 );
+        $this->assertingEquals( $expected66, $actual66 );
+        $this->assertingEquals( $expected7, $actual7 ); // casted to empty string
+        $this->assertingEquals( $expected8, $actual8 );
     }
 
 
@@ -661,8 +661,8 @@ class Mumsys_Variable_Manager_DefaultTest
             )
         );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected2, $actual2 );
     }
 
 
@@ -674,7 +674,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $message = 'A new version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
-        $this->assertEquals( $this->_version, Mumsys_Variable_Manager_Default::VERSION, $message );
+        $this->assertingEquals( $this->_version, Mumsys_Variable_Manager_Default::VERSION, $message );
     }
 
 }

@@ -24,7 +24,7 @@ class MumsysDependencyChecksTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $production = 'production';
         $testing = 'testing/ unit tests';
@@ -70,7 +70,7 @@ class MumsysDependencyChecksTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
 
     }
@@ -84,7 +84,7 @@ class MumsysDependencyChecksTest
                 $ext,
                 $usage
             );
-            $this->assertTrue( extension_loaded( $ext ), $mesg );
+            $this->assertingTrue( extension_loaded( $ext ), $mesg );
         }
     }
 
@@ -111,7 +111,7 @@ class MumsysDependencyChecksTest
                 '"' . implode( '"|"', $possible ) . '"',
                 $actual
             );
-            $this->assertEquals( $expected, $actual, $mesg );
+            $this->assertingEquals( $expected, $actual, $mesg );
         }
     }
 

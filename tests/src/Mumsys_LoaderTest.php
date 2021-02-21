@@ -44,16 +44,16 @@ class Mumsys_LoaderTest
 
     public function testLoadException1()
     {
-        $this->expectException( 'Mumsys_Exception' );
-        $this->expectExceptionMessage( 'Error! could not load: "Mumsys_NoExists".' );
+        $this->expectingException( 'Mumsys_Exception' );
+        $this->expectingExceptionMessage( 'Error! could not load: "Mumsys_NoExists".' );
         $o4 = $this->object->load( 'Mumsys_NoExists', array() );
     }
 
 
     public function testLoadException2()
     {
-        $this->expectException( 'Mumsys_Exception' );
-        $this->expectExceptionMessage( 'Error! could not load: "Mumsys_Templates_Base".' );
+        $this->expectingException( 'Mumsys_Exception' );
+        $this->expectingExceptionMessage( 'Error! could not load: "Mumsys_Templates_Base".' );
         $o4 = $this->object->load( 'Mumsys_Templates_Base', array() );
     }
 
@@ -61,7 +61,7 @@ class Mumsys_LoaderTest
     public function testAutoload()
     {
         $this->object->autoload( 'Mumsys_Timer' );
-        $this->assertTrue( class_exists( 'Mumsys_Timer', $autoload = true ) );
+        $this->assertingTrue( class_exists( 'Mumsys_Timer', $autoload = true ) );
     }
 
 
@@ -70,12 +70,12 @@ class Mumsys_LoaderTest
         $actual = $this->object->loadedClassesGet();
         $expected = array();
 
-        $this->assertEquals( is_array( $expected ), is_array( $actual ) );
+        $this->assertingEquals( is_array( $expected ), is_array( $actual ) );
     }
 
     public function testGetVersionID()
     {
-        $this->assertEquals( $this->_version, Mumsys_Loader::VERSION );
+        $this->assertingEquals( $this->_version, Mumsys_Loader::VERSION );
     }
 
 }

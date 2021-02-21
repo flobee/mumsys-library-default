@@ -72,26 +72,26 @@ class Mumsys_SessionTest
         $expected7 = 'dingding';
 
         // get
-        $this->assertEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1, $actual1 );
         // __destruct
-        $this->assertEquals( $expected2, $actual2 );
+        $this->assertingEquals( $expected2, $actual2 );
         // getID
-        $this->assertEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected3, $actual3 );
         // register
-        $this->assertEquals( $expected4, $actual4 );
+        $this->assertingEquals( $expected4, $actual4 );
         // getCurrent
-        $this->assertEquals( $expected5, $actual5 );
+        $this->assertingEquals( $expected5, $actual5 );
         // clear
-        $this->assertEquals( $expected6, $actual6 );
+        $this->assertingEquals( $expected6, $actual6 );
         // test default return
-        $this->assertEquals( $expected7, $actual7 );
+        $this->assertingEquals( $expected7, $actual7 );
 
         // version checks
-        $this->assertEquals( 'Mumsys_Session 1.0.0', $this->_object->getVersion() );
+        $this->assertingEquals( 'Mumsys_Session 1.0.0', $this->_object->getVersion() );
 
         // test register existing
-        $this->expectException( 'Mumsys_Session_Exception' );
-        $this->expectExceptionMessage( 'Session key "testkey" exists' );
+        $this->expectingException( 'Mumsys_Session_Exception' );
+        $this->expectingExceptionMessage( 'Session key "testkey" exists' );
         $this->_object->register( 'testkey', array('val5', 'val6') );
 
         echo 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
