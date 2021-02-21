@@ -73,7 +73,7 @@ class Mumsys_Variable_Item_AbstractTest
 
         $object = new Mumsys_Variable_Item_Default( $config );
 
-        $this->assertEquals( $expected, $object->filtersGet( true ) );
+        $this->assertingEquals( $expected, $object->filtersGet( true ) );
     }
 
     /**
@@ -82,7 +82,7 @@ class Mumsys_Variable_Item_AbstractTest
     public function test__toString()
     {
         $this->_object->setValue( 'unittest' );
-        $this->assertEquals( $this->_object->getValue(), $this->_object );
+        $this->assertingEquals( $this->_object->getValue(), $this->_object );
     }
 
 
@@ -93,7 +93,7 @@ class Mumsys_Variable_Item_AbstractTest
     {
         $config = $this->_config;
         unset( $config['invalid'] );
-        $this->assertEquals( $config, $this->_object->getItemValues() );
+        $this->assertingEquals( $config, $this->_object->getItemValues() );
     }
 
 
@@ -104,10 +104,10 @@ class Mumsys_Variable_Item_AbstractTest
     public function testGetSetName()
     {
         $this->_object->setName( 'somevariable2' );
-        $this->assertEquals( 'somevariable2', $this->_object->getName() );
+        $this->assertingEquals( 'somevariable2', $this->_object->getName() );
 
         $x = $this->_object->setName( 'somevariable2' );
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 
@@ -118,10 +118,10 @@ class Mumsys_Variable_Item_AbstractTest
     public function testGetSetValue()
     {
         $this->_object->setValue( 'somevariable2' );
-        $this->assertEquals( 'somevariable2', $this->_object->getValue() );
+        $this->assertingEquals( 'somevariable2', $this->_object->getValue() );
 
         $x = $this->_object->setValue( 'somevariable2' );
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 
@@ -133,7 +133,7 @@ class Mumsys_Variable_Item_AbstractTest
     public function testGetSetErrorMessages()
     {
         $expected = array('invalidArgument' => 'Item property "invalid" can\'t be set for value "invalid key"');
-        $this->assertEquals( $expected, $this->_object->getErrorMessages() );
+        $this->assertingEquals( $expected, $this->_object->getErrorMessages() );
 
         $this->_object->setErrorMessage( 'k1', 'v1' );
         $this->_object->setErrorMessage( 'k2', 'v2' );
@@ -141,7 +141,7 @@ class Mumsys_Variable_Item_AbstractTest
         $list = $this->_object->getErrorMessages();
         $this->_object->setErrorMessages( $list );
 
-        $this->assertEquals( $list, $this->_object->getErrorMessages() );
+        $this->assertingEquals( $list, $this->_object->getErrorMessages() );
     }
 
     /**
@@ -150,13 +150,13 @@ class Mumsys_Variable_Item_AbstractTest
      */
     public function testIsValid()
     {
-        $this->assertFalse( $this->_object->isValid() );
+        $this->assertingFalse( $this->_object->isValid() );
 
         $this->_object->setValidated( true );
-        $this->assertTrue( $this->_object->isValid() );
+        $this->assertingTrue( $this->_object->isValid() );
 
         $this->_object->setValidated( true );
-        $this->assertTrue( $this->_object->isValid() );
+        $this->assertingTrue( $this->_object->isValid() );
     }
 
 
@@ -226,17 +226,17 @@ class Mumsys_Variable_Item_AbstractTest
         $expected7 = array();
         $actual7 = $this->_object->filtersGet( true );
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected1['onView'], $actual2 );
-        $this->assertEquals( $expected1['onSave'], $actual3 );
-        $this->assertEquals( $expected1['onEdit'], $actual4 );
-        $this->assertEquals( $expected1['before'], $actual5a );
-        $this->assertEquals( $expected1['before'], $actual5b );
-        $this->assertEquals( $expected1['after'], $actual6a );
-        $this->assertEquals( $expected1['after'], $actual6b );
-        $this->assertEquals( $expected5, $actual5 );
-        $this->assertEquals( $expected6, $actual6 );
-        $this->assertEquals( $expected7, $actual7 );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1['onView'], $actual2 );
+        $this->assertingEquals( $expected1['onSave'], $actual3 );
+        $this->assertingEquals( $expected1['onEdit'], $actual4 );
+        $this->assertingEquals( $expected1['before'], $actual5a );
+        $this->assertingEquals( $expected1['before'], $actual5b );
+        $this->assertingEquals( $expected1['after'], $actual6a );
+        $this->assertingEquals( $expected1['after'], $actual6b );
+        $this->assertingEquals( $expected5, $actual5 );
+        $this->assertingEquals( $expected6, $actual6 );
+        $this->assertingEquals( $expected7, $actual7 );
     }
 
 
@@ -308,16 +308,16 @@ class Mumsys_Variable_Item_AbstractTest
         $expected7 = array();
         $actual7 = $this->_object->callbacksGet();
 
-        $this->assertEquals( $expected1, $actual1 );
-        $this->assertEquals( $expected1['onView'], $actual2 );
-        $this->assertEquals( $expected1['onSave'], $actual3 );
-        $this->assertEquals( $expected1['onEdit'], $actual4 );
-        $this->assertEquals( $expected1['before'], $actual5a );
-        $this->assertEquals( $expected1['after'], $actual6a );
-        $this->assertEquals( $expected1['after'], $actual6b );
+        $this->assertingEquals( $expected1, $actual1 );
+        $this->assertingEquals( $expected1['onView'], $actual2 );
+        $this->assertingEquals( $expected1['onSave'], $actual3 );
+        $this->assertingEquals( $expected1['onEdit'], $actual4 );
+        $this->assertingEquals( $expected1['before'], $actual5a );
+        $this->assertingEquals( $expected1['after'], $actual6a );
+        $this->assertingEquals( $expected1['after'], $actual6b );
 
-        $this->assertEquals( $expected6, $actual6 );
-        $this->assertEquals( $expected7, $actual7 );
+        $this->assertingEquals( $expected6, $actual6 );
+        $this->assertingEquals( $expected7, $actual7 );
     }
 
     /**
@@ -327,7 +327,7 @@ class Mumsys_Variable_Item_AbstractTest
     public function testIsSetModified()
     {
         $this->_object->setModified();
-        $this->assertTrue( $this->_object->isModified() );
+        $this->assertingTrue( $this->_object->isModified() );
     }
 
     /**
@@ -338,10 +338,10 @@ class Mumsys_Variable_Item_AbstractTest
     public function testStateGetSet()
     {
         $this->_object->stateSet( 'onEdit' );
-        $this->assertEquals( 'onEdit', $this->_object->stateGet() );
+        $this->assertingEquals( 'onEdit', $this->_object->stateGet() );
 
-        $this->expectExceptionMessageRegExp( '/(State "xxx" unknown)/i' );
-        $this->expectException( 'Mumsys_Variable_Item_Exception' );
+        $this->expectingExceptionMessageRegex( '/(State "xxx" unknown)/i' );
+        $this->expectingException( 'Mumsys_Variable_Item_Exception' );
         $this->_object->stateSet( 'xxx' );
     }
 
@@ -352,7 +352,7 @@ class Mumsys_Variable_Item_AbstractTest
     public function testStatesGet()
     {
         $expected = array('onEdit','onView', 'onSave', 'before', 'after');
-        $this->assertEquals( $expected, $this->_object->statesGet() );
+        $this->assertingEquals( $expected, $this->_object->statesGet() );
     }
 
     /**
@@ -363,7 +363,7 @@ class Mumsys_Variable_Item_AbstractTest
         $message = 'A new version exists. You should have a look at '
             . 'the code coverage to verify all code was tested and not only '
             . 'all existing tests where checked!';
-        $this->assertEquals( $this->_version, Mumsys_Variable_Item_Abstract::VERSION, $message );
+        $this->assertingEquals( $this->_version, Mumsys_Variable_Item_Abstract::VERSION, $message );
     }
 
 }

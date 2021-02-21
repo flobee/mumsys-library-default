@@ -24,12 +24,12 @@ If you like it, use it, feel free to make it better. Commits should be done to
 the unstable branch.
 
 Benefits: 
-- PHP 7+ (Also PHP 5 support, PHP4 Off!)
+- PHP 7+ (Mostly works with PHP 5, but php7.3++ first, PHP4 Off!)
 - Speed, speed speed. The library dosnt cost much ressources
 - No namespaces
 - No complicated autoloader
 - Nearly a framework but: KISS (Keep It Simple St... develpoper :-) )
-- Has interfaces to be staight. Downgrade maintainance time
+- Has interfaces to be straight. Downgrade maintainance time
 - Simple interfaces
 - Convention over configuration
 - Tests are nearly 100% and always a must have

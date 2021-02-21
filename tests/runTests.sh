@@ -1,0 +1,1 @@
+../misc/testing/runTests.sh

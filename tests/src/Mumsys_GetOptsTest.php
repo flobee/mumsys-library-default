@@ -82,6 +82,8 @@ class Mumsys_GetOptsTest
     {
         // use server vars, not input parameters
         $x = new Mumsys_GetOpts( $this->opts );
+
+        $this->assertingInstanceOf( Mumsys_GetOpts::class, $x );
     }
 
     // for 100% code coverage
@@ -91,6 +93,8 @@ class Mumsys_GetOptsTest
         $inp[] = '--help';
         $inp[] = '--no-help';
         $x = new Mumsys_GetOpts( $this->opts, $inp );
+
+        $this->assertingInstanceOf( Mumsys_GetOpts::class, $x );
     }
 
 
@@ -105,13 +109,13 @@ class Mumsys_GetOptsTest
         $actual = ob_get_clean();
 
         $regex = 'Option "--no-unknown" not found in option list\/configuration';
-        $this->assertTrue( ( preg_match( '/' . $regex . '/im', $actual ) === 1 ) );
+        $this->assertingTrue( ( preg_match( '/' . $regex . '/im', $actual ) === 1 ) );
     }
 
     public function testConstructException()
     {
-        $this->expectException( 'Mumsys_GetOpts_Exception' );
-        $this->expectExceptionMessage(
+        $this->expectingException( 'Mumsys_GetOpts_Exception' );
+        $this->expectingExceptionMessage(
             'Empty options detected. Can not parse shell arguments'
         );
         $x = new Mumsys_GetOpts( array(), $input = array() );
@@ -120,8 +124,8 @@ class Mumsys_GetOptsTest
 
     public function testConstructException2()
     {
-        $this->expectException( 'Mumsys_GetOpts_Exception' );
-        $this->expectExceptionMessage( 'Missing value for parameter "-h"' . PHP_EOL );
+        $this->expectingException( 'Mumsys_GetOpts_Exception' );
+        $this->expectingExceptionMessage( 'Missing value for parameter "-h"' . PHP_EOL );
         $options = array(
             '-h:',
             '--action:' => 'Action to call: finalize, cron, import',
@@ -148,8 +152,8 @@ class Mumsys_GetOptsTest
             'help' => true
         );
 
-        $this->assertEquals( $expected, $actual1 );
-        $this->assertEquals( $expected, $actual2 );
+        $this->assertingEquals( $expected, $actual1 );
+        $this->assertingEquals( $expected, $actual2 );
     }
 
     public function testGetMapping()
@@ -173,7 +177,7 @@ class Mumsys_GetOptsTest
             '--no-coverage' => '--no-coverage',
         );
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -181,13 +185,13 @@ class Mumsys_GetOptsTest
     {
         $actual = $this->_object->getCmd();
         $expected = '--verbose --input i_input --bits b_input -f f_param --help';
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
 
         $input = array('program', '--verbose', '--input', "true", '--bits', 'false', '-f', 'f_param', '--no-f');
         $this->_object = new Mumsys_GetOpts( $this->opts, $input );
         $actual = $this->_object->getCmd();
         $expected = '--verbose --input true --bits false --no-f';
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -196,10 +200,10 @@ class Mumsys_GetOptsTest
         $o = new Mumsys_GetOpts( array('-y:'), array('cmd', '-y', 'yes') );
         $actual = $o->getCmd();
         $expected = '-y yes';
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
 
-        $this->expectException( 'Mumsys_GetOpts_Exception' );
-        $this->expectExceptionMessage( 'Missing value for parameter "-x"' );
+        $this->expectingException( 'Mumsys_GetOpts_Exception' );
+        $this->expectingExceptionMessage( 'Missing value for parameter "-x"' );
         $o = new Mumsys_GetOpts( array('-x:'), array('cmd', '-x') );
         $actual = $o->getCmd();
     }
@@ -222,7 +226,7 @@ class Mumsys_GetOptsTest
             . '--no-coverage'
         ;
 
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -233,8 +237,8 @@ class Mumsys_GetOptsTest
         $possible = $this->_object->getVersions();
 
         foreach ( $this->_versions as $must => $value ) {
-            $this->assertTrue( isset( $possible[$must] ) );
-            $this->assertEquals( $possible[$must], $value );
+            $this->assertingTrue( isset( $possible[$must] ) );
+            $this->assertingEquals( $possible[$must], $value );
         }
     }
 

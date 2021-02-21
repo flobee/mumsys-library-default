@@ -6,7 +6,6 @@
 class Mumsys_LoggerTest
     extends Mumsys_Unittest_Testcase
 {
-
     /**
      * @var Mumsys_Logger
      */
@@ -57,6 +56,7 @@ class Mumsys_LoggerTest
         $opts['lf'] = "\n";
 
         $object = new Mumsys_Logger( $opts );
+        $this->assertingInstanceOf( Mumsys_Logger::class, $object );
     }
 
     // for 100% code coverage
@@ -72,94 +72,98 @@ class Mumsys_LoggerTest
         $_SERVER['REMOTE_USER'] = 'flobee';
         $object = new Mumsys_Logger( $opts );
 
-        unset( $opts['username'], $_SERVER['REMOTE_USER'], $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'], $_SERVER['LOGNAME'] );
+        unset(
+            $opts['username'], $_SERVER['REMOTE_USER'], $_SERVER['PHP_AUTH_USER'],
+            $_SERVER['USER'], $_SERVER['LOGNAME']
+        );
         $object = new Mumsys_Logger( $opts );
 
         $_SERVER['LOGNAME'] = 'God';
         $object = new Mumsys_Logger( $opts );
+        $this->assertingInstanceOf( Mumsys_Logger::class, $object );
     }
 
 
     public function testGetLogfile()
     {
-        $this->assertEquals( $this->_opts['logfile'], $this->_object->getLogFile() );
+        $this->assertingEquals( $this->_opts['logfile'], $this->_object->getLogFile() );
     }
 
 
     public function testLevelNameGet()
     {
-        $this->assertEquals( 'EMERG', $this->_object->levelNameGet( 0 ) );
-        $this->assertEquals( 'ALERT', $this->_object->levelNameGet( 1 ) );
-        $this->assertEquals( 'CRIT', $this->_object->levelNameGet( 2 ) );
-        $this->assertEquals( 'ERR', $this->_object->levelNameGet( 3 ) );
-        $this->assertEquals( 'WARN', $this->_object->levelNameGet( 4 ) );
-        $this->assertEquals( 'NOTICE', $this->_object->levelNameGet( 5 ) );
-        $this->assertEquals( 'INFO', $this->_object->levelNameGet( 6 ) );
-        $this->assertEquals( 'DEBUG', $this->_object->levelNameGet( 7 ) );
+        $this->assertingEquals( 'EMERG', $this->_object->levelNameGet( 0 ) );
+        $this->assertingEquals( 'ALERT', $this->_object->levelNameGet( 1 ) );
+        $this->assertingEquals( 'CRIT', $this->_object->levelNameGet( 2 ) );
+        $this->assertingEquals( 'ERR', $this->_object->levelNameGet( 3 ) );
+        $this->assertingEquals( 'WARN', $this->_object->levelNameGet( 4 ) );
+        $this->assertingEquals( 'NOTICE', $this->_object->levelNameGet( 5 ) );
+        $this->assertingEquals( 'INFO', $this->_object->levelNameGet( 6 ) );
+        $this->assertingEquals( 'DEBUG', $this->_object->levelNameGet( 7 ) );
 
-        $this->assertEquals( 'unknown', $this->_object->levelNameGet( 999 ) );
+        $this->assertingEquals( 'unknown', $this->_object->levelNameGet( 999 ) );
     }
 
 
     public function testEmerg()
     {
-        $this->assertEquals( 'log emergency', trim( $this->_object->emerg( 'log emergency' ) ) );
+        $this->assertingEquals( 'log emergency', trim( $this->_object->emerg( 'log emergency' ) ) );
     }
 
 
     public function testAlert()
     {
-        $this->assertEquals( 'log alert', trim( $this->_object->alert( 'log alert' ) ) );
+        $this->assertingEquals( 'log alert', trim( $this->_object->alert( 'log alert' ) ) );
     }
 
 
     public function testCrit()
     {
-        $this->assertEquals( 'log critical', trim( $this->_object->crit( 'log critical' ) ) );
+        $this->assertingEquals( 'log critical', trim( $this->_object->crit( 'log critical' ) ) );
     }
 
 
     public function testErr()
     {
-        $this->assertEquals( 'log error', trim( $this->_object->err( 'log error' ) ) );
+        $this->assertingEquals( 'log error', trim( $this->_object->err( 'log error' ) ) );
     }
 
 
     public function testWarn()
     {
-        $this->assertEquals( 'log warning', trim( $this->_object->warn( 'log warning' ) ) );
+        $this->assertingEquals( 'log warning', trim( $this->_object->warn( 'log warning' ) ) );
     }
 
 
     public function testNotice()
     {
-        $this->assertEquals( 'log notice', trim( $this->_object->notice( 'log notice' ) ) );
+        $this->assertingEquals( 'log notice', trim( $this->_object->notice( 'log notice' ) ) );
     }
 
 
     public function testInfo()
     {
-        $this->assertEquals( 'log info', trim( $this->_object->info( 'log info' ) ) );
+        $this->assertingEquals( 'log info', trim( $this->_object->info( 'log info' ) ) );
     }
 
 
     public function testDebug()
     {
-        $this->assertEquals( 'log debug', trim( $this->_object->debug( 'log debug' ) ) );
+        $this->assertingEquals( 'log debug', trim( $this->_object->debug( 'log debug' ) ) );
     }
 
 
     public function testLog()
     {
-        $this->assertEquals( 'long log', trim( $this->_object->log( 'long log', 7 ) ) );
+        $this->assertingEquals( 'long log', trim( $this->_object->log( 'long log', 7 ) ) );
 
         $exp = 'ff_0: array("0" => "long log");';
-        $this->assertEquals( $exp, trim( $this->_object->log( array('long log'), 7 ) ) );
+        $this->assertingEquals( $exp, trim( $this->_object->log( array('long log'), 7 ) ) );
     }
 
     public function testLogException()
     {
-        $this->expectException( 'Mumsys_Exception' );
+        $this->expectingException( 'Mumsys_Exception' );
         $this->_object->log( 'invalid log level', 99 );
     }
 
@@ -187,9 +191,9 @@ class Mumsys_LoggerTest
         $y3 = 'x ff_0: array("0" => "test1");' . $object->lf
             . 'x ff_0: array("1" => "test2");';
 
-        $this->assertEquals( 'test', trim( $x1 ) );
-        $this->assertEquals( 'x test', trim( $x2 ) );
-        $this->assertEquals( $y3, trim( $x3 ) );
+        $this->assertingEquals( 'test', trim( $x1 ) );
+        $this->assertingEquals( 'x test', trim( $x2 ) );
+        $this->assertingEquals( $y3, trim( $x3 ) );
     }
 
 
@@ -197,8 +201,8 @@ class Mumsys_LoggerTest
     {
         $opts = $this->_opts;
         $opts['lineFormat'] = '';
-        $this->expectException( 'Mumsys_Logger_Exception' );
-        $this->expectExceptionMessage( 'Log format empty' );
+        $this->expectingException( 'Mumsys_Logger_Exception' );
+        $this->expectingExceptionMessage( 'Log format empty' );
 
         $object = new Mumsys_Logger( $opts );
     }
@@ -206,8 +210,8 @@ class Mumsys_LoggerTest
 
     public function testWrite()
     {
-        $this->expectException( 'Mumsys_File_Exception' );
-        $this->expectExceptionMessage(
+        $this->expectingException( 'Mumsys_File_Exception' );
+        $this->expectingExceptionMessage(
             'Can not write to file: "' . $this->_testsDir
             . '/tmp/Mumsys_LoggerTest_defaultfile.test". '
             . 'IsOpen: "Yes", Is writeable: "Yes".'

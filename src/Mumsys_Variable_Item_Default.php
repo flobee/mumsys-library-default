@@ -39,7 +39,7 @@ class Mumsys_Variable_Item_Default
     /**
      * Version ID information
      */
-    const VERSION = '1.1.3';
+    const VERSION = '1.1.4';
 
     /**
      * List of key/value pairs (property/[boolean: en|dis-abled] handled by
@@ -78,7 +78,7 @@ class Mumsys_Variable_Item_Default
     {
         // set allowed whitelist
         foreach ( $this->_properties as $key => $value ) {
-            if ( isset( $props[$key] ) ) {
+            if ( $value === true && isset( $props[$key] ) ) {
                 $this->_input[$key] = $props[$key];
             }
         }
@@ -209,18 +209,23 @@ class Mumsys_Variable_Item_Default
     /**
      * Returns the list of regular expressions.
      *
+     * @deprecated since version 2.0.0 If a value will be set it must fit
+     *
      * @return array List of regular expression or null
      */
     public function getRegex()
     {
-        $value = & $this->_input['regex'];
         $return = array();
 
-        if ( isset( $value ) ) {
+        if ( isset( $this->_input['regex'] )
+            && !empty($this->_input['regex']) // to be removed in future
+        ) {
+            $value = $this->_input['regex'];
             if ( is_array( $value ) ) {
-                $return = (array) $value;
+                $return = $value;
             } else if ( is_string( $value ) && $value > '' ) {
-                $return = $this->_input['regex'] = array($this->_input['regex']);
+                $return = array($value);
+                $this->_input['regex'] = array( (string)$value );
             }
         }
 
@@ -239,7 +244,7 @@ class Mumsys_Variable_Item_Default
             return;
         }
 
-        $this->_input['regex'] = array((string) $value);
+        $this->_input['regex'] = array( (string)$value );
         $this->_modified = true;
     }
 
@@ -251,7 +256,7 @@ class Mumsys_Variable_Item_Default
      */
     public function addRegex( $value )
     {
-        $this->_input['regex'][] = (string) $value;
+        $this->_input['regex'][] = (string)$value;
         $this->_modified = true;
     }
 
@@ -322,9 +327,9 @@ class Mumsys_Variable_Item_Default
     public function getLabel( $altnKey = 'name', $default = '' )
     {
         if ( isset( $this->_input['label'] ) ) {
-            $return = (string) $this->_input['label'];
+            $return = (string)$this->_input['label'];
         } else if ( isset( $this->_input[$altnKey] ) ) {
-            $return = (string) $this->_input[$altnKey];
+            $return = (string)$this->_input[$altnKey];
         } else {
             $return = $default;
         }

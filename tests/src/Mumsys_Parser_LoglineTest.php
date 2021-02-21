@@ -80,7 +80,7 @@ class Mumsys_Parser_LoglineTest
         );
         $object = new Mumsys_Parser_Logline( $this->_format, $this->_patterns );
 
-        $this->assertInstanceOf( 'Mumsys_Parser_Logline', $object );
+        $this->assertingInstanceOf( 'Mumsys_Parser_Logline', $object );
     }
 
 
@@ -91,7 +91,7 @@ class Mumsys_Parser_LoglineTest
     {
         $x = $this->_object->setFormat( $this->_format );
 
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 
@@ -102,7 +102,7 @@ class Mumsys_Parser_LoglineTest
     {
         $x = $this->_object->setPattern( 'c5', '(?P<col_5>(\w*))' );
 
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 
@@ -113,7 +113,7 @@ class Mumsys_Parser_LoglineTest
     {
         $x = $this->_object->setHideFilterResults();
 
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 
@@ -124,7 +124,7 @@ class Mumsys_Parser_LoglineTest
     {
         $x = $this->_object->setShowFilterResults();
 
-        $this->assertNull( $x );
+        $this->assertingNull( $x );
     }
 
 
@@ -136,8 +136,8 @@ class Mumsys_Parser_LoglineTest
         $this->_object->setFilterCondition( 'AND' );
         $this->_object->setFilterCondition( 'OR' );
 
-        $this->expectExceptionMessageRegExp( '/(Invalid filter condition)/' );
-        $this->expectException( 'Mumsys_Parser_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Invalid filter condition)/' );
+        $this->expectingException( 'Mumsys_Parser_Exception' );
         $this->_object->setFilterCondition( 'FAILT' );
     }
 
@@ -151,8 +151,8 @@ class Mumsys_Parser_LoglineTest
         $x = $this->_object->addFilter( 'c5', 'delim', true );
         $y = $this->_object->addFilter( 'c5', array('delim', 'del'), false );
 
-        $this->assertNull( $x );
-        $this->assertNull( $y );
+        $this->assertingNull( $x );
+        $this->assertingNull( $y );
     }
 
 
@@ -207,11 +207,11 @@ class Mumsys_Parser_LoglineTest
         // empty line
         $actual5 = $this->_object->parse( $records[3] );
 
-        $this->assertEquals( $actual1, $expected1 );
-        $this->assertEquals( $actual2, $expected2 );
-        $this->assertEquals( $actual3, $expected3 );
-        $this->assertEquals( $actual4, $expected4 );
-        $this->assertFalse( $actual5 );
+        $this->assertingEquals( $actual1, $expected1 );
+        $this->assertingEquals( $actual2, $expected2 );
+        $this->assertingEquals( $actual3, $expected3 );
+        $this->assertingEquals( $actual4, $expected4 );
+        $this->assertingFalse( $actual5 );
 
         // crap in "opt"
         $regex = '/('
@@ -221,8 +221,8 @@ class Mumsys_Parser_LoglineTest
 //            . '"#^(?P<id>\w+);(?P<col_1>.+);(?P<col_2>.+);(?P<col_3>.+)'
 //            . ';(?P<col_4>.+);(?P<col_5>\w*)$#"'
             . ')/';
-        $this->expectExceptionMessageRegExp( $regex );
-        $this->expectException( 'Mumsys_Parser_Exception' );
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Parser_Exception' );
 
         $actual5 = $this->_object->parse( trim( $records[4] ) );
     }
@@ -249,7 +249,7 @@ class Mumsys_Parser_LoglineTest
             'stamp' => '1453012514',
         );
 
-        $this->assertEquals( $actual1, $expected1 );
+        $this->assertingEquals( $actual1, $expected1 );
     }
 
 
@@ -298,15 +298,15 @@ class Mumsys_Parser_LoglineTest
         // hide matches (filteredHide)
         //
 
-        $this->assertEquals( $actual1, $expected1 );
-        $this->assertEquals( $actual2, $expected2 );
-        $this->assertEquals( $actual3, $expected3 );
+        $this->assertingEquals( $actual1, $expected1 );
+        $this->assertingEquals( $actual2, $expected2 );
+        $this->assertingEquals( $actual3, $expected3 );
     }
 
 
     public function testVersions()
     {
-        $this->assertEquals( $this->_version, Mumsys_Parser_Logline::VERSION );
+        $this->assertingEquals( $this->_version, Mumsys_Parser_Logline::VERSION );
     }
 
 }

@@ -80,12 +80,12 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
 
     public function testVersions()
     {
-        $this->assertEquals(
+        $this->assertingEquals(
             $this->_version,
             Mumsys_Service_Ssh_Config_Generator_Default::VERSION
         );
 
-        $this->_checkVersionList(
+        $this->checkVersionList(
             $this->_object->getVersions(), $this->_versions
         );
     }
@@ -98,10 +98,10 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
     public function test_construct()
     {
         $object = new Mumsys_Service_Ssh_Config_Generator_Default();
-        $this->assertInstanceOf(
+        $this->assertingInstanceOf(
             'Mumsys_Service_Ssh_Config_Generator_Default', $object
         );
-        $this->assertInstanceOf( 'Mumsys_Abstract', $object );
+        $this->assertingInstanceOf( 'Mumsys_Abstract', $object );
     }
 
 
@@ -112,7 +112,7 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
     {
         $this->_object->setConfigsPath( $this->_pathConfigs );
         // in run() we will test deeply
-        $this->assertTrue( file_exists( $this->_testConfigFile ) );
+        $this->assertingTrue( file_exists( $this->_testConfigFile ) );
     }
 
 
@@ -126,11 +126,11 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
 
         $this->_object->run();
         // in run() we will test deeply
-        $this->assertTrue( file_exists( $this->_sshFile ) );
+        $this->assertingTrue( file_exists( $this->_sshFile ) );
 
         // test exception 1
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessageRegExp( '/(Path does not exists)/' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Path does not exists)/' );
         $this->_object->setFile( $this->_sshFile . '/not/exists' );
         $this->_object->run();
     }
@@ -142,8 +142,8 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
      */
     public function testSetFileCheckPathException()
     {
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessageRegExp( '/(Path not writable)/' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Path not writable)/' );
         $this->_object->setFile( '/root/testsshfile' );
         $this->_object->run();
     }
@@ -157,11 +157,11 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
         $this->_object->setMode( 0666 );
         $this->_object->run();
         // in run() we will test deeply
-        $this->assertTrue( file_exists( $this->_sshFile ) );
+        $this->assertingTrue( file_exists( $this->_sshFile ) );
 
         $expected = 100666;
         $actual = decoct( fileperms( $this->_sshFile ) );
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -175,7 +175,7 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
 
         $this->_object->run();
         // in run() we will test deeply
-        $this->assertTrue( file_exists( $this->_sshFile ) );
+        $this->assertingTrue( file_exists( $this->_sshFile ) );
 
         $expected = '# localhost' . "\n"
             . 'Host localhost' . "\n"
@@ -186,10 +186,10 @@ class Mumsys_Service_Ssh_Config_Generator_DefaultTest
             . 'Protocol 2' . "\n"
             . "\n";
         $actual = file_get_contents( $this->_sshFile );
-        $this->assertEquals( $expected, $actual );
+        $this->assertingEquals( $expected, $actual );
 
-        $this->expectException( 'Mumsys_Service_Exception' );
-        $this->expectExceptionMessageRegExp( '/(Config file not found)/' );
+        $this->expectingException( 'Mumsys_Service_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Config file not found)/' );
         $this->_dynTestFile = $this->_pathEmptyDir . '/test.php';
         touch( $this->_dynTestFile );
         chmod( $this->_dynTestFile, 0222 );
