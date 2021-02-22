@@ -7,9 +7,9 @@ MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - 
 
 ## Benefits
 
- - PHP 7.3+
+ - PHP 8
  - Speed, speed speed. The library dosnt cost much ressources
- - No namespaces, prefixed classes to improve overview
+ - No namespaces, domain prefixed classes to improve overview
  - No complicated autoloader
  - Nearly a framework but: KISS (Keep It Simple ... develpoper :-) )
  - Implements interfaces to be staight for common tasks or own implementations.
@@ -22,8 +22,7 @@ MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - 
 
 ## Test status
 
-Builds runs using phpunit tests for all branches (stable, testing, unstable) and 
-for php versions: 7.0, 7.1, 7.2 ++
+Builds runs using phpunit tests for all branches (stable, testing, unstable):
     Stable branch: [![Build Status: stable](https://travis-ci.org/Mumsys/Library.svg?branch=stable "Build Status: stable")](https://travis-ci.org/Mumsys/Library.svg?branch=stable)
     Testing branch: [![Build Status: testing](https://travis-ci.org/Mumsys/Library.svg?branch=testing "Build Status: testing")](https://travis-ci.org/Mumsys/Library.svg?branch=testing)
     Unstable branch: [![Build Status: unstable](https://travis-ci.org/Mumsys/Library.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/Mumsys/Library.svg?branch=unstable)
@@ -40,11 +39,6 @@ In that time an admin CMS system to
 
 The library is a new part of the project. The MUMSYS library/ interface. 
 A rework beginning in that time and now going to be free!
-
-"MUMSYS 2 Library" is a project version: MUMSYS core parts going to a library, 
-and it is/was version 2.
-Now its going to be MUMSYS Library Version 3, The free version, and it will be
-beginning with version 1
 
 If you like it, use it, feel free to make it better. Commits should be done to 
 the unstable branch.

@@ -13,6 +13,7 @@ For php8.0
   but version update is missing
 
 + Add VERSION to exceptions
+    - Update Mumsys_Abstact::getVersions()
 
 + Disalow error_reporting( -1 ); use E_ALL !
 
@@ -31,6 +32,9 @@ find . -type f -iname \*.php | xargs sed -i 's,expectExceptionMessage(,expecting
 find . -type f -iname \*.php | xargs sed -i 's,expectingExceptionMessageRegExp(,expectingExceptionMessageRegex(,g';
 find . -type f -iname \*.php | xargs sed -i 's,expectExceptionMessageRegExp(,expectingExceptionMessageRegex(,g';
   ```
+
++ Mumsys_Service_SshTool... or Mumsys_Service_Ssh_Config_Generator? Check history which is the current one.
+
 
 
 
