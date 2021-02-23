@@ -9,13 +9,19 @@ class Mumsys_Logger_NoneTest
     /**
      * @var Mumsys_Logger_None
      */
-    protected $_object;
+    private $_object;
 
     /**
      * Version string.
      * @var string
      */
-    protected $_version;
+    private $_version;
+
+    /**
+     * Current running user
+     * @var string
+     */
+    private $_username;
 
 
     /**
@@ -24,6 +30,7 @@ class Mumsys_Logger_NoneTest
      */
     protected function setUp(): void
     {
+        $this->_username = Mumsys_Php_Globals::getRemoteUser();
         $this->_version = '3.0.1';
         $this->_object = new Mumsys_Logger_None();
     }
@@ -45,10 +52,10 @@ class Mumsys_Logger_NoneTest
     public function testLog()
     {
         $actual1 = $this->_object->log( 'test', 3 );
-        $expected1 = date( 'Y-m-d H:i:s', time() ) . ' [flobee] [ERR](3) test' . "\n";
+        $expected1 = date( 'Y-m-d H:i:s', time() ) . ' [' . $this->_username . '] [ERR](3) test' . "\n";
 
         $actual2 = $this->_object->log( array('test1', 'test2'), 3 );
-        $expected2 = date( 'Y-m-d H:i:s', time() ) . ' [flobee] [ERR](3) ["test1","test2"]' . "\n";
+        $expected2 = date( 'Y-m-d H:i:s', time() ) . ' [' . $this->_username . '] [ERR](3) ["test1","test2"]' . "\n";
 
         $this->assertingEquals( $expected1, $actual1 );
         $this->assertingEquals( $expected2, $actual2 );

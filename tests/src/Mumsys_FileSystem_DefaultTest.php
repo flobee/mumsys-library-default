@@ -87,12 +87,20 @@ class Mumsys_FileSystem_DefaultTest
         $actual1 = $this->_object->scanDirInfo(
             $this->_testdirs['dir'], true, false, array(), -1, 1001
         );
+        $path11 = $this->_testsDir . '/tmp/unittest-mkdir/mkdirs';
+        $path12 = $this->_testsDir . '/tmp/unittest-mkdir/testfile';
+        $actual1[$path11]['size'] =
+            ( ($actual1[$path11]['size'] === 22) || ( $actual1[$path11]['size'] === 4096)) ? true : false
+        ;
+        $actual1[$path12]['size'] =
+            ( ($actual1[$path12]['size'] === 22) || ( $actual1[$path12]['size'] === 4096)) ? true : false
+        ;
         $expected1 = array(
             $this->_testsDir . '/tmp/unittest-mkdir/mkdirs' => array(
                 'file' => $this->_testsDir . '/tmp/unittest-mkdir/mkdirs',
                 'name' => 'mkdirs',
                 'path' => $this->_testsDir . '/tmp/unittest-mkdir',
-                'size' => 22,
+                'size' => true,
                 'type' => 'dir',
             ),
             $this->_testsDir . '/tmp/unittest-mkdir/testfile' => array(
@@ -108,12 +116,24 @@ class Mumsys_FileSystem_DefaultTest
         $actual2 = $this->_object->scanDirInfo(
             $this->_testdirs['dir'], true, true, $filters
         );
+        $path21 = $this->_testsDir . '/tmp/unittest-mkdir/mkdirs';
+        $path22 = $this->_testsDir . '/tmp/unittest-mkdir/testfile';
+        $path23 = $this->_testsDir . '/tmp/unittest-mkdir/mkdirs/testfile';
+        $actual2[$path21]['size'] =
+            ( ($actual2[$path21]['size'] === 22) || ( $actual2[$path21]['size'] === 4096)) ? true : false
+        ;
+        $actual2[$path22]['size'] =
+            ( ($actual2[$path22]['size'] === 22) || ( $actual2[$path22]['size'] === 4096)) ? true : false
+        ;
+        $actual2[$path23]['size'] =
+            ( ($actual2[$path23]['size'] === 22) || ( $actual2[$path23]['size'] === 4096)) ? true : false
+        ;
         $expected2 = array(
             $this->_testsDir . '/tmp/unittest-mkdir/mkdirs' => array(
                 'file' => $this->_testsDir . '/tmp/unittest-mkdir/mkdirs',
                 'name' => 'mkdirs',
                 'path' => $this->_testsDir . '/tmp/unittest-mkdir',
-                'size' => 22,
+                'size' => true,
                 'type' => 'dir',
             ),
             $this->_testsDir . '/tmp/unittest-mkdir/testfile' => array(
@@ -500,7 +520,8 @@ class Mumsys_FileSystem_DefaultTest
         $this->assertingTrue( $this->_object->unlink( $dir ) ); // not a file
         $this->assertingTrue( $this->_object->unlink( $file ) );
 
-        $fileDifferentOwnership = '/usr/bin/php';
+        $phpbin = exec('which php');
+        $fileDifferentOwnership = trim( (string) $phpbin );
         try {
             $msg = 'Testing unlink() exception failed! '
                 . 'Please create a file where you don\'t have write access but'
@@ -520,6 +541,7 @@ class Mumsys_FileSystem_DefaultTest
             $this->markTestIncomplete( $msg );
         }
         catch ( Exception $e ) {
+            // check success
             $message = sprintf(
                 'Can not delete file "%1$s"', $fileDifferentOwnership
             );
