@@ -17,8 +17,10 @@ before_script:
 #  - cd /home/travis/build/flobee/mumsys-library-default
 #  - rm -f composer.lock
   - composer install
+  - rm -rf vendor/
+  - ./composer install
   - cd tests
 #  - composer require --dev phpunit/phpunit ^5
 # phpunit --configuration phpunit.xml
 # script: ../vendor/bin/phpunit --no-coverage
-script: ./runtests.sh
+script: ./runTests.sh

@@ -30,8 +30,8 @@
  * reduce maintainance and bugfixing time over the time.
  *
  * eg:
-    possible: $this->assertArrayHasKey( $key, $array )
-    php way : $this->assertTrue( array_key_exists( $key, $array ) , 'Key not found');
+ *   possible: $this->assertArrayHasKey( $key, $array )
+ *   php way : $this->assertTrue( array_key_exists( $key, $array ) , 'Key not found');
  *
  * @category    Mumsys
  * @package     Library

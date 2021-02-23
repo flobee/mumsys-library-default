@@ -1,1 +1,0 @@
-../misc/testing/runCoverageCreate.sh
