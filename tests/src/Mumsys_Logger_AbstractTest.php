@@ -101,12 +101,14 @@ class Mumsys_Logger_AbstractTest
         );
         $object = new Mumsys_Logger_File( $opts );
 
+        $userBak = $_SERVER['LOGNAME'] ?? null;
         $_SERVER['LOGNAME'] = 'God';
         $object = new Mumsys_Logger_File( $opts );
 
         $this->assertingInstanceOf( 'Mumsys_Logger_File', $object );
         $this->assertingInstanceOf( 'Mumsys_Logger_Abstract', $object );
         $this->assertingInstanceOf( 'Mumsys_Logger_Interface', $object );
+        $_SERVER['LOGNAME'] = $userBak;
     }
 
 

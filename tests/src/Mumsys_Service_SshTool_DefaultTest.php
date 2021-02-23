@@ -35,6 +35,11 @@ class Mumsys_Service_SshTool_DefaultTest
     private $_pathEmptyDir;
     private $_dynTestFile;
 
+    /**
+     * Current running user
+     * @var string
+     */
+    private $_user;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -42,6 +47,7 @@ class Mumsys_Service_SshTool_DefaultTest
      */
     protected function setUp(): void
     {
+        $this->_user = $_SERVER['USER'];
         $this->_version = '1.0.0';
         $this->_versions = array(
             'Mumsys_Service_SshTool_Default' => $this->_version,
@@ -340,11 +346,11 @@ class Mumsys_Service_SshTool_DefaultTest
             . "scp ~/.ssh/* otheruser@otherhost:~/.ssh\n"
             . "scp /this/keyfile otheruser@otherhost:~/.ssh/id_rsa\n"
             . "scp /this/keyfile.pub otheruser@otherhost:~/.ssh/id_rsa.pub\n"
-            . "scp ~/.ssh/id_rsa flobee@secondhost:/goes/here\n"
-            . "scp ~/.ssh/id_rsa.pub flobee@secondhost:/goes/here.pub\n"
-            . "scp /this/id_rsa flobee@secondhost:/goes/there/id_key\n"
-            . "scp /this/id_rsa.pub flobee@secondhost:/goes/there/id_key.pub\n"
-            . "scp ~/.ssh/* flobee@secondhost:~/.ssh/keys/from/localhost\n"
+            . "scp ~/.ssh/id_rsa " . $this->_user . "@secondhost:/goes/here\n"
+            . "scp ~/.ssh/id_rsa.pub " . $this->_user . "@secondhost:/goes/here.pub\n"
+            . "scp /this/id_rsa " . $this->_user . "@secondhost:/goes/there/id_key\n"
+            . "scp /this/id_rsa.pub " . $this->_user . "@secondhost:/goes/there/id_key.pub\n"
+            . "scp ~/.ssh/* " . $this->_user . "@secondhost:~/.ssh/keys/from/localhost\n"
         ;
 
         $this->assertingEquals( $expectedA, $actualA );
@@ -372,8 +378,8 @@ class Mumsys_Service_SshTool_DefaultTest
         $actualA = ob_get_clean();
         $expectedA = ''
             . 'cat ~/.ssh/id_rsa.pub | awk \'{print "#\n# "$3"\n"$0}\' | '
-            . 'ssh flobee@localhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
-            . 'ssh flobee@localhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | '
+            . 'ssh ' . $this->_user . '@localhost "cat >> ~/.ssh/authorized_keys"' . PHP_EOL
+            . 'ssh ' . $this->_user . '@localhost "awk \'\!seen[\$0]++\' ~/.ssh/authorized_keys | '
             . 'cat > ~/.ssh/authorized_keys"' . PHP_EOL
             . PHP_EOL
 
@@ -441,20 +447,20 @@ class Mumsys_Service_SshTool_DefaultTest
         ob_start();
         $this->_object->revoke();
         $actual = ob_get_clean();
-        $expected = 'ssh flobee@localhost "rm -f ~/.ssh/id_rsa"' . PHP_EOL
+        $expected = 'ssh ' . $this->_user . '@localhost "rm -f ~/.ssh/id_rsa"' . PHP_EOL
 
-            . 'ssh flobee@localhost "sed -i \'s#`cat ~/.ssh/id_rsa.pub`##\' '
+            . 'ssh ' . $this->_user . '@localhost "sed -i \'s#`cat ~/.ssh/id_rsa.pub`##\' '
             . '~/.ssh/authorized_keys ; rm -f ~/.ssh/id_rsa.pub"' . PHP_EOL
 
-            . 'ssh flobee@localhost "rm -f ~/.ssh/other_key_to_remove"' . PHP_EOL
+            . 'ssh ' . $this->_user . '@localhost "rm -f ~/.ssh/other_key_to_remove"' . PHP_EOL
 
-            . 'ssh flobee@localhost "sed -i \'s#`cat ~/.ssh/other_key_to_remove.pub`##\' '
+            . 'ssh ' . $this->_user . '@localhost "sed -i \'s#`cat ~/.ssh/other_key_to_remove.pub`##\' '
             . '~/.ssh/authorized_keys ; rm -f ~/.ssh/other_key_to_remove.pub"' . PHP_EOL
 
-            . 'ssh flobee@localhost "sed -i \'s#`cat ~/.ssh/my/id_rsa.pub`##\' '
+            . 'ssh ' . $this->_user . '@localhost "sed -i \'s#`cat ~/.ssh/my/id_rsa.pub`##\' '
             . '~/.ssh/authorized_keys ; rm -f ~/.ssh/my/id_rsa.pub"' . PHP_EOL
 
-            . 'ssh flobee@secondhost "sed -i \'s#`cat ~/.ssh/my/id_rsa.pub`##\' '
+            . 'ssh ' . $this->_user . '@secondhost "sed -i \'s#`cat ~/.ssh/my/id_rsa.pub`##\' '
             . '~/.ssh/authorized_keys ; rm -f ~/.ssh/my/id_rsa.pub"' . PHP_EOL
         ;
 
