@@ -16,8 +16,8 @@ before_script:
 #  - pwd
 #  - cd /home/travis/build/flobee/mumsys-library-default
 #  - rm -f composer.lock
-  - composer install
   - rm -rf vendor/
+  - composer require composer/composer:^1.9
   - ./composer install
   - cd tests
 #  - composer require --dev phpunit/phpunit ^5
