@@ -90,10 +90,10 @@ class Mumsys_FileSystem_DefaultTest
         $path11 = $this->_testsDir . '/tmp/unittest-mkdir/mkdirs';
         $path12 = $this->_testsDir . '/tmp/unittest-mkdir/testfile';
         $actual1[$path11]['size'] =
-            ( ($actual1[$path11]['size'] === 22) || ( $actual1[$path11]['size'] === 4096)) ? true : false
+            ( ( $actual1[$path11]['size'] === 22 ) || ( $actual1[$path11]['size'] === 4096 ) ) ? true : false
         ;
         $actual1[$path12]['size'] =
-            ( ($actual1[$path12]['size'] === 22) || ( $actual1[$path12]['size'] === 4096)) ? true : false
+            ( ( $actual1[$path12]['size'] === 22 ) || ( $actual1[$path12]['size'] === 4096 ) ) ? true : false
         ;
         $expected1 = array(
             $this->_testsDir . '/tmp/unittest-mkdir/mkdirs' => array(
@@ -120,13 +120,13 @@ class Mumsys_FileSystem_DefaultTest
         $path22 = $this->_testsDir . '/tmp/unittest-mkdir/testfile';
         $path23 = $this->_testsDir . '/tmp/unittest-mkdir/mkdirs/testfile';
         $actual2[$path21]['size'] =
-            ( ($actual2[$path21]['size'] === 22) || ( $actual2[$path21]['size'] === 4096)) ? true : false
+            ( ( $actual2[$path21]['size'] === 22 ) || ( $actual2[$path21]['size'] === 4096 ) ) ? true : false
         ;
         $actual2[$path22]['size'] =
-            ( ($actual2[$path22]['size'] === 22) || ( $actual2[$path22]['size'] === 4096)) ? true : false
+            ( ( $actual2[$path22]['size'] === 22 ) || ( $actual2[$path22]['size'] === 4096 ) ) ? true : false
         ;
         $actual2[$path23]['size'] =
-            ( ($actual2[$path23]['size'] === 22) || ( $actual2[$path23]['size'] === 4096)) ? true : false
+            ( ( $actual2[$path23]['size'] === 22 ) || ( $actual2[$path23]['size'] === 4096 ) ) ? true : false
         ;
         $expected2 = array(
             $this->_testsDir . '/tmp/unittest-mkdir/mkdirs' => array(
@@ -520,7 +520,7 @@ class Mumsys_FileSystem_DefaultTest
         $this->assertingTrue( $this->_object->unlink( $dir ) ); // not a file
         $this->assertingTrue( $this->_object->unlink( $file ) );
 
-        $phpbin = exec('which php');
+        $phpbin = MumsysTestHelper::getBinary( 'php' );
         $fileDifferentOwnership = trim( (string) $phpbin );
         try {
             $msg = 'Testing unlink() exception failed! '

@@ -105,4 +105,13 @@ class MumsysTestHelper
         return rtrim( $dir, DIRECTORY_SEPARATOR );
     }
 
+    /**
+     * Returns the location of a binary.
+     *
+     * @param string $program Program which exits in PATH
+     */
+    public static function getBinary( string $program = '' )
+    {
+        return exec( 'which ' . escapeshellarg( $program ) );
+    }
 }
