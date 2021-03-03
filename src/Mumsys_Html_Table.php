@@ -70,7 +70,7 @@ class Mumsys_Html_Table
      * Array containing the table attributes used in the constructor
      * @var array
      */
-    private $_tblProps = array();
+    protected $_tblProps = array();
 
     /**
      * Array containing the content of headlines
@@ -242,9 +242,7 @@ class Mumsys_Html_Table
     {
         $result = '';
         if ( !empty( $this->_headlines['attr'][$col] ) ) {
-            $result = ' ' . parent::attributesCreate(
-                $this->_headlines['attr'][$col]
-            );
+            $result = ' ' . parent::attributesCreate( $this->_headlines['attr'][$col] );
         }
 
         return $result;
@@ -304,8 +302,7 @@ class Mumsys_Html_Table
 
 
     /**
-     * Return the number of columns based on the number of elements of the first
-     * row.
+     * Return the number of columns based on the number of elements of the first row.
      *
      * @return integer Number of columns
      */
@@ -418,11 +415,9 @@ class Mumsys_Html_Table
                     }
 
                     if ( is_int( $tmp[$i] ) ) {
-                        $html .= '   <th' . $attr . '>'
-                            . $this->_autoFill . '</th>' . _NL;
+                        $html .= '   <th' . $attr . '>' . $this->_autoFill . '</th>' . _NL;
                     } else {
-                        $html .= '   <th' . $attr . '>' . $tmp[$i] . '</th>'
-                            . _NL;
+                        $html .= '   <th' . $attr . '>' . $tmp[$i] . '</th>' . _NL;
                     }
                 }
             }
@@ -454,7 +449,7 @@ class Mumsys_Html_Table
         }
 
         // global attributes for each col
-        if ( $row == '_' ) {
+        if ( $row === '_' ) {
             $this->_structure['_'][$col]['attr'] = $attributes;
         } else {
             $this->_structure[$row][$col] = array('attr' => $attributes);
@@ -506,7 +501,7 @@ class Mumsys_Html_Table
         }
 
         // global attributes
-        if ( $row == '_' ) {
+        if ( $row === '_' ) {
             $this->_structure['_']['attr'] = $attributes;
         } else {
             $this->_structure[$row]['attr'] = $attributes;
@@ -524,14 +519,12 @@ class Mumsys_Html_Table
     {
         $attributes = false;
         if ( isset( $this->_structure[$row]['attr'] ) ) {
-            $attributes .= ' '
-                . parent::attributesCreate( $this->_structure[$row]['attr'] );
+            $attributes .= ' ' . parent::attributesCreate( $this->_structure[$row]['attr'] );
         }
 
         // global attributes
         if ( isset( $this->_structure['_']['attr'] ) ) {
-            $attributes .= ' '
-                . parent::attributesCreate( $this->_structure['_']['attr'] );
+            $attributes .= ' ' . parent::attributesCreate( $this->_structure['_']['attr'] );
         }
 
         return $attributes;
@@ -559,8 +552,7 @@ class Mumsys_Html_Table
             if ( !is_int( $col ) && $col != '_' ) {
                 throw new Exception( 'Invalid column value to set col contents' );
             }
-        }
-        catch ( Exception $e ) {
+        } catch ( Exception $e ) {
             throw new Mumsys_Html_Exception( $e->getMessage() );
         }
 
@@ -678,9 +670,7 @@ class Mumsys_Html_Table
                     $colorKey = null;
                 }
 
-                $theHtml .= ' bgcolor="'
-                    . $this->getAltRowColor( $row, $colorKey )
-                    . '"';
+                $theHtml .= ' bgcolor="' . $this->getAltRowColor( $row, $colorKey ) . '"';
 
                 if ( isset( $this->_altRowColorKeyChange ) ) {
                     // memory
