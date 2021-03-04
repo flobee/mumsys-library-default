@@ -44,6 +44,12 @@ class MumsysTestHelper
      */
     private static $_params;
 
+    /**
+     * Current running user
+     * @var string
+     */
+    private static $_user = 'unknown';
+
 
     /**
      * Return the context object needed for the tests including the default config object.
@@ -103,6 +109,21 @@ class MumsysTestHelper
         }
 
         return rtrim( $dir, DIRECTORY_SEPARATOR );
+    }
+
+
+    /**
+     * Return the current running user.
+     *
+     * @return string Username/ Logname
+     */
+    public static function getTestUser()
+    {
+        if ( self::$_user === 'unknown' ) {
+            self::$_user = Mumsys_Php_Globals::getRemoteUser();
+        }
+
+        return self::$_user;
     }
 
     /**
