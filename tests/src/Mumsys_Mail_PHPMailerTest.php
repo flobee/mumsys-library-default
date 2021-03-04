@@ -39,8 +39,8 @@ class Mumsys_Mail_PHPMailerTest
 
         $this->_config = array(
             'adapter' => 'mail',
-            'username' => 'unit', // - login name for the mail server
-            'password' => 'test', // - Password for the mailserver
+            'username' => null, // - login name for the mail server
+            'password' => null, // - Password for the mailserver
             'hostname' => 'localhost', // - Hostname or IP of the mailserver
             'port' => '25', // - Port of the mail sever
             'smtp_auth' => false, // - boolean using smtp auth or not
@@ -321,11 +321,13 @@ class Mumsys_Mail_PHPMailerTest
      */
     public function testSendEmail()
     {
-        if ( isset( $_SERVER['USER'] ) ) {
-            $to = trim( $_SERVER['USER'] ) . '@localhost.localdomain';
-        } else {
-            $to = 'root@localhost.localdomain';
+        $user = MumsysTestHelper::getTestUser();
+        if ( $user === 'travis' ) {
+            $this->markTestIncomplete( 'Currently: Can not debug on travis-ci :-(' );
         }
+
+        $to = trim( $user ) . '@localhost.localdomain';
+
         $message = '<html>html string message dummy '
             . 'generated in: ' . __FILE__ . PHP_EOL
             . '<br><br>.</html>';

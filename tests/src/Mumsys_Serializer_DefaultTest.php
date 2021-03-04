@@ -32,7 +32,7 @@ class Mumsys_Serializer_DefaultTest
      */
     protected function setUp(): void
     {
-        $this->_object = new Mumsys_Serializer_Default;
+        $this->_object = new Mumsys_Serializer_Default();
     }
 
 
@@ -79,4 +79,27 @@ class Mumsys_Serializer_DefaultTest
         $this->assertingFalse( $actualD );
     }
 
+
+    /**
+     * @covers Mumsys_Serializer_Default::unserialize
+     */
+    public function testUnserializeExceptionObject()
+    {
+        $this->expectingException( 'Mumsys_Serializer_Exception' );
+        $mesg = 'Serialized value must be a php serialized string. Value: "Mumsys_Serializer_Default"';
+        $this->expectingExceptionMessage( $mesg );
+        $this->_object->unserialize( $this->_object );
+    }
+
+
+    /**
+     * @covers Mumsys_Serializer_Default::unserialize
+     */
+    public function testUnserializeExceptionBool()
+    {
+        $this->expectingException( 'Mumsys_Serializer_Exception' );
+        $mesg = 'Serialized value must be a php serialized string. Value: "boolean"';
+        $this->expectingExceptionMessage( $mesg );
+        $this->_object->unserialize( true );
+    }
 }

@@ -25,7 +25,7 @@ class Mumsys_Service_Spss_ReaderTest
     /**
      * @var Mumsys_Service_Spss_Reader
      */
-    protected $_object;
+    private $_object;
 
     /**
      * Spss demo file location
@@ -46,11 +46,11 @@ class Mumsys_Service_Spss_ReaderTest
      */
     protected function setUp(): void
     {
-        $this->_version = '1.2.0';
+        $this->_version = '2.2.0';
 
         $this->_spssFile = __DIR__ . '/../testfiles/Service/Spss/pspp.sav';
         $this->_spssFileDump = $this->_spssFile . '.php-dump.txt';
-        $parser = \SPSS\Sav\Reader::fromString( file_get_contents( $this->_spssFile ) );
+        $parser = \SPSS\Sav\Reader::fromString( file_get_contents( $this->_spssFile ) )->read();
 
         $this->_object = new Mumsys_Service_Spss_Reader( $parser );
     }
@@ -72,7 +72,7 @@ class Mumsys_Service_Spss_ReaderTest
         $expected = '768a8f9e58224b25cd9f7226b7162b16';
 
         $mesg = sprintf(
-            'The source pspp.sav file "%1$s" seems to be changed.',
+            'The source .sav file "%1$s" seems to be changed.',
             $this->_spssFile
         );
         $this->assertingEquals( $expected, $actual, $mesg );
@@ -89,19 +89,20 @@ class Mumsys_Service_Spss_ReaderTest
         $obj->name = 'V1INT';
         $obj->label = 'v1';
         $obj->width = 0;
+        $obj->realPosition = 0;
         $obj->missingValues = array(1.0, 2.0, 1.0);
         $obj->missingValuesFormat = -3;
         $obj->print = array(
             0 => 0,
-            1 => 3,
-            2 => 5,
+            1 => 5,
+            2 => 3,
             3 => 0,
         );
         $obj->write = array(
-            0 => 2,
-            1 => 3,
-            2 => 5,
-            3 => 0,
+            0 => 0,
+            1 => 5,
+            2 => 3,
+            3 => 2,
         );
 
         $expected = array($obj);
@@ -218,14 +219,15 @@ class Mumsys_Service_Spss_ReaderTest
     {
         $actual = $this->_object->getDocumentInfo();
         $expected = array(
-            'comment to file                                                                 ',
-            'Added by pspp:  (17 Nov 2017 eingegeben)                                        ',
-            '                                                                                ',
-            '   (17 Nov 2017 eingegeben)                                                     '
+            'comment to file',
+            'Added by pspp:  (17 Nov 2017 eingegeben)',
+            '',
+            '(17 Nov 2017 eingegeben)'
         );
 
         $this->assertingEquals( $expected, $actual );
     }
+
 
     /**
      * @covers Mumsys_Service_Spss_Reader::getEncoding
@@ -279,7 +281,11 @@ class Mumsys_Service_Spss_ReaderTest
      */
     public function testVersion()
     {
-        $actual = Mumsys_Service_Spss_Reader::VERSION;
-        $this->assertingEquals( $this->_version, $actual );
+
+        $actualA = $this->_object->getVersionID();
+        $actualB = Mumsys_Service_Spss_Reader::VERSION;
+
+        $this->assertingEquals( $this->_version, $actualA );
+        $this->assertingEquals( $this->_version, $actualB );
     }
 }

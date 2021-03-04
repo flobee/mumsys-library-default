@@ -80,12 +80,20 @@ class Mumsys_Mail_PHPMailer
      */
     public function __construct( array $config )
     {
+        require_once '../vendor/phpmailer/phpmailer/src/Exception.php';
         require_once '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
         $this->_mailer = new \PHPMailer\PHPMailer\PHPMailer( true );
 
         $this->_config = $config;
 
         if ( isset( $config['adapter'] ) ) {
+            switch ( $config['adapter'] ) {
+                case 'smtp':
+                    require_once '../vendor/phpmailer/phpmailer/src/POP3.php';
+                    require_once '../vendor/phpmailer/phpmailer/src/SMTP.php';
+                    break;
+            }
+
             $this->setTransportWay( (string) $config['adapter'] );
         }
 

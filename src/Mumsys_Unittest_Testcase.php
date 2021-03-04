@@ -206,11 +206,11 @@ class Mumsys_Unittest_Testcase
     /**
      * Alias of expectExceptionMessage() phpunit 8,9
      *
-     * @param string $regex
+     * @param string $message
      */
-    public function expectingExceptionMessage( $regex )
+    public function expectingExceptionMessage( $message )
     {
-        parent::expectExceptionMessage( $regex );
+        parent::expectExceptionMessage( $message );
     }
 
 
