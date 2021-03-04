@@ -31,7 +31,7 @@ class Mumsys_Service_Spss_Writer
     /**
      * Version ID information.
      */
-    const VERSION = '1.1.0';
+    const VERSION = '2.1.0';
 
     /**
      * Initialize the writer interface.

@@ -1,5 +1,11 @@
 # Changes
 
+2021-03
+
+    + Introduce Version 2.0.0-beta1
+    + Updates tests
+    + flobee/spss:^3 -> ^4 Updates Service/Spss + tests
+
 2021-02
 
     + Sets php 8, phpunit 9.5.2

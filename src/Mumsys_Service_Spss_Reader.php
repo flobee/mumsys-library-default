@@ -38,7 +38,7 @@ class Mumsys_Service_Spss_Reader
     /**
      * Version ID information.
      */
-    const VERSION = '1.2.0';
+    const VERSION = '2.2.0';
 
     /**
      * Variable mapping (internal -> public name)
@@ -249,7 +249,7 @@ class Mumsys_Service_Spss_Reader
 
         foreach ( $this->_spss->info as $obj ) {
             if ( $obj instanceof \SPSS\Sav\Record\Info\CharacterEncoding ) {
-                $this->_encoding = $obj->data;
+                $this->_encoding = $obj->value;
                 break;
             }
         }
@@ -318,7 +318,7 @@ class Mumsys_Service_Spss_Reader
     {
         $result = false;
 
-        foreach ( $labelMap as $internal => $public ) {
+        foreach ( $labelMap as $internal => & $public ) {
             if ( $oVar->name === $internal ) {
                 $result = true;
                 break;

@@ -47,7 +47,7 @@ class Mumsys_Service_SshTool_DefaultTest
      */
     protected function setUp(): void
     {
-        $this->_user = $_SERVER['USER'];
+        $this->_user = MumsysTestHelper::getTestUser();
         $this->_version = '1.0.0';
         $this->_versions = array(
             'Mumsys_Service_SshTool_Default' => $this->_version,

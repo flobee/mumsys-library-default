@@ -60,16 +60,7 @@ class Mumsys_Serializer_Default
      */
     public function serialize( $value )
     {
-        try {
-            $string = serialize( $value );
-        }
-        catch ( Exception $ex ) {
-            throw new Mumsys_Serializer_Exception(
-                $ex->getMessage(), $ex->getCode(), $ex->getPrevious()
-            );
-        }
-
-        return $string;
+        return serialize( $value );
     }
 
 

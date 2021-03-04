@@ -520,19 +520,18 @@ class Mumsys_FileSystem_DefaultTest
         $this->assertingTrue( $this->_object->unlink( $dir ) ); // not a file
         $this->assertingTrue( $this->_object->unlink( $file ) );
 
-        $phpbin = MumsysTestHelper::getBinary( 'php' );
+        $phpbin = MumsysTestHelper::getBinary( 'bash' );
         $fileDifferentOwnership = trim( (string) $phpbin );
+        $errRepBak = error_reporting();
         try {
+            error_reporting( 0 );
             $msg = 'Testing unlink() exception failed! '
                 . 'Please create a file where you don\'t have write access but'
                 . ' read access and with a different ownership! '
                 . 'E.g.: ~/unittests/somefile.test (owner whether you, your '
                 . 'team and not root) und try to test with this file location';
             // security check, backup
-            if ( @copy(
-                $fileDifferentOwnership,
-                $fileDifferentOwnership . '.bak'
-            ) ) {
+            if ( copy( $fileDifferentOwnership, $fileDifferentOwnership . '.bak' ) !== false ) {
                 $this->markTestIncomplete( 'Security abort!!! ' . $msg );
             }
 
@@ -548,6 +547,8 @@ class Mumsys_FileSystem_DefaultTest
             $this->assertingEquals( $message, $e->getMessage() );
             $this->assertingInstanceOf( 'Mumsys_FileSystem_Exception', $e );
         }
+
+        error_reporting( $errRepBak );
     }
 
 

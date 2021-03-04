@@ -1,18 +1,13 @@
 language: php
 php:
-#  - '7.0'
-#  - '7.1'
-#  - '7.2'
-#  - '7.3'
-#  - '7.4'
   - '8.0'
-#  - nightly
+  - nightly
 
 addons:
   mariadb: '10.5'
 
 before_script: 
-  - sleep 15
+  - sleep 5
 #  - curl -s http://getcomposer.org/installer | php
 #  - php composer.phar install --no-interaction
   - composer install || sleep 30 && composer install
@@ -22,7 +17,7 @@ before_script:
 
 # script: ../vendor/bin/phpunit --no-coverage
 # script: cd tests && ./runTests.sh
-script: ./phing all
+script: ./phing check && ./phing test
 
 #after_success:
     # <logging>
