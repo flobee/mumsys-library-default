@@ -60,7 +60,7 @@ class Mumsys_Variable_Manager_DefaultBench
                 'maxlen' => 45,
                 'allowEmpty' => false,
                 'required' => true,
-                'regex' => false,
+                'regex' => array(),
                 'default' => '',
                 'value' => null,
                 'errors' => array(),
@@ -236,7 +236,7 @@ class Mumsys_Variable_Manager_DefaultBench
      *
      * @covers Mumsys_Variable_Manager_Default::validateMinMax
      */
-    public function testValidateMinMaxTrue()
+    public function validateMinMaxTrue()
     {
         $_types = array(
             'string' => 'test',
@@ -266,7 +266,7 @@ class Mumsys_Variable_Manager_DefaultBench
      *
      * @covers Mumsys_Variable_Manager_Default::validateMinMax
      */
-    public function testValidateMinMaxFalse()
+    public function validateMinMaxFalse()
     {
         $_types = array(
             'string' => 'test',
@@ -320,7 +320,7 @@ class Mumsys_Variable_Manager_DefaultBench
     {
         $item = $this->_object->getItem( 'username' );
         $item->setValue( 'uNiTtEsT' );
-        $item->setRegex( '/^(unittest)$/i' );
+        $item->setRegex( array('/^(unittest)$/i') );
 
         $this->_object->validateRegex( $item );
     }
@@ -338,7 +338,7 @@ class Mumsys_Variable_Manager_DefaultBench
     {
         $item = $this->_object->getItem( 'username' );
         $item->setValue( 'uNiTtEsT' );
-        $item->setRegex( '/^(somtest)$/i' );
+        $item->setRegex( array('/^(somtest)$/i') );
         $this->_object->validateRegex( $item );
     }
 
@@ -355,10 +355,10 @@ class Mumsys_Variable_Manager_DefaultBench
     {
         $item = $this->_object->getItem( 'username' );
         $item->setValue( 'uNiTtEsT' );
-        $item->setRegex( '\d' ); // invalid regex / syntax error will perform
+        $item->setRegex( array('\d') ); // invalid regex / syntax error will perform
 
         $displayErrors = ini_get( 'display_errors' );
-        $errorReporting = ini_get( 'error_reporting' );
+        $errorReporting = error_reporting();
 
         ini_set( 'display_errors', '0' );
         error_reporting( 0 );
@@ -500,6 +500,7 @@ class Mumsys_Variable_Manager_DefaultBench
         $object = clone $this->_object;
         unset( $this->_config['userX'] );
         $item = $object->getItem( 'username' );
+        $item->setName( 'userX' );
 
         $object->registerItem( 'userX', $item );
     }
@@ -722,7 +723,7 @@ class Mumsys_Variable_Manager_DefaultBench
      *
      * @covers Mumsys_Variable_Manager_Default::filtersApply
      */
-    public function testFiltersApply()
+    public function filtersApply()
     {
         $this->_object->filtersApply();
     }

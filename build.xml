@@ -5,7 +5,10 @@
     <property name="bindir" value="${project.basedir}/vendor/bin/" override="false" />
 
     <target name="options" description="Options for phing">
-        <echo msg="Option for phing required: test|check|coverage|api|gitstats|all" />
+        <echo msg="Options for phing" />
+        <echo msg="List actions to perform: ./phing -l" />
+        <echo msg="    eg: test|check|coverage|api|gitstats|all" />
+        <echo msg="./phing -h|--help gives you phing options" />
     </target>
 
     <target name="test" description="Executes the unit tests">
@@ -35,7 +38,7 @@
 
     <target name="check" description="Executes the coding style sniffer">
         <echo msg="Executing the coding style sniffer" />
-        <exec command="./runCSCheck.sh -n ../src ./src bootstrap.php MumsysTestHelper.php"
+        <exec command="./runCSCheck.sh -n ../src ./ bootstrap.php MumsysTestHelper.php"
             dir="tests" checkreturn="true" logoutput="true"
         />
     </target>
@@ -45,9 +48,12 @@
         <exec command="./runStaticCodeAnalysis.sh ../src/" dir="tests" checkreturn="true" logoutput="true" />
     </target>
 
-    <target name="benchmarks" description="Executes the banchmark scripts/tests (warning: take some time)">
-        <echo msg="Executing the banchmark scripts/tests (warning: take some time)" />
+    <target name="benchmarks" description="Executes the benchmark scripts/tests (warning: takes some time!)">
+        <echo msg="Currently not available (composer dependency problem)" />
+        <!--
+        <echo msg="Executing the benchmark scripts/tests (warning: this takes some time!)" />
         <exec command="./runBenchmarks.sh benchmarks/src" dir="tests" checkreturn="true" logoutput="true" />
+        -->
     </target>
 
     <target name="all" depends="check,coverage,api" description="Execute all main parts of the package (check,coverage,api)">

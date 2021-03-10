@@ -1,26 +1,50 @@
+env:
+  global:
+    - XDEBUG_MODE=coverage
+    
+    
 language: php
+
 php:
   - '8.0'
   - nightly
 
+matrix:
+  allow_failures:
+    - php: nightly
+
 addons:
   mariadb: '10.5'
 
-before_script: 
-  - sleep 5
-#  - curl -s http://getcomposer.org/installer | php
-#  - php composer.phar install --no-interaction
-  - composer install || sleep 30 && composer install
-  - ./phing travis
-  - echo "<?php return array('database' => array('type' => 'mysql:mysqli','host' => 'localhost','port' => '3306','username' => 'root','password' => '','db' => 'mumsys', 'charset' => 'utf8','compress' => false,'throwErrors' => true,'debug' => false,'socket' => false)); > tests/config/credentials.php"
-    echo "return array('debug' => true,'database' => array('type' => 'mysql:mysqli','host' => 'localost','port' => '3306','username' => 'root','password' => '','db' => 'mumsys','charset' => 'utf8','compress' => false,'throwErrors' => true,'debug' => false,'socket' => false,'tables' => array('table_access' => 'mumsys_access','table_programs' => 'mumsys_programs','table_blocks' => 'mumsys_blocks','table_sessions' => 'mumsys_sessions','table_sessionsuser' => 'mumsys_sessionsuser','table_config' => 'mumsys_config'))); > tests/config/default.php"
+branches:
+  only:
+    - unstable
+    - stable
+    - /[0-9]+\.[0-9]+\.[0-9]+/
 
-# script: ../vendor/bin/phpunit --no-coverage
-# script: cd tests && ./runTests.sh
-script: ./phing check && ./phing test
+cache:
+  directories:
+    - $HOME/.composer/cache/
+
+install:
+#  - travis_retry composer install --no-interaction --prefer-source
+    - travis_retry composer update --no-interaction --prefer-source
+
+before_script: 
+# having coverage via travis-ci output
+#  - phpenv config-rm xdebug.ini || true
+  - sleep 5
+  - git submodule update --init --recursive
+  - sleep 5
+  - ./phing travis
+  - echo "<?php return array('debug' => true, 'database' => array('type' => 'mysql:mysqli', 'host' => 'localost', 'port' => '3306', 'username' => 'root', 'password' => '', 'db' => 'mumsys', 'charset' => 'utf8', 'compress' => false, 'throwErrors' => true, 'debug' => false, 'socket' => false, 'tables' => array('table_access' => 'mumsys_access', 'table_programs' => 'mumsys_programs', 'table_blocks' => 'mumsys_blocks', 'table_sessions' => 'mumsys_sessions', 'table_sessionsuser' => 'mumsys_sessionsuser', 'table_config' => 'mumsys_config')));" > tests/config/default.php
+  - echo "<?php return array('database' => array('type' => 'mysql:mysqli', 'host' => 'localhost', 'port' => '3306', 'username' => 'root', 'password' => '','db' => 'mumsys', 'charset' => 'utf8', 'compress' => false, 'throwErrors' => true, 'debug' => false, 'socket' => false));" > tests/config/credentials.php
+  - echo "OK";
+
+script: 
+  - ./phing check
+  - ./phing test
+#  - ./vendor/bin/phpunit --coverage-text
 
 #after_success:
-    # <logging>
-    #    <log type="coverage-clover" target="clover.xml"/>
-    # </logging>
 #    - travis_retry php vendor/bin/coveralls -v
