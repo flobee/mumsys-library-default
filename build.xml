@@ -45,6 +45,11 @@
         <exec command="./runStaticCodeAnalysis.sh ../src/" dir="tests" checkreturn="true" logoutput="true" />
     </target>
 
+    <target name="benchmarks" description="Executes the banchmark scripts/tests (warning: take some time)">
+        <echo msg="Executing the banchmark scripts/tests (warning: take some time)" />
+        <exec command="./runBenchmarks.sh benchmarks/src" dir="tests" checkreturn="true" logoutput="true" />
+    </target>
+
     <target name="all" depends="check,coverage,api" description="Execute all main parts of the package (check,coverage,api)">
     </target>
 
