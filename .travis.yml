@@ -18,7 +18,11 @@ addons:
 
 branches:
   only:
+    # tests may fail
     - unstable
+    # tests should not fail (release candidate by by major version)
+    - testing
+    # tests dont fail (release of versions or hotfixes)
     - stable
     - /[0-9]+\.[0-9]+\.[0-9]+/
 
