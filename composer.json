@@ -16,8 +16,7 @@
     "require": {
         "php": "^8",
         "phpmailer/phpmailer": "^6",
-        "flobee/spss": "^4",
-        "phpbench/phpbench": "dev-master"
+        "flobee/spss": "^4"
     },
 
     "require-dev": {
@@ -25,7 +24,8 @@
         "composer/composer": "^2",
         "squizlabs/php_codesniffer": "^3",
         "phing/phing": "^2",
-        "phpstan/phpstan": "*"
+        "phpstan/phpstan": "*",
+        "phpbench/phpbench": "1.0.0-alpha6"
     },
 
     "suggest": {
