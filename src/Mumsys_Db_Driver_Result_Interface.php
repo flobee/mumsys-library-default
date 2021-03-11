@@ -1,30 +1,26 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Db_Driver_Result_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * @package     Library
+ * @subpackage  Db
  * @version     3.0.1
- * @filesource
  */
-/*}}}*/
 
 
 /**
  * Interface Mumsys_Db_Driver_Result_Interface
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * @package     Library
+ * @subpackage  Db
  */
 interface Mumsys_Db_Driver_Result_Interface
 {
@@ -36,7 +32,7 @@ interface Mumsys_Db_Driver_Result_Interface
      * @param array $options Array of options; NOT IMPLEMENTED YET!
      */
     public function __construct( Mumsys_Db_Driver_Interface &$oDB, &$result,
-        array $options=array());
+        array $options = array());
 
     /**
      * Returns the resultset of a query.
@@ -53,7 +49,7 @@ interface Mumsys_Db_Driver_Result_Interface
      * @param object $result the resultset of a different sql-resource
      * @return array return an array of fetched values
      */
-    public function fetch( $way='assoc', $result=false );
+    public function fetch( $way = 'assoc', $result = false );
 
     /**
      * Fetch all date from an result set.
@@ -66,7 +62,7 @@ interface Mumsys_Db_Driver_Result_Interface
      * @param resource $result Result set of the sql query
      * @return array List of records
      */
-    public function fetchAll( $way='assoc', $result=false );
+    public function fetchAll( $way = 'assoc', $result = false );
 
     /**
      * Returns the number of rows found.
@@ -82,7 +78,7 @@ interface Mumsys_Db_Driver_Result_Interface
      * @return integer Returns the number of rows
      * @throws Mumsys_Db_Exception If calculation of num rows fails
      */
-    public function numRows( $result=false );
+    public function numRows( $result = false );
 
     /**
      * Get the number of affected rows by the last INSERT, UPDATE, REPLACE or
@@ -111,7 +107,7 @@ interface Mumsys_Db_Driver_Result_Interface
      *
      * @todo Seems to be buggy!! $result with $this->_result
      */
-    public function affectedRows($dbc=false);
+    public function affectedRows( $dbc = false );
 
     /**
      * Retrieves the ID generated for an AUTO_INCREMENT column by the previous
@@ -133,7 +129,7 @@ interface Mumsys_Db_Driver_Result_Interface
      * previous query on success, 0 if the previous query does not generate an
      * AUTO_INCREMENT value, or FALSE if no MySQL connection was established.
      */
-    public function lastInsertId($dbc=false);
+    public function lastInsertId( $dbc = false );
 
 
     /**
@@ -157,10 +153,10 @@ interface Mumsys_Db_Driver_Result_Interface
      * column name. If undefined, the first field is retrieved.
      * @param resource $res The result resource that is being evaluated. This
      * result comes from a call to mysql_query().
-     * @return s|false The contents of one cell from a MySQL result set on
+     * @return string|false The contents of one cell from a MySQL result set on
      * success, or FALSE on failure.
      */
-    public function getFirst($row=0, $field=0, $res=false);
+    public function getFirst( $row = 0, $field = 0, $res = false );
 
 
     /**
@@ -177,7 +173,7 @@ interface Mumsys_Db_Driver_Result_Interface
      * @param resource $res Result set of a mysql query
      * @return boolean Returns TRUE on success or FALSE on failure.
      */
-    public function seek( $n=0, $res=false );
+    public function seek( $n = 0, $res = false );
 
 
     /**
@@ -195,6 +191,6 @@ interface Mumsys_Db_Driver_Result_Interface
      * will be emitted. It's worth noting that mysql_query() only returns a
      * resource for SELECT, SHOW, EXPLAIN, and DESCRIBE queries.
      */
-    public function free($res=false);
+    public function free( $res = false );
 
 }

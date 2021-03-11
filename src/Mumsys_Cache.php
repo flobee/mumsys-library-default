@@ -1,40 +1,36 @@
-<?php
+<?php declare(strict_types=1);
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Cache
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2013 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Cache
- * @version     1.0.0
  * Created: 2013-12-10
- * @filesource
  */
-/*}}}*/
 
 
 /**
  * Class for standard file caching
+ * @deprecated since version 1.1.1
+ * Use Mumsys_Cache_Default or Mumsys_Cache_File
  *
  * @category    Mumsys
  * @package     Mumsys_Library
  * @subpackage  Mumsys_Cache
  */
-class Mumsys_Cache extends Mumsys_Abstract
+class Mumsys_Cache
+    extends Mumsys_Abstract
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
-    const VERSION = '1.0.0';
+    public const VERSION = '1.2.1';
 
     /**
      * Flag if caching is enabled or not
@@ -54,6 +50,19 @@ class Mumsys_Cache extends Mumsys_Abstract
      */
     protected $_prefix = 'cache_';
 
+    /**
+     * Individual group name (a-z) to define a cache file to find on the
+     * filesystem more easier if needed to look for manually..
+     * @var string
+     */
+    private $_group;
+
+    /**
+     * Individual ID to define a cache file which will be md5 encrypted.
+     * @var string
+     */
+    private $_id;
+
 
     /**
      * Initialize the cache object and sets group and id to store it.
@@ -65,8 +74,8 @@ class Mumsys_Cache extends Mumsys_Abstract
      */
     public function __construct( $group, $id )
     {
-        $this->_id = md5((string)$id);
-        $this->_group = (string)$group;
+        $this->_id = md5( (string) $id );
+        $this->_group = (string) $group;
     }
 
 
@@ -80,14 +89,14 @@ class Mumsys_Cache extends Mumsys_Abstract
     {
         $filename = $this->_getFilename();
 
-        if ($fp = fopen($filename, 'xb')) {
-            if (flock($fp, LOCK_EX)) {
-                fwrite($fp, $data);
+        if ( $fp = fopen( $filename, 'wb' ) ) {
+            if ( flock( $fp, LOCK_EX ) ) {
+                fwrite( $fp, $data );
             }
-            fclose($fp);
+            fclose( $fp );
 
             // Set filemtime
-            touch($filename, time() + (int)$ttl);
+            touch( $filename, time() + (int) $ttl );
         }
     }
 
@@ -99,28 +108,47 @@ class Mumsys_Cache extends Mumsys_Abstract
     {
         $filename = $this->_getFilename();
 
-        return file_get_contents($filename);
+        return file_get_contents( $filename );
     }
 
 
     /**
      * Checks if an entry is cached.
      *
-     * @param string $group Groupname
-     * @param string $id Unique ID
+     * @return boolean True if cache exists or false
      */
     public function isCached()
     {
-        if ($this->_enabled) {
+        if ( $this->_enabled ) {
             $filename = $this->_getFilename();
 
-            if (file_exists($filename) && filemtime($filename) > time()) {
+            if ( ( $exists = file_exists( $filename ) ) && filemtime( $filename ) > time() ) {
                 return true;
             }
-            @unlink($filename);
+
+            if ( $exists ) {
+                unlink( $filename );
+            }
         }
 
         return false;
+    }
+
+
+    /**
+     * Removes the specific cache file.
+     *
+     * @return boolean True on success
+     */
+    public function removeCache()
+    {
+        $filename = $this->_getFilename();
+
+        if ( file_exists( $filename ) ) {
+            @unlink( $filename );
+        }
+
+        return true;
     }
 
 
@@ -131,7 +159,7 @@ class Mumsys_Cache extends Mumsys_Abstract
      */
     public function setPrefix( $prefix )
     {
-        $this->_prefix = (string)$prefix;
+        $this->_prefix = (string) $prefix;
     }
 
 
@@ -147,11 +175,11 @@ class Mumsys_Cache extends Mumsys_Abstract
     /**
      * Sets the path for cache files.
      *
-     * @param string $store The dir where to store the cache files
+     * @param string $path The dir where to store the cache files
      */
     public function setPath( $path )
     {
-        $this->_path = (string)$path;
+        $this->_path = rtrim( (string) $path, '/' ) . '/';
     }
 
 
@@ -171,7 +199,7 @@ class Mumsys_Cache extends Mumsys_Abstract
      */
     public function setEnable( $flag )
     {
-        $this->_enabled = (bool)$flag;
+        $this->_enabled = (bool) $flag;
     }
 
 

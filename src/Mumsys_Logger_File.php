@@ -31,7 +31,7 @@ class Mumsys_Logger_File
     /**
      * Version ID information
      */
-    const VERSION = '3.0.2';
+    const VERSION = '3.0.4';
 
     /**
      * path and filename to the log file.
@@ -65,7 +65,7 @@ class Mumsys_Logger_File
     /**
      * Initialize the logger file object
      *
-     * @param array $args Associativ array with additional params
+     * @param array $options Associativ array with additional params
      * - [logfile] string Location of the logfile; optional, if not set
      *      logs will be stored to /tmp/ ! Make sure you have access to it.
      * - [way] string Default: fopen "a"
@@ -76,26 +76,30 @@ class Mumsys_Logger_File
      * mode, log all)
      * - [debug] boolean Default: false
      * - [lf] string Optional Linefeed Default: \n
-     * - [maxfilesize] integer Optional Number of Bytes for the logfile Default: 0 (no limit)
+     * - [maxfilesize] integer Optional Number of Bytes for the logfile Default:
+     *   0 (no limit)
+     * @param Mumsys_Logger_Writer_Interface $writer Writer interface
      *
-     * @uses Mumsys_File Uses Mumsys_File object for file logging
+     * @uses Mumsys_File Uses Mumsys_File object for file logging if $writer not set
      */
     public function __construct( array $options = array(),
         Mumsys_Logger_Writer_Interface $writer = null )
     {
-        if ( empty($options['logfile']) ) {
-            $this->_logfile = '/tmp/' . basename(__FILE__) . '_' . date('Y-m-d', time());
+        if ( empty( $options['logfile'] ) ) {
+            $this->_logfile = '/tmp/'
+                . basename( __FILE__ ) . '_'
+                . date( 'Y-m-d', time() );
         } else {
             $this->_logfile = $options['logfile'];
         }
 
-        if ( empty($options['way']) ) {
+        if ( empty( $options['way'] ) ) {
             $this->_logway = $options['way'] = 'a';
         } else {
             $this->_logway = (string) $options['way'];
         }
 
-        if ( isset($options['maxfilesize']) ) {
+        if ( isset( $options['maxfilesize'] ) ) {
             $this->_maxfilesize = $options['maxfilesize'];
         }
 
@@ -104,13 +108,15 @@ class Mumsys_Logger_File
                 'file' => $this->_logfile,
                 'way' => $this->_logway
             );
-            $this->_writer = new Mumsys_File($fileOptions);
+            $this->_writer = new Mumsys_File( $fileOptions );
+        } else {
+            $this->_writer = $writer;
         }
 
-        parent::__construct($options);
+        parent::__construct( $options );
 
-        if ( ($message = $this->checkMaxFilesize() ) !== false ) {
-            $this->log($message, Mumsys_Logger_Abstract::INFO);
+        if ( ( $message = $this->checkMaxFilesize() ) !== '' ) {
+            $this->log( $message, Mumsys_Logger_Abstract::INFO );
         }
     }
 
@@ -136,11 +142,11 @@ class Mumsys_Logger_File
     {
         try
         {
-            $datesting = date($this->_timeFormat, time());
-            $levelName = $this->getLevelName($level);
+            $datesting = date( $this->_timeFormat, time() );
+            $levelName = $this->getLevelName( $level );
 
-            if ( !is_scalar($input) ) {
-                $input = json_encode($input);
+            if ( !is_scalar( $input ) ) {
+                $input = json_encode( $input );
             }
 
             $message = sprintf(
@@ -155,7 +161,7 @@ class Mumsys_Logger_File
             $message .= $this->_lf;
 
             if ( $level <= $this->_logLevel || $this->_debug ) {
-                $this->_writer->write($message);
+                $this->_writer->write( $message );
             }
         }
         catch ( Exception $e ) {
@@ -180,23 +186,26 @@ class Mumsys_Logger_File
     /**
      * Checks if the max filesize reached and drops the logfile.
      *
-     * If debug mode is enabled this methode will return false.
+     * If debug mode is enabled this methode will return '' if
+     * maxfilesize <= 0.
      *
-     * @return string|false Returns string with information that the log was
-     * purged or false.
+     * @return string Returns string with information that the log was
+     * purged or empty string.
      */
     public function checkMaxFilesize()
     {
-        $message = false;
+        $message = '';
 
-        if ( $this->_maxfilesize <= 0 ) {
+        if ( $this->_maxfilesize <= 0 || $this->_debug ) {
             return $message;
         }
 
-        if ( !$this->_debug
-            && ($fsize = @filesize($this->_logfile)) > $this->_maxfilesize ) {
-            file_put_contents($this->_logfile, '');
-            $message = 'Max filesize reached. Log purged now';
+        if ( ( $fsize = filesize( $this->_logfile ) ) > $this->_maxfilesize ) {
+            $this->_writer->truncate();
+            $message = sprintf(
+                'Max filesize (%1$s Bytes) reached. Log purged now',
+                $this->_maxfilesize
+            );
         }
 
         return $message;

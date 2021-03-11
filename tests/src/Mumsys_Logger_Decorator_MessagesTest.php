@@ -16,11 +16,27 @@ class Mumsys_Logger_Decorator_MessagesTest
      */
     protected $_logger;
 
+    /**
+     * @var string
+     */
+    private $_version;
 
-    protected function setUp()
+    /**
+     * @var array
+     */
+    protected $_versions;
+
+
+    protected function setUp(): void
     {
+        $this->_version = '3.0.0';
+        $this->_versions = array(
+            'Mumsys_Logger_Decorator_Messages' => $this->_version,
+            'Mumsys_Logger_Decorator_Abstract' => '3.0.0',
+        );
+
         $this->_testsDir = MumsysTestHelper::getTestsBaseDir();
-        $this->_logfile = $this->_testsDir . '/tmp/' . basename(__FILE__) .'.test';
+        $this->_logfile = $this->_testsDir . '/tmp/' . basename( __FILE__ ) . '.test';
 
         $this->_opts = $opts = array(
             'logfile' => $this->_logfile,
@@ -30,11 +46,12 @@ class Mumsys_Logger_Decorator_MessagesTest
             'maxfilesize' => 1024 * 2,
             'msgLineFormat' => '%5$s',
         );
-        $this->_logger = new Mumsys_Logger_File($this->_opts);
-        $this->_object = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
+        $this->_logger = new Mumsys_Logger_File( $this->_opts );
+        $this->_object = new Mumsys_Logger_Decorator_Messages( $this->_logger, $this->_opts );
     }
 
-    protected function tearDown()
+
+    protected function tearDown(): void
     {
         //@unlink($this->_logfile);
         $this->_logger = $this->_object = null;
@@ -47,7 +64,7 @@ class Mumsys_Logger_Decorator_MessagesTest
      */
     public function test_construct()
     {
-        $object1 = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
+        $object1 = new Mumsys_Logger_Decorator_Messages( $this->_logger, $this->_opts );
 
         $this->_opts['username'] = 'flobeeunit';
         $this->_opts['msgDatetimeFormat'] = 'H:i:s';
@@ -56,7 +73,12 @@ class Mumsys_Logger_Decorator_MessagesTest
         $this->_opts['verbose'] = true;
         $this->_opts['lf'] = " end\n";
 
-        $object2 = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
+        $object2 = new Mumsys_Logger_Decorator_Messages( $this->_logger, $this->_opts );
+
+        $this->assertingInstanceOf( 'Mumsys_Logger_Interface', $object1 );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Abstract', $object1 );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Messages', $object1 );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $object1 );
     }
 
 
@@ -66,9 +88,9 @@ class Mumsys_Logger_Decorator_MessagesTest
     public function test__clone()
     {
         $obj = clone $this->_object;
-        $this->assertInstanceOf('Mumsys_Logger_Decorator_Interface', $obj);
-        $this->assertInstanceOf('Mumsys_Logger_Decorator_Interface', $this->_object);
-        $this->assertNotSame($obj, $this->_object);
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $obj );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $this->_object );
+        $this->assertNotSame( $obj, $this->_object );
     }
 
 
@@ -83,18 +105,18 @@ class Mumsys_Logger_Decorator_MessagesTest
         $this->_opts['msgLineFormat'] = '%1$s %2$s [%3$s] %5$s';
         $this->_opts['lf'] = " end\n";
         $this->_opts['msgColors'] = true;
-        $object = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
+        $object = new Mumsys_Logger_Decorator_Messages( $this->_logger, $this->_opts );
 
-        $object->setMessageLoglevel(1);
+        $object->setMessageLoglevel( 1 );
         ob_start();
-        $baseExpected = $object->log('bam', Mumsys_Logger_Abstract::ALERT);
+        $baseExpected = $object->log( 'bam', Mumsys_Logger_Abstract::ALERT );
         $actual = ob_get_clean();
-        $expected = chr(27) . '[41m'
-            . date('H:i', time()) . ' flobeeunit [ALERT] bam'
-            . chr(27) . '[0m'
-            .' end' . "\n";
+        $expected = chr( 27 ) . '[41m'
+            . date( 'H:i', time() ) . ' flobeeunit [ALERT] bam'
+            . chr( 27 ) . '[0m'
+            . ' end' . "\n";
 
-        $this->assertEquals($expected, $actual);
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -108,14 +130,16 @@ class Mumsys_Logger_Decorator_MessagesTest
         $this->_opts['msgLineFormat'] = '%1$s %2$s [%3$s] %5$s';
         $this->_opts['lf'] = " end\n";
 
-        $object = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
+        $object = new Mumsys_Logger_Decorator_Messages( $this->_logger, $this->_opts );
         ob_start();
-        $baseExpected = $object->log(new stdClass(array(0 => 1)), Mumsys_Logger_Abstract::ALERT);
+        $mesg = new stdClass( array(0 => 1) );
+        $code = Mumsys_Logger_Abstract::ALERT;
+        $baseExpected = $object->log( $mesg, $code );
         $actual = ob_get_clean();
 
-        $expected = date('H:i', time()) . ' flobeeunit [ALERT] {} end' . "\n";
+        $expected = date( 'H:i', time() ) . ' flobeeunit [ALERT] {} end' . "\n";
 
-        $this->assertEquals($expected, $actual);
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -128,15 +152,15 @@ class Mumsys_Logger_Decorator_MessagesTest
         $this->_opts['msgDatetimeFormat'] = 'H:i';
         $this->_opts['msgLineFormat'] = '%1$s %2$s [%3$s] %5$s';
         $this->_opts['lf'] = " end\n";
-        $object = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
+        $object = new Mumsys_Logger_Decorator_Messages( $this->_logger, $this->_opts );
 
-        $object->setMessageLoglevel(1);
+        $object->setMessageLoglevel( 1 );
         ob_start();
-        $baseExpected = $object->log('bam', Mumsys_Logger_Abstract::ALERT);
+        $baseExpected = $object->log( 'bam', Mumsys_Logger_Abstract::ALERT );
         $actual = ob_get_clean();
-        $expected = date('H:i', time()) . ' flobeeunit [ALERT] bam end' . "\n";
+        $expected = date( 'H:i', time() ) . ' flobeeunit [ALERT] bam end' . "\n";
 
-        $this->assertEquals($expected, $actual);
+        $this->assertingEquals( $expected, $actual );
     }
 
 
@@ -145,11 +169,12 @@ class Mumsys_Logger_Decorator_MessagesTest
      */
     public function testSetMessageLoglevelException()
     {
-        $object = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
+        $object = new Mumsys_Logger_Decorator_Messages( $this->_logger, $this->_opts );
 
         $regex = '/(Level "99" unknown to set the message log level)/i';
-        $this->setExpectedExceptionRegExp('Mumsys_Logger_Exception', $regex);
-        $object->setMessageLoglevel(99);
+        $this->expectingExceptionMessageRegex( $regex );
+        $this->expectingException( 'Mumsys_Logger_Exception' );
+        $object->setMessageLoglevel( 99 );
     }
 
 
@@ -165,27 +190,25 @@ class Mumsys_Logger_Decorator_MessagesTest
     {
         $this->_opts['username'] = 'flobeeunit';
         $this->_opts['msgColors'] = true;
-        $decorator = new Mumsys_Logger_Decorator_Messages($this->_logger, $this->_opts);
+        $decorator = new Mumsys_Logger_Decorator_Messages( $this->_logger, $this->_opts );
 
-        $colorTemplate = chr(27) . '%1$s%2$s' . chr(27) . '[0m' . "\n";
+        $colorTemplate = chr( 27 ) . '%1$s%2$s' . chr( 27 ) . '[0m' . "\n";
 
-
-        $this->_logger->setLogFormat('%5$s');
-        $decorator->setMessageLogFormat('%5$s');
+        $this->_logger->setLogFormat( '%5$s' );
+        $decorator->setMessageLogFormat( '%5$s' );
 
         $colors = $decorator->getColors();
         $colors[99] = '[47m';
-        $decorator->setColors($colors);
+        $decorator->setColors( $colors );
         $colors[98] = '[7m';
-        foreach($colors as $level => $color)
-        {
-            $message = 'level '. $level;
+        foreach ( $colors as $level => $color ) {
+            $message = 'level ' . $level;
             ob_start();
-            $decorator->log($message, $level);
+            $decorator->log( $message, $level );
             $actual = ob_get_clean();
 
-            $expected = sprintf($colorTemplate, $color, $message);
-            $this->assertEquals($expected, $actual, 'error with level: ' . $level);
+            $expected = sprintf( $colorTemplate, $color, $message );
+            $this->assertingEquals( $expected, $actual, 'error with level: ' . $level );
         }
     }
 
@@ -198,9 +221,24 @@ class Mumsys_Logger_Decorator_MessagesTest
     {
         $expected = $this->_object->getColors();
         $expected[99] = '[49m';
-        $this->_object->setColors($expected);
+        $this->_object->setColors( $expected );
 
-        $this->assertEquals($expected, $this->_object->getColors());
+        $this->assertingEquals( $expected, $this->_object->getColors() );
+    }
+
+
+    /**
+     * Version check
+     */
+    public function testVersion()
+    {
+        $this->assertingEquals(
+            $this->_version, Mumsys_Logger_Decorator_Messages::VERSION
+        );
+        $this->assertingEquals(
+            $this->_versions['Mumsys_Logger_Decorator_Abstract'],
+            Mumsys_Logger_Decorator_Abstract::VERSION
+        );
     }
 
 }

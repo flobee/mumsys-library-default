@@ -12,7 +12,6 @@
  * @package     Library
  * @subpackage  Logger
  */
-/* }}} */
 
 
 /**
@@ -29,9 +28,9 @@ abstract class Mumsys_Logger_Abstract
     implements Mumsys_Logger_Interface
 {
     /**
-     * Version ID information
+     * Version ID information.
      */
-    const VERSION = '3.3.0';
+    const VERSION = '3.3.1';
 
     /**
      * System is unusable emerg()
@@ -103,7 +102,7 @@ abstract class Mumsys_Logger_Abstract
     /**
      * Format of a log message.
      * Default:
-     *  1 = dateformat string
+     *  1 = dateformat string (see "timeFormat" in construction)
      *  2 = username
      *  3 = name of the log level
      *  4 = id of the log level
@@ -112,7 +111,6 @@ abstract class Mumsys_Logger_Abstract
      * @var string
      */
     protected $_logFormat = '%1$s [%2$s] [%3$s](%4$s) %5$s';
-
 
     /**
      * Flag to enable debugging or not.
@@ -162,34 +160,34 @@ abstract class Mumsys_Logger_Abstract
      */
     public function __construct( array $options = array() )
     {
-        if ( !isset($options['username']) ) {
+        if ( !isset( $options['username'] ) ) {
             $this->_username = Mumsys_Php_Globals::getRemoteUser();
         } else {
             $this->_username = $options['username'];
         }
 
-        if ( isset($options['lineFormat']) ) {
+        if ( isset( $options['lineFormat'] ) ) {
             $this->_logFormat = (string) $options['lineFormat'];
-            if ( empty($this->_logFormat) ) {
-                throw new Mumsys_Logger_Exception('Log format empty');
+            if ( empty( $this->_logFormat ) ) {
+                throw new Mumsys_Logger_Exception( 'Log format empty' );
             }
         }
 
-        if ( isset($options['timeFormat']) ) {
+        if ( isset( $options['timeFormat'] ) ) {
             $this->_timeFormat = (string) $options['timeFormat'];
         } else {
             $this->_timeFormat = 'Y-m-d H:i:s';
         }
 
-        if ( isset($options['logLevel']) ) {
+        if ( isset( $options['logLevel'] ) ) {
             $this->_logLevel = $options['logLevel'];
         }
 
-        if ( isset($options['debug']) ) {
+        if ( isset( $options['debug'] ) ) {
             $this->_debug = $options['debug'];
         }
 
-        if ( isset($options['lf']) ) {
+        if ( isset( $options['lf'] ) ) {
             $this->_lf = $options['lf'];
         }
 
@@ -209,20 +207,22 @@ abstract class Mumsys_Logger_Abstract
     /**
      * Alias wrapper to extra methode calls.
      *
-     * Implements calls: emerge(), emergency(), alert(), crit(), critical(), err()
-     * error(), warn(), warning(), notice(), info(), debug().
+     * Implements calls: emerge(), emergency(), alert(), crit(), critical(),
+     * err() error(), warn(), warning(), notice(), info(), debug().
+
      * Dont use it if you can (performace). Just compatibilty to psr.
      *
      * @param string $key Methode string to wrap to
-     * @param string $value Log message value
+     * @param string $values Log message value
      *
+     * @return string Log message
      * @throws Mumsys_Logger_Exception if key not implemented
      */
-    public function __call($key, $value)
+    public function __call( $key, $values )
     {
         $level = null;
 
-        switch ( strtolower($key) )
+        switch ( strtolower( $key ) )
         {
             case 'emerg':
             case 'emergency':
@@ -261,11 +261,17 @@ abstract class Mumsys_Logger_Abstract
                 break;
 
             default:
-                $message = sprintf('Invalid method call: "%1$s"',$key);
-                throw new Mumsys_Logger_Exception($message);
+                $message = sprintf( 'Invalid method call: "%1$s"', $key );
+                throw new Mumsys_Logger_Exception( $message );
         }
 
-        $this->log($value, $level);
+        if ( count( $values ) == 1 ) {
+            $_value = $values[0];
+        } else {
+            $_value = $values;
+        }
+
+        return $this->log( $_value, $level );
     }
 
 
@@ -297,13 +303,14 @@ abstract class Mumsys_Logger_Abstract
      */
     public function setLoglevel( $level )
     {
-        if ( $this->checkLevel($level) === false ) {
+        if ( $this->checkLevel( $level ) === false ) {
             $message = 'Log level "' . $level . '" unknown. Can not set';
-            throw new Mumsys_Logger_Exception($message);
+            throw new Mumsys_Logger_Exception( $message );
         }
 
         $this->_logLevel = (int) $level;
     }
+
 
     /**
      * Checks if a loglevel is registered or not
@@ -314,7 +321,7 @@ abstract class Mumsys_Logger_Abstract
      */
     public function checkLevel( $level = 0 )
     {
-        if ( isset($this->_loglevels[$level]) ) {
+        if ( isset( $this->_loglevels[$level] ) ) {
             return true;
         }
 
@@ -330,7 +337,7 @@ abstract class Mumsys_Logger_Abstract
      */
     public function getLevelName( $level )
     {
-        if ( !isset($this->_loglevels[$level]) ) {
+        if ( !isset( $this->_loglevels[$level] ) ) {
             return 'unknown';
         }
 

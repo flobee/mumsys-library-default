@@ -23,9 +23,9 @@ class Mumsys_Variable_AbstractTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->_version = '1.2.1';
+        $this->_version = '1.2.2';
         $this->_object = null;
     }
 
@@ -34,15 +34,14 @@ class Mumsys_Variable_AbstractTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
-        $this->_object = NULL;
+        $this->_object = null;
     }
 
 
     /**
-     * @ c o v e r s Mumsys_Variable_Abstract::getTypes
-     * @ c o v e r s Mumsys_Variable_Abstract::VERSION
+     * @covers Mumsys_Variable_Abstract::getTypes
      */
     public function testCheckConstants()
     {
@@ -56,11 +55,14 @@ class Mumsys_Variable_AbstractTest
             'datetime', 'timestamp',
             'email',
             'ipv4', 'ipv6',
+            'unixtime',
             'unittest',
         );
 
-        $this->assertEquals($expected, Mumsys_Variable_Abstract::getTypes());
-        $this->assertEquals($this->_version, Mumsys_Variable_Abstract::VERSION);
+        $actual = Mumsys_Variable_Abstract::getTypes();
+        $this->assertingEquals( $expected, $actual );
+        $this->assertingEquals( count( $expected ), count( $actual ) );
+        $this->assertingEquals( $this->_version, Mumsys_Variable_Abstract::VERSION );
     }
 
 }

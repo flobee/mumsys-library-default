@@ -1,0 +1,34 @@
+<?php
+
+return array(
+    // enable debug mode,
+    'debug'			=> true,
+
+    /**
+     * uses the mumsys v1, v2 DB classes, to be removed in v3!
+     * @deprecated since mumsys version 3.0.0
+     * Use seperated config file for credentials like db access
+     */
+    'database' => array(
+        'type' => 'mysql:mysqli',
+        'host' => 'localost',
+        'port' => '3306',
+        'username' => 'username',
+        'password' => 'password',
+        'db' => 'mumsys',
+        'charset' => 'utf8',
+        'compress' => false,
+        'throwErrors' => true,
+        'debug' => false,
+        'socket' => false,
+        //default tables used by mumsys cms
+        'tables' => array(
+            'table_access' => 'mumsys_access',
+            'table_programs' => 'mumsys_programs',
+            'table_blocks' => 'mumsys_blocks',
+            'table_sessions' => 'mumsys_sessions',
+            'table_sessionsuser' => 'mumsys_sessionsuser',
+            'table_config' => 'mumsys_config',
+        ),
+    )
+);

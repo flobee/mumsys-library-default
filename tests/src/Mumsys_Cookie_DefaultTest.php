@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * Mumsys_Cookie_Default Test
+ */
+class Mumsys_Cookie_DefaultTest
+    extends Mumsys_Unittest_Testcase
+{
+    /**
+     * @var Mumsys_Cookie_Default
+     */
+    protected $_object;
+
+
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp(): void
+    {
+        $this->_object = new Mumsys_Cookie_Default();
+    }
+
+
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown(): void
+    {
+        unset( $this->_object );
+    }
+
+
+    /**
+     * @covers Mumsys_Cookie_Default::__construct
+     */
+    public function test__construct()
+    {
+        $object = new Mumsys_Cookie_Default();
+
+        $this->assertingInstanceOf( 'Mumsys_Cookie_Interface', $object );
+    }
+
+
+    /**
+     * @covers Mumsys_Cookie_Default::getCookie
+     * @covers Mumsys_Cookie_Default::setCookie
+     * @covers Mumsys_Cookie_Default::setRawCookie
+     * @runInSeparateProcess
+     */
+    public function testGetSetCookie()
+    {
+        $_COOKIE = array('unittest' => 'unit value');
+        $actual1 = $this->_object->getCookie();
+        $actual2 = $this->_object->getCookie( 'unittest' );
+        $actual3 = $this->_object->setCookie( "a", 'b' );
+        $actual4 = $this->_object->setRawCookie( "raw", 'raw' );
+
+        $this->assertingEquals( $_COOKIE, $actual1 );
+        $this->assertingEquals( $_COOKIE['unittest'], $actual2 );
+        $this->assertingTrue( $actual3 );
+        $this->assertingTrue( $actual4 );
+    }
+
+
+    /**
+     * @covers Mumsys_Cookie_Default::clear
+     * @covers Mumsys_Cookie_Default::unsetCookie
+     * @runInSeparateProcess
+     */
+    public function testClearUnset()
+    {
+        $_COOKIE = array('a', 'b');
+        $actual1 = $this->_object->clear();
+
+        $this->assertingTrue( $actual1 );
+    }
+
+}

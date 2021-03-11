@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Mumsys_Logger_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
@@ -53,19 +52,24 @@ class Mumsys_Logger_Default
     /**
      * Initialize the default logger object
      *
-     * @param array $args Associativ array with additional params
+     * @see Mumsys_Logger_File::__construct() for more prameters.
+     *
+     * @param array $args Key/value pairs with additional params.
      *  - [username] optional otherwise PHP_AUTH_USER will be taken
      *  - [lineFormat] optional format of log line;see $_logformat.
      *  - [timeFormat] optional format of a timestamp format
-     *  - [logLevel] integer Optional Number of the loglevel; Default: 7 (debug mode)
+     *  - [logLevel] integer Optional Number of the loglevel; Default: 7 (debug
+     *    mode)
      *  - [debug] boolean Default: false
      *  - [verbose] boolean Default: false
      *  - [lf] string Optional Linefeed Default: \n
-     * @param Mumsys_Logger_Writer_Interface $writer Writer interface to store messages
+     * @param Mumsys_Logger_Writer_Interface $writer Writer interface to store
+     * messages
      */
-    public function __construct( array $options = array(), Mumsys_Logger_Writer_Interface $writer = null )
+    public function __construct( array $options = array(),
+        Mumsys_Logger_Writer_Interface $writer = null )
     {
-        parent::__construct($options, $writer);
+        parent::__construct( $options, $writer );
     }
 
 }

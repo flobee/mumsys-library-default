@@ -1,23 +1,18 @@
 <?php
 
-/* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_File_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright Copyright (c) 2011 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_File
+ * @package     Library
+ * @subpackage  File
  * @version     3.0.0
  * 0.1 - Created on 2011/02
- * ----------------------------------------------------------------------------
  */
 /* }}} */
 
@@ -26,21 +21,22 @@
  * Interface for file object
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_File
+ * @package     Library
+ * @subpackage  File
  */
 interface Mumsys_File_Interface
 {
-
-
     /**
      * Initialise the File object.
-     * If a file and mode is given the open() methode will be called automaticly.
+     *
+     * If a file and mode is given the open() methode will be called
+     * automaticly.
      *
      * @param array $params Params to set on initialisation the object
-     *      [file] Location to the file to read or to write
-     * 		[way] Kind/ mode of to read/write the file
-     * 		[buffer] Number of bytes to be read from the file. @see setBuffer()
+     *  [file] Location to the file to read or to write
+     *  [way] Kind/ mode of to read/write the file
+     *  [buffer] Number of bytes to be read from the file. @see setBuffer()
+     *
      * @return void
      */
     public function __construct( array $params = array() );
@@ -58,8 +54,8 @@ interface Mumsys_File_Interface
     /**
      * Close current file connection if exists.
      *
-     * @return boolean Returns the status of the close() command. True on success
-     * or true by default even if no connection was made
+     * @return boolean Returns the status of the close() command. True on
+     * success or true by default even if no connection was made
      */
     public function close();
 
@@ -70,7 +66,8 @@ interface Mumsys_File_Interface
      * @param string|binary $content Content to write to the file
      *
      * @return boolean Returns true on success.
-     * @throws Mumsys_File_Exception Throws exception if writing to file is impossible
+     * @throws Mumsys_File_Exception Throws exception if writing to file is
+     * impossible
      */
     public function write( $content );
 
@@ -98,24 +95,33 @@ interface Mumsys_File_Interface
 
     /**
      * Set write or read mode.
-     * 'r'  	Open for reading only; place the file pointer at the beginning of the file.
-     * 'r+' 	Open for reading and writing; place the file pointer at the beginning of the file.
-     * 'w' 	Open for writing only; place the file pointer at the beginning of
-     *          the file and truncate the file to zero length. If the file does not exist, attempt to create it.
-     * 'w+' 	Open for reading and writing; place the file pointer at the beginning
-     *          of the file and truncate the file to zero length. If the file does not exist, attempt to create it.
-     * 'a' 	Open for writing only; place the file pointer at the end of the file.
-     *          If the file does not exist, attempt to create it.
-     * 'a+' 	Open for reading and writing; place the file pointer at the end of the file.
-     *          If the file does not exist, attempt to create it.
-     * 'x' 	Create and open for writing only; place the file pointer at the beginning of the file.
-     *          If the file already exists, the fopen() call will fail by returning FALSE and
-     *          generating an error of level E_WARNING. If the file does not exist, attempt to create it.
-     *          This is equivalent to specifying O_EXCL|O_CREAT flags for the underlying open(2) system call.
-     * 'x+' 	Create and open for reading and writing; place the file pointer at the beginning of the file.
-     *          If the file already exists, the fopen() call will fail by returning FALSE and generating an error
-     *          of level E_WARNING. If the file does not exist, attempt to create it. This is equivalent to
-     *          specifying O_EXCL|O_CREAT flags for the underlying open(2) system call.
+     *
+     *  - 'r'   Open for reading only; place the file pointer at the beginning
+     *          of the file.
+     *  - 'r+'  Open for reading and writing; place the file pointer at the
+     *          beginning of the file.
+     * - 'w'    Open for writing only; place the file pointer at the beginning
+     *          of the file and truncate the file to zero length. If the file
+     *          does not exist, attempt to create it.
+     *  - 'w+'  Open for reading and writing; place the file pointer at the
+     *          beginning of the file and truncate the file to zero length. If
+     *          the file does not exist, attempt to create it.
+     *  - 'a'   Open for writing only; place the file pointer at the end of the
+     *          file. If the file does not exist, attempt to create it.
+     *  - 'a+'  Open for reading and writing; place the file pointer at the end
+     *          of the file. If the file does not exist, attempt to create it.
+     *  - 'x'   Create and open for writing only; place the file pointer at the
+     *          beginning of the file. If the file already exists, the fopen()
+     *          call will fail by returning FALSE and generating an error of
+     *          level E_WARNING. If the file does not exist, attempt to create
+     *          it. This is equivalent to specifying O_EXCL|O_CREAT flags for
+     *          the underlying open(2) system call.
+     *  - 'x+'  Create and open for reading and writing; place the file pointer
+     *          at the beginning of the file. If the file already exists, the
+     *          fopen() call will fail by returning FALSE and generating an
+     *          error of level E_WARNING. If the file does not exist, attempt
+     *          to create it. This is equivalent to specifying O_EXCL|O_CREAT
+     *          flags for the underlying open(2) system call.
      *
      * @param string $string Return the mode for the file operation
      */
@@ -174,5 +180,4 @@ interface Mumsys_File_Interface
      * false on failure or the connection was closed
      */
     public function isOpen();
-
 }

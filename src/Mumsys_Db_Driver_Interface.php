@@ -1,32 +1,29 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Db_Driver_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2007 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2007 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * @package     Library
+ * @subpackage  Db
  * @version     3.1.0
  * 0.1 - Created: 2010-12-29
- * -----------------------------------------------------------------------
  */
-/* }}} */
 
 
 /**
- * Database driver interface
+ * Database driver interface.
+ *
  * Includes std connection and operation methodes base on prim. mysql behavior
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Db
+ * @package     Library
+ * @subpackage  Db
  */
 interface Mumsys_Db_Driver_Interface
 {
@@ -39,19 +36,21 @@ interface Mumsys_Db_Driver_Interface
      * - 'password' optional Database password
      * - 'host' optional Database hostname/ip
      * - 'port' optional Database port
-     * - 'charset' client character set to be used. If given it will be set when connection will be made
+     * - 'charset' client character set to be used. If given it will be set when
+     *   connection will be made
      * - 'socket' boolean optional
      * - 'debug' boolean optional
-     * - 'throw_errors' boolean optional default: true
+     * - 'throwErrors' boolean optional default: true
      * - 'compress' boolean optional Deside to compress the connection or not
      * - mixed other parameters you may need for your own connection/ driver
      */
-    public function __construct( array $args );
+    public function __construct( Mumsys_Context_Item $context, array $args );
 
     /**
      * Destructor. Close current connection.
      *
-     * @return boolean Return the status for closing the connection. True on success.
+     * @return boolean Return the status for closing the connection. True on
+     * success.
      */
     public function __destruct();
 
@@ -105,7 +104,8 @@ interface Mumsys_Db_Driver_Interface
     /**
      * Returns the list of errors the program has detected and collected.
      *
-     * @return array List of errors with ["message" => "error message", "code"=> "error code"]
+     * @return array List of errors with ["message" => "error message", "code"
+     * => "error code"]
      */
     public function getErrors();
 
@@ -152,9 +152,10 @@ interface Mumsys_Db_Driver_Interface
     /**
      * Create a database connection.
      *
-     * @return resource|false Retruns the database connection resource on succsess or
-     * throws exception
-     * @throws Mumsys_Db_Exception On connection error or if initial database can not be selected
+     * @return resource|false Retruns the database connection resource on
+     * succsess or throws exception
+     * @throws Mumsys_Db_Exception On connection error or if initial database
+     * can not be selected
      */
     public function connect();
 
@@ -221,7 +222,7 @@ interface Mumsys_Db_Driver_Interface
      * @return array|false The columns propertys with lower case array keys
      * @throws Mumsys_Db_Exception Throws exception on error
      */
-    public function showColumns($table='', $field=null);
+    public function showColumns( $table = '', $field = null );
 
     /**
      * Get current system status for uptime, threads, queries, open tables,
@@ -264,12 +265,12 @@ interface Mumsys_Db_Driver_Interface
      * - on empty query statement (if throw errors was set)
      * - on query error (if throw errors was set)
      */
-    public function query($sql=false, $unbuffered=false);
+    public function query( $sql = false, $unbuffered = false );
 
     /**
      * Test if given resource from a query is in error state
      *
-     * @param Mumsys_DB_Driver_Result_Interface|resource $res Optional, the
+     * @param Mumsys_DB_Driver_Result_Interface $res Optional, the
      * driver result interface otherwise the default/current resultset will be
      * used.
      *
@@ -300,16 +301,18 @@ interface Mumsys_Db_Driver_Interface
      * Select data from the database.
      *
      * @param array $params Parameters to be set:<br/>
-     * - [fields] required Fields to update or insert by a given array with key=>value pairs
+     * - [fields] required Fields to update or insert by a given array with key
+     * =>value pairs
      * - [table] required Table to update<br/>
-     * - [where] required Array key=>value construct for the where clause; Note: only AND conditions will be made
-     * - [order] optional; Set the order for select or update statements. List of key/value pairs (columne/ASC,DESC)
-     * - [limit] optional array containing the offset (the start value), limit count for selects or just the limit
-     * count e.g. array(limit count) for select, delete, updates.
+     * - [where] required Array key=>value construct for the where clause; Note:
+     * only AND conditions will be made
+     * - [order] optional; Set the order for select or update statements. List
+     * of key/value pairs (columne/ASC,DESC)
+     *  - [limit] optional array containing the offset (the start value), limit
+     * count for selects or just the limit count e.g. array(limit count) for
+     * select, delete, updates.
      *
-     * @return Mumsys_Db_Driver_Mysql_Result Object or false on error
-     * @return Mumsys_Db_Driver_Result_Interface Returns
-     * Mumsys_Db_Driver_Result_Interface object or false on error
+     * @return Mumsys_Db_Driver_Result_Interface Object or false on error
      */
     public function select( array $params = array() );
 
@@ -325,11 +328,12 @@ interface Mumsys_Db_Driver_Interface
 
 
     /**
-     * Replace existing data.
+     * Replace existing data at the database.
      *
-     * @param array $params Parameters to be set/ replaced:<br/>
-     * [fields] required Fields to set in the replace command<br/>
-     * [table] required Table to insert<br/>
+     * @param array $params Parameters to be set/ replaced:
+     * [fields] required Fields to set in the replace command
+     * [table] required Table to insert
+     *
      * @return integer|false Returns number of affected rows or false on error
      */
     public function replace( array $params = array() );
@@ -337,18 +341,19 @@ interface Mumsys_Db_Driver_Interface
     /**
      * Delete data from storage.
      *
-     * @param array $params Parameters as follow:<br/>
-     * [table] required Table to delete from<br/>
-     * [where] required Array key=>value pairs for the where clause; <br/>
+     * @param array $params Parameters as follow:
+     *  [table] required Table to delete from
+     *  [where] required Array key=>value pairs for the where clause;
      * Note: only AND conditions will be made to delete entrys
-     * [where] required Array key=>value construct for the where clause;
-     * Note: only AND conditions will be made<br/>
-     * [updateall] optional if set an empty where parameter will be accepted
+     *  [where] required Array key=>value construct for the where clause;
+     * Note: only AND conditions will be made
+     *  [updateall] optional if set an empty where parameter will be accepted
      * to update or delete ALL existing data without any restrictions.
-     * be careful to use it<br/>
-     * [limit] optional array containing the offset (the start value), limit
+     * be careful to use it
+     *  [limit] optional array containing the offset (the start value), limit
      * count or just the limit count e.g. array(limit count)
-     * @return Mumsys_Db_Driver_Mysql_Result|false Returns false on error
+     *
+     * @return Mumsys_Db_Driver_Result_Interface|false Returns false on error
      */
     public function delete( array $params = array() );
 

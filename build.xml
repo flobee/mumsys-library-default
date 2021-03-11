@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Mumsys library" default="options">
+
+    <property name="bindir" value="${project.basedir}/vendor/bin/" override="false" />
+
+    <target name="options" description="Options for phing">
+        <echo msg="Options for phing" />
+        <echo msg="List actions to perform: ./phing -l" />
+        <echo msg="    eg: test|check|coverage|api|gitstats|all" />
+        <echo msg="./phing -h|--help gives you phing options" />
+    </target>
+
+    <target name="test" description="Executes the unit tests">
+        <echo msg="Executing unit tests" />
+        <delete file="tests/phing-unittest.log" quiet="true" failonerror="false" />
+        <exec command="./runTests.sh" dir="tests" checkreturn="true" logoutput="true"/>
+    </target>
+
+    <target name="coverage" description="Executes the unit tests and generates the code coverage">
+        <echo msg="Generating code coverage report" />
+        <delete file="tests/phing-unittest.log" quiet="true" failonerror="false" />
+        <delete dir="docs/CodeCoverage" quiet="true" failonerror="false" />
+        <exec command="./runTestsCoverageCreate.sh" dir="tests" checkreturn="true" logoutput="true" />
+    </target>
+
+
+    <target name="api" description="Generates the API">
+        <echo msg="Generating the API" />
+        <exec command="./runApiCreate.sh" dir="tests" checkreturn="true" logoutput="true" />
+    </target>
+
+    <target name="gitstats" description="Generates git statistics">
+        <echo msg="Generating git statistics" />
+        <exec command="gitstats . docs/GitStats" dir="./" checkreturn="true" logoutput="true" />
+    </target>
+
+
+    <target name="check" description="Executes the coding style sniffer">
+        <echo msg="Executing the coding style sniffer" />
+        <exec command="./runCSCheck.sh -n ../src ./ bootstrap.php MumsysTestHelper.php"
+            dir="tests" checkreturn="true" logoutput="true"
+        />
+    </target>
+
+    <target name="sca" description="Executes the static code analysis (sca) (low level here)">
+        <echo msg="Executing the static code analysis sniffer" />
+        <exec command="./runStaticCodeAnalysis.sh ../src/" dir="tests" checkreturn="true" logoutput="true" />
+    </target>
+
+    <target name="benchmarks" description="Executes the benchmark scripts/tests (warning: takes some time!)">
+        <echo msg="Currently not available (composer dependency problem)" />
+        <!--
+        <echo msg="Executing the benchmark scripts/tests (warning: this takes some time!)" />
+        <exec command="./runBenchmarks.sh benchmarks/src" dir="tests" checkreturn="true" logoutput="true" />
+        -->
+    </target>
+
+    <target name="all" depends="check,coverage,api" description="Execute all main parts of the package (check,coverage,api)">
+    </target>
+
+
+    <!-- travis-ci service see also .travis-ci.yml file -->
+    <target name="travis" description="Run check,coverage,api on travis-ci">
+        <if>
+            <equals arg1="${env.USER}" arg2="travis" />
+            <then>
+                <!-- Externals first -->
+                <!-- <phing target="travis" haltonfailure="true" dir="${coredir}/some/path" /> -->
+                <echo msg="Copy configs" />
+                <copy file=".env-dist" tofile=".env"/>
+                <copy file="tests/config/default.php-dist" tofile="tests/config/default.php"/>
+                <copy file="tests/config/credentials.php-dist" tofile="tests/config/credentials.php"/>
+            </then>
+            <else>
+                <echo msg="Only the user travis should call the travis task!" />
+                <fail message="Only the user travis should call the travis task!" />
+            </else>
+        </if>
+    </target>
+</project>

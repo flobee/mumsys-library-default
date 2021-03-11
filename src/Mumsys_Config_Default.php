@@ -1,31 +1,34 @@
 <?php
 
-/*{{{*/
 /**
  * Mumsys_Config_Default
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
- * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Config
- * Created: 2009-11-29
- */
-/*}}}*/
-
-
-/**
- * Mumsys config class 2.0.
+ * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Config
+ * @package     Library
+ * @subpackage  Config
+ */
+
+/**
+ * Default config class
+ *
+ * @uses Mumsys_Config_File
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Config
  */
 class Mumsys_Config_Default
     extends Mumsys_Config_File
     implements Mumsys_Config_Interface
 {
+    /**
+     * Version ID information
+     */
+    const VERSION = '3.0.0';
+
 }

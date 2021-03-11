@@ -25,7 +25,7 @@ class Mumsys_Xml_AbstractTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_object = new Mumsys_Xml_AbstractTestHelper;
     }
@@ -35,9 +35,9 @@ class Mumsys_Xml_AbstractTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
-        $this->_object = NULL;
+        $this->_object = null;
     }
 
 
@@ -48,13 +48,14 @@ class Mumsys_Xml_AbstractTest
     {
         $input = array('name' => 'value', 'id' => 12345, 'customAttribute' => 'custom value');
         $expected = 'name="value" id="12345" customAttribute="custom value"';
-        $actual = $this->_object->attributesCreate($input);
+        $actual = $this->_object->attributesCreate( $input );
 
-        $this->assertEquals($expected, $actual);
+        $this->assertingEquals( $expected, $actual );
 
-        $this->setExpectedExceptionRegExp('Mumsys_Xml_Exception', '/(Invalid attribute value for key: "0": "array")/i');
+        $this->expectingExceptionMessageRegex( '/(Invalid attribute value for key: "0": "array")/i' );
+        $this->expectingException( 'Mumsys_Xml_Exception' );
         $input = array(array(1 => 2), array(2));
-        $this->_object->attributesCreate($input);
+        $this->_object->attributesCreate( $input );
     }
 
 }

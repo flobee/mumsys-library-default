@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Mumsys_Logger_Default Test
  */
@@ -19,16 +18,16 @@ class Mumsys_Logger_DefaultTest
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->_version = '3.0.0';
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_Logger_Default' => $this->_version,
-            'Mumsys_Logger_Abstract' => '3.3.0'
+            'Mumsys_Logger_Abstract' => '3.3.1'
         );
 
-        $this->_testsDir = realpath(dirname(__FILE__) . '/../');
+        $this->_testsDir = realpath( dirname( __FILE__ ) . '/../' );
 
         $this->_logfile = $this->_testsDir . '/tmp/Mumsys_LoggerTest_defaultfile.test';
         $this->_opts = $opts = array(
@@ -39,8 +38,8 @@ class Mumsys_Logger_DefaultTest
             'file' => $this->_logfile,
             'way' => 'a',
         );
-        $this->_writer = new Mumsys_File($fopts);
-        $this->_object = new Mumsys_Logger_Default($opts, $this->_writer);
+        $this->_writer = new Mumsys_File( $fopts );
+        $this->_object = new Mumsys_Logger_Default( $opts, $this->_writer );
     }
 
 
@@ -48,10 +47,10 @@ class Mumsys_Logger_DefaultTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_object = $this->_writer = null;
-        unset($this->_object, $this->_writer);
+        unset( $this->_object, $this->_writer );
     }
 
 
@@ -65,29 +64,54 @@ class Mumsys_Logger_DefaultTest
         $opts['verbose'] = false;
         $opts['lf'] = "\n";
 
-        $object = new Mumsys_Logger_Default($opts, $this->_writer);
+        $object = new Mumsys_Logger_Default( $opts, $this->_writer );
+
+        $this->assertingInstanceOf( 'Mumsys_Logger_File', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Default', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Interface', $object );
     }
 
 
-    // for 100% code coverage
+    /**
+     * For 100% code coverage
+     */
     public function test__constructor2()
     {
         $opts = $this->_opts;
         $opts['username'] = 'flobee';
-        unset($opts['logfile'], $opts['way']);
+        unset( $opts['logfile'], $opts['way'] );
 
-        $object = new Mumsys_Logger_Default($opts, $this->_writer);
+        $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
-        unset($opts['username']);
+        unset( $opts['username'] );
         $_SERVER['REMOTE_USER'] = 'flobee';
-        $object = new Mumsys_Logger_Default($opts, $this->_writer);
+        $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
-        unset($opts['username'], $_SERVER['REMOTE_USER'], $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'],
-            $_SERVER['LOGNAME']);
-        $object = new Mumsys_Logger_Default($opts, $this->_writer);
+        unset(
+            $opts['username'], $_SERVER['REMOTE_USER'],
+            $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'], $_SERVER['LOGNAME']
+        );
+        $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
         $_SERVER['LOGNAME'] = 'God';
-        $object = new Mumsys_Logger_Default($opts, $this->_writer);
+        $object = new Mumsys_Logger_Default( $opts, $this->_writer );
+
+        $this->assertingInstanceOf( 'Mumsys_Logger_File', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Default', $object );
+        $this->assertingInstanceOf( 'Mumsys_Logger_Interface', $object );
+    }
+
+
+    /**
+     * Version checks
+     */
+    public function testVersions()
+    {
+        $this->assertingEquals( $this->_version, Mumsys_Logger_Default::VERSION );
+        $this->checkVersionList(
+            $this->_object->getVersions(),
+            $this->_versions
+        );
     }
 
 }

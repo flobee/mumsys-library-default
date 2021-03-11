@@ -1,24 +1,47 @@
 <?php
 
 /**
- * Test class for Mumsys_Loader.
+ * Test class A
  */
-class Mumsys_LoaderTest extends Mumsys_Unittest_Testcase
+class Mumsys_LoaderTestClassA
+    extends Mumsys_Loader
 {
+    public function require( string $location ): bool
+    {
+        return parent::_require( $location );
+    }
+    public function include( string $location ): bool
+    {
+        return parent::_include( $location );
+    }
+}
 
+
+/**
+ * Mumsys_Loader Tests.
+ */
+class Mumsys_LoaderTest
+    extends Mumsys_Unittest_Testcase
+{
     /**
      * @var Mumsys_Loader
      */
-    protected $object;
+    private $_object;
+
+    /**
+     * @var string
+     */
+    private $_version;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->_version = '3.1.1';
-        $this->object = new Mumsys_Loader;
+        $this->_version = '3.2.2';
+        $this->_object = new Mumsys_Loader;
     }
 
 
@@ -26,54 +49,114 @@ class Mumsys_LoaderTest extends Mumsys_Unittest_Testcase
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
-        $this->object = null;
+        unset( $this->_object );
     }
 
 
+    /**
+     * @covers Mumsys_Loader::load
+     */
     public function testLoad()
     {
-        $o3 = $this->object->load('Mumsys_Timer');
-        $this->assertInstanceof('Mumsys_Timer', $o3);
+        $o3 = $this->_object->load( 'Mumsys_Timer' );
+        $this->assertInstanceof( 'Mumsys_Timer', $o3 );
 
-        $this->setExpectedExceptionRegExp('Mumsys_Loader_Exception', '/(Error! could not load: "unittest")/i');
-        $this->object->load('unittest');
+        $this->expectingException( 'Mumsys_Loader_Exception' );
+        $this->expectingExceptionMessageRegex( '/(Could not load: "unittest")/i' );
+        $this->_object->load( 'unittest' );
     }
 
 
+    /**
+     * @covers Mumsys_Loader::load
+     */
     public function testLoadException1()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Exception', '/(Error! could not load: "Mumsys_NoExists".)/');
-        $o4 = $this->object->load('Mumsys_NoExists', array());
+        $this->expectingExceptionMessageRegex( '/(Could not load: "Mumsys_NoExists".)/' );
+        $this->expectingException( 'Mumsys_Exception' );
+        $o4 = $this->_object->load( 'Mumsys_NoExists', array() );
     }
 
 
+    /**
+     * @covers Mumsys_Loader::load
+     */
     public function testLoadException2()
     {
-        $this->setExpectedExceptionRegExp('Mumsys_Exception', '/(Error! could not load: "Mumsys_Templates_Base".)/');
-        $o4 = $this->object->load('Mumsys_Templates_Base', array());
+        $this->expectingExceptionMessageRegex( '/(Could not load: "Mumsys_Templates_Base".)/' );
+        $this->expectingException( 'Mumsys_Exception' );
+        $this->_object->load( 'Mumsys_Templates_Base', array() );
     }
 
 
+    /**
+     * @covers Mumsys_Loader::autoload
+     * @covers Mumsys_Loader::_require
+     * @covers Mumsys_Loader::loadedClassesGet
+     */
     public function testAutoload()
     {
-        $this->object->autoload('Mumsys_Timer');
-        $this->assertTrue(class_exists('Mumsys_Timer', $autoload = true));
+        $this->_object->autoload( 'Mumsys_Counter' );
+
+        $this->assertingTrue( class_exists( 'Mumsys_Counter', $autoload = false ) );
+
+        $loadedList = $this->_object->loadedClassesGet();
+        $expectedList = array('Mumsys_Counter', 'Mumsys_Timer', 'Mumsys_Abstract');
+
+        $this->assertingTrue(
+            $this->checkClassList( $loadedList, $expectedList ),
+            'Check class list failed'
+        );
+
+        $actualC = $this->_object->autoload( 'Mumsys_NotExists' ); // 4CC
+        $this->assertingFalse( $actualC );
     }
 
 
+    /**
+     * @covers Mumsys_Loader::loadedClassesGet
+     */
     public function testLoadedClassesGet()
     {
-        $actual = $this->object->loadedClassesGet();
-        $expected = array();
+        $loadedList = $this->_object->loadedClassesGet( '' );
+        $expectedList = array('Mumsys_Counter', 'Mumsys_Timer', 'Mumsys_Abstract');
 
-        $this->assertEquals(is_array($expected), is_array($actual));
+        $actual = $this->checkClassList( $loadedList, $expectedList );
+        $this->assertingTrue( $actual, 'Check class list failed' );
     }
 
-    public function testGetVersionID()
+
+    /**
+     * @covers Mumsys_Loader::_require
+     */
+    public function test_require()
     {
-        $this->assertEquals($this->_version, Mumsys_Loader::VERSION);
+        $objA = new Mumsys_LoaderTestClassA();
+        $location = MumsysTestHelper::getTestsBaseDir() . '/../src/Mumsys_Timer.php';
+        $actualA = $objA->require( $location );
+
+        $this->assertingTrue( $actualA );
+    }
+
+
+    /**
+     * @covers Mumsys_Loader::_include
+     */
+    public function test_include()
+    {
+        $objA = new Mumsys_LoaderTestClassA();
+        $location = MumsysTestHelper::getTestsBaseDir() . '/../src/Mumsys_Timer.php';
+        $actualA = $objA->include( $location );
+
+        $this->assertingTrue( $actualA );
+    }
+
+
+    public function testVersion()
+    {
+        $this->assertingEquals( $this->_version, Mumsys_Loader::VERSION );
     }
 
 }

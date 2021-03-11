@@ -16,7 +16,7 @@
 
 /**
  * Common class for file system usage.
- * 
+ *
  * Here you will find basic methodes used in several filesystem-classes
  *
  * @category    Mumsys
@@ -29,7 +29,7 @@ abstract class Mumsys_FileSystem_Common_Abstract
     /**
      * Version ID information
      */
-    const VERSION = '3.1.0';
+    const VERSION = '3.1.1';
 
 
     /**
@@ -37,16 +37,17 @@ abstract class Mumsys_FileSystem_Common_Abstract
      *
      * @param string $file Filename or file location
      *
-     * @return string string of the extension or '' (empty string)
+     * @return string String of the extension or '' (empty string)
      */
     public static function extGet( $file )
     {
-        $ext = strrchr(basename($file), '.');
+        $ext = strrchr( basename( $file ), '.' );
         if ( $ext ) {
-            $ext = substr($ext, 1);
+            $ext = substr( $ext, 1 );
         } else {
             $ext = '';
         }
+
         return $ext;
     }
 
@@ -60,11 +61,11 @@ abstract class Mumsys_FileSystem_Common_Abstract
      */
     public static function nameGet( $file = '' )
     {
-        $pos = strrpos($file, '.');
+        $pos = strrpos( $file, '.' );
         if ( $pos === false ) {
-            return basename($file);
+            return basename( $file );
         } else {
-            return substr(basename($file), 0, $pos);
+            return substr( basename( $file ), 0, $pos );
         }
     }
 

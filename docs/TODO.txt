@@ -1,17 +1,59 @@
 # TODOs
 
-- [ ]
+For php8.0
+
++ Add declare (strict_types=1); to all scripts
+
+    - phpunit
+      
+      Update tests: Setup stuff in phpunit-coverage.xml, phpunit.xml and fix
+      issues for a strict test mode
+
++ Compare stable and unstable. some breaking stuff, some are newer in stable
+  but version update is missing
+
++ Add VERSION to exceptions
+    - Update Mumsys_Abstact::getVersions()
+
++ Disalow error_reporting( -1 ); use E_ALL !
+
++ Sync test methods (stable and unstable fist):
+  ```
+find . -type f -iname \*.php | xargs sed -i 's,assertTrue(,assertingTrue(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertFalse(,assertingFalse(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertEquals(,assertingEquals(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertEmpty(,assertingEmpty(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertNull(,assertingNull(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertInstanceOf(,assertingInstanceOf(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertRegExp(,assertingRegExp(,g';
+find . -type f -iname \*.php | xargs sed -i 's,assertRegExpPlural(,assertingRegExpPlural(,g';
+find . -type f -iname \*.php | xargs sed -i 's,expectException(,expectingException(,g';
+find . -type f -iname \*.php | xargs sed -i 's,expectExceptionMessage(,expectingExceptionMessage(,g';
+find . -type f -iname \*.php | xargs sed -i 's,expectingExceptionMessageRegExp(,expectingExceptionMessageRegex(,g';
+find . -type f -iname \*.php | xargs sed -i 's,expectExceptionMessageRegExp(,expectingExceptionMessageRegex(,g';
+  ```
+
++ Mumsys_Service_SshTool... or Mumsys_Service_Ssh_Config_Generator? Check history which is the current one.
+
+
+
+
+Mumsys_Abstract
+- [ ] All tests must contain test against the Mumsys_Abstract class if
+      implemented. As hint: The VERSION constant will be used later for
+      dependency checks and version/technical release control.
+
 
 Mumsys_GetOpts
 ==============
 
-- [ ] Mumsys_GetOpts: Actions groups must be validated/checked. Extend the 
-      whitelist -> the configuration options
-- [ ] A value can contain a "-" or '--' or -9. Extend the parser or redesign?
-- [ ] Some parameters can be required in combination
-- [ ] Mumsys_GetOpts: add actions/operation mode(s) e.g.: 
-      call thisAction --opt1 --opt2 or
-      call secondAction --dryrun --no-history anotherAction --thatFlag
+- [99%] Mumsys_GetOpts: Actions groups must be validated/checked. Extend the
+        whitelist -> the configuration options
+- [99%] Mumsys_GetOpts: add actions/operation mode(s) e.g.:
+        call thisAction --opt1 --opt2 or
+        call secondAction --dryrun --no-history anotherAction --thatFlag
+- [00%] A value can contain a "-" or '--' or -9. Extend the parser or redesign?
+- [00%] Some parameters can be required in combination
 
 
 Mumsys_Multirename

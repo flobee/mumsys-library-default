@@ -1,12 +1,13 @@
 <?php
 
+
 /**
  * Mumsys_Variable_Item_Default Test
  */
 class Mumsys_Variable_Item_DefaultTest
     extends Mumsys_Unittest_Testcase
 {
-     /**
+    /**
      * @var Mumsys_Variable_Item_Default
      */
     protected $_object;
@@ -22,13 +23,14 @@ class Mumsys_Variable_Item_DefaultTest
      */
     private $_version;
 
+
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->_version = '1.1.1';
+        $this->_version = '3.2.4';
 
         $this->_config = array(
             'name' => 'some name',
@@ -41,11 +43,11 @@ class Mumsys_Variable_Item_DefaultTest
             'minlen' => 1,
             'type' => 'email',
             // disabled here: 'regex' => '/(\w+)/i',
-            'allowEmpty'=>true,
-            'required' =>true,
+            'allowEmpty' => true,
+            'required' => true,
         );
 
-        $this->_object = new Mumsys_Variable_Item_Default($this->_config);
+        $this->_object = new Mumsys_Variable_Item_Default( $this->_config );
     }
 
 
@@ -53,9 +55,9 @@ class Mumsys_Variable_Item_DefaultTest
      * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
-        $this->_object = NULL;
+        $this->_object = null;
     }
 
 
@@ -66,8 +68,39 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function test_constructor()
     {
-        $object = new Mumsys_Variable_Item_Default($this->_config);
+        $this->_config['state'] = 'before';
+        $object = new Mumsys_Variable_Item_Default( $this->_config );
+        $this->assertingInstanceOf( 'Mumsys_Variable_Item_Interface', $object );
+        $this->assertingInstanceOf( 'Mumsys_Variable_Item_Abstract', $object );
+        $this->assertingInstanceOf( 'Mumsys_Variable_Item_Default', $object );
     }
+
+
+    /**
+     * @covers Mumsys_Variable_Item_Default::getProperties
+     */
+    public function testGetProperties()
+    {
+        $propsExpected = array(
+            'name' => true,
+            'value' => true,
+            'label' => true,
+            'desc' => true,
+            'info' => true,
+            'default' => true,
+            'type' => true,
+            'minlen' => true,
+            'maxlen' => true,
+            'regex' => true,
+            'allowEmpty' => true,
+            'required' => true,
+            'errors' => true,
+            'filters' => true,
+            'callbacks' => true,
+        );
+        $this->assertingEquals( $propsExpected, $this->_object->getProperties() );
+    }
+
 
     /**
      * @covers Mumsys_Variable_Item_Default::getType
@@ -75,12 +108,13 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testGetSetType()
     {
-        $this->assertNull( $this->_object->setType( $this->_object->getType() ) );
-        $this->_object->setType('integer');
-        $this->assertEquals('integer', $this->_object->getType());
+        $this->assertingNull( $this->_object->setType( $this->_object->getType() ) );
+        $this->_object->setType( 'integer' );
+        $this->assertingEquals( 'integer', $this->_object->getType() );
 
-        $this->setExpectedExceptionRegExp('Mumsys_Variable_Item_Exception', '/Type "xxx" not implemented/i');
-        $this->_object->setType('xxx');
+        $this->expectingExceptionMessageRegex( '/Type "xxx" not implemented/i' );
+        $this->expectingException( 'Mumsys_Variable_Item_Exception' );
+        $this->_object->setType( 'xxx' );
     }
 
 
@@ -90,8 +124,11 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testGetSetMinLength()
     {
-        $this->_object->setMinLength(3);
-        $this->assertEquals(3, $this->_object->getMinLength());
+        $this->_object->setMinLength( 3 );
+        $this->assertingEquals( 3, $this->_object->getMinLength() );
+        // same value again
+        $this->_object->setMinLength( $this->_object->getMinLength() );
+        $this->assertingEquals( 3, $this->_object->getMinLength() );
     }
 
 
@@ -101,8 +138,11 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testGetSetMaxLength()
     {
-        $this->_object->setMaxLength(3);
-        $this->assertEquals(3, $this->_object->getMaxLength());
+        $this->_object->setMaxLength( 3 );
+        $this->assertingEquals( 3, $this->_object->getMaxLength() );
+        // same value again
+        $this->_object->setMaxLength( $this->_object->getMaxLength() );
+        $this->assertingEquals( 3, $this->_object->getMaxLength() );
     }
 
 
@@ -113,25 +153,38 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testGetSetAddRegex()
     {
-        $expected = array('/\w*/i','/\d*/i');
-        $this->assertTrue( (array() === $this->_object->getRegex() ) );
-        $this->_object->setRegex('/\w*/i');
-        $this->assertEquals(array($expected[0]), $this->_object->getRegex());
+        $expected = array(
+            '/\w*/i',
+            '/\d*/i'
+        );
 
-        $this->_object->addRegex('/\d*/i');
-        $this->assertEquals($expected, $this->_object->getRegex());
+        $this->assertingTrue( ( array() === $this->_object->getRegex() ) );
+
+        $this->_object->setRegex( array($expected[0]) );
+        $this->_object->setRegex( array($expected[0]) ); // 4CC
+        $this->assertingEquals( array($expected[0]), $this->_object->getRegex() );
+
+        $this->_object->addRegex( $expected[1] );
+        $this->assertingEquals( $expected, $this->_object->getRegex() );
+
+        // initial regex as string
+        $this->_config['regex'] = $expected[0];
+        $object = new Mumsys_Variable_Item_Default( $this->_config );
+        $this->assertingEquals( array($expected[0]), $object->getRegex() );
     }
 
 
     /**
      * @covers Mumsys_Variable_Item_Default::getAllowEmpty
      * @covers Mumsys_Variable_Item_Default::setAllowEmpty
-     * @todo   Implement testGetAllowEmpty().
      */
     public function testGetSetAllowEmpty()
     {
-        $this->_object->setAllowEmpty(true);
-        $this->assertTrue($this->_object->getAllowEmpty());
+        $this->_object->setAllowEmpty( true );
+        $this->assertingTrue( $this->_object->getAllowEmpty() );
+
+        $this->_object->setAllowEmpty( false );
+        $this->assertingFalse( $this->_object->getAllowEmpty() );
     }
 
 
@@ -141,8 +194,11 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testGetSetRequired()
     {
-        $this->_object->setRequired(true);
-        $this->assertTrue($this->_object->getRequired());
+        $this->_object->setRequired( true );
+        $this->assertingTrue( $this->_object->getRequired() );
+
+        $this->_object->setRequired( false );
+        $this->assertingFalse( $this->_object->getRequired() );
     }
 
 
@@ -152,10 +208,20 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testGetSetLabel()
     {
-        $this->assertEquals('some name', $this->_object->getLabel());
+        $this->assertingEquals( 'some name', $this->_object->getLabel() );
 
-        $this->_object->setLabel('some label');
-        $this->assertEquals('some label', $this->_object->getLabel());
+        $this->_object->setLabel( 'some label' );
+        $this->assertingEquals( 'some label', $this->_object->getLabel() );
+        // same again
+        $x = $this->_object->setLabel( 'some label' );
+        $this->assertingNull( $x );
+        $this->assertingEquals( 'some label', $this->_object->getLabel() );
+
+        // initially no name, no lable
+        $this->_config['name'] = null;
+        $this->_config['label'] = null;
+        $this->_object = new Mumsys_Variable_Item_Default( $this->_config );
+        $this->assertingEquals( 'xyz', $this->_object->getLabel( 'lable', 'xyz' ) );
     }
 
 
@@ -165,8 +231,12 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testGetSetDescription()
     {
-        $this->_object->setDescription('some desc');
-        $this->assertEquals('some desc', $this->_object->getDescription());
+        $this->_object->setDescription( 'some desc' );
+        $this->assertingEquals( 'some desc', $this->_object->getDescription() );
+
+        $this->_object->setDescription( 'some new desc' );
+        $this->assertingEquals( 'some new desc', $this->_object->getDescription() );
+        $this->assertingTrue( $this->_object->isModified() );
     }
 
 
@@ -176,8 +246,12 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testGetSetInformation()
     {
-        $this->_object->setInformation('some info');
-        $this->assertEquals('some info', $this->_object->getInformation());
+        $this->_object->setInformation( 'some info' );
+        $this->assertingEquals( 'some info', $this->_object->getInformation() );
+
+        $this->_object->setInformation( 'some new info' );
+        $this->assertingEquals( 'some new info', $this->_object->getInformation() );
+        $this->assertingTrue( $this->_object->isModified() );
     }
 
 
@@ -187,15 +261,25 @@ class Mumsys_Variable_Item_DefaultTest
      */
     public function testGetSetDefault()
     {
-        $this->_object->setDefault('some default');
-        $this->assertEquals('some default', $this->_object->getDefault());
+        $this->_object->setDefault( $this->_object->getDefault() );
+        $this->assertingEquals( 'def', $this->_object->getDefault() );
+        $this->assertingFalse( $this->_object->isModified() );
+
+        $this->_object->setDefault( 'some default' );
+        $this->assertingEquals( 'some default', $this->_object->getDefault() );
+        $this->assertingTrue( $this->_object->isModified() );
     }
+
 
     /**
      * Version check
      */
     public function testCheckVersion()
     {
-        $this->assertEquals($this->_version, Mumsys_Variable_Item_Default::VERSION);
+        $message = 'A new version exists. You should have a look at '
+            . 'the code coverage to verify all code was tested and not only '
+            . 'all existing tests where checked!';
+        $this->assertingEquals( $this->_version, Mumsys_Variable_Item_Default::VERSION, $message );
     }
+
 }

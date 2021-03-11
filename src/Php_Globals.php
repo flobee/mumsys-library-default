@@ -15,9 +15,9 @@
 
 
 /**
- * Nice interface for php's GLOBAL VARIABLES.
- *
  * @deprecated since version 1.0.0 Use \Mumsys_Php_Globals
+ *
+ * Nice interface for php's GLOBAL VARIABLES.
  *
  * Wraper for $GLOBALS, $_SERVER, $_GET, $_POST, $_FILES, $_COOKIE, $_SESSION,
  * $_REQUEST and $_ENV and getenv().

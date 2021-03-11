@@ -11,7 +11,6 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  FileSystem
- * @version     3.0.0
  */
 
 
@@ -19,11 +18,14 @@
  * Generic exception class.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_FileSystem
+ * @package     Library
+ * @subpackage  FileSystem
  */
 class Mumsys_FileSystem_Exception
     extends Mumsys_Exception
 {
-
+    /**
+     * Version ID information
+     */
+    const VERSION = '3.0.1';
 }

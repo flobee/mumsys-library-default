@@ -1,37 +1,33 @@
 <?php
 
-/* {{{ */
 /**
  * Mumsys_Variable_Manager_Interface
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
- * @version     1.1.1
+ * @package     Library
+ * @subpackage  Variable
+ * @version     2.1.1
  * Created: 2006 based on Mumsys_Field, renew 2016
  */
-/* }}} */
 
 
 /**
  * Variable item manager interface.
- *
- * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Variable
  */
 interface Mumsys_Variable_Manager_Interface
 {
     /**
      * Initialises the default manager and variable item objects.
      *
-     * @param array $config List of key/value configuration pairs containing item properties for the item construction
-     * @param array $values List of key/value pairs to set/bind to the item values e.g: the post parameters
+     * @param array $config List of key/value configuration pairs containing
+     * item properties for the item construction
+     * @param array $values List of key/value pairs to set/bind to the item
+     * values e.g: the post parameters
      */
     public function __construct( array $config, array $values );
 
@@ -41,7 +37,7 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return boolean True on success or false on error
      */
-    public function validate();
+    public function validate(): bool;
 
 
     /**
@@ -53,7 +49,7 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return boolean True on success otherwise false.
      */
-    public function validateType( Mumsys_Variable_Item_Interface $item );
+    public function validateType( Mumsys_Variable_Item_Interface $item ): bool;
 
 
     /**
@@ -64,18 +60,20 @@ interface Mumsys_Variable_Manager_Interface
      * lower the current value.
      *
      * @param Mumsys_Variable_Item_Interface $item
+     *
      * @return boolean True on success otherwise false
      */
-    public function validateMinMax( Mumsys_Variable_Item_Interface $item );
+    public function validateMinMax( Mumsys_Variable_Item_Interface $item ): bool;
 
 
     /**
      * Item validation agains regular expressions.
      *
      * @param Mumsys_Variable_Item_Interface $item Validate item object
+     *
      * @return boolean True on success or if no regex was set or false on error
      */
-    public function validateRegex( Mumsys_Variable_Item_Interface $item );
+    public function validateRegex( Mumsys_Variable_Item_Interface $item ): bool;
 
 
     /**
@@ -90,26 +88,27 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return boolean Returns true on success otherwise false
      */
-    public function isValid( Mumsys_Variable_Item_Interface $item );
+    public function isValid( Mumsys_Variable_Item_Interface $item ): bool;
 
 
     /**
      * Returns all variable items.
      *
-     * @return array List of key/variable items implementing
-     * Mumsys_Variable_Item_Interface where key is the identifier of the item/
-     * variable
+     * @return array<string,Mumsys_Variable_Item_Interface> List of key/variable
+     * items implementing Mumsys_Variable_Item_Interface where the key is the
+     * identifier of the item
      */
-    public function getItems();
+    public function getItems(): array;
 
 
     /**
      * Returns a variable item by given key.
      *
      * @param string $key Key/ identifier of the variable item
-     * @return Mumsys_Variable_Item_Interface|false Variable item or false
+     *
+     * @return Mumsys_Variable_Item_Interface|null Variable item or null if not available
      */
-    public function getItem( $key );
+    public function getItem( $key ): ?Mumsys_Variable_Item_Interface;
 
 
     /**
@@ -120,7 +119,8 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @throws Mumsys_Variable_Manager_Exception If key already exists
      */
-    public function registerItem( $key, Mumsys_Variable_Item_Interface $item );
+    public function registerItem( string $key,
+        Mumsys_Variable_Item_Interface $item ): void;
 
 
     /**
@@ -128,11 +128,12 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @see Mumsys_Variable_Item_Default
      *
-     * @param array $properties List of key/value pairs to initialize the variable item object
+     * @param array $properties List of key/value pairs to initialize the
+     * variable item object
      *
      * @return Mumsys_Variable_Item_Interface
      */
-    public function createItem( array $properties = array() );
+    public function createItem( array $properties = array() ): Mumsys_Variable_Item_Interface;
 
 
     /**
@@ -143,7 +144,7 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return array Returns the list of errors or empty array for no errors
      */
-    public function getErrorMessages();
+    public function getErrorMessages(): array;
 
 
     /**
@@ -151,7 +152,7 @@ interface Mumsys_Variable_Manager_Interface
      *
      * @return array List of error message templates
      */
-    public function getMessageTemplates();
+    public function getMessageTemplates(): array;
 
 
     /**
@@ -160,8 +161,9 @@ interface Mumsys_Variable_Manager_Interface
      * Hint: The key is the message identifier to easyly find it where the
      * massage can vari depending on the values.
      *
-     * @param array $templates List of key/value pairs for the message templates.
+     * @param array $templates List of key/value pairs for the message
+     * templates.
      */
-    public function setMessageTemplates( array $templates );
+    public function setMessageTemplates( array $templates ): void;
 
 }

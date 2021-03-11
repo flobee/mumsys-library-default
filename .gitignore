@@ -1,9 +1,18 @@
+# General files
+*.swp
+*.ctags
+*.geany
+.env
+
 # Composer files
 composer.phar
 vendor/
 
 # Local configs
 config/autoload/*.local.php
+*/config/*.php
+# credentials.php
+tests/config/config4tests.php
 */config/credentials.php
 tests/config/default.php
 
@@ -16,10 +25,13 @@ data/cache/
 data/sessions/
 data/tmp/
 temp/
+/tests/tmp/*
+/tmp/*
 
-# Legacy ZF1
-demos/
+# Legacy
 extras/documentation
+
+/helper/fix-author.cfg
 
 .gitmodules
 copy-free-scripts-from-lib.php
@@ -32,8 +44,17 @@ svn/*
 /phpunit.log.xml
 logs/
 /docs/CodeCoverage/*
+/docs/gitstats/*
+/docs/GitStats/*
+/docs/gitstat*
 /docs/API/*
-/tests/testfiles/*
-/tests/tmp/*
-/tests/tmp/*
 
+# test (individual test) files
+tests/.phpunit.result.cache
+tests/cs
+tests/csf
+tests/sca
+tests/rt
+tests/rc
+
+phpbench.json

@@ -1,28 +1,25 @@
 <?php
 
-/* {{{ */
 /**
- * Mumsys_Request_Abstract
+ * Mumsys_Mvc_Router_Abstract
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
  * @copyright Copyright (c) 2016 by Florian Blasel for FloWorks Company
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
- * @filesource
+ * @package     Library
+ * @subpackage  Mvc
  */
-/* }}} */
 
 
 /**
- * Abstract request class to get input parameters.
+ * Abstract router class to get input parameters.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Request
+ * @package     Library
+ * @subpackage  Mvc
  */
 abstract class Mumsys_Mvc_Router_Abstract
     extends Mumsys_Abstract
@@ -70,10 +67,77 @@ abstract class Mumsys_Mvc_Router_Abstract
     protected $_actionKey = 'action';
 
     /**
-     * Incomming request parameters
-     * @var array
+     * Request interface
+     * @var Mumsys_Request_Interface
      */
-    protected $_input = array();
+    protected $_request;
+
+    /**
+     * The route. Possible options: rewrite|http|html|js|json|console|shell|id|hash
+     * Most of them only decide the format to output or return. @see setRoute()
+     * @var string
+     */
+    protected $_route;
+
+
+    /**
+     * Initialise the router object.
+     *
+     * @param string $route Route to set. @see setRoute()
+     * @param Mumsys_Request_Interface Request interface
+     * @param array $options Optional initial options e.g.: 'programKey',
+     * 'controllerKey', 'actionKey' mappings to initialize the object
+     */
+    public function __construct( Mumsys_Request_Interface $request,
+        $route = 'default', array $options = array() )
+    {
+        $this->_request = $request;
+        $this->setRoute( $route );
+
+        if ( isset( $options['programKey'] ) ) {
+            $this->setProgramKey( $options['programKey'] );
+        }
+
+        if ( isset( $options['controllerKey'] ) ) {
+            $this->setControllerKey( $options['controllerKey'] );
+        }
+
+        if ( isset( $options['actionKey'] ) ) {
+            $this->setActionKey( $options['actionKey'] );
+        }
+    }
+
+
+    /**
+     * Sets/ replaces the route.
+     *
+     * Note: Not all route options are possible from scratch.
+     * E.g. "hash" need a translator from db or config file to map the hash to
+     * program/controller/action
+     *
+     * @param string $route Route to be set:
+     * default|html = Html wrapped using ampersand "&amp;": program=Admin&ampcontroller=Index&amp;action=show
+     * rewrite = Rewrite rule; program/controller/action
+     * http|js|json = Http or js/json/console using "&" as delimiter
+     * console|shell = Using key=value pairs
+     * id = Dot seperated values. Like id=program.controller.action
+     * hash = md5 of program controller action
+     *
+     * @throws Mumsys_Mvc_Router_Exception
+     */
+    public function setRoute( $route )
+    {
+        $routes = array('default', 'rewrite', 'http', 'html', 'js', 'json', 'console', 'shell', 'id', 'hash');
+        if ( !in_array( $route, $routes ) ) {
+            $message = sprintf(
+                'Invalid route "%1$s" to set. Possible routes: "%2$s"', $route,
+                implode( '|', $routes )
+            );
+            throw new Mumsys_Mvc_Router_Exception( $message );
+        }
+
+        $this->_route = (string) $route;
+    }
 
 
     /**
@@ -83,8 +147,8 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function getProgramName()
     {
-        if ($this->_programName === null) {
-            $this->_programName = $this->_request->getParam($this->getProgramKey());
+        if ( $this->_programName === null ) {
+            $this->_programName = $this->_request->getParam( $this->getProgramKey() );
         }
 
         return $this->_programName;
@@ -99,7 +163,7 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function setProgramName( $value = null )
     {
-        $this->_programName = ucwords((string)$value);
+        $this->_programName = ucwords( (string) $value );
         return $this;
     }
 
@@ -111,8 +175,8 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function getControllerName()
     {
-        if ($this->_controllerName === null) {
-            $this->_controllerName = $this->_request->getParam($this->getControllerKey());
+        if ( $this->_controllerName === null ) {
+            $this->_controllerName = $this->_request->getParam( $this->getControllerKey() );
         }
 
         return $this->_controllerName;
@@ -127,7 +191,7 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function setControllerName( $value = null )
     {
-        $this->_controllerName = ucwords((string)$value);
+        $this->_controllerName = ucwords( (string) $value );
 
         return $this;
     }
@@ -140,8 +204,8 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function getActionName()
     {
-        if ($this->_actionName === null) {
-            $this->_actionName = $this->_request->getParam($this->getActionKey());
+        if ( $this->_actionName === null ) {
+            $this->_actionName = $this->_request->getParam( $this->getActionKey() );
         }
 
         return $this->_actionName;
@@ -156,9 +220,9 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function setActionName( $value = null )
     {
-        $this->_actionName = strtolower((string)$value);
-        if ($value === null) {
-            $this->_request->setParam($this->getActionKey(), $value);
+        $this->_actionName = strtolower( (string) $value );
+        if ( $value === null ) {
+            $this->_request->setParam( $this->getActionKey(), $value );
         }
 
         return $this;
@@ -184,7 +248,7 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function setProgramKey( $key = 'program' )
     {
-        $this->_programNameKey = (string)$key;
+        $this->_programNameKey = (string) $key;
 
         return $this;
     }
@@ -209,7 +273,7 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function setControllerKey( $key = 'controller' )
     {
-        $this->_controllerNameKey = (string)$key;
+        $this->_controllerNameKey = (string) $key;
 
         return $this;
     }
@@ -234,7 +298,7 @@ abstract class Mumsys_Mvc_Router_Abstract
      */
     public function setActionKey( $key = 'action' )
     {
-        $this->_actionNameKey = (string)$key;
+        $this->_actionNameKey = (string) $key;
 
         return $this;
     }

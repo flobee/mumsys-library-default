@@ -1,36 +1,32 @@
 <?php
 
-/*{{{*/
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Config_Exception
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
- * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
- * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
+ *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ * @copyright Copyright (c) 2009 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Config
- * @version     1.0.0
+ * @package     Library
+ * @subpackage  Config
  * Created: 2009-11-29
- * @filesource
  */
-/*}}}*/
 
 
 /**
- * Generic Exception class which will be thown if no other exception will do
+ * Generic exception class.
  *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Config
+ * @package     Library
+ * @subpackage  Config
  */
-class Mumsys_Config_Exception extends Mumsys_Exception
+class Mumsys_Config_Exception
+    extends Mumsys_Exception
 {
-
+    /**
+     * Version ID information.
+     */
+    const VERSION = '3.0.0';
 }
-

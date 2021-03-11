@@ -1,53 +1,49 @@
 <?php
 
-/* {{{ */
 /**
- * ----------------------------------------------------------------------------
  * Mumsys_Loader
  * for MUMSYS Library for Multi User Management System (MUMSYS)
- * ----------------------------------------------------------------------------
+ *
  * @author Florian Blasel <flobee.code@gmail.com>
- * ----------------------------------------------------------------------------
  * @copyright Copyright (c) 2010 by Florian Blasel for FloWorks Company
- * ----------------------------------------------------------------------------
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * ----------------------------------------------------------------------------
+ *
  * @category    Mumsys
- * @package     Mumsys_Library
- * @subpackage  Mumsys_Loader
- * @version     3.1.1
+ * @package     Library
+ * @subpackage  Loader
  * 0.4 Created on 28.08.2010
- * @filesource
- * ----------------------------------------------------------------------------
  */
-/* }}} */
 
 
- /**
-  * Factory for mumsys library
-  * Base Class handle: loads the relevant class if needed, else save inclusion
-  * or code.
-  * eg.: $db = Mumsys_Loader::load("database");
-  *
-  * @todo autoload needs to be checked, do tests!!!
-  *
-  * @category Mumsys
-  * @package Mumsys_Library
-  * @subpackage Mumsys_Loader
-  */
+/**
+ * Factory/loader for mumsys library classes.
+ *
+ * Basic class handle: loads the relevant mumsys class if needed
+ * eg.: $db = Mumsys_Loader::load("Mumsys_Timer");
+ *
+ * Note: in your bootstrap the following should be added:
+ * <code>
+ * require_once  '/path/to/src/Mumsys_Loader.php';
+ * spl_autoload_register(array('Mumsys_Loader', 'autoload'));
+ * </code>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  Loader
+ */
 class Mumsys_Loader
 {
     /**
      * Version ID information
      */
-    const VERSION = '3.1.1';
+    const VERSION = '3.2.2';
 
     /**
      * Container of objects which are loaded.
      *
      * @staticvar array
      */
-    protected static $loadedClasses;
+    protected static $_loadedClasses = array();
 
 
     /**
@@ -60,16 +56,18 @@ class Mumsys_Loader
      *
      * @throws Mumsys_Exception Throws exception if loading of class file fails.
      */
-    public static function load($instance, array $args = array())
+    public static function load( $instance, array $args = array() )
     {
-        try {
-            // autoload will be called for "new $instance($args)"
-            if (!class_exists($instance) && !isset(self::$loadedClasses[$instance])) {
-                throw new Mumsys_Loader_Exception(sprintf('Error! could not load: "%1$s".', $instance));
+        try
+        {
+            if ( !class_exists( $instance ) ) {
+                $message = sprintf( 'Could not load: "%1$s".', $instance );
+                throw new Mumsys_Loader_Exception( $message );
             } else {
-                $x = new $instance($args);
+                $x = new $instance( $args );
             }
-        } catch (Exception $e) {
+        }
+        catch ( Exception $e ) {
             throw $e;
         }
 
@@ -82,26 +80,20 @@ class Mumsys_Loader
      *
      * @param string $instance Name of the class to be loaded.
      *
-     * @return boolean Returns true on success or false if class could not be loaded
+     * @return boolean Returns true on success or false if class could not be
+     * loaded
      */
-    public static function autoload($instance)
+    public static function autoload( $instance )
     {
-        $test = true;
-        if (!class_exists($instance)) {
-            $path = dirname(__FILE__) . '/';
+        $test = false;
+        if ( !class_exists( $instance, true ) ) {
+            // fallback if %path% isnt set correctly for the current path
+            $path = __DIR__ . '/';
+            $classfile = $path . $instance . '.php';
 
-            if (substr($instance, 0, 6) == 'Mumsys') {
-                $classfile = $path . $instance . '.php';
-            } else {
-                $classfile = $path . 'class.' . $instance . '.php';
-            }
-
-            if (($test = file_exists($classfile))) {
-                $test = require_once $classfile;
-            }
-
-            if ($test !== false) {
-                self::$loadedClasses[$instance] = $instance;
+            $test = self::_require( $classfile );
+            if ( $test !== false ) {
+                self::$_loadedClasses[$instance] = $instance;
             }
         }
 
@@ -112,11 +104,56 @@ class Mumsys_Loader
     /**
      * Get instanceiated classes.
      *
+     * @param string $prefix Prefix for filtering the return values (default: 'Mumsys_')
+     *
      * @return array Returns a list of loaded classes
      */
-    public static function loadedClassesGet()
+    public static function loadedClassesGet( $prefix = 'Mumsys_' )
     {
-        return self::$loadedClasses;
+        $classList = get_declared_classes();
+        foreach ( $classList as $class ) {
+            if ( substr( $class, 0, strlen( $prefix ) ) === $prefix ) {
+                self::$_loadedClasses[$class] = $class;
+            }
+        }
+
+        return self::$_loadedClasses;
+    }
+
+
+    /**
+     * Requires/ loads a class file.
+     *
+     * @param string $location Location to the class file
+     *
+     * @return boolean true on success or false if the class could not be loaded
+     */
+    protected static function _require( string $location )
+    {
+        $test = false;
+        if ( $location && file_exists( $location ) ) {
+            $test = require_once $location;
+        }
+
+        return $test;
+    }
+
+
+    /**
+     * Includes/ loads a class file.
+     *
+     * @param string $location Location to the class file
+     *
+     * @return boolean true on success or false if the class could not be loaded
+     */
+    protected static function _include( string $location )
+    {
+        $test = false;
+        if ( $location && file_exists( $location ) ) {
+            $test = include_once $location;
+        }
+
+        return $test;
     }
 
 }
