@@ -26,8 +26,11 @@
 
 
     <target name="api" description="Generates the API">
+        <echo msg="Generating the API currently not in" />
+        <!--
         <echo msg="Generating the API" />
         <exec command="./runApiCreate.sh" dir="tests" checkreturn="true" logoutput="true" />
+        -->
     </target>
 
     <target name="gitstats" description="Generates git statistics">
@@ -49,14 +52,11 @@
     </target>
 
     <target name="benchmarks" description="Executes the benchmark scripts/tests (warning: takes some time!)">
-        <echo msg="Currently not available (composer dependency problem)" />
-        <!--
         <echo msg="Executing the benchmark scripts/tests (warning: this takes some time!)" />
         <exec command="./runBenchmarks.sh benchmarks/src" dir="tests" checkreturn="true" logoutput="true" />
-        -->
     </target>
 
-    <target name="all" depends="check,coverage,api" description="Execute all main parts of the package (check,coverage,api)">
+    <target name="all" depends="check,coverage,api,benchmarks" description="Execute all main parts of the package check,coverage,api,benchmarks">
     </target>
 
 

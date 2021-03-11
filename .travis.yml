@@ -20,7 +20,7 @@ branches:
   only:
     # tests may fail
     - unstable
-    # tests should not fail (release candidate by by major version)
+    # tests should not fail (release candidate for major/minor version)
     - testing
     # tests dont fail (release of versions or hotfixes)
     - stable
@@ -46,9 +46,10 @@ before_script:
   - echo "OK";
 
 script: 
-  - ./phing check
-  - ./phing test
+#  - ./phing check
+#  - ./phing test
 #  - ./vendor/bin/phpunit --coverage-text
+   - ./phing all
 
 #after_success:
 #    - travis_retry php vendor/bin/coveralls -v
