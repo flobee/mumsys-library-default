@@ -90,7 +90,7 @@ class Mumsys_Logger_Decorator_MessagesTest
         $obj = clone $this->_object;
         $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $obj );
         $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $this->_object );
-        $this->assertNotSame( $obj, $this->_object );
+        $this->assertingNotSame( $obj, $this->_object );
     }
 
 

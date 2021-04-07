@@ -40,13 +40,7 @@ class Mumsys_Unittest_Testcase
     /**
      * Version ID information.
      */
-    const VERSION = '3.13.2';
-
-    /**
-     * Methods memory container
-     * @var array
-     */
-    private static $_methods = array();
+    const VERSION = '3.16.2';
 
     /**
      * PHPUNIT Version ID.
@@ -99,6 +93,24 @@ class Mumsys_Unittest_Testcase
 
 
     /**
+     * Alias of assertNotEquals() phpunit 8, 9
+     *
+     * @param mixed $expected
+     * @param mixed $actual
+     * @param string $message
+     * @param float $delta
+     * @param int $maxDepth
+     * @param bool $canonicalize
+     * @param bool $ignoreCase
+     */
+    public function assertingNotEquals( $expected, $actual, $message = '',
+        $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false )
+    {
+        parent::assertNotEquals( $expected, $actual, $message, $delta, $maxDepth, $canonicalize, $ignoreCase );
+    }
+
+
+    /**
      * Alias of assertTrue() phpunit 8, 9
      *
      * @param mixed $condition
@@ -136,6 +148,7 @@ class Mumsys_Unittest_Testcase
         parent::assertEmpty( $actual, $message );
     }
 
+
     /**
      * Alias of assertNull() phpunit <7, 8, 9
      * @param mixed $actual
@@ -145,6 +158,33 @@ class Mumsys_Unittest_Testcase
     {
         parent::assertNull( $actual, $message );
     }
+
+
+    /**
+     * Alias of assertSame().
+     *
+     * @param mixed $expected
+     * @param mixed $actual
+     * @param string $message
+     */
+    public function assertingSame( $expected, $actual, $message = '' )
+    {
+        parent::assertSame( $expected, $actual, $message );
+    }
+
+
+    /**
+     * Alias of assertNotSame().
+     *
+     * @param mixed $expected
+     * @param mixed $actual
+     * @param string $message
+     */
+    public function assertingNotSame( $expected, $actual, $message = '' )
+    {
+        parent::assertNotSame( $expected, $actual, $message );
+    }
+
 
     /**
      * Alias of assertRegExp(), assertMatchesRegularExpression() phpunit <7, 8, 9.

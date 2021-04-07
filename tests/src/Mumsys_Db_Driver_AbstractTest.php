@@ -70,7 +70,7 @@ class Mumsys_Db_Driver_AbstractTest
 
         $this->assertingInstanceOf( 'Mumsys_Db_Driver_Testdummy', $x );
         $this->assertingInstanceOf( 'Mumsys_Db_Driver_Abstract', $x );
-        $this->assertNotInstanceOf( 'Mumsys_Db_Driver_Interface', $x );
+        $this->assertingFalse( ( $x instanceof Mumsys_Db_Driver_Interface ) );
     }
 
 

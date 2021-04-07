@@ -85,7 +85,7 @@ class Mumsys_Logger_Decorator_AbstractTest
         $obj = clone $this->_object;
         $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $obj );
         $this->assertingInstanceOf( 'Mumsys_Logger_Decorator_Interface', $this->_object );
-        $this->assertNotSame( $obj, $this->_object );
+        $this->assertingNotSame( $obj, $this->_object );
     }
 
 
@@ -135,7 +135,7 @@ class Mumsys_Logger_Decorator_AbstractTest
     public function test_GetObject()
     {
         $obj = $this->_object->testGetObject();
-        $this->assertSame( $obj, $this->_logger );
+        $this->assertingSame( $obj, $this->_logger );
     }
 
 
