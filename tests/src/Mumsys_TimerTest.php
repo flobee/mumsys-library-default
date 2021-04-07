@@ -60,14 +60,14 @@ class Mumsys_TimerTest
     public function testConstructor()
     {
         $this->_object = new Mumsys_Timer();
-        $this->assertInstanceof( 'Mumsys_Timer', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Timer', $this->_object );
         $this->assertingEquals( 0, $this->_object->startTimeGet() );
         $this->assertingEquals( 0, $this->_object->stopTimeGet() );
 
         $this->_object = new Mumsys_Timer( true );
-        $this->assertInstanceof( 'Mumsys_Timer', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Timer', $this->_object );
         $this->assertingEquals( 0, $this->_object->stopTimeGet() );
-        $this->assertGreaterThan( 0, $this->_object->startTimeGet() );
+        $this->assertingTrue( ( $this->_object->startTimeGet() > 0 ) );
 
         $this->_object = new Mumsys_Timer( $_SERVER['REQUEST_TIME_FLOAT'] );
 

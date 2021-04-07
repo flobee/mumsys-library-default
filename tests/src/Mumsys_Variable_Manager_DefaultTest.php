@@ -68,7 +68,7 @@ class Mumsys_Variable_Manager_DefaultTest
      *  Version ID of Mumsys_Variable_Manager_Default
      * @var string
      */
-    protected $_version = '2.3.6';
+    protected $_version = '2.3.7';
 
     /**
      * @var array
@@ -97,8 +97,23 @@ class Mumsys_Variable_Manager_DefaultTest
                 'value' => null,
                 'errors' => array(),
             ),
+            'intvalue' => array(
+                'label' => 'Integer value',
+                'type' => 'integer',
+                'minlen' => 1,
+                'maxlen' => 20,
+                'allowEmpty' => false,
+                'required' => true,
+                'regex' => array('/\d+/'),
+                'default' => '',
+                'value' => null,
+                'errors' => array(),
+            ),
         );
-        $this->_values = array('username' => 'unittest');
+        $this->_values = array(
+            'username' => 'unittest',
+            'intvalue' => 1,
+        );
 
         $this->_object = new Mumsys_Variable_Manager_Default( $this->_config, $this->_values );
     }
@@ -118,9 +133,12 @@ class Mumsys_Variable_Manager_DefaultTest
         // A
         $objectA = new Mumsys_Variable_Manager_Default( $this->_config, $this->_values );
         $this->_config['username']['name'] = 'username';
-        $this->_config['username']['value'] = 'unittest';
+        $this->_config['username']['value'] = $this->_values['username'];
+        $this->_config['intvalue']['name'] = 'intvalue';
+        $this->_config['intvalue']['value'] = $this->_values['intvalue'];
         $expectedA = array(
-            'username' => new Mumsys_Variable_Item_Default( $this->_config['username'] )
+            'username' => new Mumsys_Variable_Item_Default( $this->_config['username'] ),
+            'intvalue' => new Mumsys_Variable_Item_Default( $this->_config['intvalue'] ),
         );
 
         $this->assertingInstanceOf( Mumsys_Variable_Manager_Default::class, $objectA );
@@ -290,32 +308,38 @@ class Mumsys_Variable_Manager_DefaultTest
      */
     public function testValidateRegex()
     {
-        $item = $this->_object->getItem( 'username' );
-        $item->setValue( 'uNiTtEsT' );
-        $item->setRegex( array('/^(unittest)$/i') );
+        // A
+        $itemA = $this->_object->getItem( 'username' );
+        $itemA->setValue( 'uNiTtEsT' );
+        $itemA->setRegex( array('/^(unittest)$/i') );
 
-        $actual1 = $this->_object->validateRegex( $item );
+        $itemB = $this->_object->getItem( 'intvalue' );
 
-        $item->setRegex( array('/^(somtest)$/i') );
-        $actual2 = $this->_object->validateRegex( $item );
+        $actualAA = $this->_object->validateRegex( $itemA );
+
+        $itemA->setRegex( array('/^(somtest)$/i') );
+        $actualAB = $this->_object->validateRegex( $itemA );
 
         // regex error
         $displayErrors = ini_get( 'display_errors' );
         $errorReporting = ini_get( 'error_reporting' );
 
-        $item->setRegex( array('\d') ); // invalid regex / syntax error
-
+        $itemA->setRegex( array('\d') ); // invalid regex / syntax error
         ini_set( 'display_errors', false );
         error_reporting( 0 );
-
-        $actual3 = $this->_object->validateRegex( $item );
+        $actualAC = $this->_object->validateRegex( $itemA );
 
         ini_set( 'display_errors', $displayErrors );
         error_reporting( $errorReporting );
 
-        $this->assertingTrue( $actual1 );
-        $this->assertingFalse( $actual2 );
-        $this->assertingFalse( $actual3 );
+        $actualBA = $this->_object->validateRegex( $itemB );
+
+        //A
+        $this->assertingTrue( $actualAA );
+        $this->assertingFalse( $actualAB );
+        $this->assertingFalse( $actualAC );
+        //B
+        $this->assertingTrue( $actualBA );
     }
 
 
@@ -403,8 +427,12 @@ class Mumsys_Variable_Manager_DefaultTest
     {
         $this->_config['username']['name'] = 'username';
         $this->_config['username']['value'] = 'unittest';
+        $this->_config['intvalue']['name'] = 'intvalue';
+        $this->_config['intvalue']['value'] = 1;
         $expected = array(
-            'username' => new Mumsys_Variable_Item_Default( $this->_config['username'] ));
+            'username' => new Mumsys_Variable_Item_Default( $this->_config['username'] ),
+            'intvalue' => new Mumsys_Variable_Item_Default( $this->_config['intvalue'] ),
+        );
         $this->assertingEquals( $expected, $this->_object->getItems() );
         $this->assertingEquals( $expected['username'], $this->_object->getItem( 'username' ) );
         $this->assertingNull( $this->_object->getItem( 'unknown' ) );
@@ -530,7 +558,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $attributesA = array('values' => array('username' => 'unittest value'));
         $this->_object->setAttributes( $attributesA );
 
-        $itemsA = $this->_object->getItems();
+        $itemsA = $this->_object->getItem( 'username' );
         foreach ( $itemsA as $item ) {
             $this->assertingEquals( 'unittest value', $item->getValue() );
         }
@@ -568,7 +596,10 @@ class Mumsys_Variable_Manager_DefaultTest
     public function testToArray()
     {
         $actualA = $this->_object->toArray();
-        $expectedA = array('username' => 'unittest');
+        $expectedA = array(
+            'username' => $this->_values['username'],
+            'intvalue' => $this->_values['intvalue']
+        );
 
         $itmProps = array(
             'name' => 'domain.unittest2',
@@ -577,7 +608,11 @@ class Mumsys_Variable_Manager_DefaultTest
         $newItem = $this->_object->createItem( $itmProps );
         $this->_object->registerItem( 'domain.unittest2', $newItem );
         $actualB = $this->_object->toArray( 'domain.' );
-        $expectedB = array('username' => 'unittest', 'unittest2' => 'Unittest 2');
+        $expectedB = array(
+            'username' => 'unittest',
+            'intvalue' => 1,
+            'unittest2' => 'Unittest 2',
+        );
 
         $this->assertingEquals( $expectedA, $actualA );
         $this->assertingEquals( $expectedB, $actualB );
@@ -815,7 +850,7 @@ class Mumsys_Variable_Manager_DefaultTest
         $oItemB = clone $oItemA;
         $oItemB->setType( 'integer' );
 
-        $this->assertNotEquals( $oItemA, $oItemB );
+        $this->assertingNotEquals( $oItemA, $oItemB );
 
         //$this->expectingException('Mumsys_Variable_Manager_Exception');
         $this->expectingExceptionMessage( 'Invalid types. Type of item A: "string", item B "integer"' );

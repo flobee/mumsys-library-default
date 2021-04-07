@@ -40,11 +40,11 @@ class Mumsys_CounterTest
     public function testConstructor()
     {
         $this->_object = new Mumsys_Counter();
-        $this->assertInstanceof( 'Mumsys_Counter', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Counter', $this->_object );
         $this->assertingEquals( 0, $this->_object->result() );
 
         $this->_object = new Mumsys_Counter( true );
-        $this->assertInstanceof( 'Mumsys_Counter', $this->_object );
+        $this->assertingInstanceOf( 'Mumsys_Counter', $this->_object );
         $this->assertingEquals( 1, $this->_object->result() );
     }
 

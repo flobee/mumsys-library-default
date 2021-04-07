@@ -61,7 +61,7 @@ class Mumsys_LoaderTest
     public function testLoad()
     {
         $o3 = $this->_object->load( 'Mumsys_Timer' );
-        $this->assertInstanceof( 'Mumsys_Timer', $o3 );
+        $this->assertingInstanceOf( 'Mumsys_Timer', $o3 );
 
         $this->expectingException( 'Mumsys_Loader_Exception' );
         $this->expectingExceptionMessageRegex( '/(Could not load: "unittest")/i' );

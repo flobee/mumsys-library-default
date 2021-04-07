@@ -103,7 +103,7 @@ class Mumsys_Request_AbstractTest
         $_SERVER['HTTP_X_REQUEST_ID'] = $uuid5;
         $actual1 = $this->_object->getRequestId();
 
-        $this->assertNotEquals( $uuid5, $actual1 );
+        $this->assertingNotEquals( $uuid5, $actual1 );
     }
 
     /**

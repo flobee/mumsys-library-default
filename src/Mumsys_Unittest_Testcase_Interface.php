@@ -60,6 +60,21 @@ interface Mumsys_Unittest_Testcase_Interface
 
 
     /**
+     * Alias of assertNotEquals() phpunit 8, 9
+     *
+     * @param mixed $expected
+     * @param mixed $actual
+     * @param string $message
+     * @param float $delta
+     * @param int $maxDepth
+     * @param bool $canonicalize
+     * @param bool $ignoreCase
+     */
+    public function assertingNotEquals( $expected, $actual, $message = '',
+        $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false );
+
+
+    /**
      * Alias of assertTrue() phpunit 8, 9
      *
      * @param mixed $condition

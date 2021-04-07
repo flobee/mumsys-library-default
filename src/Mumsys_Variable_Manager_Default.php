@@ -55,7 +55,7 @@ class Mumsys_Variable_Manager_Default
     /**
      * Version ID information
      */
-    const VERSION = '2.3.6';
+    const VERSION = '2.3.7';
 
     /**
      * List key/validation items.
@@ -309,7 +309,7 @@ class Mumsys_Variable_Manager_Default
 
             case 'date':
                 $regex = '/^(\d{4})-(\d{2})-(\d{2})/i';
-                if ( strlen( $value ) != 10 && !preg_match( $regex, $value ) ) {
+                if ( $value !== null && strlen( $value ) != 10 && !preg_match( $regex, $value ) ) {
                     $errorKey = self::TYPE_INVALID_DATE;
                     $errorMessage = sprintf(
                         $this->_messageTemplates['TYPE_INVALID_DATE'],
@@ -321,7 +321,7 @@ class Mumsys_Variable_Manager_Default
             case 'datetime':
             case 'timestamp':
                 $regex = '/^(\d{4})-(\d{2})-(\d{2}) (\d{1,2}):(\d{1,2}):(\d{1,2})/i';
-                if ( strlen( $value ) != 19 && !preg_match( $regex, $value ) ) {
+                if ( $value !== null && strlen( $value ) != 19 && !preg_match( $regex, $value ) ) {
                     $errorKey = self::TYPE_INVALID_DATETIME;
                     $errorMessage = sprintf(
                         $this->_messageTemplates['TYPE_INVALID_DATETIME'],
@@ -498,6 +498,21 @@ class Mumsys_Variable_Manager_Default
         $return = true;
 
         if ( ( $expr = $item->getRegex() ) && ( $value = $item->getValue() ) ) {
+            // php > 8: if item type is numeric but should also match to a
+            // specific regex eg: 123 but not 10123..., we need to cast the
+            // value to string. For instance: disable this to detect configs
+            // incl regex which may not really needed.
+            $type = $item->getType();
+            switch ( $type ) {
+                case 'int':
+                case 'integer':
+                case 'float':
+                case 'double':
+                case 'numeric':
+                    $value = (string) $value;
+                    break;
+            }
+
             foreach ( $expr as $regex ) {
                 $match = preg_match( $regex, $value );
 
@@ -1257,6 +1272,10 @@ class Mumsys_Variable_Manager_Default
           } */
 
         $value = false;
+
+        if ( $params === null ) {
+            return $value;
+        }
 
         /* switches to improve performance */
         switch ( $cmd )

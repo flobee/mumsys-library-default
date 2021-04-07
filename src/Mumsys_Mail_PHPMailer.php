@@ -80,8 +80,8 @@ class Mumsys_Mail_PHPMailer
      */
     public function __construct( array $config )
     {
-        require_once '../vendor/phpmailer/phpmailer/src/Exception.php';
-        require_once '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+        require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/Exception.php';
+        require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/PHPMailer.php';
         $this->_mailer = new \PHPMailer\PHPMailer\PHPMailer( true );
 
         $this->_config = $config;

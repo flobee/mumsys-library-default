@@ -12,9 +12,14 @@
         <include>
             <directory>../src/</directory>
         </include>
+
         <exclude>
             <file>../src/Mumsys_Unittest_Testcase.php</file>
         </exclude>
+
+        <report>
+            <html outputDirectory="../docs/CodeCoverage/" lowUpperBound="35" highLowerBound="70"/>
+        </report>
     </coverage>
 
     <testsuites>

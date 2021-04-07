@@ -2,9 +2,36 @@
 
 2021-03
 
-    + Introduce Version 2.0.0-beta1
-    + Updates tests
+    + Introduce Version 2.0.0-beta[1|2|3]
     + flobee/spss:^3 -> ^4 Updates Service/Spss + tests
+    + Updates Mumsys_Unittest_Testcase[_Interface]
+    + Updates tests to use Mumsys_Unittest_Testcase_Interface
+
+      Find default methodes to be wrapped:
+
+          grep -R "assert" tests/src | grep -v "asserting"
+
+      Update test methods:
+        ```
+        cd tests
+        find . -type f -iname \*.php | xargs sed -i 's,assertRegExp(,assertingRegExp(,g'
+        find . -type f -iname \*.php | xargs sed -i 's,assertTrue(,assertingTrue(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,assertFalse(,assertingFalse(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,assertEquals(,assertingEquals(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,assertNotEquals(,assertingNotEquals(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,assertEmpty(,assertingEmpty(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,assertNull(,assertingNull(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,assertSame(,assertingSame(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,assertNotSame(,assertingNotSame(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,assertInstanceOf(,assertingInstanceOf(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,assertInstanceof(,assertingInstanceOf(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,assertRegExp(,assertingRegExp(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,assertRegExpPlural(,assertingRegExpPlural(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,expectException(,expectingException(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,expectExceptionMessage(,expectingExceptionMessage(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,expectingExceptionMessageRegExp(,expectingExceptionMessageRegex(,g';
+        find . -type f -iname \*.php | xargs sed -i 's,expectExceptionMessageRegExp(,expectingExceptionMessageRegex(,g';
+        ```
 
 2021-02
 
