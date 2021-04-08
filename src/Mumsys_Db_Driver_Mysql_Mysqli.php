@@ -673,9 +673,13 @@ class Mumsys_Db_Driver_Mysql_Mysqli
     {
         $return = false;
         if ( $this->_dbc ) {
-            if ( ( $r = mysqli_stat( $this->_dbc ) ) ) {
-                $return = $r;
-            }
+            $resource = $this->_dbc;
+        } else {
+            $resource = null;
+        }
+
+        if ( ( $r = mysqli_stat( $resource ) ) ) {
+            $return = $r;
         }
         return $return;
     }
