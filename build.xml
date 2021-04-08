@@ -69,8 +69,8 @@
                 <!-- <phing target="travis" haltonfailure="true" dir="${coredir}/some/path" /> -->
                 <echo msg="Copy configs" />
                 <copy file=".env-dist" tofile=".env"/>
-                <copy file="tests/config/default.php-dist" tofile="tests/config/default.php"/>
-                <copy file="tests/config/credentials.php-dist" tofile="tests/config/credentials.php"/>
+                <copy file="tests/config/default.php-disttravis" tofile="tests/config/default.php"/>
+                <copy file="tests/config/credentials.php-disttravis" tofile="tests/config/credentials.php"/>
             </then>
             <else>
                 <echo msg="Only the user travis should call the travis task!" />

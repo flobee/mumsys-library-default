@@ -1,3 +1,6 @@
+dist: focal
+#dist: bionic
+
 env:
   global:
     - XDEBUG_MODE=coverage
@@ -30,6 +33,15 @@ cache:
   directories:
     - $HOME/.composer/cache/
 
+before_install:
+  - sudo mysql -e 'drop user if exists travis@localhost;'
+  - sudo mysql -e 'drop user if exists travis@127.0.0.1;'
+  - sudo mysql -e 'create user travis@localhost;'
+  - sudo mysql -e 'create user travis@127.0.0.1;'
+  - sudo mysql -e 'DROP DATABASE IF EXISTS mumsys_tests;'
+  - sudo mysql -e 'CREATE DATABASE IF NOT EXISTS mumsys_tests;'
+  - sudo mysql -e 'GRANT ALL ON *.* TO travis@localhost;' || true
+
 install:
     - travis_wait 30
     - travis_retry composer update --no-interaction --prefer-source
@@ -41,9 +53,8 @@ before_script:
   - git submodule update --init --recursive
   - sleep 5
   - ./phing travis
-  - echo "<?php return array('debug' => true, 'database' => array('type' => 'mysql:mysqli', 'host' => 'localost', 'port' => '3306', 'username' => 'root', 'password' => '', 'db' => 'mumsys', 'charset' => 'utf8', 'compress' => false, 'throwErrors' => true, 'debug' => false, 'socket' => false, 'tables' => array('table_access' => 'mumsys_access', 'table_programs' => 'mumsys_programs', 'table_blocks' => 'mumsys_blocks', 'table_sessions' => 'mumsys_sessions', 'table_sessionsuser' => 'mumsys_sessionsuser', 'table_config' => 'mumsys_config')));" > tests/config/default.php
-  - echo "<?php return array('database' => array('type' => 'mysql:mysqli', 'host' => 'localhost', 'port' => '3306', 'username' => 'root', 'password' => '','db' => 'mumsys', 'charset' => 'utf8', 'compress' => false, 'throwErrors' => true, 'debug' => false, 'socket' => false));" > tests/config/credentials.php
-  - echo "OK";
+  - cat tests/config/default.php
+  - cat tests/config/credentials.php
 
 script: 
 #  - ./phing all
