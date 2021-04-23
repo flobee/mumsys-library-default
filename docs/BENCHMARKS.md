@@ -5,11 +5,12 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of contents**
 
-  -  [What it should do](#what-it-should-do)
-  -  [What to benchmark?](#what-to-benchmark)
-  -  [Skeleton benchmark test](#skeleton-benchmark-test)
-  -  [Possible commands](#possible-commands)
-  -  [Links](#links)
++ [Usage](#usage)
++ [What it should do](#what-it-should-do)
++ [What to benchmark?](#what-to-benchmark)
++ [Skeleton benchmark test](#skeleton-benchmark-test)
++ [Possible commands](#possible-commands)
++ [Links](#links)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
