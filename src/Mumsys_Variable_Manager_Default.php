@@ -55,7 +55,7 @@ class Mumsys_Variable_Manager_Default
     /**
      * Version ID information
      */
-    const VERSION = '2.3.7';
+    const VERSION = '2.3.8';
 
     /**
      * List key/validation items.
@@ -70,6 +70,7 @@ class Mumsys_Variable_Manager_Default
      *      "subject name",
      *      "current value",
      *      "expected value"
+     *      "current value type"
      *
      * @var array
      */
@@ -79,7 +80,7 @@ class Mumsys_Variable_Manager_Default
         self::ALLOWEMPTY_ERROR => 'Missing value',
 
         //regex checks
-        self::REGEX_FAILURE => 'Value "%1$s" does not match the regular '
+        self::REGEX_FAILURE => 'Value "%1$s" (type: "%3$s) does not match the regular '
             . 'expression/s (json): "%2$s"',
         self::REGEX_ERROR => 'Error in regular expression. Check syntax!',
 
@@ -514,7 +515,14 @@ class Mumsys_Variable_Manager_Default
             }
 
             foreach ( $expr as $regex ) {
-                $match = preg_match( $regex, $value );
+                // fallback for php8 error exception eg in invalid value
+                // with a TypeError: ... must be of type string, int given
+                try {
+                    $match = preg_match( $regex, $value );
+                }
+                catch ( Error | Exception $exc ) {
+                    $match = 0;
+                }
 
                 $errorKey = false;
                 $errorMessage = false;
@@ -522,15 +530,18 @@ class Mumsys_Variable_Manager_Default
                 if ( $match === 0 ) {
                     $errorKey = self::REGEX_FAILURE;
                     $errorMessage = sprintf(
-                        $this->_messageTemplates[self::REGEX_FAILURE], $value,
-                        $regex
+                        $this->_messageTemplates[self::REGEX_FAILURE],
+                        $value,
+                        json_encode( $regex ),
+                        gettype( $value )
                     );
                 }
 
                 if ( $match === false ) {
                     $errorKey = self::REGEX_ERROR;
                     $errorMessage = sprintf(
-                        $this->_messageTemplates[self::REGEX_ERROR], $value,
+                        $this->_messageTemplates[self::REGEX_ERROR],
+                        $value,
                         $regex
                     );
                 }

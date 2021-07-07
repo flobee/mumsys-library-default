@@ -10,6 +10,12 @@
 
 # Changes
 
+2021-07
+
+    + Fixes validateRegex() e.g when nummeric values end in a TypeError
+
+
+
 2021-03
 
     + Introduce Version 2.0.0-beta[1|2|3]
@@ -64,24 +70,24 @@
 
     + Mumsys_Cache
         + API changes in Mumsys_Cache_Interface Version 2.3.1
-        + Improvments in Mumsys_Cache_[Interface|File] 
+        + Improvments in Mumsys_Cache_[Interface|File]
         + Improves CS, phpdoc, SCA checks; Updates tests
         + Sets VERSION in Mumsys_Cache_Default
         + Sets strict_types to all classes
-        + Removes @category, @package, @subpackage from class header; see file 
+        + Removes @category, @package, @subpackage from class header; see file
           header
 
-    + Mumsys_Abstract 
+    + Mumsys_Abstract
         + Version 3.0.3
-        + Fixes getVersions() unknown class version string to be valid with 
+        + Fixes getVersions() unknown class version string to be valid with
           https://semver.org
         + Sets strict_types
-        + Removes @category, @package, @subpackage from class header; seen file 
+        + Removes @category, @package, @subpackage from class header; seen file
           header
 
     + MumsysTestHelper
         + Sets strict_types
-        + Removes @category, @package, @subpackage from class header; seen file 
+        + Removes @category, @package, @subpackage from class header; seen file
           header
 
     + Mumsys_Semver
@@ -90,7 +96,7 @@
     + Mumsys_Variable*
 
         + API change in Mumsys_Variable_Manager_Default::registerItem() to handle
-          inconsisteny for the manager when using createItem() before and have 
+          inconsisteny for the manager when using createItem() before and have
           no 'name' attribute
         + Init Mumsys_Variable_Manager_Abstract
 
@@ -114,7 +120,7 @@
               - createItem() returns Mumsys_Variable_Item_Interface
               - getItem() returns null if not available
               - moves constants to Mumsys_Variable_Manager_Abstract
-              
+
             + Mumsys_Variable_Manager_Factory 1.1.2 -> 1.1.3
               - Fixes typehints
 
@@ -165,7 +171,7 @@
 
 2019-09
 
-    + Adds performance tests unsing [phpbench](github.com/phpbench) for the 
+    + Adds performance tests unsing [phpbench](github.com/phpbench) for the
       library and also for common or private intresting php performance tests
 
     + Mumsys_Variable_*
@@ -184,7 +190,7 @@
         + Adds TYPE_INVALID_UNIXTIME for unixtime property/ validation
         + Fixes CS
         + Fixes missing $data param to externalsApply() to callbacksApply( $data )
-    
+
 
 2018-02-02
 

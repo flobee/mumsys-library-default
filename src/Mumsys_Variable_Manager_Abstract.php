@@ -27,7 +27,7 @@ abstract class Mumsys_Variable_Manager_Abstract
     public const VERSION = '2.0.0';
 
     /**
-     * Value "%1$s" does not match the regex rule: "%2$s"
+     * Value "%1$s" (type: "%3$s) does not match the regular expression/s (json): "%2$s"
      */
     public const REGEX_FAILURE = 'REGEX_FAILURE';
 

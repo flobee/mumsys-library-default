@@ -68,7 +68,7 @@ class Mumsys_Variable_Manager_DefaultTest
      *  Version ID of Mumsys_Variable_Manager_Default
      * @var string
      */
-    protected $_version = '2.3.7';
+    protected $_version = '2.3.8';
 
     /**
      * @var array
@@ -334,12 +334,22 @@ class Mumsys_Variable_Manager_DefaultTest
 
         $actualBA = $this->_object->validateRegex( $itemB );
 
+        // c integer not possible in regex (preg try catch) 4CC
+        $itemC = clone $itemA;
+        $itemC->setType( 'string' );
+        $itemC->setValue( 12345 );
+        $actualCC = $this->_object->validateRegex( $itemA );
+
+        // comparison
+
         //A
         $this->assertingTrue( $actualAA );
         $this->assertingFalse( $actualAB );
         $this->assertingFalse( $actualAC );
         //B
         $this->assertingTrue( $actualBA );
+        //C
+        $this->assertingFalse( $actualCC );
     }
 
 
