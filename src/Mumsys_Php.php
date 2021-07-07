@@ -264,7 +264,9 @@ class Mumsys_Php
       }
       curl_setopt($handle, CURLOPT_HEADER, false);
       curl_setopt($handle, CURLOPT_FAILONERROR, true);  // this works
-      curl_setopt($handle, CURLOPT_HTTPHEADER, Array("User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623 Firefox/2.0.0.15") ); // request as if Firefox
+      curl_setopt($handle, CURLOPT_HTTPHEADER, Array("User-Agent: Mozilla/5.0 (
+            Windows; U; Windows NT 5.1; en-US; rv:1.8.1.15) Gecko/20080623
+            Firefox/2.0.0.15") ); // request as if Firefox
       curl_setopt($handle, CURLOPT_NOBODY, true);
       curl_setopt($handle, CURLOPT_RETURNTRANSFER, false);
       $connectable = curl_exec($handle);
@@ -870,7 +872,7 @@ class Mumsys_Php
      * @return array Returns a list of key->value pairs by reference  array indexes to the specified key. Last value
      * contains the searched $needle; if the array is empty nothing were found
      * }}} */
-    public static function array_keys_search_recursive( $needle, & $haystack, $stopOnFirstMatch = false )
+    public static function array_keys_search_recursive( $needle, &$haystack, $stopOnFirstMatch = false )
     {
         $matches = array();
         foreach ( $haystack as $key => &$value ) {
@@ -983,7 +985,7 @@ class Mumsys_Php
      * @return boolean Returns true if disk size exceed the limit or false for OK
      * }}} */
     public static function check_disk_free_space( $path = '', $secCmp = 60, $maxSizeCmp = 92,
-        Mumsys_Logger_Interface $logger, $cmd = 'df -a %1$s' )
+        Mumsys_Logger_Interface $logger = null, $cmd = 'df -a %1$s' )
     {
         // key of exec result in $cmd
         $resultKey = 4;
@@ -1020,7 +1022,10 @@ class Mumsys_Php
                 );
                 return true;
             } else {
-                $logger->log( __METHOD__ . 'disc space OK: ' . $sizes[$i] . '% (' . $maxSizeCmp . ' is max limit!)', 6 );
+                $logger->log(
+                    __METHOD__ . 'disc space OK: ' . $sizes[$i] . '% ('
+                    . $maxSizeCmp . ' is max limit!)', 6
+                );
                 return false;
             }
         }

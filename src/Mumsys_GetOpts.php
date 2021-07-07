@@ -162,21 +162,18 @@ class Mumsys_GetOpts
         $errorNotice = '';
         $unflag = array();
 
-        while ( $argPos < $argc )
-        {
+        while ( $argPos < $argc ) {
             $arg = $argv[$argPos];
 
             // skip values as they are expected in argPos + 1, if any
-            if ( isset( $arg[0] ) && $arg[0] == '-' )
-            {
+            if ( isset( $arg[0] ) && $arg[0] == '-' ) {
                 if ( $arg[1] == '-' ) {
                     $argTag = '--' . substr( $arg, 2, strlen( $arg ) );
                 } else {
                     $argTag = '-' . $arg[1]; // take the short flag
                 }
 
-                if ( !isset( $map[ $argTag ] ) )
-                {
+                if ( !isset( $map[ $argTag ] ) ) {
                     // a --no-FLAG' to unset?
                     $test = substr( $argTag, 5, strlen( $argTag ) );
                     if ( strlen( $test )==1 ) {
@@ -199,22 +196,18 @@ class Mumsys_GetOpts
                     $var = $map[ $argTag ];
                 }
 
-                foreach ( $options as $_opk => $_opv )
-                {
+                foreach ( $options as $_opk => $_opv ) {
                     if ( is_string( $_opk ) ) {
                         $_opv = $_opk;
                     }
 
-                    if ( !isset( $return[$var] ) )
-                    {
-                        if ( strpos( $_opv, $arg ) !== false )
-                        {
-                            if ( strpos( $_opv, ':' ) !== false )
-                            {
+                    if ( !isset( $return[$var] ) ) {
+                        if ( strpos( $_opv, $arg ) !== false ) {
+                            if ( strpos( $_opv, ':' ) !== false ) {
                                 if ( isset( $argv[$argPos + 1] )
                                     && isset( $argv[$argPos + 1][0] )
-                                    && $argv[$argPos + 1][0] != '-')
-                                {
+                                    && $argv[$argPos + 1][0] != '-'
+                                ) {
                                     $return[$var] = $argv[++$argPos];
                                 } else {
                                     /*@todo value[1] is a "-" ... missing parameter or is the value ? */
@@ -305,16 +298,13 @@ class Mumsys_GetOpts
             if ( $k===0 ) {
                 continue;
             }
-            if ( $v === false || $v === true )
-            {
-                foreach ( $this->_options as $opk => $opv )
-                {
+            if ( $v === false || $v === true ) {
+                foreach ( $this->_options as $opk => $opv ) {
                     if ( is_string( $opk ) ) {
                         $opv = $opk;
                     }
 
-                    if ( preg_match( '/(' . $k . ')/', $opv ) )
-                    {
+                    if ( preg_match( '/(' . $k . ')/', $opv ) ) {
 //                        if ( strpos($opv, ':') )
 //                        {
 //                            if ( $v === false ) {
@@ -363,8 +353,7 @@ class Mumsys_GetOpts
         $str = '';
         $wrap = $wordWrap - strlen( $indentComment );
 
-        foreach ( $this->_options as $k => $v )
-        {
+        foreach ( $this->_options as $k => $v ) {
             if ( is_string( $k ) ) {
                 $option = $k;
                 $desc = $v;
@@ -387,6 +376,7 @@ class Mumsys_GetOpts
             $str .= $option . PHP_EOL . $desc;
         }
         $str = trim( $str );
+
         return $str;
     }
 
@@ -401,8 +391,7 @@ class Mumsys_GetOpts
     {
         $mapping = array();
 
-        foreach ( $options as $opkey => $opValue )
-        {
+        foreach ( $options as $opkey => $opValue ) {
             if ( is_string( $opkey ) ) {
                 $opValue = $opkey;
             }
@@ -415,8 +404,7 @@ class Mumsys_GetOpts
 //                $parts[$pk] = preg_replace('/^(--|-)/', '', $pv, -1);
 //            }
 
-            if ( isset( $parts[1] ) )
-            {
+            if ( isset( $parts[1] ) ) {
                 if ( strlen( $parts[0] ) > strlen( $parts[1] ) ) {
                     $mapping[$parts[0]] = $parts[0];
                     $mapping[$parts[1]] = $parts[0];

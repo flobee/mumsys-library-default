@@ -218,7 +218,7 @@ class Mumsys_Variable_Item_Default
         $return = array();
 
         if ( isset( $this->_input['regex'] )
-            && !empty($this->_input['regex']) // to be removed in future
+            && !empty( $this->_input['regex'] ) // to be removed in future
         ) {
             $value = $this->_input['regex'];
             if ( is_array( $value ) ) {

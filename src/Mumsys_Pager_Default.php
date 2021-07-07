@@ -258,16 +258,14 @@ class Mumsys_Pager_Default
      */
     public function __construct( array $params = array() )
     {
-        if ( $params )
-        {
+        if ( $params ) {
             $defaults = array(
                 'cntitems', 'pagestart', 'pagestartVarname', 'limit',
                 'basiclink', 'showPageNumbers', 'showSummary', 'dynamic',
                 'slidersteps', 'cssClassName'
             );
 
-            foreach ( $params as $key => &$val )
-            {
+            foreach ( $params as $key => &$val ) {
                 if ( in_array( $key, $defaults ) ) {
                     $this->{'_' . $key } = $val;
                 } else {

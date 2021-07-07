@@ -191,7 +191,7 @@ class Mumsys_Html_Table
      *
      * @param array $attr List of key/value pais for the attributes to set
      */
-    function setHeadlinesAttributes( $attr = array() )
+    public function setHeadlinesAttributes( $attr = array() )
     {
         if ( !isset( $this->_headlines['attr']['attr'] ) || !is_array( $this->_headlines['attr']['attr'] ) ) {
             $this->_headlines['attr']['attr'] = array();
@@ -348,8 +348,7 @@ class Mumsys_Html_Table
     public function getAltRowColor( $num, $val = null )
     {
         $return = false;
-        if ( $this->_altRowColor )
-        {
+        if ( $this->_altRowColor ) {
             if ( isset( $this->_altRowColorKeyChange ) && $this->_colorChangeVal == $val ) {
                 $return = current( $this->_altRowColor );
             } else {
@@ -381,8 +380,7 @@ class Mumsys_Html_Table
                 $values = $this->_headlines['values'];
             }
 
-            foreach ( $values as $i => $value )
-            {
+            foreach ( $values as $i => $value ) {
                 if ( $this->_headlines['attr'] ) {
                     $attr = $this->getHeadlinesAttribute( $i ); // sing.
                 } else {
@@ -599,7 +597,7 @@ class Mumsys_Html_Table
     {
         if ( !$this->_content ) {
             throw new Mumsys_Html_Exception( 'No content found to create a table' );
-        } else  {
+        } else {
             $records = $this->_content;
         }
 
@@ -633,8 +631,7 @@ class Mumsys_Html_Table
 
             // row begin
             $theHtml .= '<tr';
-            if ( $this->_altRowColor )
-            {
+            if ( $this->_altRowColor ) {
                 if ( isset( $this->_altRowColorKeyChange ) ) {
                     if ( !isset( $tmp[$this->_altRowColorKeyChange] ) ) {
                         $message = 'Column key not exists to change a color for rows: "'

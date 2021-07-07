@@ -110,7 +110,7 @@ class Mumsys_Multirename
      * @param object $logger Log object to track the work and/ or show the
      * output when using as shell script or cronjob
      */
-    public function __construct( array $config = array(), Mumsys_FileSystem $oFiles, Mumsys_Logger_Interface $logger )
+    public function __construct( array $config, Mumsys_FileSystem $oFiles, Mumsys_Logger_Interface $logger )
     {
         // nothing which belongs to root is allowed at the moment!
         if ( !empty( $config['allowRoot'] ) || ( php_sapi_name() === 'cli' && in_array( 'root', $_SERVER ) ) ) {
@@ -159,8 +159,7 @@ class Mumsys_Multirename
             $actions = array('version' => 'version');
         }
 
-        foreach( $actions as $action )
-        {
+        foreach ( $actions as $action ) {
             $this->logger->log( 'Will perform action "' . $action . '" now', 7 );
 
             switch ( $action ) {
@@ -221,8 +220,7 @@ class Mumsys_Multirename
     {
         $this->__destruct();
 
-        if ( isset( $config['from-config'] ) )
-        {
+        if ( isset( $config['from-config'] ) ) {
             if ( is_dir( $config['from-config'] . '/' ) ) {
                 $config['path'] =& $config['from-config'];
             } else {
@@ -237,8 +235,8 @@ class Mumsys_Multirename
                 $message = 'loaded config from --from-config "' . $config['from-config'] . '"';
                 $this->logger->log( $message, 7 );
 
-                foreach( $config as $cKey => $cValue ) {
-                     $newconfig[$cKey] = $cValue;
+                foreach ( $config as $cKey => $cValue ) {
+                    $newconfig[$cKey] = $cValue;
                 }
                 $config = $newconfig;
             }
@@ -346,8 +344,7 @@ class Mumsys_Multirename
         $cntMatchesTotal = 0;
         $cntMatchesRelevant = 0;
 
-        foreach ( $dirinfo as $k => $file )
-        {
+        foreach ( $dirinfo as $k => $file ) {
             $path = $file['path'];
 
             $cntMatches = 0;
@@ -383,10 +380,8 @@ class Mumsys_Multirename
                 $mode = 'rename';
             }
 
-            if ( $this->_config['test'] !== true )
-            {
-                if ( $source != $destination )
-                {
+            if ( $this->_config['test'] !== true ) {
+                if ( $source != $destination ) {
                     $this->logger->log(
                         'Will ' . $txtMode . ':' . "\n\t" . $file['name']
                         . ' ...TO: ' . "\n\t" . $newName . $extension, 6
@@ -424,8 +419,7 @@ class Mumsys_Multirename
                 }
             } else {
                 // $this->execTest()
-                if ( $source != $destination )
-                {
+                if ( $source != $destination ) {
                     if ( file_exists( $destination ) || is_link( $destination ) ) {
                         $message = 'Target exists! Will ';
                         if ( $this->_config['keepcopy'] ) {
@@ -487,8 +481,7 @@ class Mumsys_Multirename
             $this->_config['recursive']
         );
 
-        foreach ( $dirinfo as $key => $file )
-        {
+        foreach ( $dirinfo as $key => $file ) {
             if ( $file['type'] != 'file' ) {
                 continue;
             }
@@ -497,8 +490,8 @@ class Mumsys_Multirename
             $file['ext'] = $extension;
 
             if ( in_array( '*', $this->_config['fileextensions'] )
-                || in_array( $extension, $this->_config['fileextensions'] ))
-            {
+                || in_array( $extension, $this->_config['fileextensions'] )
+            ) {
                 // Check in OR condition; continue loop on match
                 if ( $this->_config['exclude'] ) {
                     foreach ( $this->_config['exclude'] as $find ) {
@@ -561,13 +554,11 @@ class Mumsys_Multirename
     {
         $allHistorys = $this->_getActionHistory( $path, -1 );
 
-        if ( $allHistorys )
-        {
+        if ( $allHistorys ) {
             // takes latest item for the moment
             $history = $allHistorys[count( $allHistorys )-1]['history'];
 
-            foreach ( $history as $mode => $lastActions )
-            {
+            foreach ( $history as $mode => $lastActions ) {
                 if ( $this->_config['test'] ) {
                     $mode = $mode . '-Test';
                 }
@@ -642,15 +633,15 @@ class Mumsys_Multirename
      */
     private function _undoRename( $files, $keepCopy = true )
     {
-        foreach ( $files as $to => $from ) // reverse (old to is now from)
-        {
+        foreach ( $files as $to => $from ) { // reverse (old to is now from)
             try {
                 $newTo = $this->_oFiles->rename( $from, $to, $keepCopy );
 
                 $this->logger->log( 'Undo rename ok for: "' . basename( $from ) . '"', 7 );
                 if ( $newTo != $to ) {
                     $this->logger->log(
-                        'Undo rename to "' . $to . '" notice: Already exists!. Used "' . basename( $newTo ) . '" instead', 5
+                        'Undo rename to "' . $to . '" notice: Already exists!. Used "'
+                        . basename( $newTo ) . '" instead', 5
                     );
                 }
             } catch ( Mumsys_FileSystem_Exception $e ) {
@@ -671,8 +662,7 @@ class Mumsys_Multirename
      */
     private function _undoLink( $files, $keepCopy = false )
     {
-        foreach ( $files as $to => $from ) // reverse (old to is now from)
-        {
+        foreach ( $files as $to => $from ) { // reverse (old to is now from)
             if ( is_link( $from ) && !@unlink( $from ) ) {
                 $this->logger->log( 'Deleting the link failt for "' . $from . '" ', 3 );
             } else {
@@ -1008,8 +998,7 @@ class Mumsys_Multirename
     {
         $subs = explode( ';', $substitutions );
         $result = array();
-        foreach ( $subs as $expr )
-        {
+        foreach ( $subs as $expr ) {
             $keyVal = explode( '=', $expr );
             if ( !isset( $keyVal[1] ) ) {
                 $keyVal[1] = '';
@@ -1034,14 +1023,10 @@ class Mumsys_Multirename
      */
     private function _substitutePaths( array $substitutions = array(), array $paths = array() )
     {
-        foreach ( $substitutions as $search => &$replace )
-        {
-            if ( is_numeric( $search ) && is_array( $replace ) )
-            {
-                foreach ( $replace as $key => &$value )
-                {
-                    foreach ( $paths as $pk => &$pv )
-                    {
+        foreach ( $substitutions as $search => &$replace ) {
+            if ( is_numeric( $search ) && is_array( $replace ) ) {
+                foreach ( $replace as $key => &$value ) {
+                    foreach ( $paths as $pk => &$pv ) {
                         if ( ( $newValue = str_replace( $pk, $pv, $key ) ) != $key ) {
                             $substitutions[$search][$newValue] = $value;
                             unset( $substitutions[$search][$key] );
@@ -1053,8 +1038,7 @@ class Mumsys_Multirename
                     }
                 }
             } else {
-                foreach ( $paths as $pk => $pv )
-                {
+                foreach ( $paths as $pk => $pv ) {
                     $newValue = str_replace( $pk, $pv, $search );
                     if ( $newValue != $search ) {
                         $substitutions[$newValue] = $replace;
@@ -1099,7 +1083,9 @@ class Mumsys_Multirename
         }
 
         foreach ( $substitutions as $search => $replace ) {
-            if ( ( is_array( $search ) && is_array( $replace ) ) || ( is_scalar( $search ) && is_scalar( $replace ) ) ) {
+            if ( ( is_array( $search ) && is_array( $replace ) )
+                || ( is_scalar( $search ) && is_scalar( $replace ) )
+            ) {
                 $name = str_replace( $search, $replace, $name );
             } else {
                 /* @todo escape operators? do tests */
@@ -1177,15 +1163,16 @@ class Mumsys_Multirename
                 . 'The keyword checks for matches in any string of the file location (path and filename). Optional',
             '--exclude:' => 'Exclude files. Semicolon seperated list of search keywords or regular expressions ('
                 . 'starting with "regex:"). The list will be handled in OR conditons.'
-                . 'The keyword will be checked for matches in any string of the file location (path and filename). Exclude '
-                . 'will also ignore matches from the --find option; Optional',
+                . 'The keyword will be checked for matches in any string of the file location (path and filename). '
+                . 'Exclude will also ignore matches from the --find option; Optional',
             '--recursive|-r' => 'Flag, if set read all files under each directory starting from --path recursively',
             '--keepcopy' => 'Flag. If set keep all existing files',
             '--hidden' => 'Include hidden files (dot files)',
             '--link:' => 'Don\'t rename, create symlinks or hardlinks, relativ or absolut to target '
                 . '(Values: soft|hard[;rel|abs]). If the second parameter is not given relativ links will be created',
             '--linkway:' => 'Type of the link to be created relative or absolut: ("rel"|"abs"), default: "rel". '
-                . 'This will be used internally if you use --link soft;rel the linkway will be extracted from that line',
+                . 'This will be used internally if you use --link soft;rel the linkway will be extracted from '
+                . 'that line',
             '--history|-h' => 'Flag; If set this will enable the history/ for the moment ONLY the last action log with '
                 . 'the option to undo it',
             '--history-size:' => 'Integer; Number of history entrys if --history is enabled; Default: 10; '

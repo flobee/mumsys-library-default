@@ -69,7 +69,8 @@ class Mumsys_FileSystem
      *
      * @return array|false Returns list of file/link/directory details like path, name, size, type
      */
-    public function scanDirInfo( $dir, $hideHidden = true, $recursive = false, array $filters = array(), $offset = 0, $limit = 0 )
+    public function scanDirInfo( $dir, $hideHidden = true, $recursive = false,
+        array $filters = array(), $offset = 0, $limit = 0 )
     {
         if ( $offset < 0 ) {
             $offset = 0;
@@ -84,8 +85,7 @@ class Mumsys_FileSystem
         if ( @is_dir( $dir ) && is_readable( $dir ) && !is_link( $dir ) ) {
             $cnt=0;
             if ( $dh = @opendir( $dir ) ) {
-                while( ( $file = readdir( $dh ) ) !== false )
-                {
+                while ( ( $file = readdir( $dh ) ) !== false ) {
                     if ( $file=='.' || $file=='..' ) {
                         continue;
                     }
@@ -99,8 +99,7 @@ class Mumsys_FileSystem
                         $newdir = $dir . $ds . $file;
                         $this->_dirInfo[$newdir] = $this->getFileDetails( $newdir );
                         $this->scanDirInfo( $newdir, $hideHidden, $recursive, $filters, $offset, $limit );
-                    }
-                    else {
+                    } else {
                         $this->_dirInfo[$test] = $this->getFileDetails( $dir, $file );
                         $cnt++;
                     }
@@ -112,7 +111,7 @@ class Mumsys_FileSystem
         }
 
         if ( $filters ) {
-            foreach( $this->_dirInfo as $location => & $none ) {
+            foreach ( $this->_dirInfo as $location => & $none ) {
                 foreach ( $filters as $regex ) {
                     if ( !preg_match( $regex, $location ) ) {
                         unset( $this->_dirInfo[$location] );
@@ -161,8 +160,7 @@ class Mumsys_FileSystem
             if ( !$path ) {
                 $path = substr( $filepath, 0, strrpos( $filepath, '/' ) );
             }
-        }
-        else {
+        } else {
             throw new Mumsys_FileSystem_Exception( 'File "' . $filepath . '" not found' );
         }
 
@@ -248,8 +246,7 @@ class Mumsys_FileSystem
         $file = $prepared['file'];
         $info = array();
 
-        if ( $stat = @lstat( $path . '/' . $filename ) )
-        {
+        if ( $stat = @lstat( $path . '/' . $filename ) ) {
             $info = array(
                 'file' => $prepared['file'],
                 'type' => filetype( $file ),
@@ -417,8 +414,7 @@ class Mumsys_FileSystem
 //            }
 //        }
 
-            if ( is_file( $source ) )
-            {
+            if ( is_file( $source ) ) {
                 if ( $keepCopy && file_exists( $destination ) ) {
                     $destination = $this->copy( $source, $destination, $keepCopy );
                 }
@@ -671,8 +667,7 @@ class Mumsys_FileSystem
         try
         {
             $iterator = new DirectoryIterator( $basePath );
-            foreach ( $iterator as $fileinfo )
-            {
+            foreach ( $iterator as $fileinfo ) {
                 if ( $fileinfo->isDot() ) {
                     continue;
                 }

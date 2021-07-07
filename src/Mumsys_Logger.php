@@ -377,11 +377,10 @@ class Mumsys_Logger
 
             $levelName = $this->_loglevels[$level];
 
-            if ( ( $isArray=is_array( $input ) ) )
-            {
+            if ( ( $isArray=is_array( $input ) ) ) {
                 $_cnt = 0;
                 $message = '';
-                foreach( $input as $key => $val ) {
+                foreach ( $input as $key => $val ) {
                     //$tmp = 'ff_' . $_cnt . ' key: "' . $key . '", value: "' . $val.'"';
                     $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val . '");';
                     $message .= sprintf(
@@ -395,32 +394,26 @@ class Mumsys_Logger
                 }
 
                 $_cnt++;
-            }
-            else
-            {
+            } else {
                 $message = sprintf( $this->_logFormat, $datesting, $this->username, $levelName, $level, $input );
             }
 
             $message .= $this->lf;
 
-            if ( $level <= $this->logLevel || ( $this->verbose || $this->debug ) )
-            {
+            if ( $level <= $this->logLevel || ( $this->verbose || $this->debug ) ) {
                 if ( $this->_logfile !== false ) {
                     $this->write( $message );
                 }
             }
 
-            if ( $level <= $this->msglogLevel || ( $this->verbose || $this->debug ) )
-            {
-                if ( $this->msgEcho )
-                {
+            if ( $level <= $this->msglogLevel || ( $this->verbose || $this->debug ) ) {
+                if ( $this->msgEcho ) {
                     if ( $this->_logFormatMsg && $this->_logFormatMsg != $this->_logFormat ) {
-                        if ( $isArray )
-                        {
+                        if ( $isArray ) {
                             $msgOut = '';
                             $_cnt = 0;
                             reset( $input );
-                            foreach( $input as $key => $val ) {
+                            foreach ( $input as $key => $val ) {
                                 $tmp = 'ff_' . $_cnt . ': array("' . $key . '" => "' . $val . '");';
                                 $msgOut .= sprintf(
                                     $this->_logFormatMsg,
@@ -433,9 +426,7 @@ class Mumsys_Logger
                             }
 
                             $_cnt++;
-                        }
-                        else
-                        {
+                        } else {
                             $msgOut = sprintf(
                                 $this->_logFormatMsg,
                                 $datesting,
@@ -518,11 +509,10 @@ class Mumsys_Logger
     public function checkMaxFilesize()
     {
         $message = false;
-        if ( $this->_maxfilesize )
-        {
+        if ( $this->_maxfilesize ) {
             if ( !( $this->verbose || $this->debug )
-                && ( $fsize=@filesize( $this->_logfile ) ) > $this->_maxfilesize)
-            {
+                && ( $fsize=@filesize( $this->_logfile ) ) > $this->_maxfilesize
+            ) {
                 file_put_contents( $this->_logfile, '' );
                 $message = 'Max filesize reached. Log purged now';
             }

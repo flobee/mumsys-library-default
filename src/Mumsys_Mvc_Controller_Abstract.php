@@ -75,7 +75,7 @@ abstract class Mumsys_Mvc_Controller_Abstract
      *
      * @return string Returns the location of the controller file
      */
-    public function getControllerLocation( & $program = null, & $controller = null )
+    public function getControllerLocation( &$program = null, &$controller = null )
     {
         $newProgram = preg_replace( '/ +/i', '_', ucwords( $program ) );
         $newCntrl = $controller;
@@ -96,7 +96,7 @@ abstract class Mumsys_Mvc_Controller_Abstract
      * extension)
      * @return boolean Returns true on success of false if the location not exists
      */
-    public function checkControllerLocation( & $program = null, & $controller = null )
+    public function checkControllerLocation( &$program = null, &$controller = null )
     {
         if ( preg_match( MUMSYS_REGEX_AZ09X, $program )
             && preg_match( MUMSYS_REGEX_AZ09X, $controller ) ) {

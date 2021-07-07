@@ -292,7 +292,9 @@ class Mumsys_Context
         }
         catch ( Exception $e ) {
             if ( $default === null ) {
-                $message = sprintf( 'Generic interface "%1$s" not found. Message: "%2$s"', $interface, $e->getMessage() );
+                $message = sprintf(
+                    'Generic interface "%1$s" not found. Message: "%2$s"', $interface, $e->getMessage()
+                );
                 throw new Mumsys_Exception( $message );
             } else {
                 $return = $default;
