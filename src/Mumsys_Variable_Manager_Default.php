@@ -80,7 +80,7 @@ class Mumsys_Variable_Manager_Default
         self::ALLOWEMPTY_ERROR => 'Missing value',
 
         //regex checks
-        self::REGEX_FAILURE => 'Value "%1$s" (type: "%3$s) does not match the regular '
+        self::REGEX_FAILURE => 'Value "%1$s" (type: "%3$s") does not match the regular '
             . 'expression/s (json): "%2$s"',
         self::REGEX_ERROR => 'Error in regular expression. Check syntax!',
 
