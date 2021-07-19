@@ -68,7 +68,7 @@ class Mumsys_Variable_Manager_DefaultTest
      *  Version ID of Mumsys_Variable_Manager_Default
      * @var string
      */
-    protected $_version = '2.3.8';
+    protected $_version = '2.3.9';
 
     /**
      * @var array

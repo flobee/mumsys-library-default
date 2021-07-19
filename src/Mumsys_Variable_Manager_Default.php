@@ -55,7 +55,7 @@ class Mumsys_Variable_Manager_Default
     /**
      * Version ID information
      */
-    const VERSION = '2.3.8';
+    const VERSION = '2.3.9';
 
     /**
      * List key/validation items.
@@ -264,8 +264,9 @@ class Mumsys_Variable_Manager_Default
 
             case 'email':
                 $email = trim( $value );
-                $regex = '/^[a-z0-9_\.-]+@[a-z0-9_\.-]+\.[a-z]{2,6}$/i';
-                if ( !preg_match( $regex, $email ) ) {
+                //$regex = '/^[a-z0-9_\.-]+@[a-z0-9_\.-]+\.[a-z]{2,6}$/i';
+                //if ( !preg_match( $regex, $email ) ) {
+                if ( ( (bool) filter_var( $email, FILTER_VALIDATE_EMAIL ) ) === false ) {
                     $errorKey = self::TYPE_INVALID_EMAIL;
                     $errorMessage = sprintf(
                         $this->_messageTemplates['TYPE_INVALID_EMAIL'], $email
