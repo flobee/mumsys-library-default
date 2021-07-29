@@ -30,7 +30,7 @@ abstract class Mumsys_Variable_Item_Abstract
     /**
      * Version ID information
      */
-    public const VERSION = '2.3.2';
+    public const VERSION = '2.4.2';
 
     /**
      * List of initial incoming variable properties to be set on construction.
@@ -198,6 +198,20 @@ abstract class Mumsys_Variable_Item_Abstract
         foreach ( $list as $key => $value ) {
             $this->setErrorMessage( $key, $value );
         }
+    }
+
+
+    /**
+     * Removes all detected errors.
+     *
+     * What setErrorMessages() in version 1.0 does. Now splitted; Hacking helper.
+     * Note: This is not the standard use case this tool was made for (all
+     * values to be reported, not to change them. Claning them will end in
+     * more complex debuging) but make thing comfortable e.g. for translation
+     */
+    public function clearErrorMessages(): void
+    {
+        $this->_input['errors'] = array();
     }
 
 

@@ -124,7 +124,7 @@ class Mumsys_Variable_Manager_Default
      * Example:
      * <pre>
      * $config = array(
-     *  'user.name' => array(  // address/name of the item to work with
+     *  'user.name' => array(  // address/ name of the item to work with
      *                         // within the manager
      *      'name' => 'name',  // real name of the item; optional if the address
      *                         // contains the same name otherwise a MUST HAVE
