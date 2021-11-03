@@ -144,7 +144,8 @@ class Mumsys_Variable_Item_AbstractTest
 
         $this->assertingEquals( $list, $this->_object->getErrorMessages() );
 
-        $this->assertingEquals( $this->_object->clearErrorMessages(), $this->_object->getErrorMessages() );
+        $this->assertingTrue( ( $this->_object->clearErrorMessages() === null ) );
+        $this->assertingTrue( ( $this->_object->getErrorMessages() === array() ) );
 
     }
 
