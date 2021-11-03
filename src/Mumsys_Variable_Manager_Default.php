@@ -199,6 +199,27 @@ class Mumsys_Variable_Manager_Default
 
 
     /**
+     * Wrapper for validate() and externalsApply() in default order.
+     *
+     * @see externalsApply() for details.
+     *
+     * @param mixed $callbackData Mixed data to pipe to the "callback" function (not filter
+     * function) as second parameter
+     *
+     * @return boolean True on success or false on error
+     */
+    public function validateAll( $callbackData = null ): bool
+    {
+        $status = false;
+        if ( $this->validate() && $this->externalsApply( $callbackData ) ) {
+            $status = true;
+        }
+
+        return $status;
+    }
+
+
+    /**
      * Validate registered variable items.
      *
      * @return boolean True on success or false on error
@@ -937,7 +958,7 @@ class Mumsys_Variable_Manager_Default
      * callback*() of items. This applys only filtersApply() and if successful
      * callbacksApply() and returns the status
      *
-     * @param mixed $data Mixed data to pipe to the "callback" function (not filter
+     * @param mixed|null $data Mixed data to pipe to the "callback" function (not filter
      * function) as second parameter
      *
      * @return boolean Status, true for success otherwise false

@@ -172,6 +172,22 @@ class Mumsys_Variable_Manager_DefaultTest
 
 
     /**
+     * @covers Mumsys_Variable_Manager_Default::validateAll
+     */
+    public function testValidateAll()
+    {
+        $item = $this->_object->getItem( 'username' );
+        $actual1 = $this->_object->validateAll();
+
+        $item->setValue( '' );
+        $actual2 = $this->_object->validateAll();
+
+        $this->assertingTrue( $actual1 );
+        $this->assertingFalse( $actual2 );
+    }
+
+
+    /**
      * @covers Mumsys_Variable_Manager_Default::validateType
      */
     public function testValidateType()
