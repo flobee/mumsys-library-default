@@ -15,6 +15,7 @@
 
     "require": {
         "php": "^8",
+        "ext-intl": "*",
         "phpmailer/phpmailer": "^6",
         "flobee/spss": "^4"
     },
