@@ -43,7 +43,7 @@ svn/*
 /nbproject
 /phpunit.log.xml
 logs/
-/docs/CodeCoverage/*
+/docs/CodeCoverage*
 /docs/gitstats/*
 /docs/GitStats/*
 /docs/gitstat*
