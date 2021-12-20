@@ -43,7 +43,7 @@ class Mumsys_DateTime_Formatter
      * Date format string. E.g: Y-m-d H:i:s
      * @var string
      */
-    private $_pattern;
+    private $_icupattern;
 
     /**
      * DateTime object to initially start converting with __toSting magics.
@@ -55,15 +55,15 @@ class Mumsys_DateTime_Formatter
     /**
      * Initialise the object.
      *
-     * @param string $pattern Format of the datetime string, e.g: Y-m-d H:i:s
+     * @param string $icupattern Output format, e.g: yyyy-MM-dd HH:mm:ss
      * @param string $locale Locale to use, e.g: en_US
      * @param DateTime|null $datetime Optional datetime to run with __toSting method
      */
-    public function __construct( $pattern, $locale = 'en_US',
+    public function __construct( $icupattern, $locale = 'en_US',
         \DateTime | null $datetime = null )
     {
         $this->setLocale( $locale );
-        $this->setPattern( $pattern );
+        $this->setPattern( $icupattern );
 
         if ( $datetime !== null ) {
             $this->_datetime = $datetime;
@@ -89,12 +89,14 @@ class Mumsys_DateTime_Formatter
      *
      * Note: the input format is fixed by the \DateTime object itselfs. When using
      * formatLocale() this pattern is used but may differ from standard DateTime patterns.
+     * see: https://www.php.net/manual/en/class.intldateformatter.php
+     * https://unicode-org.github.io/icu/userguide/format_parse/datetime/#date-field-symbol-table
      *
-     * @param string $pattern Output format, e.g: Y-m-d H:i:s
+     * @param string $icupattern Output format, e.g: yyyy-MM-dd HH:mm:ss
      */
-    public function setPattern( $pattern ): void
+    public function setPattern( $icupattern ): void
     {
-        $this->_pattern = $pattern;
+        $this->_icupattern = $icupattern;
     }
 
 
@@ -102,6 +104,7 @@ class Mumsys_DateTime_Formatter
      * Returns the formatted string from given DateTime object based on given locale setting.
      *
      * This method you need if you need day or month names locale specific.
+     * See https://unicode-org.github.io/icu/userguide/format_parse/datetime/ for the pattern format!
      *
      * @param DateTime $datetime DateTime object
      *
@@ -112,7 +115,7 @@ class Mumsys_DateTime_Formatter
         $formatter = new \IntlDateFormatter(
             $this->_locale, \IntlDateFormatter::FULL, \IntlDateFormatter::FULL
         );
-        $formatter->setPattern( $this->_pattern );
+        $formatter->setPattern( $this->_icupattern );
 
         return $formatter->format( $datetime );
     }
