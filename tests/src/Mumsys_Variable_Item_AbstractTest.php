@@ -25,7 +25,7 @@ class Mumsys_Variable_Item_AbstractTest
      */
     protected function setUp(): void
     {
-        $this->_version = '2.3.2';
+        $this->_version = '2.4.2';
 
         $this->_config = array(
             'name' => 'somevariable',
@@ -129,8 +129,9 @@ class Mumsys_Variable_Item_AbstractTest
      * @covers Mumsys_Variable_Item_Abstract::getErrorMessages
      * @covers Mumsys_Variable_Item_Abstract::setErrorMessage
      * @covers Mumsys_Variable_Item_Abstract::setErrorMessages
+     * @covers Mumsys_Variable_Item_Abstract::clearErrorMessages
      */
-    public function testGetSetErrorMessages()
+    public function testGetSetClearErrorMessages()
     {
         $expected = array('invalidArgument' => 'Item property "invalid" can\'t be set for value "invalid key"');
         $this->assertingEquals( $expected, $this->_object->getErrorMessages() );
@@ -142,6 +143,10 @@ class Mumsys_Variable_Item_AbstractTest
         $this->_object->setErrorMessages( $list );
 
         $this->assertingEquals( $list, $this->_object->getErrorMessages() );
+
+        $this->assertingTrue( ( $this->_object->clearErrorMessages() === null ) );
+        $this->assertingTrue( ( $this->_object->getErrorMessages() === array() ) );
+
     }
 
     /**

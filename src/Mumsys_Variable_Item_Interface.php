@@ -11,7 +11,7 @@
  * @category    Mumsys
  * @package     Library
  * @subpackage  Variable
- * @verion      2.2.4
+ * @verion      2.3.4
  * Created: 2006 based on Mumsys_Field, renew 2016
  */
 
@@ -118,6 +118,16 @@ interface Mumsys_Variable_Item_Interface
      */
     public function setErrorMessages( array $list ): void;
 
+
+    /**
+     * Removes all detected errors.
+     *
+     * What setErrorMessages() in version 1.0 does. Now splitted; Hacking helper.
+     * Note: This is not the standard use case this tool was made for (all
+     * values to be reported, not to change them. Claning them will end in
+     * more complex debuging) but make thing comfortable e.g. for translation
+     */
+    public function clearErrorMessages(): void;
 
     /**
      * Returns the item validation status.

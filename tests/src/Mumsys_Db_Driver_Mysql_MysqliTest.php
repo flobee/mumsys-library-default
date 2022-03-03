@@ -1288,9 +1288,10 @@ class Mumsys_Db_Driver_Mysql_MysqliTest
         $actual = $this->_object->getServerInfo();
         //
         $test = preg_match(
-            '/^(\d{1,3}.\d{1,3}.\d{1,3})-(.*)-((mariadb|mysql).*)/i', $actual
+            '/^(\d{1,3}.\d{1,3}.\d{1,3})(.*)((mariadb|mysql).*)/i',
+            $actual
         );
-        $this->assertingTrue( ( $test == 1 ) );
+        $this->assertingTrue( ( $test == 1 ), print_r( $actual, true ) );
     }
 
 

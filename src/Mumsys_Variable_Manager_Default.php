@@ -55,7 +55,7 @@ class Mumsys_Variable_Manager_Default
     /**
      * Version ID information
      */
-    const VERSION = '2.3.7';
+    const VERSION = '2.3.9';
 
     /**
      * List key/validation items.
@@ -70,6 +70,7 @@ class Mumsys_Variable_Manager_Default
      *      "subject name",
      *      "current value",
      *      "expected value"
+     *      "current value type"
      *
      * @var array
      */
@@ -79,7 +80,7 @@ class Mumsys_Variable_Manager_Default
         self::ALLOWEMPTY_ERROR => 'Missing value',
 
         //regex checks
-        self::REGEX_FAILURE => 'Value "%1$s" does not match the regular '
+        self::REGEX_FAILURE => 'Value "%1$s" (type: "%3$s") does not match the regular '
             . 'expression/s (json): "%2$s"',
         self::REGEX_ERROR => 'Error in regular expression. Check syntax!',
 
@@ -123,7 +124,7 @@ class Mumsys_Variable_Manager_Default
      * Example:
      * <pre>
      * $config = array(
-     *  'user.name' => array(  // address/name of the item to work with
+     *  'user.name' => array(  // address/ name of the item to work with
      *                         // within the manager
      *      'name' => 'name',  // real name of the item; optional if the address
      *                         // contains the same name otherwise a MUST HAVE
@@ -198,6 +199,27 @@ class Mumsys_Variable_Manager_Default
 
 
     /**
+     * Wrapper for validate() and externalsApply() in default order.
+     *
+     * @see externalsApply() for details.
+     *
+     * @param mixed $callbackData Mixed data to pipe to the "callback" function (not filter
+     * function) as second parameter
+     *
+     * @return boolean True on success or false on error
+     */
+    public function validateAll( $callbackData = null ): bool
+    {
+        $status = false;
+        if ( $this->validate() && $this->externalsApply( $callbackData ) ) {
+            $status = true;
+        }
+
+        return $status;
+    }
+
+
+    /**
      * Validate registered variable items.
      *
      * @return boolean True on success or false on error
@@ -263,8 +285,9 @@ class Mumsys_Variable_Manager_Default
 
             case 'email':
                 $email = trim( $value );
-                $regex = '/^[a-z0-9_\.-]+@[a-z0-9_\.-]+\.[a-z]{2,6}$/i';
-                if ( !preg_match( $regex, $email ) ) {
+                //$regex = '/^[a-z0-9_\.-]+@[a-z0-9_\.-]+\.[a-z]{2,6}$/i';
+                //if ( !preg_match( $regex, $email ) ) {
+                if ( ( (bool) filter_var( $email, FILTER_VALIDATE_EMAIL ) ) === false ) {
                     $errorKey = self::TYPE_INVALID_EMAIL;
                     $errorMessage = sprintf(
                         $this->_messageTemplates['TYPE_INVALID_EMAIL'], $email
@@ -514,7 +537,14 @@ class Mumsys_Variable_Manager_Default
             }
 
             foreach ( $expr as $regex ) {
-                $match = preg_match( $regex, $value );
+                // fallback for php8 error exception eg in invalid value
+                // with a TypeError: ... must be of type string, int given
+                try {
+                    $match = preg_match( $regex, $value );
+                }
+                catch ( Error | Exception $exc ) {
+                    $match = 0;
+                }
 
                 $errorKey = false;
                 $errorMessage = false;
@@ -522,15 +552,18 @@ class Mumsys_Variable_Manager_Default
                 if ( $match === 0 ) {
                     $errorKey = self::REGEX_FAILURE;
                     $errorMessage = sprintf(
-                        $this->_messageTemplates[self::REGEX_FAILURE], $value,
-                        $regex
+                        $this->_messageTemplates[self::REGEX_FAILURE],
+                        $value,
+                        json_encode( $regex ),
+                        gettype( $value )
                     );
                 }
 
                 if ( $match === false ) {
                     $errorKey = self::REGEX_ERROR;
                     $errorMessage = sprintf(
-                        $this->_messageTemplates[self::REGEX_ERROR], $value,
+                        $this->_messageTemplates[self::REGEX_ERROR],
+                        $value,
                         $regex
                     );
                 }
@@ -925,7 +958,7 @@ class Mumsys_Variable_Manager_Default
      * callback*() of items. This applys only filtersApply() and if successful
      * callbacksApply() and returns the status
      *
-     * @param mixed $data Mixed data to pipe to the "callback" function (not filter
+     * @param mixed|null $data Mixed data to pipe to the "callback" function (not filter
      * function) as second parameter
      *
      * @return boolean Status, true for success otherwise false

@@ -4,12 +4,27 @@ Library for the MUMSYS project.
 
 MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - now
 
-[![Latest Stable Version](https://poser.pugx.org/mumsys/library/v)](//packagist.org/packages/mumsys/library)
-[![Stable Build Status](https://travis-ci.com/mumsys/library.svg?branch=stable)](https://travis-ci.com/mumsys/library/branches?stable)
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/mumsys/library.svg?style=flat-square)](https://packagist.org/packages/mumsys/library)
-[![Total Downloads](https://img.shields.io/packagist/dt/mumsys/library.svg?style=flat-square)](https://packagist.org/packages/mumsys/library)
+[![Latest Stable Version](https://poser.pugx.org/mumsys/library/v/stable)](//packagist.org/packages/mumsys/library)
+[![Stable Build Status](https://app.travis-ci.com/Mumsys/Library.svg?branch=stable)](https://app.travis-ci.com/Mumsys/Library.svg?branch=stable)
 [![Latest Unstable Version](https://poser.pugx.org/mumsys/library/v/unstable)](//packagist.org/packages/mumsys/library)
-[![Unstable Build Status](https://travis-ci.com/mumsys/library.svg?branch=unstable)](https://travis-ci.com/mumsys/library/branches?unstable)
+[![Unstable Build Status](https://app.travis-ci.com/Mumsys/Library.svg?branch=unstable)](https://app.travis-ci.com/Mumsys/Library.svg?branch=unstable)
+[![License](https://poser.pugx.org/mumsys/library/license)](//packagist.org/packages/mumsys/library)
+[![Total Downloads](https://img.shields.io/packagist/dt/mumsys/library.svg?style=flat-square)](https://packagist.org/packages/mumsys/library)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/mumsys/library.svg?style=flat-square)](https://packagist.org/packages/mumsys/library)
+
+
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of contents**
+
++ [Benefits](#benefits)
++ [Test status](#test-status)
++ [Documentation](#documentation)
++ [History](#history)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 
 ## Benefits
@@ -28,13 +43,21 @@ MUMSYS stands for Multi User Managment System. Altn. "Mother System" (c) 2002 - 
  - For Web and shell
 
 
+
 ## Test status
 
 Builds runs using phpunit tests for all branches (stable, testing, unstable):
 
-Stable branch: [![Build Status: stable](https://travis-ci.org/Mumsys/Library.svg?branch=stable "Build Status: stable")](https://travis-ci.org/Mumsys/Library.svg?branch=stable)
-Testing branch: [![Build Status: testing](https://travis-ci.org/Mumsys/Library.svg?branch=testing "Build Status: testing")](https://travis-ci.org/Mumsys/Library.svg?branch=testing)
-Unstable branch: [![Build Status: unstable](https://travis-ci.org/Mumsys/Library.svg?branch=unstable "Build Status: unstable")](https://travis-ci.org/Mumsys/Library.svg?branch=unstable)
+Stable branch: [![Build Status: stable](https://app.travis-ci.com/Mumsys/Library.svg?branch=stable "Build Status: stable")](https://app.travis-ci.com/Mumsys/Library.svg?branch=stable)
+Testing branch: [![Build Status: testing](https://app.travis-ci.com/Mumsys/Library.svg?branch=testing "Build Status: testing")](https://app.travis-ci.com/Mumsys/Library.svg?branch=testing)
+Unstable branch: [![Build Status: unstable](https://app.travis-ci.com/Mumsys/Library.svg?branch=unstable "Build Status: unstable")](https://app.travis-ci.com/Mumsys/Library.svg?branch=unstable)
+
+
+
+## Documentation
+
+Find more documentation in [docs/](/docs) directory.
+
 
 
 ## History

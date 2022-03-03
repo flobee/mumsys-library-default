@@ -59,6 +59,20 @@
     <target name="all" depends="check,coverage,api,benchmarks" description="Execute all main parts of the package check,coverage,api,benchmarks">
     </target>
 
+    <!--
+        updates documentation TOC sections: "table of contents"
+        requires npm doctoc install: 'npm install doctoc'
+        https://www.npmjs.com/package/doctoc
+    -->
+    <target name="doctocs" description="Updates the TOC **table of contents** of documentation files">
+        <property name="list" value="README.md;docs/BENCHMARKS.md;docs/CHANGELOG.md;docs/AUTHORS.md" />
+        <foreach list="${list}" param="docfile" delimiter=";" target="doctocs_do"/>
+    </target>
+    <target name="doctocs_do" description="Internal usage for 'updatedoctocs'">
+        <echo>${docfile}</echo>
+        <exec command="doctoc --title '**Table of contents**' --entryprefix '+'  ${docfile}" dir="." checkreturn="true" logoutput="true" />
+    </target>
+
 
     <!-- travis-ci service see also .travis-ci.yml file -->
     <target name="travis" description="Run check,coverage,api on travis-ci">

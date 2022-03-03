@@ -1,4 +1,20 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of contents**
+
++ [Changes](#changes)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
+
 # Changes
+
+2021-07
+
+    + Fixes validateRegex() e.g when nummeric values end in a TypeError
+
+
 
 2021-03
 
@@ -32,6 +48,8 @@
         find . -type f -iname \*.php | xargs sed -i 's,expectingExceptionMessageRegExp(,expectingExceptionMessageRegex(,g';
         find . -type f -iname \*.php | xargs sed -i 's,expectExceptionMessageRegExp(,expectingExceptionMessageRegex(,g';
         ```
+    + Sets phpunit 9.5.4
+
 
 2021-02
 
@@ -39,9 +57,11 @@
     + Adds Mumsys_Unittest_Testcase_Interface to solve dependencies/ version
       changes on phpunit updates/ method changes
 
+
 2020-11
 
     - Moves Assets domain to local branch
+
 
 2019-11
 
@@ -50,24 +70,24 @@
 
     + Mumsys_Cache
         + API changes in Mumsys_Cache_Interface Version 2.3.1
-        + Improvments in Mumsys_Cache_[Interface|File] 
+        + Improvments in Mumsys_Cache_[Interface|File]
         + Improves CS, phpdoc, SCA checks; Updates tests
         + Sets VERSION in Mumsys_Cache_Default
         + Sets strict_types to all classes
-        + Removes @category, @package, @subpackage from class header; see file 
+        + Removes @category, @package, @subpackage from class header; see file
           header
 
-    + Mumsys_Abstract 
+    + Mumsys_Abstract
         + Version 3.0.3
-        + Fixes getVersions() unknown class version string to be valid with 
+        + Fixes getVersions() unknown class version string to be valid with
           https://semver.org
         + Sets strict_types
-        + Removes @category, @package, @subpackage from class header; seen file 
+        + Removes @category, @package, @subpackage from class header; seen file
           header
 
     + MumsysTestHelper
         + Sets strict_types
-        + Removes @category, @package, @subpackage from class header; seen file 
+        + Removes @category, @package, @subpackage from class header; seen file
           header
 
     + Mumsys_Semver
@@ -76,7 +96,7 @@
     + Mumsys_Variable*
 
         + API change in Mumsys_Variable_Manager_Default::registerItem() to handle
-          inconsisteny for the manager when using createItem() before and have 
+          inconsisteny for the manager when using createItem() before and have
           no 'name' attribute
         + Init Mumsys_Variable_Manager_Abstract
 
@@ -100,13 +120,14 @@
               - createItem() returns Mumsys_Variable_Item_Interface
               - getItem() returns null if not available
               - moves constants to Mumsys_Variable_Manager_Abstract
-              
+
             + Mumsys_Variable_Manager_Factory 1.1.2 -> 1.1.3
               - Fixes typehints
 
             + Mumsys_Variable_Manager_Interface 1.1.2 -> 2.2.4
               - createItem() returns Mumsys_Variable_Item_Interface
               - getItem() returns null if not available
+
 
 2019-10
 
@@ -147,9 +168,10 @@
         + Fixes phpdoc, updates test
         + Improves phpdoc using phpstan up to level 7 now
 
+
 2019-09
 
-    + Adds performance tests unsing [phpbench](github.com/phpbench) for the 
+    + Adds performance tests unsing [phpbench](github.com/phpbench) for the
       library and also for common or private intresting php performance tests
 
     + Mumsys_Variable_*
@@ -168,18 +190,22 @@
         + Adds TYPE_INVALID_UNIXTIME for unixtime property/ validation
         + Fixes CS
         + Fixes missing $data param to externalsApply() to callbacksApply( $data )
-    
+
+
 2018-02-02
+
     - Adds misc path as external for coding style, vc checks
 
 
 2018-01-06/07
+
     - Merges open tasks to unstable branch
     - Updates composer bindings. You can use: #> ./composer for maintaining
       external code from now on.
 
 
 2018-01-05
+
     Mumsys_GetOpts
     - VERSION 3.6.0
     - Adds action groups (or optional parameters handling as groups) like:
@@ -193,11 +219,13 @@
 
 
 2017-12
+
     Mumsys_Logger_*
     - Improves setup and tests
 
 
 2016-07-14
+
     Mumsys_Variable_*
     Mumsys_Variable_Item_*
     Mumsys_Variable_Manager_*
@@ -206,6 +234,7 @@
 
 
 2016-05-27
+
     Mumsys_Cache
     - marked as depricated
     - Adds removeCache() methode
@@ -222,6 +251,7 @@
 
 
 2016-05-17
+
     Mumsys_Session_Default
     Mumsys_Session_Nome
     Mumsys_Session_Abstract
@@ -235,19 +265,20 @@
     - Improves class to fit the extended interface
 
 
-+ 2016-05-16
+2016-05-16
 
-  - Mumsys_I18n_None
-    - Init default driver to implement without translation (just the wrapper)
-    - Adds test, code coverage 100%
-  - Mumsys_Html
-    Mumsys_Html_Table
-    Mumsys_Xml_Abstract
-    - Init classes
-    - adds tests, code coverage 100%
+    - Mumsys_I18n_None
+      - Init default driver to implement without translation (just the wrapper)
+      - Adds test, code coverage 100%
+    - Mumsys_Html
+      Mumsys_Html_Table
+      Mumsys_Xml_Abstract
+      - Init classes
+      - adds tests, code coverage 100%
 
 
 2016-05-15
+
     Mumsys_Request_*
     - Improves input handling, extend interface, updates classes to fit the
       interface
@@ -260,6 +291,7 @@
 
 
 2016-04-24
+
     Mumsys_Multirename
     - Adding --stats flag to output some stats
     Mumsys_Mvc_Router*
@@ -271,6 +303,7 @@
 
 
 2016-04-19
+
     Mumsys_Request
     - Init Mumsys_Request_Interface
     - Init Mumsys_Request_Abstract
@@ -290,6 +323,7 @@
 
 
 2016-03-27
+
     Mumsys_Multirename
     - Improves history handling
     - Sets logger property to be private
@@ -300,6 +334,7 @@
 
 
 2016-03-10
+
     Mumsys_Multirename
     - Improves handling of stored config files
         A config can contain selveral sub configs e.g: one config for this file
@@ -314,6 +349,7 @@
 
 
 2016-03-01
+
     Mumsys_I18n (init from svn to git)
     - Init Mumsys_I18n_Abstract
     - Init Mumsys_I18n_Default
@@ -322,6 +358,7 @@
 
 
 2016-02-19
+
     Mumsys_Logger
     - Init Mumsys_Logger_Writer_Interface
     - Init Mumsys_Logger_Abstract
@@ -331,6 +368,7 @@
 
 
 2016-02-14
+
     Mumsys_GetOpts
     - Bugfix to work with php7+
     - Improves tests with versions checks
@@ -338,6 +376,7 @@
 
 
 2016-01-31
+
     Mumsys_Registry
     - Init class and tests for LGPL
     - Improves tests
@@ -345,6 +384,7 @@
 
 
 2016-01-30
+
     Mumsys_Session
     - Add session handling
     - Adds tests
@@ -372,6 +412,7 @@
 
 
 2016-01-22
+
     Mumsys_Parser
     - version 1.1.1
     - Init class for LGPL
@@ -381,6 +422,7 @@
 
 
 2015-10-25
+
     Mumsys_Multirename
     - Adds --exclude option, Updates tests
     - version 1.3.1
@@ -389,6 +431,7 @@
 
 
 2015-09-14
+
     Mumsys_SVDRP
     - Init Mumsys_SVDRP class to deal with vdr's svdrpsend command
     Mumsys_Multirename
@@ -402,6 +445,7 @@
 
 
 2015-08-09
+
     Mumsys_Multirename
     - start implementation of addActionHistory, getActionHistory,
     - to be droped: setActionHistory
@@ -412,6 +456,7 @@
 
 
 2015-08-06
+
     Mumsys_Multirename
     - new Version: 1.2.5
     - Fixed incomplete bugfix version 1.2.4 for --find option in
@@ -419,6 +464,7 @@
 
 
 2015-08-01
+
     Mumsys_Multirename
     - new Version: 1.2.4
     - Fixes a fault for --find option in _getRelevantFiles() when trying to
@@ -426,6 +472,7 @@
 
 
 2015-06-24
+
     Mumsys_Multirename
     - new Version: 1.2.3
     - Improves output messages in test mode
@@ -438,6 +485,7 @@
 
 
 2015-05-24
+
     Mumsys_Multirename
     - new Version: 1.2.1 Improves set/unset parameters
     - Updates tests
@@ -447,6 +495,7 @@
 
 
 2015-05-09
+
     Mumsys_FileSystem
     - V 3.0.6; Bugfix in scanDirInfo() force skipping folder "." or ".."
     Mumsys_Multirename
@@ -456,6 +505,7 @@
 
 
 2015-05-03
+
     Mumsys_GetOpts
     - Improves output for Mumsys_GetOpts::getHelp()
     Mumsys_Multirename
@@ -463,6 +513,7 @@
 
 
 2015-04-28/29
+
     Core:
     - Improves docs and License informations
     Mumsys_Multirename
@@ -472,11 +523,13 @@
 
 
 2015-04-27
-- Improves runtests.sh
-- Adds Mumsys_Csv and Mumsys_Lock to a new LICENSE, Improves tests
-- Init Php test class to tests/src/phpTest.php
+
+    - Improves runtests.sh
+    - Adds Mumsys_Csv and Mumsys_Lock to a new LICENSE, Improves tests
+    - Init Php test class to tests/src/phpTest.php
 
 
 2015-04-24
-- Adds /tests/tmp dir and change all tests to use that directory
-- Improves tests and code coverage
+
+    - Adds /tests/tmp dir and change all tests to use that directory
+    - Improves tests and code coverage
