@@ -37,7 +37,7 @@ class Mumsys_Variable_Item_Default
     /**
      * Version ID information
      */
-    const VERSION = '3.2.4';
+    const VERSION = '3.2.6';
 
     /**
      * List of key/value pairs (property/[boolean: en|dis-abled] handled by
@@ -253,7 +253,7 @@ class Mumsys_Variable_Item_Default
      */
     public function setAllowEmpty( bool $value ): void
     {
-        if ( $value == $this->getAllowEmpty() ) {
+        if ( $value === $this->getAllowEmpty() ) {
             return;
         }
 
@@ -280,7 +280,7 @@ class Mumsys_Variable_Item_Default
      */
     public function setRequired( bool $value ): void
     {
-        if ( $value == $this->getRequired() ) {
+        if ( $value === $this->getRequired() ) {
             return;
         }
 

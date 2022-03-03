@@ -47,7 +47,7 @@ abstract class Mumsys_Mvc_Templates_Text_Abstract
      * Initialize the display text object.
      *
      * @param Mumsys_Context $context Context object
-     * @param array $opts Optional options to setup the frontend controller
+     * @param array $options Optional options to setup the frontend controller
      */
     public function __construct( Mumsys_Context $context,
         array $options = array() )

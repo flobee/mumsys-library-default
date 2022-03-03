@@ -10,6 +10,38 @@
 
 # Changes
 
+2022-03-03
+
+PHP 8.1 (and 8.0 update) branch
+    
+    Important changes to know about:
+
+    + Mumsys_Fileystem_Default
+      mkdir():
+      May have a different behavior depending on error_reporting() level
+      Test are updated. Maybe an invalid usage on you side? Otherwise file a bug.
+    
++ Updates phing config
++ Updates composer config
+    - Enables php8.1
+    - Updates dependencies
++ Fixes SCA (Static Code Analyis) for implementation and tests (level=4)
+  Which told everthing to upgrade :-)
+   - Fixes subparts of implementation/ stucture faults
+   - Fixes type annotations
+   - Fixes tests
+   - Updates sca config
+        - Init local config
+        - disables some classes which are out of date, depricated or still in
+          real development mode
++ Fixes CS
++ Fixes PHPdoc
++ Makes git submudules (misc) branch independent (submodule bindings counting
+  from now on, other branches needs to be updated)
+
+
+
+
 2021-07
 
     + Fixes validateRegex() e.g when nummeric values end in a TypeError
