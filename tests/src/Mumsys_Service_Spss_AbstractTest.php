@@ -31,7 +31,7 @@ class Mumsys_Service_Spss_AbstractTest
     /**
      * @var Mumsys_Service_Spss_Abstract
      */
-    protected $_object;
+    private $_object;
 
 
     /**
@@ -52,7 +52,7 @@ class Mumsys_Service_Spss_AbstractTest
      */
     protected function tearDown(): void
     {
-        $this->_object = null;
+        unset( $this->_object );
     }
 
 

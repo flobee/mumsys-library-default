@@ -126,7 +126,7 @@ class Mumsys_Service_Spss_WriterTest
         if ( file_exists( $this->_spssFile ) ) {
             unlink( $this->_spssFile );
         }
-        $this->_object = null;
+        unset( $this->_object );
     }
 
 
@@ -141,6 +141,7 @@ class Mumsys_Service_Spss_WriterTest
      */
     public function test__construct()
     {
+        /** @var \SPSS\Sav\Writer $writer 4SCA */
         $writer = $this->_object->getAdapter();
         $writer->save( $this->_spssFile );
         $writer->close();

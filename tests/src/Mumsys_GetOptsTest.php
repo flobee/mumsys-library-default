@@ -9,7 +9,7 @@ class Mumsys_GetOptsTest
     /**
      * @var Mumsys_GetOpts
      */
-    protected $_object;
+    private $_object;
 
     /**
      * Initial options/configuration
@@ -22,6 +22,16 @@ class Mumsys_GetOptsTest
      * @var array
      */
     private $_input;
+
+    /**
+     * @var string
+     */
+    private $_version;
+
+    /**
+     * @var array
+     */
+    private $_versions;
 
 
     /**
@@ -67,7 +77,7 @@ class Mumsys_GetOptsTest
      */
     protected function tearDown(): void
     {
-        $this->_object = null;
+        unset( $this->_object );
     }
 
 

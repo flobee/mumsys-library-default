@@ -13,10 +13,16 @@ class Mumsys_Parser_LoglineTest
     protected $_object;
     protected $_format;
     protected $_patterns;
+
     /**
      * @var string
      */
     private $_version;
+
+    /**
+     * @var string
+     */
+    private $_logContent;
 
 
     /**
@@ -53,10 +59,7 @@ class Mumsys_Parser_LoglineTest
      */
     protected function tearDown(): void
     {
-        $this->_object = null;
-        $this->_format = '';
-        $this->_patterns = '';
-        $this->_logContent = '';
+        unset( $this->_object, $this->_format, $this->_patterns, $this->_logContent );
     }
 
 

@@ -97,10 +97,6 @@
  * //           'pathstart'=>'pathstartvalue',
  * //      'action2' => array( ...
  * </code>
- *
- * @category    Mumsys
- * @package     Library
- * @subpackage  GetOpts
  */
 class Mumsys_GetOpts
     extends Mumsys_Abstract
@@ -390,7 +386,7 @@ class Mumsys_GetOpts
      */
     public function getResult()
     {
-        if ( $this->_resultCache && !$this->_isModified ) {
+        if ( $this->_resultCache && $this->_isModified === false ) {
             return $this->_resultCache;
         } else {
             $result = array();
@@ -420,6 +416,8 @@ class Mumsys_GetOpts
                 }
                 $this->_hasActions = false;
             }
+
+            $this->_isModified = false;
 
             return $this->_resultCache;
         }
@@ -595,6 +593,7 @@ TEXT;
      */
     public function resetResults()
     {
+        $this->_isModified = false;
         $this->_resultCache = array();
         $this->_mapping = array();
         $this->_result = array();
@@ -614,14 +613,16 @@ TEXT;
 
 
     /**
-     * Sets and returns the mapping of options if several short and long options exists.
+     * Sets the mapping of options if several short and long options exists.
      *
      * @param array $options List of incoming options
-     *
-     * @return array List of key value pair which is the mapping of options
      */
     public function setMappingOptions( array $options = array() )
     {
+        if ( $this->_resultCache ) {
+            $this->_isModified = true;
+        }
+
         $mapping = array();
 
         foreach ( $options as $action => $values ) {

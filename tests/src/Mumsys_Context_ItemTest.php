@@ -7,9 +7,24 @@ class Mumsys_Context_ItemTest
     extends Mumsys_Unittest_Testcase
 {
     /**
-     * @var Mumsys_Context
+     * @var Mumsys_Context_Item
      */
-    protected $_object;
+    private $_object;
+
+    /**
+     * @var string
+     */
+    private $_version;
+
+    /**
+     * @var array
+     */
+    private $_versions;
+
+    /**
+     * @var string
+     */
+    private $_logfile;
 
 
     /**

@@ -99,7 +99,7 @@ class Mumsys_Service_SshTool_DefaultTest
             unlink( $this->_dynTestFile );
         }
 
-        $this->_object = null;
+        unset( $this->_object );
     }
 
 
@@ -147,8 +147,12 @@ class Mumsys_Service_SshTool_DefaultTest
      */
     public function testInit()
     {
-        $this->assertingNull( $this->_object->init() );
-        $this->assertingNull( $this->_object->init() ); // 4CC
+        $actualA = $this->_object->getHostConfigs();
+        $this->_object->init();
+        $actualB = $this->_object->getHostConfigs();
+        $this->_object->init(); //4CC?
+
+        $this->assertingSame( $actualB, $actualA );
     }
 
 
