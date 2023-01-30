@@ -516,9 +516,13 @@ class Mumsys_FileSystem_DefaultTest
         $dir = $this->_testdirs['dir'];
         $this->_object->mkdir( $dir );
         touch( ( $file = $dir . '/toUnlink.test' ) );
+        $link = $file . '.lnk';
+        symlink( $file, $link );
 
         $this->assertingTrue( $this->_object->unlink( $dir ) ); // not a file
         $this->assertingTrue( $this->_object->unlink( $file ) );
+        $this->assertingTrue( $this->_object->unlink( $link ) );
+        $this->assertingFalse( is_link( $link ) );
 
         $phpbin = MumsysTestHelper::getBinary( 'bash' );
         $fileDifferentOwnership = trim( (string) $phpbin );

@@ -10,6 +10,14 @@
 
 # Changes
 
+2023-01
+
++ Mumsys_FileSystem_Default
+    - Fixes usage in `unlink()` for symlinks
+    - Updates tests
+
+
+
 2021-07
 
     + Fixes validateRegex() e.g when nummeric values end in a TypeError

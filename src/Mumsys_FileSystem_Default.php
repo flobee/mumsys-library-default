@@ -522,8 +522,6 @@ class Mumsys_FileSystem_Default
     /**
      * Removes/ unlinks a file.
      *
-     * @todo What about symlinks ?
-     *
      * @param string $file Location to the file to be deleted
      * @param $context Stream context
      *
@@ -533,7 +531,7 @@ class Mumsys_FileSystem_Default
      */
     public function unlink( $file, $context = null )
     {
-        if ( !is_file( $file ) ) {
+        if ( !is_file( $file ) && !is_link( $file ) ) {
             return true;
         }
 
