@@ -10,13 +10,13 @@ class Mumsys_Array2Xml_DefaultTest
     /**
      * @var Mumsys_Array2Xml_Default
      */
-    protected $_object;
+    private $_object;
 
     /**
      * Test object using cache properties.
      * @var Mumsys_Array2Xml_Default
      */
-    protected $_object2;
+    private $_object2;
 
 
     /**
@@ -158,10 +158,6 @@ class Mumsys_Array2Xml_DefaultTest
 
     public function __destruct()
     {
-        if ( !isset( $this->_object ) || !isset( $this->_object2 ) ) {
-            return;
-        }
-
         // cleanup cache files
         $list = array($this->_object->getCacheFile(), $this->_object2->getCacheFile());
         foreach ( $list as $file ) {
@@ -666,9 +662,20 @@ class Mumsys_Array2Xml_DefaultTest
         $actual3 = $obj3->encode( $iso_8859_15 );
         $expected3 = $testStringUtf8;
 
+        $errBak = error_reporting();
+        error_reporting( 0 );
+        $obj4 = new Mumsys_Array2Xml_Default();
+        $obj4->setEncoding( 'utf-8', 'iso-8859-1' );
+        $testtext4 = "This is the Euro symbol '€'.";
+        $actual4 = $obj4->encode( $testtext4 );
+        $expected4 = iconv( "UTF-8", "ISO-8859-1", $testtext4 );
+        error_reporting( $errBak );
+
         $this->assertingEquals( $testStringUtf8, $actual1 );
         $this->assertingEquals( $iso_8859_15, $actual2 );
         $this->assertingEquals( $expected3, $actual3 );
+        $this->assertingEquals( $expected4, $actual4 );
+        $this->assertingFalse( $actual4 );
     }
 
 

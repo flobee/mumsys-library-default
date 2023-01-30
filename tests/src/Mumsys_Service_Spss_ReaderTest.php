@@ -34,10 +34,10 @@ class Mumsys_Service_Spss_ReaderTest
     private $_spssFile;
 
     /**
-     * Reader dump file to compare
+     * Version string
      * @var string
      */
-    private $_spssFileDump;
+    private $_version;
 
 
     /**
@@ -49,7 +49,6 @@ class Mumsys_Service_Spss_ReaderTest
         $this->_version = '2.2.0';
 
         $this->_spssFile = __DIR__ . '/../testfiles/Service/Spss/pspp.sav';
-        $this->_spssFileDump = $this->_spssFile . '.php-dump.txt';
         $parser = \SPSS\Sav\Reader::fromString( file_get_contents( $this->_spssFile ) )->read();
 
         $this->_object = new Mumsys_Service_Spss_Reader( $parser );
@@ -62,7 +61,7 @@ class Mumsys_Service_Spss_ReaderTest
      */
     protected function tearDown(): void
     {
-        $this->_object = null;
+        unset( $this->_object );
     }
 
 
