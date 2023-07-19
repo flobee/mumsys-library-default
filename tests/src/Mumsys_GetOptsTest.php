@@ -40,7 +40,7 @@ class Mumsys_GetOptsTest
      */
     protected function setUp(): void
     {
-        $this->_version = '3.6.1';
+        $this->_version = '3.6.3';
         $this->_versions = array(
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
             'Mumsys_GetOpts' => $this->_version,
@@ -155,6 +155,8 @@ class Mumsys_GetOptsTest
 
         $incomming1 = $object->verifyOptions( $options );
         $object->setMappingOptions( $incomming1 );
+        $object->getResult(); // 4CC setMappingOptions-> isModified
+        $object->setMappingOptions( $incomming1 );// 4CC setMappingOptions-> isModified
         $mapping1 = $object->getMapping();
 
         $incomming2 = $object->verifyOptions( $newOpts );

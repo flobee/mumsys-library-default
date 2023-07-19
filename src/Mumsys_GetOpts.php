@@ -104,7 +104,7 @@ class Mumsys_GetOpts
     /**
      * Version ID information.
      */
-    const VERSION = '3.6.1';
+    const VERSION = '3.6.3';
 
     /**
      * Cmd line.
@@ -218,7 +218,19 @@ class Mumsys_GetOpts
         $errorNotice = '';
         $unflag = array();
 
-        foreach ( $this->_options as $action => $params ) {
+        // 2023-07: detect actions order from cli to match the options order.
+        $optionsToDealWith = array();
+        foreach ( $argv as $argCheck ) {
+            if ( isset( $this->_options[$argCheck] ) ) { // _options['_default_'] contains no actions
+                    $optionsToDealWith[$argCheck] = $this->_options[$argCheck];
+            } // else {
+              // only at the end deside the which options to be used
+        }
+        if ( $optionsToDealWith === array() ) {
+            $optionsToDealWith = $this->_options;
+        }
+
+        foreach ( $optionsToDealWith as $action => $params ) {
             while ( $argPos < $this->_argc ) {
                 $arg = $argv[$argPos];
 
@@ -517,7 +529,7 @@ class Mumsys_GetOpts
 
                 if ( $desc ) {
                     $desc = PHP_EOL . $tab . "    "
-                        . wordwrap( $desc, 76, PHP_EOL . "    " )
+                        . wordwrap( $desc, 76, PHP_EOL . "    " . $tab ) // help with actions to test!
                         . PHP_EOL;
                 }
 
