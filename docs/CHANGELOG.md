@@ -10,6 +10,49 @@
 
 # Changes
 
+2023-07
+
++ Mumsys_GetOpts
+    - VERSION 4.0.0
+    - Re-implementation of the parser and sub handling (currently beta for
+      version: 4.0.0 as introduction)
+    - Fixes all todo tags like:
+        - global and action params now handled
+        - `--no-[arg]` in-validates positiv defaults in shell args
+        - flags are now always bool true for 'is set', false for 'not set'
+          `getResult()` will give answer.
+        - actions do not require options anymore: `run.php action1 action2` works now
+        - options in shell like `run.php --file=/location/to/file` now possible
+        - detection of required values are improved! required: only if given.
+        - Improved handling in options of descriptions for arguments. With
+          but's, but improved. See tests for posibilities. Check `getHelp()` or
+          `getHelpLong()`
+        - Mixed args of the same name are possible now if different to different
+          actions. E.g: `run.php action1 --help action2 --help`. Also with
+          globals args: Fifo. Fist comes, first seves (there where set: that
+          action or the global takes acount).
+          `run.php --help action1 --help` will output global --help (if a global
+          help was set in options)
+    - Fixes issue in construction. argv are forced to be set only if input is
+      `null` (default now)
+    - Wont fix: options having e.g: `'-1'` ... `'-[-](int)'` keys or values.
+      php parser always tries to convert them to `int`.
+      Use aliases if you need things like this. E.g: --one, --two or '+' sign
+      which is not converted to `int`
+    - One config/ options list of key/value pairs per instance can be set.
+        - Make private:
+          `verfiyOptions() => _verfiyOptions()`
+          `setMappingOptions() => _setMappingOptions()`
+          Per instance only!
+    - Updates, renew tests also for documentation for other issues
+    - Tests status: 100%
+    - Todo: Simplify the code. still some mess.
+
++ Set dependency `phpstan` to fixed version: 0.12.83
+    - Fixed some issues regarding previous version
+
+
+
 2023-01
 
 + Mumsys_FileSystem_Default
