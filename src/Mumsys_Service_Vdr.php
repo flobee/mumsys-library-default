@@ -52,7 +52,7 @@ class Mumsys_Service_Vdr
      * @link http://vdr-wiki.de/wiki/index.php/Channels.conf VDR Specs
      * @var array
      */
-    private $_channels = array(); // @phpstan-ignore-line
+    private $_channels = array();
 
 
     /**

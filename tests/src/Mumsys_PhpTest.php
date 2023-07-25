@@ -493,7 +493,7 @@ class Mumsys_PhpTest
         // PHP >= 5.3.0 !!
         if ( PHP_VERSION_ID >= 50300 ) {
             // Mumsys_Php::strstr not implemented in class!
-            $this->assertingEquals( '12345', Mumsys_Php::strstr( '12345', '123' ) );
+            $this->assertingEquals( '12345', strstr( '12345', '123' ) );
         }
         if ( PHP_VERSION_ID < 50300 ) {
             $this->markTestIncomplete( 'PHP < 5.3.0; Can not be called.' );

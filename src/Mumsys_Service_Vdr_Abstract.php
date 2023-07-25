@@ -83,19 +83,19 @@ abstract class Mumsys_Service_Vdr_Abstract
      * @link http://vdr-wiki.de/wiki/index.php/Channels.conf VDR Specs
      * @var array
      */
-    private $_channels = array(); // @phpstan-ignore-line
+    private $_channels = array();
 
     /**
      * List of times
      * @var array
      */
-    private $_timers = array(); // @phpstan-ignore-line
+    private $_timers = array();
 
     /**
      * List of recordings
      * @var array
      */
-    private $_recordings = array(); // @phpstan-ignore-line
+    private $_recordings = array();
 
 
     /**

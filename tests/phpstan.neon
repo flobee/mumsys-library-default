@@ -8,7 +8,7 @@ parameters:
     level: 1
 
     ignoreErrors:
-		#- '#Call to an undefined method [a-zA-Z0-9\\_]+::doFoo\(\)#'
+        #- '#Call to an undefined method [a-zA-Z0-9\\_]+::doFoo\(\)#'
         - '#Call to an undefined method Mumsys_Logger_File::emerg\(\)#'
         - '#Call to an undefined method Mumsys_Logger_File::alert\(\)#'
         - '#Call to an undefined method Mumsys_Logger_File::crit\(\)#'
@@ -20,7 +20,7 @@ parameters:
         - '#Call to an undefined method Mumsys_Logger_File::invalid\(\)#'
         - '#Call to an undefined method PHPMailer\\PHPMailer\\PHPMailer::mumsysMailMethod\(\)#'
         - '#Access to an undefined property Mumsys_Php::\$unknownVariable#'
-        - '#Call to an undefined static method Mumsys_Php::strstr\(\)#'
+        #- '#Call to an undefined static method Mumsys_Php::strstr\(\)#'
         - '#Call to an undefined method Mumsys_Php::strstr\(\)#'
 
     # Hints:

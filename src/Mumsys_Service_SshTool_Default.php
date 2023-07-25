@@ -81,7 +81,7 @@ class Mumsys_Service_SshTool_Default
      * List of commands generated
      * @var array
      */
-    private $_cmdList; // @phpstan-ignore-line
+    private $_cmdList;
 
 
     /**
