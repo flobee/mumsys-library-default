@@ -112,32 +112,34 @@ class Mumsys_GetOpts
      * E.g: /program -a "X" --append "Y" -> --append will be "X", "Y" ignored!
      * Output: array("append" => "X")
      *
-     * @var array
+     * After _verifyOptions()
+     *
+     * @var array<string, string|array<string|int, string>>
      */
     private $_options;
 
     /**
      * Mapping for short and long options.
-     * @var array
+     * @var array<string, array<string,string>|string>
      */
     private $_mapping;
 
     /**
-     * List (key value pairs) of all parameter which are in the whitelist.
-     * @var array
+     * Internal list (key value pairs) of all parameter which are in the whitelist.
+     * @var array<string, array<string, scalar>>
      */
-    private $_result;
+    private $_rawResult;
 
     /**
      * List (key value pairs) of all parameter without - and -- parameter
      * prefixes
-     * @var array
+     * @var array<string, array<string, scalar>>
      */
     private $_resultCache;
 
     /**
      * List of argument values (argv)
-     * @var array
+     * @var array<string>
      */
     private $_argv;
 
@@ -164,9 +166,10 @@ class Mumsys_GetOpts
     /**
      * Initialise the object and verify and parse incoming options/ config.
      *
-     * @param array $configOptions List of configuration parameters to look for
-     * @param array $input List of input arguments. Optional, uses default input
-     * handling then
+     * @param array<int|string, string|array<string|int,string>> $configOptions
+     * List of configuration parameters to look for
+     * @param array<string> $input List of input arguments. Optional else uses
+     *  default input (_argv) handling then
      *
      * @throws Mumsys_GetOpts_Exception On error initialsing the object
      */
@@ -180,21 +183,21 @@ class Mumsys_GetOpts
             $this->_argc = count( $input );
         }
 
-        $this->_options = $this->_verifyOptions( $configOptions );
-        $this->_setMappingOptions( $this->_options );
-
-        $this->_result = $this->parse();
+        $this->_verifyOptions( $configOptions ); // gen: $this->_options
+        $this->_setMappingOptions( $this->_options ); // gen: $this->_mapping
+        $this->_rawResult = $this->parse();
     }
 
 
     /**
      * Parse parameters to create the result.
      *
-     * @todo trim() the values? eg using auto-complesion in shell like: --file= /tmp<TAB><TAB>
+     * @todo trim() values? eg using auto-complete in shell like: --file= /tmp<TAB><TAB>
      *
+     * @return array<string, array<string, scalar>> Result to be used
      * @throws Mumsys_GetOpts_Exception
      */
-    public function parse()
+    public function parse(): array
     {
         $argPos = 1; // zero is the calling program
         $argv = & $this->_argv;
@@ -234,7 +237,7 @@ class Mumsys_GetOpts
             $argValue = $argv[$argPos];
 
             if ( isset( $argValue[0] ) && $argValue[0] == '-' ) {
-                // its an arg. parseArg() with the last state of action or _default_ to be checked
+                // its an arg. parseArg() with the last state of action or _default_
                 $return = $this->_parseArg( $argValue, $inAction, $return, $argPos );
 
             } else {
@@ -261,13 +264,16 @@ class Mumsys_GetOpts
      *
      * @param string $argValue Current argument value
      * @param string $action Current action to test the argTag for
-     * @param array $results Current results of the parsing process
+     * @param array<string, array<string, scalar>> $results Current results of
+     * the parsing process
      * @param int $argPos Current position/ sequence of the argument
      *
-     * @return array Previous results incl. results found in the current sequence
+     * @return array<string, array<string, scalar>> Previous results incl.
+     * results found in the current sequence
      * @throws Mumsys_GetOpts_Exception On errors handling the argument
      */
-    private function _parseArg( string $argValue, string $action, array $results, &$argPos ): array
+    private function _parseArg( string $argValue, string $action,
+        array $results, &$argPos ): array
     {
         if ( !isset( $results['_default_'] ) && isset( $this->_mapping['_default_'] ) ) {
             $results['_default_'] = array();
@@ -411,7 +417,8 @@ class Mumsys_GetOpts
 
 
     /**
-     * Checks if optionTag (e.g: argument combination -f|--file:) contains the required flag (:).
+     * Checks if optionTag (e.g: argument combination -f|--file:) contains the
+     * required flag (:).
      *
      * @todo benchmark strpos( $optionsTag, ':' ) vs last char or known position of a : ?
      *
@@ -440,18 +447,22 @@ class Mumsys_GetOpts
      *
      * @param string $action Current action of the parse in use
      * @param string $argTag Current argument tag
-     * @param string $realAction internal action the argTag was found (a _default_ arg inside an action given)
+     * @param string $realAction internal action the argTag was found (a
+     * _default_ arg inside an action given)
      *
      * @return string The key of the options array to work with for the action
      * @throws Mumsys_GetOpts_Exception If option key could not be found
      */
-    private function _argFindInOptions( string $action, string $argTag, string $realAction ): string
+    private function _argFindInOptions( string $action, string $argTag,
+        string $realAction ): string
     {
-        foreach ( $this->_options[$action] as $optKey => &$optVal ) {
+        foreach ( (array)$this->_options[$action] as $optKey => &$optVal ) {
+        //foreach ( $this->_options[$action] as $optKey => &$optVal ) {
 
             if ( is_int( $optKey ) !== false && is_string( $optVal ) ) {
                 $optKey = $optVal;
             }
+            /** @var string $optKey 4SCA */
 
             // replace required flag for fast exact match
             $optKeyReplaced = str_replace( ':', '', $optKey );
@@ -471,26 +482,6 @@ class Mumsys_GetOpts
                 }
             }
 
-            /** @todo check later and performance and char escaping with preg! */
-//            //if ( preg_match( '/' . preg_$optKey . '/i', $argTag ) === 1 ) {
-//            //    return $optKey;
-//            //}
-//            // test:
-//            $list = array(
-//                '--file|-f:' => '-f',
-//                '--path:' => '--path',
-//                '--help' => '--help',
-//                '-h' => '-h',
-//            );
-//            //str_replace(array('/',':'), array('\/',''), $test)
-//            foreach ( $list as $test => $expected ) {
-//                if ( preg_match( '/(' . preg_quote( $test ) . ')/i', $expected,
-//                        $matches ) === 1 ) {
-//                    echo '$test: ' . $test . ' found for ' . $expected . '' . PHP_EOL;
-//                }
-//                echo 'matches:' . print_r( $matches, true );
-//            }
-
             // next option to check...
         }
 
@@ -505,9 +496,12 @@ class Mumsys_GetOpts
             $optionalAction = ' (action: "' . $realAction . '")';
         }
         $mesg = sprintf(
-            'IF YOU SEE THIS PLEASE SEND config/options AND input to have tests. ' . PHP_EOL .
-            'Keys with negativ int\'s in options already known. wont fix! ' . PHP_EOL .
-            'Tag in mapper found for action: "%1$s" but not the option for argTag: "%2$s"%3$s',
+            'IF YOU SEE THIS PLEASE SEND config/options AND input to have '
+            . ' tests. ' . PHP_EOL .
+            'Keys with negativ int\'s in options already known. wont fix! '
+            . PHP_EOL .
+            'Tag in mapper found for action: "%1$s" but not the option for '
+            . 'argTag: "%2$s"%3$s',
             $action, $argTag, $optionalAction
         );
         throw new Mumsys_GetOpts_Exception( $mesg );
@@ -518,32 +512,47 @@ class Mumsys_GetOpts
     /**
      * Checks, verfiy and build the structure from incomming options for the parser.
      *
-     * @param array $config Configuration to check for actions and validity
+     * @param array<int|string, string|array<string|int,string>> $config Configuration
+     * to check for actions and validity
      *
-     * @return array action/options list to work with internally
      * @throws Mumsys_GetOpts_Exception On errors with the input
      */
-    private function _verifyOptions( array $config )
+    private function _verifyOptions( array $config ): void
     {
         // arguments to be checked as global options
         // all the following as: action [action options]...
         $options = array();
         // -9 opt wont work. use --9 opt to be string and valid for options and mapping
         foreach ( $config as $key => $value ) {
-            if ( ( is_int( $key ) && is_string( $value ) && isset( $value[0] ) && $value[0] === '-' ) ) {
+            if ( is_int( $key )
+                && is_string( $value )
+                && isset( $value[0] )
+                && $value[0] === '-' ) {
+
                 // 0 => --file
                 $options['_default_'][$value] = 'No description';
 
-            } else if ( ( is_int( $key ) && is_string( $value ) && isset( $value[0] ) && $value[0] !== '-' ) ) {
+            } else if ( is_int( $key )
+                && is_string( $value )
+                && isset( $value[0] )
+                && $value[0] !== '-' ) {
+
                 // 0 => action1
                 $options[$value] = array(); // arg action
 
-            } else if ( is_string( $key ) && isset( $key[0] ) && $key[0] === '-' && is_string( $value ) ) {
+            } else if ( is_string( $key )
+                && isset( $key[0] )
+                && $key[0] === '-'
+                && is_string( $value ) ) {
+
                 // --file => description
                 $options['_default_'][$key] = $value; // arg key/desc pair
 
-            } else if ( is_string( $key ) && isset( $key[0] ) && $key[0] !== '-'
+            } else if ( is_string( $key )
+                && isset( $key[0] )
+                && $key[0] !== '-'
                 && ( is_string( $value ) || is_array( $value ) ) ) {
+
                 // action1 => description or action1 => array(...)
                 $options[$key] = $value;
 
@@ -567,7 +576,7 @@ class Mumsys_GetOpts
             $return = & $options;
         }
 
-        return $return;
+        $this->_options = $return;
     }
 
 
@@ -575,15 +584,16 @@ class Mumsys_GetOpts
      * Returns the list of key/value pairs of the input parameters without
      * "-" and "--" from the cmd line.
      *
-     * @return array List of key/value pair from incoming cmd line.
+     * @return array<string, array<string, scalar>> List of key/value pair from
+     * incoming cmd line.
      */
-    public function getResult()
+    public function getResult(): array
     {
         if ( $this->_resultCache && $this->_isModified === false ) {
             return $this->_resultCache;
         } else {
             $result = array();
-            foreach ( $this->_result as $action => $params ) {
+            foreach ( $this->_rawResult as $action => $params ) {
                 // prepare action maybe with empty action
                 if ( $action != '_default_' ) {
                     $result[$action] = array();
@@ -616,7 +626,7 @@ class Mumsys_GetOpts
      *
      * @return string Help informations
      */
-    public function getHelp()
+    public function getHelp(): string
     {
         $str = '';
         $tab = '';
@@ -637,7 +647,6 @@ class Mumsys_GetOpts
 
             if ( is_string( $values ) ) {
                 // a action desc only given?
-//                $str .= $tab . wordwrap( $values, 76, PHP_EOL . $tab ) . PHP_EOL;
                 $str .= $tab . $this->_wordwrapHelp( $values, 76, PHP_EOL . $tab ) . PHP_EOL;
 
             } else if ( is_array( $values ) && empty( $values ) ) {
@@ -662,11 +671,6 @@ class Mumsys_GetOpts
                         $option .= ' <yourValue/s>';
                     }
 
-//                    if ( $desc ) {
-//                        $desc = PHP_EOL . $tab . "    "
-//                            . wordwrap( $desc, 76, PHP_EOL . "    " . $tab )
-//                            . PHP_EOL;
-//                    }
                     if ( $desc ) {
                         $desc = PHP_EOL . $tab . "    "
                             . $this->_wordwrapHelp( $desc, 76, PHP_EOL . "    " . $tab );
@@ -688,7 +692,7 @@ class Mumsys_GetOpts
      *
      * @return string Long help informations
      */
-    public function getHelpLong()
+    public function getHelpLong(): string
     {
         $string = <<<TEXT
 Class to handle/ pipe shell arguments in php context.
@@ -721,12 +725,12 @@ TEXT;
      *
      * @return string Argument string
      */
-    public function getCmd()
+    public function getCmd(): string
     {
         $parts = '';
         $cmd = sprintf( '%1$s ', $this->_argv[0] );
 
-        foreach ( $this->_result as $action => $values ) {
+        foreach ( $this->_rawResult as $action => $values ) {
             if ( $action != '_default_' ) {
                 $parts .= $action . ' ';
             }
@@ -756,20 +760,21 @@ TEXT;
     /**
      * Return the list of actions and list of key/value pairs the parser accepted.
      *
-     * @return array List of key/value pairs of the incoming parameters
+     * @return array<string, array<string, scalar>> List of key/value pairs of
+     * the incoming parameters
      */
-    public function getRawData()
+    public function getRawData(): array
     {
-        return $this->_result;
+        return $this->_rawResult;
     }
 
 
     /**
      * Returns the raw input.
      *
-     * @return array Returns the given input array or _SERVER['argv'] array
+     * @return array<string> Returns the given input array or _SERVER['argv'] array
      */
-    public function getRawInput()
+    public function getRawInput(): array
     {
         return $this->_argv;
     }
@@ -779,19 +784,20 @@ TEXT;
      * Free/ cleanup collected, calculated results to generate them new. Given
      * default/ setup data will be still available.
      */
-    public function resetResults()
+    public function resetResults(): void
     {
         $this->_isModified = false;
         $this->_resultCache = array();
         $this->_mapping = array();
-        $this->_result = array();
+        $this->_rawResult = array();
     }
 
 
     /**
      * Returns the internal options after verifyOptions().
      *
-     * @return array The internal options after verifyOptions()
+     * @return array<string, string|array<string|int, string>> The internal
+     * options after _verifyOptions()
      */
     public function getOptions(): array
     {
@@ -802,10 +808,10 @@ TEXT;
     /**
      * Returns the mapping of short and long options.
      *
-     * @return array List of key value pairs where the key is the option and the
-     * value the target to map to it.
+     * @return array<string, string|array<string>> List of key value pairs where
+     * the key is the option and the value the target to map to it.
      */
-    public function getMapping()
+    public function getMapping(): array
     {
         return $this->_mapping;
     }
@@ -814,9 +820,10 @@ TEXT;
     /**
      * Sets the mapping of options if several short and long options exists.
      *
-     * @param array $options List of incoming options
+     * @param array<string, string|array<string|int, string>> $options List of
+     * incoming options
      */
-    private function _setMappingOptions( array $options = array() )
+    private function _setMappingOptions( array $options = array() ): void
     {
         $mapping = array();
 
@@ -850,14 +857,13 @@ TEXT;
             }
         }
 
-        $this->_mapping = $mapping;
         if ( count( $mapping ) > 1 ) {
             $this->_hasActionsInOpts = true;
         } else {
             $this->_hasActionsInOpts = false;
         }
 
-        return $mapping;
+        $this->_mapping = $mapping;
     }
 
 
@@ -870,7 +876,7 @@ TEXT;
      *
      * @return string The wraped string
      */
-    private function _wordwrapHelp( string $text, int $with, string $eol )
+    private function _wordwrapHelp( string $text, int $with, string $eol ): string
     {
         $list = explode( PHP_EOL, $text );
         $result = '';
@@ -885,7 +891,7 @@ TEXT;
     /**
      * Prints the help message.
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getHelp();
     }

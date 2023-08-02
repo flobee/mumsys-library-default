@@ -104,7 +104,10 @@ class Mumsys_GetOptsTest
             array(
             'action1', // without a description or params
             'action2' => array(), // with no params
-            'action3' => array('--long', '-s'), // with params
+            'action3' => array(
+                '--long',
+                '-s'
+            ), // with params
             )
         );
         $this->_inputSimpleActions = array(
@@ -730,6 +733,7 @@ HELPLONG;
     /**
      * @covers Mumsys_GetOpts::getHelp
      * @covers Mumsys_GetOpts::getHelpLong
+     * @covers Mumsys_GetOpts::_wordwrapHelp
      * @covers Mumsys_GetOpts::__toString
      */
     public function testGetHelpSimple()
@@ -767,6 +771,7 @@ HELPLONG;
     /**
      * @covers Mumsys_GetOpts::getHelp
      * @covers Mumsys_GetOpts::getHelpLong
+     * @covers Mumsys_GetOpts::_wordwrapHelp
      * @covers Mumsys_GetOpts::__toString
      */
     public function testGetHelpSimpleActions()
@@ -817,6 +822,7 @@ HELPLONG;
     /**
      * @covers Mumsys_GetOpts::getHelp
      * @covers Mumsys_GetOpts::getHelpLong
+     * @covers Mumsys_GetOpts::_wordwrapHelp
      * @covers Mumsys_GetOpts::__toString
      */
     public function testGetHelpSimpleActionsWithDesc()
@@ -866,6 +872,7 @@ HELPLONG;
     /**
      * @covers Mumsys_GetOpts::getHelp
      * @covers Mumsys_GetOpts::getHelpLong
+     * @covers Mumsys_GetOpts::_wordwrapHelp
      * @covers Mumsys_GetOpts::__toString
      */
     public function testGetHelpActionsWithDescNoGlobals()
