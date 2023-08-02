@@ -7,6 +7,9 @@ parameters:
 
     level: 1
 
+    # 2023-08-01 set to false for GetOpts implementation
+    treatPhpDocTypesAsCertain: false
+
     ignoreErrors:
         #- '#Call to an undefined method [a-zA-Z0-9\\_]+::doFoo\(\)#'
         - '#Call to an undefined method Mumsys_Logger_File::emerg\(\)#'
@@ -48,4 +51,5 @@ parameters:
         - %rootDir%/../../../src/Mumsys_Db_Driver*
         - %rootDir%/../../../src/Mumsys_Mvc_Display_Helper_Url*
         - %rootDir%/../../../src/Mumsys_Weather*
+        #- %rootDir%/../../../src/Mumsys_ShellTools_Adapter_Exif*
         - %rootDir%/../../../tests/src/Mumsys_Db_Driver*

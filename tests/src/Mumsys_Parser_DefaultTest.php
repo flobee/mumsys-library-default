@@ -2,13 +2,13 @@
 
 
 /**
- * Test class for Mumsys_Parser_Logline
+ * Test class for Mumsys_Parser_Default
  */
-class Mumsys_Parser_LoglineTest
+class Mumsys_Parser_DefaultTest
     extends Mumsys_Unittest_Testcase
 {
     /**
-     * @var Mumsys_Parser_Logline
+     * @var Mumsys_Parser_Default
      */
     protected $_object;
     protected $_format;
@@ -59,7 +59,7 @@ class Mumsys_Parser_LoglineTest
             'c4' => '(?P<col_4>.+)',
             'c5' => '(?P<col_5>\w*)', // optional
         );
-        $this->_object = new Mumsys_Parser_Logline( $this->_format, $this->_patterns );
+        $this->_object = new Mumsys_Parser_Default( $this->_format, $this->_patterns );
     }
 
 
@@ -74,13 +74,13 @@ class Mumsys_Parser_LoglineTest
 
 
     /**
-     * @covers Mumsys_Parser_Logline::__construct
-     * @covers Mumsys_Parser_Logline::setFormat
+     * @covers Mumsys_Parser_Default::__construct
+     * @covers Mumsys_Parser_Default::setFormat
      */
     public function test__construct()
     {
         // default loglines
-        $object = new Mumsys_Parser_Logline();
+        $object = new Mumsys_Parser_Default();
         // own parameters
         $this->_format = 'id;c1;c2;c3;c4;c5';
         $this->_patterns = array(
@@ -91,14 +91,14 @@ class Mumsys_Parser_LoglineTest
             'c4' => '(?P<col_4>.+)',
             'c5' => '(?P<col_5>\w*)', // optional
         );
-        $object = new Mumsys_Parser_Logline( $this->_format, $this->_patterns );
+        $object = new Mumsys_Parser_Default( $this->_format, $this->_patterns );
 
-        $this->assertingInstanceOf( 'Mumsys_Parser_Logline', $object );
+        $this->assertingInstanceOf( 'Mumsys_Parser_Default', $object );
     }
 
 
     /**
-     * @covers Mumsys_Parser_Logline::setFormat
+     * @covers Mumsys_Parser_Default::setFormat
      */
     public function testSetFormat()
     {
@@ -109,7 +109,7 @@ class Mumsys_Parser_LoglineTest
 
 
     /**
-     * @covers Mumsys_Parser_Logline::setPattern
+     * @covers Mumsys_Parser_Default::setPattern
      */
     public function testSetPattern()
     {
@@ -120,7 +120,7 @@ class Mumsys_Parser_LoglineTest
 
 
     /**
-     * @covers Mumsys_Parser_Logline::setHideFilterResults
+     * @covers Mumsys_Parser_Default::setHideFilterResults
      */
     public function testSetHideFilterResults()
     {
@@ -131,7 +131,7 @@ class Mumsys_Parser_LoglineTest
 
 
     /**
-     * @covers Mumsys_Parser_Logline::setShowFilterResults
+     * @covers Mumsys_Parser_Default::setShowFilterResults
      */
     public function testSetShowFilterResults()
     {
@@ -142,7 +142,7 @@ class Mumsys_Parser_LoglineTest
 
 
     /**
-     * @covers Mumsys_Parser_Logline::setFilterCondition
+     * @covers Mumsys_Parser_Default::setFilterCondition
      */
     public function testSetFilterCondition()
     {
@@ -157,7 +157,7 @@ class Mumsys_Parser_LoglineTest
 
     /**
      * Just for CC
-     * @covers Mumsys_Parser_Logline::addFilter
+     * @covers Mumsys_Parser_Default::addFilter
      */
     public function testAddFilter()
     {
@@ -169,7 +169,7 @@ class Mumsys_Parser_LoglineTest
 
 
     /**
-     * @covers Mumsys_Parser_Logline::parse
+     * @covers Mumsys_Parser_Default::parse
      * @covers Mumsys_Parser_Abstract::_getExpression
      * @covers Mumsys_Parser_Abstract::_applyFilters
      */
@@ -233,7 +233,7 @@ class Mumsys_Parser_LoglineTest
     }
 
     /**
-     * @covers Mumsys_Parser_Logline::parse
+     * @covers Mumsys_Parser_Default::parse
      */
     public function testParseExceptionInvalidPattern()
     {
@@ -257,7 +257,7 @@ class Mumsys_Parser_LoglineTest
 
 
     /**
-     * @covers Mumsys_Parser_Logline::parse
+     * @covers Mumsys_Parser_Default::parse
      */
     public function testParseTimestampFeature()
     {
@@ -313,7 +313,7 @@ class Mumsys_Parser_LoglineTest
         );
 
         // strict filter
-        $object = new Mumsys_Parser_Logline();
+        $object = new Mumsys_Parser_Default();
         $object->setPattern( 'id', '(?P<id>\w+)' );
         $object->setPattern( 'timeIn', '(?P<time>.+)' );
         $object->setFormat( $format );

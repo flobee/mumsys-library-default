@@ -10,6 +10,30 @@
 
 # Changes
 
+2023-08
+
++ Mumsys_Parser_*
+    - Fixes parse() methode in error handling.
+        - Adds second parameter `parse($logline, bool $stayStrict = true)` for
+          beeing/ stay more strict (prev. and default behavior now: throw
+          exception on regex error OR if no match found
+    - Moves complete base functions to abstract class
+    - Adds new classes:
+        - `Mumsys_Parser_Abstract` Base implementation now
+        - `Mumsys_Parser_Default`: With default patters as feature/ offer you may like
+          Each variant/ flavour now only contains configs for that flavour.
+          E.g. Logline has common configs dealing with a line of a webserver or
+          simular log files (syslog, nginx...).
+        - `Mumsys_Parser_Logline`: VERSION 2.0.0
+          Fixes also type hints so some usage may not work anymore.
+    - Each variant/adapter: `Logline`, `Default` can be still used for own behavior
+      when adding format and patterns from your side on construction.
+    - Adds and updates tests/ code coverage: 100%
+    - Fixes SCA (Static Code Analyis) (phpstan level=8; src/! not for tests!)
+    - Fixes CS
+
+
+
 2023-07
 
 + Mumsys_GetOpts
@@ -45,6 +69,8 @@
           `setMappingOptions() => _setMappingOptions()`
           Per instance only!
     - Updates, renew tests also for documentation for other issues
+    - Fixes SCA (Static Code Analyis) level=6 src/! not for tests!
+    - Fixes CS
     - Tests status: 100%
     - Todo: Simplify the code. still some mess.
 
