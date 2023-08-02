@@ -42,11 +42,13 @@
  * </pre>
  */
 class Mumsys_Parser_Logline
+//    extends Mumsys_Parser_Abstract
 {
     /**
      * Version ID information.
      */
-    const VERSION = '1.1.1';
+    const VERSION = '1.1.2';
+//    const VERSION = '2.0.0';
 
     /**
      * Default log format.
@@ -60,13 +62,13 @@ class Mumsys_Parser_Logline
      * agent:            "%{User-agent}i"
      * @var string
      */
-    private $_defaultLogFormat = '%h %l %u %t "%r" %>s %O';
+    private $_inputFormatDefault = '%h %l %u %t "%r" %>s %O';
 
     /**
      * Log format to be used internally
      * @var string
      */
-    private $_logFormat = '';
+    private $_inputFormat = '';
 
     /**
      * List of filters
@@ -94,7 +96,7 @@ class Mumsys_Parser_Logline
      * List of key/value pairs to substitute the key with the regular
      * expression. These are common patterns to be used in apache or nginx.
      *
-     * @var array
+     * @var array<string, string>
      */
     private $_patternsDefault = array(
         '%%' => '(?P<percent>\%)',
@@ -151,9 +153,37 @@ class Mumsys_Parser_Logline
         if ( $format ) {
             $this->setFormat( $format );
         } else {
-            $this->setFormat( $this->_defaultLogFormat );
+            $this->setFormat( $this->_inputFormatDefault );
         }
     }
+
+//
+//    /**
+//     * Initialise the object.
+//     *
+//     * Optional with a format and if needed your own configuration of patterns
+//     * to not use the features of this variant (Logline).
+//     *
+//     * @param string|null $format Optional Format of a string/ logline.
+//     * @param array<string, string>|null $patterns Optional patterns to be set. Otherwise default
+//     * patterns (for this implementation) will be used.
+//     */
+//    public function __construct( ?string $format = null , ?array $patterns = null )
+//    {
+//        if ( $patterns ) {
+//            $patternsList = $patterns;
+//        } else {
+//            $patternsList = $this->_patternsDefault;
+//        }
+//
+//        if ( $format ) {
+//            $usingFormat = $format;
+//        } else {
+//            $usingFormat = $this->_inputFormatDefault;
+//        }
+//
+//        //parent::__construct( $usingFormat, $patternsList );
+//    }
 
 
     /**
@@ -165,7 +195,7 @@ class Mumsys_Parser_Logline
      */
     public function setFormat( $format )
     {
-        $this->_logFormat = "#^{$format}$#";
+        $this->_inputFormat = "#^{$format}$#";
     }
 
 
@@ -177,12 +207,12 @@ class Mumsys_Parser_Logline
      */
     private function _getExpression()
     {
-        $expr = $this->_logFormat;
+        $expr = $this->_inputFormat;
         foreach ( $this->_patterns as $key => $replace ) {
             $expr = preg_replace( "/{$key}/", $replace, $expr );
             // @codeCoverageIgnoreStart
             if ( $expr === null ) {
-                throw new Mumsys_Parser_Exception( 'Invalid logformat' );
+                throw new Mumsys_Parser_Exception( 'Invalid input format' );
             }
             // @codeCoverageIgnoreEnd
         }
@@ -283,13 +313,15 @@ class Mumsys_Parser_Logline
      * Parse a log line and return its parts.
      *
      * @param string $line A line of the log file.
+     * @param bool $stayStrict Default true to report any error. false will not
+     * report empty matches and returns empty array
      *
      * @return array|false Returns array with found properties or empty array if
      * filters take affect or false for an empty line.
      *
-     * @throws Exception If format doesn't match the line format.
+     * @throws Mumsys_Parser_Exception If format doesn't match the line format.
      */
-    public function parse( $line )
+    public function parse( string $line, bool $stayStrict = true )
     {
         if ( empty( $line ) ) {
             return false;
@@ -297,16 +329,25 @@ class Mumsys_Parser_Logline
 
         $regex = $this->_getExpression();
 
-        if ( !preg_match( $regex, $line, $matches ) ) {
-            $message = sprintf(
-                'Format of log line invalid (expected:"%1$s"); Line was "%2$s";'
-                . ' regex: "%3$s"',
-                $this->_logFormat,
-                $line,
-                $regex
+        if ( false === preg_match( $regex, $line, $matches ) ) {
+            $mesg = sprintf(
+                'Regex error detected: "%3$s" Line: "%2$s"; Format: "%1$s"',
+                $this->_inputFormat, $line, $regex
             );
 
-            throw new Mumsys_Parser_Exception( $message );
+            throw new Mumsys_Parser_Exception( $mesg );
+        }
+
+        /* allow empty results? to not end with an exception !?
+         * $stayStrict=true : you dont loose a focus on important data
+         * $stayStrict=false: simple things dont match, validate in business logic */
+        if ( $stayStrict === true && 0 === preg_match( $regex, $line, $matches ) ) {
+            $mesg = sprintf(
+                'Format of the value is invalid (expected: "%1$s"); Line: "%2$s"; Regex: "%3$s"',
+                $this->_inputFormat, $line, $regex
+            );
+
+            throw new Mumsys_Parser_Exception( $mesg );
         }
 
         $result = array();
