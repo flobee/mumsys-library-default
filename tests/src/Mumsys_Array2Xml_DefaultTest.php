@@ -209,6 +209,7 @@ class Mumsys_Array2Xml_DefaultTest
         $this->_object2->buffer( 'test' );
         $current = file_get_contents( $this->_object2->getCacheFile() );
 
+        /** @todo in some cases 'testtest' come out in tests 20230731 */
         $this->assertingEquals( 'test', $current );
         $this->assertingEquals(
             $this->_objectoptions2['cachefile'], $this->_object2->getCacheFile()

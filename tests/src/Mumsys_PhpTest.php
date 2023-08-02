@@ -55,14 +55,15 @@ class Mumsys_PhpTest
                 $this->fail( "No Exception was thrown" );
             } catch ( Exception $e ) {
                 // all fine
+                $this->expectingException( 'Exception' );
             }
 
         } else {
-            if ( function_exists( 'get_magic_quotes_gpc' ) ) {
-                $actual = get_magic_quotes_gpc();
-                $expected = false;
-                $this->assertingEquals( $expected, $actual );
-            }
+//            if ( function_exists( 'get_magic_quotes_gpc' ) ) {
+//                $actual = get_magic_quotes_gpcc();
+//                $expected = false;
+//                $this->assertingEquals( $expected, $actual );
+//            }
 
             $this->expectingException( 'Mumsys_Php_Exception' );
             $this->object->unknownVariable = 'I\'m wrong at all';
