@@ -54,11 +54,12 @@ class Mumsys_Service_SshTool_DefaultTest
             'Mumsys_Abstract' => Mumsys_Abstract::VERSION,
         );
 
-        $basePath = MumsysTestHelper::getTestsBaseDir();
-        $this->_sshFile = $basePath . '/testfiles/Service/Ssh/ssh-config-generated';
-        $this->_pathConfigs = $basePath . '/testfiles/Service/Ssh/Config/conffiles';
+        $basePathService = MumsysTestHelper::getTestsBaseDir()
+            . '/testfiles/Domain/Service/Ssh';
+        $this->_sshFile = $basePathService . '/ssh-config-generated';
+        $this->_pathConfigs = $basePathService . '/Config/conffiles';
         $this->_testConfigFile = $this->_pathConfigs . '/localhost.php';
-        $this->_pathEmptyDir = $basePath . '/testfiles/Service/Ssh/Config/empty';
+        $this->_pathEmptyDir = $basePathService . '/Config/empty';
         $this->_dynTestFile = '';
 
         $this->_object = new Mumsys_Service_SshTool_Default(

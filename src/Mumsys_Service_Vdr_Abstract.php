@@ -81,21 +81,21 @@ abstract class Mumsys_Service_Vdr_Abstract
      * 'vdr_id', 'name', 'bouquet', 'frequency', 'parameter', 'source', 'symbolrate',
      * 'VPID', 'APID', 'TPID', 'CAID', 'SID', 'NID', 'TID', 'RID'
      * @link http://vdr-wiki.de/wiki/index.php/Channels.conf VDR Specs
-     * @var array
+     * @ var array
      */
-    private $_channels = array();
+    //private $_channels = array(); disabled 4SCA
 
     /**
      * List of times
-     * @var array
+     * @ var array
      */
-    private $_timers = array();
+    // private $_timers = array(); disabled 4SCA
 
     /**
      * List of recordings
-     * @var array
+     * @ var array
      */
-    private $_recordings = array();
+    // private $_recordings = array(); disabled 4SCA
 
 
     /**

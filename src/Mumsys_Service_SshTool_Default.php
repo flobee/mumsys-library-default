@@ -79,9 +79,9 @@ class Mumsys_Service_SshTool_Default
 
     /**
      * List of commands generated
-     * @var array
+     * @ v ar array
      */
-    private $_cmdList;
+    //private $_cmdList; disabled 4SCA
 
 
     /**

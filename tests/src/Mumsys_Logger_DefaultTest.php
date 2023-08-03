@@ -117,8 +117,8 @@ class Mumsys_Logger_DefaultTest
         $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 
         unset(
-            $opts['username'], $_SERVER['REMOTE_USER'],
-            $_SERVER['PHP_AUTH_USER'], $_SERVER['USER'], $_SERVER['LOGNAME']
+            $_SERVER['REMOTE_USER'], $_SERVER['PHP_AUTH_USER'],
+            $_SERVER['USER'], $_SERVER['LOGNAME']
         );
         $object = new Mumsys_Logger_Default( $opts, $this->_writer );
 

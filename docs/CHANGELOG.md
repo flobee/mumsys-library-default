@@ -12,6 +12,34 @@
 
 2023-08
 
+General fixes:
++ Improves CS, SCA which came up with some tests, e.g:
+  Context, Array2Xml, 
+
+Dependencies:
++ Updates/ Set dependency 
+    - `phpstan` to version: ^1.10
+      ./runStaticCodeAnalysis.sh --level=4 ../src/ ./src # => 0 issues
+      ./runStaticCodeAnalysis.sh --level=8 ../src/ ./src # => 1.7k issues
+      ./runStaticCodeAnalysis.sh --level=8 ../src/ # => 698 issues
+    - phpunit/phpunit (9.5.16 => 9.6.10)
+    - phing/phing (2.17.2 => 2.17.4)
+    - phpmailer/phpmailer (v6.6.0 => v6.8.0)
+    - phpunit/php-code-coverage (9.2.14 => 9.2.27)
+    - squizlabs/php_codesniffer (3.6.2 => 3.7.2)
+
++ Mumsys_Service_Spss*
+    - Relocates testfiles/Service => testfiles/Domain/Service
+    - Updates tests
+
++ Mumsys_Service_Ssh*
+    - Relocates testfiles/Service => testfiles/Domain/Service
+    - Updates tests
+
++ Mumsys_GetOpts
+    - Fixes SCA (Static Code Analyis) (phpstan level=8; src/! not for tests!)
+    - Fixes CS
+
 + Mumsys_Parser_*
     - Fixes parse() methode in error handling.
         - Adds second parameter `parse($logline, bool $stayStrict = true)` for

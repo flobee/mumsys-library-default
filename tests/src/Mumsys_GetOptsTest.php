@@ -1,4 +1,18 @@
-<?php
+<?php declare( strict_types=1 );
+
+/**
+ * Mumsys_GetOptsTest
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright (c) 2015 by Florian Blasel
+ * @author Florian Blasel <flobee.code@gmail.com>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  GetOpts
+ */
+
 
 /**
  * Test class for Mumsys_GetOpts.
@@ -32,7 +46,6 @@ class Mumsys_GetOptsTest
     private $_inputSimple;
     private $_inputSimpleDesc;
     private $_inputSimpleActions;
-    private $_inputSimpleActionsDesc;
 
     /**
      * Long help prefix string
@@ -135,7 +148,6 @@ class Mumsys_GetOptsTest
                 '-s' => 'action3 description -s',
             ), // with no params
         );
-        $this->_inputSimpleActionsDesc = array();
 
         $this->_helpLong = <<<HELPLONG
 Class to handle/ pipe shell arguments in php context.
@@ -160,6 +172,7 @@ Your options:
 
 HELPLONG;
 
+        $this->_object = new Mumsys_GetOpts( $this->_optionsSimple, array() );
     }
 
 
@@ -286,7 +299,7 @@ HELPLONG;
 
     /**
      * @covers Mumsys_GetOpts::__construct
-     * @covers Mumsys_GetOpts::_setMappingOptions
+     * @covers Mumsys_GetOpts::_generateMappingOptions
      * @covers Mumsys_GetOpts::getMapping
      */
     public function testConstructSetMappingOptions()

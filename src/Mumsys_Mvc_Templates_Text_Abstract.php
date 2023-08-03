@@ -49,7 +49,7 @@ abstract class Mumsys_Mvc_Templates_Text_Abstract
      * @param Mumsys_Context $context Context object
      * @param array $options Optional options to setup the frontend controller
      */
-    public function __construct( Mumsys_Context $context,
+    public function __construct( Mumsys_Context_Interface $context,
         array $options = array() )
     {
         $this->_context = $context;
@@ -58,5 +58,4 @@ abstract class Mumsys_Mvc_Templates_Text_Abstract
             $this->_pagetitle = (string) $options['pageTitle'];
         }
     }
-
 }

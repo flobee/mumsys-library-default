@@ -18,18 +18,19 @@
         "ext-intl": "*",
         "phpmailer/phpmailer": "^6",
         "flobee/spss": "^5.0",
-        "phpunit/phpunit": "^9"
+        "phing/phing": "^2"
     },
 
     "require-dev": {
         "composer/composer": "^2.1",
         "squizlabs/php_codesniffer": "^3",
-        "phing/phing": "^2",
-        "phpstan/phpstan": "0.12.83",
+        "phpunit/phpunit": "^9",
+        "phpstan/phpstan": "^1.10",
         "phpbench/phpbench": "1.0.0-alpha6"
     },
 
     "suggest": {
+        "exiftool": "# apt install exiftool",
         "phploc/phploc": "*",
         "phpmd/phpmd": "*",
         "sebastian/phpcpd": "*"

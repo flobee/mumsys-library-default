@@ -48,7 +48,7 @@ class Mumsys_Service_Spss_ReaderTest
     {
         $this->_version = '2.2.0';
 
-        $this->_spssFile = __DIR__ . '/../testfiles/Service/Spss/pspp.sav';
+        $this->_spssFile = __DIR__ . '/../testfiles/Domain/Service/Spss/pspp.sav';
         $parser = \SPSS\Sav\Reader::fromString( file_get_contents( $this->_spssFile ) )->read();
 
         $this->_object = new Mumsys_Service_Spss_Reader( $parser );
@@ -203,7 +203,7 @@ class Mumsys_Service_Spss_ReaderTest
         $actual = $this->_object->getData();
         $expected = array(
             array(1, 1.23, 'ab'),
-            array(2.0, 2.3399999999999, 'bc'),
+            array(2.0, 2.3400, 'bc'),
             array(3, 3.45, 'cd')
         );
 

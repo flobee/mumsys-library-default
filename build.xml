@@ -22,7 +22,7 @@
     </target>
 
     <target name="sca" description="Executes the static code analysis (sca) (level=4)">
-        <echo msg="Executing the static code analysis (level=4)" />
+        <echo msg="Executing the static code analysis (level=4, tests/src/, src)" />
         <exec command="./runStaticCodeAnalysis.sh --level=4 ../src/ ./src/" dir="tests" checkreturn="true" logoutput="true" />
     </target>
 

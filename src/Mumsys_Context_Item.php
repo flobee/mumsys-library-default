@@ -190,7 +190,22 @@ class Mumsys_Context_Item
     }
 
 
+//    /** registerControllerFrontend
+//
+//     * Sets display/ frontend controller object.
+//     *
+//     * @param Mumsys_Mvc_Display_Control_Interface $display Display controller
+//     *
+//     * @throws Mumsys_Context_Exception Throws exception if object was already set
+//     */
+//    public function registerDisplay( Mumsys_Mvc_Display_Control_Interface $display )
+//    {
+//        $this->_register( 'Mumsys_Mvc_Display_Control_Interface', $display );
+//    }
+
+
     /**
+     * replaceControllerFrontend
      * Replaces the display/ frontend controller object.
      *
      * @param Mumsys_Mvc_Display_Control_Interface $display Display controller to set

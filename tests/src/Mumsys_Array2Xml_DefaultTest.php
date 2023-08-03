@@ -209,7 +209,9 @@ class Mumsys_Array2Xml_DefaultTest
         $this->_object2->buffer( 'test' );
         $current = file_get_contents( $this->_object2->getCacheFile() );
 
-        /** @todo in some cases 'testtest' come out in tests 20230731 */
+        /* In some cases 'testtest' come out. Cache was not cleand correctly.
+         * This happens if a test ends before __destruct() executed here. E.g:
+         * Also if you break/ end tests while running */
         $this->assertingEquals( 'test', $current );
         $this->assertingEquals(
             $this->_objectoptions2['cachefile'], $this->_object2->getCacheFile()

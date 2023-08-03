@@ -50,9 +50,9 @@ class Mumsys_Service_Vdr
      * 'vdr_id', 'name', 'bouquet', 'frequency', 'parameter', 'source', 'symbolrate',
      * 'VPID', 'APID', 'TPID', 'CAID', 'SID', 'NID', 'TID', 'RID'
      * @link http://vdr-wiki.de/wiki/index.php/Channels.conf VDR Specs
-     * @var array
+     * @ v ar array
      */
-    private $_channels = array();
+    //private $_channels = array(); disabled 4SCA
 
 
     /**

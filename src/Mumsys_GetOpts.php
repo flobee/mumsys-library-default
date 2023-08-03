@@ -1,4 +1,4 @@
-<?php
+<?php declare( strict_types=1 );
 
 /**
  * Mumsys_GetOpts
@@ -120,7 +120,7 @@ class Mumsys_GetOpts
 
     /**
      * Mapping for short and long options.
-     * @var array<string, array<string,string>|string>
+     * @var array<string, array<string,string>>
      */
     private $_mapping;
 
@@ -133,7 +133,7 @@ class Mumsys_GetOpts
     /**
      * List (key value pairs) of all parameter without - and -- parameter
      * prefixes
-     * @var array<string, array<string, scalar>>
+     * @var array<string, array<string, scalar>|scalar>
      */
     private $_resultCache;
 
@@ -184,7 +184,10 @@ class Mumsys_GetOpts
         }
 
         $this->_verifyOptions( $configOptions ); // gen: $this->_options
-        $this->_setMappingOptions( $this->_options ); // gen: $this->_mapping
+        $this->_generateMappingOptions( $this->_options ); // gen: $this->_mapping
+
+//print_r($this->_mapping);
+
         $this->_rawResult = $this->parse();
     }
 
@@ -300,6 +303,15 @@ class Mumsys_GetOpts
             $resultValue = trim( $valParts[1] );
         }
 
+        // 4SCA
+        // @codeCoverageIgnoreStart
+        if ( ( isset( $this->_mapping['_default_'] )
+            && !is_array( $this->_mapping['_default_'] ) )
+            || !is_array( $this->_mapping[$action] ) ) {
+            throw new Mumsys_GetOpts_Exception( 'Unexpected error' );
+        }
+        // @codeCoverageIgnoreEnd
+
         // is a global tag? not in mapping?:
         // is a --no-FLAG to disable?
         // or an unknown tag?
@@ -324,7 +336,7 @@ class Mumsys_GetOpts
                     // argTag done here
                     return $results;
 
-                } else if ( ( $unTag = $this->_argIsUntag( '_default_', $argTag ) ) ) {
+                } else if ( ( $unTag = $this->_argIsUntag( '_default_', $argTag ) ) !== false ) {
                     // a global arg!
                     // use the long opt, the short one maps to
                     $unTag = $this->_mapping['_default_'][$unTag];
@@ -529,6 +541,10 @@ class Mumsys_GetOpts
                 && isset( $value[0] )
                 && $value[0] === '-' ) {
 
+                // 4SCA
+                if ( !isset( $options['_default_'] ) || !is_array( $options['_default_'] ) ) {
+                    $options['_default_'] = array();
+                }
                 // 0 => --file
                 $options['_default_'][$value] = 'No description';
 
@@ -545,6 +561,10 @@ class Mumsys_GetOpts
                 && $key[0] === '-'
                 && is_string( $value ) ) {
 
+                // 4SCA
+                if ( !isset( $options['_default_'] ) || !is_array( $options['_default_'] ) ) {
+                    $options['_default_'] = array();
+                }
                 // --file => description
                 $options['_default_'][$key] = $value; // arg key/desc pair
 
@@ -584,7 +604,7 @@ class Mumsys_GetOpts
      * Returns the list of key/value pairs of the input parameters without
      * "-" and "--" from the cmd line.
      *
-     * @return array<string, array<string, scalar>> List of key/value pair from
+     * @return array<string, array<string, scalar>|scalar> List of key/value pair from
      * incoming cmd line.
      */
     public function getResult(): array
@@ -608,6 +628,7 @@ class Mumsys_GetOpts
                     if ( $action === '_default_' ) {
                         $result[substr( $key, $num )] = $value;
                     } else {
+                        /** @var array<string, array<string, scalar>> $result 4SCA */
                         $result[$action][substr( $key, $num )] = $value;
                     }
                 }
@@ -823,7 +844,7 @@ TEXT;
      * @param array<string, string|array<string|int, string>> $options List of
      * incoming options
      */
-    private function _setMappingOptions( array $options = array() ): void
+    private function _generateMappingOptions( array $options = array() ): void
     {
         $mapping = array();
 

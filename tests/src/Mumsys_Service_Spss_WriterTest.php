@@ -50,7 +50,7 @@ class Mumsys_Service_Spss_WriterTest
     protected function setUp(): void
     {
         $this->_version = '2.1.0';
-        $this->_spssFile = __DIR__ . '/../testfiles/Service/Spss/writerTests.sav';
+        $this->_spssFile = __DIR__ . '/../testfiles/Domain/Service/Spss/writerTests.sav';
 
         $this->_options = array(
             'header' => array(
