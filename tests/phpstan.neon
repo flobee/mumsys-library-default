@@ -10,6 +10,9 @@ parameters:
     # 2023-08-01 set to false for GetOpts implementation
     treatPhpDocTypesAsCertain: false
 
+    # activate to check missing PhpDocs for class properties; default: false
+    #inferPrivatePropertyTypeFromConstructor: true
+
     ignoreErrors:
         #- '#Call to an undefined method [a-zA-Z0-9\\_]+::doFoo\(\)#'
         - '#Call to an undefined method Mumsys_Logger_File::emerg\(\)#'

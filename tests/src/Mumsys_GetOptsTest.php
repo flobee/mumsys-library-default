@@ -427,7 +427,7 @@ HELPLONG;
 //     * @covers Mumsys_GetOpts::parse
 //     * @covers Mumsys_GetOpts::_parseArg
 //     */
-//    public function testParseSimpleTestNummericArg()
+//    public function testParseSimpleTestNumericArg()
 //    {
 //        $this->markTestIncomplete('Negativ int wont fix unless php will do for array keys');
 //

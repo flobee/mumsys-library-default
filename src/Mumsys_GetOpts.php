@@ -90,6 +90,13 @@
  * //           'pathstart' =>'pathstartvalue',
  * //      'action2' => array( ...
  * </code>
+ *
+ * Limitations: Only one action of the same name can be requested per request.
+ * Also see some todo's tags at some methodes with are still open!
+ * E.g: Numeric values which are negativ.:
+ *      Dont work:          Works:
+ *      --input "-0.123"    --input="-0.123"
+ *      --input -0.123      --input=-0.123
  */
 class Mumsys_GetOpts
     extends Mumsys_Abstract
@@ -263,6 +270,7 @@ class Mumsys_GetOpts
     /**
      * Parse current argment tag and collect results.
      *
+     * @todo a value can contain e.g: "-00:00..." works this way: --key="-00" not that way: --key "-00"
      * @todo benchmark opts given -f=f vs -f "f", whats faster? for the docs!
      *
      * @param string $argValue Current argument value
@@ -347,7 +355,7 @@ class Mumsys_GetOpts
 
                 } else {
                     // not in mapping found!
-                    // todo/feat: ignore unknown tags or report as error? verbose mode?
+                    /** @todo/feat: ignore unknown tags or report as error? verbose mode? */
                     $mesg = sprintf(
                         'Option "%1$s" not found in option list/configuration for action "%2$s"',
                         $argTag, $action
@@ -382,6 +390,7 @@ class Mumsys_GetOpts
 
                     if ( isset( $this->_argv[$argPos + 1] )
                         && isset( $this->_argv[$argPos + 1][0] )
+/** @todo a value can contain e.g: "-00:00..." work this was: --key="-00" not that way: --key "-00" */
                         && $this->_argv[$argPos + 1][0] != '-'
                     ) {
                         // count up for next usage? no the sequence ends. next loop...
