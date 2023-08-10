@@ -1,6 +1,19 @@
 # dist: https://docs.travis-ci.com/user/reference/linux#sts=Using%20Ubuntu%20Linux%20distributions%20#
 dist: focal
-#dist: bionic
+# Ubuntu 22.04 Jammy
+#dist: jammy
+addons:
+  apt:
+    sources:
+    # adds the MASTER of php packages for debian/ubuntu OS's
+    - sourceline: 'ppa:ondrej/php'
+    #  - sourceline: 'ppa:chris-lea/redis-server'
+    packages:
+    - ffmpeg 
+    - imagemagick 
+    - exiftool
+
+  mariadb: '10.5'
 
 env:
   global:
@@ -16,11 +29,9 @@ php:
 
 matrix:
   allow_failures:
-    - php: '8.1'
+    - php: '8.2'
+    - php: '8.3'
     - php: nightly
-
-addons:
-  mariadb: '10.5'
 
 branches:
   only:
@@ -37,6 +48,11 @@ cache:
     - $HOME/.composer/cache/
 
 before_install:
+  # - sudo apt-get update
+  # if ffmpeg fails
+  # sudo apt-get install libavformat-dev libavfilter-dev libavdevice-dev ffmpeg
+  # sudo apt install multimedia-devel
+  # - sudo apt-get install ffmpeg imagemagick exiftool
   - sudo mysql -e 'drop user if exists travis@localhost;'
   - sudo mysql -e 'drop user if exists travis@127.0.0.1;'
   - sudo mysql -e 'create user travis@localhost;'
