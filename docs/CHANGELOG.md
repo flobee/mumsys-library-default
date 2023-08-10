@@ -12,9 +12,40 @@
 
 2023-08
 
+Introduce **ShellTools** Domain:
+
+Adds commandline tool `bin/shelltools.php` as helper and library parts for 
+common tasks on a linux system for editing or manipulate media files (photos 
+exif data with `exiftool` or `ffmpeg` for cutting videos). 
+It is a wrapper with very very limitid options. Single script helps me in the 
+past. All my little helpers will go in here and: 
+
+Now in a new costume. 
+
+Other tools will follow soon. Open for cross OS's but not implemented in detail.
+Maybe the tests work on windows? I don't know!
+
+Details you can find in _docs/shelltools-README.md_
+
+Currently available Adapters/ functions:
++ Exif filename 2 meta
++ Exif Fix Timestamps
++ Exif Meta 2 Filename
++ Ffmpeg CutTrim Video
++ Soon: resize images using 'convert' from imagemagick package
+
+Quick test? 
+
++ MAKE BACKUPS
++ ALWAYS use `--test` for simulation of commands!!!
+
+`bin/shelltools.php --test --help`
+
+
 General fixes:
 + Improves CS, SCA which came up with some tests, e.g:
-  Context, Array2Xml, 
+  Context, Array2Xml,
++ Updates .gitignore because of new tests and testfiles 
 
 Dependencies:
 + Updates/ Set dependency 

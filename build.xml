@@ -58,7 +58,7 @@
         https://www.npmjs.com/package/doctoc
     -->
     <target name="doctocs" description="Updates the TOC **table of contents** of documentation files">
-        <property name="list" value="README.md;docs/BENCHMARKS.md;docs/CHANGELOG.md;docs/AUTHORS.md" />
+        <property name="list" value="README.md;docs/BENCHMARKS.md;docs/CHANGELOG.md;docs/AUTHORS.md;docs/shelltools-README.md" />
         <foreach list="${list}" param="docfile" delimiter=";" target="doctocs_do"/>
     </target>
     <target name="doctocs_do" description="Internal usage for 'updatedoctocs'">

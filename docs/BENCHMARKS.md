@@ -9,6 +9,7 @@
 + [What it should do](#what-it-should-do)
 + [What to benchmark?](#what-to-benchmark)
 + [Skeleton benchmark test](#skeleton-benchmark-test)
++ [Compare benchmarks](#compare-benchmarks)
 + [Possible commands](#possible-commands)
 + [Links](#links)
 
