@@ -26,6 +26,7 @@ data/sessions/
 data/tmp/
 temp/
 /tests/tmp/*
+/tests/testfiles/Domain/ShellTools/images/filename2meta_20230729_235859.jpg_original
 /tmp/*
 
 # Legacy

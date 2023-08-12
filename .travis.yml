@@ -25,6 +25,8 @@ language: php
 php:
   - '8.0'
   - '8.1'
+  - '8.2'
+  - '8.3'
   - nightly
 
 matrix:
@@ -49,7 +51,7 @@ cache:
 
 before_install:
   # - sudo apt-get update
-  # if ffmpeg fails
+  # if ffmpeg fails (see addons: apt: above) 
   # sudo apt-get install libavformat-dev libavfilter-dev libavdevice-dev ffmpeg
   # sudo apt install multimedia-devel
   # - sudo apt-get install ffmpeg imagemagick exiftool
