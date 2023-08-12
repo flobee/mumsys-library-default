@@ -19,6 +19,7 @@ BEFORE YOU START: CREATE BACKUPS OF YOUR FILES!!!
       + [Action exiffilename2meta](#action-exiffilename2meta)
     + [Adapters for ffmpeg](#adapters-for-ffmpeg)
       + [Action ffmpegcuttrimvideo](#action-ffmpegcuttrimvideo)
+    + [Adapter resizeimages](#adapter-resizeimages)
     + [General hints for ffmpeg](#general-hints-for-ffmpeg)
     + [General hints for exiftool and in php context](#general-hints-for-exiftool-and-in-php-context)
 
@@ -183,14 +184,42 @@ be solved with it. Cutting, converting, resizing and much more for videos.
 
 #### Action ffmpegcuttrimvideo
 
-Cut a video by given start, end datetime value in different flavours. Possible 
-ways: 
+Cut a video by given start, end datetime value in different flavours. Possible
+ways:
 + 'range' cut at start until stop value
 + 'duration' cat at start until given value for endtime. Were endtime is ment as
   duration and not the stop time! E.g cat a start and 10minutes long
-+ 'reverse' start time in negativ form. start from the end of the file. E.g: 
++ 'reverse' start time in negativ form. start from the end of the file. E.g:
   Give the last 10minutes of the video
 
+
+
+### Adapter resizeimages
+
+It uses imagemagick package and the 'convert' command.
+
+Make sure, if a source path is given, that only files of the same format exists.
+E.g. only jpg or png images. Also video formats could be converted if exists.
+Just in case to not overheat your cpu.
+
+Resize images to a given size of pixel. E.g:
+```
+    bin/shelltools.php --test resizeimages \
+        --source=/tmp/gopro/20120802_192919.jpg \
+        --suffix=_x \
+        --size=1600
+    # will create: /tmp/gopro/20120802_192919_x1600.jpg
+```
+
+Example using a source path:
+```
+    bin/shelltools.php --test resizeimages \
+        --source=/tmp/gopro \
+        --suffix=_x \
+        --size=1600
+    # Scans all files in source and will create:
+    # /tmp/gopro/[sourcefile]_x1600[.ext]
+```
 
 
 

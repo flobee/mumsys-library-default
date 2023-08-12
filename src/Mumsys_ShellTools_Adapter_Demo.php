@@ -346,11 +346,7 @@ class Mumsys_ShellTools_Adapter_Demo
      */
     private function _prepareCommand(): array
     {
-        if ( ( $binParts = $this->_getBinaryParts( 'testalias' ) ) ===  array() ) {
-            // @codeCoverageIgnoreStart
-            $this->_logger->log( 'Binary/ parts not found for current sapi or OS', 5 );
-            // @codeCoverageIgnoreEnd
-        }
+        $binParts = $this->_getBinaryParts( 'testalias' );
 
         $cmdList = array();
         foreach ( $binParts as $command => $globalParams ) {

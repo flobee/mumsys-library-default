@@ -5,7 +5,7 @@
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * @copyright Copyright (c) 2023 by Florian Blasel for FloWorks Company
+ * @copyright Copyright (c) 2023 by Florian Blasel
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
@@ -393,11 +393,7 @@ class Mumsys_ShellTools_Adapter_ExifFilename2Meta
 
             //
             // base cmd (cmd + global params)
-            if ( ( $binParts = $this->_getBinaryParts( 'exiftool' ) ) ===  array() ) {
-                // @codeCoverageIgnoreStart
-                $this->_logger->log( 'Binary/ parts not found for current sapi or OS', 5 );
-                // @codeCoverageIgnoreEnd
-            }
+            $binParts = $this->_getBinaryParts( 'exiftool' );
             // expect only one: foreach ( $binParts as $command => $globalParams ) {}
             $cmdBase = key( $binParts ) . current( $binParts );
             //

@@ -13,4 +13,4 @@ require_once './../src/Mumsys_Loader.php';
 spl_autoload_extensions( '.php' );
 /** @var callable $callable 4SCA */
 $callable = array('Mumsys_Loader', 'autoload');
-spl_autoload_register(  ); //v2+
+spl_autoload_register( $callable ); //v2+

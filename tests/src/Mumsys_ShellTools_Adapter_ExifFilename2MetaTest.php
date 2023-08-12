@@ -386,6 +386,7 @@ class Mumsys_ShellTools_Adapter_ExifFilename2MetaTest
         $this->assertingTrue( $actualA );
     }
 
+
     /**
      * Just run execute() with _prepareCommands() exception
      * Invalid default location exception
@@ -435,7 +436,16 @@ class Mumsys_ShellTools_Adapter_ExifFilename2MetaTest
 
         $actualB = $this->_object->execute( true );
         $this->assertingTrue( $actualB );
+
+        // cleanup
+        $testfileBak = $this->_testsDir
+            . '/testfiles/Domain/ShellTools/images/filename2meta_20230729_235859.jpg_original';
+        if ( file_exists( $testfileBak ) ) {
+            unlink( $testfileBak );
+        }
+        $this->assertingTrue( true ); // run until here, good
     }
+
 
     /**
      * Just run with default switch individual  locationFormat in _prepareCommands.
@@ -485,8 +495,6 @@ class Mumsys_ShellTools_Adapter_ExifFilename2MetaTest
         $actualA = $this->_object->validate( $inputA );
         $this->assertingTrue( $actualA );
 
-//        $this->expectingException( 'Mumsys_Parser_Exception' ); // see todo of parser
-//        $this->expectingExceptionMessageRegex( '/Format of the value is invalid/' );
         $this->expectingException( 'Mumsys_ShellTools_Adapter_Exception' );
         $this->expectingExceptionMessageRegex( '/String of filename seems invalid "file.png"/' );
         $this->_object->execute( false );

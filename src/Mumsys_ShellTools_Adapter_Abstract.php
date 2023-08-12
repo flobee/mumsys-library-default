@@ -5,7 +5,7 @@
  * for MUMSYS Library for Multi User Management System (MUMSYS)
  *
  * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
- * @copyright Copyright (c) 2023 by Florian Blasel for FloWorks Company
+ * @copyright Copyright (c) 2023 by Florian Blasel
  * @author Florian Blasel <flobee.code@gmail.com>
  *
  * @category    Mumsys
@@ -280,7 +280,7 @@ abstract class Mumsys_ShellTools_Adapter_Abstract
         }
         // @codeCoverageIgnoreStart
         // OS dependent
-        return array();
+        return array($alias => '');
         // @codeCoverageIgnoreEnd
     }
 
@@ -547,8 +547,10 @@ abstract class Mumsys_ShellTools_Adapter_Abstract
 
 
     /**
-     * Checks if variable given or default will be used and if a file/dir
-     * location exists.
+     * Checks if variable given or takes the default value.
+     *
+     * Note: if abs. phth did not succeed it checks for relativ location and
+     * returns the value if a match was found.
      *
      * Dont use this if you dont have a default value and if the value is not
      * for a test for file or dir exists check.
@@ -581,16 +583,26 @@ abstract class Mumsys_ShellTools_Adapter_Abstract
                     $valueList[$key]
                 );
                 $this->_logger->log( $message, 6 );
+
             } else {
-                $mesg = sprintf(
-                    $this->_validationMessageTemplate,
-                    'Error! Not found: ' . $action,
-                    '',
-                    '--' . $key,
-                    $valueList[$key]
-                );
-                $this->_logger->log( $mesg, 6 );
-                throw new Mumsys_ShellTools_Adapter_Exception( $mesg );
+                if ( isset( $valueList[$key] ) && realpath( $valueList[$key] ) === false ) {
+                    //can be relativ
+                    $wd = $_SERVER['PWD'] ?? '';
+                    $loc = $wd . DIRECTORY_SEPARATOR . $valueList[$key];
+                    if ( file_exists( $loc ) ) {
+                        $result = $loc;
+                    }
+                }
+
+                if ( empty( $result ) ) {
+                    $mesg = sprintf(
+                        $this->_validationMessageTemplate,
+                        'Error! Not found: ' . $action, '', '--' . $key,
+                        $valueList[$key]
+                    );
+                    $this->_logger->log( $mesg, 6 );
+                    throw new Mumsys_ShellTools_Adapter_Exception( $mesg );
+                }
             }
 
         } else if ( isset( $optionDefaults[$action][$key] ) ) {
@@ -605,6 +617,7 @@ abstract class Mumsys_ShellTools_Adapter_Abstract
                 $optionDefaults[$action][$key]
             );
             $this->_logger->log( $message, 6 );
+
         } else {
             // @codeCoverageIgnoreStart
             // ignore, not given. if the default would not exists anymore, only

@@ -12,6 +12,23 @@
 
 2023-08
 
++ Mumsys_ShellTools_Adapter*
+  - Indroduce/ adds new adapter 'ResizeImages' to convert images using imagemagick
+    (package) convert (command)
+
+  - validate() using `_checkVarExistsWithDefaultsLocationExists` checks also
+    relative path/files from now on
+
+  - Updates tests (delete tmp files)
+
++ Mumsys_ShellTools_Adapter_Abstract
+
+  - _getBinaryParts() return by default the alias if no comamand exists for
+    current sapi or OS
+
+  - relocate some methodes from adaptes to abstract class to limit code
+
+
 Introduce **ShellTools** Domain:
 
 Adds commandline tool `bin/shelltools.php` as helper and library parts for 

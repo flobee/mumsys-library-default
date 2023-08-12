@@ -111,6 +111,7 @@ class Mumsys_ShellTools_Adapter_DemoTest
     {
     }
 
+
     /**
      * @covers Mumsys_ShellTools_Adapter_Demo::__construct
      * @covers Mumsys_ShellTools_Adapter_Abstract::__construct
@@ -233,6 +234,30 @@ class Mumsys_ShellTools_Adapter_DemoTest
         $this->assertingTrue( $actualA );
         $this->assertingTrue( $actualB );
     }
+
+
+    /**
+     * @covers Mumsys_ShellTools_Adapter_Demo::validate
+     * @covers Mumsys_ShellTools_Adapter_Demo::_checkVarExistsWithDefaultsLocationExists
+     */
+    public function testValidateLocationRelativValid()
+    {
+        // setup
+        $wd = getcwd();
+        chdir( '../bin' );
+
+        // test
+        $inputA = array('demoaction1' => array(
+            'file' => 'testfiles/Domain/ShellTools/images/file.png',
+        ));
+
+        $actualA = $this->_object->validate( $inputA );
+        $this->assertingTrue( $actualA );
+
+        // re-set
+        chdir( $wd );
+    }
+
 
     /**
      * @covers Mumsys_ShellTools_Adapter_Demo::validate
@@ -401,6 +426,7 @@ class Mumsys_ShellTools_Adapter_DemoTest
 
         $test = ob_get_clean(); // if exception not thrown: clean the buffer
     }
+
 
     /**
      * Version checks

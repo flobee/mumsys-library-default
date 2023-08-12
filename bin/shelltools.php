@@ -48,10 +48,11 @@ $oLogger->log( 'Logfile goes to: ' . $loggerOpts['logfile'], 6 );
 
 // list of programs/ adapter this tools should use
 $adapterList = array(
-    new Mumsys_ShellTools_Adapter_ExifFixTimestamps( $oLogger ),
-    new Mumsys_ShellTools_Adapter_ExifMeta2Filename( $oLogger ),
-    new Mumsys_ShellTools_Adapter_ExifFilename2Meta( $oLogger ),
-    new Mumsys_ShellTools_Adapter_FfmpegCutTrimVideo( $oLogger ),
+    new Mumsys_ShellTools_Adapter_ExifFixTimestamps( $oLogger ), // exiftool
+    new Mumsys_ShellTools_Adapter_ExifMeta2Filename( $oLogger ), // exiftool
+    new Mumsys_ShellTools_Adapter_ExifFilename2Meta( $oLogger ), // exiftool
+    new Mumsys_ShellTools_Adapter_FfmpegCutTrimVideo( $oLogger ), // ffmpeg
+    new Mumsys_ShellTools_Adapter_ResizeImages( $oLogger ), // imagemagick
     //new Mumsys_ShellTools_Adapter_Demo( $oLogger ),
 );
 $oConfig = new Mumsys_Config_Default();
