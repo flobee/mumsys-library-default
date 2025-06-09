@@ -1,0 +1,22 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+/*{{{*/
+/**
+ * shelltools.php Runner for mixed adapters of the ShellTools domain.
+ * for MUMSYS Library for Multi User Management System (MUMSYS)
+ *
+ * @license LGPL Version 3 http://www.gnu.org/licenses/lgpl-3.0.txt
+ * @copyright Copyright (c) 2023 by Florian Blasel for FloWorks Company
+ * @author Florian Blasel <[ba|z|a]sh: echo 1l2b33.code@EmAil.c2m | tr 123AE foeag>
+ *
+ * @category    Mumsys
+ * @package     Library
+ * @subpackage  ShellTools
+ * Created: 2023-08-10
+ */
+/*}}}*/
+
+/**
+ * Wrapper for shelltools using the shebang to call it from the shell
+ */
+require_once __DIR__ . '/shelltools.php';

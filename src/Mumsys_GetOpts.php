@@ -14,7 +14,7 @@
  * Created: 2011-04-11
  */
 
-// test unflag overwrites flag eg: --help --no-help
+/** @TODO test unflag overwrites flag eg: --help --no-help */
 
 /**
  * Class to handle/ pipe shell arguments in php context.
@@ -64,7 +64,7 @@
  *        '--param1:', => 'Path where your files are',
  *        // ...
  * );
- *  *
+ *
  * // input is optional, when not using it the $_SERVER['argv'] will be used.
  * $input = null;
  * // or:
@@ -104,7 +104,7 @@ class Mumsys_GetOpts
     /**
      * Version ID information.
      */
-    const VERSION = '4.0.0';
+    public const VERSION = '4.0.0';
 
     /**
      * Cmd line.
@@ -121,7 +121,8 @@ class Mumsys_GetOpts
      *
      * After _verifyOptions()
      *
-     * @var array<string, string|array<string|int, string>>
+     * //   array<string, string|array<string|int, string>>
+     * @var array<int|string, string|array<string|int,string>>
      */
     private $_options;
 
@@ -180,7 +181,7 @@ class Mumsys_GetOpts
      *
      * @throws Mumsys_GetOpts_Exception On error initialsing the object
      */
-    public function __construct( array $configOptions, array $input = null )
+    public function __construct( array $configOptions, array|null $input = null )
     {
         if ( $input === null ) {
             $this->_argv = Mumsys_Php_Globals::getServerVar( 'argv', array() );
@@ -190,9 +191,8 @@ class Mumsys_GetOpts
             $this->_argc = count( $input );
         }
 
-        $this->_verifyOptions( $configOptions ); // gen: $this->_options
-        $this->_generateMappingOptions( $this->_options ); // gen: $this->_mapping
-
+        $this->_verifyOptions( $configOptions );
+        $this->_generateMappingOptions( $this->_options );
         $this->_rawResult = $this->parse();
     }
 
@@ -769,17 +769,21 @@ TEXT;
     public function getHelpCheckGlobalOrLocal(): ?string
     {
         $result = $this->getResult();
-        if ( isset( $result['help'] ) ) {
-            // global  help given. no need to test for an action help
+
+        if (isset($result['help']) || isset($result['helplong'])) {
             return null;
         }
 
-        foreach ( $result as $action => $actionOpts ) {
-            if ( isset( $actionOpts['help'] ) && $actionOpts['help'] === true ) {
+        foreach ($result as $action => $actionOpts) {
+            if (
+                (isset($actionOpts['help']) && $actionOpts['help'] === true) ||
+                (isset($actionOpts['helplong']) && $actionOpts['helplong'] === true)
+            ) {
                 return $action;
             }
         }
-        // nothing found
+
+        // not found
         return null;
     }
 

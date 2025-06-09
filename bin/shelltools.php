@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php declare(strict_types=1);
 
 /**
@@ -90,8 +89,18 @@ try {
         }
 
         if ( isset( $cliOptsResult['helplong'] ) ) {
-            // $helpToShow --helplong need to be set in adapter options
-            echo $cliOpts->getHelpLong() . PHP_EOL;
+            $action = null;
+            foreach ( $cliOptsResult as $key => $val ) {
+                if ( $key !== 'helplong' && is_array( $val ) ) {
+                    $action = $key;
+                    break;
+                }
+            }
+            if ( $action ) {
+                echo $cliOpts->getHelpLong( $action ) . PHP_EOL;
+            } else {
+                echo $cliOpts->getHelpLong() . PHP_EOL;
+            }
         }
 
         exit( 0 );

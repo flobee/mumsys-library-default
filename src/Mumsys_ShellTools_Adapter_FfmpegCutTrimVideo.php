@@ -106,9 +106,8 @@ class Mumsys_ShellTools_Adapter_FfmpegCutTrimVideo
                 . 'HH:MM:SS',
 
             '--wayofcut:' => 'Way of the cut: ' . PHP_EOL
-                . '- "range": Default value; Cut a video from timeStart to '
-                . 'timeEnd value.' . PHP_EOL
-
+                . '- "range": Default value; Cut a video part from timeStart '
+                . 'to timeEnd value.' . PHP_EOL
                 . '- "duration": Cut fixed n seconds begining from --timeStart '
                 . 'value.' . PHP_EOL
                 . "\t" . 'E.g: Cut 5 min. and begin at the first minute: ' . PHP_EOL
@@ -122,7 +121,14 @@ class Mumsys_ShellTools_Adapter_FfmpegCutTrimVideo
                 . "\t" . 'a negativ value. E.g: Cut the last minute from a '
                 . 'video: ' . PHP_EOL
                 . "\t" . 'Use: ./thisscript --timeStart="-00:01:00" '
-                . '--wayofcut=reverse --location...'
+                . '--wayofcut=reverse --location...' . PHP_EOL
+
+                . 'You may merge cuts this way: '
+                . '\'ffmpeg -auto_convert 1 -f concat -i SEGMENTS.txt '
+                . '-c copy -map 0 "OUT.mp4"\' '
+                . 'where SEGMENTS.txt is a list of files:' . PHP_EOL
+                . "\t" . 'file cut1.mp4' . PHP_EOL
+                . "\t" . 'file cut2.mp4' . PHP_EOL
             ,
             '--timeEnd:' => 'The time for the cut end: "HH:MM:SS.MILLISECONDS" '
                 . 'or "HH:MM:SS". ' . PHP_EOL
